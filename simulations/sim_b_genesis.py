@@ -3,12 +3,12 @@ import matplotlib.pyplot as plt
 
 def run_genesis_sim():
     print("LCT Simulation B: Kibble-Zurek Genesis")
-    N = 100
+    N = 1000
     # Random Phase Field (Hot Universe)
     phase = np.random.uniform(0, 2*np.pi, (N, N))
     
     # Cooling / Relaxation Step (Cellular Automaton approximation)
-    for _ in range(50):
+    for _ in range(5000):
         # Average neighbors to simulate energy minimization
         phase_new = (np.roll(phase, 1, 0) + np.roll(phase, -1, 0) + 
                      np.roll(phase, 1, 1) + np.roll(phase, -1, 1)) / 4.0
