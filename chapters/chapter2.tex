@@ -1,50 +1,58 @@
 \chapter{The Signal Layer: Gravity and Mass}
 
 \section{The Lindblom Dispersion Relation (Mass)}
-Standard physics assumes a linear dispersion relation ($E=hf$). LCT applies \textbf{Nyquist Sampling Theory} to the vacuum lattice. As a signal's local excitation rate $\omega$ approaches the resonant frequency of the lattice node ($\omega_{cutoff}$), the Inductive Reactance ($X_L$) becomes non-linear.
+Standard physics assumes a linear dispersion relation ($E=hf$). LCT applies \textbf{Nyquist Sampling Theory} to the vacuum lattice[cite: 94]. As a signal's local excitation rate $\omega$ approaches the resonant frequency of the lattice node ($\omega_{cutoff}$), the Inductive Reactance ($X_L$) becomes non-linear[cite: 95].
+
+
+
 \begin{equation}
 v_g(\omega) = c \cdot \sqrt{1 - \left(\frac{\omega}{\omega_{cutoff}}\right)^2}
 \end{equation}
-As $v_g \to 0$, the energy packet becomes a localized \textbf{Standing Wave} (Rest Mass). Inertia is the Back-EMF generated when an external force attempts to change the phase of this standing wave.
+
+\begin{itemize}
+    \item \textbf{Regime A ($\omega \ll \omega_{cutoff}$):} Linear response. $v_g \approx c$. (Massless Radiation) [cite: 96].
+    \item \textbf{Regime B ($\omega \to \omega_{cutoff}$):} Saturation. The node's Slew Rate is exceeded. The Group Velocity $v_g \to 0$. The energy packet becomes a localized \textbf{Standing Wave} (Rest Mass)[cite: 98].
+\end{itemize}
+\textbf{Conclusion:} Rest Mass is identified as \textbf{High-Frequency Flux trapped by the Bandwidth Limit of the Vacuum}[cite: 98]. Inertia is the Back-EMF generated when an external force attempts to change the phase of this standing wave[cite: 99].
 
 \section{Gravity as Metric Strain}
-Standard General Relativity describes gravity as geometric curvature. In the LCT hardware framework, we describe it as **Metric Strain** ($\varepsilon$) of the vacuum lattice.
-A massive object imposes a stress load on the surrounding vacuum substrate. Because the lattice behaves as an elastic solid, it responds with a radial strain field:
+Standard General Relativity describes gravity as geometric curvature. In the LCT hardware framework, we describe it as \textbf{Metric Strain} ($\varepsilon$) of the vacuum lattice[cite: 101]. 
+A massive object imposes a stress load on the surrounding vacuum substrate[cite: 102]. Because the lattice behaves as an elastic solid, it responds with a radial strain field[cite: 103]:
 \begin{equation}
 \varepsilon_{rr}(r) = \frac{\Delta L_{vac}}{L_{vac}} \approx \frac{2GM}{rc^2}
 \end{equation}
-This strain physically stretches the grid spacing. To a photon traveling through this region, the increased inductance per unit length ($L' = L_{vac}(1+\varepsilon)$) manifests as a slower propagation velocity.
+This strain physically stretches the grid spacing[cite: 106]. To a photon traveling through this region, the increased inductance per unit length ($L' = L_{vac}(1+\varepsilon)$) manifests as a slower propagation velocity[cite: 106].
 
 \section{Deriving the Schwarzschild Metric (Hydrodynamic Limit)}
-We model gravity as a radial "sink flow" of the vacuum substrate toward a massive object. The velocity of the vacuum flow $v_0$ is given by:
+We model gravity as a radial "sink flow" of the vacuum substrate toward a massive object[cite: 108]. The velocity of the vacuum flow $v_0$ is given by[cite: 109, 110]:
 \begin{equation}
 v_0(r) = - \sqrt{\frac{2GM}{r}} \hat{r}
 \end{equation}
-Substituting this flow field into the acoustic metric line element:
+Substituting this flow field into the acoustic metric line element[cite: 110, 112]:
 \begin{equation}
 ds^2 \approx - \left(1 - \frac{v_0^2}{c^2}\right) c^2 dt^2 + \left(1 - \frac{v_0^2}{c^2}\right)^{-1} dr^2 + r^2 d\Omega^2
 \end{equation}
-This exactly recovers the **Schwarzschild Metric**, demonstrating that General Relativity is the hydrodynamic limit of a flowing, strained vacuum.
+This exactly recovers the \textbf{Schwarzschild Metric}, demonstrating that General Relativity is the hydrodynamic limit of a flowing, strained vacuum[cite: 117].
 
 \section{Computational Module: The Lensing Simulation}
-We utilized the Finite-Difference Time-Domain (FDTD) method to simulate a photon pulse passing through a strained lattice.
+We utilized the Finite-Difference Time-Domain (FDTD) method to simulate a photon pulse passing through a strained lattice[cite: 118, 119].
 \begin{itemize}
-    \item **Setup:** A 2D lattice where the node density varies according to the strain field $\varepsilon(r)$.
-    \item **Result:** The pulse wavefront bent toward the mass center exactly matching the predicted deflection angle $\alpha = 4GM/rc^2$.
+    \item \textbf{Setup:} A 2D lattice where the node density varies according to the strain field $\varepsilon(r)$[cite: 120].
+    \item \textbf{Result:} The pulse wavefront bent toward the mass center exactly matching the predicted deflection angle $\alpha = 4GM/rc^2$[cite: 121].
 \end{itemize}
-*(See Appendix D.1 for the full Python source code.)*
+*(See Appendix D.1 for the full Python source code.)* [cite: 122]
 
 \section{Bridge the Gap: From Geometry to Elasticity}
-To the General Relativist, gravity is **Curvature**. To the Mechanical Engineer, gravity is **Strain**.
+To the General Relativist, gravity is \textbf{Curvature}. To the Mechanical Engineer, gravity is \textbf{Strain}.
 \begin{itemize}
-    \item **The Metric ($g_{\mu\nu}$):** The Strain Tensor of the vacuum solid.
-    \item **Geodesics:** The path of least action through a variable-density medium.
-    \item **Gravitational Waves:** Phonons propagating through the lattice stiffness.
+    \item \textbf{The Metric ($g_{\mu\nu}$):} The Strain Tensor of the vacuum solid[cite: 125].
+    \item \textbf{Geodesics:} The path of least action through a variable-density medium[cite: 126].
+    \item \textbf{Gravitational Waves:} Phonons propagating through the lattice stiffness[cite: 127].
 \end{itemize}
 
 \section{Problems}
 \begin{enumerate}
-    \item \textbf{Metric Strain:} A massive object induces a radial strain $\varepsilon_{rr}$ on the lattice. Derive the relationship between this strain and the effective refractive index $n(r)$ assuming an isotropic elastic solid.
-    \item \textbf{The Event Horizon:} Using the "Sink Flow" model $v(r) = \sqrt{2GM/r}$, calculate the radius $R_s$ at which the vacuum flow velocity equals the lattice sound speed $c_s$. Compare this to the Schwarzschild radius.
-    \item \textbf{Lensing Angle:} A photon passes a mass $M$ with impact parameter $b$. Calculate the deflection angle $\alpha$ using the strain gradient $\nabla \varepsilon$.
+    \item \textbf{Metric Strain:} A massive object induces a radial strain $\varepsilon_{rr}$ on the lattice[cite: 130]. Derive the relationship between this strain and the effective refractive index $n(r)$ assuming an isotropic elastic solid[cite: 131].
+    \item \textbf{The Event Horizon:} Using the "Sink Flow" model $v(r) = \sqrt{2GM/r}$, calculate the radius $R_s$ at which the vacuum flow velocity equals the lattice sound speed $c_s$[cite: 132]. Compare this to the Schwarzschild radius[cite: 133].
+    \item \textbf{Lensing Angle:} A photon passes a mass $M$ with impact parameter $b$[cite: 134]. Calculate the deflection angle $\alpha$ using the strain gradient $\nabla \varepsilon$[cite: 135].
 \end{enumerate}

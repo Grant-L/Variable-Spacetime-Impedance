@@ -11,16 +11,39 @@ Applying the Euler-Lagrange equation, we recover the scalar wave equation for th
 This confirms that the continuum limit of the LCT lattice is standard Electrodynamics.
 
 \chapter{Appendix B: General Relativity (Acoustic Metric)}
-We derive the Schwarzschild Metric from the hydrodynamic flow of the vacuum.
-Assuming a steady-state, irrotational "sink" flow $v_0 = -\sqrt{2GM/r}\hat{r}$, we substitute this into the acoustic metric line element $ds^2$. Applying a coordinate transformation to remove the cross-terms ($dt dr$), we recover:
-\begin{equation}
-ds^2 \approx - \left(1 - \frac{2GM}{c_s^2 r}\right) c_s^2 dt^2 + \left(1 - \frac{2GM}{c_s^2 r}\right)^{-1} dr^2 + r^2 d\Omega^2
-\end{equation}
-**Conclusion:** General Relativity is an Emergent Phenomenon. The curvature of spacetime is the effective geometry experienced by fluctuations propagating through a moving superfluid.
 
+\section{Deriving the Schwarzschild Metric}
+We model gravity as a radial "sink flow" of the vacuum substrate toward a massive object[cite: 316]. Assuming a steady-state, irrotational flow, the velocity field is defined as:
+\begin{equation}
+v_{0}(r) = -\sqrt{\frac{2GM}{r}}\hat{r}
+\end{equation}
+[cite: 317]
+We substitute this flow field into the acoustic metric line element $ds^{2}$, which represents the effective geometry experienced by sound-like fluctuations in the fluid[cite: 317]. By applying a coordinate transformation to remove the non-diagonal cross-terms ($dt dr$), we recover the standard Schwarzschild line element:
+\begin{equation}
+ds^{2} \approx -\left(1 - \frac{2GM}{c_{s}^{2}r}\right) c_{s}^{2} dt^{2} + \left(1 - \frac{2GM}{c_{s}^{2}r}\right)^{-1} dr^2 + r^2 d\Omega^2
+\end{equation}
+[cite: 319]
+\section{Conclusion: Emergent Geometry}
+General Relativity is an \textbf{Emergent Phenomenon}. The curvature of spacetime is not a property of the manifold itself, but the \textbf{Effective Geometry} experienced by fluctuations (matter and light) propagating through a moving superfluid substrate. The "Event Horizon" is physically identified as the surface where the background flow velocity $|v_{0}|$ exceeds the local speed of light $c_{s}$ in the lattice.
 \chapter{Appendix C: Theoretical Stress Tests}
+
 \section{The Isotropy Problem}
-\textbf{Defense:} The **Amorphous Limit**. Just as glass is transparent despite being disordered at the atomic scale, the vacuum is isotropic at the macroscopic scale ($L \gg \lambda_{min}$).
+\textbf{Critique:} A discrete lattice violates Lorentz Invariance because wave speed should vary based on the axis of travel[cite: 163, 324].
+
+\textbf{Defense: The Amorphous Limit.} 
+Just as window glass is transparent and isotropic despite being disordered at the atomic scale, the vacuum is isotropic at the macroscopic scale[cite: 325]. By modeling the vacuum as an \textbf{Amorphous Solid} rather than a perfect crystal, the local anisotropies average to zero over distances much larger than the breakdown wavelength ($L \gg \lambda_{min}$)[cite: 164, 167, 325].
 
 \section{The Ether Drift (Stellar Aberration)}
-\textbf{Defense:} **Fresnel Drag.** A fluid drags light only if $n > 1$. Near Earth, $n \approx 1$, so the drag coefficient $k \approx 0$. Aberration is preserved. Near Black Holes ($n \gg 1$), drag becomes total (Frame Dragging).
+\textbf{Critique:} If the vacuum is a fluid dragged by mass, we should not see the annual shift in star positions (Stellar Aberration)[cite: 326].
+
+\textbf{Defense: Fresnel Drag.} 
+In hydrodynamics, a fluid drags light only if its refractive index $n > 1$[cite: 327]. The drag coefficient $k$ is defined by:
+\begin{equation}
+k = 1 - \frac{1}{n^2}
+\end{equation}
+[cite: 327]
+
+\begin{itemize}
+    \item \textbf{Near Earth:} The vacuum strain is negligible, and $n \approx 1$[cite: 327]. Therefore, $k \approx 0$, the vacuum is not "dragged" significantly, and Stellar Aberration is preserved[cite: 327].
+    \item \textbf{Near Black Holes:} Here, $n \gg 1$, and $k \to 1$[cite: 328]. In this regime, the vacuum is fully dragged, which observationally manifests as the **Lense-Thirring effect** (Frame Dragging)[cite: 328].
+\end{itemize}

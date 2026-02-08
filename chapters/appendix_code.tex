@@ -1,43 +1,101 @@
 \chapter{Appendix D: Computational Verification Suite}
 
-\section{Simulation: Gravitational Lensing (Refraction)}
+\section{Simulation: Gravitational Lensing (Metric Strain)}
+This simulation models a photon pulse passing through a vacuum lattice under radial metric strain $\varepsilon_{rr} \approx 2GM/rc^2$[cite: 104, 120, 121].
+
 \begin{lstlisting}[language=Python]
 import numpy as np
+
 def simulate_lensing():
     Nx, Ny = 600, 400; Nt = 1200; dt = 0.5
     x = np.arange(Nx); y = np.arange(Ny)
     X, Y = np.meshgrid(x, y, indexing='ij')
+    
+    # Distance from mass center
     R = np.sqrt((X - Nx//2)**2 + (Y - (Ny//2+50))**2)
+    
+    # Metric Strain defines effective index n = 1 + epsilon
     n_map = 1.0 + 20.0 / (np.sqrt(R**2 + 10.0)) 
-    v_map = 1.0 / n_map 
+    v_map = 1.0 / n_map # Local wave speed v = c/n
+    
     u = np.zeros((Nx, Ny)); u_prev = np.zeros((Nx, Ny))
     for t in range(Nt):
+        # 5-point Laplacian stencil
         lap = (np.roll(u,1,0) + np.roll(u,-1,0) + 
                np.roll(u,1,1) + np.roll(u,-1,1) - 4*u)
+        
+        # Wave Equation Update
         u_next = 2*u - u_prev + (v_map * dt)**2 * lap
+        
+        # Source Pulse
         if t < 100: u_next[5, Ny//2-50] += np.sin(0.6*t)
+        
         u_prev, u = u, u_next
     return u
 \end{lstlisting}
 
-\section{Simulation: The Quantum Walker (Double Slit)}
+\section{Simulation: The Quantum Walker (Pilot Wave)}
+This script simulates a "Bouncing Soliton" interacting with its own phase memory to generate interference[cite: 151, 155, 171].
+
 \begin{lstlisting}[language=Python]
-% [Insert your Quantum Walker code here]
+def simulate_walker():
+    Nx, Ny = 200, 200; dt = 0.5
+    u = np.zeros((Nx, Ny)); u_prev = np.zeros((Nx, Ny))
+    px, py = 50.0, 100.0; vx, vy = 0.8, 0.0 # Initial State
+    
+    for t in range(1000):
+        # Lattice Wave Propagation
+        lap = (np.roll(u,1,0) + np.roll(u,-1,0) + 
+               np.roll(u,1,1) + np.roll(u,-1,1) - 4*u)
+        u_next = 2*u - u_prev + 0.25*lap
+        u_next *= 0.98 # Damping for memory decay
+        
+        # Soliton impact (Source)
+        u_next[int(px), int(py)] += 2.0 * np.sin(0.5 * t)
+        
+        # Pilot Wave Guidance (Gradient of Phase/Memory)
+        grad_y = (u[int(px), int(py)+1] - u[int(px), int(py)-1]) / 2.0
+        vy -= 0.1 * grad_y # Force proportional to wave gradient
+        
+        px += vx; py += vy
+        u_prev, u = u, u_next
+    return px, py
 \end{lstlisting}
 
-\section{Simulation: The Genesis (Crystallization)}
-\begin{lstlisting}[language=Python]
-def simulate_genesis():
-    Nx, Ny = 200, 200; dt = 0.2
-    psi = (np.random.rand(Nx, Ny)-0.5) + 1j*(np.random.rand(Nx, Ny)-0.5)
-    psi /= np.abs(psi)
-    for t in range(800):
-        lap = (np.roll(psi,1,0)+np.roll(psi,-1,0)+np.roll(psi,1,1)+np.roll(psi,-1,1)-4*psi)
-        psi += dt**2 * (lap + psi*(1-np.abs(psi)**2)) - 0.1*psi
-    return np.abs(psi)**2
-\end{lstlisting}
+\section{Simulation: The Entanglement Bridge (Phase Tension)}
+This simulation demonstrates the mechanical transmission of stress through the vacuum fabric[cite: 230, 237, 241, 255].
 
-\section{Simulation: The Entanglement Bridge}
+
+
 \begin{lstlisting}[language=Python]
-% [Insert your Entanglement Bridge code here]
+def simulate_bridge():
+    Nx, Ny = 300, 150; Nt = 800; dt = 0.2
+    # Initialize Vortex-Antivortex Pair Phase Field
+    x1, y1 = 80, 75; x2, y2 = 220, 75
+    X, Y = np.meshgrid(np.arange(Nx), np.arange(Ny), indexing='ij')
+    theta1 = np.arctan2(Y-y1, X-x1); theta2 = np.arctan2(Y-y2, X-x2)
+    psi_curr = np.exp(1j * (theta1 - theta2))
+    psi_prev = psi_curr.copy()
+    
+    pos2_y = []; gamma = 0.05
+    for t in range(Nt):
+        # Non-linear wave equation (Ginzburg-Landau)
+        lap = (np.roll(psi_curr,1,0) + np.roll(psi_curr,-1,0) + 
+               np.roll(psi_curr,1,1) + np.roll(psi_curr,-1,1) - 4*psi_curr)
+        restoring = psi_curr * (1.0 - np.abs(psi_curr)**2)
+        
+        psi_next = 2*psi_curr - psi_prev + dt**2 * (lap + restoring) - gamma*(psi_curr - psi_prev)
+        
+        # Experimenter forces Vortex 1 (Shake)
+        cy1 = y1 + 10.0 * np.sin(0.04 * t)
+        mask = np.sqrt((X-x1)**2 + (Y-cy1)**2) < 10.0
+        psi_next[mask] = np.exp(1j * (np.arctan2(Y-cy1, X-x1) - theta2))[mask]
+        
+        psi_prev, psi_curr = psi_curr, psi_next
+        
+        # Observe reaction of Vortex 2 (Non-local response)
+        right_half = np.abs(psi_curr[150:, :])**2
+        min_idx = np.unravel_index(np.argmin(right_half), right_half.shape)
+        pos2_y.append(min_idx[1])
+    return pos2_y
 \end{lstlisting}
