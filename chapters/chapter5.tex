@@ -62,6 +62,25 @@ if __name__ == "__main__":
 \section{Thermodynamic Scrambling (The Information Paradox)}
 Standard black hole theory struggles with the loss of information at the singularity. In LCT, the singularity does not exist. Instead, matter falling into the horizon is dissolved into the superfluid core. This process preserves \textbf{Unitarity}. The information is not destroyed, but is \textbf{scrambled} into the thermal degrees of freedom of the superfluid.
 
+\section{Exercises}
+
+\begin{enumerate}
+    \item \textbf{The Vacuum Reynolds Number.}
+    We defined the Vacuum Reynolds Number as $Re_{vac} = \frac{\rho v L}{\mu_{vac}}$.
+    Using dimensional analysis, if the "viscosity" of the vacuum $\mu_{vac}$ is proportional to Planck's constant $\hbar$, show that the transition from Laminar (Quantum) to Turbulent (Classical) occurs when the action $S$ of the system exceeds $\hbar$.
+    
+    \item \textbf{Entropic Gravity.}
+    If a black hole is a region of maximum lattice entropy, derive the Bekenstein-Hawking entropy formula $S_{BH} = \frac{k_B A}{4 \ell_P^2}$ by counting the number of "lattice nodes" on the surface area $A$, assuming one bit of information per Planck area $\ell_P^2$.
+    
+    \item \textbf{Computational: The Fringe Visibility.}
+    Open \texttt{sim\_f\_grav\_decoherence.py}. The code currently adds noise based on distance $R$.
+    Add a calculation to measure the \textit{Visibility} $V$ of the interference fringes:
+    \begin{equation*}
+        V = \frac{I_{max} - I_{min}}{I_{max} + I_{min}}
+    \end{equation*}
+    Plot $V$ as a function of the noise magnitude. At what "Temperature" does the quantum signal become indistinguishable from classical noise?
+\end{enumerate}
+
 \section*{Bridge the Gap: Multidisciplinary Links}
 \begin{itemize}
     \item \textbf{For the Physicist:} The horizon is a \textbf{Critical Point} in a phase diagram. Hawking Radiation is simply the thermal evaporation of the superfluid surface.

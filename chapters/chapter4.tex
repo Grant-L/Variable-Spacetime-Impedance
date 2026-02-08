@@ -55,6 +55,23 @@ Standard Quantum Mechanics treats entanglement as a "spooky" non-local correlati
 \section{Cosmological Impedance Evolution}
 Standard $\Lambda$CDM cosmology assumes that the properties of the vacuum (specifically $c$) have been constant since the Big Bang. LCT argues that a cooling lattice must undergo **Impedance Drift**. As the universe continues to cool, the lattice stiffness $\chi$ increases.
 
+\section{Exercises}
+
+\begin{enumerate}
+    \item \textbf{Energy of a Topological Defect.}
+    Consider a universe described by the Landau-Ginzburg potential $V(\Psi) = \lambda(|\Psi|^2 - v^2)^2$. Calculate the energy density of a "Domain Wall" where the phase shifts by $\pi$ over a coherence length $\xi$. Show that this energy is non-zero, proving that topological defects have mass.
+    
+    \item \textbf{The Horizon Problem.}
+    Standard inflation relies on exponential expansion to solve the Horizon Problem. Explain how the "Superfluid Phase Transition" in LCT solves this problem by decoupling the speed of lattice crystallization from the speed of light $c$.
+    
+    \item \textbf{Computational: Kibble-Zurek Scaling.}
+    Modify \texttt{sim\_b\_genesis.py}. Currently, the simulation cools instantly. Update the loop to "cool" at a variable rate $\tau_Q$ (quench time). Count the number of resulting defects $N$ for different rates and verify the Kibble-Zurek scaling law:
+    \begin{equation*}
+        N \propto \tau_Q^{-\alpha}
+    \end{equation*}
+    Does your simulation match the theoretical exponent $\alpha$?
+\end{enumerate}
+
 \section*{Bridge the Gap: Multidisciplinary Links}
 \begin{itemize}
     \item \textbf{For the Physicist:} The Phase Bridge is analogous to the \textbf{Einstein-Rosen Bridge} (Wormhole), but constructed from quantum phase topology rather than spacetime curvature.

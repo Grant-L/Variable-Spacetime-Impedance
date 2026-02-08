@@ -65,6 +65,26 @@ The electric charge $q$ corresponds to the topological winding number $n$ of the
 \subsection{Baryons as Vortex Molecules}
 We propose that Baryons (Protons and Neutrons) are not elementary point particles, but \textbf{Stable Vortex Molecules}. Specifically, the Proton is modeled as a \textbf{Tri-Vortex Geometry} (three $n=+1$ vortices bound by phase tension).
 
+\section{Exercises}
+
+\begin{enumerate}
+    \item \textbf{Quantization of Circulation.}
+    Starting from the definition of the vacuum order parameter $\Psi = \sqrt{\rho} e^{iS/\hbar}$ and the definition of velocity $\mathbf{v} = \frac{\nabla S}{m^*}$, derive the Onsager-Feynman quantization condition:
+    \begin{equation*}
+        \oint_C \mathbf{v} \cdot d\mathbf{l} = n \frac{h}{m^*}
+    \end{equation*}
+    Explain why the single-valuedness of $\Psi$ forces the integer $n$ to be discrete.
+    
+    \item \textbf{The Pilot Wave Force.}
+    In the Walker Model, the particle interacts with a "Memory Field" $\Phi_M$. If the memory field decays as $\Phi_M(r) \sim \frac{J_0(k_F r)}{r}$, calculate the force $\mathbf{F} = -\nabla \Phi_M$ at the first node of the Bessel function. How does this "locking" mechanism lead to stable orbits?
+    
+    \item \textbf{Computational: Memory Decay.}
+    Open \texttt{sim\_d\_born\_rule.py}. The current simulation assumes "infinite" memory (the probability field is static). Modify the code to introduce a \textit{decay factor} $\gamma$ where the probability density at previous steps fades over time.
+    \begin{itemize}
+        \item Hypothesis: If $\gamma$ is high (short memory), does the Walker distribution still match the Born Rule $|\Psi|^2$, or does it revert to classical diffusion?
+    \end{itemize}
+\end{enumerate}
+
 \section*{Bridge the Gap: Multidisciplinary Links}
 \begin{itemize}
     \item \textbf{For the Physicist:} This framework replaces the "Collapse of the Wavefunction" with \textbf{Chaotic Attractors}. The particle never loses its definite position; we simply lose the ability to track it.

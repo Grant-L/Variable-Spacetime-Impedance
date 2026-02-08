@@ -90,3 +90,20 @@ LCT predicts that a rotating mass creates a rotating strain vortex. We propose u
     \item \textbf{For the Engineer:} Gravity is \textbf{Mechanical Strain} on the PCB. If you bend the board (Space), the trace length increases, and the signal takes longer to arrive.
     \item \textbf{For the Physicist:} This is **Elastic Gravity**. The vacuum has a Shear Modulus. $G_{\mu\nu}$ is the Strain Tensor of the substrate.
 \end{itemize}
+
+\section{Exercises}
+
+\begin{enumerate}
+    \item \textbf{Impedance Matching.}
+    Consider a gravitational wave propagating from a region of flat space ($Z_0$) into a region of high metric strain ($Z_{load}$). Using standard transmission line theory, derive the Reflection Coefficient $\Gamma$:
+    \begin{equation*}
+        \Gamma = \frac{Z_{load} - Z_0}{Z_{load} + Z_0}
+    \end{equation*}
+    What does a non-zero $\Gamma$ imply for the "transparency" of gravity?
+    
+    \item \textbf{Deriving the Speed of Light.}
+    Given a cubic lattice with node inductance $L_{vac} = \mu_0 \ell$ and capacitance $C_{vac} = \epsilon_0 \ell$ (where $\ell$ is the Planck length), prove that the propagation speed of a signal is independent of the lattice spacing $\ell$.
+    
+    \item \textbf{Computational: Strain Visualization.}
+    Modify the \texttt{run\_strain\_sim()} script to simulate a \textit{binary} mass system. Place two mass loads at $(-3, 0)$ and $(3, 0)$ and visualize the resulting interference pattern in the strain field.
+\end{enumerate}

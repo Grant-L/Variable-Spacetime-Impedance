@@ -99,6 +99,23 @@ We conclude this foundational derivation by identifying "particles" as \textbf{T
 \end{equation}
 Integer winding numbers $n$ correspond to fundamental charges. This identifies the "Hard Matter" of the universe as stable vortices trapped within the superfluid substrate.
 
+\section{Exercises}
+
+\begin{enumerate}
+    \item \textbf{Dimensional Analysis of the Action.} 
+    Using the Lindblom Action (Eq. \ref{eq:lct_lagrangian}), perform a dimensional analysis to determine the physical units of the vacuum order parameter $\Psi$. Show that $|\Psi|^2$ corresponds to a number density $n$ when appropriately normalized.
+    
+    \item \textbf{The Linear Limit.}
+    Starting from the LCT Equation of Motion:
+    \begin{equation*}
+        i\hbar \frac{\partial \Psi}{\partial t} = -\frac{\hbar^2}{2m^*} \nabla^2 \Psi + V'(\rho)\Psi
+    \end{equation*}
+    Show that in the limit of small fluctuations around the vacuum expectation value ($\Psi = \Psi_0 + \delta\psi$) where $V'(\rho) \approx \text{const}$, the system reduces to the standard free-particle Schrödinger equation.
+    
+    \item \textbf{Computational: Potential Tuning.}
+    Modify the \texttt{gen\_mexican\_hat()} script to plot the potential $V(\phi) = \phi^4 - \mu \phi^2$ for three different values of $\mu$. Explain how the parameter $\mu$ (chemical potential) affects the vacuum density $\rho_{vac}$.
+\end{enumerate}
+
 \section*{Bridge the Gap: Multidisciplinary Links}
 \begin{itemize}
     \item \textbf{For the Physicist:} The substrate is mathematically isomorphic to a \textbf{Bose-Einstein Condensate (BEC)}. The "Quantum Potential" $Q$ is identical to the internal pressure of the condensate.

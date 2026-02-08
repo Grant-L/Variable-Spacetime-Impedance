@@ -113,6 +113,25 @@ if __name__ == "__main__":
     \caption{\textbf{Frequency-Dependent Scattering.} Simulation results showing the scattering cross-section of a Tri-Vortex for electron vs. muon probes. The "Puzzle" is simply the geometric consequence of probing a vortex with different wavelengths.}
 \end{figure}
 
+\section{Exercises}
+
+\begin{enumerate}
+    \item \textbf{Deriving the Flat Rotation Curve.}
+    LCT proposes a "Vortex Halo" where the dark mass density scales as $\rho_{vortex} \propto 1/r^2$.
+    Using the Poisson equation $\nabla^2 \Phi = 4\pi G \rho$, solve for the gravitational potential $\Phi(r)$. Then, using $v^2/r = \nabla \Phi$, show that the orbital velocity $v$ becomes constant at large $r$.
+    
+    \item \textbf{The Early Dark Energy Boost.}
+    Consider the Hubble parameter evolution $H(z)^2 = H_0^2 [\Omega_m (1+z)^3 + \Omega_{vac}(z)]$.
+    If $\Omega_{vac}$ undergoes a step-function change $\Delta \Lambda$ at $z=10$, calculate the fractional change in the present-day Hubble constant $\frac{\Delta H_0}{H_0}$. Does a 2\% energy injection explain the 9\% tension?
+    
+    \item \textbf{Computational: Bullet Cluster Dynamics.}
+    Open \texttt{sim\_j\_bullet\_cluster.py}.
+    The current simulation assumes the "Halo" has zero friction (Superfluid). Introduce a small non-zero "mutual friction" term $B$ between the Halo and the Baryonic Gas.
+    \begin{itemize}
+        \item Experiment: How large can $B$ be before the separation of Dark Matter and Gas (observed in X-ray data) disappears? This sets an upper limit on the vacuum viscosity.
+    \end{itemize}
+\end{enumerate}
+
 \section*{Bridge the Gap: Multidisciplinary Links}
 \begin{itemize}
     \item \textbf{For the Physicist:} The Hubble Tension solution is analogous to **Early Dark Energy**, physically motivated by the thermodynamics of the vacuum.
