@@ -8,31 +8,21 @@ def simulate_lensing():
     # Corrected Refractive Index Logic (Schwarzschild-like)
     x = np.arange(Nx); y = np.arange(Ny)
     X, Y = np.meshgrid(x, y, indexing='ij')
-    # Distance from mass center
     R = np.sqrt((X - Nx//2)**2 + (Y - (Ny//2+50))**2)
     # Refractive index n = 1 + 2GM/rc^2 (Scalar approximation)
-    # Fixed Syntax Error from previous version
     n_map = 1.0 + 20.0 / (np.sqrt(R**2 + 10.0)) 
     v_map = 1.0 / n_map # Velocity = c/n
-    
     u = np.zeros((Nx, Ny)); u_prev = np.zeros((Nx, Ny))
-    
     for t in range(Nt):
-        # Laplacian (Standard 5-point stencil)
         lap = (np.roll(u,1,0) + np.roll(u,-1,0) + 
                np.roll(u,1,1) + np.roll(u,-1,1) - 4*u)
-        
-        # Wave Equation Update
         u_next = 2*u - u_prev + (v_map * dt)**2 * lap
-        
-        # Source Pulse
         if t < 100: u_next[5, Ny//2-50] += np.sin(0.6*t)
-        
         u_prev, u = u, u_next
     return u
 \end{lstlisting}
 
-\section{D.4 Simulation: The Entanglement Bridge}
+\section{D.2 Simulation: The Entanglement Bridge}
 \begin{lstlisting}[language=Python]
 def simulate_bridge():
     Nx, Ny = 300, 150; Nt = 800; dt = 0.2
@@ -43,34 +33,23 @@ def simulate_bridge():
     psi_curr = np.exp(1j * (theta1 - theta2))
     psi_prev = psi_curr.copy()
     
-    pos2_y = []
-    gamma = 0.05 # Damping factor
-    
+    pos2_y = []; gamma = 0.05
     for t in range(Nt):
         lap = (np.roll(psi_curr,1,0) + np.roll(psi_curr,-1,0) + 
                np.roll(psi_curr,1,1) + np.roll(psi_curr,-1,1) - 4*psi_curr)
-        
-        # Non-Linear Restoring Force (Ginzburg-Landau)
         restoring = psi_curr * (1 - np.abs(psi_curr)**2)
-        
-        # Damped Wave Equation
-        # Fixed Logic: Damping acts on velocity (psi_curr - psi_prev)
         psi_next = 2*psi_curr - psi_prev + dt**2 * (lap + restoring) - gamma*(psi_curr - psi_prev)
         
         # Forcing: Shake Vortex 1
         cy1 = y1 + 10.0 * np.sin(0.02 * 2 * np.pi * t)
         mask = np.sqrt((X-x1)**2 + (Y-cy1)**2) < 10.0
-        
-        # Update V1 position strictly
         psi_next[mask] = np.exp(1j * (np.arctan2(Y-cy1, X-x1) - theta2))[mask]
         
-        psi_prev = psi_curr
-        psi_curr = psi_next
+        psi_prev = psi_curr; psi_curr = psi_next
         
         # Measure V2 Reaction
         right_half = np.abs(psi_curr[150:, :])**2
         min_idx = np.unravel_index(np.argmin(right_half), right_half.shape)
         pos2_y.append(min_idx[1])
-        
     return pos2_y
 \end{lstlisting}
