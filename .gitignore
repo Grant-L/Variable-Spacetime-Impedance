@@ -1,76 +1,16 @@
-# Python
 __pycache__/
 *.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-
-# Virtual Environments
-venv/
-env/
-ENV/
-.venv
-.conda/
-
-# Jupyter Notebook
-.ipynb_checkpoints
 *.ipynb_checkpoints/
-*/.ipynb_checkpoints/*
+data/*
+simulations/*
 
-# Jupyter Notebook outputs (optional - uncomment if you don't want to track outputs)
-# *.ipynb
+# Virtual environments
+venv/
+.venv/
 
-# Jupyter Lab
-.jupyter/lab/workspaces/
+# OS files
+.DS_Store
 
 # IDE
 .vscode/
 .idea/
-*.swp
-*.swo
-*~
-.DS_Store
-
-# Data files (uncomment if you have large data files)
-# data/*
-# !data/.gitkeep
-
-# Simulations and outputs
-simulations/*
-!simulations/.gitkeep
-
-# Large data files (uncomment if needed)
-# data/*
-# !data/.gitkeep
-
-# Environment variables
-.env
-.env.local
-
-# Logs
-*.log
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Temporary files
-*.tmp
-*.temp
-.cache/
