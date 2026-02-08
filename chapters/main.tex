@@ -1,117 +1,111 @@
-\documentclass[11pt, titlepage, oneside]{book}
-
-% --- Core Packages ---
+\documentclass[11pt, letterpaper, openany]{book}
 \usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
+\usepackage{amsmath, amsfonts, amssymb}
 \usepackage{geometry}
-\geometry{margin=1.1in}
-\usepackage{amsmath, amssymb, physics}
 \usepackage{graphicx}
-\usepackage{xcolor}
-\usepackage{cite}
-\usepackage{listings}
-\usepackage{booktabs} % For professional tables
-\usepackage{titlesec} % For professional chapter titles
-
-% --- Path to Figures ---
-\graphicspath{{assets/}}
-
-% --- Advanced Hyperlink Setup ---
 \usepackage{hyperref}
-\hypersetup{
-    colorlinks=true,
-    linkcolor=blue,
-    filecolor=magenta,      
-    urlcolor=cyan,
-    citecolor=blue,
-    pdftitle={The Discrete Vacuum Substrate},
-    breaklinks=true
-}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{booktabs} % For nicer tables in Translation Matrix
 
-% --- Code Listing Configuration (Graduate Style) ---
-\definecolor{backcolour}{rgb}{0.96,0.96,0.94}
-\lstset{
-    backgroundcolor=\color{backcolour},
+% Geometry
+\geometry{margin=1in}
+
+% Header/Footer
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\textbf{Variable Spacetime Impedance}}
+\lhead{Lindblom Coupling Theory}
+\cfoot{\thepage}
+
+% Code Style
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
     basicstyle=\ttfamily\footnotesize,
-    breaklines=true,
-    captionpos=b,
-    numbers=left,
-    numberstyle=\tiny\color{gray},
-    keywordstyle=\color{blue},
-    commentstyle=\color{green!50!black},
-    frame=single
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
 }
+\lstset{style=mystyle}
 
-% --- Custom Definitions ---
-\newcommand{\LCT}{\textit{Lattice Constitutive Theory}}
-
-% --- Document Metadata ---
-\title{
-    \Huge \textbf{The Discrete Vacuum Substrate} \\
-    \Large \textit{A Hydrodynamic Approach to Unified Field Theory}
-}
-\author{Grant Lindblom}
+% --- TITLE PAGE DATA ---
+\title{\textbf{Variable Spacetime Impedance: \\ The Discrete Vacuum Substrate} \\ \Large A Hydrodynamic Approach to Unified Field Theory}
+\author{\textbf{Grant Lindblom} \\ Principal Investigator}
 \date{February 2026 Edition}
 
-% --- Main Content ---
 \begin{document}
 
+% --- FRONT MATTER ---
 \frontmatter
 \maketitle
 
-\section*{Preface: A Multidisciplinary Foundation}
+\chapter*{Preface: A Multidisciplinary Foundation}
 This text represents a shift from the geometric abstraction of the 20th century toward a constitutive, hardware-oriented understanding of the cosmos. By merging Electrical Engineering (RF Impedance), Fluid Mechanics (Superfluidity), and Theoretical Physics (NLSE), we provide a unified framework for the graduate-level researcher.
 
-\subsection*{How to Use This Book}
+\section*{How to Use This Book}
 This textbook is designed to be accessible to physicists, engineers, and mathematicians alike. However, each field uses different dialects to describe the same phenomena. To bridge this gap:
 
 \begin{itemize}
-    \item \textbf{The Glossary:} The frontmatter contains a comprehensive \textbf{Translation Matrix}. We strongly recommend reviewing this first. It maps new LCT terms (like "Vacuum Impedance") to their familiar analogs (like "Refractive Index" or "Characteristic Impedance").
+    \item \textbf{The Glossary:} The frontmatter contains a comprehensive Translation Matrix. We strongly recommend reviewing this first. It maps new LCT terms (like "Vacuum Impedance") to their familiar analogs.
     \item \textbf{Bridge the Gap:} At the end of each chapter, you will find a "Bridge the Gap" section. This explicitly translates the chapter's derivation into the language of your specific field.
     \item \textbf{Computational Verification:} Physics is not a spectator sport. The associated GitHub repository contains the Python simulations referenced in the "Computational Module" sections. We encourage you to run these scripts to verify the theory for yourself.
 \end{itemize}
 
+\chapter*{Glossary of Terms}
+\begin{table}[h]
+\centering
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{LCT Term} & \textbf{Physics Analog} & \textbf{Engineering Analog} \\ \midrule
+Vacuum Impedance ($Z_0$) & Geometric Curvature & Characteristic Impedance ($Z_0$) \\
+Breakdown Wavelength & Planck Length & Grid Spacing / Pitch \\
+Bandwidth Saturation & Relativistic Mass & Slew Rate Limit \\
+Pilot Wave & Wavefunction ($\psi$) & Carrier Wave \\
+Phase Bridge & Entanglement & Flux Tube / Transmission Line \\
+Vortex Defect & Electric Charge & Phase Winding \\
+Common-Mode Drift & Dark Energy & DC Bias Drift \\
+\bottomrule
+\end{tabular}
+\caption{The LCT Translation Matrix}
+\label{tab:glossary}
+\end{table}
+
 \tableofcontents
 
-% --- Include the Glossary ---
-\input{frontmatter/glossary}
-
+% --- MAIN MATTER ---
 \mainmatter
 
-% --- Chapter 1: Foundations (Old Paper 1) ---
-\chapter{The Unified Action Principle}
-\input{chapters/chapter1}
+\include{chapter1_hardware}     % The Lattice, Constants & Maxwell Limit
+\include{chapter2_gravity}      % Mass, Lensing & Schwarzschild Metric
+\include{chapter3_quantum}      % Pilot Waves, Schrödinger Eq & Isotropy
+\include{chapter4_topology}     % Charge, Protons & Matter
+\include{chapter5_cosmology}    % Big Bang, Entanglement & Kibble-Zurek
+\include{chapter6_observation}  % Vortex Halos & Hubble Tension
 
-% --- Chapter 2: Hardware (Old Paper 2) ---
-\chapter{Vacuum Impedance and Transmission Lines}
-\input{chapters/chapter2}
-
-% --- Chapter 3: Micro-Dynamics (Old Paper 3) ---
-\chapter{Vortex Topology and Emergent Quantum Mechanics}
-\input{chapters/chapter3}
-
-% --- Chapter 4: Cosmology (Old Paper 4) ---
-\chapter{The Entangled Substrate and Cosmic Genesis}
-\input{chapters/chapter4}
-
-% --- Chapter 5: Phase Transitions (Old Paper 5) ---
-\chapter{The Thermodynamic Vacuum and Decoherence}
-\input{chapters/chapter5}
-
-% --- Chapter 6: Anomalies (Old Paper 6) ---
-\chapter{Cosmological Impedance Evolution and Anomalies}
-\input{chapters/chapter6}
+% --- BACK MATTER ---
 \appendix
-\input{chapters/appendix_a}
-\input{chapters/appendix_b}
+\include{appendix_defense}      % Theoretical Rebuttals
+\include{appendix_code}         % Python Simulation Suite
 
 \backmatter
-\begin{thebibliography}{99}
-    \bibitem{volovik} Volovik, G. E. (2003). \textit{The Universe in a Helium Droplet}.
-    \bibitem{couder} Couder, Y., \& Fort, E. (2006). Single-particle diffraction and interference at a macroscopic scale. \textit{Physical Review Letters}, 97(15), 154101.
-    \bibitem{bell} Bell, J. S. (1964). On the Einstein Podolsky Rosen paradox. \textit{Physics Physique Feniz}, 1(3), 195.
-    \bibitem{hawking} Hawking, S. W. (1975). Particle creation by black holes. \textit{Communications in Mathematical Physics}, 43(3), 199-220.
-    \bibitem{kibble} Kibble, T. W. (1976). Topology of cosmic domains and strings. \textit{Journal of Physics A: Mathematical and General}, 9(8), 1387.
-\end{thebibliography}
+% Bibliography would go here
 
 \end{document}

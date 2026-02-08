@@ -1,139 +1,37 @@
-% --- Chapter 6: Vacuum Phase Transitions and Anomalies ---
+\chapter{Observational Signatures: Solving the Dark Sector}
 
-In this concluding chapter, we demonstrate that the "Dark Sector" anomalies are not evidence of new particles, but artifacts of the complex thermodynamic history of the vacuum. By applying the principles of **Superfluid Hydrodynamics** and **Vacuum Phase Transitions**, we resolve the "Big Three" mysteries without modifying General Relativity's geometric predictions.
+\section{Introduction: Anomalies as Clues}
+The Standard Model of Cosmology ($\Lambda$CDM) faces two major crises: the nature of Dark Matter and the Hubble Tension. LCT proposes that these are not due to invisible particles or new fields, but are artifacts of the vacuum's fluid dynamics.
 
-\section{Anomaly I: The Galaxy Rotation Problem}
-Standard dynamics predicts Keplerian decline. Observations show flat rotation curves.
-
-\subsection{The LCT Solution: The Superfluid Vortex Halo}
-In LCT, the vacuum surrounding a galaxy is not empty; it is a region of high vorticity. Just as superfluid helium forms a lattice of quantized vortices when rotated, a rotating galaxy drags the surrounding vacuum substrate into a \textbf{Superfluid Vortex Halo}.
-
-These vortices are topological solitons with non-zero effective mass. They do not interact via friction (viscosity is zero), so they decouple from the baryonic gas during collisions (solving the \textbf{Bullet Cluster} paradox).
-
-\begin{lstlisting}[language=Python, caption=Simulating the Superfluid Vortex Halo]
-import numpy as np
-import matplotlib.pyplot as plt
-
-def gen_galaxy_rotation():
-    r = np.linspace(0.1, 50, 500)
-    M_baryon = 1.0e11 * (1 - np.exp(-r/3.0))
-    v_newton = np.sqrt(M_baryon / r)
-    
-    # The Vortex Halo adds effective mass linearly with radius
-    M_vortex = 0.5e11 * (r / 10.0) 
-    v_lct = np.sqrt((M_baryon + M_vortex) / r)
-    
-    norm = 220 / v_lct[-1]
-    plt.figure(figsize=(6, 4))
-    plt.plot(r, v_newton * norm, 'b--', label='Baryonic Only')
-    plt.plot(r, v_lct * norm, 'r-', linewidth=2, label='LCT Vortex Halo')
-    plt.fill_between(r, v_newton*norm, v_lct*norm, color='gray', alpha=0.1, label='Vortex Mass')
-    plt.title("Galaxy Rotation: Superfluid Vortex Halo")
-    plt.legend()
-    plt.savefig('galaxy_rotation.png', dpi=300)
-
-if __name__ == "__main__":
-    gen_galaxy_rotation()
-\end{lstlisting}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.8\textwidth]{galaxy_rotation.png}
-    \caption{\textbf{The Vortex Halo.} LCT identifies Dark Matter not as a new particle, but as a condensate of vacuum vortices dragged by the galaxy's rotation.}
-\end{figure}
-
-\section{Anomaly II: The Hubble Tension}
-Measurements of $H_0$ disagree by 9\% between the Early (CMB) and Late (Supernova) universe.
-
-\subsection{The LCT Solution: Vacuum Phase Transition}
-Standard cosmology assumes the Vacuum Energy Density ($\Lambda$) is constant. LCT posits that the lattice undergoes discrete \textbf{Phase Transitions} (settling events) as it cools.
-
-A phase transition at $z \approx 10$ (Reionization epoch) would release latent energy into the substrate, effectively boosting the expansion rate $H_0$ in the late universe. This matches **Early Dark Energy (EDE)** models.
-
-\begin{lstlisting}[language=Python, caption=Simulating Vacuum Phase Transition]
-import numpy as np
-import matplotlib.pyplot as plt
-
-def gen_hubble_tension():
-    a = np.linspace(0.001, 1.0, 1000)
-    H_cmb = 67.4
-    H_late = 73.0
-    # Sigmoid Phase Transition
-    h_lct = H_cmb + (H_late - H_cmb) / (1 + np.exp(-(a - 0.1)/0.05))
-    
-    plt.figure(figsize=(6, 4))
-    plt.plot(a, np.ones_like(a)*H_cmb, 'b--', label='Standard Model')
-    plt.plot(a, h_lct, 'r-', linewidth=2, label='Vacuum Phase Transition')
-    plt.title("Hubble Tension as Phase Transition")
-    plt.legend()
-    plt.savefig('hubble_phase_transition.png', dpi=300)
-
-if __name__ == "__main__":
-    gen_hubble_tension()
-\end{lstlisting}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.8\textwidth]{simulations/chapter6/hubble_tension_shift.png}
-    \caption{\textbf{Solving the Tension.} A phase transition in the vacuum substrate (red) naturally bridges the gap between early and late universe measurements without invoking "Tired Light."}
-\end{figure}
-
-\section{Anomaly III: The Proton Radius Puzzle}
-The charge radius of the proton appears smaller when measured with muons than with electrons.
-
-\subsection{Computational Module: Vortex Topology}
-The proton is a \textbf{Tri-Vortex Molecule}. High-frequency probes (muons) penetrate the core, while low-frequency probes (electrons) scatter off the flow field.
-
-\begin{lstlisting}[language=Python, caption=Simulating Frequency-Dependent Scattering]
-import numpy as np
-import matplotlib.pyplot as plt
-
-def gen_proton_radius():
-    r = np.linspace(0.1, 2.0, 500)
-    profile = 1.0 / (r**2 + 0.1)
-    e_sens = np.exp(-r/0.8)
-    m_sens = np.exp(-r/0.2)
-    
-    plt.figure(figsize=(6, 4))
-    plt.plot(r, profile*e_sens, 'b-', label='Electron (Flow)')
-    plt.plot(r, profile*m_sens, 'r-', label='Muon (Core)')
-    plt.axvline(0.877, color='blue', linestyle='--')
-    plt.axvline(0.841, color='red', linestyle='--')
-    plt.title("Proton Radius Scattering")
-    plt.legend()
-    plt.savefig('proton_radius_scattering.png', dpi=300)
-
-if __name__ == "__main__":
-    gen_proton_radius()
-\end{lstlisting}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.8\textwidth]{proton_radius_scattering.png}
-    \caption{\textbf{Frequency-Dependent Scattering.} Simulation results showing the scattering cross-section of a Tri-Vortex for electron vs. muon probes. The "Puzzle" is simply the geometric consequence of probing a vortex with different wavelengths.}
-\end{figure}
-
-\section{Exercises}
-
-\begin{enumerate}
-    \item \textbf{Deriving the Flat Rotation Curve.}
-    LCT proposes a "Vortex Halo" where the dark mass density scales as $\rho_{vortex} \propto 1/r^2$.
-    Using the Poisson equation $\nabla^2 \Phi = 4\pi G \rho$, solve for the gravitational potential $\Phi(r)$. Then, using $v^2/r = \nabla \Phi$, show that the orbital velocity $v$ becomes constant at large $r$.
-    
-    \item \textbf{The Early Dark Energy Boost.}
-    Consider the Hubble parameter evolution $H(z)^2 = H_0^2 [\Omega_m (1+z)^3 + \Omega_{vac}(z)]$.
-    If $\Omega_{vac}$ undergoes a step-function change $\Delta \Lambda$ at $z=10$, calculate the fractional change in the present-day Hubble constant $\frac{\Delta H_0}{H_0}$. Does a 2\% energy injection explain the 9\% tension?
-    
-    \item \textbf{Computational: Bullet Cluster Dynamics.}
-    Open \texttt{sim\_j\_bullet\_cluster.py}.
-    The current simulation assumes the "Halo" has zero friction (Superfluid). Introduce a small non-zero "mutual friction" term $B$ between the Halo and the Baryonic Gas.
-    \begin{itemize}
-        \item Experiment: How large can $B$ be before the separation of Dark Matter and Gas (observed in X-ray data) disappears? This sets an upper limit on the vacuum viscosity.
-    \end{itemize}
-\end{enumerate}
-
-\section*{Bridge the Gap: Multidisciplinary Links}
+\section{Dark Matter: The Vortex Halo}
+Standard Cold Dark Matter (CDM) models the galactic halo as a spherical cloud of weakly interacting particles (WIMPs). The gravitational field is purely radial.
+LCT proposes that the "Halo" is a region of high vacuum vorticity—a **Superfluid Vortex** dragged by the rotating galaxy.
 \begin{itemize}
-    \item \textbf{For the Physicist:} The Hubble Tension solution is analogous to **Early Dark Energy**, physically motivated by the thermodynamics of the vacuum.
-    \item \textbf{For the Engineer:} This is \textbf{Step Response}. The vacuum's "DC Offset" ($H_0$) shifted due to a state change (Phase Transition) in the circuit components.
+    \item **Mechanism:** The rotating mass of the galaxy drags the vacuum substrate (Frame Dragging), creating a vortex of high impedance.
+    \item **Mass Equivalent:** The energy density of this vortex field $E \propto (\nabla \theta)^2$ acts as effective mass, flattening the rotation curves of outer stars.
 \end{itemize}
+
+\section{Prediction: Rotational Lensing Asymmetry}
+Because the vacuum halo has angular momentum, it induces a strong **Gravitomagnetic** effect. This leads to a distinct falsifiable prediction for strong gravitational lensing:
+\begin{enumerate}
+    \item **Pro-Grade Lensing:** Light passing on the side of the galaxy spinning *towards* the observer travels "downstream" (lower effective index). It is deflected *less*.
+    \item **Retro-Grade Lensing:** Light passing on the side spinning *away* travels "upstream" (higher effective index). It is deflected *more*.
+\end{enumerate}
+**The Signature:** We predict that Einstein Rings around rotating galaxies will be slightly **elliptical or skewed** along the axis of rotation, a feature not predicted by scalar Dark Matter models.
+
+\section{The Hubble Tension: A Vacuum Phase Transition}
+Measurements of the Hubble Constant ($H_0$) from the Early Universe (CMB) and Late Universe (Supernovae) disagree by $\approx 5\sigma$.
+LCT explains this as a **Vacuum Phase Transition**.
+\begin{itemize}
+    \item **Mechanism:** As the universe cooled, the vacuum lattice underwent a freezing event (crystallization) at redshift $z \approx 10$.
+    \item **Latent Heat:** This transition released latent energy (Dark Energy) into the lattice, boosting the expansion rate of the late universe.
+\end{itemize}
+This "Early Dark Energy" solution naturally resolves the tension without requiring fine-tuned scalar fields.
+
+\section{Bridge the Gap: From Astronomy to Hydrodynamics}
+To the Astronomer, a Galaxy Halo is a mass distribution. To the Fluid Dynamicist, it is a **Rankine Vortex**.
+\begin{itemize}
+    \item **Core:** Solid-body rotation (The visible galaxy).
+    \item **Halo:** Irrotational flow where velocity drops as $1/r$ (The Dark Matter halo).
+\end{itemize}
+This mapping suggests that Dark Matter is simply the kinetic energy of the vacuum fluid itself.

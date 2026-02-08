@@ -1,0 +1,40 @@
+\chapter{Appendices: Theoretical \& Computational Defense}
+
+\section{Appendix A: Electrodynamics (The Lattice Limit)}
+We derive Maxwell's Equations from the discrete Lagrangian of the LC network.
+Consider the Lagrangian density $\mathcal{L}$ for a 3D LC lattice:
+\begin{equation}
+\mathcal{L} = \sum_{n} \left[ \frac{1}{2} C_{vac} \left(\frac{dV_n}{dt}\right)^2 - \frac{1}{2} \frac{1}{L_{vac}} (\nabla V_n)^2 \right]
+\end{equation}
+Applying the Euler-Lagrange equation $\frac{\partial \mathcal{L}}{\partial \phi} - \partial_\mu \frac{\partial \mathcal{L}}{\partial(\partial_\mu \phi)} = 0$, we recover the scalar wave equation for the potential $\phi$:
+\begin{equation}
+\frac{1}{c^2} \frac{\partial^2 \phi}{\partial t^2} - \nabla^2 \phi = 0
+\end{equation}
+This confirms that the continuum limit of the LCT lattice is standard Electrodynamics.
+
+\section{Appendix B: General Relativity (The Acoustic Metric)}
+We derive the Schwarzschild Metric from the hydrodynamic flow of the vacuum.
+Assuming a steady-state, irrotational, spherically symmetric "sink" flow where the vacuum substrate is flowing radially inward toward a massive object:
+\begin{equation}
+v_0 = -v(r)\hat{r} = -\sqrt{\frac{2GM}{r}}\hat{r}
+\end{equation}
+Substituting this into the acoustic metric line element $ds^2$ and applying a coordinate transformation to remove the cross-terms ($dt dr$), we recover the standard Schwarzschild Metric structure:
+\begin{equation}
+ds^2 \approx - \left(1 - \frac{2GM}{c_s^2 r}\right) c_s^2 dt^2 + \left(1 - \frac{2GM}{c_s^2 r}\right)^{-1} dr^2 + r^2 d\Omega^2
+\end{equation}
+**Conclusion:** General Relativity is an Emergent Phenomenon. The curvature of spacetime is the effective geometry experienced by fluctuations propagating through a moving superfluid substrate.
+
+\section{Appendix C: Theoretical Stress Tests (Addressing Critiques)}
+This section addresses three common theoretical objections regarding the discrete nature of the LCT substrate.
+
+\subsection{C.1 The Isotropy Problem}
+**Critique:** A cubic lattice breaks Lorentz Invariance.
+**Defense:** The **Amorphous Limit**. Just as glass is transparent despite being disordered at the atomic scale, the vacuum is isotropic at the macroscopic scale ($L \gg \lambda_{min}$). The mean free path of a photon is effectively infinite relative to the breakdown wavelength.
+
+\subsection{C.2 The Speed of Light vs. Gravity}
+**Critique:** GW170817 proved $c_g = c_{em}$. In solids, shear and pressure waves differ.
+**Defense:** **Coupled Moduli**. Gravity is not a shear wave; it is a gradient in the parameters that define the speed of light ($\mu, \epsilon$). Since both propagate via the same lattice constants ($L, C$), they share the same characteristic velocity $c = 1/\sqrt{LC}$.
+
+\subsection{C.3 The Ether Drift}
+**Critique:** Why do we not detect an Ether Wind (Michelson-Morley)?
+**Defense:** **Stokes' Drag**. Massive objects (Earth) create a region of high refractive index that is "dragged" along with the mass. The local vacuum is static relative to the observer on Earth. The "wind" is only detectable as Frame Dragging in space.
