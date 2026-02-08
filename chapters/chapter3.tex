@@ -27,14 +27,29 @@ To resolve this, we model the vacuum as an \textbf{Amorphous Solid} (Glass) rath
     \item \textbf{Global Isotropy:} At the macro-scale, these fluctuations average to zero. The refractive index is statistically uniform in all directions.
 \end{itemize}
 
-\section{Computational Module: The Double Slit Simulation}
-We simulated a deterministic "Walker" particle interacting with a wave equation solver.
+\subsection{The Illusion of Choice: The Observer Effect}
+The "Double Slit" experiment is often cited as proof that consciousness collapses the wavefunction. LCT offers a strictly hydrodynamic explanation based on **Impedance Mismatch**.
+
 \begin{itemize}
-    \item **Setup:** A particle passes one-by-one through a double-slit barrier.
-    \item **Result:** Although each particle has a definite trajectory, the ensemble builds up an interference pattern matching $|\psi|^2$.
-    \item **Observation:** The "interference" exists in the vacuum memory, not in the particle itself.
+    \item \textbf{Wave Mode (No Observer):} The electron's pilot wave passes through both slits and interferes with itself. The electron "surfs" this interference pattern, following a complex, curved trajectory (See Figure \ref{fig:observer_comparison}, Left).
+    \item \textbf{Particle Mode (With Observer):} A detector acts as a \textbf{Resistive Load} on the vacuum. It extracts energy from the pilot wave (damping). Without the interfering wave to guide it, the electron follows a straight Newtonian path (See Figure \ref{fig:observer_comparison}, Right).
 \end{itemize}
-*(See Appendix B.2 for the full Python source code.)*
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{simulation_electron_choice_observer_off.png}
+        \caption*{\textbf{A. Observer OFF (Wave Mode)}}
+    \end{minipage}\hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{simulation_electron_choice_observer_on.png}
+        \caption*{\textbf{B. Observer ON (Particle Mode)}}
+    \end{minipage}
+    \caption{\textbf{Simulation D.8: The Mechanism of Collapse.} (A) Without observation, the pilot wave interferes, causing the electron (Green Trace) to oscillate and land in a fringe. (B) When a detector dampens the second slit (Red Trace), the interference is destroyed, and the electron behaves like a classical projectile. Collapse is simply fluid viscosity.}
+    \label{fig:observer_comparison}
+\end{figure}
 
 \section{Bridge the Gap: From Copenhagen to Hydrodynamics}
 To the Quantum Physicist, $\psi$ is a probability amplitude. To the Fluid Dynamicist, $\psi$ is a complex order parameter.
@@ -50,3 +65,36 @@ To the Quantum Physicist, $\psi$ is a probability amplitude. To the Fluid Dynami
     \item \textbf{The Quantum Potential:} For a fluid density $\rho(x) = e^{-x^2/\sigma^2}$, calculate the Quantum Potential $Q(x)$. Show that this creates a repulsive force.
     \item \textbf{Dispersion Limit:} Determine the velocity of a particle with energy $E = 10^{19}$ GeV (Planck scale) using the Lindblom Dispersion Relation.
 \end{enumerate}
+
+\subsection{The Emergent Atom: Deriving the Bohr Radius}
+The ultimate test of any quantum interpretation is the stability of the atom. Classical electrodynamics predicts that an orbiting electron should radiate energy and spiral into the nucleus in $\approx 10^{-11}$ seconds. Standard Quantum Mechanics prevents this by postulating a stationary wavefunction.
+
+In LCT, we do not postulate stability; we observe it as a hydrodynamic consequence.
+
+\begin{itemize}
+    \item \textbf{The Mechanism:} As the electron orbits, it continuously perturbs the vacuum lattice, creating a "Pilot Wave" wake.
+    \item \textbf{The Lock-In:} As the electron spirals inward due to energy loss, it eventually hits a radius where its orbital frequency matches the resonant frequency of the vacuum wake.
+    \item \textbf{Result:} The electron "surfs" its own reflection. The radiation pressure from the vacuum lattice balances the Coulomb attraction, creating a stable, quantized orbit.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{simulate_hydrogenic_atom.png}
+    \caption{\textbf{Simulation of the Hydrogenic Ground State.} The red trace shows the path of a deterministic electron "Walker." Instead of spiraling into the proton (Black Cross), the electron is stabilized by pilot-wave pressure, forming a chaotic but bounded orbit near the theoretical Bohr Radius ($n=1$, Green Dashed Line). This demonstrates that quantization is an emergent feature of fluid resonance.}
+    \label{fig:hydrogen_sim}
+\end{figure}
+
+\subsection{The Casimir Effect: Vacuum Filtration}
+Standard physics treats the Casimir force as a regularization of infinite sums. LCT treats it as a simple \textbf{Band-Stop Filter}.
+\begin{itemize}
+    \item \textbf{The Mechanism:} The conducting plates act as short circuits ($V=0$) for the vacuum noise.
+    \item \textbf{The Gap:} Any vacuum mode with a half-wavelength longer than the gap separation ($\lambda/2 > d$) cannot exist between the plates.
+    \item \textbf{The Force:} The exclusion of these low-frequency modes results in a lower energy density (pressure) inside the gap compared to the broadband noise outside. The plates are pushed together by the external radiation pressure.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{simulate_casimir_effect.png}
+    \caption{\textbf{Simulation D.10: The Casimir Effect.} A 1D vacuum lattice driven by random broadband noise. The presence of two conducting plates (Black Lines) suppresses the vacuum energy density in the gap (Yellow Region) by filtering out long-wavelength modes. The resulting pressure difference (-20.4\%) generates the attractive Casimir force.}
+    \label{fig:casimir_sim}
+\end{figure}

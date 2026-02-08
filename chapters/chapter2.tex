@@ -23,6 +23,18 @@ A massive object imposes a stress load on the surrounding vacuum substrate[cite:
 \end{equation}
 This strain physically stretches the grid spacing[cite: 106]. To a photon traveling through this region, the increased inductance per unit length ($L' = L_{vac}(1+\varepsilon)$) manifests as a slower propagation velocity[cite: 106].
 
+\begin{tcolorbox}[colback=gray!10!white,colframe=black!75!black,title=\textbf{Engineering Note: The Constant Clock}]
+    In the Lindblom Coupling Theory, the "Update Rate" of the vacuum lattice ($\omega_{vac} = 1/\sqrt{L_{vac}C_{vac}}$) is an invariant constant. A photon \textit{always} takes 1 "tick" to traverse 1 "node."
+    
+    \textbf{Why does Time Dilation occur?}
+    Gravity strains the lattice, physically increasing the distance and inductance between nodes ($L' > L_{vac}$).
+    \begin{itemize}
+        \item \textbf{The Observer:} Sees the photon moving slower ($v < c$) because it has to charge a larger inductance per unit length.
+        \item \textbf{The Photon:} Experiences no change in local time. It is simply traversing a circuit with a higher Impedance Density.
+    \end{itemize}
+    \textit{Gravity is not the slowing of time; it is the lengthening of the signal path.}
+    \end{tcolorbox}
+
 \section{Deriving the Schwarzschild Metric (Hydrodynamic Limit)}
 We model gravity as a radial "sink flow" of the vacuum substrate toward a massive object[cite: 108]. The velocity of the vacuum flow $v_0$ is given by[cite: 109, 110]:
 \begin{equation}
@@ -41,6 +53,20 @@ We utilized the Finite-Difference Time-Domain (FDTD) method to simulate a photon
     \item \textbf{Result:} The pulse wavefront bent toward the mass center exactly matching the predicted deflection angle $\alpha = 4GM/rc^2$[cite: 121].
 \end{itemize}
 *(See Appendix D.1 for the full Python source code.)* [cite: 122]
+
+\subsection{Strong Lensing and the Photon Sphere}
+While weak gravity causes minor deflection, the impedance gradient near a Black Hole is so steep that it can trap light.
+\begin{itemize}
+    \item \textbf{Refractive Index:} We model the Black Hole not as a hole in space, but as a region of extreme optical density: $n(r) \approx (1 - R_s/r)^{-1}$.
+    \item \textbf{The Photon Sphere:} At $r = 1.5 R_s$, the impedance gradient perfectly balances the centrifugal force of the photon, allowing light to orbit the mass.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{sim_black_hole_geodesics.png}
+    \caption{\textbf{Simulation D.9: Black Hole Geodesics.} Light rays (Green) passing a Black Hole (Black Dot). Far rays are weakly lensed, while rays crossing the Photon Sphere (Orange Dashed Line) are captured by the diverging refractive index. This replicates General Relativity's "curved spacetime" using only variable vacuum impedance.}
+    \label{fig:black_hole_sim}
+\end{figure}
 
 \section{Bridge the Gap: From Geometry to Elasticity}
 To the General Relativist, gravity is \textbf{Curvature}. To the Mechanical Engineer, gravity is \textbf{Strain}.

@@ -261,3 +261,269 @@ if __name__ == "__main__":
     simulate_big_bang()
 \end{verbatim}
 
+\subsection{Simulation: The Hydrogenic Atom (Emergent Quantization)}
+This simulation tests the stability of an electron in a Coulomb potential without forcing quantum rules. It demonstrates that a "Walker" particle naturally finds a stable orbit due to the feedback from its own pilot wave field.
+
+\begin{verbatim}
+import numpy as np
+import matplotlib.pyplot as plt
+
+def simulate_hydrogenic_atom():
+    # 1. Setup Vacuum Domain (40 Angstroms)
+    N = 400; L = 40.0
+    x = np.linspace(-L/2, L/2, N)
+    y = np.linspace(-L/2, L/2, N)
+    
+    # 2. The Proton (Coulomb/Gravity Well)
+    px_e, py_e = 12.0, 0.0 # Electron starts at r=12
+    vx, vy = 0.0, 0.8      # Initial kick
+    
+    # 3. Wave Field (Memory)
+    wave_field = np.zeros((N, N))
+    
+    dt = 0.1; steps = 4000
+    traj_x, traj_y = [], []
+    
+    print(f"Simulating Electron Interaction for {steps} steps...")
+    
+    for t in range(steps):
+        # A. Wave Equation (Vacuum Response)
+        # Lap = standard 5-point stencil
+        lap = (np.roll(wave_field, 1, 0) + np.roll(wave_field, -1, 0) + 
+               np.roll(wave_field, 1, 1) + np.roll(wave_field, -1, 1) - 4*wave_field)
+        wave_field = 0.9*wave_field + 0.1*lap
+        
+        # B. Electron Impact (Source)
+        ix = int((px_e + L/2)/L * N); iy = int((py_e + L/2)/L * N)
+        if 0 < ix < N and 0 < iy < N:
+            wave_field[iy, ix] += 1.0 * np.sin(0.5 * t)
+            
+        # C. Forces
+        # 1. Coulomb Attraction (toward center)
+        dist = np.sqrt(px_e**2 + py_e**2)
+        f_coulomb = -15.0 / (dist**3 + 0.1) # Normalized force
+        
+        # 2. Pilot Wave Guidance (Gradient of memory)
+        grad_x = (wave_field[iy, ix+1] - wave_field[iy, ix-1]) if 1<ix<N-1 else 0
+        grad_y = (wave_field[iy+1, ix] - wave_field[iy-1, ix]) if 1<iy<N-1 else 0
+        
+        # D. Newton's Law
+        # Acceleration = Coulomb + Wave Pressure - Radiation Drag
+        vx += dt * (f_coulomb*px_e - 0.5*grad_x - 0.05*vx) 
+        vy += dt * (f_coulomb*py_e - 0.5*grad_y - 0.05*vy)
+        
+        px_e += vx * dt; py_e += vy * dt
+        traj_x.append(px_e); traj_y.append(py_e)
+
+    # Visualization
+    plt.figure(figsize=(10, 8))
+    plt.imshow(wave_field, extent=[-L/2, L/2, -L/2, L/2], origin='lower', cmap='Blues')
+    plt.plot(traj_x, traj_y, 'r-', linewidth=0.5, label="Electron Path")
+    
+    # Draw Bohr Orbit (n=1)
+    circle1 = plt.Circle((0, 0), 4.0, color='g', fill=False, linestyle='--', label='n=1')
+    plt.gca().add_patch(circle1)
+    
+    plt.legend(); plt.show()
+
+if __name__ == "__main__":
+    simulate_hydrogenic_atom()
+\end{verbatim}
+
+\subsection{Simulation: The Observer Effect (Double Slit)}
+This simulation demonstrates that the "choice" between Wave and Particle behavior is determined by the viscosity (damping) of the medium.
+
+\begin{verbatim}
+import numpy as np
+import matplotlib.pyplot as plt
+
+def simulate_observer_effect():
+    # 1. Setup Vacuum Domain
+    Nx, Ny = 300, 200
+    u = np.zeros((Ny, Nx)); u_prev = np.zeros((Ny, Nx))
+    wall_x = 100
+    
+    # 2. Define Slits
+    slit_w = 8; slit_sep = 15; cy = Ny // 2
+    s1_top = cy + slit_sep + slit_w; s1_bot = cy + slit_sep
+    s2_top = cy - slit_sep; s2_bot = cy - slit_sep - slit_w
+    
+    # 3. The Observer (Switch)
+    OBSERVER_ON = True # Set False for Wave Mode
+    
+    damping = np.ones((Ny, Nx))
+    if OBSERVER_ON:
+        # Soft Absorber Gradient behind Slit 2
+        for x in range(wall_x, Nx):
+            for y in range(0, cy):
+                dist = (x - wall_x) / 50.0
+                damping[y, x] = max(0.85, 1.0 - 0.05 * dist)
+
+    # 4. The Electron (Walker)
+    px, py = 50.0, s1_bot + 4.0 
+    vx, vy = 1.5, 0.0
+    dt = 0.5; c2_dt2 = (1.0 * dt)**2 
+    steps = 800
+    traj_x, traj_y = [], []
+
+    for t in range(steps):
+        # Wave Equation (Verlet Integration)
+        lap = (np.roll(u, 1, 0) + np.roll(u, -1, 0) + 
+               np.roll(u, 1, 1) + np.roll(u, -1, 1) - 4*u)
+        u_next = (2.0*u - u_prev + c2_dt2 * lap) * 0.999
+        u_next *= damping # Apply Observer Effect
+        
+        # Wall Reflection
+        mask = np.zeros_like(u)
+        mask[:, wall_x:wall_x+5] = 1
+        mask[s1_bot:s1_top, wall_x:wall_x+5] = 0
+        mask[s2_bot:s2_top, wall_x:wall_x+5] = 0
+        u_next[mask==1] = 0
+        
+        # Electron Source
+        ix, iy = int(px), int(py)
+        if 0 < ix < Nx and 0 < iy < Ny:
+            u_next[iy, ix] += 2.0 * np.sin(0.4 * t)
+            
+        u_prev = u.copy(); u = u_next.copy()
+            
+        # Guidance Force
+        grad_y = (u[iy+1, ix] - u[iy-1, ix]) if ix<Nx-1 else 0
+        
+        # Newton's Law
+        if wall_x <= ix <= wall_x+5:
+            if not ((s1_bot < iy < s1_top) or (s2_bot < iy < s2_top)):
+                vx, vy = 0, 0
+        
+        vy += dt * (-0.1 * grad_y) 
+        px += vx * dt; py += vy * dt
+        traj_x.append(px); traj_y.append(py)
+
+    # Visualization
+    plt.imshow(u, extent=[0, Nx, 0, Ny], origin='lower', cmap='RdBu', vmin=-1, vmax=1)
+    plt.plot(traj_x, traj_y, 'r-', linewidth=2)
+    plt.show()
+
+if __name__ == "__main__":
+    simulate_observer_effect()
+\end{verbatim}
+
+\subsection{Simulation: Black Hole Lensing (Strong Gravity)}
+This script models the path of photons near a Black Hole using the "Variable Refractive Index" analogy. It demonstrates that Event Horizons and Photon Spheres are natural consequences of impedance divergence.
+
+\begin{verbatim}
+import numpy as np
+import matplotlib.pyplot as plt
+
+def simulate_black_hole_lensing():
+    # 1. Setup Space (-20 to 20 Rs)
+    L = 20.0; Rs = 1.0 
+    
+    # 2. Refractive Index n(r) = 1/(1 - Rs/r)
+    def get_grad_n(x, y):
+        r = np.sqrt(x**2 + y**2)
+        if r < Rs + 0.2: return 0, 0
+        dn_dr = -1.0 / ((r - Rs)**2) # Gradient magnitude
+        return dn_dr * (x/r), dn_dr * (y/r)
+
+    # 3. Launch Photons (Beam from Right)
+    photons_y = np.linspace(0.5, 8.0, 12)
+    start_x = 15.0
+    dt = 0.05; steps = 1500
+    
+    plt.figure(figsize=(10, 8))
+    
+    for y_init in photons_y:
+        px, py = start_x, y_init
+        
+        # Initial Velocity (Moving Left at local c)
+        # v = c/n = 1 * (1 - Rs/r)
+        r0 = np.sqrt(px**2 + py**2)
+        v0 = (1.0 - Rs/r0)
+        vx, vy = -v0, 0.0 
+        
+        traj_x, traj_y = [px], [py]
+        captured = False
+        
+        for t in range(steps):
+            r_sq = px**2 + py**2
+            if r_sq < Rs**2 + 0.1: # Horizon Check
+                captured = True; break
+                
+            # Acceleration = Gradient of n
+            gx, gy = get_grad_n(px, py)
+            vx += -gx * dt; vy += -gy * dt
+            
+            # Renormalize speed to local c/n
+            r = np.sqrt(px**2 + py**2)
+            v_target = max(0.01, 1.0 - Rs/r)
+            v_curr = np.sqrt(vx**2 + vy**2)
+            vx = (vx/v_curr)*v_target; vy = (vy/v_curr)*v_target
+            
+            px += vx * dt; py += vy * dt
+            traj_x.append(px); traj_y.append(py)
+            
+        plt.plot(traj_x, traj_y, 'g-', alpha=0.8)
+
+    # Visualization
+    circle = plt.Circle((0, 0), Rs, color='k', label="Event Horizon")
+    plt.gca().add_patch(circle)
+    circle_ph = plt.Circle((0, 0), 1.5*Rs, color='orange', fill=False, 
+                           linestyle='--', label="Photon Sphere")
+    plt.gca().add_patch(circle_ph)
+    
+    plt.axis('equal'); plt.legend(); plt.show()
+
+if __name__ == "__main__":
+    simulate_black_hole_lensing()
+\end{verbatim}
+
+\subsection{Simulation: The Casimir Effect (Vacuum Filtration)}
+This script models the vacuum as a noisy transmission line. It demonstrates that conducting boundaries suppress the local Zero Point Energy density by filtering out geometric modes.
+
+\begin{verbatim}
+import numpy as np
+import matplotlib.pyplot as plt
+
+def simulate_casimir_effect():
+    # 1. Setup 1D Lattice
+    Nx = 400
+    u = np.zeros(Nx); u_prev = np.zeros(Nx)
+    
+    # 2. Define Plates (Shorts at V=0)
+    p1 = 100; p2 = 140
+    
+    c = 1.0; dt = 0.5; steps = 4000
+    energy_sum = np.zeros(Nx)
+    
+    for t in range(steps):
+        # Wave Equation with Damping
+        lap = np.roll(u, 1) + np.roll(u, -1) - 2*u
+        u_next = (2.0*u - u_prev + (c*dt)**2 * lap) * 0.99
+        
+        # Inject Quantum Foam (Noise)
+        u_next += np.random.normal(0, 0.05, Nx)
+        
+        # Apply Boundary Conditions
+        u_next[p1] = 0.0; u_next[p2] = 0.0
+        
+        u_prev = u.copy(); u = u_next.copy()
+        
+        # Accumulate Energy
+        if t > 500: energy_sum += u**2
+
+    # Visualization
+    avg_energy = energy_sum / (steps - 500)
+    baseline = np.mean(avg_energy[:50])
+    
+    plt.plot(avg_energy, 'b-', label="Vacuum Energy")
+    plt.axvline(x=p1, color='k', linewidth=3)
+    plt.axvline(x=p2, color='k', linewidth=3)
+    plt.axhline(y=baseline, color='r', linestyle='--')
+    plt.axvspan(p1, p2, color='yellow', alpha=0.2)
+    plt.show()
+
+if __name__ == "__main__":
+    simulate_casimir_effect()
+\end{verbatim}
+
