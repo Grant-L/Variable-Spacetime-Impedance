@@ -206,3 +206,58 @@ def simulate_rotation_curve():
 if __name__ == "__main__":
     simulate_rotation_curve()
 \end{verbatim}
+
+\subsection{Simulation: The Cosmic Quench (Genesis)}
+This simulation demonstrates the \textbf{Kibble-Zurek Mechanism}. It starts with a randomized "Hot" vacuum and solves the Ginzburg-Landau equation to show how matter (defects) spontaneously forms as the universe cools.
+
+\begin{verbatim}
+import numpy as np
+import matplotlib.pyplot as plt
+
+def simulate_big_bang():
+    print("Initiating Big Bang (Random Phase Field)...")
+    
+    # 1. Setup the Early Universe
+    N = 300; L = 30.0; dx = L / N
+    
+    # Initial State: "Hot" Universe = Complete Randomness
+    # The phase angle is random everywhere between -pi and +pi
+    psi = np.exp(1j * np.random.uniform(-np.pi, np.pi, (N, N)))
+    
+    # 2. The Cooling Process (Time Evolution)
+    # We use Ginzburg-Landau to 'order' the chaos.
+    dt = 0.001; steps = 1500
+    
+    print(f"Cooling Vacuum for {steps} epochs...")
+    
+    for t in range(steps):
+        # Laplacian (Diffusion/Ordering force)
+        lap = (np.roll(psi, 1, axis=0) + np.roll(psi, -1, axis=0) + 
+               np.roll(psi, 1, axis=1) + np.roll(psi, -1, axis=1) - 4*psi) / (dx**2)
+        
+        # GL Equation: Vacuum relaxes to magnitude 1
+        psi += dt * (lap + psi * (1.0 - np.abs(psi)**2))
+
+    # 3. Visualization
+    plt.figure(figsize=(10, 8))
+    
+    # Plot: The Emergence of Matter
+    plt.imshow(np.angle(psi), cmap='twilight', origin='lower', 
+               extent=[-L/2, L/2, -L/2, L/2])
+    
+    plt.title(f"The Kibble-Zurek Mechanism: Spontaneous Matter Creation")
+    plt.colorbar(label="Vacuum Phase (Topology)")
+    plt.xlabel("Cosmic Scale"); plt.ylabel("Cosmic Scale")
+    
+    # Count the particles (defects where density drops)
+    density = np.abs(psi)
+    defect_count = np.sum(density < 0.1)
+    plt.text(-L/2 + 1, -L/2 + 1, f"Defects Trapped: ~{defect_count}", 
+             color='white', fontweight='bold')
+    
+    plt.show()
+
+if __name__ == "__main__":
+    simulate_big_bang()
+\end{verbatim}
+

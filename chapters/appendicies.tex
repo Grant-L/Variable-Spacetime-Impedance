@@ -1,15 +1,20 @@
-\chapter{Appendix A: Electrodynamics (Maxwell Derivation)}
-We derive Maxwell's Equations from the discrete Lagrangian of the LC network.
-Consider the Lagrangian density $\mathcal{L}$ for a 3D LC lattice:
-\begin{equation}
-\mathcal{L} = \sum_{n} \left[ \frac{1}{2} C_{vac} \left(\frac{dV_n}{dt}\right)^2 - \frac{1}{2} \frac{1}{L_{vac}} (\nabla V_n)^2 \right]
-\end{equation}
-Applying the Euler-Lagrange equation, we recover the scalar wave equation for the potential $\phi$:
-\begin{equation}
-\frac{1}{c^2} \frac{\partial^2 \phi}{\partial t^2} - \nabla^2 \phi = 0
-\end{equation}
-This confirms that the continuum limit of the LCT lattice is standard Electrodynamics.
+\section{Appendix A: Electrodynamics (Hardware Derivation)}
+We derive Maxwell's Equations not from abstract fields, but from the discrete energy balance of the LC network.
 
+Consider the \textbf{Lagrangian Density} $\mathcal{L} = T - U$ for a 3D LC lattice, representing the difference between the Kinetic (Capacitive) and Potential (Inductive) energies:
+
+\begin{equation}
+\mathcal{L} = \sum_{n} \left[ \underbrace{\frac{1}{2}C_{vac}\left(\frac{dV_n}{dt}\right)^2}_{\text{Capacitive Energy (E-Field)}} - \underbrace{\frac{1}{2}\frac{1}{L_{vac}}(\nabla V_n)^2}_{\text{Inductive Energy (B-Field)}} \right]
+\label{eq:lagrangian}
+\end{equation}
+
+Applying the Euler-Lagrange equation $\frac{\partial \mathcal{L}}{\partial \phi} - \partial_\mu \frac{\partial \mathcal{L}}{\partial(\partial_\mu \phi)} = 0$, we minimize the action to recover the scalar wave equation:
+
+\begin{equation}
+\frac{\partial^2 \phi}{\partial t^2} - \frac{1}{L_{vac}C_{vac}}\nabla^2 \phi = 0
+\end{equation}
+
+\textbf{Engineering Conclusion:} Maxwell's Equations are simply the continuum limit of Kirchhoff's Laws applied to the vacuum mesh. Light is the vibration of the lattice; the speed of light $c$ is the characteristic propagation velocity determined by the lattice constants $L_{vac}$ and $C_{vac}$.
 \chapter{Appendix B: General Relativity (Acoustic Metric)}
 
 \section{Deriving the Schwarzschild Metric}
@@ -25,25 +30,34 @@ ds^{2} \approx -\left(1 - \frac{2GM}{c_{s}^{2}r}\right) c_{s}^{2} dt^{2} + \left
 [cite: 319]
 \section{Conclusion: Emergent Geometry}
 General Relativity is an \textbf{Emergent Phenomenon}. The curvature of spacetime is not a property of the manifold itself, but the \textbf{Effective Geometry} experienced by fluctuations (matter and light) propagating through a moving superfluid substrate. The "Event Horizon" is physically identified as the surface where the background flow velocity $|v_{0}|$ exceeds the local speed of light $c_{s}$ in the lattice.
-\chapter{Appendix C: Theoretical Stress Tests}
+\section{Appendix A: Electrodynamics (Hardware Derivation)}
+We derive Maxwell's Equations not from abstract fields, but from the discrete energy balance of the LC network.
 
-\section{The Isotropy Problem}
-\textbf{Critique:} A discrete lattice violates Lorentz Invariance because wave speed should vary based on the axis of travel[cite: 163, 324].
+Consider the \textbf{Lagrangian Density} $\mathcal{L} = T - U$ for a 3D LC lattice, representing the difference between the Kinetic (Capacitive) and Potential (Inductive) energies:
 
-\textbf{Defense: The Amorphous Limit.} 
-Just as window glass is transparent and isotropic despite being disordered at the atomic scale, the vacuum is isotropic at the macroscopic scale[cite: 325]. By modeling the vacuum as an \textbf{Amorphous Solid} rather than a perfect crystal, the local anisotropies average to zero over distances much larger than the breakdown wavelength ($L \gg \lambda_{min}$)[cite: 164, 167, 325].
+\begin{equation}
+\mathcal{L} = \sum_{n} \left[ \underbrace{\frac{1}{2}C_{vac}\left(\frac{dV_n}{dt}\right)^2}_{\text{Capacitive Energy (E-Field)}} - \underbrace{\frac{1}{2}\frac{1}{L_{vac}}(\nabla V_n)^2}_{\text{Inductive Energy (B-Field)}} \right]
+\label{eq:lagrangian}
+\end{equation}
 
-\section{The Ether Drift (Stellar Aberration)}
-\textbf{Critique:} If the vacuum is a fluid dragged by mass, we should not see the annual shift in star positions (Stellar Aberration)[cite: 326].
+Applying the Euler-Lagrange equation $\frac{\partial \mathcal{L}}{\partial \phi} - \partial_\mu \frac{\partial \mathcal{L}}{\partial(\partial_\mu \phi)} = 0$, we minimize the action to recover the scalar wave equation:
 
-\textbf{Defense: Fresnel Drag.} 
-In hydrodynamics, a fluid drags light only if its refractive index $n > 1$[cite: 327]. The drag coefficient $k$ is defined by:
+\begin{equation}
+\frac{\partial^2 \phi}{\partial t^2} - \frac{1}{L_{vac}C_{vac}}\nabla^2 \phi = 0
+\end{equation}
+
+\textbf{Engineering Conclusion:} Maxwell's Equations are simply the continuum limit of Kirchhoff's Laws applied to the vacuum mesh. Light is the vibration of the lattice; the speed of light $c$ is the characteristic propagation velocity determined by the lattice constants $L_{vac}$ and $C_{vac}$.
+
+\subsection{C.2 The Ether Drift (Why Michelson-Morley Failed)}
+\textbf{Critique:} If the vacuum is a fluid, the Earth's motion through it should create an "Ether Wind" detectable by interferometers (Michelson-Morley).
+\\
+\textbf{Defense: Fresnel Drag.}
+In hydrodynamics, a moving fluid only "drags" light if it has a refractive index $n > 1$. The drag coefficient $k$ is given by:
 \begin{equation}
 k = 1 - \frac{1}{n^2}
 \end{equation}
-[cite: 327]
-
 \begin{itemize}
-    \item \textbf{Near Earth:} The vacuum strain is negligible, and $n \approx 1$[cite: 327]. Therefore, $k \approx 0$, the vacuum is not "dragged" significantly, and Stellar Aberration is preserved[cite: 327].
-    \item \textbf{Near Black Holes:} Here, $n \gg 1$, and $k \to 1$[cite: 328]. In this regime, the vacuum is fully dragged, which observationally manifests as the **Lense-Thirring effect** (Frame Dragging)[cite: 328].
+    \item \textbf{Near Earth:} The vacuum is unstrained, so $n \approx 1.0$. Therefore, $k \approx 0$. The vacuum flows \textit{through} the interferometer without altering the light path.
+    \item \textbf{Near a Black Hole:} The vacuum is highly strained ($n \gg 1$), so $k \rightarrow 1$. In this regime, the "Ether Wind" is fully coupled to light, manifesting as \textbf{Frame Dragging} (Lense-Thirring Effect).
 \end{itemize}
+\textbf{Conclusion:} Michelson-Morley didn't disprove the Ether; they simply confirmed that the vacuum near Earth has a refractive index of 1.
