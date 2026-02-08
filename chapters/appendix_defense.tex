@@ -8,9 +8,19 @@
 \textbf{Critique:} GW170817 proved $c_g = c_{em}$. In solids, shear and pressure waves differ.
 \textbf{Defense:} **Coupled Moduli**. Gravity is not a shear wave; it is a gradient in the parameters that define the speed of light ($\mu, \epsilon$). Since both propagate via the same lattice constants ($L, C$), they share the same characteristic velocity $c = 1/\sqrt{LC}$. The vacuum behaves as an **Isentropic Fluid** where mechanical stiffness determines electromagnetic propagation speed.
 
-\section{A.3 The Ether Drift}
-\textbf{Critique:} Why do we not detect an Ether Wind (Michelson-Morley)?
-\textbf{Defense:} **Stokes' Drag**. Massive objects (Earth) create a region of high refractive index that is "dragged" along with the mass. The local vacuum is static relative to the observer on Earth. The "wind" is only detectable as Frame Dragging in space (Gravity Probe B).
+\section{A.3 The Ether Drift & Stellar Aberration}
+\textbf{Critique:} If the vacuum is a fluid dragged by mass, why do we observe Stellar Aberration? (The apparent shift of star positions due to Earth's motion). If the ether were fully dragged by Earth, the light should not tilt.
+
+\textbf{Defense:} **Partial Entrainment (Fresnel Drag).**
+In hydrodynamics, a fluid drags light only if it has a refractive index $n > 1$. The drag coefficient $k$ is given by Fresnel:
+\begin{equation}
+k = 1 - \frac{1}{n^2}
+\end{equation}
+\begin{itemize}
+    \item **Near Earth:** The vacuum impedance is nominal ($Z \approx Z_0$). The effective refractive index due to Earth's gravity is $n \approx 1 + 10^{-9}$. Thus, $k \approx 0$. The vacuum is \textit{not} dragged significantly by Earth's motion relative to the optical path. Aberration is preserved.
+    \item **Near Black Holes:** The refractive index $n \gg 1$. Here, $k \to 1$. The vacuum is fully dragged. This is the regime of **Frame Dragging** (Lense-Thirring effect).
+\end{itemize}
+LCT recovers both the Newtonian optics of the solar system and the relativistic hydrodynamics of strong gravity.
 
 \section{A.4 Deriving the Acoustic Metric (Emergent Gravity)}
 We model gravity as a radial "sink flow" of the vacuum substrate toward a massive object. The velocity of the vacuum flow $v_0$ is given by:

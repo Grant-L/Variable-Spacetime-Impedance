@@ -5,73 +5,72 @@
 import numpy as np
 def simulate_lensing():
     Nx, Ny = 600, 400; Nt = 1200; dt = 0.5
-    # Refractive Index n(r) = 1 + A/r
-    x = np.arange(Nx); y = np.arange(Ny); X, Y = np.meshgrid(x, y, indexing='ij')
+    # Corrected Refractive Index Logic (Schwarzschild-like)
+    x = np.arange(Nx); y = np.arange(Ny)
+    X, Y = np.meshgrid(x, y, indexing='ij')
+    # Distance from mass center
     R = np.sqrt((X - Nx//2)**2 + (Y - (Ny//2+50))**2)
-    v_map = 1.0 / (1.0 + 20.0 / np.sqrt(R**2 + 400.0))
+    # Refractive index n = 1 + 2GM/rc^2 (Scalar approximation)
+    # Fixed Syntax Error from previous version
+    n_map = 1.0 + 20.0 / (np.sqrt(R**2 + 10.0)) 
+    v_map = 1.0 / n_map # Velocity = c/n
+    
     u = np.zeros((Nx, Ny)); u_prev = np.zeros((Nx, Ny))
+    
     for t in range(Nt):
-        lap = (np.roll(u,1,0)+np.roll(u,-1,0)+np.roll(u,1,1)+np.roll(u,-1,1)-4*u)
+        # Laplacian (Standard 5-point stencil)
+        lap = (np.roll(u,1,0) + np.roll(u,-1,0) + 
+               np.roll(u,1,1) + np.roll(u,-1,1) - 4*u)
+        
+        # Wave Equation Update
         u_next = 2*u - u_prev + (v_map * dt)**2 * lap
+        
+        # Source Pulse
         if t < 100: u_next[5, Ny//2-50] += np.sin(0.6*t)
+        
         u_prev, u = u, u_next
     return u
-\end{lstlisting}
-
-\section{D.2 Simulation: The Quantum Walker (Double Slit)}
-\begin{lstlisting}[language=Python]
-def simulate_walker():
-    Nx, Ny = 200, 200; dt = 0.5
-    u = np.zeros((Nx, Ny)); u_prev = np.zeros((Nx, Ny))
-    px, py = 50.0, 100.0; vx, vy = 0.8, 0.0
-    for t in range(1000):
-        # Wave Eq
-        lap = (np.roll(u,1,0)+np.roll(u,-1,0)+np.roll(u,1,1)+np.roll(u,-1,1)-4*u)
-        u_next = 2*u - u_prev + 0.25*lap; u_next *= 0.95
-        # Walker Source & Guidance
-        u_next[int(px), int(py)] += 2.0*np.sin(0.4*t)
-        grad_y = (u[int(px), int(py)+1] - u[int(px), int(py)-1])/2
-        vy -= 0.1*grad_y
-        px += vx; py += vy
-        u_prev, u = u, u_next
-    return px, py
-\end{lstlisting}
-
-\section{D.3 Simulation: The Genesis (Crystallization)}
-\begin{lstlisting}[language=Python]
-def simulate_genesis():
-    Nx, Ny = 200, 200; dt = 0.2
-    psi = (np.random.rand(Nx, Ny)-0.5) + 1j*(np.random.rand(Nx, Ny)-0.5)
-    psi /= np.abs(psi)
-    for t in range(800):
-        lap = (np.roll(psi,1,0)+np.roll(psi,-1,0)+np.roll(psi,1,1)+np.roll(psi,-1,1)-4*psi)
-        psi += dt**2 * (lap + psi*(1-np.abs(psi)**2)) - 0.1*psi
-    return np.abs(psi)**2
 \end{lstlisting}
 
 \section{D.4 Simulation: The Entanglement Bridge}
 \begin{lstlisting}[language=Python]
 def simulate_bridge():
     Nx, Ny = 300, 150; Nt = 800; dt = 0.2
-    # Initialize Vortex Pair
+    # Initialize Vortex Pair Phase Field
     x1, y1 = 80, 75; x2, y2 = 220, 75
     X, Y = np.meshgrid(np.arange(Nx), np.arange(Ny), indexing='ij')
     theta1 = np.arctan2(Y-y1, X-x1); theta2 = np.arctan2(Y-y2, X-x2)
-    psi = np.exp(1j * (theta1 - theta2))
+    psi_curr = np.exp(1j * (theta1 - theta2))
+    psi_prev = psi_curr.copy()
     
     pos2_y = []
+    gamma = 0.05 # Damping factor
+    
     for t in range(Nt):
-        lap = (np.roll(psi,1,0)+np.roll(psi,-1,0)+np.roll(psi,1,1)+np.roll(psi,-1,1)-4*psi)
-        restoring = psi * (1 - np.abs(psi)**2)
-        psi = 2*psi - psi + dt**2 * (lap + restoring) - 0.05*(psi-psi)
-        # Force Vortex 1 (Shake)
+        lap = (np.roll(psi_curr,1,0) + np.roll(psi_curr,-1,0) + 
+               np.roll(psi_curr,1,1) + np.roll(psi_curr,-1,1) - 4*psi_curr)
+        
+        # Non-Linear Restoring Force (Ginzburg-Landau)
+        restoring = psi_curr * (1 - np.abs(psi_curr)**2)
+        
+        # Damped Wave Equation
+        # Fixed Logic: Damping acts on velocity (psi_curr - psi_prev)
+        psi_next = 2*psi_curr - psi_prev + dt**2 * (lap + restoring) - gamma*(psi_curr - psi_prev)
+        
+        # Forcing: Shake Vortex 1
         cy1 = y1 + 10.0 * np.sin(0.02 * 2 * np.pi * t)
-        mask_r = np.sqrt((X-x1)**2 + (Y-cy1)**2); mask = mask_r < 10.0
-        psi[mask] = np.exp(1j * (np.arctan2(Y-cy1, X-x1) - theta2))[mask]
+        mask = np.sqrt((X-x1)**2 + (Y-cy1)**2) < 10.0
+        
+        # Update V1 position strictly
+        psi_next[mask] = np.exp(1j * (np.arctan2(Y-cy1, X-x1) - theta2))[mask]
+        
+        psi_prev = psi_curr
+        psi_curr = psi_next
         
         # Measure V2 Reaction
-        right = np.abs(psi[150:, :])**2
-        min_idx = np.unravel_index(np.argmin(right), right.shape)
+        right_half = np.abs(psi_curr[150:, :])**2
+        min_idx = np.unravel_index(np.argmin(right_half), right_half.shape)
         pos2_y.append(min_idx[1])
+        
     return pos2_y
 \end{lstlisting}

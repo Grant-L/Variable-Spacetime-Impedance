@@ -8,7 +8,7 @@
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{titlesec}
-\usepackage{booktabs} % For nicer tables in Translation Matrix
+\usepackage{booktabs}
 
 % Geometry
 \geometry{margin=1in}
@@ -93,18 +93,18 @@ Common-Mode Drift & Dark Energy & DC Bias Drift \\
 % --- MAIN MATTER ---
 \mainmatter
 
-\include{chapter1}     % The Lattice, Constants & Maxwell Limit
-\include{chapter2}      % Mass, Lensing & Schwarzschild Metric
-\include{chapter3}      % Pilot Waves, Schrödinger Eq & Isotropy
-\include{chapter4}     % Charge, Protons & Matter
-\include{chapter5}    % Big Bang, Entanglement & Kibble-Zurek
-\include{chapter6}  % Vortex Halos & Hubble Tension
+\include{chapter1_hardware}     % The Lattice & Constants
+\include{chapter2_gravity}      % Mass & Refraction
+\include{chapter3_quantum}      % Pilot Waves & Walkers
+\include{chapter4_topology}     % Charge, Protons & Matter
+\include{chapter5_cosmology}    % Big Bang & Entanglement
+\include{chapter6_observation}  % Vortex Lattice Dark Matter
 
 % --- BACK MATTER ---
 \appendix
-\include{appendix_defense}      % Theoretical Rebuttals
+\include{appendix_defense}      % Theoretical Rebuttals (Aberration, Emergent Gravity)
 \include{appendix_code}         % Python Simulation Suite
+\include{bibliography}          % References
 
-\include{bibliography}          % <--- ADD THIS LINE
-
+\backmatter
 \end{document}
