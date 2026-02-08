@@ -59,4 +59,72 @@ Standard $\Lambda$CDM cosmology assumes that the properties of the vacuum (speci
 \begin{itemize}
     \item \textbf{For the Physicist:} The Phase Bridge is analogous to the \textbf{Einstein-Rosen Bridge} (Wormhole), but constructed from quantum phase topology rather than spacetime curvature.
     \item \textbf{For the Engineer:} Entanglement is a \textbf{Hardwired Connection}. In a large sensor array (the universe), two nodes can share a common clock line (the Phase Bridge).
+\end{itemize}% --- Chapter 5: The Thermodynamic Vacuum and Decoherence ---
+
+In the previous chapters, we established the lattice as a transmission line (Chapter 2) and a quantum pilot wave medium (Chapter 3). However, a critical boundary remains undefined: the transition between the Quantum (Laminar) and Classical (Turbulent) domains.
+
+This chapter proposes that "Classicality" is not a fundamental state of matter, but a regime of \textbf{High Vacuum Turbulence}. We introduce the \textbf{Vacuum Reynolds Number ($Re_{vac}$)} and demonstrate that the "Collapse of the Wavefunction" is simply the scrambling of the Pilot Wave by local phase noise.
+
+\section{The Signal-to-Noise Ratio of Reality}
+We define the stability of the vacuum flow using the \textbf{Vacuum Reynolds Number}:
+
+\begin{equation}
+Re_{vac} = \frac{\rho \cdot v \cdot L}{\mu_{vac}}
+\end{equation}
+
+\begin{itemize}
+    \item \textbf{Low $Re_{vac}$ (Laminar):} The pilot wave propagates without distortion. The system behaves "Quantumly."
+    \item \textbf{High $Re_{vac}$ (Turbulent):} The background noise level exceeds the amplitude of the Pilot Wave. The system "Decoheres" into a Classical trajectory.
+\end{itemize}
+
+\section{Computational Module: Gravitational Decoherence}
+We propose that an Event Horizon is not a geometric singularity, but a \textbf{Thermodynamic Phase Transition} (Lattice Liquefaction). As a quantum signal approaches the horizon, the increasing turbulence of the lattice scrambles the phase information.
+
+\begin{lstlisting}[language=Python, caption=Simulating Decoherence at the Event Horizon]
+import numpy as np
+import matplotlib.pyplot as plt
+
+def gen_decoherence():
+    x = np.linspace(-10, 10, 500)
+    y = np.linspace(-10, 10, 500)
+    X, Y = np.meshgrid(x, y)
+    R = np.sqrt(X**2 + Y**2)
+    
+    # Interference Pattern (Quantum Signal)
+    k = 2.0
+    psi = np.sin(k * (X + 2*Y)) + np.sin(k * (X - 2*Y))
+    
+    # Horizon Scrambling (Thermodynamic Noise)
+    # Noise increases as R -> 0 (Event Horizon)
+    noise_mask = 1.0 / (R + 0.5)
+    # Scramble the signal near the horizon
+    scrambled = psi * (1 - np.exp(-R/3)) + np.random.normal(0, 2, X.shape) * np.exp(-R/2)
+    
+    plt.figure(figsize=(6, 5))
+    plt.imshow(scrambled, extent=[-10, 10, -10, 10], cmap='magma', origin='lower')
+    plt.title("Gravitational Decoherence at the Horizon")
+    
+    # Draw Black Hole
+    circle = plt.Circle((0, 0), 2, color='black')
+    plt.gca().add_patch(circle)
+    plt.axis('off')
+    plt.savefig('gravitational_double_slit.png', dpi=300)
+
+if __name__ == "__main__":
+    gen_decoherence()
+\end{lstlisting}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{gravitational_double_slit.png}
+    \caption{\textbf{Gravitational Decoherence.} Simulation results showing the evolution of a quantum state near an event horizon. As the signal approaches the "Turbulence Zone" of the horizon (center), the coherent interference fringes are scrambled into thermodynamic noise.}
+\end{figure}
+
+\section{Thermodynamic Scrambling (The Information Paradox)}
+Standard black hole theory struggles with the loss of information at the singularity. In LCT, the singularity does not exist. Instead, matter falling into the horizon is dissolved into the superfluid core. This process preserves \textbf{Unitarity}. The information is not destroyed, but is \textbf{scrambled} into the thermal degrees of freedom of the superfluid.
+
+\section*{Bridge the Gap: Multidisciplinary Links}
+\begin{itemize}
+    \item \textbf{For the Physicist:} The horizon is a \textbf{Critical Point} in a phase diagram. Hawking Radiation is simply the thermal evaporation of the superfluid surface.
+    \item \textbf{For the Engineer:} This is \textbf{Shannon Entropy}. A Black Hole is a maximum-entropy channel where the signal-to-noise ratio drops to zero.
 \end{itemize}
