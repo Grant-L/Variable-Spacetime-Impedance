@@ -2,18 +2,10 @@
 
 \section{The Lindblom Dispersion Relation (Mass)}
 Standard physics assumes a linear dispersion relation ($E=hf$). LCT applies \textbf{Nyquist Sampling Theory} to the vacuum lattice. As a signal's local excitation rate $\omega$ approaches the resonant frequency of the lattice node ($\omega_{cutoff}$), the Inductive Reactance ($X_L$) becomes non-linear.
-
-
-
 \begin{equation}
 v_g(\omega) = c \cdot \sqrt{1 - \left(\frac{\omega}{\omega_{cutoff}}\right)^2}
 \end{equation}
-
-\begin{itemize}
-    \item \textbf{Regime A ($\omega \ll \omega_{cutoff}$):} Linear response. $v_g \approx c$. (Massless Radiation).
-    \item \textbf{Regime B ($\omega \to \omega_{cutoff}$):} Saturation. The node's Slew Rate is exceeded. The Group Velocity $v_g \to 0$. The energy packet becomes a localized \textbf{Standing Wave}.
-\end{itemize}
-\textbf{Conclusion:} Rest Mass is identified as \textbf{High-Frequency Flux trapped by the Bandwidth Limit of the Vacuum.} Inertia is the Back-EMF generated when an external force attempts to change the phase of this standing wave.
+As $v_g \to 0$, the energy packet becomes a localized \textbf{Standing Wave} (Rest Mass). Inertia is the Back-EMF generated when an external force attempts to change the phase of this standing wave.
 
 \section{Gravity as Metric Strain}
 Standard General Relativity describes gravity as geometric curvature. In the LCT hardware framework, we describe it as **Metric Strain** ($\varepsilon$) of the vacuum lattice.
@@ -22,10 +14,9 @@ A massive object imposes a stress load on the surrounding vacuum substrate. Beca
 \varepsilon_{rr}(r) = \frac{\Delta L_{vac}}{L_{vac}} \approx \frac{2GM}{rc^2}
 \end{equation}
 This strain physically stretches the grid spacing. To a photon traveling through this region, the increased inductance per unit length ($L' = L_{vac}(1+\varepsilon)$) manifests as a slower propagation velocity.
-\textbf{The Coupled Moduli Effect:} Crucially, because the lattice is isentropic, the Bulk Modulus ($K$) and Shear Modulus ($G$) are coupled. The strain propagates at the same characteristic velocity as the shear waves (light), ensuring that $c_{gravity} = c_{light}$, satisfying the constraints of GW170817.
 
 \section{Deriving the Schwarzschild Metric (Hydrodynamic Limit)}
-We model gravity as a radial "sink flow" of the vacuum substrate toward a massive object. This flow represents the dynamic relaxation of the lattice strain. The velocity of the vacuum flow $v_0$ is given by:
+We model gravity as a radial "sink flow" of the vacuum substrate toward a massive object. The velocity of the vacuum flow $v_0$ is given by:
 \begin{equation}
 v_0(r) = - \sqrt{\frac{2GM}{r}} \hat{r}
 \end{equation}
@@ -33,24 +24,7 @@ Substituting this flow field into the acoustic metric line element:
 \begin{equation}
 ds^2 \approx - \left(1 - \frac{v_0^2}{c^2}\right) c^2 dt^2 + \left(1 - \frac{v_0^2}{c^2}\right)^{-1} dr^2 + r^2 d\Omega^2
 \end{equation}
-This exactly recovers the **Schwarzschild Metric**, demonstrating that General Relativity is the hydrodynamic limit of a flowing, strained vacuum. The "Event Horizon" corresponds to the radius where the inflow velocity $|v_0|$ exceeds the sound speed $c$ of the lattice (a Sonic Point).
-
-\section{Computational Module: The Lensing Simulation}
-We utilized the Finite-Difference Time-Domain (FDTD) method to simulate a photon pulse passing through a strained lattice.
-\begin{itemize}
-    \item **Setup:** A 2D lattice where the node density varies according to the strain field $\varepsilon(r)$.
-    \item **Result:** The pulse wavefront bent toward the mass center exactly matching the predicted deflection angle $\alpha = 4GM/rc^2$.
-    \item **Observation:** No back-scattering was observed, confirming the adiabatic nature of the strain gradient.
-\end{itemize}
-*(See Appendix D.1 for the full Python source code.)*
-
-\section{Bridge the Gap: From Geometry to Elasticity}
-To the General Relativist, gravity is **Curvature**. To the Mechanical Engineer, gravity is **Strain**.
-\begin{itemize}
-    \item **The Metric ($g_{\mu\nu}$):** The Strain Tensor of the vacuum solid.
-    \item **Geodesics:** The path of least action through a variable-density medium.
-    \item **Gravitational Waves:** Phonons propagating through the lattice stiffness.
-\end{itemize}
+This exactly recovers the **Schwarzschild Metric**, demonstrating that General Relativity is the hydrodynamic limit of a flowing, strained vacuum.
 
 \section{Problems}
 \begin{enumerate}

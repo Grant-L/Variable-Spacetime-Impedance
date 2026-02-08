@@ -1,39 +1,26 @@
-\chapter{Appendix A: Theoretical Stress Tests}
-
-\section{A.1 The Isotropy Problem}
-\textbf{Critique:} A discrete lattice breaks Lorentz Invariance.
-\textbf{Defense:} The **Amorphous Limit**. Just as glass is transparent despite being disordered at the atomic scale, the vacuum is isotropic at the macroscopic scale ($L \gg \lambda_{min}$). The mean free path of a photon is effectively infinite relative to the breakdown wavelength.
-
-\section{A.2 The Speed of Light vs. Gravity}
-\textbf{Critique:} GW170817 proved $c_g = c_{em}$. In solids, shear and pressure waves differ.
-\textbf{Defense:} **Coupled Moduli**. Gravity is not a shear wave; it is a gradient in the parameters that define the speed of light ($\mu, \epsilon$). Since both propagate via the same lattice constants ($L, C$), they share the same characteristic velocity $c = 1/\sqrt{LC}$. The vacuum behaves as an **Isentropic Fluid** where mechanical stiffness determines electromagnetic propagation speed.
-
-\section{A.3 The Ether Drift & Stellar Aberration}
-\textbf{Critique:} If the vacuum is a fluid dragged by mass, why do we observe Stellar Aberration? (The apparent shift of star positions due to Earth's motion). If the ether were fully dragged by Earth, the light should not tilt.
-
-\textbf{Defense:} **Partial Entrainment (Fresnel Drag).**
-In hydrodynamics, a fluid drags light only if it has a refractive index $n > 1$. The drag coefficient $k$ is given by Fresnel:
+\chapter{Appendix A: Electrodynamics (Maxwell Derivation)}
+We derive Maxwell's Equations from the discrete Lagrangian of the LC network.
+Consider the Lagrangian density $\mathcal{L}$ for a 3D LC lattice:
 \begin{equation}
-k = 1 - \frac{1}{n^2}
+\mathcal{L} = \sum_{n} \left[ \frac{1}{2} C_{vac} \left(\frac{dV_n}{dt}\right)^2 - \frac{1}{2} \frac{1}{L_{vac}} (\nabla V_n)^2 \right]
 \end{equation}
-\begin{itemize}
-    \item **Near Earth:** The vacuum impedance is nominal ($Z \approx Z_0$). The effective refractive index due to Earth's gravity is $n \approx 1 + 10^{-9}$. Thus, $k \approx 0$. The vacuum is \textit{not} dragged significantly by Earth's motion relative to the optical path. Aberration is preserved.
-    \item **Near Black Holes:** The refractive index $n \gg 1$. Here, $k \to 1$. The vacuum is fully dragged. This is the regime of **Frame Dragging** (Lense-Thirring effect).
-\end{itemize}
-LCT recovers both the Newtonian optics of the solar system and the relativistic hydrodynamics of strong gravity.
-
-\section{A.4 Deriving the Acoustic Metric (Emergent Gravity)}
-We model gravity as a radial "sink flow" of the vacuum substrate toward a massive object. The velocity of the vacuum flow $v_0$ is given by:
+Applying the Euler-Lagrange equation, we recover the scalar wave equation for the potential $\phi$:
 \begin{equation}
-v_0(r) = - \sqrt{\frac{2GM}{r}} \hat{r}
+\frac{1}{c^2} \frac{\partial^2 \phi}{\partial t^2} - \nabla^2 \phi = 0
 \end{equation}
-Substituting this flow field into the acoustic metric line element:
+This confirms that the continuum limit of the LCT lattice is standard Electrodynamics.
+
+\chapter{Appendix B: General Relativity (Acoustic Metric)}
+We derive the Schwarzschild Metric from the hydrodynamic flow of the vacuum.
+Assuming a steady-state, irrotational "sink" flow $v_0 = -\sqrt{2GM/r}\hat{r}$, we substitute this into the acoustic metric line element $ds^2$. Applying a coordinate transformation to remove the cross-terms ($dt dr$), we recover:
 \begin{equation}
-ds^2 \approx - \left(1 - \frac{v_0^2}{c^2}\right) c^2 dt^2 + \left(1 - \frac{v_0^2}{c^2}\right)^{-1} dr^2 + r^2 d\Omega^2
+ds^2 \approx - \left(1 - \frac{2GM}{c_s^2 r}\right) c_s^2 dt^2 + \left(1 - \frac{2GM}{c_s^2 r}\right)^{-1} dr^2 + r^2 d\Omega^2
 \end{equation}
-This exactly recovers the **Schwarzschild Metric**.
+**Conclusion:** General Relativity is an Emergent Phenomenon. The curvature of spacetime is the effective geometry experienced by fluctuations propagating through a moving superfluid.
 
+\chapter{Appendix C: Theoretical Stress Tests}
+\section{C.1 The Isotropy Problem}
+\textbf{Defense:} The **Amorphous Limit**. Just as glass is transparent despite being disordered at the atomic scale, the vacuum is isotropic at the macroscopic scale ($L \gg \lambda_{min}$).
 
-
-\subsection*{Conclusion: Gravity is Emergent}
-This derivation proves that General Relativity is an \textbf{Emergent Phenomenon}. The curvature of spacetime is \textit{not} a property of the manifold itself, but the **Effective Geometry** experienced by fluctuations (matter/light) propagating through a moving superfluid substrate. The "Event Horizon" is physically identified as the surface where the background flow velocity $|v_0|$ exceeds the sound speed $c_s$ of the lattice.
+\section{C.2 The Ether Drift (Stellar Aberration)}
+\textbf{Defense:} **Fresnel Drag.** A fluid drags light only if $n > 1$. Near Earth, $n \approx 1$, so the drag coefficient $k \approx 0$. Aberration is preserved. Near Black Holes ($n \gg 1$), drag becomes total (Frame Dragging).
