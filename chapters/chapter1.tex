@@ -58,3 +58,10 @@ To the Physicist, Maxwell's Equations are fundamental. To the Engineer, they are
     \item **Magnetic Flux:** In LCT, this is the integrated voltage pulse across the vacuum inductors ($V = L \frac{dI}{dt}$).
 \end{itemize}
 By treating $\epsilon_0$ and $\mu_0$ as component values rather than constants, we unlock the ability to model "Variable Vacuum" scenarios (like the interior of a black hole) using standard circuit simulation tools (SPICE/FDTD).
+
+\section{Problems}
+\begin{enumerate}
+    \item \textbf{Lattice Parameters:} Given $Z_0 = 376.73\,\Omega$ and $c = 2.998 \times 10^8$ m/s, calculate the distributed inductance $L_{vac}$ and capacitance $C_{vac}$ per meter of the vacuum substrate.
+    \item \textbf{Breakdown Limit:} If the vacuum dielectric breakdown occurs at an field strength of $E_{crit} \approx 10^{18}$ V/m (Schwinger Limit), estimate the maximum energy density $U_{max}$ of the lattice before non-linearity sets in.
+    \item \textbf{Common-Mode Drift:} Assume the Hubble Constant $H_0 = 70$ km/s/Mpc represents the drift rate of the lattice DC bias. Calculate the fractional change in the breakdown wavelength $\Delta \lambda / \lambda$ per gigayear.
+\end{enumerate}
