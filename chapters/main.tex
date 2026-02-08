@@ -1,0 +1,113 @@
+\documentclass[11pt, titlepage, oneside]{book}
+
+% --- Core Packages ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{margin=1.1in}
+\usepackage{amsmath, amssymb, physics}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{cite}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{titlesec} % For professional chapter titles
+
+% --- Path to Figures ---
+\graphicspath{{assets/}}
+
+% --- Advanced Hyperlink Setup ---
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    citecolor=blue,
+    pdftitle={The Discrete Vacuum Substrate},
+    breaklinks=true
+}
+
+% --- Code Listing Configuration (Graduate Style) ---
+\definecolor{backcolour}{rgb}{0.96,0.96,0.94}
+\lstset{
+    backgroundcolor=\color{backcolour},
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    captionpos=b,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!50!black},
+    frame=single
+}
+
+% --- Custom Definitions ---
+\newcommand{\LCT}{\textit{Lattice Constitutive Theory}}
+
+% --- Document Metadata ---
+\title{
+    \Huge \textbf{The Discrete Vacuum Substrate} \\
+    \Large \textit{A Hydrodynamic Approach to Unified Field Theory}
+}
+\author{Grant Lindblom}
+\date{February 2026 Edition}
+
+% --- Main Content ---
+\begin{document}
+
+\frontmatter
+\maketitle
+
+\section*{Preface: A Multidisciplinary Foundation}
+This text represents a shift from the geometric abstraction of the 20th century toward a constitutive, hardware-oriented understanding of the cosmos. By merging Electrical Engineering (RF Impedance), Fluid Mechanics (Superfluidity), and Theoretical Physics (NLSE), we provide a unified framework for the graduate-level researcher.
+
+\tableofcontents
+
+\chapter*{Nomenclature and Dictionary}
+\addcontentsline{toc}{chapter}{Nomenclature and Dictionary}
+\markboth{Nomenclature and Dictionary}{}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Term} & \textbf{LCT Definition} \\ \midrule
+$\Psi(\mathbf{x}, t)$ & Vacuum Order Parameter (Complex Scalar Field) \\
+$\chi$ & Lattice Constitutive Parameter (Bulk Modulus) \\
+$Z_0$ & Vacuum Impedance (RF Transmission Line Analog) \\
+$Re_{vac}$ & Vacuum Reynolds Number (Quantum-Classical Transition) \\
+$\lambda_{min}$ & Breakdown Wavelength (Lattice Saturation Limit) \\
+\bottomrule
+\end{tabular}
+
+\mainmatter
+
+% --- Chapter 1: Foundations (Old Paper 1) ---
+\chapter{The Unified Action Principle}
+\input{chapters/chapter1}
+
+% --- Chapter 2: Hardware (Old Paper 2) ---
+\chapter{Vacuum Impedance and Transmission Lines}
+\input{chapters/chapter2}
+
+% --- Chapter 3: Micro-Dynamics (Old Paper 3) ---
+\chapter{Vortex Topology and Emergent Quantum Mechanics}
+\input{chapters/chapter3}
+
+% --- Chapter 4: Cosmology (Old Paper 4) ---
+\chapter{The Entangled Substrate and Cosmic Genesis}
+\input{chapters/chapter4}
+
+% --- Chapter 5: Phase Transitions (Old Paper 5) ---
+\chapter{The Thermodynamic Vacuum and Decoherence}
+\input{chapters/chapter5}
+
+% --- Chapter 6: Anomalies (Old Paper 6) ---
+\chapter{Cosmological Impedance Evolution and Anomalies}
+\input{chapters/chapter6}
+
+\backmatter
+\begin{thebibliography}{99}
+    \bibitem{volovik} Volovik, G. E. (2003). \textit{The Universe in a Helium Droplet}.
+    % Additional central references go here
+\end{thebibliography}
+
+\end{document}
