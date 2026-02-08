@@ -5,13 +5,11 @@
 import numpy as np
 def simulate_lensing():
     Nx, Ny = 600, 400; Nt = 1200; dt = 0.5
-    # Corrected Refractive Index Logic (Schwarzschild-like)
     x = np.arange(Nx); y = np.arange(Ny)
     X, Y = np.meshgrid(x, y, indexing='ij')
     R = np.sqrt((X - Nx//2)**2 + (Y - (Ny//2+50))**2)
-    # Refractive index n = 1 + 2GM/rc^2 (Scalar approximation)
     n_map = 1.0 + 20.0 / (np.sqrt(R**2 + 10.0)) 
-    v_map = 1.0 / n_map # Velocity = c/n
+    v_map = 1.0 / n_map 
     u = np.zeros((Nx, Ny)); u_prev = np.zeros((Nx, Ny))
     for t in range(Nt):
         lap = (np.roll(u,1,0) + np.roll(u,-1,0) + 
@@ -22,34 +20,24 @@ def simulate_lensing():
     return u
 \end{lstlisting}
 
+\section{Simulation: The Quantum Walker (Double Slit)}
+\begin{lstlisting}[language=Python]
+% [Insert your Quantum Walker code here]
+\end{lstlisting}
+
+\section{Simulation: The Genesis (Crystallization)}
+\begin{lstlisting}[language=Python]
+def simulate_genesis():
+    Nx, Ny = 200, 200; dt = 0.2
+    psi = (np.random.rand(Nx, Ny)-0.5) + 1j*(np.random.rand(Nx, Ny)-0.5)
+    psi /= np.abs(psi)
+    for t in range(800):
+        lap = (np.roll(psi,1,0)+np.roll(psi,-1,0)+np.roll(psi,1,1)+np.roll(psi,-1,1)-4*psi)
+        psi += dt**2 * (lap + psi*(1-np.abs(psi)**2)) - 0.1*psi
+    return np.abs(psi)**2
+\end{lstlisting}
+
 \section{Simulation: The Entanglement Bridge}
 \begin{lstlisting}[language=Python]
-def simulate_bridge():
-    Nx, Ny = 300, 150; Nt = 800; dt = 0.2
-    # Initialize Vortex Pair Phase Field
-    x1, y1 = 80, 75; x2, y2 = 220, 75
-    X, Y = np.meshgrid(np.arange(Nx), np.arange(Ny), indexing='ij')
-    theta1 = np.arctan2(Y-y1, X-x1); theta2 = np.arctan2(Y-y2, X-x2)
-    psi_curr = np.exp(1j * (theta1 - theta2))
-    psi_prev = psi_curr.copy()
-    
-    pos2_y = []; gamma = 0.05
-    for t in range(Nt):
-        lap = (np.roll(psi_curr,1,0) + np.roll(psi_curr,-1,0) + 
-               np.roll(psi_curr,1,1) + np.roll(psi_curr,-1,1) - 4*psi_curr)
-        restoring = psi_curr * (1 - np.abs(psi_curr)**2)
-        psi_next = 2*psi_curr - psi_prev + dt**2 * (lap + restoring) - gamma*(psi_curr - psi_prev)
-        
-        # Forcing: Shake Vortex 1
-        cy1 = y1 + 10.0 * np.sin(0.02 * 2 * np.pi * t)
-        mask = np.sqrt((X-x1)**2 + (Y-cy1)**2) < 10.0
-        psi_next[mask] = np.exp(1j * (np.arctan2(Y-cy1, X-x1) - theta2))[mask]
-        
-        psi_prev = psi_curr; psi_curr = psi_next
-        
-        # Measure V2 Reaction
-        right_half = np.abs(psi_curr[150:, :])**2
-        min_idx = np.unravel_index(np.argmin(right_half), right_half.shape)
-        pos2_y.append(min_idx[1])
-    return pos2_y
+% [Insert your Entanglement Bridge code here]
 \end{lstlisting}
