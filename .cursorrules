@@ -1,0 +1,37 @@
+# Cursor Rules for Variable Spacetime Impedance Project
+
+## Project Context
+This is a theoretical physics research project exploring novel concepts in spacetime dynamics. The codebase uses Python, Jupyter notebooks, and scientific computing libraries.
+
+## Code Style
+- Follow PEP 8 for Python code
+- Use descriptive variable names, especially for physical quantities
+- Include units in comments when relevant (e.g., `# meters`, `# seconds`)
+- Prefer NumPy/SciPy for numerical computations
+- Use SymPy for symbolic mathematics
+
+## Notebook Conventions
+- Start notebooks with markdown cells explaining purpose and theory
+- Use markdown cells to separate sections
+- Keep code cells focused and well-commented
+- Document assumptions and approximations
+- Include references to relevant papers/theory
+
+## Physics-Specific Guidelines
+- Always use physical constants from `scipy.constants` or `src/constants.py`
+- Be explicit about coordinate systems and conventions
+- Document dimensional analysis
+- Include error estimates where relevant
+- Use appropriate precision for calculations
+
+## File Organization
+- Notebooks go in `notebooks/` directory
+- Reusable code goes in `src/` directory
+- Data files go in `data/` directory
+- Results go in `results/` directory
+
+## Git Workflow
+- Commit notebooks frequently
+- Use descriptive commit messages
+- Don't commit large data files (use .gitignore)
+- Keep working tree clean
