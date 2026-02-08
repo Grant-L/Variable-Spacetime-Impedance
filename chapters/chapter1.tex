@@ -14,9 +14,9 @@ We define the state of the \textbf{Vacuum Substrate} at any point by a complex s
 
 Where:
 \begin{itemize}
-    \item $\rho(\mathbf{x}, t)$: The \textbf{Vacuum Spectral Density}, representing the amplitude of lattice excitation.
-    \item $S(\mathbf{x}, t)$: The \textbf{Vacuum Phase Action}, which dictates the flow and guidance of signals (the Pilot Wave).
-    \item $\hbar$: The lattice quantization constant, or the fundamental action scale of the grid.
+    \item $\rho(\mathbf{x}, t)$: The \textbf{Vacuum Amplitude Density}. This represents the magnitude of the lattice excitation at a given node ($|\Psi|^2$).
+    \item $S(\mathbf{x}, t)$: The \textbf{Vacuum Phase Action}. This scalar field dictates the flow of the substrate and serves as the guidance mechanism (Pilot Wave) for topological defects.
+    \item $\hbar$: The lattice quantization constant, representing the fundamental action scale of the grid.
 \end{itemize}
 
 \section{The Lattice Constitutive Action}
@@ -26,7 +26,7 @@ The dynamics of the substrate are governed by the \textbf{Lindblom Action} $\mat
     \mathcal{L} = i\hbar \Psi^\dagger \dot{\Psi} - \frac{\hbar^2}{2m^*} \nabla \Psi^\dagger \cdot \nabla \Psi - V(|\Psi|^2)
 \end{equation}
 
-The term $V(|\Psi|^2)$ represents the nonlinear interaction potential of the lattice, typically modeled as a \textbf{Mexican Hat Potential} to account for spontaneous symmetry breaking and the establishment of a non-zero vacuum expectation value (VEV).
+The term $V(|\Psi|^2)$ represents the nonlinear interaction potential of the lattice, typically modeled as a \textbf{Mexican Hat Potential}. This potential forces the vacuum into a broken-symmetry state with a non-zero vacuum expectation value (VEV), providing the "stiffness" required for wave propagation.
 
 \begin{figure}[h]
     \centering
@@ -41,7 +41,7 @@ To find the equation of motion for the substrate, we apply the Euler-Lagrange eq
     i\hbar \frac{\partial \Psi}{\partial t} = -\frac{\hbar^2}{2m^*} \nabla^2 \Psi + V'(\rho)\Psi
 \end{equation}
 
-\textbf{Pedagogical Note:} In the linear limit where $V'(\rho)$ is dominated by an external potential, this recovers the standard \textbf{Time-Dependent Schrödinger Equation}. Thus, in LCT, the Schrödinger equation is not an axiom of "probability," but a wave equation describing the laminar flow of the vacuum substrate.
+\textbf{Pedagogical Note:} In the linear limit where the potential gradient $V'(\rho)$ is dominated by external factors, this recovers the standard \textbf{Time-Dependent Schrödinger Equation}. Thus, in LCT, the Schrödinger equation is not an axiom of "probability," but a hydrodynamic wave equation describing the laminar flow of the vacuum substrate.
 
 \section{Derivation II: Effective Refractive Geometry}
 Gravity is not a fundamental force in LCT; it is an \textbf{Effective Refractive Geometry} experienced by perturbations in the substrate. To demonstrate this, we apply the \textbf{Madelung Transformation} to separate $\Psi$ into its hydrodynamic components.
@@ -56,8 +56,6 @@ The effective metric $g_{\mu\nu}$, known as the \textbf{Gordon Metric}, is defin
 \begin{equation}
     g_{\mu\nu} \propto \frac{\rho_0}{c_s} \begin{pmatrix} -(c_s^2 - v_0^2) & -v_0^j \\ -v_0^i & \delta_{ij} \end{pmatrix}
 \end{equation}
-
-
 
 \subsection{Weak Field Limit and Lattice Compressibility}
 In the Newtonian limit ($v_0 \ll c_s$), the gravitational potential $\Phi$ is identified as a local perturbation in the substrate density $\delta \rho$. We find that the Gravitational Constant $G$ is a constitutive property of the lattice:

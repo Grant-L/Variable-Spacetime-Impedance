@@ -10,7 +10,7 @@
 \usepackage{xcolor}
 \usepackage{cite}
 \usepackage{listings}
-\usepackage{booktabs}
+\usepackage{booktabs} % For professional tables
 \usepackage{titlesec} % For professional chapter titles
 
 % --- Path to Figures ---
@@ -62,21 +62,19 @@
 \section*{Preface: A Multidisciplinary Foundation}
 This text represents a shift from the geometric abstraction of the 20th century toward a constitutive, hardware-oriented understanding of the cosmos. By merging Electrical Engineering (RF Impedance), Fluid Mechanics (Superfluidity), and Theoretical Physics (NLSE), we provide a unified framework for the graduate-level researcher.
 
+\subsection*{How to Use This Book}
+This textbook is designed to be accessible to physicists, engineers, and mathematicians alike. However, each field uses different dialects to describe the same phenomena. To bridge this gap:
+
+\begin{itemize}
+    \item \textbf{The Glossary:} The frontmatter contains a comprehensive \textbf{Translation Matrix}. We strongly recommend reviewing this first. It maps new LCT terms (like "Vacuum Impedance") to their familiar analogs (like "Refractive Index" or "Characteristic Impedance").
+    \item \textbf{Bridge the Gap:} At the end of each chapter, you will find a "Bridge the Gap" section. This explicitly translates the chapter's derivation into the language of your specific field.
+    \item \textbf{Computational Verification:} Physics is not a spectator sport. The associated GitHub repository contains the Python simulations referenced in the "Computational Module" sections. We encourage you to run these scripts to verify the theory for yourself.
+\end{itemize}
+
 \tableofcontents
 
-\chapter*{Nomenclature and Dictionary}
-\addcontentsline{toc}{chapter}{Nomenclature and Dictionary}
-\markboth{Nomenclature and Dictionary}{}
-\begin{tabular}{@{}ll@{}}
-\toprule
-\textbf{Term} & \textbf{LCT Definition} \\ \midrule
-$\Psi(\mathbf{x}, t)$ & Vacuum Order Parameter (Complex Scalar Field) \\
-$\chi$ & Lattice Constitutive Parameter (Bulk Modulus) \\
-$Z_0$ & Vacuum Impedance (RF Transmission Line Analog) \\
-$Re_{vac}$ & Vacuum Reynolds Number (Quantum-Classical Transition) \\
-$\lambda_{min}$ & Breakdown Wavelength (Lattice Saturation Limit) \\
-\bottomrule
-\end{tabular}
+% --- Include the Glossary ---
+\input{frontmatter/glossary}
 
 \mainmatter
 
@@ -107,7 +105,10 @@ $\lambda_{min}$ & Breakdown Wavelength (Lattice Saturation Limit) \\
 \backmatter
 \begin{thebibliography}{99}
     \bibitem{volovik} Volovik, G. E. (2003). \textit{The Universe in a Helium Droplet}.
-    % Additional central references go here
+    \bibitem{couder} Couder, Y., \& Fort, E. (2006). Single-particle diffraction and interference at a macroscopic scale. \textit{Physical Review Letters}, 97(15), 154101.
+    \bibitem{bell} Bell, J. S. (1964). On the Einstein Podolsky Rosen paradox. \textit{Physics Physique Feniz}, 1(3), 195.
+    \bibitem{hawking} Hawking, S. W. (1975). Particle creation by black holes. \textit{Communications in Mathematical Physics}, 43(3), 199-220.
+    \bibitem{kibble} Kibble, T. W. (1976). Topology of cosmic domains and strings. \textit{Journal of Physics A: Mathematical and General}, 9(8), 1387.
 \end{thebibliography}
 
 \end{document}
