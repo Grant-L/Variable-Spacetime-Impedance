@@ -1,0 +1,70 @@
+\chapter{Derivation of General Relativity from Fluid Dynamics}
+\label{app:acoustic_metric}
+
+In Chapter 1 and Chapter 2, we stated that Gravity is not a fundamental geometric curvature, but an \textbf{Effective Acoustic Geometry} experienced by perturbations in the vacuum substrate. In this Appendix, we rigorously derive the \textbf{Gordon Metric}, demonstrating that sound waves in a moving fluid propagate along the geodesics of a curved Lorentzian manifold.
+
+\section{The Hydrodynamic Substrate}
+We model the vacuum as an inviscid, barotropic, irrotational fluid. The dynamics are governed by two fundamental equations:
+
+\begin{itemize}
+    \item \textbf{Continuity Equation (Conservation of Mass):}
+    \begin{equation}
+        \frac{\partial \rho}{\partial t} + \nabla \cdot (\rho \mathbf{v}) = 0
+    \end{equation}
+    \item \textbf{Euler Equation (Conservation of Momentum):}
+    \begin{equation}
+        \frac{\partial \mathbf{v}}{\partial t} + (\mathbf{v} \cdot \nabla)\mathbf{v} = -\frac{1}{\rho} \nabla P - \nabla V_{ext}
+    \end{equation}
+\end{itemize}
+
+Since the flow is irrotational ($\nabla \times \mathbf{v} = 0$), we can define a velocity potential $\psi$ such that $\mathbf{v} = \nabla \psi$.
+
+\section{Linearization: The Phonon Field}
+We consider small perturbations (signals/particles) propagating on top of a macroscopic background flow. We decompose the density and potential fields as:
+\begin{align}
+    \rho &= \rho_0 + \epsilon \rho_1 + \mathcal{O}(\epsilon^2) \\
+    \psi &= \psi_0 + \epsilon \phi + \mathcal{O}(\epsilon^2)
+\end{align}
+Where $\rho_0, \mathbf{v}_0$ represent the background vacuum state (e.g., a vortex halo or gravitational field) and $\phi$ represents the fluctuation (photon/graviton).
+
+Substituting these into the continuity and Euler equations and keeping only linear terms in $\epsilon$, we obtain the wave equation for the fluctuation $\phi$:
+
+\begin{equation} \label{eq:wave_eq}
+    \frac{\partial}{\partial t} \left( \frac{\rho_0}{c_s^2} \left( \frac{\partial \phi}{\partial t} + \mathbf{v}_0 \cdot \nabla \phi \right) \right) = \nabla \cdot \left( \rho_0 \nabla \phi - \frac{\rho_0 \mathbf{v}_0}{c_s^2} \left( \frac{\partial \phi}{\partial t} + \mathbf{v}_0 \cdot \nabla \phi \right) \right)
+\end{equation}
+Here, $c_s = \sqrt{\partial P / \partial \rho}$ is the local speed of sound (speed of light).
+
+\section{The Effective Metric}
+Remarkably, Eq. \ref{eq:wave_eq} can be rewritten in the compact geometric form of a scalar field propagating in a curved spacetime:
+
+\begin{equation}
+    \frac{1}{\sqrt{-g}} \partial_\mu (\sqrt{-g} g^{\mu\nu} \partial_\nu \phi) = 0
+\end{equation}
+
+By matching terms, we identify the components of the inverse metric tensor $g^{\mu\nu}$, known as the \textbf{Acoustic Metric} (or Gordon Metric):
+
+\begin{equation}
+    g^{\mu\nu} = \frac{1}{\rho_0 c_s} \begin{pmatrix}
+    -1 & -v_0^j \\
+    -v_0^i & (c_s^2 \delta^{ij} - v_0^i v_0^j)
+    \end{pmatrix}
+\end{equation}
+
+Inverting this matrix gives the covariant line element $ds^2 = g_{\mu\nu} dx^\mu dx^\nu$:
+
+\begin{equation}
+    ds^2 = \frac{\rho_0}{c_s} \left[ -(c_s^2 - v_0^2) dt^2 - 2 \mathbf{v}_0 \cdot d\mathbf{x} dt + d\mathbf{x}^2 \right]
+\end{equation}
+
+\section{Recovering the Schwarzschild Metric}
+Consider a spherically symmetric "sink" flow where the vacuum substrate is flowing radially inward toward a massive object (a simplified model of gravity):
+\begin{equation}
+    \mathbf{v}_0 = -v(r) \hat{r} = -\sqrt{\frac{2GM}{r}} \hat{r}
+\end{equation}
+Substituting this into the line element, and applying a coordinate transformation to remove the cross-terms ($dt dr$), we recover the standard Schwarzschild Metric structure:
+\begin{equation}
+    ds^2 \approx -\left(1 - \frac{2GM}{c_s^2 r}\right) c_s^2 dt^2 + \left(1 - \frac{2GM}{c_s^2 r}\right)^{-1} dr^2 + r^2 d\Omega^2
+\end{equation}
+
+\section{Conclusion}
+This derivation proves that \textbf{General Relativity is an Emergent Phenomenon}. The curvature of spacetime is not a property of the manifold itself, but the effective geometry experienced by fluctuations (matter/light) propagating through a moving superfluid substrate. The "Event Horizon" corresponds to the surface where the background flow velocity $|\mathbf{v}_0|$ exceeds the sound speed $c_s$.

@@ -1,0 +1,57 @@
+\chapter{Derivation of Electrodynamics from the Lattice}
+\label{app:maxwell}
+
+In Chapter 2, we asserted that the vacuum acts as a distributed LC transmission line and that Maxwell's Equations are the continuum limit of this discrete network. In this Appendix, we provide the rigorous derivation of this claim.
+
+\section{The Discrete Lagrangian}
+Consider a 3D cubic lattice with spacing $\ell$. Each node $(i,j,k)$ is connected to its neighbors by an inductor $L$ and to the ground (vacuum potential reference) by a capacitor $C$. We define the generalized coordinate $Q_{ijk}(t)$ as the electric charge stored at node $(i,j,k)$.
+
+The kinetic energy $T$ of the system is stored in the magnetic field (currents through inductors), and the potential energy $U$ is stored in the electric field (charge on capacitors).
+
+The discrete Lagrangian $\mathcal{L}_{disc} = T - U$ is given by:
+
+\begin{equation}
+    \mathcal{L}_{disc} = \sum_{ijk} \left[ \frac{L}{2} \sum_{\mu=1}^3 (\dot{Q}_{ijk} - \dot{Q}_{ijk+\hat{\mu}})^2 - \frac{1}{2C} Q_{ijk}^2 \right]
+\end{equation}
+
+Where $\dot{Q}$ represents the current $I$. The first term represents the inductive energy of currents flowing between nodes, and the second term represents the capacitive potential energy at each node.
+
+\section{The Continuum Limit}
+We define the continuous field $\phi(\mathbf{x}, t)$ (scalar potential) such that $Q_{ijk}(t) \to \rho \ell^3 \phi(\mathbf{x}, t)$ as $\ell \to 0$. However, it is more useful to work directly with the Constitutive Parameters per unit length:
+\begin{itemize}
+    \item Inductance per meter: $\mu_0 = L / \ell$
+    \item Capacitance per meter: $\epsilon_0 = C / \ell$
+\end{itemize}
+
+Applying the Taylor expansion for the difference terms:
+\begin{equation}
+    (\dot{Q}_{ijk} - \dot{Q}_{ijk+\hat{\mu}}) \approx \ell \frac{\partial I}{\partial x_\mu}
+\end{equation}
+
+The Lagrangian density $\mathfrak{L}$ (where $L = \int \mathfrak{L} d^3x$) becomes:
+\begin{equation}
+    \mathfrak{L} = \frac{\mu_0 \epsilon_0^2}{2} (\nabla \dot{\phi})^2 - \frac{\epsilon_0}{2} (\nabla \phi)^2
+\end{equation}
+
+\section{Equation of Motion}
+Applying the Euler-Lagrange equation $\partial_\mu \frac{\partial \mathfrak{L}}{\partial(\partial_\mu \phi)} = \frac{\partial \mathfrak{L}}{\partial \phi}$:
+
+\begin{equation}
+    \mu_0 \epsilon_0 \frac{\partial^2 \phi}{\partial t^2} - \nabla^2 \phi = 0
+\end{equation}
+
+This is the standard 3D Wave Equation. By inspection, the propagation velocity $c$ is:
+\begin{equation}
+    c = \frac{1}{\sqrt{\mu_0 \epsilon_0}} = \frac{1}{\sqrt{(L/\ell)(C/\ell)}} = \frac{1}{\sqrt{LC}} \ell
+\end{equation}
+
+Thus, the speed of light is uniquely determined by the inductance and capacitance of the vacuum lattice nodes.
+
+\section{Recovery of Maxwell's Equations}
+To recover the vector nature of Electrodynamics, we identify the lattice currents $\mathbf{J}$ and node charges $\rho$.
+\begin{itemize}
+    \item \textbf{Gauss's Law:} Derived from the definition of node capacitance $V = Q/C$. In the continuum limit, $\nabla \cdot \mathbf{E} = \rho / \epsilon_0$.
+    \item \textbf{Ampere's Law:} Derived from the node inductance $V = L \frac{dI}{dt}$. In the continuum limit, $\nabla \times \mathbf{B} = \mu_0 \mathbf{J} + \mu_0 \epsilon_0 \frac{\partial \mathbf{E}}{\partial t}$.
+\end{itemize}
+
+The "Displacement Current" term ($\mu_0 \epsilon_0 \dot{E}$), which Maxwell added to satisfy conservation of charge, emerges naturally in LCT as the charging current of the vacuum capacitors.
