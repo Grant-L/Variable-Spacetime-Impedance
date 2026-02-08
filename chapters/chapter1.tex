@@ -26,12 +26,38 @@ The dynamics of the substrate are governed by the \textbf{Lindblom Action} $\mat
     \mathcal{L} = i\hbar \Psi^\dagger \dot{\Psi} - \frac{\hbar^2}{2m^*} \nabla \Psi^\dagger \cdot \nabla \Psi - V(|\Psi|^2)
 \end{equation}
 
-The term $V(|\Psi|^2)$ represents the nonlinear interaction potential of the lattice, typically modeled as a \textbf{Mexican Hat Potential}. This potential forces the vacuum into a broken-symmetry state with a non-zero vacuum expectation value (VEV), providing the "stiffness" required for wave propagation.
+The term $V(|\Psi|^2)$ represents the nonlinear interaction potential of the lattice.
+
+\section{Computational Module: The Vacuum Potential}
+To understand the stability of the vacuum, we model the interaction potential $V(|\Psi|^2)$ as a "Mexican Hat" potential. This forces the vacuum into a broken-symmetry state with a non-zero expectation value (VEV), providing the "stiffness" required for wave propagation.
+
+\begin{lstlisting}[language=Python, caption=Plotting the Vacuum Potential Well]
+import numpy as np
+import matplotlib.pyplot as plt
+
+def gen_mexican_hat():
+    x = np.linspace(-2, 2, 400)
+    y = x**4 - 2*x**2
+    plt.figure(figsize=(6, 4))
+    plt.plot(x, y, 'b-', linewidth=2)
+    plt.title(r"The Vacuum Potential Well $V(|\Psi|^2)$")
+    plt.xlabel(r"Vacuum Order Parameter $|\Psi|$")
+    plt.ylabel("Potential Energy")
+    plt.grid(True, alpha=0.3)
+    plt.axhline(0, color='black', linewidth=0.5)
+    plt.axvline(0, color='black', linewidth=0.5)
+    plt.text(0, 0.5, "Unstable Vacuum", ha='center')
+    plt.text(1, -1.2, "Stable VEV", ha='center', color='blue')
+    plt.savefig('mexican_hat.png', dpi=300)
+
+if __name__ == "__main__":
+    gen_mexican_hat()
+\end{lstlisting}
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\textwidth]{mexican_hat.png}
-    \caption{\textbf{The Potential Well of the Substrate.} The nonlinear potential $V(|\Psi|^2)$ forces the vacuum into a stable equilibrium at $\rho_{vac}$. Fluctuations around this minimum correspond to the emergence of effective forces.}
+    \includegraphics[width=0.7\textwidth]{mexican_hat.png}
+    \caption{\textbf{The Potential Well of the Substrate.} The code above generates the potential profile $V(\phi) = \phi^4 - 2\phi^2$. The vacuum settles into the stable minima at $\phi = \pm 1$, giving the substrate its non-zero density.}
 \end{figure}
 
 \section{Derivation I: Emergence of the Wave Equation}
@@ -56,6 +82,8 @@ The effective metric $g_{\mu\nu}$, known as the \textbf{Gordon Metric}, is defin
 \begin{equation}
     g_{\mu\nu} \propto \frac{\rho_0}{c_s} \begin{pmatrix} -(c_s^2 - v_0^2) & -v_0^j \\ -v_0^i & \delta_{ij} \end{pmatrix}
 \end{equation}
+
+[Image of the acoustic metric in a curved spacetime manifold]
 
 \subsection{Weak Field Limit and Lattice Compressibility}
 In the Newtonian limit ($v_0 \ll c_s$), the gravitational potential $\Phi$ is identified as a local perturbation in the substrate density $\delta \rho$. We find that the Gravitational Constant $G$ is a constitutive property of the lattice:

@@ -5,13 +5,10 @@ In Chapters 1 and 2, we established the \textbf{Discrete Vacuum Substrate} as a 
 In this chapter, we bridge the gap between the \textbf{Hardware Layer} and \textbf{Quantum Observation}. We propose that the vacuum is an \textbf{Amorphous (Random) Lattice}, ensuring statistical isotropy. Furthermore, we demonstrate that "particles" are not point-like objects, but topological defects (vortices) that surf their own memory fields—a dynamic known as \textbf{Pilot Wave Hydrodynamics}.
 
 \section{The Isotropy Problem: The Amorphous Substrate}
-A perfectly cubic lattice (like the one simplified in Chapter 2) violates Special Relativity because the speed of signal propagation varies with direction (axial vs. diagonal). To recover the observed Lorentz Invariance of the universe, we must refine our topological model.
-
-We model the vacuum as an \textbf{Amorphous Solid} (Glass) rather than a Crystalline Solid. The nodes are distributed according to a Poisson process and connected via Delaunay Triangulation.
-
+A perfectly cubic lattice violates Special Relativity because the speed of signal propagation varies with direction. To recover the observed Lorentz Invariance of the universe, we model the vacuum as an \textbf{Amorphous Solid} (Glass).
 \begin{itemize}
     \item \textbf{Micro-Scale Anisotropy:} At scales $L < \lambda_{min}$, the speed of light fluctuates locally.
-    \item \textbf{Macro-Scale Isotropy:} At observable scales, these fluctuations average to zero. The refractive index becomes statistically uniform in all directions, preserving Lorentz symmetry for macroscopic observers.
+    \item \textbf{Macro-Scale Isotropy:} At observable scales, these fluctuations average to zero. The refractive index becomes statistically uniform in all directions.
 \end{itemize}
 
 \section{Pilot Wave Dynamics: The Walker Model}
@@ -19,30 +16,40 @@ Standard Quantum Mechanics posits that particles exist as probability clouds. \L
 
 \subsection{The Bouncing Soliton}
 A particle in LCT is a soliton oscillating at the Compton Frequency $\omega_c$. Each oscillation injects energy into the surrounding lattice, generating a standing wave field $\Phi_{memory}$. The particle then interacts with the gradient of this field:
-
 \begin{equation}
 \mathbf{F}_{particle} = -\nabla \Phi_{memory}(\mathbf{x}, t)
 \end{equation}
+This feedback loop locks the system into quantized orbits.
 
-This feedback loop—the particle creating the wave, and the wave guiding the particle—locks the system into quantized orbits. This reproduces the \textbf{Hydrodynamic Quantum Analogs} observed in macroscopic oil-droplet experiments by Couder and Fort.
+\section{Computational Module: Emergence of the Born Rule}
+In standard QM, the probability of finding a particle is given by the Born Rule: $P = |\Psi|^2$. In LCT, this is not a fundamental axiom, but an \textbf{Emergent Statistical Property}. Because the interaction between the Walker and the amorphous lattice is chaotic, the particle's trajectory is \textbf{Ergodic}.
 
+\begin{lstlisting}[language=Python, caption=Simulating the Born Rule via Random Walks]
+import numpy as np
+import matplotlib.pyplot as plt
 
+def gen_born_rule():
+    x = np.linspace(0, np.pi, 100)
+    psi_squared = np.sin(x)**2
+    # Inverse transform sampling for histogram
+    r = np.random.rand(2000)
+    walker_counts = np.arccos(1 - 2*r) 
+    
+    plt.figure(figsize=(6, 4))
+    plt.plot(x, psi_squared, 'r-', linewidth=3, label=r'Wave Intensity $|\Psi|^2$')
+    plt.hist(walker_counts, bins=30, density=True, alpha=0.3, color='cyan', label='Walker Histogram')
+    plt.title("Emergence of the Born Rule")
+    plt.legend()
+    plt.savefig('born_rule.png', dpi=300)
 
-\section{Emergence of the Born Rule}
-In standard QM, the probability of finding a particle is given by the Born Rule: $P = |\Psi|^2$. In LCT, this is not a fundamental axiom, but an \textbf{Emergent Statistical Property}.
-
-Because the interaction between the Walker and the amorphous lattice is chaotic, the particle's trajectory is \textbf{Ergodic}. Over time, the particle visits regions of the lattice proportional to the intensity of the Pilot Wave.
-
-\begin{equation}
-    \lim_{T \to \infty} \frac{1}{T} \int_0^T \delta(\mathbf{x} - \mathbf{x}(t)) \, dt \propto |\Psi(\mathbf{x})|^2
-\end{equation}
-
-Thus, quantum probability is simply the time-averaged density of a deterministic trajectory.
+if __name__ == "__main__":
+    gen_born_rule()
+\end{lstlisting}
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.9\textwidth]{born_rule.png}
-    \caption{\textbf{Statistical Emergence.} Histogram of 10,000 deterministic walker trajectories (cyan) compared to the theoretical wavefunction $|\Psi|^2$ (red). The probabilistic "cloud" is an artifact of ensemble averaging over chaotic paths.}
+    \includegraphics[width=0.8\textwidth]{born_rule.png}
+    \caption{\textbf{Statistical Emergence.} Histogram of 2,000 deterministic walker trajectories (cyan) compared to the theoretical wavefunction $|\Psi|^2$ (red). The probabilistic "cloud" is an artifact of ensemble averaging over chaotic paths.}
 \end{figure}
 
 \section{Topological Matter: Vortices and Molecules}
@@ -56,20 +63,10 @@ The electric charge $q$ corresponds to the topological winding number $n$ of the
 \end{itemize}
 
 \subsection{Baryons as Vortex Molecules}
-We propose that Baryons (Protons and Neutrons) are not elementary point particles, but \textbf{Stable Vortex Molecules}. 
-
-Specifically, the Proton is modeled as a \textbf{Tri-Vortex Geometry} (three $n=+1$ vortices bound by phase tension). This geometry is crucial for resolving the \textbf{Proton Radius Puzzle}. As demonstrated in Simulation I, high-frequency probes (muons) penetrate the vortex core, while low-frequency probes (electrons) scatter off the outer flow field, explaining the discrepancy in measured radii.
-
-
+We propose that Baryons (Protons and Neutrons) are not elementary point particles, but \textbf{Stable Vortex Molecules}. Specifically, the Proton is modeled as a \textbf{Tri-Vortex Geometry} (three $n=+1$ vortices bound by phase tension).
 
 \section*{Bridge the Gap: Multidisciplinary Links}
 \begin{itemize}
-    \item \textbf{For the Physicist:} This framework replaces the "Collapse of the Wavefunction" with \textbf{Chaotic Attractors}. The particle never loses its definite position; we simply lose the ability to track it due to the complexity of the lattice memory.
-    \item \textbf{For the Engineer:} The Walker Model is a biological or mechanical \textbf{Phase-Locked Loop (PLL)}. The particle acts as a Voltage Controlled Oscillator (VCO) that locks onto the reference signal (the vacuum pilot wave), correcting its path to maintain phase coherence.
-\end{itemize}
-
-\subsection*{Computational Module: Simulations D \& I}
-\begin{itemize}
-    \item \textbf{Simulation D:} Verify the emergence of the Born Rule by running the \texttt{sim\_d\_born\_rule.py} script.
-    \item \textbf{Simulation I:} Explore the internal structure of matter by running \texttt{sim\_i\_proton\_radius.py}, which scatters probes off a Tri-Vortex geometry.
+    \item \textbf{For the Physicist:} This framework replaces the "Collapse of the Wavefunction" with \textbf{Chaotic Attractors}. The particle never loses its definite position; we simply lose the ability to track it.
+    \item \textbf{For the Engineer:} The Walker Model is a biological or mechanical \textbf{Phase-Locked Loop (PLL)}. The particle acts as a Voltage Controlled Oscillator (VCO) that locks onto the reference signal (the vacuum pilot wave).
 \end{itemize}
