@@ -51,9 +51,13 @@ ENV/
 # data/*
 # !data/.gitkeep
 
-# Results and outputs
-results/*
-!results/.gitkeep
+# Simulations and outputs
+simulations/*
+!simulations/.gitkeep
+
+# Large data files (uncomment if needed)
+# data/*
+# !data/.gitkeep
 
 # Environment variables
 .env

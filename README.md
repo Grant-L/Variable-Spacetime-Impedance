@@ -2,29 +2,35 @@
 
 A theoretical physics research project exploring novel concepts in spacetime dynamics using computational methods.
 
-## 🎯 Project Overview
-
-This repository is structured for collaborative theoretical physics research using:
-- **Jupyter Lab** for interactive exploration and calculations
-- **GitHub** for version control and collaboration
-- **Cursor** for code editing and AI-assisted development
-
 ## 📁 Project Structure
 
 ```
 Variable-Spacetime-Impedance/
-├── notebooks/          # Jupyter notebooks for exploration
-│   └── 00_template.ipynb  # Template for new notebooks
-├── src/                # Reusable Python modules
+├── README.md               # Project overview, setup instructions, notebook list
+├── requirements.txt         # Dependencies (numpy, matplotlib, scipy, astropy, etc.)
+├── .gitignore               # Ignores checkpoints, caches, large data
+├── notebooks/               # Jupyter notebooks for step-by-step work
+│   ├── 00_template.ipynb
+│   ├── 01_Relativistic_Limit.ipynb
+│   ├── 02_CMB_BAO_Fitting.ipynb
+│   ├── 03_Bullet_Cluster_Sim.ipynb
+│   ├── 04_Vacuum_Energy.ipynb
+│   ├── 05_Lepton_Asymmetry.ipynb
+│   ├── 06_Superconductor_Vortex.ipynb
+│   ├── 07_Quantum_Hall.ipynb
+│   ├── 08_Gravitational_Waves.ipynb
+│   ├── 09_Atomic_Spectra.ipynb
+│   ├── 10_Cosmic_Inflation.ipynb
+│   └── (Add more as needed, e.g., 11_Theory_Synthesis.ipynb)
+├── docs/                    # Paper drafts, abstracts, figures
+│   └── (Empty for now—add Markdown or LaTeX files)
+├── src/                     # Reusable Python modules/scripts
 │   ├── __init__.py
-│   └── constants.py    # Physical constants
-├── docs/               # Documentation and notes
-├── data/               # Data files (gitignored if large)
-├── results/            # Generated results and outputs
-├── .jupyter/           # Jupyter configuration
-├── requirements.txt    # Python dependencies
-├── setup.sh           # Setup script
-└── README.md          # This file
+│   └── constants.py         # Physical constants (optional utilities)
+├── data/                    # Datasets (e.g., SPARC galaxy data, Planck CMB)
+│   └── (Empty—git ignore large files; use Git LFS if needed)
+└── simulations/             # Raw outputs, logs, plots from runs
+    └── (Empty—store .npy, .csv, .png here)
 ```
 
 ## 🚀 Quick Start
@@ -67,11 +73,24 @@ jupyter lab
 
 Jupyter Lab will open in your browser at `http://localhost:8888`
 
-### 3. Create a New Notebook
+### 3. Work with Notebooks
 
-1. Copy `notebooks/00_template.ipynb` to create a new notebook
-2. Name it with a descriptive prefix (e.g., `01_spacetime_metric.ipynb`)
-3. Select the kernel: **Variable Spacetime Impedance**
+- Use `00_template.ipynb` as a starting point for new notebooks
+- Number notebooks sequentially (01_, 02_, etc.) for chronological order
+- Select the kernel: **Variable Spacetime Impedance**
+
+## 📓 Notebook List
+
+1. **01_Relativistic_Limit.ipynb** - Relativistic limit calculations
+2. **02_CMB_BAO_Fitting.ipynb** - Cosmic Microwave Background and Baryon Acoustic Oscillation fitting
+3. **03_Bullet_Cluster_Sim.ipynb** - Bullet Cluster simulations
+4. **04_Vacuum_Energy.ipynb** - Vacuum energy calculations
+5. **05_Lepton_Asymmetry.ipynb** - Lepton asymmetry analysis
+6. **06_Superconductor_Vortex.ipynb** - Superconductor vortex dynamics
+7. **07_Quantum_Hall.ipynb** - Quantum Hall effect
+8. **08_Gravitational_Waves.ipynb** - Gravitational wave analysis
+9. **09_Atomic_Spectra.ipynb** - Atomic spectra calculations
+10. **10_Cosmic_Inflation.ipynb** - Cosmic inflation models
 
 ## 🔄 Workflow
 
@@ -84,11 +103,15 @@ Jupyter Lab will open in your browser at `http://localhost:8888`
    ```
 
 2. **Work in notebooks:**
-   - Use the template notebook as a starting point
-   - Keep notebooks focused on specific explorations
+   - Use numbered notebooks for specific explorations
+   - Keep notebooks focused on specific topics
    - Document your thought process with markdown cells
 
-3. **Save and commit:**
+3. **Save outputs:**
+   - Save simulation outputs to `simulations/` directory
+   - Store data files in `data/` (large files gitignored)
+
+4. **Commit changes:**
    ```bash
    git add notebooks/your_notebook.ipynb
    git commit -m "Add exploration of [topic]"
@@ -97,11 +120,12 @@ Jupyter Lab will open in your browser at `http://localhost:8888`
 
 ### Best Practices
 
-- **Notebook naming:** Use numbered prefixes (00_, 01_, 02_) for chronological order
-- **Code organization:** Put reusable functions in `src/` modules
+- **Notebook naming:** Use numbered prefixes (01_, 02_, etc.) for chronological order
+- **Code organization:** Put reusable functions in `src/` modules (e.g., `lattice_utils.py`)
 - **Documentation:** Write clear markdown explanations in notebooks
 - **Version control:** Commit frequently with descriptive messages
-- **Data management:** Large data files should go in `data/` (may be gitignored)
+- **Data management:** Large data files should go in `data/` (gitignored by default)
+- **Simulations:** Save raw outputs, logs, and plots to `simulations/` directory
 
 ## 🛠️ Development Tools
 
@@ -116,6 +140,7 @@ Jupyter Lab will open in your browser at `http://localhost:8888`
 - **NumPy & SciPy:** Numerical computations
 - **SymPy:** Symbolic mathematics
 - **Matplotlib & Seaborn:** Visualization
+- **Astropy:** Astronomy/physics utilities
 - **Jupyter Lab:** Interactive development environment
 
 ### Cursor Integration
@@ -124,10 +149,11 @@ This project is optimized for use with Cursor IDE:
 - AI-assisted code generation and refactoring
 - Intelligent autocomplete for physics calculations
 - Integrated terminal for running Jupyter commands
+- See `.cursorrules` for project-specific guidelines
 
 ## 📚 Documentation
 
-- See `docs/README.md` for documentation structure
+- Paper drafts, abstracts, and figures go in `docs/`
 - Notebooks serve as both code and documentation
 - Use markdown cells extensively for explanations
 
