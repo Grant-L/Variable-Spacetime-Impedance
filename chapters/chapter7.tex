@@ -1,31 +1,32 @@
 \chapter{7 Observational Signatures: Superfluid Turbulence and Phase Transitions}
+\label{ch:observational_signatures}
 
 \section{7.1 Introduction: Anomalies as Clues}
-The Standard Model of Cosmology ($\Lambda$CDM) faces two major crises: the nature of Dark Matter and the Hubble Tension[cite: 523, 526]. LCT proposes that these are not due to invisible particles, but are artifacts of the vacuum's fluid dynamics and hardware state changes[cite: 527].
+The Standard Model of Cosmology ($\Lambda$CDM) faces two major crises: the nature of Dark Matter and the Hubble Tension[cite: 1465]. LCT proposes that these are not due to invisible particles, but are artifacts of the vacuum's fluid dynamics and hardware state changes[cite: 1466].
 
 \section{7.2 Dark Matter: The Vortex Lattice}
-LCT identifies the galactic "Dark Matter Halo" as a region of \textbf{Quantum Turbulence} in the superfluid vacuum substrate[cite: 530]. 
+LCT identifies the galactic "Dark Matter Halo" as a region of \textbf{Quantum Turbulence} in the superfluid vacuum substrate[cite: 1468]. 
 \begin{itemize}
-    \item \textbf{The Mechanism}: A rotating galaxy drags the local vacuum through viscous coupling[cite: 532]. 
-    \item \textbf{Superfluid Constraint}: Because the vacuum is a superfluid, it cannot rotate as a rigid body[cite: 533, 536]. 
-    \item \textbf{Quantization}: Instead, it forms a quantized \textbf{Vortex Lattice} (Abrikosov lattice), where rotation is partitioned into microscopic vortex filaments[cite: 537, 538].
-    \item \textbf{Effective Mass}: The kinetic energy density of this lattice provides the additional gravitational "stiffness" observed in galactic dynamics[cite: 540].
+    \item \textbf{The Mechanism}: A rotating galaxy drags the local vacuum through viscous coupling[cite: 1469]. 
+    \item \textbf{Superfluid Constraint}: Because the vacuum is a superfluid, it cannot rotate as a rigid body. 
+    \item \textbf{Quantization}: Instead, it forms a quantized \textbf{Vortex Lattice} (Abrikosov lattice), where rotation is partitioned into microscopic vortex filaments[cite: 1471].
+    \item \textbf{Effective Mass}: The kinetic energy density of this lattice provides the additional gravitational "stiffness" observed in galactic dynamics[cite: 1472].
 \end{itemize}
 
 
 
 \subsection{7.2.1 Explaining Flat Rotation Curves}
-A single vortex has a velocity profile $v \propto 1/r$[cite: 542, 544]. However, a macroscopic Vortex Lattice maintains a constant vorticity per unit area[cite: 544]. 
+A single vortex has a velocity profile $v \propto 1/r$[cite: 1476]. However, a macroscopic Vortex Lattice maintains a constant vorticity per unit area[cite: 1477]. 
 \begin{equation}
-v_{rot} \approx \frac{\hbar}{m} \sqrt{2\pi n_{v}(r)}
+v_{rot} \approx \frac{\hbar}{m} \sqrt{2\pi n_{v}(r)} \quad (14.1)
 \label{eq:rotation_vortex_ch7}
 \end{equation}
-If the vacuum responds to shear stress by maintaining an equilibrium vortex density ($n_v$), the resulting rotation curve is flat ($v \approx \text{const}$)[cite: 544].
+If the vacuum responds to shear stress by maintaining an equilibrium vortex density ($n_v$), the resulting rotation curve is flat ($v \approx \text{const}$)[cite: 1480].
 
 
 
 \subsection{7.2.2 Computational Module: Galactic Rotation Curves}
-The following simulation, synchronized with \texttt{sim\_l\_galactic\_rotation.py}, verifies that the addition of the vacuum vortex lattice term ($k_{lattice}$) corrects the Newtonian drop-off to match observed galactic data[cite: 550, 554].
+The following simulation, synchronized with \texttt{sim\_l\_galactic\_rotation.py}, verifies that the addition of the vacuum vortex lattice term ($k_{lattice}$) corrects the Newtonian drop-off to match observed galactic data[cite: 1482].
 
 \begin{simbox}[Galactic Rotation Curves]
 \begin{lstlisting}[language=Python]
@@ -33,7 +34,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def simulate_rotation_curve():
-    r = np.linspace(0.1, 50, 500); G = 4.302e-6
+    r = np.linspace(0.1, 50, 500); G = 4.302
     M_visible = 6.0e10 # Visible Bulge + Disk
     # Newtonian Expectation
     v_newton = np.sqrt(G * M_visible / r) * (1 - np.exp(-r/3.0))
@@ -50,19 +51,17 @@ def simulate_rotation_curve():
 \end{simbox}
 
 \section{7.3 The Hubble Tension: A Vacuum Phase Transition}
-LCT explains the $H_0$ mismatch as a result of a \textbf{Late-Time Phase Transition}[cite: 563, 566]. At redshift $z \approx 10$, the vacuum underwent a localized "crystallization" event, releasing \textbf{latent heat} (Dark Energy) that boosted the late-universe expansion rate[cite: 567, 569].
-
-
+LCT explains the $H_0$ mismatch as a result of a \textbf{Late-Time Phase Transition}[cite: 1498]. At redshift $z \approx 10$, the vacuum underwent a localized "crystallization" event, releasing \textbf{latent heat} (Dark Energy) that boosted the late-universe expansion rate[cite: 1500].
 
 \section{7.4 Exhaustive Problems and Exercises}
 \begin{problembox}[Chapter 7 Observational Proofs]
 \begin{enumerate}
-    \item \textbf{Vortex Lattice Rotation}: Show that an area density $n_{v}(r) \propto 1/r$ leads to a constant rotational velocity $v_{rot}$[cite: 576, 577].
-    \item \textbf{Hubble Mismatch}: Calculate the shift in $H_{0}$ if Early Dark Energy acted only between $z=10$ and $z=8$[cite: 578].
-    \item \textbf{Vortex Density Calculation}: Using the constants for a typical spiral galaxy ($v_{rot} = 220$ km/s), calculate the required density $n_v$ of quantized vortices per square parsec[cite: 579, 582].
-    \item \textbf{The Bullet Cluster}: Qualitatively describe how the decoupling of the vortex lattice from gaseous matter explains the gravitational lensing anomalies in the Bullet Cluster[cite: 583, 584].
+    \item \textbf{Vortex Lattice Rotation}: Show that an area density $n_{v}(r) \propto 1/r$ leads to a constant rotational velocity $v_{rot}$[cite: 1503].
+    \item \textbf{Hubble Mismatch}: Calculate the shift in $H_{0}$ if Early Dark Energy acted only between $z=10$ and $z=8$[cite: 1504].
+    \item \textbf{Vortex Density Calculation}: Using the constants for a typical spiral galaxy ($v_{rot} = 220$ km/s), calculate the required density $n_v$ of quantized vortices per square parsec[cite: 1505].
+    \item \textbf{The Bullet Cluster}: Qualitatively describe how the decoupling of the vortex lattice from gaseous matter explains the gravitational lensing anomalies in the Bullet Cluster[cite: 1506].
 \end{enumerate}
 \end{problembox}
 
 \section{7.5 Transition to Vacuum Engineering}
-We have identified the macroscale signatures of the hardware layer[cite: 588]. In the final chapter, Chapter 8, we move from observation to application, exploring how the characteristic impedance of this superfluid lattice can be manipulated for propulsion and energy extraction[cite: 589].
+We have identified the macroscale signatures of the hardware layer[cite: 1508]. In the final chapter, Chapter 8, we move from observation to application, exploring how the characteristic impedance of this superfluid lattice can be manipulated for propulsion and energy extraction[cite: 1509].
