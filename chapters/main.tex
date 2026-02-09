@@ -30,50 +30,33 @@
 \date{February 9, 2026} 
 
 \begin{document}
-\newcommand{\cleansubsection}[1]{\subsection{#1}} % Macro to avoid duplicate numbers in TOC
-% Example usage for Chapter 1:
-\cleansubsection{The Postulate of Emergence}
-% Repeat for other subsections, e.g., \cleansubsection{The Discrete LC Lattice Framework}
 % --- Front Matter ---
 \frontmatter
 \maketitle
 
 \chapter*{Preface}
 \addcontentsline{toc}{chapter}{Preface}
-This text represents a departure from 20th-century geometric abstraction toward a constitutive, hardware-oriented understanding of the cosmos[cite: 7]. We move from the perceived continuum to a discrete hardware layer[cite: 8].
+\input{chapters/frontmatter/preface.tex}
 
-% --- Nomenclature and Constants ---
-% This pulls from the updated variables.tex provided in the previous turn.
+\tableofcontents
+
 \input{chapters/frontmatter/variables.tex} 
 
 % --- Main Matter ---
 \mainmatter
 
 \part{The Foundation: The Vacuum Substrate}
-% Chapter 1: Hardware Layer
 \input{chapters/chapter1.tex} 
-
-% Chapter 2: Signal Layer
 \input{chapters/chapter2.tex}
 
 \part{The Emergent Layers: Particles and Forces}
-% Chapter 3: Quantum Layer
 \input{chapters/chapter3.tex}
-
-% Chapter 4: Topological Layer
 \input{chapters/chapter4.tex}
-
-% Chapter 6: Weak Layer (Re-indexed in sequence)
-\input{chapters/chapter6.tex}
+\input{chapters/chapter6.tex}  % Weak Layer as logical Ch5
 
 \part{The Macroscale: Cosmology and Engineering}
-% Chapter 5: Cosmic Layer
-\input{chapters/chapter5.tex}
-
-% Chapter 7: Observational Signatures
+\input{chapters/chapter5.tex}  % Cosmic Layer as logical Ch6
 \input{chapters/chapter7.tex}
-
-% Chapter 8: Engineering the Vacuum
 \input{chapters/chapter8.tex}
 
 % --- Back Matter ---
