@@ -29,7 +29,10 @@
 \date{February 9, 2026} 
 
 \begin{document}
-
+\newcommand{\cleansubsection}[1]{\subsection{#1}} % Macro to avoid duplicate numbers in TOC
+% Example usage for Chapter 1:
+\cleansubsection{The Postulate of Emergence}
+% Repeat for other subsections, e.g., \cleansubsection{The Discrete LC Lattice Framework}
 % --- Front Matter ---
 \frontmatter
 \maketitle
@@ -37,8 +40,6 @@
 \chapter*{Preface}
 \addcontentsline{toc}{chapter}{Preface}
 This text represents a departure from 20th-century geometric abstraction toward a constitutive, hardware-oriented understanding of the cosmos[cite: 7]. We move from the perceived continuum to a discrete hardware layer[cite: 8].
-
-\tableofcontents
 
 % --- Nomenclature and Constants ---
 % This pulls from the updated variables.tex provided in the previous turn.
