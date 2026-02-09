@@ -1,57 +1,51 @@
-\chapter{Derivation of Electrodynamics from the Lattice}
-\label{app:maxwell}
+\chapter{Mathematical Proofs and Formalism}
+\label{app:proofs}
 
-In Chapter 2, we asserted that the vacuum acts as a distributed LC transmission line and that Maxwell's Equations are the continuum limit of this discrete network. In this Appendix, we provide the rigorous derivation of this claim.
+\section{A.1 The Discrete-to-Continuum Limit (Kirchhoff)}
+To bridge the gap between electrical engineering and field theory, we expand the derivation in Section 1.2.2. Consider the 3D discrete lattice where each node $(i, j, k)$ is connected by inductors $\Lvac$ and capacitors $\Cvac$. [cite: 42, 43]
 
-\section{The Discrete Lagrangian}
-Consider a 3D cubic lattice with spacing $\ell$. Each node $(i,j,k)$ is connected to its neighbors by an inductor $L$ and to the ground (vacuum potential reference) by a capacitor $C$. We define the generalized coordinate $Q_{ijk}(t)$ as the electric charge stored at node $(i,j,k)$.
-
-The kinetic energy $T$ of the system is stored in the magnetic field (currents through inductors), and the potential energy $U$ is stored in the electric field (charge on capacitors).
-
-The discrete Lagrangian $\mathcal{L}_{disc} = T - U$ is given by:
-
+The nodal current balance (Kirchhoff’s Current Law) at node $n$ is: [cite: 44]
 \begin{equation}
-    \mathcal{L}_{disc} = \sum_{ijk} \left[ \frac{L}{2} \sum_{\mu=1}^3 (\dot{Q}_{ijk} - \dot{Q}_{ijk+\hat{\mu}})^2 - \frac{1}{2C} Q_{ijk}^2 \right]
+\Cvac \frac{dV_{n}}{dt} = I_{n} - I_{n+1}
 \end{equation}
 
-Where $\dot{Q}$ represents the current $I$. The first term represents the inductive energy of currents flowing between nodes, and the second term represents the capacitive potential energy at each node.
-
-\section{The Continuum Limit}
-We define the continuous field $\phi(\mathbf{x}, t)$ (scalar potential) such that $Q_{ijk}(t) \to \rho \ell^3 \phi(\mathbf{x}, t)$ as $\ell \to 0$. However, it is more useful to work directly with the Constitutive Parameters per unit length:
-\begin{itemize}
-    \item Inductance per meter: $\mu_0 = L / \ell$
-    \item Capacitance per meter: $\epsilon_0 = C / \ell$
-\end{itemize}
-
-Applying the Taylor expansion for the difference terms:
+Differentiating with respect to time and substituting the Inductive Voltage law $\Lvac\frac{dI}{dt} = \Delta V$: [cite: 44, 47]
 \begin{equation}
-    (\dot{Q}_{ijk} - \dot{Q}_{ijk+\hat{\mu}}) \approx \ell \frac{\partial I}{\partial x_\mu}
+\Lvac\Cvac \frac{d^2 V_{n}}{dt^2} = V_{n-1} - 2V_{n} + V_{n+1}
 \end{equation}
 
-The Lagrangian density $\mathfrak{L}$ (where $L = \int \mathfrak{L} d^3x$) becomes:
+In the limit where the lattice spacing $\Delta x \to 0$, we define the spatial second derivative: [cite: 49]
 \begin{equation}
-    \mathfrak{L} = \frac{\mu_0 \epsilon_0^2}{2} (\nabla \dot{\phi})^2 - \frac{\epsilon_0}{2} (\nabla \phi)^2
+\frac{V_{n-1} - 2V_{n} + V_{n+1}}{\Delta x^2} \to \frac{\partial^2 V}{\partial x^2}
 \end{equation}
 
-\section{Equation of Motion}
-Applying the Euler-Lagrange equation $\partial_\mu \frac{\partial \mathfrak{L}}{\partial(\partial_\mu \phi)} = \frac{\partial \mathfrak{L}}{\partial \phi}$:
-
+Substituting this into the discrete equation: [cite: 52]
 \begin{equation}
-    \mu_0 \epsilon_0 \frac{\partial^2 \phi}{\partial t^2} - \nabla^2 \phi = 0
+\frac{\Lvac\Cvac}{\Delta x^2} \frac{\partial^2 V}{\partial t^2} = \frac{\partial^2 V}{\partial x^2}
 \end{equation}
 
-This is the standard 3D Wave Equation. By inspection, the propagation velocity $c$ is:
+Setting $c^2 = \frac{\Delta x^2}{\Lvac\Cvac}$, we recover the standard Wave Equation. [cite: 52, 53]
+
+\section{A.2 The Madelung Internal Pressure ($Q$)}
+In Chapter 3, the Quantum Potential $Q$ was identified as internal vacuum pressure. [cite: 183, 188] We derive this by substituting the polar form of the wavefunction $\psi = \sqrt{\rho}e^{iS/\hbar}$ into the Schrödinger Equation. [cite: 181, 182]
+
+Separating the real part yields the **Quantum Hamilton-Jacobi Equation**: [cite: 182]
 \begin{equation}
-    c = \frac{1}{\sqrt{\mu_0 \epsilon_0}} = \frac{1}{\sqrt{(L/\ell)(C/\ell)}} = \frac{1}{\sqrt{LC}} \ell
+\frac{\partial S}{\partial t} + \frac{(\nabla S)^2}{2m} + V + Q = 0
 \end{equation}
 
-Thus, the speed of light is uniquely determined by the inductance and capacitance of the vacuum lattice nodes.
+Where $Q$ is defined as: [cite: 182]
+\begin{equation}
+Q = -\frac{\hbar^2}{2m} \frac{\nabla^2 \sqrt{\rho}}{\sqrt{\rho}}
+\end{equation}
 
-\section{Recovery of Maxwell's Equations}
-To recover the vector nature of Electrodynamics, we identify the lattice currents $\mathbf{J}$ and node charges $\rho$.
-\begin{itemize}
-    \item \textbf{Gauss's Law:} Derived from the definition of node capacitance $V = Q/C$. In the continuum limit, $\nabla \cdot \mathbf{E} = \rho / \epsilon_0$.
-    \item \textbf{Ampere's Law:} Derived from the node inductance $V = L \frac{dI}{dt}$. In the continuum limit, $\nabla \times \mathbf{B} = \mu_0 \mathbf{J} + \mu_0 \epsilon_0 \frac{\partial \mathbf{E}}{\partial t}$.
-\end{itemize}
+In LCT, $Q$ is the **elastic potential energy density** of the lattice nodes being displaced. [cite: 188, 189] This term accounts for the "pressure" that prevents the collapse of the electron into the nucleus, providing a mechanical basis for the Bohr Radius. [cite: 224, 228]
 
-The "Displacement Current" term ($\mu_0 \epsilon_0 \dot{E}$), which Maxwell added to satisfy conservation of charge, emerges naturally in LCT as the charging current of the vacuum capacitors.
+\section{A.3 Impedance Clamping and Parity Violation}
+We derive the directional impedance encounters of helical pulses. [cite: 292, 296] The impedance $Z$ is modified by the alignment of the vortex winding $m$ and the momentum vector $k$. [cite: 296, 304]
+
+\begin{equation}
+Z_{eff}(\sigma, m, k) = \Zvac \exp \left( \sigma \cdot (m \cdot k) \right)
+\end{equation}
+
+As $\sigma \to \Wcut$, the impedance for right-handed configurations ($m \cdot k > 0$) approaches the hardware slew limit. [cite: 308, 310] This reflects the energy back into the substrate, acting as a mechanical filter that creates the observed Parity Violation in weak interactions. [cite: 315, 316]

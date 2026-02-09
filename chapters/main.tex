@@ -1,63 +1,94 @@
-\documentclass[11pt,oneside]{book}
+\documentclass[11pt,oneside,openany]{book}
+
+% --- Core Packages ---
 \usepackage[utf8]{inputenc}
-\usepackage{amsmath, amssymb, amsthm}
-\usepackage{graphicx}
-\usepackage{listings}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsthm} % Essential math rigor
+\usepackage{graphicx}                % For simulation assets [cite: 58]
+\usepackage{listings}                % For Computational Modules [cite: 152]
 \usepackage{xcolor}
-\usepackage{hyperref}
+\usepackage{hyperref}                % Internal cross-referencing
+\usepackage{geometry}
+ \geometry{letterpaper, margin=1in}
 
-% Define custom commands for LCT constants
-\newcommand{\Lvac}{\mathcal{L}}
-\newcommand{\Cvac}{\mathcal{C}}
-\newcommand{\Zvac}{Z_0}
-\newcommand{\Wcut}{\omega_{cutoff}}
+% --- Load LCT Styles & Environments ---
+\input{setup.tex} % Defines Example, Problem, Sim, and Axiom boxes
 
+% --- Custom LCT Commands (Synchronized with src/constants.py) ---
+\newcommand{\Lvac}{\mathcal{L}}       % Lattice Inductance [cite: 15, 36]
+\newcommand{\Cvac}{\mathcal{C}}       % Lattice Capacitance [cite: 15, 40]
+\newcommand{\Zvac}{Z_0}               % Characteristic Impedance [cite: 15, 88]
+\newcommand{\Wcut}{\omega_{cutoff}}   % Hardware Nyquist Limit [cite: 15, 122]
+\newcommand{\Dx}{\Delta x}            % Lattice Pitch [cite: 15, 85]
+
+% --- Document Metadata ---
 \title{The Lindblom Coupling Theory: \\ \large A Hardware-Oriented Unified Field Theory}
 \author{Grant Lindblom}
-\date{\today}
+\date{February 9, 2026} [cite: 3]
 
 \begin{document}
 
+% --- Front Matter ---
+\frontmatter
 \maketitle
 
-\frontmatter
+\chapter*{Preface}
+\addcontentsline{toc}{chapter}{Preface}
+This text represents a departure from 20th-century geometric abstraction toward a constitutive, hardware-oriented understanding of the cosmos[cite: 29]. We move from the perceived continuum to a discrete hardware layer[cite: 63].
+
 \tableofcontents
 
-\chapter{Nomenclature and Fundamental Constants}
-\input{sections/variables.tex}
+% Nomenclature and Constants Section
+\input{chapters/frontmatter/variables.tex} 
 
+% Glossary and Acronyms
+\input{chapters/frontmatter/glossary.tex}
+
+% --- Main Matter ---
 \mainmatter
 
 \part{The Foundation: The Vacuum Substrate}
 \chapter{The Hardware Layer: The Vacuum as a Discrete LC Lattice}
-\input{sections/chapter1.tex}
+\input{chapters/chapter1.tex} [cite: 21, 22]
 
 \chapter{The Signal Layer: Variable Impedance and Mass Emergence}
-\input{sections/chapter2.tex}
+\input{chapters/chapter2.tex} [cite: 98, 102]
 
 \part{The Emergent Layers: Particles and Forces}
 \chapter{The Quantum Layer: Hydrodynamic Pilot-Wave Mechanics}
-\input{sections/chapter3.tex}
+\input{chapters/chapter3.tex} [cite: 171, 174]
 
 \chapter{The Topological Layer: Matter as Defects in the Order Parameter}
-\input{sections/chapter4.tex}
+\input{chapters/chapter4.tex} [cite: 234, 238]
 
 \chapter{The Weak Layer: Chirality as a Filter}
-\input{sections/chapter6.tex}
+\input{chapters/chapter6.tex} [cite: 283, 286]
 
 \part{The Macroscale: Cosmology and Engineering}
-\chapter{The Cosmic Layer: Genesis and Non-Locality}
-\input{sections/chapter5.tex}
+\chapter{The Cosmic Layer: Genesis and Non-Locality in a Stiff Substrate}
+\input{chapters/chapter5.tex} [cite: 328, 331]
 
-\chapter{Observational Signatures: Superfluid Turbulence}
-\input{sections/chapter7.tex}
+\chapter{Observational Signatures: Superfluid Turbulence and Phase Transitions}
+\input{chapters/chapter7.tex} [cite: 384, 387]
 
 \chapter{Engineering the Vacuum: Metric Engineering and Propulsion}
-\input{sections/chapter8.tex}
+\input{chapters/chapter8.tex} [cite: 431, 434]
 
+% --- Back Matter ---
 \backmatter
 \appendix
+
+\chapter{Mathematical Proofs and Formalism}
+\input{chapters/appendix_a.tex} % Exhaustive Proofs (A.1 - A.3)
+
 \chapter{The Computational Verification Suite}
-\chapter{Bibliography}
+\input{chapters/appendix_b.tex} % High-level walkthrough of sim_ scripts
+
+\chapter{Simulation Code Repository}
+\input{chapters/appendix_c.tex} % Raw exhaustive code listings
+
+% --- Bibliography ---
+\bibliographystyle{unsrt} 
+\bibliography{chapters/bibliography} % Exhaustive BibTeX database
 
 \end{document}

@@ -1,0 +1,54 @@
+% --- LCT Custom Styles and Environments ---
+\usepackage{tcolorbox}
+\tcbuselibrary{skins, breakable}
+
+% 1. Example Environment
+% Used for worked solutions like "Calculating Lattice Pitch"
+\newtcolorbox[auto counter, number within=chapter]{examplebox}[1][]{
+    colback=blue!5!white,
+    colframe=blue!75!black,
+    fonttitle=\bfseries,
+    title=Example \thetcbcounter: #1,
+    enhanced,
+    breakable,
+    attach title to upper,
+    after title={:\enskip},
+}
+
+% 2. Problem Environment
+% Used for the exhaustive end-of-chapter exercises
+\newtcolorbox[auto counter, number within=chapter]{problembox}[1][]{
+    colback=red!5!white,
+    colframe=red!75!black,
+    fonttitle=\bfseries,
+    title=Problem \thetcbcounter: #1,
+    enhanced,
+    breakable,
+}
+
+% 3. Simulation/Computational Module Environment
+% Designed to house Python code snippets (FDTD, Ginzburg-Landau)
+\newtcolorbox{simbox}[1][]{
+    colback=green!5!white,
+    colframe=green!50!black,
+    fonttitle=\bfseries,
+    title=Computational Module: #1,
+    enhanced,
+    breakable,
+}
+
+% 4. Hardware Postulate/Constraint Box
+% Used to highlight the core hardware-oriented axioms of LCT
+\newtcolorbox{axiombox}[1][]{
+    colback=gray!10!white,
+    colframe=black,
+    fonttitle=\bfseries,
+    title=LCT Postulate: #1,
+    enhanced,
+    breakable,
+    sharp corners,
+}
+
+% --- Proof Environment Customization ---
+% Ensures standard qed symbols align with LCT's "hardware-verified" tone
+\renewcommand{\qedsymbol}{$\blacksquare$}

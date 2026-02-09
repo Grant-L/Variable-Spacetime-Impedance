@@ -1,16 +1,21 @@
+\chapter*{Nomenclature and Fundamental Constants}
+\addcontentsline{toc}{chapter}{Nomenclature and Fundamental Constants}
+
 \section*{The LCT Hardware Constants}
-\begin{table}[h]
+The following table summarizes the constitutive parameters of the vacuum hardware layer. All emergent units (Volts, Amps, Meters) are derived from the synchronization of these lattice components. [cite: 15, 16]
+
+\begin{table}[h!]
 \centering
-\begin{tabular}{cll}
-\textbf{Symbol} & \textbf{Name} & \textbf{Mechanical/Electrical Equivalent} \\ \hline
-$\Lvac$ & Lattice Inductance & $\mu_0$ (Vacuum Permeability / Inertia) \\
-$\Cvac$ & Lattice Capacitance & $\epsilon_0$ (Vacuum Permittivity / Elasticity) \\
-$\Zvac$ & Characteristic Impedance & $\sqrt{\Lvac/\Cvac} \approx 376.73 \Omega$ \\
-$\Delta x$ & Lattice Pitch & The discrete spacing of vacuum nodes \\
-$\Wcut$ & Cutoff Frequency & The Nyquist limit of the substrate ($2/\sqrt{\Lvac\Cvac}$) \\
-$\epsilon_{\mu\nu}$ & Metric Strain Tensor & Physical displacement/stretching of nodes \\
-$n$ & Winding Number & Integer topological charge \\
-$Q$ & Quantum Potential & Internal pressure of the vacuum fluid \\
+\begin{tabular}{|c|l|l|l|}
+\hline
+\textbf{Symbol} & \textbf{Name} & \textbf{Value (LCT)} & \textbf{Physical Equivalent} \\ \hline
+$\Lvac$ & Lattice Inductance & $\approx 1.257 \mu\text{H/m}$ & $\mu_0$ (Vacuum Permeability) [cite: 15, 90] \\ \hline
+$\Cvac$ & Lattice Capacitance & $\approx 8.854 \text{pF/m}$ & $\epsilon_0$ (Vacuum Permittivity) [cite: 15, 90] \\ \hline
+$\Zvac$ & Characteristic Impedance & $\approx 376.73 \Omega$ & $\sqrt{\Lvac/\Cvac}$ [cite: 15, 88] \\ \hline
+$\Delta x$ & Lattice Pitch & $\sim 10^{-35} \text{m}$ & The discrete nodal spacing [cite: 15, 94] \\ \hline
+$\Wcut$ & Cutoff Frequency & $2/\sqrt{\Lvac\Cvac}$ & The Nyquist limit of the substrate [cite: 15, 122] \\ \hline
+$\epsilon_{\mu\nu}$ & Metric Strain Tensor & Dimensionless & Physical nodal displacement [cite: 15, 137] \\ \hline
+$Q$ & Quantum Potential & Joules & Internal vacuum pressure [cite: 15, 182, 188] \\ \hline
 \end{tabular}
 \caption{Foundational variables of the Lindblom Coupling Theory.}
 \end{table}

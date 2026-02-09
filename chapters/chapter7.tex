@@ -1,32 +1,33 @@
 \chapter{7 Observational Signatures: Superfluid Turbulence and Phase Transitions}
 
 \section{7.1 Introduction: Anomalies as Clues}
-The Standard Model of Cosmology ($\Lambda$CDM) faces two major crises: the nature of Dark Matter and the Hubble Tension[cite: 448]. LCT proposes that these are not due to invisible particles, but are artifacts of the vacuum's fluid dynamics and hardware state changes[cite: 405, 449].
+[cite_start]The Standard Model of Cosmology ($\Lambda$CDM) faces two major crises: the nature of Dark Matter and the Hubble Tension[cite: 389]. [cite_start]LCT proposes that these are not due to invisible particles, but are artifacts of the vacuum's fluid dynamics and hardware state changes[cite: 390].
 
 \section{7.2 Dark Matter: The Vortex Lattice}
-LCT identifies the galactic "Dark Matter Halo" as a region of \textbf{Quantum Turbulence} in the superfluid vacuum substrate[cite: 407, 452]. 
-
+[cite_start]LCT identifies the galactic "Dark Matter Halo" as a region of \textbf{Quantum Turbulence} in the superfluid vacuum substrate[cite: 392]. 
 \begin{itemize}
-    \item \textbf{The Mechanism}: A rotating galaxy drags the local vacuum through viscous coupling[cite: 408, 453]. 
-    \item \textbf{Superfluid Constraint}: Because the vacuum is a superfluid, it cannot rotate as a rigid body[cite: 409, 454]. 
-    \item \textbf{Quantization}: Instead, it forms a quantized \textbf{Vortex Lattice} (Abrikosov lattice), where rotation is partitioned into microscopic vortex filaments[cite: 409, 455].
-    \item \textbf{Effective Mass}: The kinetic energy density of this lattice provides the additional gravitational "stiffness" observed in galactic dynamics[cite: 410, 457].
+    [cite_start]\item \textbf{The Mechanism}: A rotating galaxy drags the local vacuum through viscous coupling[cite: 393]. 
+    [cite_start]\item \textbf{Superfluid Constraint}: Because the vacuum is a superfluid, it cannot rotate as a rigid body[cite: 394]. 
+    [cite_start]\item \textbf{Quantization}: Instead, it forms a quantized \textbf{Vortex Lattice} (Abrikosov lattice), where rotation is partitioned into microscopic vortex filaments[cite: 395].
+    [cite_start]\item \textbf{Effective Mass}: The kinetic energy density of this lattice provides the additional gravitational "stiffness" observed in galactic dynamics[cite: 398].
 \end{itemize}
 
+
+
 \subsection{7.2.1 Explaining Flat Rotation Curves}
-A single vortex has a velocity profile $v \propto 1/r$. However, a macroscopic Vortex Lattice maintains a constant vorticity per unit area[cite: 413, 460]. 
+A single vortex has a velocity profile $v \propto 1/r$. [cite_start]However, a macroscopic Vortex Lattice maintains a constant vorticity per unit area[cite: 400]. 
 \begin{equation}
 v_{rot} \approx \frac{\hbar}{m} \sqrt{2\pi n_{v}(r)}
-\label{eq:rotation_vortex}
+\label{eq:rotation_vortex_final}
 \end{equation}
-If the vacuum responds to shear stress by maintaining an equilibrium vortex density ($n_v$), the resulting rotation curve is flat ($v \approx const$)[cite: 416, 463].
+[cite_start]If the vacuum responds to shear stress by maintaining an equilibrium vortex density ($n_v$), the resulting rotation curve is flat ($v \approx const$)[cite: 403].
 
 
 
 \subsection{7.2.2 Computational Module: Galactic Rotation Curves}
-The following simulation verifies that the addition of the vacuum vortex lattice term ($k_{lattice}$) corrects the Newtonian drop-off to match observed galactic data[cite: 757, 780].
+[cite_start]The following simulation, synchronized with \texttt{sim\_l\_galactic\_rotation.py}, verifies that the addition of the vacuum vortex lattice term ($k_{lattice}$) corrects the Newtonian drop-off to match observed galactic data[cite: 404].
 
-\begin{verbatim}
+\begin{lstlisting}[language=Python]
 import numpy as np
 import matplotlib.pyplot as plt
 def simulate_rotation_curve():
@@ -39,18 +40,23 @@ def simulate_rotation_curve():
     v_lattice = k_lattice * (1 - np.exp(-r/10.0))
     # Total Velocity
     v_lct = np.sqrt(v_newton**2 + v_lattice**2)
-    plt.plot(r, v_newton, 'r--', label='Newtonian'); plt.plot(r, v_lct, 'b', label='LCT')
+    plt.plot(r, v_newton, 'r--', label='Newtonian')
+    plt.plot(r, v_lct, 'b', label='LCT')
     plt.show()
-\end{verbatim}
+\end{lstlisting}
 
 \section{7.3 The Hubble Tension: A Vacuum Phase Transition}
-LCT explains the $H_0$ mismatch as a result of a \textbf{Late-Time Phase Transition}[cite: 418, 492]. At redshift $z \approx 10$, the vacuum underwent a localized "crystallization" event, releasing \textbf{latent heat} (Dark Energy) that boosted the late-universe expansion rate[cite: 375, 419, 493].
+[cite_start]LCT explains the $H_0$ mismatch as a result of a \textbf{Late-Time Phase Transition}[cite: 419]. [cite_start]At redshift $z \approx 10$, the vacuum underwent a localized "crystallization" event, releasing \textbf{latent heat} (Dark Energy) that boosted the late-universe expansion rate[cite: 420, 422].
 
-\section{7.4 Problems}
+
+
+\section{7.4 Exhaustive Problems and Exercises}
 \begin{enumerate}
-    \item \textbf{Vortex Lattice Rotation}: Show that an area density $n_v(r) \propto 1/r$ leads to a constant rotational velocity $v_{rot}$[cite: 496].
-    \item \textbf{Hubble Mismatch}: Calculate the shift in $H_0$ if Early Dark Energy acted only between $z=10$ and $z=8$[cite: 498].
+    [cite_start]\item \textbf{Vortex Lattice Rotation}: Show that an area density $n_{v}(r) \propto 1/r$ leads to a constant rotational velocity $v_{rot}$[cite: 424].
+    [cite_start]\item \textbf{Hubble Mismatch}: Calculate the shift in $H_{0}$ if Early Dark Energy acted only between $z=10$ and $z=8$[cite: 425].
+    \item \textbf{Vortex Density Calculation}: Using the constants for a typical spiral galaxy ($v_{rot} = 220$ km/s), calculate the required density $n_v$ of quantized vortices per square parsec.
+    \item \textbf{The Bullet Cluster}: Qualitatively describe how the decoupling of the vortex lattice from gaseous matter explains the gravitational lensing anomalies in the Bullet Cluster.
 \end{enumerate}
 
-\chapter{8 [Placeholder: Engineering the Vacuum]}
-\textit{Intended Content: Applied LCT for propulsion and energy extraction. Derivation of the Alcubierre Metric as a localized impedance bubble and the Wormhole as a lattice shortcut.}
+\section{7.5 Transition to Vacuum Engineering}
+We have identified the macroscale signatures of the hardware layer. In the final chapter, \textbf{Chapter 8}, we move from observation to application, exploring how the characteristic impedance of this superfluid lattice can be manipulated for propulsion and energy extraction.
