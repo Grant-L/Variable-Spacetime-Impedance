@@ -1,54 +1,85 @@
-% --- LCT Custom Styles and Environments ---
+% --- LCT Master Setup (setup.tex contents) ---
 \usepackage{tcolorbox}
 \tcbuselibrary{skins, breakable}
+\definecolor{codegreen}{rgb}{0,0.6,0}
 
-% 1. Example Environment
-% Used for worked solutions like "Calculating Lattice Pitch"
+% Custom Environments for Pedagogical Rigor
 \newtcolorbox[auto counter, number within=chapter]{examplebox}[1][]{
-    colback=blue!5!white,
-    colframe=blue!75!black,
-    fonttitle=\bfseries,
-    title=Example \thetcbcounter: #1,
-    enhanced,
-    breakable,
-    attach title to upper,
-    after title={:\enskip},
-}
+    colback=blue!5!white, colframe=blue!75!black, fonttitle=\bfseries,
+    title=Example \thetcbcounter: #1, enhanced, breakable, attach title to upper, after title={:\enskip}}
 
-% 2. Problem Environment
-% Used for the exhaustive end-of-chapter exercises
 \newtcolorbox[auto counter, number within=chapter]{problembox}[1][]{
-    colback=red!5!white,
-    colframe=red!75!black,
-    fonttitle=\bfseries,
-    title=Problem \thetcbcounter: #1,
-    enhanced,
-    breakable,
-}
+    colback=red!5!white, colframe=red!75!black, fonttitle=\bfseries,
+    title=Problem \thetcbcounter: #1, enhanced, breakable}
 
-% 3. Simulation/Computational Module Environment
-% Designed to house Python code snippets (FDTD, Ginzburg-Landau)
 \newtcolorbox{simbox}[1][]{
-    colback=green!5!white,
-    colframe=green!50!black,
-    fonttitle=\bfseries,
-    title=Computational Module: #1,
-    enhanced,
-    breakable,
-}
+    colback=green!5!white, colframe=green!50!black, fonttitle=\bfseries,
+    title=Computational Module: #1, enhanced, breakable}
 
-% 4. Hardware Postulate/Constraint Box
-% Used to highlight the core hardware-oriented axioms of LCT
-\newtcolorbox{axiombox}[1][]{
-    colback=gray!10!white,
-    colframe=black,
-    fonttitle=\bfseries,
-    title=LCT Postulate: #1,
-    enhanced,
-    breakable,
-    sharp corners,
-}
+% --- Nomenclature and Constants (variables.tex) ---
+\chapter*{Nomenclature and Fundamental Constants}
+\addcontentsline{toc}{chapter}{Nomenclature and Fundamental Constants}
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Symbol} & \textbf{Name} & \textbf{Value (LCT)} & \textbf{Physical Equivalent} \\ \hline
+$\Lvac$ & Lattice Inductance & $\approx 1.257 \mu$H/m & $\mu_0$ (Vacuum Permeability) [cite: 26] \\ \hline
+$\Cvac$ & Lattice Capacitance & $\approx 8.854$ pF/m & $\epsilon_0$ (Vacuum Permittivity) [cite: 26] \\ \hline
+$\Zvac$ & Characteristic Impedance & $\approx 376.73 \Omega$ & $\sqrt{\Lvac/\Cvac}$ [cite: 26] \\ \hline
+$\Dx$ & Lattice Pitch & $\sim 10^{-35}$ m & Discrete nodal spacing [cite: 26] \\ \hline
+$\Wcut$ & Cutoff Frequency & $2/\sqrt{\Lvac\Cvac}$ & Nyquist limit [cite: 26] \\ \hline
+\end{tabular}
+\caption{constitutive parameters of the vacuum hardware layer[cite: 24].}
+\end{table}
 
-% --- Proof Environment Customization ---
-% Ensures standard qed symbols align with LCT's "hardware-verified" tone
-\renewcommand{\qedsymbol}{$\blacksquare$}
+% --- Chapter 1: The Hardware Layer ---
+\chapter{The Hardware Layer: The Vacuum as a Discrete LC Lattice}
+\section{1.1 The Postulate of Emergence}
+We postulate that the vacuum is not an empty void but a dynamic, physical \textbf{Hardware Layer}[cite: 93]. All observed physical laws, constants, and interactions are emergent phenomena derived from the mechanical impedance and synchronization of this substrate[cite: 93].
+
+\section{1.2 The Discrete LC Lattice Framework}
+The foundational architecture of the universe is modeled as a massive, resonant network of nodes[cite: 95]. This structure dictates the universal "time constant" and shapes emergent reality through discrete Kirchhoff dynamics[cite: 95].
+
+\begin{equation}
+\Lvac \frac{dI_{n}}{dt} = V_{n-1} - V_{n}, \quad \Cvac \frac{dV_{n}}{dt} = I_{n} - I_{n+1} \quad (2.1) \text{ [cite: 104]}
+\end{equation}
+
+In the continuum limit ($\Dx \rightarrow 0$), we recover the standard Wave Equation[cite: 109, 110]:
+\begin{equation}
+\frac{\partial^2 V}{\partial t^2} - \frac{1}{\Lvac\Cvac} \frac{\partial^2 V}{\partial x^2} = 0 \quad (2.3) \text{ [cite: 110]}
+\end{equation}
+
+% --- Chapter 2: The Signal Layer ---
+\chapter{The Signal Layer: Variable Impedance and Mass Emergence}
+\section{2.1 The Lindblom Dispersion Relation}
+We derive the relationship between signal frequency and propagation velocity[cite: 158]. As frequency approaches the Nyquist limit, group velocity ($v_g$) vanishes[cite: 175]:
+\begin{equation}
+v_{g}(\omega) = c\sqrt{1 - \left(\frac{\omega}{\Wcut}\right)^{2}} \quad (4.4) \text{ [cite: 170]}
+\end{equation}
+\textbf{Rest Mass} is thus identified as high-frequency flux trapped by \textbf{Bandwidth Saturation}[cite: 176].
+
+\section{2.2 Gravity as Metric Strain}
+General Relativity's "curvature" is recast as the mechanical strain of the hardware components[cite: 178]. We define the vacuum state using the Strain Tensor $\epsilon_{\mu\nu}$[cite: 181]:
+\begin{equation}
+\epsilon_{\mu\nu} = \frac{\Delta\Lvac}{\Lvac} \approx \frac{h_{\mu\nu}}{2} \quad (4.5) \text{ [cite: 183]}
+\end{equation}
+
+% --- Appendix C: Code Repository (Selection) ---
+\chapter{Simulation Code Repository}
+\section{C.1 Introduction}
+These simulations utilize FDTD methods and Ginzburg-Landau relaxation to model the vacuum as a physical hardware layer[cite: 960].
+
+\begin{simbox}[Metric Strain and Wave Refraction]
+\begin{lstlisting}[language=Python]
+import numpy as np
+# Normalized hardware constants from src/constants.py
+def run_metric_simulation(Nx=600, Ny=400, Nt=1200):
+    u = np.zeros((Nx, Ny)); u_prev = np.zeros((Nx, Ny))
+    # Distance-based metric strain mapping (Eq. 4.6)
+    X, Y = np.meshgrid(np.arange(Nx), np.arange(Ny), indexing='ij')
+    R = np.sqrt((X - Nx//2)**2 + (Y - (Ny//2+50))**2)
+    n_map = 1.0 + 20.0 / (np.sqrt(R**2 + 10.0))
+    v_map = 1.0 / n_map # Local phase velocity [cite: 964]
+\end{lstlisting}
+\end{simbox}
