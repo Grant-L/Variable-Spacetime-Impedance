@@ -3,7 +3,7 @@
 \addcontentsline{toc}{chapter}{Nomenclature and Fundamental Constants}
 
 \section*{Universal Hardware Constants}
-The following constants define the constitutive properties of the vacuum substrate[cite: 27].
+The following constants define the constitutive properties of the vacuum substrate.
 
 \begin{table}[h]
     \centering
@@ -11,35 +11,32 @@ The following constants define the constitutive properties of the vacuum substra
     \hline
     Symbol & Name & Value (LCT) & Physical Equivalent \\
     \hline
-    $L$ & Lattice Inductance & $\approx 1.257\,\mu$H/m & $\mu_0$ (Vacuum Permeability) \cite{26} \\
-    $C$ & Lattice Capacitance & $\approx 8.854$ pF/m & $\epsilon_0$ (Vacuum Permittivity) \cite{26} \\
-    $Z_0$ & Characteristic Impedance & $\approx 376.73\,\Omega$ & $\sqrt{L/C}$ \cite{26} \\
-    $\Delta x$ & Lattice Pitch & $\sim 10^{-35}$ m & Discrete nodal spacing \cite{26} \\
-    $\omega_{\text{cutoff}}$ & Cutoff Frequency & $2 / \sqrt{LC}$ & Nyquist limit \cite{26} \\
+    $L$ & Lattice Inductance & $\approx 1.2566 \times 10^{-6}$ H/m & $\mu_0$ (Vacuum Permeability) \\
+    $C$ & Lattice Capacitance & $\approx 8.8542 \times 10^{-12}$ F/m & $\epsilon_0$ (Vacuum Permittivity) \\
+    $Z_0$ & Characteristic Impedance & $\approx 376.73\,\Omega$ & $\sqrt{L/C}$ \\
+    $\Delta x$ & Lattice Pitch & $l_P \approx 1.616 \times 10^{-35}$ m & Discrete nodal spacing \\
+    $\omega_{\text{cutoff}}$ & Cutoff Frequency & $2 / \sqrt{LC}$ & Nyquist/Slew limit \\
     \hline
     \end{tabular}
     \caption{Primary hardware variables of the Lindblom Coupling Theory.}
-    \end{table}
-    
-    % Emergent list (ensure \cite{130,131} etc., fix β as needed)
-    \item $\epsilon_{\mu\nu}$ (Metric Strain Tensor): ... \cite{130,131}
+\end{table}
 
 \section*{Emergent Tensors and Variables}
-These variables describe the behavior of signals and defects within the lattice[cite: 130, 131].
+These variables describe the behavior of signals and defects within the lattice.
 
 \begin{itemize}
-    \item \textbf{$\epsilon_{\mu\nu}$ (Metric Strain Tensor)}: Represents the physical displacement of lattice nodes, recasting GR curvature as mechanical strain[cite: 130, 131].
-    \item \textbf{$Q$ (Quantum Potential)}: Identifies the internal vacuum pressure gradient that guides pilot-wave trajectories[cite: 190, 569].
-    \item \textbf{$v_g$ (Group Velocity)}: The propagation speed of energy, which vanishes as signal frequency approaches $\Wcut$[cite: 112, 115].
-    \item \textbf{$n$ (Topological Winding Number)}: An integer representing the "twist" of a vortex, identified as electric charge[cite: 266, 267].
-    \item \textbf{$Z_{eff}$ (Effective Impedance)}: The directional impedance encountered by helical pulses, governing the Weak Interaction[cite: 333, 334].
-    \item $\beta$ (Strain Coefficient): A dimensionless factor of order unity governing the scaling of metric strain from effective mass, $\epsilon = \beta \frac{m_{\text{eff}}}{m_{\text{Pl}}}$[cite: new-ref]. % Replace new-ref with appropriate citation, e.g., [130]
+    \item \textbf{$\epsilon_{\mu\nu}$ (Metric Strain Tensor)}: Represents the physical displacement of lattice nodes, recasting GR curvature as mechanical strain.
+    \item \textbf{$Q$ (Quantum Potential)}: Identifies the internal vacuum pressure gradient that guides pilot-wave trajectories.
+    \item \textbf{$v_g$ (Group Velocity)}: The propagation speed of energy, which vanishes as signal frequency approaches $\omega_{\text{cutoff}}$.
+    \item \textbf{$n$ (Topological Winding Number)}: An integer representing the "twist" of a vortex, identified as electric charge.
+    \item \textbf{$Z_{\text{eff}}$ (Effective Impedance)}: The directional impedance encountered by helical pulses, governing the Weak Interaction.
+    \item \textbf{$\beta$ (Strain Coefficient)}: A dimensionless factor governing the scaling of metric strain from effective mass, $\epsilon = \beta \frac{m_{\text{eff}}}{m_{\text{Pl}}}$.
 \end{itemize}
 
 \section*{Acronyms}
 \begin{itemize}
-    \item \textbf{B-EMF}: Back-Electromotive Force (Mechanical Inertia)[cite: 47, 125].
-    \item \textbf{FDTD}: Finite-Difference Time-Domain (Numerical Verification Method)[cite: 143, 588].
-    \item \textbf{LCT}: Lindblom Coupling Theory[cite: 3].
-    \item \textbf{TVS}: Transient Voltage Suppressor (Weak Force Analogy)[cite: 324, 326].
+    \item \textbf{B-EMF}: Back-Electromotive Force (Mechanical Inertia).
+    \item \textbf{FDTD}: Finite-Difference Time-Domain (Numerical Verification Method).
+    \item \textbf{LCT}: Lindblom Coupling Theory.
+    \item \textbf{TVS}: Transient Voltage Suppressor (Weak Force Analogy).
 \end{itemize}

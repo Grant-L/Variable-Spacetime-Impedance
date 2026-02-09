@@ -1,17 +1,36 @@
+% --- LCT Master Setup (The BIOS) ---
+
+% 1. Core LaTeX Hardware
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsfonts, amsthm} % Essential Math
+\usepackage{bm}                                 % Bold Greek for Tensors
+\usepackage{siunitx}                            % For Z_0, L, and C values
+\usepackage{graphicx}                           % For simulation PNGs
+\usepackage{cleveref}                           % Intelligent cross-referencing
+
+% 2. Styling Containers (The Boxes)
 \usepackage{tcolorbox}
 \tcbuselibrary{skins, breakable}
 
-% Example Environment
+% Example Environment: Blue for worked derivations
 \newtcolorbox[auto counter, number within=chapter]{examplebox}[1][]{
     colback=blue!5!white, colframe=blue!75!black, fonttitle=\bfseries,
     title=Example \thetcbcounter: #1, enhanced, breakable, attach title to upper, after title={:\enskip}}
 
-% Problem Environment
+% Problem Environment: Red for theory challenges
 \newtcolorbox[auto counter, number within=chapter]{problembox}[1][]{
     colback=red!5!white, colframe=red!75!black, fonttitle=\bfseries,
     title=Problem \thetcbcounter: #1, enhanced, breakable}
 
-% Simulation Environment
-\newtcolorbox{simbox}[1][]{
+% Simulation Environment: Green for FDTD modules
+\newtcolorbox[auto counter, number within=chapter]{simbox}[1][]{
     colback=green!5!white, colframe=green!50!black, fonttitle=\bfseries,
-    title=Computational Module: #1, enhanced, breakable}
+    title=Computational Module \thetcbcounter: #1, enhanced, breakable}
+
+% 3. LCT Specific Macros (The "Software" Layer)
+\newcommand{\Zvac}{Z_0}
+\newcommand{\Wcut}{\omega_{\text{cutoff}}}
+\newcommand{\epsmn}{\epsilon_{\mu\nu}}
+\newcommand{\lplanck}{l_P}
+\newcommand{\psiorder}{\psi(\mathbf{r}, t)}
