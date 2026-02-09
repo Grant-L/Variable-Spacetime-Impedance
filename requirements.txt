@@ -1,9 +1,5 @@
-numpy
-matplotlib
-scipy
-astropy
-jupyterlab
-ipykernel
-sympy
-# Add classy or CAMB for CMB
-# GADGET-3 for simulations (install separately)
+# LCT Simulation Suite Dependencies
+numpy>=1.24.0      # High-performance numerical array operations [cite: 598]
+scipy>=1.10.0      # Fundamental constants and Ginzburg-Landau relaxation [cite: 600]
+matplotlib>=3.7.0   # Visual proofs, phase maps, and rotation curves [cite: 599]
+jupyter>=1.0.0      # Required for the .ipynb verification notebooks [cite: 563]

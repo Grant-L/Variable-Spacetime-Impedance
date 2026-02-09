@@ -1,23 +1,29 @@
 """
-Physical constants and unit definitions for the project.
+LCT Hardware Constants: 
+Defining the Vacuum as a Discrete LC Lattice.
 """
-
 import scipy.constants as const
+import numpy as np
 
-# Fundamental constants
-C = const.c  # Speed of light [m/s]
-G = const.G  # Gravitational constant [m^3 kg^-1 s^-2]
-HBAR = const.hbar  # Reduced Planck constant [J s]
-H = const.h  # Planck constant [J s]
-K_B = const.k  # Boltzmann constant [J/K]
-EPSILON_0 = const.epsilon_0  # Vacuum permittivity [F/m]
-MU_0 = const.mu_0  # Vacuum permeability [H/m]
+# --- Standard Physical Constants ---
+C_LIGHT = const.c
+G_GRAV = const.G
+H_BAR = const.hbar
+EPSILON_0 = const.epsilon_0  # Lattice Capacitance equivalent 
+MU_0 = const.mu_0            # Lattice Inductance equivalent [cite: 38, 69]
 
-# Derived constants
-PLANCK_LENGTH = const.physical_constants['Planck length'][0]  # [m]
-PLANCK_TIME = const.physical_constants['Planck time'][0]  # [s]
-PLANCK_MASS = const.physical_constants['Planck mass'][0]  # [kg]
+# --- LCT Hardware Variables (Table 1) ---
+L_LATTICE = MU_0             # [H/m] Vacuum Permeability [cite: 38]
+C_LATTICE = EPSILON_0        # [F/m] Vacuum Permittivity [cite: 38]
+DX = 1.616255e-35            # [m] Lattice Pitch (Planck Length) [cite: 38]
 
-# Unit conversions
-EV_TO_JOULE = const.e  # Electron volt to joule
-KG_TO_EV = 1 / (EV_TO_JOULE / C**2)  # Mass-energy conversion
+# --- Emergent Hardware Properties ---
+# Characteristic Impedance: Z0 = sqrt(L/C) [cite: 38]
+Z_0 = np.sqrt(L_LATTICE / C_LATTICE) 
+
+# Nyquist Limit: w_cutoff = 2 / sqrt(LC) [cite: 38, 134]
+W_CUTOFF = 2.0 / np.sqrt(L_LATTICE * C_LATTICE)
+
+# --- Derived LCT Scaling Factors ---
+# Mass as Bandwidth Saturation: Relates mass to frequency cutoff [cite: 144]
+PLANCK_MASS_LCT = (H_BAR * W_CUTOFF) / (C_LIGHT**2)
