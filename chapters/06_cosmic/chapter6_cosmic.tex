@@ -2,44 +2,45 @@
 \label{ch:cosmic_layer}
 
 \section{Introduction: The Big Bang as a Global Quench}
-Standard cosmology models the Big Bang as an expansion from a singular point of infinite density. LCT proposes a mechanical alternative: the \textbf{Global Quench}. The early universe was a high-temperature, disordered phase fluid that underwent a rapid transition into the ordered ground state of the LC lattice. 
+Standard cosmology models the Big Bang as an expansion from a singular point. \LCT{} replaces this with the \textbf{Global Quench}. The early universe was a high-temperature, disordered fluid that underwent a rapid cooling phase, "freezing" into the \textbf{Amorphous Topological Glass} (the vacuum lattice) we observe today.
 
-
-
-\section{The Kibble-Zurek Mechanism}
+\section{The Kibble-Zurek Mechanism: Matter Genesis}
 As the vacuum crystallized, independent "domains" of the lattice formed with mismatched phase orientations. Where these domains met, the resulting phase mismatch created permanent topological "knots."
 \begin{itemize}
-    \item \textbf{Primordial Scars}: Fundamental particles are the "cracks" trapped in the freezing vacuum.
-    \item \textbf{Defect Density}: The total amount of matter in the universe is a direct function of the \textbf{Quench Rate}---the speed at which the vacuum cooled.
+    \item \textbf{Primordial Scars:} Fundamental particles (Protons/Electrons) are the "cracks" trapped in the freezing vacuum structure.
+    \item \textbf{Defect Density:} The total amount of matter is a direct function of the \textbf{Quench Rate} ($dT/dt$). Faster cooling traps more defects (matter), while slower cooling allows for a clearer, empty vacuum.
 \end{itemize}
 
-\section{Numerical Verification: Spontaneous Matter Creation}
-We use the time-dependent Ginzburg-Landau (TDGL) equation to simulate the "freezing" of a disordered vacuum into an ordered state.
+\section{Dark Energy as Latent Heat}
+\label{sec:latent_heat}
+The most significant prediction of LCT is the mechanical origin of **Dark Energy**. The "accelerated expansion" is not caused by a cosmological constant ($\Lambda$), but by the **Latent Heat** released during the solidification of the vacuum substrate.
 
-\begin{simbox}[The Cosmic Quench]
-As verified in \texttt{sim\_6\_cosmic\_quench.py}, starting from a state of total phase randomness (high temperature), the vacuum substrate naturally relaxes into ordered domains. At the junctions where phase orientations conflict, topological vortices (matter) are spontaneously trapped.
+\begin{axiombox}[Dark Energy as Work]
+"Dark Energy" is the potential energy stored in the nodal capacitance $C$ that is converted into mechanical work (expansion) as the amorphous lattice releases its internal stress and reaches equilibrium connectivity $\langle k \rangle \approx 15.54$.
+\end{axiombox}
+
+\section{Numerical Verification: The Expansion Pulse}
+We verify this by modeling the universe's expansion history $H(t)$ as a function of matter density $\rho_m$ and the latent heat flux $\rho_{latent}$.
+
+\begin{simbox}[Verification of the Hubble Pulse]
+As verified in \texttt{sim\_6\_cosmological\_expansion.py}, the expansion curve in Figure 6.1 displays a distinct "pulse" corresponding to the vacuum's phase transition.
 \begin{center}
-    \includegraphics[width=0.8\textwidth]{assets/sim_outputs/cosmic_quench_result.png}
+    \includegraphics[width=0.9\textwidth]{assets/sim_outputs/cosmological_expansion.png}
 \end{center}
-The resulting distribution of vortices represents the primordial matter density of the LCT universe.
+This resolves the \textbf{Hubble Tension}: early-universe measurements (CMB) capture the pre-transition rate, while late-universe measurements (Supernovae) capture the post-quench acceleration driven by latent heat release.
 \end{simbox}
 
-\section{Dark Energy as Latent Heat}
-In LCT, the accelerated expansion of the universe (Dark Energy) is not a "lambda" constant, but the \textbf{Latent Heat} of the vacuum phase transition. As the lattice settles into its final ordered state, the energy released from the "freezing" process exerts an outward pressure on the metric.
-
-
-
 \section{The Late-Time Phase Transition}
-The "Hubble Tension"---the discrepancy in the measured expansion rate of the universe---is resolved in LCT as a signature of a \textbf{Late-Time Phase Transition}. At approximately $z \approx 10$, the vacuum underwent a final crystallization step, releasing a pulse of energy that boosted the local expansion rate.
+The simulation confirms that the vacuum is still "settling." At approximately $z \approx 10$, the lattice underwent a secondary crystallization step. This implies that the "Hubble Constant" is not constant, but a time-dependent variable $H(t)$ driven by the cooling rate of the hardware.
 
 \section{Exercises}
 \begin{problembox}[Cosmic Layer Challenges]
 \begin{enumerate}
-    \item \textbf{Quench Rate Calculation}: Using the defect density from \texttt{sim\_6}, calculate the required cooling rate ($dT/dt$) to produce the observed baryon-to-photon ratio.
-    \item \textbf{Domain Boundary Tension}: Model a "Domain Wall" as a region of infinite metric strain $\epsilon$. Prove that signals (photons) are reflected by these boundaries, creating the observed "CMB Cold Spots."
-    \item \textbf{Latent Heat Pressure}: Derive the effective "Dark Energy" pressure $P$ as a function of the lattice condensation energy $U_{cond}$.
+    \item \textbf{Quench Rate Calculation:} Using the standard defect density of the universe ($n \approx 0.25$ baryons/$m^3$), calculate the required cooling rate ($dT/dt$) of the LCT vacuum.
+    \item \textbf{Latent Heat Pressure:} Derive the effective "Dark Energy" pressure $P$ as a function of the lattice condensation energy $U_{cond}$.
+    \item \textbf{The Heat Death:} Prove that as $t \to \infty$, the latent heat $\rho_{latent} \to 0$, leading to a static, Euclidean lattice (Flat Space).
 \end{enumerate}
 \end{problembox}
 
 \section{Transition to Observational Signatures}
-With the origin of matter established as a byproduct of vacuum crystallization, we move to \textbf{Chapter 7: Observational Signatures}. Here, we verify the macroscale consequences of our superfluid vacuum, solving the mystery of \textbf{Dark Matter} as a quantized vortex lattice.
+With the origin of Dark Energy established as the cooling of the vacuum glass, we move to **Chapter 7: The Galactic Layer**. Here, we verify the macroscale consequences of our superfluid vacuum, solving the mystery of **Dark Matter** as the rotational stiffness of the Abrikosov Lattice.

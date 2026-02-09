@@ -1,22 +1,53 @@
-\chapter{The Computational Verification Suite}
-\label{app:verification_suite}
+\chapter{Simulation Manifest and Codebase}
+\label{app:simulation_manifest}
 
-\section{B.1 Overview: The Numerical Foundation}
-The LCT is verified through Python-based Finite-Difference Time-Domain (FDTD) and Ginzburg-Landau relaxation simulations[cite: 42, 43]. These ensure reproducibility of the emergent phenomena described in Chapters 1–8[cite: 43].
+The credibility of Lindblom Coupling Theory rests on numerical verification. The following Python modules, available in the \texttt{src/} directory, reproduce the figures and results presented in this text.
 
-\section{B.2 Key Verification Modules}
+\section*{B.1 Hardware Layer (Chapter 1)}
 \begin{itemize}
-    \item \textbf{Metric Strain (\texttt{sim\_a\_metric\_strain.py})}: Validates the "Gravity as Metric Strain" postulate by locally modifying $\Lvac$ and $\Cvac$[cite: 44, 45].
-    \item \textbf{Dispersion (\texttt{01\_Relativistic\_Limit.ipynb})}: Confirms that as signal frequency $\omega$ approaches $\Wcut$, the group velocity $v_g$ vanishes[cite: 47, 48].
-    \item \textbf{Pilot-Wave (\texttt{sim\_d\_born\_rule.py})}: Reproduces the Born Rule using deterministic solitons without wavefunction collapse[cite: 50, 52].
-    \item \textbf{Proton Triplet (\texttt{sim\_k\_proton\_triplet.py})}: Proves that three vortex cores self-assemble into a stable triangular "Trefoil" configuration[cite: 53, 54].
-    \item \textbf{Galactic Rotation (\texttt{sim\_l\_galactic\_rotation.py})}: Validates the Dark Matter solution through quantized vortex lattices[cite: 55, 56].
-    \item \textbf{The Cosmic Quench (\texttt{sim\_b\_genesis.py})}: Models the Big Bang as a vacuum phase transition where matter is trapped at domain boundaries[cite: 57, 58].
+    \item \textbf{Module:} \texttt{sim\_1\_amorphous\_vacuum.py}
+    \item \textbf{Physics Verified:} Generates the 3D Voronoi substrate and calculates the nodal connectivity mean $\langle k \rangle \approx 15.54$.
+    \item \textbf{Key Output:} \texttt{connectivity\_histogram.png} – Proves the statistical isotropy of the glass.
 \end{itemize}
 
-\section{B.3 Environment Setup}
-To run the suite, use the following requirements[cite: 59, 60, 61, 62]:
+\section*{B.2 Signal Layer (Chapter 2)}
 \begin{itemize}
-    \item \texttt{numpy}, \texttt{matplotlib}, \texttt{scipy}[cite: 59, 60, 61].
-    \item Execute \texttt{setup.sh} to link \texttt{src/constants.py}[cite: 62].
+    \item \textbf{Module:} \texttt{sim\_2\_metric\_refraction\_v2.py}
+    \item \textbf{Physics Verified:} Simulates the \textbf{Refractive Index Gradient} near a mass load.
+    \item \textbf{Key Output:} \texttt{impedance\_heatmap.png} – Visualizes Gravity as a region of high-inductance signal delay ($n > 1$).
+\end{itemize}
+
+\section*{B.3 Quantum Layer (Chapter 3)}
+\begin{itemize}
+    \item \textbf{Module:} \texttt{sim\_3\_pilot\_wave\_v2.py}
+    \item \textbf{Physics Verified:} Models the \textbf{Pilot Wave} feedback loop and the "Walker" trajectory.
+    \item \textbf{Key Output:} \texttt{pilot\_wave\_walker\_v2.png} – Demonstrates that "Probability" is the result of deterministic \textbf{Nodal Jitter}.
+\end{itemize}
+
+\section*{B.4 Topological Layer (Chapter 4)}
+\begin{itemize}
+    \item \textbf{Module:} \texttt{sim\_4\_proton\_triplet\_final.py}
+    \item \textbf{Physics Verified:} Visualizes the Proton as a **Trefoil Knot** of three entangled phase singularities.
+    \item \textbf{Key Output:} \texttt{proton\_3d\_topology\_V2.png} – Reveals the high-tension "Phase Bridges" (Gluons) responsible for confinement.
+\end{itemize}
+
+\section*{B.5 Weak Layer (Chapter 5)}
+\begin{itemize}
+    \item \textbf{Module:} \texttt{sim\_5\_weak\_clamping.py}
+    \item \textbf{Physics Verified:} Tests the propagation of chiral pulses through a polarized lattice.
+    \item \textbf{Key Output:} \texttt{weak\_clamping\_results.png} – Shows the reflection (clamping) of right-handed helical signals.
+\end{itemize}
+
+\section*{B.6 Cosmological Layer (Chapter 6)}
+\begin{itemize}
+    \item \textbf{Module:} \texttt{sim\_6\_cosmological\_expansion.py}
+    \item \textbf{Physics Verified:} Models the universe's expansion history $H(t)$ during the **Global Quench**.
+    \item \textbf{Key Output:} \texttt{cosmological\_expansion.png} – Identifying the "Hubble Pulse" driven by latent heat release.
+\end{itemize}
+
+\section*{B.7 Galactic Layer (Chapter 7)}
+\begin{itemize}
+    \item \textbf{Module:} \texttt{sim\_7\_galactic\_rotation\_v2.py}
+    \item \textbf{Physics Verified:} Simulates the \textbf{Abrikosov Lattice} stiffness in a rotating superfluid galaxy.
+    \item \textbf{Key Output:} \texttt{galactic\_rotation\_v2.png} – Recovers flat rotation curves and the $1/r$ "Dark Matter" density profile without hidden mass.
 \end{itemize}

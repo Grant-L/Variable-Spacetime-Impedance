@@ -8,29 +8,42 @@
 \usepackage{siunitx}                            % For Z_0, L, and C values
 \usepackage{graphicx}                           % For simulation PNGs
 \usepackage{cleveref}                           % Intelligent cross-referencing
+\usepackage{listings}                           % For code blocks
+\usepackage{xcolor}                             % Required for color styling
 
 % 2. Styling Containers (The Boxes)
 \usepackage{tcolorbox}
 \tcbuselibrary{skins, breakable}
 
+% Axiom Box: Gold/Blue for fundamental LCT postulates (New!)
+\newtcolorbox{axiombox}[1][]{
+    colback=blue!2!white, colframe=blue!75!black, fonttitle=\bfseries,
+    title=LCT Postulate: #1, enhanced, breakable, attach title to upper, 
+    after title={:\enskip}, arc=0mm}
+
 % Example Environment: Blue for worked derivations
 \newtcolorbox[auto counter, number within=chapter]{examplebox}[1][]{
     colback=blue!5!white, colframe=blue!75!black, fonttitle=\bfseries,
-    title=Example \thetcbcounter: #1, enhanced, breakable, attach title to upper, after title={:\enskip}}
+    title=Example \thetcbcounter: #1, enhanced, breakable, attach title to upper, 
+    after title={:\enskip}}
 
 % Problem Environment: Red for theory challenges
 \newtcolorbox[auto counter, number within=chapter]{problembox}[1][]{
     colback=red!5!white, colframe=red!75!black, fonttitle=\bfseries,
     title=Problem \thetcbcounter: #1, enhanced, breakable}
 
-% Simulation Environment: Green for FDTD modules
+% Simulation Environment: Green for FDTD/Graph modules
 \newtcolorbox[auto counter, number within=chapter]{simbox}[1][]{
     colback=green!5!white, colframe=green!50!black, fonttitle=\bfseries,
     title=Computational Module \thetcbcounter: #1, enhanced, breakable}
 
-% 3. LCT Specific Macros (The "Software" Layer)
-\newcommand{\Zvac}{Z_0}
-\newcommand{\Wcut}{\omega_{\text{cutoff}}}
+% 3. LCT Specific Macros (Collision-Proof)
+\providecommand{\Zvac}{Z_0}
+\providecommand{\Wcut}{\omega_{\text{cutoff}}}
+\renewcommand{\Zvac}{Z_0} 
+\renewcommand{\Wcut}{\omega_{\text{cutoff}}}
+
+\newcommand{\LCT}{Lindblom Coupling Theory}
 \newcommand{\epsmn}{\epsilon_{\mu\nu}}
 \newcommand{\lplanck}{l_P}
 \newcommand{\psiorder}{\psi(\mathbf{r}, t)}
