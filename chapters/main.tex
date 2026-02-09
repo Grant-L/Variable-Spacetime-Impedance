@@ -3,115 +3,37 @@
 % --- Core Packages ---
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{amsmath, amssymb, amsthm} % Essential math rigor
-\usepackage{graphicx}                % For simulation assets [cite: 152, 942]
-\usepackage{listings}                % For Computational Modules
+\usepackage{amsmath, amssymb, amsthm} 
+\usepackage{graphicx}                
+\usepackage{listings}                
 \usepackage{xcolor}
-\usepackage{hyperref}                % Internal cross-referencing
+\usepackage{hyperref}                
 \usepackage{geometry}
- \geometry{letterpaper, margin=1in}
+\geometry{letterpaper, margin=1in}
 
-% --- Load LCT Styles & Environments (setup.tex) ---
-\usepackage{tcolorbox}
-\tcbuselibrary{skins, breakable}
+% --- Load LCT Styles ---
+\input{setup.tex} 
 
-\newtcolorbox[auto counter, number within=chapter]{examplebox}[1][]{
-    colback=blue!5!white, colframe=blue!75!black, fonttitle=\bfseries,
-    title=Example \thetcbcounter: #1, enhanced, breakable, attach title to upper, after title={:\enskip}}
-
-\newtcolorbox[auto counter, number within=chapter]{problembox}[1][]{
-    colback=red!5!white, colframe=red!75!black, fonttitle=\bfseries,
-    title=Problem \thetcbcounter: #1, enhanced, breakable}
-
-\newtcolorbox{simbox}[1][]{
-    colback=green!5!white, colframe=green!50!black, fonttitle=\bfseries,
-    title=Computational Module: #1, enhanced, breakable}
-
-% --- Custom LCT Commands (Synchronized with constants.py) ---
-\newcommand{\Lvac}{\mathcal{L}}       % Lattice Inductance [cite: 15, 90]
-\newcommand{\Cvac}{\mathcal{C}}       % Lattice Capacitance [cite: 15, 90]
-\newcommand{\Zvac}{Z_0}               % Characteristic Impedance [cite: 15, 88]
-\newcommand{\Wcut}{\omega_{cutoff}}   % Hardware Nyquist Limit [cite: 15, 122]
-\newcommand{\Dx}{\Delta x}            % Lattice Pitch [cite: 15, 94]
-
-% --- Document Metadata ---
-\title{The Lindblom Coupling Theory: \\ \large A Hardware-Oriented Unified Field Theory}
-\author{Grant Lindblom}
-\date{February 9, 2026} [cite: 5]
+% --- Global LCT Commands ---
+\newcommand{\Lvac}{\mathcal{L}}       
+\newcommand{\Cvac}{\mathcal{C}}       
+\newcommand{\Zvac}{Z_0}               
+\newcommand{\Wcut}{\omega_{cutoff}}   
+\newcommand{\Dx}{\Delta x}            
 
 \begin{document}
-
-% --- Front Matter ---
 \frontmatter
 \maketitle
+\tableofcontents
 
-\chapter*{Preface}
-\addcontentsline{toc}{chapter}{Preface}
-This text represents a departure from 20th-century geometric abstraction toward a constitutive, hardware-oriented understanding of the cosmos[cite: 7]. We move from the perceived continuum to a discrete hardware layer[cite: 8].
+% Nomenclature and Constants Section
+\input{chapters/frontmatter/variables.tex} 
 
-\tableofcontents [cite: 11]
-
-% --- Nomenclature & Glossary ---
-\chapter*{Nomenclature and Fundamental Constants}
-\addcontentsline{toc}{chapter}{Nomenclature and Fundamental Constants}
-\begin{table}[h!]
-\centering
-\begin{tabular}{|l|l|l|l|}
-\hline
-\textbf{Symbol} & \textbf{Name} & \textbf{Value (LCT)} & \textbf{Physical Equivalent} \\ \hline
-$\Lvac$ & Lattice Inductance & $\approx 1.257 \mu$H/m & $\mu_0$ (Vacuum Permeability) [cite: 26] \\ \hline
-$\Cvac$ & Lattice Capacitance & $\approx 8.854$ pF/m & $\epsilon_0$ (Vacuum Permittivity) [cite: 26] \\ \hline
-$\Zvac$ & Characteristic Impedance & $\approx 376.73 \Omega$ & $\sqrt{\Lvac/\Cvac}$ [cite: 26] \\ \hline
-$\Dx$ & Lattice Pitch & $\sim 10^{-35}$ m & Discrete nodal spacing [cite: 26] \\ \hline
-$\Wcut$ & Cutoff Frequency & $2/\sqrt{\Lvac\Cvac}$ & Nyquist limit [cite: 26] \\ \hline
-\end{tabular}
-\end{table}
-
-% --- Main Matter ---
 \mainmatter
-
-\part{The Foundation: The Vacuum Substrate} [cite: 11]
-\chapter{The Hardware Layer: The Vacuum as a Discrete LC Lattice} [cite: 11, 88]
+\part{The Foundation: The Vacuum Substrate}
+\chapter{The Hardware Layer: The Vacuum as a Discrete LC Lattice}
 \input{chapters/chapter1.tex} 
 
-\chapter{The Signal Layer: Variable Impedance and Mass Emergence} [cite: 11, 153]
-\input{chapters/chapter2.tex}
-
-\part{The Emergent Layers: Particles and Forces} [cite: 14, 222]
-\chapter{The Quantum Layer: Hydrodynamic Pilot-Wave Mechanics} [cite: 14, 226]
-\input{chapters/chapter3.tex}
-
-\chapter{The Topological Layer: Matter as Defects in the Order Parameter} [cite: 14, 298]
-\input{chapters/chapter4.tex}
-
-\chapter{The Weak Layer: Chirality as a Filter} [cite: 14, 364]
-\input{chapters/chapter6.tex}
-
-\part{The Macroscale: Cosmology and Engineering} [cite: 14, 424]
-\chapter{The Cosmic Layer: Genesis and Non-Locality in a Stiff Substrate} [cite: 14, 427]
-\input{chapters/chapter5.tex}
-
-\chapter{Observational Signatures: Superfluid Turbulence and Phase Transitions} [cite: 17, 497]
-\input{chapters/chapter7.tex}
-
-\chapter{Engineering the Vacuum: Metric Engineering and Propulsion} [cite: 17, 594]
-\input{chapters/chapter8.tex}
-
-% --- Back Matter ---
-\backmatter
-\appendix
-
-\chapter{Mathematical Proofs and Formalism} [cite: 17, 740]
-\input{chapters/appendix_a.tex}
-
-\chapter{The Computational Verification Suite} [cite: 17, 785]
-\input{chapters/appendix_b.tex}
-
-\chapter{Simulation Code Repository} [cite: 21, 957]
-\input{chapters/appendix_c.tex}
-
-% --- Bibliography ---
-\bibliographystyle{unsrt} 
-\bibliography{chapters/bibliography} % Links to 1100+ citation database [cite: 1020]
+% Other chapters to be updated sequentially...
 
 \end{document}
