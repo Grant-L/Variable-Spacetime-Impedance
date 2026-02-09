@@ -143,3 +143,99 @@ def run_casimir_filter():
     # Result: Frequencies < c/2d are suppressed
     plot_spectrum(signal_inside, signal_outside)
 \end{lstlisting}
+
+\section*{C.10 Engineering Layer: Topological Short Stability}
+\begin{lstlisting}[language=Python, caption=Stability Analysis of a Vacuum Via]
+# sim_8_topological_short_stability.py
+import numpy as np
+import matplotlib.pyplot as plt
+
+def run_topological_short_stability():
+    # --- LCT Hardware Constants ---
+    E_crit = 1e18        # Schwinger Limit (V/m)
+    epsilon_0 = 8.85e-12 # Lattice Capacitance (F/m)
+    r_via = 1.0          # Radius of the Vacuum Via
+    
+    # Activation Energy to stress the vacuum volume
+    Volume = (4/3) * np.pi * r_via**3
+    U_activation = 0.5 * epsilon_0 * E_crit**2 * Volume
+    
+    t = np.linspace(0, 10, 1000)
+    
+    # Scenario A: Resistive Collapse (Standard Model)
+    # The lattice snaps back instantly without active stabilization
+    U_resistive = U_activation * np.exp(-t)
+
+    # Scenario B: Topological Lock-In (LCT Model)
+    # Negative Impedance (-Z) creates a lossless Phase Bridge
+    U_lct = np.zeros_like(t)
+    pulse_end = 2.0
+    
+    for i, time in enumerate(t):
+        if time < pulse_end:
+            U_lct[i] = U_activation * (time / pulse_end) # Charging
+        else:
+            U_lct[i] = U_activation # Locked State
+            
+    # Visualization
+    plt.plot(t, U_resistive, 'r--', label='Resistive Collapse')
+    plt.plot(t, U_lct, 'g-', label='Topological Lock-In')
+    plt.title("LCT Figure 8.2: Stability of a Topological Short")
+    plt.xlabel("Time (microseconds)")
+    plt.ylabel("Lattice Potential (Joules)")
+    plt.legend()
+    plt.show()
+\end{lstlisting}
+
+\section*{C.11 Engineering Layer: Spatiotemporal Evolution}
+\begin{lstlisting}[language=Python, caption=Visualizing the Formation of a Topological Short]
+# sim_8_topological_short.py
+import numpy as np
+import matplotlib.pyplot as plt
+
+def run_topological_short_sim():
+    # Setup 3x3 Grid
+    fig, axes = plt.subplots(3, 3, figsize=(12, 12))
+    
+    # Grid Geometry
+    x = np.linspace(-5, 5, 100)
+    y = np.linspace(-5, 5, 100)
+    X, Y = np.meshgrid(x, y)
+    R = np.sqrt(X**2 + Y**2)
+    
+    times = np.linspace(0, 4.0, 9)
+    activation_time = 1.5
+    
+    for i, t in enumerate(times):
+        ax = axes.flat[i]
+        
+        # --- Physics Model ---
+        if t <= activation_time:
+            # Phase 1: Charging (Resistive Load)
+            # Power ramps linearly to max (Schwinger Limit)
+            power_text = "Input: High"
+            # Gaussian Strain Peak
+            Z = np.exp(-R**2 / 2.0) * (t / activation_time)
+        else:
+            # Phase 2: Stable Soliton (Negative Impedance)
+            # Power drops to zero (Self-Sustaining)
+            power_text = "Input: ~0 W"
+            # Topology fractures into a Ring/Throat
+            ring_factor = min(1.0, (t - activation_time) * 1.5)
+            Z = ((1-ring_factor) * np.exp(-R**2 / 2.0) + 
+                 ring_factor * np.exp(-(R-1.5)**2 / 0.5))
+            
+        # Plot Heatmap
+        ax.imshow(Z, cmap='inferno', origin='lower')
+        ax.set_title(f"t={t:.1f} $\mu$s")
+        ax.text(0.05, 0.9, power_text, color='white', transform=ax.transAxes,
+                bbox=dict(facecolor='black', alpha=0.5))
+        ax.axis('off')
+        
+    plt.suptitle("LCT Figure 8.3: Evolution of a Topological Short", fontsize=16)
+    plt.tight_layout()
+    plt.show()
+
+if __name__ == "__main__":
+    run_topological_short_sim()
+\end{lstlisting}
