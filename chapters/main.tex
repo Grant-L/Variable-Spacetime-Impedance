@@ -7,33 +7,88 @@
 \usepackage{graphicx}                
 \usepackage{listings}                
 \usepackage{xcolor}
+\usepackage{tabularx}                % Added to fix variable table width
 \usepackage{hyperref}                
 \usepackage{geometry}
 \geometry{letterpaper, margin=1in}
 
-% --- Load LCT Styles ---
+% --- Load LCT Styles & Environments ---
+% Ensure setup.tex contains the tcolorbox definitions for examplebox, problembox, and simbox.
 \input{setup.tex} 
 
-% --- Global LCT Commands ---
+% --- Global LCT Commands & Math Fixes ---
 \newcommand{\Lvac}{\mathcal{L}}       
 \newcommand{\Cvac}{\mathcal{C}}       
 \newcommand{\Zvac}{Z_0}               
 \newcommand{\Wcut}{\omega_{cutoff}}   
 \newcommand{\Dx}{\Delta x}            
 
+% --- Document Metadata (Fixes "No author given" warning) ---
+\title{\Huge \textbf{The Lindblom Coupling Theory} \\ \vspace{0.5cm} \Large A Hardware-Oriented Unified Field Theory}
+\author{\Large Grant Lindblom}
+\date{February 9, 2026} [cite: 5]
+
 \begin{document}
+
+% --- Front Matter ---
 \frontmatter
 \maketitle
+
+\chapter*{Preface}
+\addcontentsline{toc}{chapter}{Preface}
+This text represents a departure from 20th-century geometric abstraction toward a constitutive, hardware-oriented understanding of the cosmos[cite: 7]. We move from the perceived continuum to a discrete hardware layer[cite: 8].
+
 \tableofcontents
 
-% Nomenclature and Constants Section
-\input{chapters/frontmatter/variables.tex} 
+% --- Nomenclature and Constants ---
+% This pulls from the updated variables.tex provided in the previous turn.
+\input{variables.tex} 
 
+% --- Main Matter ---
 \mainmatter
+
 \part{The Foundation: The Vacuum Substrate}
-\chapter{The Hardware Layer: The Vacuum as a Discrete LC Lattice}
+% Chapter 1: Hardware Layer
 \input{chapters/chapter1.tex} 
 
-% Other chapters to be updated sequentially...
+% Chapter 2: Signal Layer
+\input{chapters/chapter2.tex}
+
+\part{The Emergent Layers: Particles and Forces}
+% Chapter 3: Quantum Layer
+\input{chapters/chapter3.tex}
+
+% Chapter 4: Topological Layer
+\input{chapters/chapter4.tex}
+
+% Chapter 6: Weak Layer (Re-indexed in sequence)
+\input{chapters/chapter6.tex}
+
+\part{The Macroscale: Cosmology and Engineering}
+% Chapter 5: Cosmic Layer
+\input{chapters/chapter5.tex}
+
+% Chapter 7: Observational Signatures
+\input{chapters/chapter7.tex}
+
+% Chapter 8: Engineering the Vacuum
+\input{chapters/chapter8.tex}
+
+% --- Back Matter ---
+\backmatter
+\appendix
+
+% Mathematical Proofs
+\input{chapters/appendix_a.tex}
+
+% Computational Verification Suite
+\input{chapters/appendix_b.tex}
+
+% Simulation Code Repository
+\input{chapters/appendix_c.tex}
+
+% --- Bibliography ---
+\bibliographystyle{unsrt} 
+\bibliography{chapters/bibliography}
 
 \end{document}
