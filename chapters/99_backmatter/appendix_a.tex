@@ -1,29 +1,30 @@
 \chapter{Mathematical Proofs and Formalism}
+\label{app:math_proofs}
 
 \section{A.1 The Discrete-to-Continuum Limit (Kirchhoff)}
-To bridge the gap between electrical engineering and field theory, we expand the derivation in Section 1.2.2. [cite_start]Consider the 3D discrete lattice where each node is connected by inductors $\Lvac$ and capacitors $\Cvac$[cite: 745]. [cite_start]The nodal current balance at node $n$ is[cite: 747]:
+To bridge the gap between electrical engineering and field theory, we expand the derivation of the vacuum wave equation from Section 1.2.2[cite: 37, 38]. Consider a 3D discrete lattice where each node is connected by inductors $\Lvac$ and capacitors $\Cvac$[cite: 38]. The nodal current balance at node $n$ is defined by[cite: 39]:
 \begin{equation}
 \Cvac \frac{dV_n}{dt} = I_n - I_{n+1}
 \end{equation}
-[cite_start]Differentiating and substituting $\Lvac \frac{dI}{dt} = \Delta V$ yields the discrete wave equation[cite: 749]:
+Differentiating and substituting the voltage relation $\Lvac \frac{dI}{dt} = \Delta V$ yields the discrete wave equation[cite: 39]:
 \begin{equation}
 \Lvac\Cvac \frac{d^2 V_n}{dt^2} = V_{n-1} - 2V_n + V_{n+1}
 \end{equation}
-[cite_start]In the limit $\Dx \rightarrow 0$, we define the spatial second derivative and recover the standard Wave Equation[cite: 754, 758]:
+In the limit $\Dx \rightarrow 0$, we recover the standard Wave Equation[cite: 39]:
 \begin{equation}
 \frac{\Lvac\Cvac}{\Dx^2} \frac{\partial^2 V}{\partial t^2} = \frac{\partial^2 V}{\partial x^2} \implies \frac{\partial^2 V}{\partial t^2} - c^2 \frac{\partial^2 V}{\partial x^2} = 0
 \end{equation}
 
-\section{A.2 The Madelung Internal Pressure (Q)}
-[cite_start]In Chapter 3, the Quantum Potential $Q$ was identified as internal vacuum pressure[cite: 761]. [cite_start]Substituting the polar form $\psi = \sqrt{\rho}e^{iS/\hbar}$ into the Schrödinger Equation and separating the real part yields the \textbf{Quantum Hamilton-Jacobi Equation}[cite: 764]:
+\section{A.2 The Madelung Internal Pressure ($Q$)}
+The Quantum Potential $Q$ is identified as internal vacuum pressure[cite: 39]. Substituting the polar form $\psi = \sqrt{\rho}e^{iS/\hbar}$ into the Schrödinger Equation and separating the real part yields the \textbf{Quantum Hamilton-Jacobi Equation}[cite: 40]:
 \begin{equation}
 \frac{\partial S}{\partial t} + \frac{(\nabla S)^2}{2m} + V + Q = 0 \quad \text{where} \quad Q = -\frac{\hbar^2}{2m} \frac{\nabla^2\sqrt{\rho}}{\sqrt{\rho}}
 \end{equation}
-[cite_start]In LCT, $Q$ is the \textbf{elastic potential energy density} of the lattice nodes being displaced[cite: 772].
+In LCT, $Q$ is the \textbf{elastic potential energy density} of the lattice nodes being physically displaced[cite: 40].
 
 \section{A.3 Impedance Clamping and Parity Violation}
-[cite_start]The effective impedance $Z_{eff}$ for helical pulses is modified by the alignment of the vortex winding $m$ and momentum vector $k$[cite: 776, 778]:
+The effective impedance $Z_{eff}$ for helical pulses is modified by the alignment of the vortex winding $m$ and momentum vector $k$[cite: 41]:
 \begin{equation}
-Z_{eff}(\sigma, m, k) = Z_0 e^{\sigma(m \cdot k)}
+Z_{eff}(\sigma, m, k) = Z_0 e^{(m \cdot k)}
 \end{equation}
-[cite_start]As $\omega \rightarrow \Wcut$, the impedance for right-handed configurations $(m \cdot k > 0)$ hits the hardware slew limit, reflecting the energy back into the substrate[cite: 780, 781].
+As $\omega \rightarrow \Wcut$, the impedance for right-handed configurations hits the hardware slew limit, reflecting the energy back into the substrate[cite: 41].

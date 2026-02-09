@@ -1,68 +1,22 @@
-\chapter{B The Computational Verification Suite}
+\chapter{The Computational Verification Suite}
+\label{app:verification_suite}
 
 \section{B.1 Overview: The Numerical Foundation}
-The Lindblom Coupling Theory (LCT) is verified through a suite of Python-based Finite-Difference Time-Domain (FDTD) and Ginzburg-Landau relaxation simulations. This appendix provides the technical documentation for the scripts found in the \texttt{simulations/} directory, ensuring reproducibility of the emergent phenomena described in Chapters 1–8.
+The LCT is verified through Python-based Finite-Difference Time-Domain (FDTD) and Ginzburg-Landau relaxation simulations[cite: 42, 43]. These ensure reproducibility of the emergent phenomena described in Chapters 1–8[cite: 43].
 
-\section{B.2 Hardware and Signal Verification}
-
-\subsection{B.2.1 Metric Strain and Geodesics (\texttt{sim\_a\_metric\_strain.py})}
-This script validates the "Gravity as Metric Strain" postulate from Chapter 2. By locally modifying the distributed inductance $\Lvac$ and capacitance $\Cvac$ according to the Schwarzschild potential, the simulation demonstrates the refraction of wave packets.
-
-
-
+\section{B.2 Key Verification Modules}
 \begin{itemize}
-    \item \textbf{Postulate}: Light speed $v = 1/\sqrt{\Lvac'\Cvac'}$ drops near a mass.
-    \item \textbf{Result}: Wavefronts exhibit gravitational lensing, matching General Relativity’s predictions through variable impedance rather than curved geometry.
+    \item \textbf{Metric Strain (\texttt{sim\_a\_metric\_strain.py})}: Validates the "Gravity as Metric Strain" postulate by locally modifying $\Lvac$ and $\Cvac$[cite: 44, 45].
+    \item \textbf{Dispersion (\texttt{01\_Relativistic\_Limit.ipynb})}: Confirms that as signal frequency $\omega$ approaches $\Wcut$, the group velocity $v_g$ vanishes[cite: 47, 48].
+    \item \textbf{Pilot-Wave (\texttt{sim\_d\_born\_rule.py})}: Reproduces the Born Rule using deterministic solitons without wavefunction collapse[cite: 50, 52].
+    \item \textbf{Proton Triplet (\texttt{sim\_k\_proton\_triplet.py})}: Proves that three vortex cores self-assemble into a stable triangular "Trefoil" configuration[cite: 53, 54].
+    \item \textbf{Galactic Rotation (\texttt{sim\_l\_galactic\_rotation.py})}: Validates the Dark Matter solution through quantized vortex lattices[cite: 55, 56].
+    \item \textbf{The Cosmic Quench (\texttt{sim\_b\_genesis.py})}: Models the Big Bang as a vacuum phase transition where matter is trapped at domain boundaries[cite: 57, 58].
 \end{itemize}
 
-\subsection{B.2.2 Dispersion and Group Velocity (\texttt{01\_Relativistic\_Limit.ipynb})}
-This Jupyter notebook verifies the Lindblom Dispersion Relation.
+\section{B.3 Environment Setup}
+To run the suite, use the following requirements[cite: 59, 60, 61, 62]:
 \begin{itemize}
-    \item \textbf{Validation}: Numerical results confirm that as signal frequency $\omega$ approaches the hardware cutoff $\Wcut$, the group velocity $v_g$ vanishes.
-    \item \textbf{Significance}: This provides the numerical basis for mass as bandwidth saturation.
+    \item \texttt{numpy}, \texttt{matplotlib}, \texttt{scipy}[cite: 59, 60, 61].
+    \item Execute \texttt{setup.sh} to link \texttt{src/constants.py}[cite: 62].
 \end{itemize}
-
-\section{B.3 Quantum and Topological Verification}
-
-\subsection{B.3.1 The Hydrodynamic Pilot-Wave (\texttt{sim\_d\_born\_rule.py})}
-This simulation supports Chapter 3 by modeling a particle as a bouncing soliton that generates a memory field in the vacuum lattice.
-\begin{itemize}
-    \item \textbf{Mechanism}: The particle is guided by the gradient of the standing wave it creates.
-    \item \textbf{Outcome}: The resulting probability distribution reproduces the Born Rule without requiring probabilistic collapse.
-\end{itemize}
-
-
-
-\subsection{B.3.2 Proton Triplet Assembly (\texttt{sim\_k\_proton\_triplet.py})}
-This script uses Ginzburg-Landau relaxation to verify the "Proton as a Molecule" model from Chapter 4.
-\begin{itemize}
-    \item \textbf{Procedure}: Three phase vortices (winding $n=1$) are initialized in proximity.
-    \item \textbf{Result}: The lattice elastic tension forces the vortices into a stable triangular "Trefoil" configuration.
-\end{itemize}
-
-\section{B.4 Cosmic and Macroscale Verification}
-
-\subsection{B.4.1 Galactic Rotation and Vortex Lattices (\texttt{sim\_l\_galactic\_rotation.py})}
-This script validates the Dark Matter solution in Chapter 7.
-\begin{itemize}
-    \item \textbf{Logic}: It adds a quantized vortex lattice term to a standard Newtonian rotation model.
-    \item \textbf{Result}: The simulation produces a flat rotation curve that matches observed galactic data without the need for additional invisible particles.
-\end{itemize}
-
-
-
-\subsection{B.4.2 The Cosmic Quench (\texttt{sim\_b\_genesis.py})}
-This simulation models the Big Bang as a vacuum phase transition (crystallization) as described in Chapter 5.
-\begin{itemize}
-    \item \textbf{Observation}: As the "hot" disordered fluid cools, topological defects (matter) are spontaneously trapped at domain boundaries.
-    \item \textbf{Cosmology}: This provides a mechanical origin for the observed matter density of the universe.
-\end{itemize}
-
-\section{B.5 Environment Setup and Requirements}
-To run the LCT verification suite, ensure the following dependencies are installed via the \texttt{requirements.txt} file found in the root directory:
-\begin{itemize}
-    \item \texttt{numpy}: For high-performance numerical array operations[cite: 17, 21, 22].
-    \item \texttt{matplotlib}: For generating the visual proofs and phase maps[cite: 17, 21, 22].
-    \item \texttt{scipy}: For Ginzburg-Landau relaxation and integration[cite: 17, 21, 22].
-\end{itemize}
-Execute \texttt{setup.sh} to initialize the environment and link the \texttt{src/constants.py} file to the simulation modules[cite: 17, 21, 22].

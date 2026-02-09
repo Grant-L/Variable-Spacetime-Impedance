@@ -1,112 +1,49 @@
 \chapter{Simulation Code Repository}
-\label{app:code}
+\label{app:code_repo}
 
-\section{C.1 Introduction: Numerical Hardware Verification}
-The following scripts represent the core computational verification of the Lindblom Coupling Theory (LCT). These simulations utilize Finite-Difference Time-Domain (FDTD) methods and Ginzburg-Landau relaxation to model the vacuum as a physical hardware layer. All scripts are designed to work with the global constants defined in \texttt{src/constants.py}[cite: 90].
+\section{C.1 Introduction}
+All scripts utilize FDTD and Ginzburg-Landau methods based on the global constants defined in \texttt{src/constants.py}. [cite: 859]
 
-\section{C.2 Core Physics Simulations}
-
-\subsection{C.2.1 Metric Strain and Wave Refraction (\texttt{sim\_a\_metric\_strain.py})}
-This script demonstrates how localized gradients in $\Lvac$ and $\Cvac$ recreate the effects of gravitational lensing[cite: 65, 150].
-
-\begin{lstlisting}[language=Python]
+\section{C.2 Core Code: Metric Lensing}
+\begin{lstlisting}[language=Python, caption=Gravitational Lensing Simulation]
 import numpy as np
-# Normalized hardware constants from src/constants.py
+
 def run_metric_simulation(Nx=600, Ny=400, Nt=1200):
-    u = np.zeros((Nx, Ny)); u_prev = np.zeros((Nx, Ny))
-    # Distance-based metric strain mapping (Eq. 4.6)
+    u = np.zeros((Nx, Ny))
+    u_prev = np.zeros((Nx, Ny))
+    
+    # Grid for metric strain mapping
     X, Y = np.meshgrid(np.arange(Nx), np.arange(Ny), indexing='ij')
     R = np.sqrt((X - Nx//2)**2 + (Y - (Ny//2+50))**2)
-    n_map = 1.0 + 20.0 / (np.sqrt(R**2 + 10.0)) # Refractive Index
+    
+    # n = 1 + epsilon (refractive index gradient)
+    n_map = 1.0 + 20.0 / (np.sqrt(R**2 + 10.0)) 
     v_map = 1.0 / n_map # Local phase velocity
     
+    dt = 0.5
     for t in range(Nt):
-        lap = (np.roll(u,1,0) + np.roll(u,-1,0) + np.roll(u,1,1) + np.roll(u,-1,1) - 4*u)
-        u_next = 2*u - u_prev + (v_map * 0.5)**2 * lap
-        if t < 100: u_next[5, Ny//2-50] += np.sin(0.6*t)
+        lap = (np.roll(u, 1, 0) + np.roll(u, -1, 0) + 
+               np.roll(u, 1, 1) + np.roll(u, -1, 1) - 4*u)
+        u_next = 2*u - u_prev + (v_map * dt)**2 * lap
+        
+        if t < 100: 
+            u_next[5, Ny//2-50] += np.sin(0.6*t)
+            
         u_prev, u = u.copy(), u_next.copy()
     return u
 \end{lstlisting}
 
-\subsection{C.2.2 Topological Defect Creation (\texttt{sim\_spontaneous\_matter\_creation.py})}
-This script solves the time-dependent Ginzburg-Landau equation to model the spontaneous formation of matter during a vacuum quench[cite: 351, 356].
-
-\begin{lstlisting}[language=Python]
-import numpy as np
+\section{C.3 Core Code: The Cosmic Quench}
+\begin{lstlisting}[language=Python, caption=Vacuum Phase Transition (Genesis)]
 def simulate_quench(N=300, steps=1500):
     # Initial Hot Disordered Phase
     psi = np.exp(1j * np.random.uniform(-np.pi, np.pi, (N, N)))
     dt, dx = 0.001, 0.1
+    
     for t in range(steps):
-        lap = (np.roll(psi,1,0) + np.roll(psi,-1,0) + np.roll(psi,1,1) + np.roll(psi,-1,1) - 4*psi)/(dx**2)
-        # Vacuum relaxation to ordered state (Eq. 12.1)
+        lap = (np.roll(psi, 1, 0) + np.roll(psi, -1, 0) + 
+               np.roll(psi, 1, 1) + np.roll(psi, -1, 1) - 4*psi) / (dx**2)
+        # GL Relaxation to ordered state
         psi += dt * (lap + psi * (1.0 - np.abs(psi)**2))
     return np.angle(psi)
 \end{lstlisting}
-
-\section{C.3 Quantum Mechanical Walkers (\texttt{sim\_d\_born\_rule.py})}
-This script verifies the Pilot-Wave guidance law derived in Chapter 3, reproducing the Born Rule through deterministic "jitter"[cite: 197, 198].
-
-\begin{lstlisting}[language=Python]
-def run_born_rule_sim(steps=1000):
-    # Particle 'Bouncing' on the lattice
-    px, py = 50.0, 100.0; vx, vy = 0.8, 0.0
-    u = np.zeros((200, 200)); u_prev = np.zeros((200, 200))
-    for t in range(steps):
-        lap = (np.roll(u,1,0) + np.roll(u,-1,0) + np.roll(u,1,1) + np.roll(u,-1,1) - 4*u)
-        u_next = (2*u - u_prev + 0.25*lap) * 0.98 # Memory field decay
-        u_next[int(px), int(py)] += 2.0 * np.sin(0.5 * t) # Impact
-        # Gradient force from the memory field (Eq. 6.3)
-        vy += 0.1 * (u[int(px), int(py)+1] - u[int(px), int(py)-1]) / 2.0
-        px += vx; py += vy
-        u_prev, u = u.copy(), u_next.copy()
-\end{lstlisting}
-
-\section{C.4 Macroscale Galactic Rotation (\texttt{sim\_l\_galactic\_rotation.py})}
-Validates the Superfluid Vortex Lattice model for Dark Matter from Chapter 7[cite: 391, 404].
-
-\begin{lstlisting}[language=Python]
-import matplotlib.pyplot as plt
-def plot_rotation_curve():
-    r = np.linspace(0.1, 50, 500)
-    # Newtonian Visible Matter (Eq. 14.1)
-    v_newton = np.sqrt(4.302e-6 * 6.0e10 / r) * (1 - np.exp(-r/3.0))
-    # Superfluid Lattice Correction (k_lattice)
-    v_lct = np.sqrt(v_newton**2 + (180.0 * (1 - np.exp(-r/10.0)))**2)
-    plt.plot(r, v_newton, '--r', label='Newtonian'); plt.plot(r, v_lct, 'b', label='LCT')
-    plt.legend(); plt.show()
-\end{lstlisting}
-
-\section{C.5 Warp Field Impedance (\texttt{sim\_warp.py})}
-Demonstrates metric engineering by manipulating local capacitance to create a "slowed" hardware segment[cite: 442, 465].
-
-\begin{lstlisting}[language=Python]
-def simulate_warp_bubble():
-    C_map = np.ones((400, 400))
-    X, Y = np.meshgrid(np.arange(400), np.arange(400))
-    # Local saturation of lattice capacitance
-    C_map[(X-200)**2 + (Y-200)**2 < 50**2] = 2.5
-    # Solve wave equation with variable phase velocity
-    v_local = 1.0 / np.sqrt(C_map)
-    # [FDTD Loop implementation follows Section C.2.1]
-\end{lstlisting}
-
-\subsection{C.6 Weak Impedance Clamping (sim_weak_clamping.py)}
-FDTD simulation of asymmetric inductance on a 1D LC lattice with chiral nodes. Verifies reverse current suppression factor $\exp(-V_b / kT_\text{eff})$ matching $\sin^2 \theta_W$. Uses numpy/scipy for Kirchhoff solver; parameters: $V_b=2.52$ MeV, $kT_\text{eff}=1.8$ MeV.
-
-\subsection{C.7 Effective Coupling Suppression}
-The forward weak current proceeds at electromagnetic strength; reverse is suppressed. The effective mixing is derived as:
-\begin{equation}
-    \sin^2 \theta_W \approx \exp\left( -\frac{V_b}{kT_\text{eff}} \right),
-\end{equation}
-yielding $\sin^2 \theta_W \approx 0.231$ for $V_b = 2.52~\text{MeV}$ (lattice QCD up-down mass difference) and $kT_\text{eff} \approx 1.8~\text{MeV}$ (nuclear excitation scale), matching observation. This emerges from the impedance bias without tuning.
-
-The Fermi constant follows as $G_F \approx \frac{1}{\sqrt{2} v^2}$, where the vev $v \sim 246~\text{GeV}$ relates to the clamping threshold via lattice quench scales (detailed in Appendix A.3).
-
-\section{C.8 Technical Summary of Prior Computational Work}
-The LCT verification suite is built upon the foundational numerical libraries and scripts developed between June and November 2025.
-\begin{itemize}
-    \item \textbf{Relativistic Limits}: Verified in \texttt{01\_Relativistic\_Limit.ipynb} showing $v_g \rightarrow 0$ at the slew limit[cite: 64, 127].
-    \item \textbf{Atomic Stability}: Validated in \texttt{simulate\_hydrogenic\_atom.py} through wake-resonance matching[cite: 227].
-    \item \textbf{Cosmic Phase Transitions}: Documented in \texttt{02\_CMB\_BAO\_Fitting.ipynb} using late-time crystallization models[cite: 419].
-\end{itemize}
