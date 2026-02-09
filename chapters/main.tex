@@ -1,112 +1,63 @@
-\documentclass[11pt, letterpaper, openany]{book}
+\documentclass[11pt,oneside]{book}
 \usepackage[utf8]{inputenc}
-\usepackage{amsmath, amsfonts, amssymb}
-\usepackage{geometry}
+\usepackage{amsmath, amssymb, amsthm}
 \usepackage{graphicx}
-\usepackage{hyperref}
-\usepackage{fancyhdr}
 \usepackage{listings}
 \usepackage{xcolor}
-\usepackage{titlesec}
-\usepackage{booktabs}
+\usepackage{hyperref}
 
-% Geometry
-\geometry{margin=1in}
+% Define custom commands for LCT constants
+\newcommand{\Lvac}{\mathcal{L}}
+\newcommand{\Cvac}{\mathcal{C}}
+\newcommand{\Zvac}{Z_0}
+\newcommand{\Wcut}{\omega_{cutoff}}
 
-% Header/Footer
-\pagestyle{fancy}
-\fancyhf{}
-\rhead{\textbf{Variable Spacetime Impedance}}
-\lhead{Lindblom Coupling Theory}
-\cfoot{\thepage}
-
-% Code Style
-\definecolor{codegreen}{rgb}{0,0.6,0}
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}
-\definecolor{codepurple}{rgb}{0.58,0,0.82}
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
-
-\lstdefinestyle{mystyle}{
-    backgroundcolor=\color{backcolour},   
-    commentstyle=\color{codegreen},
-    keywordstyle=\color{magenta},
-    numberstyle=\tiny\color{codegray},
-    stringstyle=\color{codepurple},
-    basicstyle=\ttfamily\footnotesize,
-    breakatwhitespace=false,         
-    breaklines=true,                 
-    captionpos=b,                    
-    keepspaces=true,                 
-    numbers=left,                    
-    numbersep=5pt,                  
-    showspaces=false,                
-    showstringspaces=false,
-    showtabs=false,                  
-    tabsize=2
-}
-\lstset{style=mystyle}
-
-% --- TITLE PAGE DATA ---
-\title{\textbf{Variable Spacetime Impedance: \\ The Discrete Vacuum Substrate} \\ \Large A Hydrodynamic Approach to Unified Field Theory}
-\author{\textbf{Grant Lindblom} \\ Principal Investigator}
-\date{February 2026 Edition}
+\title{The Lindblom Coupling Theory: \\ \large A Hardware-Oriented Unified Field Theory}
+\author{Grant Lindblom}
+\date{\today}
 
 \begin{document}
 
-% --- FRONT MATTER ---
-\frontmatter
 \maketitle
 
-\chapter*{Preface: A Multidisciplinary Foundation}
-This text represents a shift from the geometric abstraction of the 20th century toward a constitutive, hardware-oriented understanding of the cosmos. By merging Electrical Engineering (RF Impedance), Fluid Mechanics (Superfluidity), and Theoretical Physics (NLSE), we provide a unified framework for the graduate-level researcher.
-
-\section*{How to Use This Book}
-This textbook is designed to be accessible to physicists, engineers, and mathematicians alike. However, each field uses different dialects to describe the same phenomena. To bridge this gap:
-
-\begin{itemize}
-    \item \textbf{The Glossary:} The frontmatter contains a comprehensive Translation Matrix. We strongly recommend reviewing this first. It maps new LCT terms (like "Vacuum Impedance") to their familiar analogs.
-    \item \textbf{Bridge the Gap:} At the end of each chapter, you will find a "Bridge the Gap" section. This explicitly translates the chapter's derivation into the language of your specific field.
-    \item \textbf{Computational Verification:} Physics is not a spectator sport. The associated GitHub repository contains the Python simulations referenced in the "Computational Module" sections. We encourage you to run these scripts to verify the theory for yourself.
-\end{itemize}
-
-\chapter*{Glossary of Terms}
-\begin{table}[h]
-\centering
-\begin{tabular}{@{}lll@{}}
-\toprule
-\textbf{LCT Term} & \textbf{Physics Analog} & \textbf{Engineering Analog} \\ \midrule
-Vacuum Impedance ($Z_0$) & Geometric Curvature & Characteristic Impedance ($Z_0$) \\
-Breakdown Wavelength & Planck Length & Grid Spacing / Pitch \\
-Bandwidth Saturation & Relativistic Mass & Slew Rate Limit \\
-Pilot Wave & Wavefunction ($\psi$) & Carrier Wave \\
-Phase Bridge & Entanglement & Flux Tube / Transmission Line \\
-Vortex Defect & Electric Charge & Phase Winding \\
-Common-Mode Drift & Dark Energy & DC Bias Drift \\
-\bottomrule
-\end{tabular}
-\caption{The LCT Translation Matrix}
-\label{tab:glossary}
-\end{table}
-
+\frontmatter
 \tableofcontents
 
-% --- MAIN MATTER ---
+\chapter{Nomenclature and Fundamental Constants}
+\input{sections/variables.tex}
+
 \mainmatter
 
-\include{chapter1}     % The Lattice & Constants
-\include{chapter2}      % Mass & Refraction
-\include{chapter3}      % Pilot Waves & Walkers
-\include{chapter4}     % Charge, Protons & Matter
-\include{chapter5}    % Big Bang & Entanglement
-\include{chapter6}    % Vacuum as a Polarized TVS Filterl
-\include{chapter7}  % Vortex Lattice Dark Matter
+\part{The Foundation: The Vacuum Substrate}
+\chapter{The Hardware Layer: The Vacuum as a Discrete LC Lattice}
+\input{sections/chapter1.tex}
 
-% --- BACK MATTER ---
-\appendix
-\include{chapters/appendicies}            % Theory Defenses A, B, C
-\include{chapters/appendix_code}         % Simulation Code D
+\chapter{The Signal Layer: Variable Impedance and Mass Emergence}
+\input{sections/chapter2.tex}
 
-\include{chapters/bibliography}          % References
+\part{The Emergent Layers: Particles and Forces}
+\chapter{The Quantum Layer: Hydrodynamic Pilot-Wave Mechanics}
+\input{sections/chapter3.tex}
+
+\chapter{The Topological Layer: Matter as Defects in the Order Parameter}
+\input{sections/chapter4.tex}
+
+\chapter{The Weak Layer: Chirality as a Filter}
+\input{sections/chapter6.tex}
+
+\part{The Macroscale: Cosmology and Engineering}
+\chapter{The Cosmic Layer: Genesis and Non-Locality}
+\input{sections/chapter5.tex}
+
+\chapter{Observational Signatures: Superfluid Turbulence}
+\input{sections/chapter7.tex}
+
+\chapter{Engineering the Vacuum: Metric Engineering and Propulsion}
+\input{sections/chapter8.tex}
 
 \backmatter
+\appendix
+\chapter{The Computational Verification Suite}
+\chapter{Bibliography}
+
 \end{document}

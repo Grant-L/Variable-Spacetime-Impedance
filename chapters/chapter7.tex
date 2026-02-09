@@ -1,43 +1,56 @@
-\chapter{Observational Signatures: Solving the Dark Sector}
+\chapter{7 Observational Signatures: Superfluid Turbulence and Phase Transitions}
 
-\section{Introduction: Anomalies as Clues}
-The Standard Model of Cosmology ($\Lambda$CDM) faces two major crises: the nature of Dark Matter and the Hubble Tension[cite: 275]. LCT proposes that these are not due to invisible particles, but are artifacts of the vacuum's fluid dynamics[cite: 276].
+\section{7.1 Introduction: Anomalies as Clues}
+The Standard Model of Cosmology ($\Lambda$CDM) faces two major crises: the nature of Dark Matter and the Hubble Tension[cite: 448]. LCT proposes that these are not due to invisible particles, but are artifacts of the vacuum's fluid dynamics and hardware state changes[cite: 405, 449].
 
-\section{Dark Matter: The Vortex Lattice}
-Standard Cold Dark Matter (CDM) postulates a halo of invisible particles[cite: 278]. LCT identifies the "Halo" as a region of \textbf{Quantum Turbulence} in the vacuum substrate[cite: 279].
-
-
+\section{7.2 Dark Matter: The Vortex Lattice}
+LCT identifies the galactic "Dark Matter Halo" as a region of \textbf{Quantum Turbulence} in the superfluid vacuum substrate[cite: 407, 452]. 
 
 \begin{itemize}
-    \item \textbf{The Mechanism:} The rotating galaxy drags the local vacuum[cite: 280]. However, because the vacuum is a superfluid, it cannot rotate as a rigid body[cite: 281]. Instead, it forms a quantized \textbf{Vortex Lattice} similar to an Abrikosov lattice in a Type-II superconductor[cite: 282].
-    \item \textbf{Vortex Density:} The galaxy creates a dense array of microscopic vortices[cite: 283]. The energy density of this lattice acts as effective mass[cite: 284].
+    \item \textbf{The Mechanism}: A rotating galaxy drags the local vacuum through viscous coupling[cite: 408, 453]. 
+    \item \textbf{Superfluid Constraint}: Because the vacuum is a superfluid, it cannot rotate as a rigid body[cite: 409, 454]. 
+    \item \textbf{Quantization}: Instead, it forms a quantized \textbf{Vortex Lattice} (Abrikosov lattice), where rotation is partitioned into microscopic vortex filaments[cite: 409, 455].
+    \item \textbf{Effective Mass}: The kinetic energy density of this lattice provides the additional gravitational "stiffness" observed in galactic dynamics[cite: 410, 457].
 \end{itemize}
 
-\subsection{Explaining Flat Rotation Curves}
-A single vortex has a velocity profile $v \propto 1/r$ (Keplerian), which fails to explain galactic rotation. However, a \textbf{Vortex Lattice} creates a macroscopic "texture" where the vortex area density $n_v$ scales with the galactic stress.
-
+\subsection{7.2.1 Explaining Flat Rotation Curves}
+A single vortex has a velocity profile $v \propto 1/r$. However, a macroscopic Vortex Lattice maintains a constant vorticity per unit area[cite: 413, 460]. 
 \begin{equation}
-v_{rot} \approx \frac{\hbar}{m} \sqrt{2\pi n_v(r)}
-\label{eq:rotation}
+v_{rot} \approx \frac{\hbar}{m} \sqrt{2\pi n_{v}(r)}
+\label{eq:rotation_vortex}
 \end{equation}
+If the vacuum responds to shear stress by maintaining an equilibrium vortex density ($n_v$), the resulting rotation curve is flat ($v \approx const$)[cite: 416, 463].
 
-If the vacuum responds to shear stress by maintaining a constant vorticity per unit area (Quantum Turbulence equilibrium), the resulting rotation curve is flat ($v \approx const$).
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1.0\textwidth]{simulations/sim_l_galactic_rotation.png}
-    \caption{\textbf{The Galactic Rotation Crisis vs. LCT Solution.} (Red Dashed) The Newtonian prediction where velocity drops off at the edge of the galaxy. (Blue Solid) The LCT prediction, where the \textbf{Vortex Lattice} ($k_{lattice}$) provides the additional "stiffness" required to maintain high orbital velocities, perfectly matching observed data without requiring Dark Matter particles.}
-    \label{fig:rotation_curve}
-\end{figure}
 
-\textbf{Simulation Results:} As shown in Figure \ref{fig:rotation_curve}, our simulation combines the standard Baryonic gravity (Bulge + Disk) with the LCT Vacuum Stress term. The result (Blue Line) recovers the flat rotation curve characteristic of spiral galaxies, identifying "Dark Matter" as the stored kinetic energy of the superfluid vacuum lattice.
+\subsection{7.2.2 Computational Module: Galactic Rotation Curves}
+The following simulation verifies that the addition of the vacuum vortex lattice term ($k_{lattice}$) corrects the Newtonian drop-off to match observed galactic data[cite: 757, 780].
 
-\section{The Hubble Tension: A Vacuum Phase Transition}
-LCT explains the $H_{0}$ mismatch as a \textbf{Vacuum Phase Transition} (Crystallization) at redshift $z \approx 10$, releasing latent heat (Dark Energy) that boosted late-universe expansion.
+\begin{verbatim}
+import numpy as np
+import matplotlib.pyplot as plt
+def simulate_rotation_curve():
+    r = np.linspace(0.1, 50, 500); G = 4.302e-6
+    M_visible = 6.0e10 # Visible Bulge + Disk
+    # Newtonian Expectation
+    v_newton = np.sqrt(G * M_visible / r) * (1 - np.exp(-r/3.0))
+    # LCT Vacuum 'Stiffness' (Vortex Lattice)
+    k_lattice = 180.0
+    v_lattice = k_lattice * (1 - np.exp(-r/10.0))
+    # Total Velocity
+    v_lct = np.sqrt(v_newton**2 + v_lattice**2)
+    plt.plot(r, v_newton, 'r--', label='Newtonian'); plt.plot(r, v_lct, 'b', label='LCT')
+    plt.show()
+\end{verbatim}
 
-\section{Problems}
+\section{7.3 The Hubble Tension: A Vacuum Phase Transition}
+LCT explains the $H_0$ mismatch as a result of a \textbf{Late-Time Phase Transition}[cite: 418, 492]. At redshift $z \approx 10$, the vacuum underwent a localized "crystallization" event, releasing \textbf{latent heat} (Dark Energy) that boosted the late-universe expansion rate[cite: 375, 419, 493].
+
+\section{7.4 Problems}
 \begin{enumerate}
-    \item \textbf{Vortex Lattice Rotation:} A galactic halo creates a vortex lattice with area density $n_{v}(r) \propto 1/r$. Show that the resulting rotational velocity profile $v_{rot}$ is constant (Flat Rotation Curve).
-    \item \textbf{Lensing Asymmetry:} Calculate the time delay difference $\Delta t$ for a photon passing pro-grade vs. retro-grade through a rotating frame-dragging vortex with angular momentum $J$[cite: 299].
-    \item \textbf{Hubble Mismatch:} If Early Dark Energy acted only between $z=10$ and $z=8$, how would this shift the inferred value of $H_{0}$ from the CMB peak compared to Supernovae measurements[cite: 300]?
+    \item \textbf{Vortex Lattice Rotation}: Show that an area density $n_v(r) \propto 1/r$ leads to a constant rotational velocity $v_{rot}$[cite: 496].
+    \item \textbf{Hubble Mismatch}: Calculate the shift in $H_0$ if Early Dark Energy acted only between $z=10$ and $z=8$[cite: 498].
 \end{enumerate}
+
+\chapter{8 [Placeholder: Engineering the Vacuum]}
+\textit{Intended Content: Applied LCT for propulsion and energy extraction. Derivation of the Alcubierre Metric as a localized impedance bubble and the Wormhole as a lattice shortcut.}

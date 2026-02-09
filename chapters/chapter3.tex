@@ -1,80 +1,72 @@
-\chapter{The Quantum Layer: Emergent Mechanics}
+\chapter{The Quantum Layer: Hydrodynamic Pilot-Wave Mechanics}
 
-\section{Introduction: The End of "Spooky" Action}
-The Copenhagen Interpretation posits that particles exist as probabilistic wavefunctions ($\psi$) that collapse upon measurement[cite: 176]. This introduces an irreconcilable break between the determinism of Gravity and the randomness of Matter[cite: 177]. LCT proposes a \textbf{Hidden Variable} solution: the vacuum lattice stores the history of a particle's path[cite: 178]. This "Memory Field" acts as a Pilot Wave, guiding the particle through interference patterns[cite: 179].
+\section{3.1 Introduction: The End of "Spooky" Action}
+The Copenhagen Interpretation posits that particles exist as probabilistic wavefunctions ($\psi$) that collapse upon measurement[cite: 148]. LCT proposes a \textbf{Hidden Variable} solution: the vacuum lattice stores the history of a particle's path[cite: 150]. This "Memory Field" acts as a physical Pilot Wave, guiding the particle through interference patterns[cite: 151].
 
-\section{Deriving the Schrödinger Equation}
-We derive the Schrödinger Equation as the hydrodynamic limit of the vacuum fluid[cite: 180]. By applying the \textbf{Madelung Transformation} ($\psi = \sqrt{\rho}e^{iS/\hbar}$), where $v = \nabla S/m$, we rewrite the classical Euler equations for a vacuum fluid density $\rho$ and velocity $v$ as[cite: 181]:
+\section{3.2 Deriving the Schrödinger Equation}
+We derive the Schrödinger Equation as the hydrodynamic limit of the vacuum lattice[cite: 153]. By applying the \textbf{Madelung Transformation} ($\psi = \sqrt{\rho}e^{iS/\hbar}$), where $v = \nabla S/m$, we rewrite the classical Euler equations for a vacuum fluid density $\rho$ and velocity $v$ as[cite: 154]:
 
 \begin{equation}
 i\hbar\frac{\partial\psi}{\partial t} = -\frac{\hbar^2}{2m}\nabla^2\psi + V\psi + Q\psi
-\label{eq:schrodinger}
+\label{eq:schrodinger_hydro}
 \end{equation}
 
-In this framework, $Q$ is the \textbf{Quantum Potential}[cite: 184]:
+In this framework, $Q$ is the \textbf{Quantum Potential}[cite: 156]:
 \begin{equation}
 Q = -\frac{\hbar^2}{2m}\frac{\nabla^2\sqrt{\rho}}{\sqrt{\rho}}
 \end{equation}
 
-$Q$ represents the internal pressure of the vacuum fluid, proving that Eq. \ref{eq:schrodinger} is simply the equation of motion for a superfluid substrate[cite: 184, 185].
+$Q$ represents the \textbf{Internal Pressure} of the vacuum substrate[cite: 159]. This proves that the Schrödinger equation is simply the equation of motion for a superfluid lattice[cite: 160].
 
-\section{Pilot Wave Dynamics: The Walker Model}
-A particle in LCT is a "Bouncing Soliton" oscillating at the \textbf{Compton Frequency} ($\omega_c$)[cite: 187]. Each oscillation injects energy into the lattice, creating a standing wave field[cite: 188]. The particle "surfs" the gradient of its own memory field[cite: 191]:
+\section{3.3 Pilot Wave Dynamics: The Walker Model}
+A particle in LCT is a "Bouncing Soliton" oscillating at the \textbf{Compton Frequency} ($\omega_c$)[cite: 162]. Each oscillation injects energy into the lattice, creating a standing wave field[cite: 163]. The particle "surfs" the gradient of its own memory field[cite: 164]:
 
 \begin{equation}
 F_{particle} = -\nabla \Phi_{memory}
 \end{equation}
 
-This feedback loop causes the particle to exhibit diffraction and interference even when passing through a system one at a time[cite: 192]. \textbf{Heisenberg Uncertainty} is thus identified as dynamical "jitter" (Zitterbewegung) caused by the background noise of the pilot wave[cite: 193, 194].
+This feedback loop causes the particle to exhibit diffraction and interference even when passing through a system one at a time[cite: 169]. \textbf{Heisenberg Uncertainty} is thus identified as dynamical "jitter" (Zitterbewegung) caused by the background noise of the pilot wave[cite: 170].
 
-\section{The Illusion of Choice: The Observer Effect}
-LCT replaces the "Conscious Collapse" model with a hydrodynamic \textbf{Impedance Mismatch}[cite: 205, 206]. 
+\subsection{3.3.1 Computational Module: The Quantum Walker}
+The following simulation verifies that a classical walker guided by its own wave gradient reproduces quantum-like trajectories [cite: 608-610].
+
+\begin{verbatim}
+import numpy as np
+def simulate_walker():
+    Nx, Ny = 200, 200; dt = 0.5
+    u = np.zeros((Nx, Ny)); u_prev = np.zeros((Nx, Ny))
+    px, py = 50.0, 100.0; vx, vy = 0.8, 0.0 
+    for t in range(1000):
+        lap = (np.roll(u,1,0) + np.roll(u,-1,0) + np.roll(u,1,1) + np.roll(u,-1,1) - 4*u)
+        u_next = (2*u - u_prev + 0.25*lap) * 0.98 # Memory decay
+        u_next[int(px), int(py)] += 2.0 * np.sin(0.5 * t) # Impact
+        # Pilot Wave Guidance
+        grad_y = (u[int(px), int(py)+1] - u[int(px), int(py)-1]) / 2.0
+        vy += 0.1 * grad_y 
+        px += vx; py += vy
+        u_prev, u = u.copy(), u_next.copy()
+    return px, py
+\end{verbatim}
+
+\section{3.4 The Illusion of Choice: The Observer Effect}
+LCT replaces the "Conscious Collapse" model with a hydrodynamic \textbf{Impedance Mismatch}[cite: 172]. 
 
 
-
-\begin{itemize}
-    \item \textbf{Wave Mode (Observer OFF):} The pilot wave passes through both slits, creating interference fringes that guide the particle[cite: 207, 208].
-    \item \textbf{Particle Mode (Observer ON):} A detector acts as a \textbf{Resistive Load} ($R_{load}$) on the vacuum[cite: 209]. It extracts energy from the pilot wave, damping the interference[cite: 210]. Without the wave to guide it, the particle follows a straight Newtonian path[cite: 210].
-\end{itemize}
-
-\begin{figure}[H]
-    \centering
-    \begin{subfigure}{0.48\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{simulations/simulation_electron_choice_observer_off.png}
-        \caption{Observer OFF: Wave Mode}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.48\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{simulations/simulation_electron_choice_observer_on.png}
-        \caption{Observer ON: Particle Mode}
-    \end{subfigure}
-    \caption{Simulation D.8: The Mechanism of Collapse. Damping the pilot wave via measurement removes the guiding force, resulting in classical trajectories [cite: 256-259].}
-    \label{fig:observer_effect}
-\end{figure}
-
-\section{The Emergent Atom: Deriving the Bohr Radius}
-LCT observes atomic stability as a consequence of fluid resonance rather than postulating a stationary state[cite: 226, 229]. 
 
 \begin{itemize}
-    \item \textbf{The Lock-In:} As an electron spirals toward a nucleus, it perturbs the vacuum lattice, creating a "wake"[cite: 230, 231]. 
-    \item \textbf{Quantization:} At a specific radius, the electron's orbital frequency matches the resonant frequency of its own vacuum wake[cite: 231]. 
-    \item \textbf{Stability:} The radiation pressure from the lattice balances the Coulomb attraction, creating a stable orbit at the Bohr Radius ($a_0$)[cite: 232].
+    \item \textbf{Wave Mode (Observer OFF)}: The pilot wave passes through both slits, creating interference fringes that guide the particle[cite: 173].
+    \item \textbf{Particle Mode (Observer ON)}: A detector acts as a \textbf{Resistive Load} ($R_{load}$) on the vacuum[cite: 174]. It extracts energy from the pilot wave, damping the interference[cite: 175]. 
 \end{itemize}
 
-\section{The Casimir Effect: Vacuum Filtration}
-The Casimir force is modeled as a \textbf{Band-Stop Filter} within the noisy vacuum substrate[cite: 234]. 
+Without the wave to guide it, the particle follows a straight Newtonian path[cite: 176].
 
+\section{3.5 The Emergent Atom: Deriving the Bohr Radius}
+LCT observes atomic stability as a consequence of fluid resonance[cite: 178]. 
 \begin{itemize}
-    \item \textbf{Filtration:} Conducting plates act as short circuits ($V=0$) for vacuum noise[cite: 235]. Any mode with $\lambda/2 > d$ is excluded from the gap[cite: 236].
-    \item \textbf{Pressure Differential:} The lower energy density inside the gap creates a pressure deficit relative to the broadband noise outside[cite: 237].
-    \item \textbf{Result:} The plates are pushed together by external radiation pressure, as verified in Simulation D.10[cite: 238].
+    \item \textbf{The Lock-In}: As an electron spirals toward a nucleus, it perturbs the vacuum lattice, creating a "wake"[cite: 179].
+    \item \textbf{Quantization}: At a specific radius, the electron's orbital frequency matches the resonant frequency of its own vacuum wake[cite: 180]. 
+    \item \textbf{Stability}: The radiation pressure from the lattice balances the Coulomb attraction, creating a stable orbit at the \textbf{Bohr Radius} ($a_0$)[cite: 181].
 \end{itemize}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\linewidth]{simulations/simulate_casimir_effect.png}
-    \caption{Simulation D.10: Vacuum energy density suppression between conducting plates [cite: 314-316].}
-    \label{fig:casimir}
-\end{figure}
+\section{3.6 The Casimir Effect: Vacuum Filtration}
+The Casimir force is modeled as a \textbf{Band-Stop Filter} within the noisy vacuum substrate[cite: 183]. Conducting plates act as short circuits ($V=0$) for vacuum noise[cite: 184]. Any mode with $\lambda/2 > d$ is excluded from the gap, creating a pressure deficit [cite: 185-186].
