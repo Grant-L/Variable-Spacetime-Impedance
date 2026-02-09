@@ -5,20 +5,25 @@
 \section*{Universal Hardware Constants}
 The following constants define the constitutive properties of the vacuum substrate[cite: 27].
 
-\begin{table}[h!]
-\centering
-\small
-\begin{tabularx}{\textwidth}{|l|X|l|X|}
-\hline
-\textbf{Symbol} & \textbf{Name} & \textbf{Value (LCT)} & \textbf{Physical Equivalent} \\ \hline
-$\Lvac$ & Lattice Inductance & $\approx 1.257 \mu$H/m & $\mu_0$ (Vacuum Permeability) [cite: 27] \\ \hline
-$\Cvac$ & Lattice Capacitance & $\approx 8.854$ pF/m & $\epsilon_0$ (Vacuum Permittivity) [cite: 27] \\ \hline
-$Z_0$ & Characteristic Impedance & $\approx 376.73 \Omega$ & $\sqrt{\Lvac/\Cvac}$ [cite: 27] \\ \hline
-$\Dx$ & Lattice Pitch & $\sim 10^{-35}$ m & Discrete nodal spacing [cite: 27] \\ \hline
-$\Wcut$ & Cutoff Frequency & $2/\sqrt{\Lvac\Cvac}$ & Nyquist limit [cite: 27] \\ \hline
-\end{tabularx}
-\caption{Primary hardware variables of the Lindblom Coupling Theory.}
-\end{table}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+    Symbol & Name & Value (LCT) & Physical Equivalent \\
+    \hline
+    $L$ & Lattice Inductance & $\approx 1.257\,\mu$H/m & $\mu_0$ (Vacuum Permeability) [27] \\
+    $C$ & Lattice Capacitance & $\approx 8.854$ pF/m & $\epsilon_0$ (Vacuum Permittivity) [27] \\
+    $Z_0$ & Characteristic Impedance & $\approx 376.73\,\Omega$ & $\sqrt{L/C}$ [27] \\
+    $\Delta x$ & Lattice Pitch & $\sim 10^{-35}$ m & Discrete nodal spacing [27] \\
+    $\omega_{\text{cutoff}}$ & Cutoff Frequency & $2 / \sqrt{LC}$ & Nyquist limit [27] \\
+    \hline
+    \end{tabular}
+    \caption{Primary hardware variables of the Lindblom Coupling Theory.}
+    \label{tab:hardware}
+    \end{table}
+    
+    % Emergent list (excerpt, update β line)
+    \item $\beta$ (Strain Coefficient): A dimensionless factor of order unity governing the scaling of metric strain from effective mass, $\epsilon = \beta \frac{m_{\text{eff}}}{m_{\text{Pl}}}$[130].
 
 \section*{Emergent Tensors and Variables}
 These variables describe the behavior of signals and defects within the lattice[cite: 130, 131].
