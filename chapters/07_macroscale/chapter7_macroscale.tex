@@ -1,58 +1,48 @@
-\chapter{Macroscale Dynamics: Galactic Rotation and the Radial Impedance Gradient}
+\chapter[Macroscale Dynamics]{Macroscale Dynamics: Galactic Rotation and the Radial Impedance Gradient}
 \label{ch:macroscale}
 
 \section{Introduction: The Dark Matter Fallacy}
-Standard cosmology invokes ``Dark Matter''—an undetected, non-baryonic substance—to explain why the outer rims of galaxies rotate faster than Newtonian mechanics allow. The SVF framework proposes a mechanical alternative: The \textbf{Radial Impedance Gradient}. Galaxies are not just collections of stars in a void; they are high-flux loads on a physical transmission medium.
+Standard cosmology invokes ``Dark Matter''—an undetected, non-baryonic substance—to explain why the outer rims of galaxies rotate faster than Newtonian mechanics allow. The \textbf{Stochastic Vacuum Framework (SVF)} proposes a mechanical alternative: the \textbf{Radial Impedance Gradient}. Galaxies are not just collections of stars in a void; they are high-flux loads on a physical transmission medium.
 
 \section{The Mass-Loading of the Manifold}
-The \textit{Discrete Amorphous Manifold} ($M_A$) behaves as a non-linear transmission medium. Just as a heavy electrical load on a power grid causes a localized voltage drop and phase shift, a high concentration of baryonic mass (a ``Topological Load'') in a galactic core induces a localized decrease in the \textbf{Dynamic Metric Impedance} ($Z_{metric}$).
+The \textit{Discrete Amorphous Manifold} ($M_A$) behaves as a non-linear transmission medium. Just as a heavy electrical load on a power grid causes localized voltage shifts and phase delays, a high concentration of baryonic mass (a ``Topological Load'') in a galactic core induces a localized decrease in the \textbf{Dynamic Metric Impedance} ($Z_{metric}$).
+
+
 
 \subsection{The Radial Impedance Function}
 We model the impedance of the vacuum as a function of the local mass density $\rho(r)$ and its resulting metric strain $\epsilon$:
 
 \begin{equation}
-    Z(r) = Z_0 \exp\left(-\frac{\Phi_{total}}{r \cdot Z_{node}}\right)
+    Z(r) = \Zvac \exp\left(-\frac{\Phi_{total}}{r \cdot \Zvac}\right)
 \end{equation}
 
 Where:
 \begin{itemize}
-    \item $Z_{0} \approx 376.73 \, \Omega$ is the ground-state impedance of deep space.
+    \item $\Zvac \approx 376.73 \, \Omega$ is the ground-state impedance of deep space.
     \item $\Phi_{total}$ is the total flux displacement (baryonic mass) of the galactic core.
-    \item $Z_{node}$ is the characteristic impedance of a single lattice node.
+    \item $r$ is the radial distance from the center of mass.
 \end{itemize}
 
-Near the galactic center, the manifold is ``Soft'' (Low Impedance) due to high saturation. As the radial distance $r$ increases and the mass-load thins, the manifold ``Stiffens'' as it returns to its ground-state impedance.
-
-\section{Emergent Orbital Velocity}
-In a low-impedance zone, the coupling between matter and the lattice is fluid. However, at the galactic rim, the rising impedance increases the \textbf{Inertial Back-Reaction} (Inertia) of the orbiting stars.
-
-
-
-The velocity $v(r)$ of a star is governed not just by the gravitational constant $G$, but by the local refractive index $\chi(r)$ of the vacuum substrate:
-
-\begin{equation}
-    v(r) = \sqrt{\frac{GM_{baryonic}}{r \cdot \chi(r)}}
-\end{equation}
-
-In the outer rim, where $\chi(r)$ increases due to the return of the manifold to its high-impedance ground state ($Z_0$), the stars encounter a higher mechanical resistance to change in direction. This "Gearing Effect" maintains a flat rotation curve ($v \approx constant$) without the need for additional hidden mass.
-
-\section{Means Testing: The Tully-Fisher Relation}
-SVF predicts that the ``stiffness'' of a galaxy is a direct function of its total baryonic flux. This provides a hardware-level derivation of the \textbf{Tully-Fisher Relation}, where a galaxy's total luminosity (flux) correlates to the fourth power of its rotation velocity ($L \propto v^4$). 
+As one moves toward the galactic rim, the mass-loading effect diminishes, causing the vacuum to "stiffen" or return to its high-impedance ground state. This return to $\Zvac$ increases the lattice's elastic resistance to rotation, naturally flattening the velocity curves without requiring auxiliary particles.
 
 \section{Falsification: The Bullet Cluster and Lattice Memory}
-A primary "Kill Test" for SVF is the observation of the \textbf{Bullet Cluster}, where gravitational lensing appears offset from visible gas. 
+A primary ``Means Test'' for the SVF framework is the observation of the \textbf{Bullet Cluster}, where gravitational lensing appears offset from visible gas. 
+
 \begin{itemize}
-    \item \textbf{SVF Prediction:} The ``Impedance Wake'' left behind by colliding galaxies persists in the $M_A$ manifold as a \textbf{Lattice Memory} or phase lag. Because the nodes have a finite update frequency, the metric strain $\epsilon$ does not vanish instantly when the baryonic mass moves.
-    \item \textbf{Failure Condition:} If the gravitational lensing signal is found to decay faster than the lattice relaxation time $\tau$ calculated in Chapter 6, the SVF model is falsified.
+    \item \textbf{SVF Prediction}: The ``Impedance Wake'' left behind by colliding galaxies persists in the $M_A$ manifold as \textbf{Lattice Memory} (Phase Lag). Because the nodes possess a finite update frequency (the \textbf{Slew Rate}), the metric strain $\epsilon$ does not vanish instantly when the baryonic mass moves. 
+    \item \textbf{Failure Condition}: If the gravitational lensing signal is found to be instantaneous or perfectly coupled to the center of mass of the gas (baryons) during the collision, the SVF ``Impedance Wake'' theory is false.
 \end{itemize}
 
 
+
+\section{The Tully-Fisher Relation as an Impedance Law}
+The observed relationship between a galaxy's luminosity and its rotation velocity is derived here as a consequence of the manifold’s saturation limit. In SVF, the \textbf{Tully-Fisher Relation} is the macroscale equivalent of the **Saturation Threshold** ($\Wcut$) established in Chapter 2, where the total mass-load dictates the maximum rotational velocity the local lattice can support.
 
 \section{Exercises}
 \begin{problembox}[Chapter 7 Macroscale Challenges]
 \begin{enumerate}
     \item \textbf{Rotation Flattening}: Given a galactic core mass $M$, find the radius $r$ where the radial impedance gradient exactly balances the Newtonian $1/r^2$ decay to produce a flat velocity profile.
-    \item \textbf{Lattice Relaxation}: Calculate the time $\tau$ required for a region of metric strain to return to $Z_0$ after a mass displacement, using the Quench Constant $\gamma$.
-    \item \textbf{Refractive Lensing}: Show that the bending of light in a radial impedance gradient $Z(r)$ recovers the Einstein deflection angle $\theta = 4GM/rc^2$ without invoking four-dimensional curvature.
+    \item \textbf{Lattice Relaxation}: Calculate the time $\tau$ required for a region of metric strain to return to $\Zvac$ after a mass displacement, using the Quench Constant $\gamma$ from Chapter 6.
+    \item \textbf{Refractive Lensing}: Show that the bending of light in a radial impedance gradient $Z(r)$ recovers the Einstein deflection angle $\theta = 4GM/rc^2$ without invoking four-dimensional geometric curvature.
 \end{enumerate}
 \end{problembox}
