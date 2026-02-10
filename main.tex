@@ -1,31 +1,18 @@
 \documentclass[11pt,oneside,openany]{book}
 
-% --- Core Packages ---
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{amsmath, amssymb, amsthm} 
-\usepackage{graphicx}                
-\usepackage{listings}                
-\usepackage{xcolor}
-\usepackage{tabularx}                
-\usepackage{hyperref}
-\usepackage{geometry}
-\geometry{letterpaper, margin=1in}
-
-% --- Load LCT Styles & Environments ---
-% Anchored to the frontmatter directory
+% --- Core Setup ---
+% Note: Using the relative path to ensure pdflatex finds the setup file
 \input{chapters/00_frontmatter/setup.tex} 
 
-% --- Global LCT Commands ---
-% Standardizing math symbols across the manuscript
-\newcommand{\Lvac}{\mathcal{L}}       
-\newcommand{\Cvac}{\mathcal{C}}       
-\newcommand{\Zvac}{Z_0}               
-\newcommand{\Wcut}{\omega_{\text{cutoff}}}   
-\newcommand{\Dx}{\Delta x}            
+% --- Global SVF Commands ---
+% Note: \Zvac and \Wcut are already defined in setup.tex
+\newcommand{\Lvac}{L_{node}}       
+\newcommand{\Cvac}{C_{node}}       
+\renewcommand{\Zvac}{Z_0}               
+\renewcommand{\Wcut}{\omega_{sat}}   
+\newcommand{\lp}{\ell_P}            
 
-% --- Document Metadata ---
-\title{\Huge \textbf{The Lindblom Coupling Theory} \\ \vspace{0.5cm} \Large A Hardware-Oriented Unified Field Theory}
+\title{\Huge \textbf{Variable Spacetime Impedance} \\ \vspace{0.5cm} \Large A Stochastic Vacuum Framework (SVF)}
 \author{\Large Grant Lindblom}
 \date{February 9, 2026} 
 
@@ -35,6 +22,7 @@
 \frontmatter
 \maketitle
 
+% Path updated to chapters/00_frontmatter/
 \input{chapters/00_frontmatter/preface.tex}
 
 \tableofcontents
@@ -45,31 +33,31 @@
 % --- Main Matter ---
 \mainmatter
 
-% Part I: The Substrate (Replaces the duplicate Part II)
-\part{The Foundation: The Vacuum Substrate}
+\part{The Hardware Layer: Vacuum Constitutive Properties}
 \input{chapters/01_hardware/chapter1_hardware.tex} 
 \input{chapters/02_signal/chapter2_signal.tex}
 
-% Part II: Emergence
-\part{The Emergent Layers: Particles and Forces}
+\part{The Quantum Layer: Defects and Chiral Exclusion}
 \input{chapters/03_quantum/chapter3_quantum.tex}
 \input{chapters/04_topology/chapter4_topology.tex}
 \input{chapters/05_weak/chapter5_weak.tex} 
 
-% Part III: Macroscale
-\part{The Macroscale: Cosmology and Engineering}
+\part{Macroscale Dynamics and Engineering}
 \input{chapters/06_cosmic/chapter6_cosmic.tex} 
 \input{chapters/07_macroscale/chapter7_macroscale.tex}
 \input{chapters/08_engineering/chapter8_engineering.tex}
 
-% --- Back Matter ---
-\backmatter
-\appendix
+\part{Falsifiability and Verification}
+\input{chapters/09_testability/09_falsifiability.tex}
 
+% --- Back Matter ---
+\appendix
 \input{chapters/99_backmatter/appendix_a.tex}
 \input{chapters/99_backmatter/appendix_b.tex}
 \input{chapters/99_backmatter/appendix_c.tex}
 \input{chapters/99_backmatter/appendix_d.tex}
 
-
+\backmatter
+\bibliographystyle{unsrt}
+\bibliography{chapters/99_backmatter/bibliography}
 \end{document}

@@ -1,33 +1,58 @@
-\chapter{The Galactic Layer: Dark Matter as Vacuum Stiffness}
-\label{ch:galactic_layer}
+\chapter{Macroscale Dynamics: Galactic Rotation and the Radial Impedance Gradient}
+\label{ch:macroscale}
 
-\section{Introduction: The Rotation Problem}
-Observations show that stars at the edge of galaxies orbit just as fast as those near the center, defying Keplerian mechanics. Standard models patch this by adding a "Dark Matter" halo. \LCT{} removes this ad hoc fix by modeling the galaxy as a vortex in a superfluid condensate.
+\section{Introduction: The Dark Matter Fallacy}
+Standard cosmology invokes ``Dark Matter''—an undetected, non-baryonic substance—to explain why the outer rims of galaxies rotate faster than Newtonian mechanics allow. The SVF framework proposes a mechanical alternative: The \textbf{Radial Impedance Gradient}. Galaxies are not just collections of stars in a void; they are high-flux loads on a physical transmission medium.
 
-\section{Numerical Verification: The Abrikosov Lattice}
-To validate this, we model the galaxy as a vortex in a superfluid condensate using \texttt{sim\_7\_galactic\_rotation\_v2.py}.
+\section{The Mass-Loading of the Manifold}
+The \textit{Discrete Amorphous Manifold} ($M_A$) behaves as a non-linear transmission medium. Just as a heavy electrical load on a power grid causes a localized voltage drop and phase shift, a high concentration of baryonic mass (a ``Topological Load'') in a galactic core induces a localized decrease in the \textbf{Dynamic Metric Impedance} ($Z_{metric}$).
 
-\begin{simbox}[Verification of Vacuum Stiffness]
-Figure 7.1 presents a dual verification of the Galactic Layer.
+\subsection{The Radial Impedance Function}
+We model the impedance of the vacuum as a function of the local mass density $\rho(r)$ and its resulting metric strain $\epsilon$:
+
+\begin{equation}
+    Z(r) = Z_0 \exp\left(-\frac{\Phi_{total}}{r \cdot Z_{node}}\right)
+\end{equation}
+
+Where:
 \begin{itemize}
-    \item \textbf{Left Pane:} The LCT prediction (Green) corrects the Newtonian decay (Red) by adding the elastic tension of the vacuum, perfectly matching the flat rotation curves of observed galaxies.
-    \item \textbf{Right Pane:} The \textbf{Vortex Density} ($n_v$) profile reveals the mechanical origin of the "Dark Halo." The density of vacuum defects scales as $1/r$, creating a stiffness gradient that mimics the gravitational pull of an isothermal mass distribution.
+    \item $Z_{0} \approx 376.73 \, \Omega$ is the ground-state impedance of deep space.
+    \item $\Phi_{total}$ is the total flux displacement (baryonic mass) of the galactic core.
+    \item $Z_{node}$ is the characteristic impedance of a single lattice node.
 \end{itemize}
-\begin{center}
-    \includegraphics[width=1.0\textwidth]{assets/sim_outputs/galactic_rotation_v2.png}
-\end{center}
-\end{simbox}
 
-\section{Numerical Verification: Galactic Rotation Curves}
-We model the galactic disk as a fluid coupled to an elastic background lattice.
+Near the galactic center, the manifold is ``Soft'' (Low Impedance) due to high saturation. As the radial distance $r$ increases and the mass-load thins, the manifold ``Stiffens'' as it returns to its ground-state impedance.
 
-\begin{simbox}[Verification of Vacuum Stiffness]
-As verified in \texttt{sim\_7\_galactic\_rotation.py}, adding the stiffness term $k \cdot r$ to the Newtonian prediction perfectly recovers the flat rotation curves observed in spiral galaxies.
-\begin{center}
-    \includegraphics[width=0.9\textwidth]{assets/sim_outputs/galactic_rotation.png}
-\end{center}
-The simulation proves that $v(r)$ flattens at large $r$ not due to hidden mass, but due to the linear increase in vacuum tension.
-\end{simbox}
+\section{Emergent Orbital Velocity}
+In a low-impedance zone, the coupling between matter and the lattice is fluid. However, at the galactic rim, the rising impedance increases the \textbf{Inertial Back-Reaction} (Inertia) of the orbiting stars.
 
-\section{The Tully-Fisher Relation}
-The relationship between a galaxy's mass and its rotation speed ($L \propto v^4$) emerges naturally from the hardware physics. A more massive galaxy creates a deeper strain in the lattice, increasing the density of Abrikosov vortices and thus the stiffness of the vacuum background.
+
+
+The velocity $v(r)$ of a star is governed not just by the gravitational constant $G$, but by the local refractive index $\chi(r)$ of the vacuum substrate:
+
+\begin{equation}
+    v(r) = \sqrt{\frac{GM_{baryonic}}{r \cdot \chi(r)}}
+\end{equation}
+
+In the outer rim, where $\chi(r)$ increases due to the return of the manifold to its high-impedance ground state ($Z_0$), the stars encounter a higher mechanical resistance to change in direction. This "Gearing Effect" maintains a flat rotation curve ($v \approx constant$) without the need for additional hidden mass.
+
+\section{Means Testing: The Tully-Fisher Relation}
+SVF predicts that the ``stiffness'' of a galaxy is a direct function of its total baryonic flux. This provides a hardware-level derivation of the \textbf{Tully-Fisher Relation}, where a galaxy's total luminosity (flux) correlates to the fourth power of its rotation velocity ($L \propto v^4$). 
+
+\section{Falsification: The Bullet Cluster and Lattice Memory}
+A primary "Kill Test" for SVF is the observation of the \textbf{Bullet Cluster}, where gravitational lensing appears offset from visible gas. 
+\begin{itemize}
+    \item \textbf{SVF Prediction:} The ``Impedance Wake'' left behind by colliding galaxies persists in the $M_A$ manifold as a \textbf{Lattice Memory} or phase lag. Because the nodes have a finite update frequency, the metric strain $\epsilon$ does not vanish instantly when the baryonic mass moves.
+    \item \textbf{Failure Condition:} If the gravitational lensing signal is found to decay faster than the lattice relaxation time $\tau$ calculated in Chapter 6, the SVF model is falsified.
+\end{itemize}
+
+
+
+\section{Exercises}
+\begin{problembox}[Chapter 7 Macroscale Challenges]
+\begin{enumerate}
+    \item \textbf{Rotation Flattening}: Given a galactic core mass $M$, find the radius $r$ where the radial impedance gradient exactly balances the Newtonian $1/r^2$ decay to produce a flat velocity profile.
+    \item \textbf{Lattice Relaxation}: Calculate the time $\tau$ required for a region of metric strain to return to $Z_0$ after a mass displacement, using the Quench Constant $\gamma$.
+    \item \textbf{Refractive Lensing}: Show that the bending of light in a radial impedance gradient $Z(r)$ recovers the Einstein deflection angle $\theta = 4GM/rc^2$ without invoking four-dimensional curvature.
+\end{enumerate}
+\end{problembox}
