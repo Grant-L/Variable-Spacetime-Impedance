@@ -1,0 +1,25 @@
+\section{Topological Helicity as Quantized Spin}
+\label{sec:helicity_spin}
+
+\citestart The fundamental unit of quantum interaction is \textbf{Topological Helicity} ($h$), defined as the quantized orientation of a phase twist relative to the substrate's intrinsic ground state[cite: 1007].
+
+\subsection{The Winding Condition}
+Because the $M_A$ manifold is discrete, a phase twist cannot exist in fractional states. \citestart It must satisfy the integer winding condition[cite: 1008, 1009]:
+
+\begin{equation}
+    \oint \nabla \theta \cdot dl = 2\pi h, \quad h \in \mathbb{Z}
+    \label{eq:winding}
+\end{equation}
+
+This hardware constraint is the physical origin of the quantization of angular momentum (spin).
+
+\section{The Nyquist-Heisenberg Resolution}
+\label{sec:nyquist_heisenberg}
+
+\citestart The Heisenberg Uncertainty Principle is redefined as the \textbf{Hardware Resolution Limit} of the manifold[cite: 1025].
+
+\begin{equation}
+    \Delta x \cdot \Delta p \ge \frac{\hbar}{2} \equiv \text{Nyquist Noise of } M_{A}
+\end{equation}
+
+Since no information can be encoded at a scale smaller than $l_P$ (Lattice Pitch) or a frequency higher than $\omega_{sat}$ (Slew Rate), measurements of position and momentum are subject to quantization noise. \citestart "Uncertainty" is simply the aliasing artifact of attempting to measure a discrete lattice as if it were a continuum[cite: 1026, 993].

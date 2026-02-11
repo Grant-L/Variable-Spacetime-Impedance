@@ -1,0 +1,25 @@
+\section{Gravity as Metric Refraction}
+\label{sec:metric_refraction}
+
+General Relativity describes gravity as the curvature of a 4D geometric manifold. SVF describes it as a gradient in the \textbf{Variable Spacetime Impedance}.
+
+\subsection{The Impedance Gradient}
+Massive bodies (topological defects) ``load'' the surrounding nodes of $M_A$, increasing the local Metric Strain ($\epsilon$). This strain effectively increases the local inductance $L_{node}$, resulting in a higher refractive index $\chi$:
+
+\begin{equation}
+    \chi(r) = \sqrt{\frac{L'_{node} C'_{node}}{L_{node} C_{node}}} \approx 1 + \frac{2GM}{rc^2}
+\end{equation}
+
+Light passing near a massive body slows down ($v = c/\chi$) not because space is curved, but because the nodes in that region are saturated. They require more update cycles to process the same amount of flux.
+
+\subsection{Simulation Results}
+Using the \texttt{MetricRefractionSim} module (Figure \ref{fig:impedance_well}), we modeled a central mass load on a 2D lattice. The resulting refractive index map creates a "Gravity Well" of high impedance.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{assets/sim_outputs/impedance_heatmap.png}
+    \caption{\textbf{The Optical Gravity Well.} White lines trace the geodesics of light rays passing through the impedance gradient. The bending of light (Gravitational Lensing) is recovered here as simple optical refraction through a medium of variable density, without invoking geometric curvature.}
+    \label{fig:impedance_well}
+\end{figure}
+
+The simulation confirms that geodesics naturally curve toward the region of highest impedance (the mass), reproducing the Shapiro Delay and lensing effects of GR purely through variable hardware density.

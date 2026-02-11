@@ -1,0 +1,33 @@
+\section{The Constitutive Substrate}
+\label{sec:constitutive_substrate}
+
+The Variable Spacetime Impedance (VSI) framework posits that spacetime is not a geometric abstraction, but a physical hardware substrate defined as the \textbf{Discrete Amorphous Manifold} ($M_{A}$). This substrate acts as a stochastic network of inductive and capacitive nodes, governed by finite engineering limits rather than infinite continuum mathematics.
+
+Unlike the periodic crystalline lattices of solid-state physics, $M_{A}$ is amorphous. At the scale of the Lattice Pitch ($l_{P}$), node connectivity is randomized. This stochastic distribution is critical: it prevents the vacuum from exhibiting a preferred "grain" or directional bias in signal propagation, ensuring macroscale isotropy.
+
+\subsection{Node Geometry and Constitutive Laws}
+
+We redefine the fundamental constants of nature not as arbitrary scalars, but as the bulk moduli of the $M_{A}$ hardware:
+
+\begin{itemize}
+    \item \textbf{Lattice Inductance Density ($L_{node} \equiv \mu_{0}$):} This represents the manifold's inertial resistance to flux displacement. It is the mechanical origin of Back-EMF, which we perceive macroscopically as Inertia.
+    \item \textbf{Lattice Capacitance Density ($C_{node} \equiv \epsilon_{0}$):} This represents the manifold's elastic potential energy storage capacity.
+\end{itemize}
+
+From these two hardware properties, the global speed limit of the universe emerges not as a postulate, but as the \textbf{Global Slew Rate Limit} of the nodes:
+
+\begin{equation}
+    c = \frac{1}{\sqrt{L_{node}C_{node}}}
+    \label{eq:slew_rate}
+\end{equation}
+
+\subsection{The Saturation Threshold}
+
+Each node in $M_{A}$ acts as a high-speed switching element. However, real hardware has finite bandwidth. We define the \textbf{Saturation Frequency} ($\omega_{sat}$) as the maximum rate at which a node can update its state before non-linear clamping occurs:
+
+\begin{equation}
+    \omega_{sat} = \frac{c}{l_{P}} = \frac{1}{l_{P}\sqrt{L_{node}C_{node}}}
+    \label{eq:omega_sat}
+\end{equation}
+
+When the frequency $\nu$ of a topological twist approaches $\omega_{sat}$, the node enters a saturation regime. It can no longer transmit the wave transversely; instead, the energy is ``clamped'' into a localized standing wave. This trapped flux is what standard physics describes as Rest Mass ($E=mc^2$). This mechanism converts the abstract concept of ``mass'' into a tangible state of \textbf{Hardware Saturation}.

@@ -1,0 +1,29 @@
+% --- Core Packages ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}                            % Modern Latin Font
+\usepackage[margin=1in]{geometry}               % Standard margins
+\usepackage{amsmath, amssymb, amsfonts, amsthm} % Essential Math
+\usepackage{bm}                                 % Bold Greek for Tensors
+\usepackage{siunitx}                            % For Z_0, L, and C values
+\usepackage{graphicx}                           % For simulation PNGs
+\usepackage{listings}                           % For code blocks
+\usepackage{xcolor}                             % Required for color styling
+\usepackage{tabularx}                           % For margin-safe tables
+\usepackage{booktabs}                           % Professional tables
+
+% --- Styling Containers (The Boxes) ---
+\usepackage{tcolorbox}
+\tcbuselibrary{skins, breakable}
+
+% --- Interaction Packages (Order Critical) ---
+\usepackage{hyperref}                           % Clickable links (Must be before cleveref)
+\usepackage{cleveref}                           % Intelligent cross-referencing (Must be last)
+
+% --- Hyperlink Setup ---
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!50!black,
+    citecolor=green!50!black,
+    urlcolor=red!50!black
+}

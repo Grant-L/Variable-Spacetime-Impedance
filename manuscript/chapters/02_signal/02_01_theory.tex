@@ -1,0 +1,37 @@
+\section{The Vacuum Dispersion Relation}
+\label{sec:vacuum_dispersion}
+
+In the Standard Model, the speed of light $c$ is an axiomatic constant. In the SVF, it is a derived property of the substrate's impedance. We treat the vacuum as a 3D transmission line grid where each node satisfies the discrete Kirchhoff equations.
+
+\subsection{Discrete Kirchhoff Derivation}
+Consider a 1D chain of nodes separated by lattice pitch $l_P$. The voltage $V_n$ (vacuum potential) and current $I_n$ (flux) are governed by:
+
+\begin{align}
+    L_{node} \frac{dI_n}{dt} &= V_{n-1} - V_n \label{eq:inductance} \\
+    C_{node} \frac{dV_n}{dt} &= I_n - I_{n+1} \label{eq:capacitance}
+\end{align}
+
+Substituting a plane-wave solution $V_n = V_0 e^{i(\omega t - n k l_P)}$, we obtain the exact dispersion relation for the vacuum substrate:
+
+\begin{equation}
+    \omega(k) = \frac{2}{\sqrt{L_{node}C_{node}}} \sin\left(\frac{k l_P}{2}\right)
+    \label{eq:dispersion}
+\end{equation}
+
+\subsection{The Group Velocity Limit}
+The speed at which information (energy) propagates through the lattice is the Group Velocity $v_g = \frac{d\omega}{dk}$. Differentiating Eq. \ref{eq:dispersion}:
+
+\begin{equation}
+    v_g(k) = \frac{l_P}{\sqrt{L_{node}C_{node}}} \cos\left(\frac{k l_P}{2}\right) = c \cdot \cos\left(\frac{k l_P}{2}\right)
+\end{equation}
+
+This reveals the fundamental mechanism of Relativity: **Bandwidth Limiting**. As the wavenumber $k$ increases (higher energy/momentum), the cosine term drops. When $k \rightarrow \pi/l_P$ (the Nyquist limit), $v_g \rightarrow 0$.
+
+Standard Special Relativity is therefore the low-frequency approximation ($k l_P \ll 1$) of this discrete hardware limit. The "Lorentz Factor" $\gamma$ is simply the non-linear approach to the lattice saturation frequency.
+
+\subsection{Relativistic Scaling}
+We rewrite the velocity relation in terms of frequency:
+\begin{equation}
+    v_g = c \sqrt{1 - \left(\frac{\omega}{\omega_{sat}}\right)^2}
+\end{equation}
+When a topological defect is accelerated, its internal oscillation frequency $\omega$ increases. As $\omega \to \omega_{sat}$, the hardware becomes increasingly "loaded," requiring more update cycles to process the twist, which macroscopically manifests as a decrease in velocity and an increase in effective mass.
