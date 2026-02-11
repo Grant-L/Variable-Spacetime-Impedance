@@ -20,6 +20,7 @@
     title=SVF Postulate: #1, enhanced, breakable, attach title to upper, 
     after title={:\enskip}, arc=0mm
 }
+\newenvironment{axiom}[1][]{\begin{axiombox}[#1]}{\end{axiombox}}
 
 % 2. Example Environment: Blue for worked derivations
 \newtcolorbox[auto counter, number within=chapter]{examplebox}[1][]{
