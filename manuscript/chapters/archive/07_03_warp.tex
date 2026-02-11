@@ -1,0 +1,14 @@
+\section{Simulation: The Warp Bubble}
+\label{sec:warp_sim}
+
+To test the feasibility of Metric Refraction, we simulated a "Warp Bubble" where the local refractive index is driven to $\chi = 0.5$ using the \texttt{WarpBubbleSim} module. The simulation applies a smooth Gaussian gradient to the lattice density to satisfy the Impedance Matching Condition ($Z \approx Z_0$).
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{assets/sim_outputs/warp_bubble_spacetime.png}
+    \caption{\textbf{Superluminal Translation via Lattice Slip.} The heatmap demonstrates a flux packet (pulse) outrunning the background light speed limit (white dashed line) by entering an engineered rarefaction zone ($\chi = 0.5$). 
+    \textit{Note:} The pulse does not fracture or reflect upon entering the bubble. This confirms that by scaling $L$ and $C$ proportionally, the Refractive Index can be lowered without creating an Impedance Mismatch boundary.}
+    \label{fig:warp_bubble}
+\end{figure}
+
+The simulation confirms that $c$ is only a limit for the ground-state density of the vacuum. By artificially rarefying the lattice, the local speed limit increases proportionally ($v_g = c/\chi$), allowing for apparent superluminal travel relative to the background metric.

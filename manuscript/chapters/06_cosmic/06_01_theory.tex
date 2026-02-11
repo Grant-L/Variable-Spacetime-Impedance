@@ -1,30 +1,43 @@
-\section{Lattice Viscosity \& The Hubble Illusion}
-\label{sec:hubble_viscosity}
+\section{Generative Cosmology: The Crystallizing Vacuum}
+\label{sec:generative_cosmology}
 
-We abandon the V2.0 hypothesis that atomic spectra or fundamental constants ($c, h$) have evolved over time. Instead, we treat the redshift as a propagation effect.
+\subsection{The Failure of Static Viscosity}
+The "Tired Light" model (VSI v3.0) successfully predicted the redshift-distance relation but failed the \textbf{Supernova Time Dilation Test}. Observations of Type Ia supernovae confirm that distant events are temporally dilated by a factor of $(1+z)$. This is geometrically impossible in a static universe, regardless of viscosity.
 
-\subsection{The Viscosity Coefficient ($\gamma$)}
-As an electromagnetic wave propagates through the lattice, it performs work on the nodes, experiencing a small, continuous energy loss due to the vacuum's finite viscosity. We define the \textbf{Vacuum Viscosity Coefficient} $\gamma$ ($m^{-1}$).
+\subsection{The Lattice Genesis Hypothesis}
+VSI v4.0 asserts that the vacuum manifold $M_A$ is not static, but \textbf{Generative}.
+We identified in Chapter 2 that the vacuum possesses a Lattice Tension ($P_{vac}$). We propose that this tension drives a continuous phase transition: the crystallization of new lattice nodes from the underlying substrate.
 
-The energy of a photon is $E = hf$. The power loss over distance $dx$ is proportional to the energy carried:
+\subsection{Derivation of the Genesis Rate ($R_g$)}
+Let $N(t)$ be the total number of nodes along a line of sight. The Lattice Tension induces a proliferation of nodes proportional to the existing volume (a geometric growth series):
 \begin{equation}
-    \frac{dE}{dx} = - \frac{\gamma}{c} E
+\frac{dN}{dt} = R_g N(t)
+\end{equation}
+Where $R_g$ is the \textbf{Node Genesis Rate} (Hz).
+
+Solving for $N(t)$:
+\begin{equation}
+N(t) = N_0 e^{R_g t}
 \end{equation}
 
-Since Planck's constant $h$ is invariant in V3.0, the frequency $f$ must decay:
+\subsection{Recovering the Hubble Parameter}
+The physical distance $D$ is simply the node count $N$ times the Lattice Pitch $l_P$:
 \begin{equation}
-    \frac{df}{dx} = - \frac{\gamma}{c} f \implies f_{obs} = f_{emit} e^{-\frac{\gamma D}{c}}
+D(t) = N(t) \cdot l_P
+\end{equation}
+The recession velocity $v$ is the rate of change of distance:
+\begin{equation}
+v = \frac{dD}{dt} = l_P \frac{dN}{dt} = l_P (R_g N) = R_g D
+\end{equation}
+Comparing this to Hubble's Law ($v = H_0 D$), we identify the Hubble Constant as the Genesis Rate:
+\begin{equation}
+H_0 \equiv R_{genesis}
 \end{equation}
 
-\subsection{Deriving the Hubble Constant}
-Redshift is defined as $z = \Delta f / f$. For local galaxies (small distance $D$), we Taylor expand the exponential decay:
+\subsection{Solving the Supernova Clock}
+Because new nodes are inserted into the path \textit{during} the photon's transit, the wavelength $\lambda$ is mechanically stretched by the ratio of the node count at reception vs. emission:
 \begin{equation}
-    z \approx \frac{\gamma D}{c}
+1+z = \frac{N(t_{obs})}{N(t_{emit})}
 \end{equation}
-
-Comparing this to the empirical Hubble Law ($z = \frac{H_0 D}{c}$), we identify the Hubble Constant not as an expansion rate, but as the \textbf{Viscosity Rate} of the vacuum:
-\begin{equation}
-    H_0 \equiv \gamma_{viscosity} \cdot c
-\end{equation}
-
-This derivation mathematically reproduces the linear redshift-distance relation observed in local cosmology. The "acceleration" of the universe at high $z$ is simply the non-linearity of the exponential decay function ($e^{-\gamma D/c}$) becoming significant at large distances.
+This mechanical insertion of space dilates both the wavelength (Redshift) and the wave-train duration (Time Dilation) identically.
+\textbf{Result:} VSI v4.0 recovers the $(1+z)$ Supernova Timing signal while retaining the hardware-based derivation of Dark Energy (Lattice Tension driving Genesis).

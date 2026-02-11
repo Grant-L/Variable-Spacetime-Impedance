@@ -1,47 +1,36 @@
-\section{Gravity as Metric Refraction}
-\label{sec:gravity}
+\section{Tensor Gravitation: The Matched Impedance Field}
+\label{sec:tensor_gravity}
 
-General Relativity describes gravity as the curvature of a 4D geometric manifold. SVF describes it as a gradient in the **Variable Spacetime Impedance**.
+\subsection{The Birefringence Constraint}
+Previous iterations (VSI v3.0) modeled gravity via an anisotropic Inductance Tensor $\mathbf{L}_{ij}$ coupled with a scalar Capacitance $C_0$. While this recovered the correct light bending angle, it inadvertently predicted Vacuum Birefringence—gravity would act as a polarizing crystal, splitting images of background stars. To satisfy the Equivalence Principle and observational constraints, the vacuum must be \textbf{Impedance Matched}.
 
-\section{Derivation of the Vacuum Impedance Tensor ($\mathbf{L}_{ij}$)}
+\subsection{The Matched Constitutive Tensors}
+We propose that the vacuum dielectric properties are coupled. A gravitational potential does not merely stiffen the lattice (Inductance); it simultaneously increases its charge storage density (Capacitance).
 
-\subsection{Objective}
-To derive the components of the Inductance Tensor $\mathbf{L}$ such that the propagation of electromagnetic flux through the VSI lattice follows the exact geodesics predicted by the Schwarzschild metric of General Relativity.
+We define the Metric Deformation Tensor $\mathbf{D}_{ij}$ for a spherically symmetric mass $M$:
+\begin{equation}
+\mathbf{D} = \begin{pmatrix} (1 - r_s/r)^{-1} & 0 & 0 \\ 0 & (1 - r_s/r)^{-1} & 0 \\ 0 & 0 & (1 - r_s/r)^{-1} \end{pmatrix}
+\end{equation}
+*(Note: Using the Isotropic Coordinate basis for optical clarity).*
 
-\subsection{The Schwarzschild Metric}
-The invariant line element around a static, spherically symmetric mass $M$ is given by:
-$$ ds^2 = -c^2 \left(1 - \frac{r_s}{r}\right) dt^2 + \left(1 - \frac{r_s}{r}\right)^{-1} dr^2 + r^2 d\Omega^2 $$
-Where $r_s = \frac{2GM}{c^2}$ is the Schwarzschild radius.
+The Constitutive Tensors for the vacuum are:
+\begin{align}
+\mathbf{L}_{ij} &= L_0 \cdot \mathbf{D}_{ij} \\
+\mathbf{C}_{ij} &= C_0 \cdot \mathbf{D}_{ij}
+\end{align}
 
-\subsection{The VSI Tensor Correspondence}
-In the Variable Spacetime Impedance framework, the metric tensor $g_{\mu\nu}$ is mapped to the electromagnetic material properties of the vacuum lattice. Specifically, the spatial curvature $g_{rr}$ corresponds to the \textbf{Radial Inductance} ($L_{rr}$), while time dilation $g_{tt}$ corresponds to the \textbf{Geometric Mean Impedance} of the node.
+\subsection{Observational Verification}
+\textbf{1. Variable Speed of Light (Gravity):}
+The Refractive Index $n$ is determined by the product of the tensor components:
+\begin{equation}
+n_{ij} = c \sqrt{\mathbf{L}_{ij} \mathbf{C}_{ij}} = c \sqrt{L_0 C_0} \cdot \mathbf{D}_{ij}
+\end{equation}
+This produces the localized slowing of light required by General Relativity ($n > 1$).
 
-To mimic the optical geometry of General Relativity, the vacuum behaves as an anisotropic dielectric (a "Plebanski Medium"). We define the local Inductance Tensor $\mathbf{L}$ in spherical coordinates $(r, \theta, \phi)$ as:
-
-$$ \mathbf{L} = \begin{pmatrix} L_{rr} & 0 & 0 \\ 0 & L_{\theta\theta} & 0 \\ 0 & 0 & L_{\phi\phi} \end{pmatrix} $$
-
-\subsection{Component Derivation}
-The effective refractive index $n$ for a wave traveling through the lattice is derived from the impedance $Z = \sqrt{L/C}$. For a vacuum with constant capacitance $C_0$ (to satisfy the Charge Scaling patch), all variations must be borne by $\mathbf{L}$.
-
-\textbf{1. Radial Component ($L_{rr}$):}
-The radial metric component is $g_{rr} = \left(1 - \frac{r_s}{r}\right)^{-1}$.
-This represents the "stretching" of space in the radial direction. In the lattice, this manifests as an increased inductance (inertia) for flux moving radially.
-$$ L_{rr} = L_0 \cdot g_{rr} = L_0 \left(1 - \frac{2GM}{rc^2}\right)^{-1} $$
-
-\textbf{2. Transverse Components ($L_{\theta\theta}, L_{\phi\phi}$):}
-In the standard Schwarzschild metric, the transverse space is not stretched locally (it scales with $r^2$ purely geometrically). However, relative to the radial stretching, the lattice exhibits anisotropy. 
-$$ L_{\theta\theta} = L_{\phi\phi} = L_0 $$
-
-\subsection{The Resulting Tensor Field}
-Thus, the gravity of a point mass $M$ is described not by a scalar field, but by the deformation of the Inductance Tensor:
-
-$$ \mathbf{L}_{Schwarzschild} = L_0 \begin{pmatrix} \frac{1}{1 - \frac{2GM}{rc^2}} & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & \sin^2\theta \end{pmatrix} $$
-*(Note: The $\sin^2\theta$ term accounts for the spherical coordinate basis. In a local orthonormal frame, the transverse terms are unity.)*
-
-\subsection{Implication for Light Bending}
-The total bending angle $\delta$ of a light ray passing the sun is the sum of the bending due to time dilation (scalar potential) and spatial curvature (tensor deformation).
-$$ \delta = \delta_{time} + \delta_{space} $$
-In VSI v2.0 (Scalar $L$), $\delta_{space} = 0$, yielding $\delta = \frac{2GM}{rc^2}$.
-In VSI v3.0 (Tensor $\mathbf{L}$), the anisotropy $L_{rr} \neq L_{\theta\theta}$ creates a birefringence effect that accounts for the missing spatial curvature term.
-$$ \delta_{VSI} = \frac{2GM}{rc^2} + \frac{2GM}{rc^2} = \frac{4GM}{rc^2} $$
-This successfully recovers the Einsteinian prediction and passes the Solar Eclipse audit.
+\textbf{2. Constant Impedance (No Birefringence):}
+The Characteristic Impedance $Z$ is determined by the ratio:
+\begin{equation}
+Z_{ij} = \sqrt{\frac{\mathbf{L}_{ij}}{\mathbf{C}_{ij}}} = \sqrt{\frac{L_0 \mathbf{D}_{ij}}{C_0 \mathbf{D}_{ij}}} = \sqrt{\frac{L_0}{C_0}} = Z_0 \approx 377 \Omega
+\end{equation}
+Because the deformation term $\mathbf{D}_{ij}$ cancels out, the Impedance remains a scalar invariant. Light of all polarizations travels at the same speed (determined by $n$) and encounters the same resistance ($Z$).
+\textbf{Result:} Correct light bending ($4GM/rc^2$) with Zero Birefringence.
