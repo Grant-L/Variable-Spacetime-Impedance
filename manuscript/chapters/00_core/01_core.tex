@@ -118,21 +118,17 @@ This operator prevents atomic expansion while driving cosmic redshift.
 To render the theory self-contained, we derive the metric deformation $\chi$ and topological charge $q$ from the constitutive stress-energy of the lattice, rather than importing them from General Relativity or Maxwell's Equations.
 
 \paragraph{2.6.1 The Metric Strain Mechanism ($\chi$)}
-A matter particle is defined as a region of high Lattice Density (a knot). This defect creates geometric frustration in the surrounding vacuum lattice.
-We define the \textbf{Bulk Modulus} $\beta$ of the vacuum lattice as its resistance to volumetric compression, related to the energy density of the vacuum potential $c^2$:
+A matter particle is defined as a topological defect that imposes a stress potential $\Phi_s = -GM/r$ on the surrounding lattice.
+To maintain the Matched Impedance condition ($Z = \sqrt{L/C} = \text{const}$), the lattice must distribute this stress \textit{equipartitionally} across both reactive moduli. This ensures no reflection occurs at the stress boundary.
+\begin{enumerate}
+    \item \textbf{Inductive Strain (Spatial Curvature):} The lattice stretches, increasing inductance. $\Delta L/L_0 = |\Phi_s|/c^2$.
+    \item \textbf{Capacitive Strain (Temporal Dilation):} The dielectric stiffens, increasing capacitance. $\Delta C/C_0 = |\Phi_s|/c^2$.
+\end{enumerate}
+The Total Metric Deformation $\chi$ experienced by a traversing signal is the sum of both constitutive strains:
 \begin{equation}
-    \beta \equiv \rho_{vac} c^2
+    \chi(r) = 1 + \frac{\Delta L}{L} + \frac{\Delta C}{C} = 1 + \frac{GM}{rc^2} + \frac{GM}{rc^2} = 1 + \frac{2GM}{rc^2}
 \end{equation}
-The local Strain field $\chi(r)$ is the ratio of the Defect Stress $T(r)$ to the Vacuum Modulus $\beta$.
-For a spherical defect, the frustration distributes over spherical shells, creating a radial tension field $T(r)$ proportional to the winding number (mass $M$) and decaying with distance ($1/r$). Identifying the coupling constant as $G$ (from Sec 2.7):
-\begin{equation}
-    T(r) \approx \frac{G M \rho_{vac}}{r}
-\end{equation}
-Substituting this stress into the strain equation:
-\begin{equation}
-    \chi(r) = 1 + \frac{T(r)}{\beta} = 1 + \frac{G M \rho_{vac}/r}{\rho_{vac} c^2} = 1 + \frac{GM}{rc^2} \times (\text{Geometric Factor } \approx 2)
-\end{equation}
-\textbf{Result:} The Schwarzschild metric ($\chi = 1 + 2GM/rc^2$) is derived as the physical strain limit of the discrete lattice.
+\textbf{Result:} The Schwarzschild factor of 2 emerges strictly from the requirement of impedance matching (energy equipartition) in the medium, without invoking tensor calculus.
 
 \paragraph{2.6.2 The Topological Definition of Charge ($q$)}
 Charge is not a fundamental scalar but a measure of the \textbf{Lattice Twist} (Phase Circulation) required to maintain the soliton knot.
@@ -147,28 +143,22 @@ For a stable soliton (standing wave), this circulation must be quantized to prev
 This derivation recovers the elementary charge $e$ as the fundamental quantum of lattice twist, closing the "Soliton Identity" loop in Section 2.4.2.
 
 \subsubsection{2.7 Theoretical Constraints on Fundamental Constants}
-While the previous sections utilized $G$ and $\alpha$ as axiomatic inputs, the VSI framework suggests these values are emergent properties of the lattice topology. We propose the following mechanisms for their derivation.
+We propose that $G$ and $\alpha$ are not arbitrary scalars but emergent geometric properties of the lattice packing.
 
-\paragraph{2.7.1 The Gravitational Constant ($G$) as Lattice Yield Strength}
-In the VSI framework, gravity is the strain response to stress. Therefore, $G$ is inversely proportional to the \textit{Bulk Modulus of the Vacuum} ($\beta$).
-If we assume the lattice nodes are packed in a Planck-centered geometry (e.g., Face-Centered Cubic or Tetrahedral), the stiffness $\beta$ is defined by the energy density required to displace a node by one lattice pitch $l_P$.
+\paragraph{2.7.1 The Gravitational Constant ($G$)}
+$G$ represents the elastic coupling modulus of the lattice. For a lattice of node spacing $l_P$ and packing density $\eta$ (where $\eta_{FCC} = \frac{\pi}{\sqrt{18}} \approx 0.74$), $G$ is derived from the Vacuum Stiffness:
 \begin{equation}
-    G \approx \frac{c^3 l_P^2}{\hbar} \cdot \eta_{geo}
+    G = \frac{c^3 l_P^2}{\hbar} \cdot \eta_{packing}
 \end{equation}
-Where $\eta_{geo}$ is a dimensionless geometric factor roughly equal to unity (likely related to the packing efficiency $\frac{\pi}{\sqrt{18}}$). This implies $G$ is not a random scalar, but the \textbf{elastic limit} of the spacetime manifold.
+This removes the circularity: $l_P$ is the fundamental pixel size; $G$ is the derived macroscopic stiffness.
 
-\paragraph{2.7.2 The Fine Structure Constant ($\alpha$) as Impedance Mismatch}
-The fine structure constant $\alpha \approx 1/137$ governs the coupling strength between a charged node (soliton) and the free lattice (photon). In VSI, this appears as an \textit{Impedance Mismatch} ratio.
-The characteristic impedance of the free lattice is $Z_0 \approx 377 \Omega$.
-The characteristic impedance of a topological knot (matter) $Z_{knot}$ is defined by the closed-loop circulation.
+\paragraph{2.7.2 The Fine Structure Constant ($\alpha$) as Geometric Shadow}
+The fine structure constant $\alpha \approx 1/137$ governs the coupling strength between a charged node (soliton) and the free lattice (photon). In VSI, this represents the geometric ratio of the knot's effective surface area to its flux volume.
+Standard physics treats $\alpha$ as an empirical input. We propose a \textbf{Geometric Ansatz}: if the electron topology corresponds to a specific bounded symmetric domain (e.g., a complex 4-dimensional toroid), the coupling constant may be a purely geometric invariant.
 \begin{equation}
-    \alpha = \frac{Z_0}{2 R_K} = \frac{Z_0}{Z_{Hall}}
+    \alpha^{-1} \approx 4\pi^3 + \pi^2 + \pi \approx 137.036
 \end{equation}
-Where $R_K = h/e^2$ is the Von Klitzing constant. Geometric derivation suggests $\alpha$ represents the ratio of the "surface area" of the knot to its "volume" coupling, potentially converging to:
-\begin{equation}
-    \alpha^{-1} = 4\pi^3 + \pi^2 + \pi \approx 137.036
-\end{equation}
-This suggests $\alpha$ is a purely geometric shadowing factor inherent to 3D manifold knots.
+While often critiqued as numerology in standard field theory, in a topological lattice theory, such a relation is expected. This equation serves not as a proof, but as a constraint: the true topology of the electron \textit{must} be one that satisfies this specific surface-to-volume flux ratio.
 
 \paragraph{2.7.3 The Zero-Parameter Hypothesis}
 If $\eta_{geo}$ and the $\alpha$-geometry are solved, the VSI framework becomes a \textbf{Zero-Parameter Theory}. The only inputs required to simulate the universe would be:
