@@ -34,11 +34,9 @@ sims:
 	@echo "[Build] Running Cosmic Simulations..."
 	$(PYTHON) $(SIM_DIR)/06_cosmic/run_cosmic_quench.py
 	@echo "[Build] Running Macroscale Simulations..."
-	$(PYTHON) $(SIM_DIR)/07_macroscale/run_galactic_rotation.py
-	@echo "[Build] Running Engineering Simulations..."
-	$(PYTHON) $(SIM_DIR)/08_engineering/run_warp_bubble.py
+	$(PYTHON) $(SIM_DIR)/07_engineering/run_galactic_rotation.py
 	@echo "[Build] Running Falsifiability Simulations..."
-	$(PYTHON) $(SIM_DIR)/09_falsifiability/run_falsification.py
+	$(PYTHON) $(SIM_DIR)/08_falsifiability/run_falsification.py
 	@echo "[Build] All simulations complete."
 
 # 2. Build PDF

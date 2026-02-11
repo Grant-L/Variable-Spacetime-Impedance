@@ -7,14 +7,14 @@ PROJECT_ROOT = Path(".")  # Runs in current directory
 # Structure Definition based on the "Atomic Chapter" protocol
 STRUCTURE = {
     "assets/figures": ["01_hardware", "02_signal", "03_quantum", "04_topology", 
-                       "05_weak", "06_cosmic", "07_macroscale", "08_engineering", "09_falsifiability"],
+                       "05_weak", "06_cosmic", "07_engineering", "08_engineering", "08_falsifiability"],
     "assets/references": [],
     "build": [],
     "manuscript/structure": ["preamble.tex", "commands.tex", "titlepage.tex"],
     "manuscript/frontmatter": ["00_preface.tex", "01_glossary.tex"],
     "manuscript/backmatter": ["appendix_math.tex", "appendix_code.tex"],
     "simulations": ["01_hardware", "02_signal", "03_quantum", "04_topology", 
-                    "05_weak", "06_cosmic", "07_macroscale", "08_engineering", "09_falsifiability"],
+                    "05_weak", "06_cosmic", "07_engineering", "08_engineering", "08_falsifiability"],
     "src/vsi": ["__init__.py", "constants.py", "lattice.py", "solver.py", "metric.py"],
     "tests": [],
     "notebooks": []
@@ -28,9 +28,9 @@ CHAPTERS = {
     "04_topology": "The Topological Layer: Matter as Defects",
     "05_weak": "The Weak Interaction: Chiral Clamping",
     "06_cosmic": "Cosmic Evolution: The Quench",
-    "07_macroscale": "Macroscale Dynamics: Rotation and Impedance",
+    "07_engineering": "Engineering Layer: Rotation and Impedance",
     "08_engineering": "The Engineering Layer: Metric Refraction",
-    "09_falsifiability": "Falsifiability: The Universal Means Test"
+    "08_falsifiability": "Falsifiability: The Universal Means Test"
 }
 
 # --- Templates ---
