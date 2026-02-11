@@ -3,24 +3,32 @@
 
 General Relativity describes gravity as the curvature of a 4D geometric manifold. SVF describes it as a gradient in the **Variable Spacetime Impedance**.
 
-\subsection{The Impedance Gradient (Dual-Modulus Loading)}
-Massive bodies (spinning vortices) impose a strain field $\sigma$ on the surrounding lattice. To recover the correct deflection angles observed in General Relativity ($4GM/rc^2$), the lattice must undergo **Dual-Modulus Loading**.
+\subsection{The Impedance Gradient (Asymmetric Inertial Loading)}
+In previous iterations of lattice theory, mass was assumed to scale the entire metric tensor symmetrically. However, this leads to an "Impedance Paradox" where $Z = \sqrt{L/C}$ remains constant, preventing the formation of a refractive gradient.
 
-The strain stiffens \textit{both} the inductive (inertial) and capacitive (elastic) moduli of the nodes:
+To resolve this, SVF posits **Asymmetric Inertial Loading**. Massive bodies (spinning vortices) primarily stiffen the **Inductive** capacity of the vacuum (Inertia), while leaving the Capacitive density (Geometry) relatively invariant.
+
+We define the Local Lattice Inductance $L'_{node}$ under the influence of a strain field $\sigma$:
 \begin{align}
-    L'_{node} &= L_{node}(1 + \sigma) \\
-    C'_{node} &= C_{node}(1 + \sigma)
+    L'_{node} &= L_{node}(1 + 2\sigma) \\
+    C'_{node} &\approx C_{node}
 \end{align}
+Where $\sigma \propto GM/rc^2$ is the gravitational strain.
 
-\subsection{The Refractive Index}
-This simultaneous stiffening results in a local Refractive Index $\chi$ that accounts for both spatial curvature (via $L$) and time dilation (via $C$):
+\subsection{The Refractive Index and Impedance Hill}
+This asymmetric stiffening produces two coupled effects:
 
+1. **Refraction (Slowing of Light):** The local propagation speed drops, creating the lensing effects observed in GR.
 \begin{equation}
-    \chi(r) = \sqrt{\frac{L'_{node}C'_{node}}{L_{node}C_{node}}} = \sqrt{(1+\sigma)^2} \approx 1 + \frac{2GM}{rc^2}
+    v(r) = \frac{1}{\sqrt{L'_{node}C'_{node}}} \approx \frac{c}{\sqrt{1+2\sigma}} \approx c(1-\sigma)
 \end{equation}
 
-Light passing near a massive body slows down ($v = c/\chi$) not because space is "curved" in an abstract dimension, but because the nodes in that region are **saturated**. They require more update cycles to process the same amount of flux.
+2. **Impedance Gradient (The Hill):** Crucially, the Characteristic Impedance rises, creating a "potential hill" that particles must climb.
+\begin{equation}
+    Z(r) = \sqrt{\frac{L'_{node}}{C'_{node}}} \approx Z_0\sqrt{1+2\sigma} \approx Z_0(1+\sigma)
+\end{equation}
+
+Light passing near a massive body slows down ($v < c$) and curves toward the region of highest inductance. This recovers the Schwarzschild metric's optical behavior without invoking abstract curvature, identifying Gravity as a **Dielectric Refraction** phenomenon driven by the inertial density of the vacuum nodes.
 
 \subsubsection{Simulation Verification}
-
-Using the \texttt{DualModulusSim} module (Figure 2.1), we modeled the optical path of light rays passing a Schwarzschild-radius mass. The simulation confirms that geodesics naturally curve toward the region of highest impedance (the mass), reproducing the Shapiro Delay and lensing effects of GR purely through variable hardware density.
+Using the \texttt{MetricRefractionSim} module, we modeled the optical path of light rays passing a Schwarzschild-radius mass. The simulation confirms that the Impedance Gradient ($\nabla Z$) naturally bends geodesics toward the mass, reproducing the Shapiro Delay and lensing effects of GR.
