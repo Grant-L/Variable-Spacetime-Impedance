@@ -1,241 +1,62 @@
 \chapter{Simulation Code Repository}
 \label{app:code_repo}
 
-\section{C.1 Introduction}
-All scripts utilize FDTD and Ginzburg-Landau methods based on the global constants defined in \texttt{src/constants.py}. [cite: 859]
-
-\section{C.2 Core Code: Metric Lensing}
-\begin{lstlisting}[language=Python, caption=Gravitational Lensing Simulation]
-import numpy as np
-
-def run_metric_simulation(Nx=600, Ny=400, Nt=1200):
-    u = np.zeros((Nx, Ny))
-    u_prev = np.zeros((Nx, Ny))
+\section{C.1 The Pilot Wave (Walker Mechanism)}
+\begin{lstlisting}[language=Python, caption=sim\_pilot\_wave.py]
+def simulate_pilot_wave():
+    # 1. Initialize Lattice (Wave Field)
+    wave_field = np.zeros((GRID_SIZE, GRID_SIZE))
     
-    # Grid for metric strain mapping
-    X, Y = np.meshgrid(np.arange(Nx), np.arange(Ny), indexing='ij')
-    R = np.sqrt((X - Nx//2)**2 + (Y - (Ny//2+50))**2)
+    # 2. Initialize Particle (Walker)
+    pos = np.array([GRID_SIZE//4, GRID_SIZE//2], dtype=float)
+    vel = np.array([1.5, 0.0]) 
     
-    # n = 1 + epsilon (refractive index gradient)
-    n_map = 1.0 + 20.0 / (np.sqrt(R**2 + 10.0)) 
-    v_map = 1.0 / n_map # Local phase velocity
-    
-    dt = 0.5
-    for t in range(Nt):
-        lap = (np.roll(u, 1, 0) + np.roll(u, -1, 0) + 
-               np.roll(u, 1, 1) + np.roll(u, -1, 1) - 4*u)
-        u_next = 2*u - u_prev + (v_map * dt)**2 * lap
-        
-        if t < 100: 
-            u_next[5, Ny//2-50] += np.sin(0.6*t)
+    for t in range(STEPS):
+        # A. Particle impacts lattice (Source Term)
+        # (Simplified Wave Splat)
+        wave_field += generate_ripple(pos) * 0.05
             
-        u_prev, u = u.copy(), u_next.copy()
-    return u
+        # B. Lattice refracts particle (Pilot Wave Guidance)
+        # Force = -Gradient of Memory Field
+        grad_y, grad_x = np.gradient(wave_field)
+        force = np.array([-grad_x[int(pos[1]), int(pos[0])], 
+                          -grad_y[int(pos[1]), int(pos[0])]])
+        vel += force * 0.1
+        pos += vel
 \end{lstlisting}
 
-\section{C.3 Core Code: The Cosmic Quench}
-\begin{lstlisting}[language=Python, caption=Vacuum Phase Transition (Genesis)]
-def simulate_quench(N=300, steps=1500):
-    # Initial Hot Disordered Phase
-    psi = np.exp(1j * np.random.uniform(-np.pi, np.pi, (N, N)))
-    dt, dx = 0.001, 0.1
+\section{C.2 Borromean Topology (The Proton)}
+\begin{lstlisting}[language=Python, caption=sim\_proton\_topology.py]
+def generate_borromean_rings():
+    theta = np.linspace(0, 2 * np.pi, 200)
     
-    for t in range(steps):
-        lap = (np.roll(psi, 1, 0) + np.roll(psi, -1, 0) + 
-               np.roll(psi, 1, 1) + np.roll(psi, -1, 1) - 4*psi) / (dx**2)
-        # GL Relaxation to ordered state
-        psi += dt * (lap + psi * (1.0 - np.abs(psi)**2))
-    return np.angle(psi)
+    # Ring 1 (Base Ellipse + Warping)
+    r1_x = 2 * np.cos(theta)
+    r1_y = np.sin(theta)
+    r1_z = 0.5 * np.cos(3*theta) # Vertical weave
+    
+    # Ring 2 (Rotated 120 deg)
+    r2_x, r2_y, r2_z = rotate_120(r1_x, r1_y, r1_z)
+    
+    # Ring 3 (Rotated 240 deg)
+    r3_x, r3_y, r3_z = rotate_240(r1_x, r1_y, r1_z)
+    
+    return (r1_x, r1_y, r1_z), (r2_x, r2_y, r2_z), (r3_x, r3_y, r3_z)
 \end{lstlisting}
 
-\section*{C.4 Quantum Layer: Pilot Wave Walkers}
-\begin{lstlisting}[language=Python, caption=Simulating the Pilot Wave Feedback Loop]
-# sim_3_pilot_wave_v2.py
-def run_pilot_wave_walker_v2(Nx=300, Ny=200, Nt=2000):
-    u = np.zeros((Nx, Ny)) # Memory Field
-    xp, yp = Nx // 4, Ny // 2 # Walker Position
+\section{C.3 Generative Cosmology (Dark Energy Alternative)}
+\begin{lstlisting}[language=Python, caption=sim\_genesis\_cosmology.py]
+def luminosity_distance_vsi(z):
+    """
+    In VSI, space multiplies exponentially: N(t) = N0 * exp(H*t).
+    This implies distance D = (c/H0) * ln(1+z).
+    """
+    # Hubble distance
+    dh = C / H0 
     
-    for t in range(Nt):
-        # 1. Update Vacuum Wave Equation
-        lap = get_laplacian(u)
-        u_next = 2*u - u_prev + (c*dt)**2 * lap
-        
-        # 2. Walker "Surfs" the Gradient
-        grad_x, grad_y = np.gradient(u)
-        xp += coupling * grad_x[int(xp), int(yp)]
-        yp += coupling * grad_y[int(xp), int(yp)]
-        
-        # 3. Walker Impacts Lattice (Source Term)
-        u_next[int(xp), int(yp)] += np.sin(omega * t)
-\end{lstlisting}
-
-\section*{C.5 Topological Layer: The Proton Triplet}
-\begin{lstlisting}[language=Python, caption=Ginzburg-Landau Relaxation of Quark Knots]
-# sim_4_proton_triplet_final.py
-def run_proton_topology():
-    # Initialize 3 Phase Singularities (Quarks)
-    psi = initialize_vortices(poles=[(100,100), (120,135), (80,135)])
+    # Metric Distance (Geometric Growth)
+    d_metric = dh * np.log(1 + z)
     
-    for t in range(relaxation_steps):
-        # GL Equation minimizes free energy
-        # The phase gradients form "Flux Tubes" (Gluons)
-        psi += dt * (laplacian(psi) + psi * (1 - abs(psi)**2))
-    
-    plot_phase_and_density(psi) # Visualizes the Trefoil Knot
-\end{lstlisting}
-
-\section*{C.6 Weak Layer: Impedance Clamping}
-\begin{lstlisting}[language=Python, caption=Chiral Filter Simulation]
-# sim_5_weak_clamping.py
-def run_weak_clamping_sim():
-    # Define High-Impedance Region for Right-Handed Chirality
-    Z_map = np.ones((Nx, Ny))
-    Z_map[filter_zone] = 1000.0 # "Clamping" Zone
-    
-    # Propagate Helical Pulse
-    # Left-Handed (Low Z) -> Passes
-    # Right-Handed (High Z) -> Reflects (Parity Violation)
-    u_next = update_wave_equation_variable_Z(u, Z_map)
-\end{lstlisting}
-
-\section*{C.7 Cosmological Layer: The Hubble Pulse}
-\begin{lstlisting}[language=Python, caption=Dark Energy as Latent Heat Release]
-# sim_6_cosmological_expansion.py
-def run_cosmic_pulse():
-    t = np.linspace(0, 14, 1000) # Billions of Years
-    rho_matter = 1.0 / t**3
-    
-    # Latent Heat Release (Sigmoid Function)
-    rho_vacuum = 0.7 / (1 + np.exp(-(t - t_transition)))
-    
-    # Friedman Equation with Variable Vacuum Energy
-    H = np.sqrt(rho_matter + rho_vacuum)
-    plot(t, H) # Shows the "Jerk" at t_transition
-\end{lstlisting}
-
-\section*{C.8 Galactic Layer: Abrikosov Stiffness}
-\begin{lstlisting}[language=Python, caption=Galaxy Rotation with Vacuum Tension]
-# sim_7_galactic_rotation_v2.py
-def run_galactic_rotation():
-    r = np.linspace(0, 50, 500)
-    v_newton = np.sqrt(M / r) # Decays
-    
-    # LCT: Vacuum acts as a stiff superfluid
-    # Stiffness k increases with radius (Vortex Density)
-    v_vacuum = stiffness * r 
-    
-    # Total Velocity = Sqrt(Newton^2 + Vacuum^2)
-    v_total = np.sqrt(v_newton**2 + v_vacuum**2)
-    plot(r, v_total) # Result: Flat Rotation Curve
-\end{lstlisting}
-
-\section*{C.9 Engineering Layer: Casimir Filter}
-\begin{lstlisting}[language=Python, caption=High-Pass Filtering in a Cavity]
-# sim_8_casimir_filter.py
-def run_casimir_filter():
-    # Set Dirichlet BCs at plates (Distance d)
-    u[plate_1] = 0; u[plate_2] = 0
-    
-    # Inject White Noise
-    noise = gaussian_noise()
-    
-    # Measure Spectral Density inside vs outside
-    # Result: Frequencies < c/2d are suppressed
-    plot_spectrum(signal_inside, signal_outside)
-\end{lstlisting}
-
-\section*{C.10 Engineering Layer: Topological Short Stability}
-\begin{lstlisting}[language=Python, caption=Stability Analysis of a Vacuum Via]
-# sim_8_topological_short_stability.py
-import numpy as np
-import matplotlib.pyplot as plt
-
-def run_topological_short_stability():
-    # --- LCT Hardware Constants ---
-    E_crit = 1e18        # Schwinger Limit (V/m)
-    epsilon_0 = 8.85e-12 # Lattice Capacitance (F/m)
-    r_via = 1.0          # Radius of the Vacuum Via
-    
-    # Activation Energy to stress the vacuum volume
-    Volume = (4/3) * np.pi * r_via**3
-    U_activation = 0.5 * epsilon_0 * E_crit**2 * Volume
-    
-    t = np.linspace(0, 10, 1000)
-    
-    # Scenario A: Resistive Collapse (Standard Model)
-    # The lattice snaps back instantly without active stabilization
-    U_resistive = U_activation * np.exp(-t)
-
-    # Scenario B: Topological Lock-In (LCT Model)
-    # Negative Impedance (-Z) creates a lossless Phase Bridge
-    U_lct = np.zeros_like(t)
-    pulse_end = 2.0
-    
-    for i, time in enumerate(t):
-        if time < pulse_end:
-            U_lct[i] = U_activation * (time / pulse_end) # Charging
-        else:
-            U_lct[i] = U_activation # Locked State
-            
-    # Visualization
-    plt.plot(t, U_resistive, 'r--', label='Resistive Collapse')
-    plt.plot(t, U_lct, 'g-', label='Topological Lock-In')
-    plt.title("LCT Figure 8.2: Stability of a Topological Short")
-    plt.xlabel("Time (microseconds)")
-    plt.ylabel("Lattice Potential (Joules)")
-    plt.legend()
-    plt.show()
-\end{lstlisting}
-
-\section*{C.11 Engineering Layer: Spatiotemporal Evolution}
-\begin{lstlisting}[language=Python, caption=Visualizing the Formation of a Topological Short]
-# sim_8_topological_short.py
-import numpy as np
-import matplotlib.pyplot as plt
-
-def run_topological_short_sim():
-    # Setup 3x3 Grid
-    fig, axes = plt.subplots(3, 3, figsize=(12, 12))
-    
-    # Grid Geometry
-    x = np.linspace(-5, 5, 100)
-    y = np.linspace(-5, 5, 100)
-    X, Y = np.meshgrid(x, y)
-    R = np.sqrt(X**2 + Y**2)
-    
-    times = np.linspace(0, 4.0, 9)
-    activation_time = 1.5
-    
-    for i, t in enumerate(times):
-        ax = axes.flat[i]
-        
-        # --- Physics Model ---
-        if t <= activation_time:
-            # Phase 1: Charging (Resistive Load)
-            # Power ramps linearly to max (Schwinger Limit)
-            power_text = "Input: High"
-            # Gaussian Strain Peak
-            Z = np.exp(-R**2 / 2.0) * (t / activation_time)
-        else:
-            # Phase 2: Stable Soliton (Negative Impedance)
-            # Power drops to zero (Self-Sustaining)
-            power_text = "Input: ~0 W"
-            # Topology fractures into a Ring/Throat
-            ring_factor = min(1.0, (t - activation_time) * 1.5)
-            Z = ((1-ring_factor) * np.exp(-R**2 / 2.0) + 
-                 ring_factor * np.exp(-(R-1.5)**2 / 0.5))
-            
-        # Plot Heatmap
-        ax.imshow(Z, cmap='inferno', origin='lower')
-        ax.set_title(f"t={t:.1f} $\mu$s")
-        ax.text(0.05, 0.9, power_text, color='white', transform=ax.transAxes,
-                bbox=dict(facecolor='black', alpha=0.5))
-        ax.axis('off')
-        
-    plt.suptitle("LCT Figure 8.3: Evolution of a Topological Short", fontsize=16)
-    plt.tight_layout()
-    plt.show()
-
-if __name__ == "__main__":
-    run_topological_short_sim()
+    # Luminosity Distance (Standard Candle)
+    return (1 + z) * d_metric
 \end{lstlisting}

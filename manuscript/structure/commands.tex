@@ -1,23 +1,20 @@
-% --- Global SVF Constants (The Rosetta Stone) ---
-% Using providecommand allows these to be overwritten if needed, 
-% but standardizes the notation across all chapters.
-
+% --- Global SVF Constants ---
 \providecommand{\Lvac}{L_{node}}       % Lattice Inductance
 \providecommand{\Cvac}{C_{node}}       % Lattice Capacitance
 \providecommand{\Zvac}{Z_0}            % Characteristic Impedance
 \providecommand{\Wcut}{\omega_{sat}}   % Saturation Frequency
-\providecommand{\lp}{\ell_P}           % Lattice Pitch (Planck Length)
+\providecommand{\lp}{l_P}              % Lattice Pitch (Planck Length)
 
 % --- Citation Commands ---
-\newcommand{\citestart}{}              % Citation start marker (empty command)
-\newcommand{\citeend}{}                % Citation end marker (empty command)
+\newcommand{\citestart}{}              
+\newcommand{\citeend}{}                
 
 % --- Theorem-like Environments (amsthm) ---
 \newtheorem{theorem}{Theorem}[chapter]
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{lemma}[theorem]{Lemma}
 
-% --- Custom Environments ---
+% --- Custom Boxes ---
 
 % 1. Axiom Box: Gold/Blue for fundamental SVF postulates
 \newtcolorbox{axiombox}[1][]{
@@ -27,38 +24,8 @@
 }
 \newenvironment{axiom}[1][]{\begin{axiombox}[#1]}{\end{axiombox}}
 
-% 2. Example Environment: Blue for worked derivations
-\newtcolorbox[auto counter, number within=chapter]{examplebox}[1][]{
-    colback=blue!5!white, colframe=blue!75!black, fonttitle=\bfseries,
-    title=Example \thetcbcounter: #1, 
-    enhanced, breakable, attach title to upper, 
-    after title={:\enskip}
-}
-
-% 3. Problem Environment: Red for theory challenges
-\newtcolorbox[auto counter, number within=chapter]{problembox}[1][]{
-    colback=red!5!white, colframe=red!75!black, fonttitle=\bfseries,
-    title=Problem \thetcbcounter: #1, enhanced, breakable
-}
-
-% 4. Simulation Environment: Green for FDTD/Graph modules
+% 2. Simulation Environment: Green for Module Results
 \newtcolorbox[auto counter, number within=chapter]{simbox}[1][]{
     colback=green!5!white, colframe=green!50!black, fonttitle=\bfseries,
     title=Computational Module \thetcbcounter: #1, enhanced, breakable
-}
-
-% --- Code Block Styling ---
-\lstset{
-    language=Python,
-    basicstyle=\ttfamily\small,
-    keywordstyle=\color{blue}\bfseries,
-    stringstyle=\color{green!50!black},
-    commentstyle=\color{gray}\itshape,
-    numbers=left,
-    numberstyle=\tiny\color{gray},
-    stepnumber=1,
-    frame=single,
-    breaklines=true,
-    captionpos=b,
-    showstringspaces=false
 }

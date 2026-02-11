@@ -1,15 +1,16 @@
 \section{Simulation: Emergent Clamping}
 \label{sec:clamping_sim}
 
-To verify the Chiral Bias postulate, we modeled the propagation of two signal polarities through the $M_{A}$ substrate using the \texttt{WeakInteractionSim} module. The simulation applies the Chiral Bias Equation (Eq 1.3) to dynamically update the local lattice impedance based on signal helicity ($h$).
+To verify the Chiral Bias postulate, we modeled the propagation of two signal polarities through the $M_{A}$ substrate using the \texttt{WeakInteractionSim} module.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=1.0\textwidth]{assets/sim_outputs/weak_clamping_results.png}
     \caption{\textbf{The Chiral Exclusion Principle (Simulation Result).} 
-    \textbf{Green (Left-Handed):} The signal ($h=-1$) aligns with the vacuum bias ($\Omega_{vac}$), encountering baseline impedance $Z_0$. It propagates freely past the barrier zone ($x=60$).
-    \textbf{Red (Right-Handed):} The signal ($h=+1$) opposes the bias, triggering an impedance spike ($Z \to \infty$). The wave hits the "Impedance Wall" and undergoes immediate evanescent decay. This confirms that the absence of Right-Handed neutrinos is a hardware filtering effect.}
+    \textbf{Green (Left-Handed):} The signal ($h=-1$) aligns with the vacuum bias ($\Omega_{vac}$), encountering baseline impedance $Z_0$. It propagates freely.
+    \textbf{Red (Right-Handed):} The signal ($h=+1$) opposes the bias, triggering an impedance spike ($Z \to \infty$). The wave hits the "Impedance Wall" and undergoes immediate evanescent decay.
+    This confirms that the absence of Right-Handed neutrinos is a hardware filtering effect.}
     \label{fig:weak_clamping}
 \end{figure}
 
-The result (Figure \ref{fig:weak_clamping}) demonstrates that the "broken symmetry" of the Weak Interaction is actually a \textbf{Chiral High-Pass Filter}. Any right-handed twist is damped out by the Back-EMF of the manifold before it can propagate beyond a single lattice pitch ($l_P$).
+\citestart The simulation demonstrates that the "broken symmetry" of the Weak Interaction is actually a \textbf{Chiral High-Pass Filter}\cite{1011,1012}\citeend. Any right-handed twist is damped out by the Back-EMF of the manifold before it can propagate beyond a single lattice pitch ($l_P$).

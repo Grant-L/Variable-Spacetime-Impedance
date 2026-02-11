@@ -1,43 +1,26 @@
 \section{Generative Cosmology: The Crystallizing Vacuum}
-\label{sec:generative_cosmology}
-
-\subsection{The Failure of Static Viscosity}
-The "Tired Light" model (VSI v3.0) successfully predicted the redshift-distance relation but failed the \textbf{Supernova Time Dilation Test}. Observations of Type Ia supernovae confirm that distant events are temporally dilated by a factor of $(1+z)$. This is geometrically impossible in a static universe, regardless of viscosity.
+\label{sec:generative_theory}
 
 \subsection{The Lattice Genesis Hypothesis}
-VSI v4.0 asserts that the vacuum manifold $M_A$ is not static, but \textbf{Generative}.
-We identified in Chapter 2 that the vacuum possesses a Lattice Tension ($P_{vac}$). We propose that this tension drives a continuous phase transition: the crystallization of new lattice nodes from the underlying substrate.
+We propose that the vacuum manifold $M_A$ is **Generative**. The Lattice Tension ($P_{vac}$) identified in Chapter 2 drives a continuous phase transition: the crystallization of new lattice nodes from the quantum substrate.
 
-\subsection{Derivation of the Genesis Rate ($R_g$)}
-Let $N(t)$ be the total number of nodes along a line of sight. The Lattice Tension induces a proliferation of nodes proportional to the existing volume (a geometric growth series):
+\subsection{Derivation of the Genesis Rate ($H_0$)}
+Let $N(t)$ be the total number of nodes along a line of sight. The Lattice Tension induces a proliferation of nodes proportional to the existing volume (geometric growth):
 \begin{equation}
-\frac{dN}{dt} = R_g N(t)
+    \frac{dN}{dt} = R_g N(t)
 \end{equation}
-Where $R_g$ is the \textbf{Node Genesis Rate} (Hz).
-
-Solving for $N(t)$:
+Where $R_g$ is the **Node Genesis Rate** (Hz). Solving for $N(t)$:
 \begin{equation}
-N(t) = N_0 e^{R_g t}
+    N(t) = N_0 e^{R_g t}
 \end{equation}
 
 \subsection{Recovering the Hubble Parameter}
-The physical distance $D$ is simply the node count $N$ times the Lattice Pitch $l_P$:
+The physical distance $D$ is the node count $N$ times the Lattice Pitch $l_P$. The recession velocity $v$ is the rate of growth:
 \begin{equation}
-D(t) = N(t) \cdot l_P
+    v = \frac{dD}{dt} = l_P \frac{dN}{dt} = l_P (R_g N) = R_g D
 \end{equation}
-The recession velocity $v$ is the rate of change of distance:
+Comparing this to Hubble's Law ($v = H_0 D$), we identify the Hubble Constant mechanically:
 \begin{equation}
-v = \frac{dD}{dt} = l_P \frac{dN}{dt} = l_P (R_g N) = R_g D
+    H_0 \equiv R_{genesis}
 \end{equation}
-Comparing this to Hubble's Law ($v = H_0 D$), we identify the Hubble Constant as the Genesis Rate:
-\begin{equation}
-H_0 \equiv R_{genesis}
-\end{equation}
-
-\subsection{Solving the Supernova Clock}
-Because new nodes are inserted into the path \textit{during} the photon's transit, the wavelength $\lambda$ is mechanically stretched by the ratio of the node count at reception vs. emission:
-\begin{equation}
-1+z = \frac{N(t_{obs})}{N(t_{emit})}
-\end{equation}
-This mechanical insertion of space dilates both the wavelength (Redshift) and the wave-train duration (Time Dilation) identically.
-\textbf{Result:} VSI v4.0 recovers the $(1+z)$ Supernova Timing signal while retaining the hardware-based derivation of Dark Energy (Lattice Tension driving Genesis).
+\textbf{Conclusion:} The "Expansion of the Universe" is simply the real-time refresh rate of the vacuum hardware.

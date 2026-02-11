@@ -1,20 +1,28 @@
 \section{Metric Refraction: The Non-Geometric Warp}
 \label{sec:refraction_warp}
 
-SVF replaces the abstract "warping" of spacetime with the mechanical \textbf{Refraction of Flux}. A region of modified node density relative to the background creates a local Refractive Index ($\chi$):
+\citestart SVF replaces the abstract "warping" of spacetime with the mechanical \textbf{Refraction of Flux}\cite{1157}\citeend. \citestart A region of modified node density relative to the background creates a local Refractive Index ($\chi$)\cite{1158}\citeend:
 
 \begin{equation}
     \chi = \frac{n_{local}}{n_0} = \sqrt{\frac{L'_{node} C'_{node}}{L_{node} C_{node}}}
-    \label{eq:engineered_index}
 \end{equation}
 
-When $\chi < 1$, the local group velocity $v_g = c/\chi$ exceeds the background speed of light. This creates a \textbf{Lattice Slip} zone. Because the impedance remains matched ($Z' = Z_0$), the vessel does not encounter a "light barrier" or shockwave; it simply traverses a medium with a higher local slew rate limit.
+When $\chi < 1$, the local group velocity $v_g = c/\chi$ exceeds the background speed of light. \citestart This creates a \textbf{Lattice Slip} zone\cite{1159}\citeend. \citestart Because the impedance remains matched ($Z' = Z_0$), the vessel does not encounter a "light barrier" or shockwave; it simply traverses a medium with a higher local slew rate limit\cite{1160}\citeend.
 
 \subsection{The Lattice Stress Coefficient ($\sigma$)}
-The magnitude of the modification is governed by the \textbf{Lattice Stress Coefficient} ($\sigma$).
+\citestart The magnitude of the modification is governed by the \textbf{Lattice Stress Coefficient} ($\sigma$)\cite{1161}\citeend:
 \begin{itemize}
-    \item \textbf{Compression ($\sigma > 1$):} Increases node density ($L \uparrow, C \uparrow$). This slows light (Gravity).
-    \item \textbf{Rarefaction ($\sigma < 1$):} Decreases node density ($L \downarrow, C \downarrow$). This speeds light (Warp).
+    \item \textbf{Compression ($\sigma > 1$):} Increases node density ($L \uparrow, C \uparrow$). \citestart This slows light (Gravity)\cite{1162}\citeend.
+    \item \textbf{Rarefaction ($\sigma < 1$):} Decreases node density ($L \downarrow, C \downarrow$). \citestart This speeds light (Warp)\cite{1163}\citeend.
 \end{itemize}
 
-This unified definition links Gravity and Warp Drive as opposite poles of the same mechanical stress function.
+\citestart This unified definition links Gravity and Warp Drive as opposite poles of the same mechanical stress function\cite{1164}\citeend.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{assets/sim_outputs/metric_stress_profile.png}
+    \caption{\textbf{The Unified Stress Field.} A simulation of effective light speed vs. Lattice Stress ($\sigma$).
+    \textbf{Right ($\sigma > 1$):} Gravitational slowing (Black Hole regime).
+    \textbf{Left ($\sigma < 1$):} Metric Rarefaction (Warp Drive regime). The vertical asymptote represents the background vacuum state ($c$).}
+    \label{fig:metric_stress}
+\end{figure}

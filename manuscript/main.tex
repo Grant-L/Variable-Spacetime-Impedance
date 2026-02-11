@@ -9,11 +9,9 @@
 % 2. Front Matter
 \frontmatter
 \input{manuscript/structure/titlepage}
-\tableofcontents
-
-% Preface and Glossary
 \input{manuscript/frontmatter/00_preface}
-% \input{manuscript/frontmatter/01_glossary} % Uncomment when ready
+% \input{manuscript/frontmatter/glossary}
+\tableofcontents
 
 % 3. Main Content
 \mainmatter
@@ -21,7 +19,7 @@
 % Part 0: Core Theory
 \input{manuscript/chapters/00_core/_manifest}
 
-% Part I: The Substrate
+% Part I: The Hardware
 \part{The Hardware Layer}
 \input{manuscript/chapters/01_hardware/_manifest}
 \input{manuscript/chapters/02_signal/_manifest}
@@ -36,14 +34,13 @@
 \part{Macroscale Dynamics \& Engineering}
 \input{manuscript/chapters/06_cosmic/_manifest}
 \input{manuscript/chapters/07_engineering/_manifest}
+
 % Part IV: Verification
 \part{Falsifiability}
 \input{manuscript/chapters/08_falsifiability/_manifest}
 
 % 4. Back Matter
 \backmatter
-% \input{manuscript/backmatter/appendix_math}
-% \input{manuscript/backmatter/appendix_code}
 \bibliographystyle{plain}
 \bibliography{manuscript/bibliography}
 

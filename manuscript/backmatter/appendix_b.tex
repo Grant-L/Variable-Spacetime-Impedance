@@ -1,53 +1,47 @@
-\chapter{Simulation Manifest and Codebase}
+\chapter{Simulation Manifest}
 \label{app:simulation_manifest}
 
-The credibility of Lindblom Coupling Theory rests on numerical verification. The following Python modules, available in the \texttt{src/} directory, reproduce the figures and results presented in this text.
+The credibility of the Stochastic Vacuum Framework rests on numerical verification. The following Python modules reproduce the figures presented in this text.
 
-\section*{B.1 Hardware Layer (Chapter 1)}
+\section*{B.1 Hardware Layer}
 \begin{itemize}
-    \item \textbf{Module:} \texttt{sim\_1\_amorphous\_vacuum.py}
-    \item \textbf{Physics Verified:} Generates the 3D Voronoi substrate and calculates the nodal connectivity mean $\langle k \rangle \approx 15.54$.
-    \item \textbf{Key Output:} \texttt{connectivity\_histogram.png} – Proves the statistical isotropy of the glass.
+    \item \textbf{Module:} \texttt{sim\_lattice\_structure.py}
+    \item \textbf{Physics:} Generates the 3D Voronoi substrate and calculates mean connectivity.
+    \item \textbf{Output:} \texttt{connectivity\_histogram.png}, \texttt{lattice\_slice.png}.
 \end{itemize}
 
-\section*{B.2 Signal Layer (Chapter 2)}
+\section*{B.2 Quantum Layer}
 \begin{itemize}
-    \item \textbf{Module:} \texttt{sim\_2\_metric\_refraction\_v2.py}
-    \item \textbf{Physics Verified:} Simulates the \textbf{Refractive Index Gradient} near a mass load.
-    \item \textbf{Key Output:} \texttt{impedance\_heatmap.png} – Visualizes Gravity as a region of high-inductance signal delay ($n > 1$).
+    \item \textbf{Module:} \texttt{sim\_pilot\_wave.py}
+    \item \textbf{Physics:} Models the "Walker" mechanism where a particle surfs its own impedance wake.
+    \item \textbf{Output:} \texttt{pilot\_wave\_walker.png}.
 \end{itemize}
 
-\section*{B.3 Quantum Layer (Chapter 3)}
+\section*{B.3 Topological Layer}
 \begin{itemize}
-    \item \textbf{Module:} \texttt{sim\_3\_pilot\_wave\_v2.py}
-    \item \textbf{Physics Verified:} Models the \textbf{Pilot Wave} feedback loop and the "Walker" trajectory.
-    \item \textbf{Key Output:} \texttt{pilot\_wave\_walker\_v2.png} – Demonstrates that "Probability" is the result of deterministic \textbf{Nodal Jitter}.
+    \item \textbf{Module:} \texttt{sim\_proton\_topology.py}
+    \item \textbf{Physics:} Parametric generation of the \textbf{Borromean Rings} (Proton) and Trefoil (Electron).
+    \item \textbf{Output:} \texttt{proton\_borromean.png}.
 \end{itemize}
 
-\section*{B.4 Topological Layer (Chapter 4)}
+\section*{B.4 Weak Interaction}
 \begin{itemize}
-    \item \textbf{Module:} \texttt{sim\_4\_proton\_triplet\_final.py}
-    \item \textbf{Physics Verified:} Visualizes the Proton as a **Trefoil Knot** of three entangled phase singularities.
-    \item \textbf{Key Output:} \texttt{proton\_3d\_topology\_V2.png} – Reveals the high-tension "Phase Bridges" (Gluons) responsible for confinement.
+    \item \textbf{Module:} \texttt{sim\_weak\_clamping.py}
+    \item \textbf{Physics:} Simulates the propagation of Left vs. Right-handed waves in a biased impedance grid.
+    \item \textbf{Output:} \texttt{weak\_clamping\_results.png}.
 \end{itemize}
 
-\section*{B.5 Weak Layer (Chapter 5)}
+\section*{B.5 Cosmology}
 \begin{itemize}
-    \item \textbf{Module:} \texttt{sim\_5\_weak\_clamping.py}
-    \item \textbf{Physics Verified:} Tests the propagation of chiral pulses through a polarized lattice.
-    \item \textbf{Key Output:} \texttt{weak\_clamping\_results.png} – Shows the reflection (clamping) of right-handed helical signals.
+    \item \textbf{Module:} \texttt{sim\_genesis\_cosmology.py}
+    \item \textbf{Physics:} Solves the Friedman Equation vs. VSI Exponential Growth ($N(t) = N_0 e^{Ht}$).
+    \item \textbf{Output:} \texttt{genesis\_vs\_lcdm.png}.
 \end{itemize}
 
-\section*{B.6 Cosmological Layer (Chapter 6)}
+\section*{B.6 Engineering \& Falsification}
 \begin{itemize}
-    \item \textbf{Module:} \texttt{sim\_6\_cosmological\_expansion.py}
-    \item \textbf{Physics Verified:} Models the universe's expansion history $H(t)$ during the **Global Quench**.
-    \item \textbf{Key Output:} \texttt{cosmological\_expansion.png} – Identifying the "Hubble Pulse" driven by latent heat release.
-\end{itemize}
-
-\section*{B.7 Galactic Layer (Chapter 7)}
-\begin{itemize}
-    \item \textbf{Module:} \texttt{sim\_7\_galactic\_rotation\_v2.py}
-    \item \textbf{Physics Verified:} Simulates the \textbf{Abrikosov Lattice} stiffness in a rotating superfluid galaxy.
-    \item \textbf{Key Output:} \texttt{galactic\_rotation\_v2.png} – Recovers flat rotation curves and the $1/r$ "Dark Matter" density profile without hidden mass.
+    \item \textbf{Module:} \texttt{sim\_metric\_stress.py}
+    \item \textbf{Output:} \texttt{metric\_stress\_profile.png} (The Unified Gravity/Warp Field).
+    \item \textbf{Module:} \texttt{sim\_falsification.py}
+    \item \textbf{Output:} \texttt{falsification\_dashboard.png} (The Kill Switches).
 \end{itemize}
