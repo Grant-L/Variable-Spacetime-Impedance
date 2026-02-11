@@ -1,28 +1,30 @@
-\section{The Impedance Evolution Equation}
-\label{sec:impedance_evolution}
+\section{Lattice Viscosity \& The Hubble Illusion}
+\label{sec:hubble_viscosity}
 
-We model the background Characteristic Impedance ($Z_{0}$) of the vacuum as a function of cosmic time $t$. The evolution follows a sigmoid relaxation curve, characteristic of a damped harmonic system stiffening into its ground state:
+We abandon the V2.0 hypothesis that atomic spectra or fundamental constants ($c, h$) have evolved over time. Instead, we treat the redshift as a propagation effect.
 
+\subsection{The Viscosity Coefficient ($\gamma$)}
+As an electromagnetic wave propagates through the lattice, it performs work on the nodes, experiencing a small, continuous energy loss due to the vacuum's finite viscosity. We define the \textbf{Vacuum Viscosity Coefficient} $\gamma$ ($m^{-1}$).
+
+The energy of a photon is $E = hf$. The power loss over distance $dx$ is proportional to the energy carried:
 \begin{equation}
-    Z_{0}(t) = Z_{modern} \left( 1 - e^{-\xi \cdot t} \right)
+    \frac{dE}{dx} = - \frac{\gamma}{c} E
 \end{equation}
 
-Where $\xi$ is the **Quench Constant** ($s^{-1}$).
-
-\subsection{Deriving Dark Energy: The Lattice Tension State Equation}
-Standard Cosmology attributes the accelerating expansion of the universe to a mysterious "Dark Energy." In SVF, this acceleration is identified as the mechanical **Lattice Tension** of the stiffening vacuum.
-
-In General Relativity, acceleration requires a source of **Negative Pressure** ($P < 0$). We define the Vacuum Pressure $P_{vac}$ as the negative derivative of the lattice stiffness. As the manifold "cools" and $Z_0$ rises, the lattice becomes stiffer, exerting an increasing **Elastic Tension** on the fabric of spacetime:
-
+Since Planck's constant $h$ is invariant in V3.0, the frequency $f$ must decay:
 \begin{equation}
-    P_{vac}(t) = -\kappa \frac{dZ_0}{dt}
-\end{equation}
-Where $\kappa$ is the bulk modulus coupling constant.
-
-Substituting the time derivative of the evolution equation:
-\begin{equation}
-    P_{vac}(t) \propto -\xi e^{-\xi t}
-    \label{eq:vacuum_pressure}
+    \frac{df}{dx} = - \frac{\gamma}{c} f \implies f_{obs} = f_{emit} e^{-\frac{\gamma D}{c}}
 \end{equation}
 
-Since $P_{vac}$ is negative (Tension), it acts as a repulsive source in the Friedmann equations, driving the accelerated expansion of the universe. The "Dark Energy" epoch corresponds to the period of maximum stiffening rate ($z \approx 0.7$), where the tension overcomes the gravitational attraction of matter.
+\subsection{Deriving the Hubble Constant}
+Redshift is defined as $z = \Delta f / f$. For local galaxies (small distance $D$), we Taylor expand the exponential decay:
+\begin{equation}
+    z \approx \frac{\gamma D}{c}
+\end{equation}
+
+Comparing this to the empirical Hubble Law ($z = \frac{H_0 D}{c}$), we identify the Hubble Constant not as an expansion rate, but as the \textbf{Viscosity Rate} of the vacuum:
+\begin{equation}
+    H_0 \equiv \gamma_{viscosity} \cdot c
+\end{equation}
+
+This derivation mathematically reproduces the linear redshift-distance relation observed in local cosmology. The "acceleration" of the universe at high $z$ is simply the non-linearity of the exponential decay function ($e^{-\gamma D/c}$) becoming significant at large distances.
