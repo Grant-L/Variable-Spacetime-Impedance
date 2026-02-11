@@ -3,23 +3,32 @@
 
 General Relativity describes gravity as the curvature of a 4D geometric manifold. SVF describes it as a gradient in the \textbf{Variable Spacetime Impedance}.
 
-\subsection{The Impedance Gradient}
-Massive bodies (topological defects) ``load'' the surrounding nodes of $M_A$, increasing the local Metric Strain ($\epsilon$). This strain effectively increases the local inductance $L_{node}$, resulting in a higher refractive index $\chi$:
+\subsection{The Impedance Gradient (Dual-Modulus Loading)}
+Massive bodies (spinning vortices) impose a strain field $\sigma$ on the surrounding lattice. To recover the correct deflection angles observed in General Relativity (e.g., $4GM/rc^2$), the lattice must undergo \textbf{Dual-Modulus Loading}.
+
+The strain stiffens \textit{both} the inductive (inertial) and capacitive (elastic) moduli of the nodes:
+
+\begin{align}
+    L'_{node} &= L_{node}(1 + \sigma) \\
+    C'_{node} &= C_{node}(1 + \sigma)
+\end{align}
+
+This results in a local refractive index $\chi$ that accounts for both spatial curvature (via $L$) and time dilation (via $C$):
 
 \begin{equation}
-    \chi(r) = \sqrt{\frac{L'_{node} C'_{node}}{L_{node} C_{node}}} \approx 1 + \frac{2GM}{rc^2}
+    \chi(r) = \sqrt{\frac{L'_{node} C'_{node}}{L_{node} C_{node}}} = \sqrt{(1+\sigma)^2} \approx 1 + \frac{2GM}{rc^2}
 \end{equation}
 
 Light passing near a massive body slows down ($v = c/\chi$) not because space is curved, but because the nodes in that region are saturated. They require more update cycles to process the same amount of flux.
 
 \subsection{Simulation Results}
-Using the \texttt{MetricRefractionSim} module (Figure \ref{fig:impedance_well}), we modeled a central mass load on a 2D lattice. The resulting refractive index map creates a "Gravity Well" of high impedance.
+Using the \texttt{DualModulusSim} module (Figure \ref{fig:dual_modulus}), we modeled the optical path of light rays passing a Schwarzschild-radius mass.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\textwidth]{assets/sim_outputs/impedance_heatmap.png}
-    \caption{\textbf{The Optical Gravity Well.} White lines trace the geodesics of light rays passing through the impedance gradient. The bending of light (Gravitational Lensing) is recovered here as simple optical refraction through a medium of variable density, without invoking geometric curvature.}
-    \label{fig:impedance_well}
+    \includegraphics[width=1.0\textwidth]{assets/sim_outputs/dual_modulus_lensing.png}
+    \caption{\textbf{Refraction via Dual-Modulus Loading.}  The simulation demonstrates that stiffening both $L$ and $C$ reproduces the exact light deflection predicted by General Relativity. The "Event Horizon" (black) represents the region of 100\% hardware saturation.}
+    \label{fig:dual_modulus}
 \end{figure}
 
 The simulation confirms that geodesics naturally curve toward the region of highest impedance (the mass), reproducing the Shapiro Delay and lensing effects of GR purely through variable hardware density.

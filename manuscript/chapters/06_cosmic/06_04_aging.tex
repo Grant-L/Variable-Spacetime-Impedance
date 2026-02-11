@@ -1,0 +1,25 @@
+\section{The Vacuum Dispersion Relation}
+\label{sec:vacuum_dispersion}
+
+In the SVF, the speed of light $c$ is a derived property of the substrate. We treat the vacuum as a 3D transmission line grid where each node satisfies the discrete Kirchhoff equations.
+
+\subsection{Relativistic Scaling: The Rotational Origin of Mass}
+We rewrite the velocity relation in terms of frequency:
+\begin{equation}
+    v_g = c \sqrt{1 - \left(\frac{\omega_{spin}}{\omega_{sat}}\right)^2}
+\end{equation}
+
+In the SVF, a particle is not a static point but a dynamic \textbf{Topological Vortex}. The fundamental property of matter is its Intrinsic Spin Frequency ($\omega_{spin}$). As $\omega_{spin} \to \omega_{sat}$, the hardware node enters a saturation regime. It can no longer process transverse updates (motion) because its bandwidth is consumed by maintaining the rotational state of the vortex. This "locking" of the lattice is what we perceive as \textbf{Inertial Mass}.
+
+\subsection{Gravity as Dual-Modulus Loading}
+To recover the correct deflection angles observed in General Relativity ($4GM/rc^2$), the lattice must undergo \textbf{Dual-Modulus Loading}. Massive bodies impose a strain field $\sigma$ that stiffens both the inductive ($L$) and capacitive ($C$) moduli:
+
+\begin{align}
+    L'_{node} &= L_{node}(1 + \sigma) \\
+    C'_{node} &= C_{node}(1 + \sigma)
+\end{align}
+
+This results in a local refractive index $\chi$:
+\begin{equation}
+    \chi(r) = \sqrt{\frac{L'_{node} C'_{node}}{L_{node} C_{node}}} \approx 1 + \frac{2GM}{rc^2}
+\end{equation}

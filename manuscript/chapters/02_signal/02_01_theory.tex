@@ -25,13 +25,19 @@ The speed at which information (energy) propagates through the lattice is the Gr
     v_g(k) = \frac{l_P}{\sqrt{L_{node}C_{node}}} \cos\left(\frac{k l_P}{2}\right) = c \cdot \cos\left(\frac{k l_P}{2}\right)
 \end{equation}
 
-This reveals the fundamental mechanism of Relativity: **Bandwidth Limiting**. As the wavenumber $k$ increases (higher energy/momentum), the cosine term drops. When $k \rightarrow \pi/l_P$ (the Nyquist limit), $v_g \rightarrow 0$.
+This reveals the fundamental mechanism of Relativity: \textbf{Bandwidth Limiting}. As the wavenumber $k$ increases (higher energy/momentum), the cosine term drops. When $k \rightarrow \pi/l_P$ (the Nyquist limit), $v_g \rightarrow 0$.
 
 Standard Special Relativity is therefore the low-frequency approximation ($k l_P \ll 1$) of this discrete hardware limit. The "Lorentz Factor" $\gamma$ is simply the non-linear approach to the lattice saturation frequency.
 
-\subsection{Relativistic Scaling}
+\subsection{Relativistic Scaling: The Rotational Origin of Mass}
 We rewrite the velocity relation in terms of frequency:
+
 \begin{equation}
-    v_g = c \sqrt{1 - \left(\frac{\omega}{\omega_{sat}}\right)^2}
+    v_g = c \sqrt{1 - \left(\frac{\omega_{spin}}{\omega_{sat}}\right)^2}
 \end{equation}
-When a topological defect is accelerated, its internal oscillation frequency $\omega$ increases. As $\omega \to \omega_{sat}$, the hardware becomes increasingly "loaded," requiring more update cycles to process the twist, which macroscopically manifests as a decrease in velocity and an increase in effective mass.
+
+In the SVF, a particle is not a static point but a dynamic \textbf{Topological Vortex}. The fundamental property of matter is its Intrinsic Spin Frequency ($\omega_{spin}$).
+
+As $\omega_{spin} \to \omega_{sat}$, the hardware node enters a saturation regime. It can no longer process transverse updates (motion) because its bandwidth is consumed by maintaining the rotational state of the vortex. This "locking" of the lattice is what we macroscopically perceive as \textbf{Inertial Mass}.
+
+If the spin were to stop ($\omega_{spin} \to 0$), the saturation would vanish, and the "mass" would evaporate into radiation.

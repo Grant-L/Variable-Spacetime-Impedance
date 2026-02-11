@@ -1,0 +1,13 @@
+\section{Simulation: The Warp Bubble}
+\label{sec:warp_sim}
+
+To test the feasibility of Metric Refraction, we simulated a "Warp Bubble" where the local refractive index is driven to $\chi = 0.5$ using the \texttt{WarpBubbleSim} module[cite: 584].
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{assets/sim_outputs/warp_bubble_spacetime.png}
+    \caption{\textbf{Superluminal Translation via Lattice Slip.} The heatmap shows a signal packet outrunning the background light speed limit ($c$) by entering an engineered low-impedance zone[cite: 606, 609]. Because the local impedance is lower, the signal covers more lattice nodes per update cycle, effectively raising the "speed limit of the road"[cite: 609, 613].}
+    \label{fig:warp_bubble}
+\end{figure}
+
+The simulation confirms that $c$ is only a limit for the ground-state impedance $Z_0$[cite: 612]. By artificially lowering $Z_{local}$, the local speed limit increases proportionally[cite: 612].
