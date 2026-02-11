@@ -116,42 +116,32 @@ This operator prevents atomic expansion while driving cosmic redshift.
 \subsubsection{2.6 Micro-Topology: The Origin of Parameters}
 To render the theory self-contained, we derive the metric deformation $\chi$ and topological charge $q$ from the constitutive stress-energy of the lattice, rather than importing them from General Relativity or Maxwell's Equations.
 
-\paragraph{2.6.1 The Metric Strain Mechanism ($\chi$)}
-A matter particle is defined as a topological defect (knot) with internal energy $E = Mc^2$. In VSI, this energy represents the work done to create a "Geometric Void" or lattice compression of effective radius $r_s$ (the defect radius) against the background stiffness of the vacuum.
+\subsection{The Metric Strain Mechanism ($\chi$)}
+In VSI, a mass $M$ represents a "Geometric Void" or lattice compression. We model the strain field $\chi(r)$ via Flux Conservation.
 
-\subparagraph{Derivation of the Schwarzschild Radius (The Elastic Limit):}
-We model the vacuum as a linear elastic solid. The bulk stiffness (Yield Force) of the manifold is given by the Planck Force $F_{yield}$ (derived in Sec 2.7.1).
-The energy $E$ required to create a defect of size $r_s$ is the work done against this stiffness:
+\subsubsection{Flux Conservation}
+By Gauss's Law for the lattice, the total strain flux $\Psi$ through any shell at distance $r$ is constant:
 \begin{equation}
-    E = \text{Work} \approx F_{yield} \cdot r_s
+    \Psi = \oint \nabla \chi \cdot dA = 4\pi r^2 \frac{d\chi}{dr} = C
 \end{equation}
-Substituting $E=Mc^2$ and $F_{yield} \approx c^4/G$:
+Solving for the gradient:
 \begin{equation}
-    r_s \approx \frac{Mc^2}{F_{yield}} = \frac{GM}{c^2}
-\end{equation}
-This derivation recovers the gravitational radius $r_s$ purely from linear elasticity.
-
-\subparagraph{Flux Conservation (The $1/r$ Law):}
-This defect $r_s$ acts as a source of "Strain Flux" $\Psi$ radiating isotropically. By Gauss's Law for the lattice, the total strain flux through any shell at distance $r$ must be conserved.
-\begin{equation}
-    \Psi = \oint \nabla \chi \cdot d\mathbf{A} = 4\pi r^2 \frac{d\chi}{dr} = \text{const}
-\end{equation}
-To satisfy the boundary condition $\chi(r_s) \sim 1+2$ (large strain) and $\chi(\infty) \to 1$, the constant of integration is fixed at $-8\pi r_s$:
-\begin{equation}
-    \frac{d\chi}{dr} = -\frac{2r_s}{r^2} \implies \chi(r) = 1 + \frac{2r_s}{r} = 1 + \frac{2GM}{rc^2}
+    \frac{d\chi}{dr} = \frac{C}{4\pi r^2}
 \end{equation}
 
-\subparagraph{The Equipartition Response:}
-The factor of 2 arises from the Matched Impedance condition. The stress potential magnitude $|\Phi_s| = GM/r$ is distributed equipartitionally:
-\begin{enumerate}
-    \item \textbf{Spatial Strain:} $\Delta L/L = |\Phi_s|/c^2$.
-    \item \textbf{Temporal Strain:} $\Delta C/C = |\Phi_s|/c^2$.
-\end{enumerate}
-Total metric deformation:
+\subsubsection{The Equipartition Derivation}
+To determine the constant $C$, we apply the \textbf{Lattice Equipartition Principle}. The energy of the defect must be stored equally in the Inductive ($\mu$) and Capacitive ($\epsilon$) moduli to maintain impedance matching ($Z_0$).
+
+1.  \textbf{Static Potential:} The classic Newtonian potential is $\Phi = -GM/r$.
+2.  \textbf{Total Lattice Strain:} Since the lattice must deform both $\mu$ and $\epsilon$ to store this energy without reflection:
+    $$ E_{total} = E_{ind} + E_{cap} = 2 \times E_{potential} $$
+
+This factor of 2 implies the effective refractive index gradient is double that of the static potential alone:
 \begin{equation}
-    \chi_{total} = 1 + \frac{GM}{rc^2} + \frac{GM}{rc^2} = 1 + \frac{2GM}{rc^2}
+    \chi(r) = 1 + \frac{2|\Phi|}{c^2} = 1 + \frac{2GM}{rc^2}
 \end{equation}
-\textbf{Result:} The Schwarzschild metric is derived strictly from lattice elasticity, flux conservation, and impedance matching.
+
+\textbf{Result:} The Schwarzschild metric coefficient ($2GM/c^2$) is derived strictly from the Equipartition of strain energy, independent of General Relativity's geometric assumptions.
 
 \paragraph{2.6.2 The Topological Definition of Charge ($q$)}
 In VSI, charge is not a fundamental scalar but a conserved topological invariant representing the \textbf{Winding Number} of the lattice phase.

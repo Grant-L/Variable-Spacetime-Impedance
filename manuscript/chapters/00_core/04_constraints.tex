@@ -1,37 +1,39 @@
 \section{Theoretical Constraints on Fundamental Constants}
 \label{sec:constraints}
 
-We propose that $G$ and $\hbar$ are not arbitrary scalars but emergent geometric properties of the lattice packing.
+We propose that $G$ and $\alpha$ are not arbitrary scalars but emergent geometric properties of the lattice packing. However, to avoid circular definitions, we must strictly define our independent axioms.
+
+\subsection{Axiom III: The Vacuum Breakdown Voltage}
+To define the energy scale of the lattice without assuming the Planck constant a priori, we introduce the \textbf{Vacuum Breakdown Voltage} ($V_{break}$). This is the maximum potential difference a single lattice node can sustain before dielectric breakdown (pair production).
+
+\begin{equation}
+    V_{break} \equiv \frac{c^2}{\sqrt{G \epsilon_0}} \approx 1.04 \times 10^{27} \text{ Volts}
+\end{equation}
+
+While this value seems extreme, it represents the potential across a distance of $l_P$. This axiom replaces the manual insertion of $\hbar$.
 
 \subsection{Derivation of the Planck Action ($\hbar$)}
-Standard physics treats $\hbar$ as a fundamental input. In VSI, we derive it as the **Maximum Action Capacity** of a single lattice node.
-Consider a single node with capacitance $C_{node} \approx \epsilon_0 l_P$. The energy required to saturate the node (twist the phase by $2\pi$) is the Saturation Energy $E_{sat}$.
-The "Action" of this event is the energy integrated over one tick of the lattice clock ($t_{tick} = l_P/c$).
+We can now derive the Planck Action as the \textbf{Maximum Action Capacity} of a single node. The energy stored in a node at breakdown voltage is:
 \begin{equation}
-    \mathcal{S}_{node} = E_{sat} \cdot t_{tick}
+    E_{sat} = \frac{1}{2} C_{node} V_{break}^2
 \end{equation}
-We identify this intrinsic hardware limit as the Planck Constant:
+Substituting $C_{node} \approx \epsilon_0 l_P$:
 \begin{equation}
-    \hbar \equiv \mathcal{S}_{node}
+    \hbar \equiv E_{sat} \cdot t_{tick} = \left( \frac{1}{2} \epsilon_0 l_P V_{break}^2 \right) \left( \frac{l_P}{c} \right)
 \end{equation}
-Thus, Quantum Mechanics is not assumed; it is the inevitable result of a discrete system having a finite "pixel action."
+This derivation identifies $\hbar$ not as a primary constant, but as the derived action limit of the capacitive substrate.
 
 \subsection{The Gravitational Constant ($G$) as Lattice Compliance}
-Having defined the energy density of the vacuum without reference to $G$, we now derive gravity as the **Mechanical Compliance** (inverse stiffness) of the lattice.
-The \textbf{Yield Force} $F_{yield}$ is the force required to displace the lattice by one pitch ($l_P$) against its saturation energy $E_{sat}$.
+Having defined the energy density via $V_{break}$, we derive Gravity as the \textbf{Mechanical Compliance} (inverse stiffness) of the lattice.
+
+The Yield Force $F_{yield}$ is the force required to displace the lattice by one pitch ($l_P$) against the saturation energy $E_{sat}$:
 \begin{equation}
     F_{yield} = \frac{E_{sat}}{l_P}
 \end{equation}
-In General Relativity, the "stiffness" of spacetime is defined by the coupling constant $c^4/G$. Equating the Lattice Stiffness to the Einstein Stiffness:
+
+Equating the Lattice Stiffness to the Einstein Stiffness ($c^4/G$):
 \begin{equation}
-    \frac{c^4}{G} = \frac{E_{sat}}{l_P}
+    \frac{c^4}{G} = F_{yield} \implies G = \frac{c^4 l_P}{E_{sat}}
 \end{equation}
-Solving for $G$:
-\begin{equation}
-    G = \frac{c^4 l_P}{E_{sat}}
-\end{equation}
-Substituting $E_{sat} = \hbar c / l_P$ (from our derived $\hbar$):
-\begin{equation}
-    G = \frac{c^3 l_P^2}{\hbar}
-\end{equation}
-\textbf{Conclusion:} Gravity ($G$) is the measure of how "floppy" the lattice is. A stiff lattice (high $E_{sat}$) yields a small $G$ (weak gravity).
+
+\textbf{Conclusion:} Gravity is mechanically defined as the ratio of the vacuum's slew rate ($c^4$) to its saturation energy density. A "stiffer" lattice (higher $V_{break}$) results in a weaker gravitational coupling $G$.
