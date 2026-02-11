@@ -1,33 +1,34 @@
 \section{The Constitutive Substrate}
 \label{sec:constitutive_substrate}
 
-The Variable Spacetime Impedance (VSI) framework posits that spacetime is not a geometric abstraction, but a physical hardware substrate defined as the \textbf{Discrete Amorphous Manifold} ($M_{A}$). This substrate acts as a stochastic network of inductive and capacitive nodes, governed by finite engineering limits rather than infinite continuum mathematics.
+We posit that the physical universe is a discrete, amorphous transmission network. The physics of the universe are derived exclusively from the constitutive engineering properties of this substrate.
 
-Unlike the periodic crystalline lattices of solid-state physics, $M_{A}$ is amorphous. At the scale of the Lattice Pitch ($l_{P}$), node connectivity is randomized. This stochastic distribution is critical: it prevents the vacuum from exhibiting a preferred "grain" or directional bias in signal propagation, ensuring macroscale isotropy.
-
-\subsection{Node Geometry and Constitutive Laws}
-
-We redefine the fundamental constants of nature not as arbitrary scalars, but as the bulk moduli of the $M_{A}$ hardware:
+\subsection{Fundamental Axioms (The Hardware Layer)}
 
 \begin{itemize}
-    \item \textbf{Lattice Inductance Density ($L_{node} \equiv \mu_{0}$):} This represents the manifold's inertial resistance to flux displacement. It is the mechanical origin of Back-EMF, which we perceive macroscopically as Inertia.
-    \item \textbf{Lattice Capacitance Density ($C_{node} \equiv \epsilon_{0}$):} This represents the manifold's elastic potential energy storage capacity.
+    \item \textbf{Axiom I: The Discrete Substrate Limit} \\
+    The manifold consists of stochastic nodes separated by a fundamental \textbf{Lattice Pitch} ($l_P$). This acts as the geometric limit (pixel size) of the universe.
+    \begin{equation}
+    l_P \approx 1.616 \times 10^{-35} \text{ m}
+    \end{equation}
+
+    \item \textbf{Axiom II: The Constitutive Moduli} \\
+    Each node acts as a reactive circuit element characterized by volume densities:
+    \begin{itemize}
+        \item \textbf{Inductance Density $\mu_0$ (Inertia):} The resistance to flux displacement $[H/m]$.
+        \item \textbf{Capacitance Density $\epsilon_0$ (Elasticity):} The elastic charge storage capacity $[F/m]$.
+    \end{itemize}
+
+    \item \textbf{Axiom III: The Global Slew Rate} \\
+    The speed of light $c$ is not a fundamental constant, but the effective slew rate limit of the lattice signal propagation, determined by the geometric mean of the moduli:
+    \begin{equation}
+    c = \frac{1}{\sqrt{\mu_0 \epsilon_0}}
+    \end{equation}
+
+    \item \textbf{Axiom IV: The Saturable Dielectric Condition} \\
+    The vacuum acts as a Non-Linear, Saturable Dielectric.
+    \begin{itemize}
+        \item \textit{Linear Regime (Light):} For energy $U \ll U_{sat}$, the medium is linear.
+        \item \textit{Saturation Regime (Matter):} For $U \approx U_{sat}$ (Planck Density), the capacitance clamps to a maximum saturation value ($C_{sat}$), enabling charge storage (Mass).
+    \end{itemize}
 \end{itemize}
-
-From these two hardware properties, the global speed limit of the universe emerges not as a postulate, but as the \textbf{Global Slew Rate Limit} of the nodes:
-
-\begin{equation}
-    c = \frac{1}{\sqrt{L_{node}C_{node}}}
-    \label{eq:slew_rate}
-\end{equation}
-
-\subsection{The Saturation Threshold}
-
-Each node in $M_{A}$ acts as a high-speed switching element. However, real hardware has finite bandwidth. We define the \textbf{Saturation Frequency} ($\omega_{sat}$) as the maximum rate at which a node can update its state before non-linear clamping occurs:
-
-\begin{equation}
-    \omega_{sat} = \frac{c}{l_{P}} = \frac{1}{l_{P}\sqrt{L_{node}C_{node}}}
-    \label{eq:omega_sat}
-\end{equation}
-
-When the frequency $\nu$ of a topological twist approaches $\omega_{sat}$, the node enters a saturation regime. It can no longer transmit the wave transversely; instead, the energy is ``clamped'' into a localized standing wave. This trapped flux is what standard physics describes as Rest Mass ($E=mc^2$). This mechanism converts the abstract concept of ``mass'' into a tangible state of \textbf{Hardware Saturation}.

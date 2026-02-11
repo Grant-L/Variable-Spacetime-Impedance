@@ -1,46 +1,26 @@
 \section{The Vacuum Dispersion Relation}
 \label{sec:dispersion}
 
-In the Standard Model, the speed of light $c$ is an axiomatic constant. In the SVF, we distinguish between two distinct modes of propagation within the $M_{A}$ substrate: **Linear Flux** and **Topological Defects**.
-
-This bifurcation resolves the "Lattice Trap" common to discrete theories, ensuring that high-energy cosmic rays obey Lorentz invariance while massive particles exhibit relativistic saturation.
+In the Standard Model, the speed of light $c$ is an axiomatic constant. In VSI, it is the \textbf{Global Slew Rate Limit} of the hardware.
 
 \subsection{Mode 1: Linear Flux (Light)}
-Photons represent sub-saturation perturbations of the vacuum potential. Because the amplitude of a flux signal is small compared to the saturation threshold of the nodes, the lattice behaves as a linear transmission line. 
-
-For all wavenumbers $k$ below the hard Nyquist limit ($k \ll \pi/l_P$), the dispersion relation is linear:
+Photons represent sub-saturation perturbations of the vacuum potential ($U \ll U_{sat}$). For wavenumbers $k$ below the Nyquist limit ($k \ll \pi/l_P$), the lattice behaves as a linear transmission line with constant group velocity:
 \begin{equation}
-    \omega_{flux}(k) = c \cdot k
+    v_g = \frac{1}{\sqrt{L_{node}C_{node}}} = c
 \end{equation}
-
-Consequently, the Group Velocity $v_g$ remains constant:
-\begin{equation}
-    v_g = \frac{d\omega}{dk} = c = \frac{1}{\sqrt{L_{node}C_{node}}}
-\end{equation}
-
-This derivation confirms that the speed of light is the **Global Slew Rate Limit** of the hardware in its linear regime. High-energy photons do not "see" the granularity of the lattice until their wavelength approaches the Planck scale ($l_P$), preventing the violation of Lorentz invariance observed in simple cosine-dispersion models.
+This confirms that $c$ is the maximum signaling rate of the dielectric medium.
 
 \subsection{Mode 2: Topological Defects (Matter)}
-Matter particles are not transient waves, but stable **Topological Knots** (vortices) in the field. Unlike free flux, these structures impose a continuous, high-frequency load on the local nodes, defined as the particle's **Intrinsic Spin Frequency** ($\omega_{spin}$).
+Matter particles are stable **Topological Knots** (vortices) in the field. Unlike free flux, these structures impose a continuous computational load on the nodes, defined as the \textbf{Intrinsic Spin Frequency} ($\omega_{spin}$).
 
-As a defect accelerates, its effective update rate approaches the hardware's **Saturation Frequency** ($\omega_{sat}$):
-\begin{equation}
-    \omega_{sat} = \frac{c}{l_P} = \frac{1}{l_P\sqrt{L_{node}C_{node}}}
-\end{equation}
-
-When $\omega_{spin} \to \omega_{sat}$, the node enters a non-linear saturation regime. It can no longer update fast enough to translate the pattern transversely. The group velocity is effectively "throttled" by the available bandwidth:
-
+As a defect accelerates, its update rate approaches the hardware's **Saturation Frequency** ($\omega_{sat} = c/l_P$). The group velocity is "throttled" by the available bandwidth:
 \begin{equation}
     v_{defect} = c \sqrt{1 - \left(\frac{\omega_{spin}}{\omega_{sat}}\right)^2}
 \end{equation}
 
 \subsubsection{Deriving the Lorentz Factor}
-Rearranging Eq 2.4 recovers the standard relativistic Lorentz Factor ($\gamma$):
+Rearranging the velocity equation recovers the standard relativistic Lorentz Factor ($\gamma$):
 \begin{equation}
-    \gamma = \frac{1}{\sqrt{1 - v^2/c^2}} = \frac{\omega_{sat}}{\sqrt{\omega_{sat}^2 - \omega_{spin}^2}}
+    \gamma = \frac{1}{\sqrt{1 - v^2/c^2}}
 \end{equation}
-
-This reveals the physical definition of **Inertial Mass**:
-\begin{quote}
-    \textbf{Mass is Hardware Latency.} It is the drag induced when a topological pattern's internal spin frequency competes with the lattice's global refresh rate.
-\end{quote}
+\textbf{Physical Result:} Special Relativity is derived not as a geometric principle, but as the bandwidth limitation of a discrete signal processor.

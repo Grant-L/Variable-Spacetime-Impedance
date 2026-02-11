@@ -1,25 +1,40 @@
-\section{Simulation: The Amorphous Substrate}
-\label{sec:simulation_substrate}
+\section{The Lattice Hardware: Micro-Geometry}
+\label{sec:lattice_hardware}
 
-To validate the postulate that a discrete, stochastic manifold can approximate a smooth continuum, we performed a Monte Carlo generation of a 3D Voronoi tessellation representing the $M_{A}$ vacuum structure.
+To validate the postulate that a discrete, stochastic manifold can approximate a smooth continuum, we formally define the vacuum graph structure.
+
+\subsection{The Discrete Amorphous Manifold ($M_A$)}
+We define the physical vacuum as a stochastic graph $G = (V, E)$ embedded in a topological volume.
+\begin{definition}[The Voronoi Vacuum]
+The manifold $M_A$ is the dual graph of a \textbf{Poisson Point Process} in 3D space.
+\begin{itemize}
+    \item \textbf{Nodes ($V$):} Stochastic points distributed with mean density $\rho_{node} \approx l_P^{-3}$.
+    \item \textbf{Edges ($E$):} The Delaunay Triangulation connecting nearest neighbors.
+\end{itemize}
+\end{definition}
 
 \subsection{Connectivity Analysis}
-Unlike a crystalline lattice, where the coordination number (neighbor count) is fixed (e.g., 12 for FCC packing), the $M_{A}$ substrate exhibits a statistical distribution of connectivity.
-
-Running the simulation script \texttt{run\_lattice\_gen.py} with $N=10,000$ nodes yields a mean connectivity of:
-
-\begin{equation}
-    \langle k \rangle \approx 15.54 \pm 1.3
-\end{equation}
-
-Figure \ref{fig:connectivity} illustrates this distribution. The Gaussian profile confirms that while individual nodes have varying local geometries, the \textbf{bulk average} is highly consistent. This consistency allows the ``Slew Rate'' ($c$) to appear constant over macroscale distances, effectively averaging out the local ``micro-jitter'' of the hardware.
+Unlike a crystalline lattice, where the coordination number is fixed (e.g., 12 for FCC), the $M_{A}$ substrate exhibits a statistical distribution of connectivity.
+Running the simulation ($N=10,000$) yields a mean connectivity of $\langle k \rangle \approx 15.54$.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\textwidth]{assets/sim_outputs/connectivity_histogram.png}
-    \caption{\textbf{Stochastic Node Connectivity.} The distribution of neighbors in the generated Voronoi vacuum. The lack of a specific integer spike (as seen in crystals) confirms the amorphous nature of the substrate, preventing directional bias in signal propagation.}
+    \includegraphics[width=0.85\textwidth]{assets/sim_outputs/connectivity_histogram.png}
+    \caption{\textbf{Stochastic Node Connectivity.} The distribution of neighbors in the VSI vacuum follows a Gaussian-like profile. The lack of a specific integer spike (as seen in crystals) confirms the amorphous nature of the substrate.}
     \label{fig:connectivity}
 \end{figure}
 
-\subsection{Implications for Isotropy}
-Standard lattice theories often fail because they predict a ``Manhattan Distance'' effect where light travels faster along the grid axes. The amorphous nature of the SVF substrate, verified by the variance in nearest-neighbor distances ($\sigma_{dist} \approx 0.1 l_P$), destroys these preferred axes. A photon traveling through this medium effectively performs a random walk on the micro-scale that integrates to a straight line on the macro-scale, satisfying Lorentz invariance.
+\subsection{Isotropy and the Graph Laplacian}
+A critical requirement for VSI is that this discrete graph must behave like smooth spacetime at macroscopic scales.
+\begin{theorem}[Isotropic Averaging]
+For a Delaunay graph generated from a Poisson distribution, the Graph Laplacian converges to the Laplace-Beltrami operator $\nabla^2$ in the limit of large node count $N$.
+\end{theorem}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.65\textwidth]{assets/sim_outputs/lattice_slice.png}
+    \caption{\textbf{The Amorphous Graph (2D Slice).} A cross-section of the generated hardware. The randomized triangulation ensures that a photon performs a random walk on the micro-scale that integrates to a straight line on the macro-scale, preventing "Grid Artifacts" and preserving Lorentz Invariance.}
+    \label{fig:isotropy}
+\end{figure}
+
+**Physical Implication:** The randomness destroys the "Manhattan Distance" effect of regular grids. Light travels at the same average speed in every direction, satisfying Lorentz Invariance without requiring a continuum.

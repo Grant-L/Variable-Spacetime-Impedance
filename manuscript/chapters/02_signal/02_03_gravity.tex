@@ -1,36 +1,24 @@
-\section{Tensor Gravitation: The Matched Impedance Field}
-\label{sec:tensor_gravity}
+\section{Gravity as Metric Refraction}
+\label{sec:gravity_refraction}
 
-\subsection{The Birefringence Constraint}
-Previous iterations (VSI v3.0) modeled gravity via an anisotropic Inductance Tensor $\mathbf{L}_{ij}$ coupled with a scalar Capacitance $C_0$. While this recovered the correct light bending angle, it inadvertently predicted Vacuum Birefringence—gravity would act as a polarizing crystal, splitting images of background stars. To satisfy the Equivalence Principle and observational constraints, the vacuum must be \textbf{Impedance Matched}.
-
-\subsection{The Matched Constitutive Tensors}
-We propose that the vacuum dielectric properties are coupled. A gravitational potential does not merely stiffen the lattice (Inductance); it simultaneously increases its charge storage density (Capacitance).
-
-We define the Metric Deformation Tensor $\mathbf{D}_{ij}$ for a spherically symmetric mass $M$:
+We have established (Chapter 1) that a mass $M$ creates a refractive index gradient $n(r)$ in the surrounding lattice:
 \begin{equation}
-\mathbf{D} = \begin{pmatrix} (1 - r_s/r)^{-1} & 0 & 0 \\ 0 & (1 - r_s/r)^{-1} & 0 \\ 0 & 0 & (1 - r_s/r)^{-1} \end{pmatrix}
+    n(r) = 1 + \frac{2GM}{rc^2}
 \end{equation}
-*(Note: Using the Isotropic Coordinate basis for optical clarity).*
+In this section, we treat the propagation of light through this gradient as an optical problem.
 
-The Constitutive Tensors for the vacuum are:
-\begin{align}
-\mathbf{L}_{ij} &= L_0 \cdot \mathbf{D}_{ij} \\
-\mathbf{C}_{ij} &= C_0 \cdot \mathbf{D}_{ij}
-\end{align}
-
-\subsection{Observational Verification}
-\textbf{1. Variable Speed of Light (Gravity):}
-The Refractive Index $n$ is determined by the product of the tensor components:
+\subsection{Fermat's Principle on the Lattice}
+Light follows the path of least time (geodesic). In a variable index medium $n(r)$, the trajectory is governed by Snell's Law of Refraction.
+The total deflection angle $\delta$ for a photon passing a mass $M$ at impact parameter $b$ is the integral of the refractive gradient perpendicular to the path:
 \begin{equation}
-n_{ij} = c \sqrt{\mathbf{L}_{ij} \mathbf{C}_{ij}} = c \sqrt{L_0 C_0} \cdot \mathbf{D}_{ij}
+    \delta = \int_{-\infty}^{\infty} \nabla_\perp n \, dz \approx \frac{4GM}{bc^2}
 \end{equation}
-This produces the localized slowing of light required by General Relativity ($n > 1$).
 
-\textbf{2. Constant Impedance (No Birefringence):}
-The Characteristic Impedance $Z$ is determined by the ratio:
+\subsection{The No-Birefringence Proof}
+A critical constraint is that gravity must not be birefringent (polarization-dependent).
+This is satisfied by the \textbf{Impedance Matching Condition}:
 \begin{equation}
-Z_{ij} = \sqrt{\frac{\mathbf{L}_{ij}}{\mathbf{C}_{ij}}} = \sqrt{\frac{L_0 \mathbf{D}_{ij}}{C_0 \mathbf{D}_{ij}}} = \sqrt{\frac{L_0}{C_0}} = Z_0 \approx 377 \Omega
+    Z(r) = \sqrt{\frac{L(r)}{C(r)}} = \sqrt{\frac{L_0 \chi}{C_0 \chi}} = Z_0 \approx 377 \Omega
 \end{equation}
-Because the deformation term $\mathbf{D}_{ij}$ cancels out, the Impedance remains a scalar invariant. Light of all polarizations travels at the same speed (determined by $n$) and encounters the same resistance ($Z$).
-\textbf{Result:} Correct light bending ($4GM/rc^2$) with Zero Birefringence.
+Because the metric strain $\chi$ affects Inductance and Capacitance equally (Equipartition), the characteristic impedance $Z$ remains invariant.
+\textbf{Result:} Light slows down (Gravity), but does not reflect or split (No Birefringence), perfectly matching General Relativity observational constraints.

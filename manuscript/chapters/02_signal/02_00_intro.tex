@@ -1,29 +1,20 @@
 \section{Introduction: The Activated Substrate}
 \label{sec:signal_intro}
 
-In Part I, we defined the vacuum not as a geometric void, but as a discrete, amorphous manifold ($M_{A}$) characterized by finite inductance ($L_{node}$) and capacitance ($C_{node}$). However, a static lattice explains nothing. To describe the universe we observe—populated by light, matter, and energy—we must transition from **Hardware Architecture** to **Signal Dynamics**.
+In Part I, we defined the vacuum as a static hardware substrate ($M_{A}$) characterized by finite inductance ($L_0$) and capacitance ($C_0$). However, a static lattice explains nothing. To describe the universe we observe—populated by light, matter, and energy—we must transition from **Hardware Architecture** to **Signal Dynamics**.
 
 The "Signal Layer" treats the $M_{A}$ substrate as a 3D Transmission Line Grid. In this framework, "Physics" is simply the study of signal propagation through a reactive medium.
 
 \subsection{The Transmission Line Analogy}
-Classical mechanics treats space as a passive stage upon which particles move. The Stochastic Vacuum Framework (SVF) inverts this relationship:
+Classical mechanics treats space as a passive stage upon which particles move. The VSI framework inverts this relationship:
 \begin{itemize}
-    \item **The Medium is the Machine:** The vacuum nodes *are* the physics. A particle is not a distinct object moving *through* the lattice; it is a persistent state of excitation *of* the lattice.
-    \item **Propagation is Handoff:** Motion is the sequential transfer of flux energy from one node to its neighbor. The speed of this transfer is strictly governed by the local impedance ($Z_0 = \sqrt{L/C}$).
+    \item \textbf{The Medium is the Machine:} The vacuum nodes *are* the physics. A particle is not a distinct object moving *through* the lattice; it is a persistent state of excitation *of* the lattice.
+    \item \textbf{Propagation is Handoff:} Motion is the sequential transfer of flux energy from one node to its neighbor. The speed of this transfer is strictly governed by the local impedance ($Z_0 = \sqrt{L/C}$).
 \end{itemize}
 
-By adopting this view, we eliminate the need for "laws of motion" as external axioms. Objects do not move because they are told to; they propagate because the hardware nodes are discharging their potential into adjacent nodes.
-
 \subsection{Time as Nodal Update Rate}
-Before deriving relativity, we must rigorously define Time within the SVF. Time is not a fundamental dimension; it is the **Global Clock Rate** of the manifold.
-
+Time is not a fundamental dimension; it is the **Global Clock Rate** of the manifold.
 \begin{equation}
-    t_{tick} = \sqrt{L_{node}C_{node}} \approx 5.39 \times 10^{-44} \text{ s}
+    t_{tick} = \sqrt{L_{0}C_{0}} \cdot l_P \approx 5.39 \times 10^{-44} \text{ s}
 \end{equation}
-
-Every physical process is a sequence of these discrete updates. Consequently, "Time Dilation" is not a magical slowing of a temporal dimension, but a mechanical phenomenon we define as **Lattice Latency**:
-\begin{quote}
-    **Lattice Latency:** When a node is saturated by a heavy computational load (high mass or high gravity), it requires more "cycles" to process a signal update. An observer in a high-impedance region perceives time moving slower simply because their local hardware is running at a lower effective frame rate.
-\end{quote}
-
-With this definition established, we can now derive the Vacuum Dispersion Relation and identify the mechanical origin of the speed of light.
+"Time Dilation" is mechanically defined as **Lattice Latency**: when a node is saturated by high energy density (mass), it requires more "cycles" to process a signal update, slowing the local effective clock.
