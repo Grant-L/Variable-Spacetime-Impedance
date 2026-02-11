@@ -1,0 +1,37 @@
+\section{Theoretical Constraints on Fundamental Constants}
+\label{sec:constraints}
+
+We propose that $G$ and $\hbar$ are not arbitrary scalars but emergent geometric properties of the lattice packing.
+
+\subsection{Derivation of the Planck Action ($\hbar$)}
+Standard physics treats $\hbar$ as a fundamental input. In VSI, we derive it as the **Maximum Action Capacity** of a single lattice node.
+Consider a single node with capacitance $C_{node} \approx \epsilon_0 l_P$. The energy required to saturate the node (twist the phase by $2\pi$) is the Saturation Energy $E_{sat}$.
+The "Action" of this event is the energy integrated over one tick of the lattice clock ($t_{tick} = l_P/c$).
+\begin{equation}
+    \mathcal{S}_{node} = E_{sat} \cdot t_{tick}
+\end{equation}
+We identify this intrinsic hardware limit as the Planck Constant:
+\begin{equation}
+    \hbar \equiv \mathcal{S}_{node}
+\end{equation}
+Thus, Quantum Mechanics is not assumed; it is the inevitable result of a discrete system having a finite "pixel action."
+
+\subsection{The Gravitational Constant ($G$) as Lattice Compliance}
+Having defined the energy density of the vacuum without reference to $G$, we now derive gravity as the **Mechanical Compliance** (inverse stiffness) of the lattice.
+The \textbf{Yield Force} $F_{yield}$ is the force required to displace the lattice by one pitch ($l_P$) against its saturation energy $E_{sat}$.
+\begin{equation}
+    F_{yield} = \frac{E_{sat}}{l_P}
+\end{equation}
+In General Relativity, the "stiffness" of spacetime is defined by the coupling constant $c^4/G$. Equating the Lattice Stiffness to the Einstein Stiffness:
+\begin{equation}
+    \frac{c^4}{G} = \frac{E_{sat}}{l_P}
+\end{equation}
+Solving for $G$:
+\begin{equation}
+    G = \frac{c^4 l_P}{E_{sat}}
+\end{equation}
+Substituting $E_{sat} = \hbar c / l_P$ (from our derived $\hbar$):
+\begin{equation}
+    G = \frac{c^3 l_P^2}{\hbar}
+\end{equation}
+\textbf{Conclusion:} Gravity ($G$) is the measure of how "floppy" the lattice is. A stiff lattice (high $E_{sat}$) yields a small $G$ (weak gravity).
