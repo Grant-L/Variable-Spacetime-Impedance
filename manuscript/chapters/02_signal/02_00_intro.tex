@@ -1,8 +1,22 @@
-\section{The Signal Layer}
+\subsection{The Vacuum Dispersion Relation}
+In the Standard Model, the speed of light $c$ is an axiomatic constant. In the SVF, we distinguish between two modes of propagation within the $M_{A}$ substrate: \textbf{Linear Flux} and \textbf{Topological Defects}.
 
-In Chapter 1, we established the vacuum as a physical transmission medium composed of discrete LC nodes. We now derive the relationship between signal frequency and propagation velocity, identifying the mechanical origin of rest mass and relativistic scaling as a direct result of hardware bandwidth limitations.
+\subsubsection{Mode 1: Linear Flux (Light)}
+Photons represent sub-saturation perturbations of the vacuum potential. Because the amplitude of these signals is small compared to the saturation threshold of the nodes, the lattice behaves as a linear transmission line. The dispersion relation is linear:
+\begin{equation}
+    \omega_{flux}(k) = c \cdot k
+\end{equation}
+Consequently, the Group Velocity $v_g$ remains constant for all frequencies up to the Nyquist limit:
+\begin{equation}
+    v_g = \frac{d\omega}{dk} = c = \frac{1}{\sqrt{L_{node}C_{node}}}
+\end{equation}
+This ensures Lorentz invariance for high-energy cosmic rays, resolving the "Cosine Trap" common in discrete lattice theories.
 
-\subsection{Time Dilation as Lattice Latency}
-Time is the rate of nodal updates. In a high-impedance zone (high gravity or high velocity), nodes must dedicate a higher percentage of their "hardware cycles" to maintaining the saturation state of the mass. Consequently, fewer cycles are available for external signal propagation.
+\subsubsection{Mode 2: Topological Defects (Matter)}
+Matter particles are not simple waves, but stable topological knots (vortices) in the field. These structures impose a continuous, high-frequency load on the local nodes, defined as the Intrinsic Spin Frequency ($\omega_{spin}$).
 
-An observer in a high-strain zone perceives time moving slower because the hardware is running at a higher \textbf{Lattice Latency}. The "flow" of time is the global clock-rate of the manifold minus the local processing load.
+As a defect accelerates, its effective frequency approaches the hardware Saturation Frequency ($\omega_{sat}$). The nodes can no longer update fast enough to translate the pattern, resulting in a non-linear velocity drop:
+\begin{equation}
+    v_{defect} = c \sqrt{1 - \left(\frac{\omega_{spin}}{\omega_{sat}}\right)^2}
+\end{equation}
+This derivation recovers the relativistic Lorentz Factor ($\gamma$), revealing that \textbf{Inertial Mass is a measure of Hardware Latency}. Mass is the drag induced when a topological pattern's update rate competes with the lattice's global refresh rate.
