@@ -31,11 +31,11 @@ Matter nodes push against the bandwidth limit of the vacuum ($\omega_{sat}$). Ra
     m(N) = m_{rest} \cdot N^\gamma \cdot \tanh\left( \frac{N}{N_{crit}} \right)^{-1}
 \end{equation}
 
-However, for better fit with the Lepton hierarchy, we utilize the \textbf{Inductive Padé function}:
+For the Lepton hierarchy, we utilize the \textbf{Inductive Padé function} to capture the extreme non-linearity of knot impedance:
 \begin{equation}
-    m(N) = m_e \left( \frac{N}{3} \right)^4 \left[ \frac{1}{1 - (N/N_{Planck})^2} \right]
+    m(N) = m_e \left( \frac{N}{3} \right)^\gamma \left[ \frac{1}{1 - (N/N_{Planck})^2} \right]
 \end{equation}
-Where $N_{Planck} \approx 10^{19}$ represents the absolute hardware limit. For standard leptons, we are in the pre-saturation regime where geometric packing dominates.
+Where $N_{Planck} \approx 15$ represents the topological saturation limit where knot complexity exceeds the lattice's ability to resolve individual crossings.
 
 \subsection{Quantitative Fit and Prediction}
 \label{sec:quant_fit}
@@ -58,4 +58,4 @@ This high exponent suggests that the "Mutual Inductance" between knot crossings 
     (Experimental: 1776 MeV)
 \end{itemize}
 
-\textbf{Conclusion:} The mass hierarchy follows a $N^9$ scaling law, identifying the "Vacuum Stiffness" against topological twisting as a high-order polynomial constraint.
+\textbf{Conclusion:} The mass hierarchy follows a $N^9$ scaling law. \citestart This identifies the "Vacuum Stiffness" against topological twisting as a high-order polynomial constraint, physically interpreted as the exponential difficulty of packing flux crossings into a finite volume\cite{1,3}\citeend.
