@@ -1,34 +1,26 @@
 \section{Gravity as Metric Refraction}
-\label{sec:metric_refraction}
+\label{sec:gravity}
 
-General Relativity describes gravity as the curvature of a 4D geometric manifold. SVF describes it as a gradient in the \textbf{Variable Spacetime Impedance}.
+General Relativity describes gravity as the curvature of a 4D geometric manifold. SVF describes it as a gradient in the **Variable Spacetime Impedance**.
 
 \subsection{The Impedance Gradient (Dual-Modulus Loading)}
-Massive bodies (spinning vortices) impose a strain field $\sigma$ on the surrounding lattice. To recover the correct deflection angles observed in General Relativity (e.g., $4GM/rc^2$), the lattice must undergo \textbf{Dual-Modulus Loading}.
+Massive bodies (spinning vortices) impose a strain field $\sigma$ on the surrounding lattice. To recover the correct deflection angles observed in General Relativity ($4GM/rc^2$), the lattice must undergo **Dual-Modulus Loading**.
 
 The strain stiffens \textit{both} the inductive (inertial) and capacitive (elastic) moduli of the nodes:
-
 \begin{align}
     L'_{node} &= L_{node}(1 + \sigma) \\
     C'_{node} &= C_{node}(1 + \sigma)
 \end{align}
 
-This results in a local refractive index $\chi$ that accounts for both spatial curvature (via $L$) and time dilation (via $C$):
+\subsection{The Refractive Index}
+This simultaneous stiffening results in a local Refractive Index $\chi$ that accounts for both spatial curvature (via $L$) and time dilation (via $C$):
 
 \begin{equation}
-    \chi(r) = \sqrt{\frac{L'_{node} C'_{node}}{L_{node} C_{node}}} = \sqrt{(1+\sigma)^2} \approx 1 + \frac{2GM}{rc^2}
+    \chi(r) = \sqrt{\frac{L'_{node}C'_{node}}{L_{node}C_{node}}} = \sqrt{(1+\sigma)^2} \approx 1 + \frac{2GM}{rc^2}
 \end{equation}
 
-Light passing near a massive body slows down ($v = c/\chi$) not because space is curved, but because the nodes in that region are saturated. They require more update cycles to process the same amount of flux.
+Light passing near a massive body slows down ($v = c/\chi$) not because space is "curved" in an abstract dimension, but because the nodes in that region are **saturated**. They require more update cycles to process the same amount of flux.
 
-\subsection{Simulation Results}
-Using the \texttt{DualModulusSim} module (Figure \ref{fig:dual_modulus}), we modeled the optical path of light rays passing a Schwarzschild-radius mass.
+\subsubsection{Simulation Verification}
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=1.0\textwidth]{assets/sim_outputs/dual_modulus_lensing.png}
-    \caption{\textbf{Refraction via Dual-Modulus Loading.}  The simulation demonstrates that stiffening both $L$ and $C$ reproduces the exact light deflection predicted by General Relativity. The "Event Horizon" (black) represents the region of 100\% hardware saturation.}
-    \label{fig:dual_modulus}
-\end{figure}
-
-The simulation confirms that geodesics naturally curve toward the region of highest impedance (the mass), reproducing the Shapiro Delay and lensing effects of GR purely through variable hardware density.
+Using the \texttt{DualModulusSim} module (Figure 2.1), we modeled the optical path of light rays passing a Schwarzschild-radius mass. The simulation confirms that geodesics naturally curve toward the region of highest impedance (the mass), reproducing the Shapiro Delay and lensing effects of GR purely through variable hardware density.
