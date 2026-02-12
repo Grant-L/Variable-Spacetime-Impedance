@@ -1,0 +1,250 @@
+Variable-Spacetime-Impedance/
+├── .cursorrules
+├── .gitattributes
+├── .gitignore
+├── .python-version
+├── LICENSE
+├── Makefile
+├── README.md
+├── CONTRIBUTING.md
+├── MERGE_STRATEGY.md
+├── requirements.txt
+├── build_book.sh
+├── setup_vsi.py
+├── clean_latex.py
+├── main.pdf
+├── TREE.txt
+│
+├── .github/
+│   └── workflows/
+│       └── build_pdf.yml
+│
+├── .jupyter/
+│   └── jupyter_lab_config.py
+│
+├── assets/
+│   ├── archive/
+│   │   ├── diagrams/
+│   │   │   └── Visualizing_Proton_Topology_and_Confinement.mp4
+│   │   ├── amorphous_lattice.png
+│   │   ├── casimir_filter_results.png
+│   │   ├── connectivity_histogram.png
+│   │   ├── cosmic_quench_result.png
+│   │   ├── cosmological_expansion.png
+│   │   ├── galactic_rotation_result.png
+│   │   ├── galactic_rotation_v2.png
+│   │   ├── galactic_rotation.png
+│   │   ├── impedance_heatmap.png
+│   │   ├── lattice_isotropy_result.png
+│   │   ├── metric_refraction_result.png
+│   │   ├── pilot_wave_result.png
+│   │   ├── pilot_wave_walker_v2.png
+│   │   ├── proton_3d_topology_V2.png
+│   │   ├── proton_3d_topology.png
+│   │   ├── proton_triplet_result.png
+│   │   ├── refractive_gradient.png
+│   │   ├── topological_short_evolution.png
+│   │   ├── topological_short_stability.png
+│   │   ├── warp_bubble_result.png
+│   │   ├── weak_clamping_final.png
+│   │   ├── weak_clamping_result.png
+│   │   ├── weak_clamping_results.png
+│   │   ├── wormhole_evolution_9frames.png
+│   │   └── wormhole_stability.png
+│   ├── derivations/
+│   │   └── mass_scaling_derivation.png
+│   └── sim_outputs/
+│       ├── ball_lightning_sim.png
+│       ├── black_hole_cfd.png
+│       ├── bullet_cluster_result.png
+│       ├── bullet_cluster_v2.png
+│       ├── cassini_flyby.png
+│       ├── cherenkov_cone.png
+│       ├── chiral_clamping_result.png
+│       ├── connectivity_histogram_pbc.png
+│       ├── connectivity_histogram.png
+│       ├── cosmic_quench_result.png
+│       ├── double_slit_result.png
+│       ├── dual_modulus_lensing.png
+│       ├── falsification_dashboard.png
+│       ├── galaxy_rotation_v3.png
+│       ├── galaxy_rotation.png
+│       ├── genesis_vs_lcdm.png
+│       ├── impedance_heatmap.png
+│       ├── knot_saturation_pole.png
+│       ├── lattice_slice.png
+│       ├── lepton_hierarchy_v6.png
+│       ├── magnetosphere_3d.png
+│       ├── metric_aging_decay.png
+│       ├── metric_aging_rates.png
+│       ├── metric_streamlining_cfd.png
+│       ├── metric_stress_profile.png
+│       ├── photon_gyroscopic_propagation.png
+│       ├── pilot_wave_walker.png
+│       ├── proton_borromean.png
+│       ├── proton_trefoil_knot.png
+│       ├── rlve_prediction_v2.png
+│       ├── rlve_technical_schematic_v2.png
+│       ├── rlve_technical_schematic.png
+│       ├── superconductivity_pair.png
+│       ├── viscous_redshift.png
+│       ├── vsi_chiral_filter_v3.png
+│       ├── warp_bubble_result.png
+│       ├── warp_bubble_spacetime.png
+│       └── warp_wake_cfd.png
+│
+├── build/
+│   ├── main.pdf
+│   ├── main.log
+│   ├── main.aux
+│   ├── main.toc
+│   ├── main.out
+│   └── (other LaTeX build artifacts)
+│
+├── docs/
+│   ├── INSTALLATION.md
+│   └── USAGE.md
+│
+├── manuscript/
+│   ├── main.tex
+│   ├── main.bbl
+│   ├── main.blg
+│   ├── bibliography.bib
+│   │
+│   ├── archive/
+│   │   ├── main.tex
+│   │   ├── glossary.tex
+│   │   ├── titlepage.tex
+│   │   ├── frontmatter/
+│   │   │   └── 00_preface.tex
+│   │   ├── backmatter/
+│   │   │   ├── appendix_a.tex
+│   │   │   ├── appendix_b.tex
+│   │   │   ├── appendix_c.tex
+│   │   │   └── appendix_d.tex
+│   │   └── chapters/
+│   │       ├── 00_core/
+│   │       ├── 01_hardware/
+│   │       ├── 02_signal/
+│   │       ├── 03_quantum/
+│   │       ├── 04_topology/
+│   │       ├── 05_weak/
+│   │       ├── 06_cosmic/
+│   │       ├── 07_engineering/
+│   │       ├── 08_falsifiability/
+│   │       ├── 09_Vacuum_CFD/
+│   │       └── archive/
+│   │
+│   ├── frontmatter/
+│   │   └── 00_title.tex
+│   │
+│   ├── backmatter/
+│   │   └── 00_appendcies.tex
+│   │
+│   ├── structure/
+│   │   ├── commands.tex
+│   │   └── preamble.tex
+│   │
+│   └── chapters/
+│       ├── 01_discrete_amorphous_manifold/
+│       │   ├── 01_voronoi_vacuum.tex
+│       │   ├── 02_moduli_of_the_void.tex
+│       │   ├── 03_global_slew_rate.tex
+│       │   └── 04_saturation_limit.tex
+│       │
+│       ├── 02_signal_dynamics/
+│       │   ├── 01_dielectric_lagrangian.tex
+│       │   ├── 02_quantization_as_bandwidth.tex
+│       │   ├── 03_pilot_wave.tex
+│       │   └── 04_measurement_affect.tex
+│       │
+│       ├── 03_fermion_sector/
+│       │   ├── 01_fundamental_theorem_of_knots.tex
+│       │   ├── 02_electron.tex
+│       │   ├── 03_mass_hierarchy.tex
+│       │   └── 04_chirality_antimatter.tex
+│       │
+│       ├── 04_baryon_sector/
+│       │   ├── 01_borromean_confinement.tex
+│       │   ├── 02_proton_mass.tex
+│       │   └── 03_neutron_decay.tex
+│       │
+│       ├── 05_neutrino_star/
+│       │   ├── 01_twisted_unknot.tex
+│       │   └── 02_chiral_exlusion_principle.tex
+│       │
+│       ├── 06_electrodynamics_weak_interaction/
+│       │   ├── 01_coulombs_law.tex
+│       │   └── 02_weak_interaction.tex
+│       │
+│       ├── 07_gravitation_metric_refraction/
+│       │   ├── 01_gravity_as_refractive_index.tex
+│       │   ├── 02_lensing_theorem.tex
+│       │   └── 03_equivalence_principle.tex
+│       │
+│       ├── 08_generative_cosmology/
+│       │   ├── 01_genesis_rate.tex
+│       │   ├── 02_dark_energy_resolution.tex
+│       │   └── 03_cmb.tex
+│       │
+│       ├── 09_viscous_dynamics_dark_matter/
+│       │   ├── 01_viscosity_term.tex
+│       │   ├── 02_galactic_rotation.tex
+│       │   ├── 03_bullet_cluster.tex
+│       │   └── 04_flyby_anomaly.tex
+│       │
+│       ├── 10_vacuum_cfd/
+│       │   ├── 01_navier-stokes_vacuum.tex
+│       │   ├── 02_black_holes.tex
+│       │   └── 03_warp_mechanics.tex
+│       │
+│       ├── 11_metric_engineering/
+│       │   ├── 01_stress_coefficient.tex
+│       │   ├── 02_metric_streamlining.tex
+│       │   └── 03_kinetic_inductance.tex
+│       │
+│       └── 12_eperimental_falsification/
+│           ├── 01_falsification.tex
+│           ├── 02_neturino_parity_kill-switch.tex
+│           ├── 03_nyquist_limit.tex
+│           └── 04_metric_null-result.tex
+│
+├── notebooks/
+│   ├── 00_template.ipynb
+│   ├── 01_Relativistic_Limit.ipynb
+│   ├── 02_CMB_BAO_Fitting.ipynb
+│   ├── 03_Bullet_Cluster_Sim.ipynb
+│   ├── 04_Vacuum_Energy.ipynb
+│   ├── 05_Lepton_Asymmetry.ipynb
+│   ├── 06_Superconductor_Vortex.ipynb
+│   ├── 07_Quantum_Hall.ipynb
+│   ├── 08_Gravitational_Waves.ipynb
+│   ├── 09_Atomic_Spectra.ipynb
+│   └── 10_Cosmic_Inflation.ipynb
+│
+├── scripts/
+│   ├── create_file.py
+│   ├── generate_assets.py
+│   └── generate_simulations.py
+│
+├── simulations/
+│   └── (simulation scripts organized by chapter)
+│
+├── src/
+│   ├── clean_latex.py
+│   └── vsi/
+│       ├── __init__.py
+│       ├── constants.py
+│       ├── lattice.py
+│       ├── metric.py
+│       ├── solver.py
+│       ├── core/
+│       │   ├── lattice.py
+│       │   └── solvers.py
+│       └── utils/
+│           └── visualization.py
+│
+└── tests/
+    ├── test_chirality.py
+    ├── test_constants.py
+    └── test_energy_conservation.py

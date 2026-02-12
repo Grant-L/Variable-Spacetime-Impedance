@@ -1,50 +1,198 @@
-\documentclass[11pt, letterpaper, oneside]{book}
+\documentclass[11pt, letterpaper, openright]{book}
 
-% 1. Load Structure
-\input{manuscript/structure/preamble}
-\input{manuscript/structure/commands}
+% =========================================
+% PREAMBLE: THE ENGINEERING AESTHETIC
+% =========================================
+
+% --- Typography & Encoding ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern} 
+\usepackage{microtype} 
+
+% --- Layout & Geometry ---
+\usepackage[margin=1.2in, headheight=14pt]{geometry}
+\usepackage{fancyhdr} 
+\usepackage{emptypage} 
+
+% --- Mathematics & Science ---
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{mathtools}
+\usepackage{siunitx} 
+\usepackage{bm} 
+
+% --- Graphics & Floats ---
+\usepackage{graphicx}
+\graphicspath{{../assets/}{../assets/sim_outputs/}{../assets/derivations/}{../assets/archive/}}
+\usepackage{float}
+\usepackage{booktabs} 
+\usepackage{tabularx}
+\usepackage{caption}
+\usepackage{tabularx} % For tabularx environment
+\usepackage[table,xcdraw]{xcolor}
+
+% --- Navigation & Linking ---
+\usepackage[hidelinks]{hyperref} 
+\usepackage{tocloft} 
+
+% --- Code & Verbatim ---
+\usepackage{listings}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins, breakable}
+
+% =========================================
+% CUSTOM COMMANDS & DEFINITIONS
+% =========================================
+\input{structure/commands.tex}
+
+% Define the "Vacuum Engineering" constants (Wrapped in \ensuremath for safety)
+\newcommand{\vacuum}{\ensuremath{M_A}}
+\newcommand{\slew}{\ensuremath{c}}
+\newcommand{\planck}{\ensuremath{\hbar}}
+\newcommand{\permeability}{\ensuremath{\mu_0}}
+\newcommand{\permittivity}{\ensuremath{\epsilon_0}}
+\newcommand{\impedance}{\ensuremath{Z_0}}
+
+% Header/Footer Configuration
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[RE]{\itshape Applied Vacuum Engineering}
+\fancyhead[LO]{\itshape\nouppercase{\leftmark}}
+
+% =========================================
+% DOCUMENT STRUCTURE
+% =========================================
 
 \begin{document}
 
-% 2. Front Matter
+% --- FRONT MATTER ---
 \frontmatter
-\input{manuscript/structure/titlepage}
-\input{manuscript/frontmatter/00_preface}
-% \input{manuscript/frontmatter/glossary}
-\tableofcontents
 
-% 3. Main Content
+\input{frontmatter/00_title.tex}
+
+\thispagestyle{empty}
+\vspace*{\fill}
+\noindent
+\textbf{Applied Vacuum Engineering: The Mechanical Substrate of Physics}\\
+Copyright \copyright\ 2024 Grant Lindblom\\
+Vacuum Engineering Press\\
+\\
+\textit{This document is a technical specification. All constants derived herein are subject to the hardware limitations of the local vacuum manifold.}
+\vspace{1cm}
+\newpage
+
+\tableofcontents
+\newpage
+
+\chapter*{Preface: The Hardware Perspective}
+\addcontentsline{toc}{chapter}{Preface}
+Traditional physics asks "What are the laws?" Engineering asks "What are the specs?" This book is an attempt to answer the second question. By treating the universe not as a mathematical abstraction but as a physical machine, we find that the "laws" are simply the operating limits of the hardware.
+\newpage
+
+% --- MAIN MATTER ---
 \mainmatter
 
-% Part 0: Core Theory
-\input{manuscript/chapters/00_core/_manifest}
+% =================================================
+% PART I: THE CONSTITUTIVE SUBSTRATE
+% =================================================
+\part{The Constitutive Substrate}
+\label{part:substrate}
 
-% Part I: The Hardware
-\part{The Hardware Layer}
-\input{manuscript/chapters/01_hardware/_manifest}
-\input{manuscript/chapters/02_signal/_manifest}
+\include{chapters/01_discrete_amorphous_manifold/01_voronoi_vacuum}
+\include{chapters/01_discrete_amorphous_manifold/02_moduli_of_the_void}
+\include{chapters/01_discrete_amorphous_manifold/03_global_slew_rate}
+\include{chapters/01_discrete_amorphous_manifold/04_saturation_limit}
 
-% Part II: Emergence
-\part{The Quantum \& Weak Layers}
-\input{manuscript/chapters/03_quantum/_manifest}
-\input{manuscript/chapters/04_topology/_manifest}
-\input{manuscript/chapters/05_weak/_manifest}
+% =================================================
+% PART II: TOPOLOGICAL MATTER
+% =================================================
+\part{Topological Matter}
+\label{part:matter}
 
-% Part III: Macroscale
-\part{Macroscale Dynamics \& Engineering}
-\input{manuscript/chapters/06_cosmic/_manifest}
-\input{manuscript/chapters/07_engineering/_manifest}
+% Signal Dynamics
+\include{chapters/02_signal_dynamics/01_dielectric_lagrangian}
+\include{chapters/02_signal_dynamics/02_quantization_as_bandwidth}
+\include{chapters/02_signal_dynamics/03_pilot_wave}
+\include{chapters/02_signal_dynamics/04_measurement_effect}
 
-% Part IV: Verification
-\part{Falsifiability}
-\input{manuscript/chapters/08_falsifiability/_manifest}
+% Fermion Sector
+\include{chapters/03_fermion_sector/01_fundamental_theorem_of_knots}
+\include{chapters/03_fermion_sector/02_electron}
+\include{chapters/03_fermion_sector/03_mass_hierarchy}
+\include{chapters/03_fermion_sector/04_chirality_antimatter}
 
-% Part V: Application
-\part{Applications}
-\input{manuscript/chapters/09_Vacuum_CFD/_manifest}
-% 4. Back Matter
+% Baryon Sector
+\include{chapters/04_baryon_sector/01_borromean_confinement}
+\include{chapters/04_baryon_sector/02_proton_mass}
+\include{chapters/04_baryon_sector/03_neutron_decay}
+
+% Neutrino Sector
+\include{chapters/05_neutrino_star/01_twisted_unknot}
+\include{chapters/05_neutrino_star/02_chiral_exlusion_principle}
+
+% =================================================
+% PART III: INTERACTIVE DYNAMICS
+% =================================================
+\part{Interactive Dynamics}
+\label{part:interaction}
+
+% Electrodynamics and Weak Interaction
+\include{chapters/06_electrodynamics_weak_interaction/01_coulombs_law}
+\include{chapters/06_electrodynamics_weak_interaction/02_weak_interaction}
+
+% Gravitation and Metric Refraction
+\include{chapters/07_gravitation_metric_refraction/01_gravity_as_refractive_index}
+\include{chapters/07_gravitation_metric_refraction/02_lensing_theorem}
+\include{chapters/07_gravitation_metric_refraction/03_equivalence_principle}
+
+% =================================================
+% PART IV: COSMOLOGICAL DYNAMICS
+% =================================================
+\part{Cosmological Dynamics}
+\label{part:cosmology}
+
+% Generative Cosmology
+\include{chapters/08_generative_cosmology/01_genesis_rate}
+\include{chapters/08_generative_cosmology/02_dark_energy_resolution}
+\include{chapters/08_generative_cosmology/03_cmb}
+
+% Viscous Dynamics and Dark Matter
+\include{chapters/09_viscous_dynamics_dark_matter/01_viscosity_term}
+\include{chapters/09_viscous_dynamics_dark_matter/02_galactic_rotation}
+\include{chapters/09_viscous_dynamics_dark_matter/03_bullet_cluster}
+\include{chapters/09_viscous_dynamics_dark_matter/04_flyby_anomaly}
+
+% =================================================
+% PART V: APPLIED VACUUM MECHANICS
+% =================================================
+\part{Applied Vacuum Mechanics}
+\label{part:applied}
+
+% Vacuum CFD
+\include{chapters/10_vacuum_cfd/01_navier-stokes_vacuum.tex}
+\include{chapters/10_vacuum_cfd/02_black_holes.tex}
+\include{chapters/10_vacuum_cfd/03_warp_mechanics}
+
+% Metric Engineering
+\include{chapters/11_metric_engineering/01_stress_coefficient}
+\include{chapters/11_metric_engineering/02_metric_streamlining}
+\include{chapters/11_metric_engineering/03_kinetic_inductance}
+
+% Experimental Falsification
+\include{chapters/12_eperimental_falsification/01_falsification}
+\include{chapters/12_eperimental_falsification/02_neturino_parity_kill-switch}
+\include{chapters/12_eperimental_falsification/03_nyquist_limit}
+\include{chapters/12_eperimental_falsification/04_metric_null-result}
+
+% --- BACK MATTER ---
 \backmatter
+
+% Appendices
+\include{backmatter/00_appendcies}
+
+% Bibliography
 \bibliographystyle{plain}
-\bibliography{manuscript/bibliography}
+\bibliography{bibliography}
 
 \end{document}

@@ -1,60 +1,56 @@
-# Variable Spacetime Impedance - Master Build System
+# Applied Vacuum Engineering - Master Build System
 
 PYTHON = python3
 LATEX = pdflatex
 BIBTEX = bibtex
-OUT_DIR = build
+# Note: OUT_DIR is relative to where we run the command. 
+# Since we change directory into 'manuscript' to run latex, we use ../build
+OUT_DIR = ../build
 SRC_DIR = manuscript
-SIM_DIR = simulations
+SCRIPT_DIR = scripts
 
 .PHONY: all clean sims pdf test help
 
 help:
-	@echo "VSI Framework Build System"
-	@echo "--------------------------"
-	@echo "  make sims   : Run all Python simulations and generate figures"
+	@echo "Applied Vacuum Engineering (AVE) Build System"
+	@echo "---------------------------------------------"
+	@echo "  make sims   : Run simulation suite"
 	@echo "  make pdf    : Compile the LaTeX textbook"
-	@echo "  make all    : Run tests, simulations, and build PDF"
 	@echo "  make clean  : Remove build artifacts"
 
-all: test sims pdf
+all: sims pdf
 
-# 1. Run Simulations
 sims:
-	@echo "[Build] Running Hardware Simulations..."
-	$(PYTHON) $(SIM_DIR)/01_hardware/run_lattice_gen.py
-	@echo "[Build] Running Signal Simulations..."
-	$(PYTHON) $(SIM_DIR)/02_signal/run_refraction.py
-	@echo "[Build] Running Quantum Simulations..."
-	$(PYTHON) $(SIM_DIR)/03_quantum/run_pilot_wave.py
-	@echo "[Build] Running Topology Simulations..."
-	$(PYTHON) $(SIM_DIR)/04_topology/run_proton_knot.py
-	@echo "[Build] Running Weak Simulations..."
-	$(PYTHON) $(SIM_DIR)/05_weak/run_weak_clamping.py
-	@echo "[Build] Running Cosmic Simulations..."
-	$(PYTHON) $(SIM_DIR)/06_cosmic/run_cosmic_quench.py
-	@echo "[Build] Running Macroscale Simulations..."
-	$(PYTHON) $(SIM_DIR)/07_engineering/run_galactic_rotation.py
-	@echo "[Build] Running Falsifiability Simulations..."
-	$(PYTHON) $(SIM_DIR)/08_falsifiability/run_falsification.py
-	@echo "[Build] All simulations complete."
+	@echo "[Build] Running Simulation Suite..."
+	$(PYTHON) $(SCRIPT_DIR)/generate_simulations.py
+	@echo "[Build] Asset generation complete."
 
-# 2. Build PDF
 pdf:
+	@echo "[Build] Setting up build directories..."
+	@mkdir -p build
+	# Mirror the manuscript directory structure into build/
+	@cd $(SRC_DIR) && find . -type d -exec mkdir -p ../build/{} \;
+	
 	@echo "[Build] Compiling LaTeX Manuscript..."
-	mkdir -p $(OUT_DIR)
-	$(LATEX) -output-directory=$(OUT_DIR) $(SRC_DIR)/main.tex
-	# Run Bibtex if bibliography exists (commented out until bib file is populated)
-	# $(BIBTEX) $(OUT_DIR)/main
-	$(LATEX) -output-directory=$(OUT_DIR) $(SRC_DIR)/main.tex
-	@echo "[Build] PDF generated at $(OUT_DIR)/main.pdf"
+	# Clean potentially corrupted bookmark files
+	rm -f build/main.out build/main.aux build/main.toc
+	# 1. First Pass (Generate AUX)
+	cd $(SRC_DIR) && $(LATEX) -output-directory=$(OUT_DIR) main.tex
+	
+	# 2. BibTeX (Run only if .bib file is present)
+	@if [ -f $(SRC_DIR)/bibliography.bib ]; then \
+		echo "[Build] Processing Bibliography..."; \
+		cp $(SRC_DIR)/bibliography.bib build/; \
+		cd build && $(BIBTEX) main; \
+	fi
 
-# 3. Unit Tests (Placeholder)
-test:
-	@echo "[Test] Running Unit Tests..."
-	# $(PYTHON) -m unittest discover tests
+	# 3. Second Pass (Link References)
+	cd $(SRC_DIR) && $(LATEX) -output-directory=$(OUT_DIR) main.tex
+	
+	# 4. Third Pass (Resolve Citations & Layout)
+	cd $(SRC_DIR) && $(LATEX) -output-directory=$(OUT_DIR) main.tex
+	@echo "[Build] PDF generated at build/main.pdf"
 
 clean:
 	@echo "[Clean] Removing build artifacts..."
-	rm -rf $(OUT_DIR)/*
-	rm -f assets/sim_outputs/*.png
+	rm -rf build/*

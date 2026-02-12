@@ -1,0 +1,30 @@
+\section{The Lensing Theorem: Deriving Einstein}
+\label{sec:lensing_theorem}
+
+We now derive the bending of light purely via Snell's Law in this graded medium.
+
+\subsection{Deflection of Light}
+Consider a photon passing a mass $M$ with impact parameter $b$. The trajectory is governed by the gradient of the refractive index perpendicular to the path ($\nabla_\perp n$).
+\begin{equation}
+    \delta = \int_{-\infty}^{\infty} \nabla_{\perp} n \, dz
+\end{equation}
+Substituting the gradient of our derived index $n(r) = 1 + \frac{2GM}{rc^2}$:
+\begin{equation}
+    \delta = \int_{-\infty}^{\infty} \frac{2GM}{c^2} \frac{b}{(b^2 + z^2)^{3/2}} \, dz
+\end{equation}
+Evaluating this integral yields:
+\begin{equation}
+    \delta = \frac{4GM}{bc^2}
+\end{equation}
+\textbf{Result:} This perfectly recovers the Einstein deflection angle. In VSI, light curves not because space is bent, but because the \textbf{wavefront velocity is slower} near the mass ($v = c/n$), causing the ray to refract inward.
+
+\subsection{Shapiro Delay (The Refractive Delay)}
+The "slowing" of light near a mass is measured as a time delay $\Delta t$. In VSI, this is simply the transit time integral through the denser medium:
+\begin{equation}
+    \Delta t = \int_{path} \left( \frac{1}{v(r)} - \frac{1}{c} \right) dl = \frac{1}{c} \int_{path} (n(r) - 1) dl
+\end{equation}
+Substituting $n(r)$:
+\begin{equation}
+    \Delta t \approx \frac{4GM}{c^3} \ln \left( \frac{4x_e x_p}{b^2} \right)
+\end{equation}
+This confirms that the Shapiro Delay is a \textbf{Dielectric Delay}. The vacuum near the sun is "thicker," so signals take longer to propagate.
