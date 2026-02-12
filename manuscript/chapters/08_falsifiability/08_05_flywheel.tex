@@ -20,13 +20,21 @@ The rotational kinetic energy of the flywheel creates a localized impedance spik
     \Delta n = \eta_{vac} \cdot \left(\frac{v_{tan}}{c}\right)^2 = \alpha \left(\frac{\omega R}{c}\right)^2
 \end{equation}
 
-\subsection{Experimental Setup and Signal Prediction}
-To detect this shift, we utilize a Resonant Cavity (Fabry-Perot) Interferometer. The signal is amplified by the cavity finesse ($\mathcal{F}$), effectively folding the path length $L$ multiple times.
+\subsection{8.6.4 Simulation: Signal Prediction (Density Dependent)}
+To verify the experimental feasibility, we modeled the expected phase shift for both the primary (Tungsten) and control (Aluminum) rotors using the \texttt{RLVE\_Prediction\_v2} engine.
 
-\begin{figure}[ht]
+The simulation incorporates the Density Scaling Factor $(\rho / \rho_{sat})$ derived in Section 8.6.2. The parameters assume a 20 cm interaction length $(L)$ and a cavity finesse of $\mathcal{F}=10,000$.
+
+\textbf{Results (Figure 8.2):}
+\begin{itemize}
+    \item \textbf{Tungsten Signal $(\rho \approx 19.3)$:} The model predicts a quadratic rise in phase shift, reaching $\Delta \phi \approx 0.72$ milli-radians at 100,000 RPM. This is well above the noise floor of modern interferometry $(\sim 10^{-6}$ rad).
+    \item \textbf{Aluminum Control $(\rho \approx 2.7)$:} The signal drops to $\approx 0.10$ milli-radians. This 7.1x reduction provides a robust "fingerprint" to distinguish the VSI effect from aerodynamic turbulence, which depends on geometry rather than mass.
+\end{itemize}
+
+\begin{figure}[h]
     \centering
-    \includegraphics[width=0.9\textwidth]{assets/sim_outputs/rlve_prediction_v6.png}
-    \caption{\textbf{RLVE Signal Prediction (v6.0):} A 100k RPM tungsten rotor is predicted to generate a 0.72 milli-radian phase shift due to lattice viscosity $\alpha$. General Relativity predicts a null result (black line) at this scale.}
+    \includegraphics[width=0.8\linewidth]{assets/sim_outputs/rlve_prediction_v2.png}
+    \caption{\textbf{RLVE Signal Prediction.} The simulation confirms that the VSI effect is density-dependent. The Tungsten rotor (Orange) generates a strong 0.72 mrad signal, while the Aluminum control (Green) yields a suppressed signal. General Relativity (Black Dashed) predicts a null result at this scale.}
     \label{fig:rlve_prediction}
 \end{figure}
 
@@ -75,20 +83,3 @@ The effect scales with mass density ($\rho_{tungsten} \approx 19.3$).
     \item \textbf{Differentiation:} Acoustic vibrations travel through the table. A signal that persists at distance is vibrational noise.
 \end{itemize}
 
-\subsection{Simulation: Signal Prediction (Density Dependent)}
-To verify the experimental feasibility, we modeled the expected phase shift for both the primary (Tungsten) and control (Aluminum) rotors using the \texttt{RLVE\_Prediction\_v2} engine.
-
-The simulation incorporates the Density Scaling Factor $(\rho / \rho_{sat})$ derived in Section 8.6.2. The parameters assume a 20 cm interaction length $(L)$ and a cavity finesse of $\mathcal{F}=10,000$.
-
-\textbf{Results (Figure 8.2):}
-\begin{itemize}
-    \item \textbf{Tungsten Signal $(\rho \approx 19.3)$:} The model predicts a quadratic rise in phase shift, reaching $\Delta \phi \approx 0.72$ milli-radians at 100,000 RPM. This is well above the noise floor of modern interferometry $(\sim 10^{-6}$ rad).
-    \item \textbf{Aluminum Control $(\rho \approx 2.7)$:} The signal drops to $\approx 0.10$ milli-radians. This 7.1x reduction provides a robust "fingerprint" to distinguish the VSI effect from aerodynamic turbulence, which depends on geometry rather than mass.
-\end{itemize}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.8\linewidth]{assets/sim_outputs/rlve_prediction_v2.png}
-    \caption{\textbf{RLVE Signal Prediction.} The simulation confirms that the VSI effect is density-dependent. The Tungsten rotor (Orange) generates a strong 0.72 mrad signal, while the Aluminum control (Green) yields a suppressed signal. General Relativity (Black Dashed) predicts a null result at this scale.}
-    \label{fig:rlve_prediction}
-\end{figure}
