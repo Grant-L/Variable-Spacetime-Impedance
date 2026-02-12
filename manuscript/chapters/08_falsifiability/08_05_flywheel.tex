@@ -48,3 +48,29 @@ The total amplified shift in the resonant cavity is:
 \begin{equation}
     \Delta \phi_{total} \approx \mathcal{F} \cdot \delta \phi_{single} = \mathcal{F} \frac{2\pi L}{\lambda} \left[ \alpha \left(\frac{\omega R}{c}\right)^2 \right]
 \end{equation}
+
+\subsubsection{Experimental Controls and Systematics}
+To distinguish the Vacuum Viscosity signal ($\Delta n$) from environmental noise (vibration, acoustics), we propose three specific control protocols:
+
+\textbf{1. The Counter-Rotation Null (Symmetry Test)}
+The VSI effect depends on $v^2$ (scalar energy density) and is strictly positive.
+\begin{itemize}
+    \item \textbf{Protocol:} Reverse rotor direction ($+\omega \to -\omega$).
+    \item \textbf{Prediction:} Signal remains constant ($v^2$ is invariant).
+    \item \textbf{Differentiation:} Mechanical resonances often depend on phase/direction. A signal that flips sign is an artifact.
+\end{itemize}
+
+\textbf{2. The "Dummy Mass" Null (Density Test)}
+The effect scales with mass density ($\rho_{tungsten} \approx 19.3$).
+\begin{itemize}
+    \item \textbf{Protocol:} Replace Tungsten with Aluminum ($\rho \approx 2.7$) at identical RPM.
+    \item \textbf{Prediction:} Signal drops by factor of $\approx 7.1$.
+    \item \textbf{Differentiation:} Aerodynamic noise depends on geometry, not density. A signal that persists is air turbulence.
+\end{itemize}
+
+\textbf{3. The Geometric Offset (Range Test)}
+\begin{itemize}
+    \item \textbf{Protocol:} Shift optical path laterally by $d=5$ cm.
+    \item \textbf{Prediction:} Signal extinction (local evanescent drag).
+    \item \textbf{Differentiation:} Acoustic vibrations travel through the table. A signal that persists at distance is vibrational noise.
+\end{itemize}

@@ -24,3 +24,34 @@ Rearranging the velocity equation recovers the standard relativistic Lorentz Fac
     \gamma = \frac{1}{\sqrt{1 - v^2/c^2}}
 \end{equation}
 \textbf{Physical Result:} Special Relativity is derived not as a geometric principle, but as the bandwidth limitation of a discrete signal processor.
+
+\subsection{Gyroscopic Stabilization: The Origin of Rectilinear Propagation}
+\label{sec:gyro_stabilization}
+
+A fundamental question in field theory is why light travels in straight lines (geodesics) rather than diffusing outward like heat or sound in a solid. Standard physics attributes this to "inertia" or geometric necessity, but VSI provides a mechanical explanation: \textbf{Gyroscopic Stabilization}.
+
+\subsubsection{The "Drill Bit" Mechanism}
+In the VSI framework, a photon is not a passive scalar wave; it is a vector boson with intrinsic spin angular momentum $\vec{S} = \hbar$. This spin creates a "corkscrew" motion as the perturbation propagates through the lattice.
+
+Just as a spinning rifle bullet or a gyroscope resists deflection, the photon's high-frequency rotation ($\omega$) creates a stabilization torque against the lattice impedance. We define the \textbf{Stabilization Torque Density} $\vec{\tau}$ as:
+\begin{equation}
+    \vec{\tau}_{stabilize} = \vec{S} \times \nabla_{\perp} Z_{lattice}
+\end{equation}
+Where $\nabla_{\perp} Z_{lattice}$ represents the transverse impedance gradient (dispersion noise). This torque actively suppresses transverse spreading, forcing the wave packet to "drill" a straight path through the dielectric substrate.
+
+\subsubsection{Impedance Reaction and Back-Pressure}
+The interaction is not one-way. As the photon corkscrews, it exerts a forward "radiation pressure" on the lattice nodes. The lattice, possessing elasticity ($\epsilon_0$) and inertia ($\mu_0$), exerts an equal and opposite \textbf{Impedance Back-Reaction}.
+
+\begin{itemize}
+    \item \textbf{Phase Sync:} The photon's frequency $\omega$ is perfectly tuned to the lattice's resonant response time ($t_{tick}$). This minimizes reflection ($Z_{refl} \approx 0$).
+    \item \textbf{Propulsion:} The "snap-back" of the lattice nodes against the corkscrew thread is what physically propels the wave forward at $c$. This is analogous to a screw being driven by the resistance of the wood it penetrates.
+\end{itemize}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1.0\textwidth]{assets/sim_outputs/photon_gyroscopic_propagation.png}
+    \caption{\textbf{Gyroscopic Stabilization Simulation:} (Top) A scalar wave without spin diffuses radially, losing coherence. (Bottom) A vector boson with VSI "Corkscrew" spin maintains a tight, rectilinear packet, cutting a straight path through the lattice impedance. The spin acts as a gyroscopic stabilizer against vacuum dispersion.}
+    \label{fig:gyro_propagation}
+\end{figure}
+
+\textbf{Conclusion:} Rectilinear propagation is not a geometric axiom but a dynamic stability condition. Light travels straight because it is spinning fast enough to resist the dispersive noise of the vacuum.
