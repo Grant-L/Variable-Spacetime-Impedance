@@ -1,0 +1,44 @@
+\section{Resolution of the Galactic Rotation Anomaly}
+\label{sec:rotation_curves}
+
+The "Flat Rotation Curve" of spiral galaxies is the primary observational evidence for Dark Matter halos. Newtonian gravity predicts that orbital velocity should drop as $v \propto 1/\sqrt{r}$ beyond the visible disk, but observations show $v \approx constant$.
+
+VSI resolves this by identifying the **Inductive Saturation** of the vacuum substrate.
+
+\subsection{The Inductive Saturation Hypothesis}
+The vacuum lattice is a non-linear medium. Its stiffness (Impedance) is not constant; it depends on the local stress (acceleration) field.
+\begin{itemize}
+    \item \textbf{High Acceleration (Inner Galaxy):} The lattice is "Stiff." The Inductive Gain is unity ($\Omega \approx 1$). Gravity behaves linearly (Newtonian).
+    \item \textbf{Low Acceleration (Outer Galaxy):} As the acceleration drops below the Lattice Relaxation Threshold ($a_0$), the lattice "Relaxes." The effective inductance increases, boosting the gravitational coupling.
+\end{itemize}
+
+We define the Variable Inductive Gain $\Omega(r)$ as:
+\begin{equation}
+    \Omega(a) = \sqrt{1 + \frac{a_0}{a_{Newton}}}
+\end{equation}
+Where $a_0 \approx 2.4 \times 10^{-10} m/s^2$ (approx 7400 galactic units) is the characteristic acceleration scale where the lattice transitions from linear to saturated response.
+
+\subsection{Derivation of the Flat Rotation Curve}
+The orbital velocity is determined by the effective VSI acceleration:
+\begin{equation}
+    a_{VSI} = a_{Newton} \cdot \Omega(a) \approx \sqrt{a_{Newton} \cdot a_0} \quad (\text{for } a \ll a_0)
+\end{equation}
+
+Substituting $a_{Newton} = GM/r^2$:
+\begin{equation}
+    a_{VSI} \approx \sqrt{\frac{GM}{r^2} a_0} = \frac{\sqrt{G M a_0}}{r}
+\end{equation}
+
+The orbital velocity becomes:
+\begin{equation}
+    v = \sqrt{a_{VSI} \cdot r} = \sqrt[4]{G M a_0} = \text{Constant}
+\end{equation}
+
+This derivation perfectly recovers the flat rotation curve observed in galaxies (Tully-Fisher relation), purely from the variable impedance response of the vacuum hardware.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{assets/sim_outputs/galactic_rotation_result.png}
+    \caption{\textbf{Galactic Rotation Simulation:} The dashed black line shows the Newtonian prediction, which fails at large radii. The solid blue line shows the VSI prediction using **Inductive Saturation** with $a_0 \approx 7400$. This successfully matches the observational data at $\approx 120$ km/s without requiring a Dark Matter halo.}
+    \label{fig:rotation_curve}
+\end{figure}
