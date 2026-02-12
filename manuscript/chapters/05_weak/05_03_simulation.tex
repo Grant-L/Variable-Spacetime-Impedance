@@ -1,16 +1,20 @@
-\section{Simulation: Emergent Clamping}
-\label{sec:clamping_sim}
+\subsection{5.5 Simulation: The Chiral High-Pass Filter}
+To verify the mechanical origin of Parity Violation, we modeled the propagation of chiral signals through the $M_A$ substrate using the \texttt{WeakInteractionSim\_v3} physics engine.
 
-To verify the Chiral Bias postulate, we modeled the propagation of two signal polarities through the $M_{A}$ substrate using the \texttt{WeakInteractionSim} module.
+The simulation implements the \textbf{Chiral Damping Law}, where the local lattice impedance $Z$ is a function of the alignment between the signal helicity $h$ and the vacuum grain $\Omega_{vac}$:
+\begin{equation}
+    \Gamma_{damping}(x) = \Gamma_{max} \cdot \max(0, h \cdot \Omega_{vac}(x))
+\end{equation}
+
+\textbf{Results:}
+\begin{itemize}
+    \item \textbf{Left-Handed ($h=-1$):} The signal aligns with the vacuum grain ($h \cdot \Omega_{vac} = -1$). The damping term vanishes ($\Gamma = 0$), allowing the neutrino to propagate freely as a stable soliton.
+    \item \textbf{Right-Handed ($h=+1$):} The signal opposes the vacuum grain ($h \cdot \Omega_{vac} = +1$). The damping term activates ($\Gamma = \Gamma_{max}$), creating an infinite impedance wall that blocks propagation within one lattice pitch ($l_P$).
+\end{itemize}
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=1.0\textwidth]{assets/sim_outputs/weak_clamping_results.png}
-    \caption{\textbf{The Chiral Exclusion Principle (Simulation Result).} 
-    \textbf{Green (Left-Handed):} The signal ($h=-1$) aligns with the vacuum bias ($\Omega_{vac}$), encountering baseline impedance $Z_0$. It propagates freely.
-    \textbf{Red (Right-Handed):} The signal ($h=+1$) opposes the bias, triggering an impedance spike ($Z \to \infty$). The wave hits the "Impedance Wall" and undergoes immediate evanescent decay.
-    This confirms that the absence of Right-Handed neutrinos is a hardware filtering effect.}
-    \label{fig:weak_clamping}
+    \includegraphics[width=0.9\linewidth]{assets/sim_outputs/vsi_chiral_filter_v3.png}
+    \caption{\textbf{The Chiral Exclusion Principle.} Simulation results demonstrate that the "Weak Force" is effectively a Chiral High-Pass Filter. The vacuum hardware is transparent to Left-Handed twists (Green) but opaque to Right-Handed twists (Red), mechanically enforcing the Standard Model's parity violation.}
+    \label{fig:chiral_filter}
 \end{figure}
-
-\citestart The simulation demonstrates that the "broken symmetry" of the Weak Interaction is actually a \textbf{Chiral High-Pass Filter}\cite{1011,1012}\citeend. Any right-handed twist is damped out by the Back-EMF of the manifold before it can propagate beyond a single lattice pitch ($l_P$).
