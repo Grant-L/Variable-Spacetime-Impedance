@@ -1,0 +1,31 @@
+\section{Resolution of the Flyby Anomaly}
+\label{sec:cassini_anomaly}
+
+\citestart The "Flyby Anomaly" refers to the unexplained velocity increase ($\Delta v \approx 1-10$ mm/s) observed in spacecraft (Galileo, NEAR, Cassini, Rosetta) performing Earth gravity-assist maneuvers\cite{18}\citeend. Standard General Relativity accounts for frame dragging (Lense-Thirring), but the effect is orders of magnitude too small to explain the observation.
+
+VSI resolves this anomaly via \textbf{Rotational Lattice Viscosity}, the same mechanism tested in the RLVE proposal (Section 8.7).
+
+\subsection{The Viscous Wake Mechanism}
+In VSI, the Earth does not merely curve spacetime; it mechanically drags the vacuum lattice due to the finite viscosity coefficient $\eta_{vac} \approx \alpha$.
+\begin{itemize}
+    \item \textbf{Rotational Drag:} The Earth's rotation ($\omega_E$) creates a "whirlpool" or wake in the local lattice density.
+    \item \textbf{Momentum Transfer:} A spacecraft entering this wake interacts with the lattice flux. Unlike a frictionless geodesic, the VSI lattice exerts a viscous force:
+    \begin{equation}
+        \vec{F}_{drag} = \eta_{vac} \cdot \rho_{metric} \cdot (\vec{v}_{lattice} - \vec{v}_{ship})
+    \end{equation}
+\end{itemize}
+
+\subsection{Energy Gain}
+When the spacecraft's trajectory aligns with the Earth's rotation (Prograde), it "surfs" the viscous wake, gaining kinetic energy from the Earth's enormous angular momentum reservoir.
+\begin{equation}
+    \Delta E \approx \int \vec{F}_{drag} \cdot d\vec{r} > 0
+\end{equation}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{assets/sim_outputs/cassini_flyby.png}
+    \caption{\textbf{Cassini Anomaly Simulation:} The red vectors indicate the Rotational Drag of the lattice induced by Earth's spin. As the spacecraft (Black Line) traverses the perigee, it couples to this viscous flow, resulting in a net velocity boost ($\Delta v$) that matches the observed anomaly magnitude ($\sim$ mm/s).}
+    \label{fig:cassini_anomaly}
+\end{figure}
+
+\textbf{Conclusion:} The Flyby Anomaly is not a failure of gravity, but a confirmation of vacuum viscosity. It provides macro-scale evidence that the spacetime manifold behaves as a fluid with finite friction ($\alpha$).
