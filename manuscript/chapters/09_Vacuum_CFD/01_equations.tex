@@ -1,0 +1,28 @@
+\section{The Constitutive Equations of VCFD}
+\label{sec:vcfd_equations}
+
+To simulate the vacuum as a fluid, we map the classical Navier-Stokes conservation laws to the electromagnetic properties of the substrate.
+
+\subsection{Conservation of Mass (Node Density)}
+Matter cannot be created or destroyed, but lattice nodes can be compressed. The Continuity Equation describes the flux of lattice density ($\rho_{node}$):
+\begin{equation}
+    \frac{\partial \rho}{\partial t} + \nabla \cdot (\rho \mathbf{v}) = S_{genesis}
+\end{equation}
+Where $\mathbf{v}$ is the bulk flow velocity of the vacuum (the "River of Space") and $S_{genesis} = H_0 \rho$ is the Hubble source term derived in Chapter 6.
+
+\subsection{Conservation of Momentum (The VSI Navier-Stokes)}
+The "force" of gravity is simply the pressure gradient of the vacuum fluid.
+\begin{equation}
+    \rho \left( \frac{\partial \mathbf{v}}{\partial t} + \mathbf{v} \cdot \nabla \mathbf{v} \right) = -\nabla P + \eta_{vac} \nabla^2 \mathbf{v} + \mathbf{f}_{ext}
+\end{equation}
+\begin{itemize}
+    \item \textbf{Pressure ($P$):} Identified as the Vacuum Energy Density ($w$). Regions of high mass (low energy density) create a low-pressure sink, causing the surrounding lattice to flow inward (Gravity).
+    \item \textbf{Viscosity ($\eta_{vac}$):} The resistance to shear, governed by the Fine Structure Constant ($\alpha$). This term prevents infinite singularities by smoothing out shockwaves.
+\end{itemize}
+
+\subsection{The Acoustic Limit (Speed of Light)}
+In VCFD, the "Speed of Light" ($c$) is identified as the **Speed of Sound** in the vacuum fluid.
+\begin{equation}
+    c_s = \sqrt{\frac{\partial P}{\partial \rho}} = \frac{1}{\sqrt{\mu_0 \epsilon_0}}
+\end{equation}
+Massive objects move through this fluid. If a particle accelerates beyond this limit, it creates a "Sonic Boom" (Cherenkov Radiation), fundamentally identifying the light barrier as an acoustic horizon.
