@@ -1,13 +1,9 @@
-\section{Simulation: Falsification Dashboard}
-\label{sec:falsification_sim}
-
-To visualize the boundaries of the theory, we generated a Falsification Dashboard (Figure \ref{fig:kill_switch}) using the \texttt{FalsificationDashboard} module.
+\subsection{8.6 Simulation: Falsification Dashboard}
+To visualize the rigid boundaries of the theory, we generated the Falsification Dashboard using the \texttt{VSIMeansTest} module. These plots define the "Kill Signals" that would immediately disprove the VSI framework.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=1.0\textwidth]{assets/sim_outputs/falsification_dashboard.png}
-    \caption{\textbf{The Universal Means Test.} 
-    \textbf{(Left)} The Hardware Nyquist Limit imposes a hard cutoff on particle frequency ($\omega_{sat}$). \citestart Any detection in the "Forbidden Zone" disproves the discrete lattice hypothesis\cite{1128,1129}\citeend.
-    \textbf{(Right)} The Chiral Impedance Wall allows Left-Handed helicity (Green) but blocks Right-Handed helicity (Red) with infinite impedance. \citestart Detection of a Right-Handed neutrino disproves the Chiral Bias hypothesis\cite{1130,1131}\citeend.}
-    \label{fig:kill_switch}
+    \includegraphics[width=1.0\linewidth]{assets/sim_outputs/falsification_dashboard.png}
+    \caption{\textbf{The Universal Means Test.} (Left) The \textbf{Hardware Nyquist Limit} imposes a hard cutoff on particle frequency ($\omega_{sat} \approx 1.85 \times 10^{43}$ Hz). Any detection of a Trans-Planckian signal falsifies the discrete manifold hypothesis. (Right) The \textbf{Neutrino Parity Switch} shows the impedance wall for Right-Handed helicity ($h=+1$). Detection of a stable Right-Handed neutrino disproves the Chiral Bias postulate.}
+    \label{fig:means_test}
 \end{figure}
