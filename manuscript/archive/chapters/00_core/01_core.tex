@@ -1,0 +1,125 @@
+\section{Constitutive Vacuum Mechanics}
+\label{sec:core_theory}
+
+\subsection{Fundamental Axioms (The Hardware Layer)}
+We posit that the physical universe is a discrete, amorphous transmission network defined as the \textbf{Discrete Amorphous Manifold} ($M_A$).
+
+\begin{itemize}
+    \item \textbf{Axiom I: The Discrete Substrate Limit} \\
+    The manifold consists of stochastic nodes separated by a fundamental \textbf{Lattice Pitch} ($l_P$). This acts as the geometric limit (pixel size) of the universe.
+    \begin{equation}
+        l_P \approx 1.616 \times 10^{-35} \text{ m}
+    \end{equation}
+    \textit{Note: We strictly identify $l_P \equiv \sqrt{\hbar G/c^3}$ in Section 2.7 as a derived property of lattice stiffness, avoiding circular definition.}
+
+    \item \textbf{Axiom II: The Constitutive Moduli} \\
+    Each node acts as a reactive circuit element characterized by volume densities:
+    \begin{itemize}
+        \item Inductance Density $\mu_0$ (Inertia): $[H/m]$.
+        \item Capacitance Density $\epsilon_0$ (Elasticity): $[F/m]$.
+    \end{itemize}
+
+    \item \textbf{Axiom III: The Global Slew Rate} \\
+    The effective signal propagation velocity $c$ is determined by the geometric mean of the moduli:
+    \begin{equation}
+    c = \frac{1}{\sqrt{\mu_0 \epsilon_0}}
+    \end{equation}
+
+    \item \textbf{Axiom IV: The Saturable Dielectric Condition} \\
+    The vacuum acts as a Non-Linear, Saturable Dielectric.
+    \begin{itemize}
+        \item \textit{Linear Regime (Small Signal):} For field energy $U \ll U_{sat}$, $\epsilon \propto \chi$.
+        \item \textit{Saturation Regime (Large Signal):} For $U \approx U_{sat}$, $\epsilon \to \epsilon_{sat}$ (where $\nabla \epsilon \to 0$).
+    \end{itemize}
+
+    \item \textbf{Axiom V: The Lattice Relaxation Threshold} \\
+    The vacuum impedance is constant only for accelerations $a \gg a_0$. The lattice possesses a finite \textbf{Stiffness Threshold} ($a_0$).
+    \begin{equation}
+        Z(a) = Z_0 \cdot \frac{1}{\sqrt{1 + a_0/a}}
+    \end{equation}
+    Where $a_0 \approx 1.2 \times 10^{-10} m/s^2$. Below this acceleration (Deep Space), the lattice "relaxes," increasing the effective inductive coupling. This non-linearity is the mechanical origin of the "Dark Matter" signal observed in galactic rotation curves.
+\end{itemize}
+
+\subsection{Electrodynamics: The Lagrangian of the Lattice}
+To describe the dynamics of the lattice flux, we adopt the standard electromagnetic Lagrangian density for a linear constitutive medium, identifying the vacuum properties explicitly as variable moduli.
+
+\begin{equation}
+    \mathcal{L} = \frac{1}{2} \left( \epsilon(U) \mathbf{E}^2 - \frac{1}{\mu(r)} \mathbf{B}^2 \right)
+\end{equation}
+
+Where $\mathbf{E} = -\nabla\phi - \partial_t\mathbf{A}$ and $\mathbf{B} = \nabla \times \mathbf{A}$.
+Applying the Euler-Lagrange equations yields the wave equation in a refractive medium:
+\begin{equation}
+    \nabla^2 \phi - \mu(r)\epsilon(U) \frac{\partial^2 \phi}{\partial t^2} = 0
+\end{equation}
+This recovers the "Speed of Light" $c = 1/\sqrt{\mu\epsilon}$ purely from the constitutive parameters of the hardware, without requiring a scalar toy model.
+
+\subsection{The Origin of Gravity: Signal Bifurcation}
+VSI resolves the discrepancy between Newtonian and Einsteinian predictions via signal-dependent impedance.
+
+\subsubsection{The Matched Impedance Condition}
+To prevent vacuum birefringence (reflection), the vacuum maintains constant impedance $Z_0$. For a metric deformation $\chi(r) \approx 1 + \frac{2GM}{rc^2}$:
+\begin{equation}
+    \mu_{vac}(r) = \mu_0 \chi(r), \quad \epsilon_{vac}(r) = \epsilon_0 \chi(r)
+\end{equation}
+\begin{equation}
+    Z(r) = \sqrt{\frac{\mu_{vac}}{\epsilon_{vac}}} = \sqrt{\frac{\mu_0}{\epsilon_0}} \approx 377 \Omega
+\end{equation}
+
+\subsubsection{Theorem A: Light Bends via Linear Refraction (Small Signal)}
+We treat the propagation of light through a gravitational potential as an optical problem through a variable index medium $n(r) = \chi(r) = 1 + \frac{2GM}{rc^2}$.
+
+\paragraph{Deflection of Light (The Lens Equation)}
+For a photon passing a mass $M$ with impact parameter $b$, the total deflection angle $\delta$ is the integral of the transverse gradient of the refractive index along the path $z$:
+\begin{equation}
+    \delta = \int_{-\infty}^{\infty} \nabla_{\perp} n \, dz = \int_{-\infty}^{\infty} \frac{2GM}{c^2 (b^2 + z^2)^{3/2}} b \, dz = \frac{4GM}{bc^2}
+\end{equation}
+This perfectly recovers the Einstein deflection angle.
+
+\paragraph{Shapiro Delay (The Refractive Delay)}
+The "slowing" of light near a mass is measured as a time delay $\Delta t$. In VSI, this is the transit time integral through the denser medium ($v = c/n$):
+\begin{equation}
+    \Delta t = \int_{path} \left( \frac{1}{v(r)} - \frac{1}{c} \right) dl \approx \frac{4GM}{c^3} \ln \left( \frac{4x_e x_p}{b^2} \right)
+\end{equation}
+The VSI refractive model naturally predicts the Shapiro delay as a "thickening" of the vacuum dielectric.
+
+\subsubsection{Theorem B: Matter Falls via Inductive Gradient (Large Signal)}
+A matter particle ($U \approx U_{sat}$) saturates the local dielectric, clamping $\epsilon \to \epsilon_{sat}$. The particle energy is defined by the resonant cavity equation:
+\begin{equation}
+    E_{mass}(r) = \frac{\hbar}{\sqrt{\mu_{vac}(r) \epsilon_{sat}}} = E_0 \left( 1 + \frac{2GM}{rc^2} \right)^{-1/2}
+\end{equation}
+Using the weak-field approximation, the gravitational force is the gradient of the potential energy:
+\begin{equation}
+    F = -\nabla E_{mass} = -\frac{GMm}{r^2}
+\end{equation}
+
+\paragraph{Note on the Equivalence Principle:}
+A critical reader might ask: does the saturation limit depend on material composition? In the VSI framework, nucleons are identical topological knots (Borromean Rings). Saturation occurs at the \textit{nodal} level ($l_P$). Since all stable matter excites the same vacuum substrate, the saturation per unit of energy (mass) is universal, preserving the Weak Equivalence Principle.
+
+\subsection{Derivation of Inertia and Mass Equivalence}
+\paragraph{Mass as Resonant Energy}
+A particle is a soliton oscillating at the Compton frequency $\omega_c$. Its rest mass is derived from the stored energy in the lattice:
+\begin{equation}
+    m_{res} = \frac{\hbar \omega_c}{c^2}
+\end{equation}
+
+\paragraph{Inertia as Back-EMF}
+Accelerating the soliton induces a change in flux current $J_\phi$. The lattice opposes this via Back-EMF ($\mathcal{E} = -L \dot{J}$):
+\begin{equation}
+    F_{inertial} = - (q^2 \mu_{eff}) \vec{a}
+\end{equation}
+\textbf{The Soliton Identity:} For the theory to hold, the inductive coupling must equal the resonant energy mass ($m_{inertial} \equiv m_{res}$). This ensures $F=ma$.
+
+\subsection{Micro-Topology: The Origin of Parameters}
+
+\subsubsection{The Topological Definition of Charge ($q$)}
+We define the "Natural Charge" ($q_{nat}$) of the lattice as the maximum flux circulation capable of being supported by a single node before dielectric breakdown (The Planck Charge equivalent).
+\begin{equation}
+    q_{nat} \equiv \sqrt{4\pi \epsilon_0 \hbar c} \approx 1.875 \times 10^{-18} \, \text{C}
+\end{equation}
+
+The observed elementary charge $e$ is a fraction of this potential, scaled by the geometric coupling efficiency ($\alpha$) of the topological knot:
+\begin{equation}
+    e = q_{nat} \sqrt{\alpha_{geo}} \implies \alpha_{geo} = \frac{e^2}{4\pi \epsilon_0 \hbar c} \approx \frac{1}{137}
+\end{equation}
+This removes the ambiguity: $\alpha$ is strictly the geometric transmission coefficient between the knot topology and the free lattice.

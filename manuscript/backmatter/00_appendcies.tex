@@ -1,0 +1,67 @@
+\appendix
+\chapter{Mathematical Proofs and Formalism}
+\label{app:proofs}
+
+\section{The Discrete-to-Continuum Limit (Kirchhoff)}
+We rigorously show that as the Lattice Pitch $\lp \to 0$, the discrete difference equations of the mesh converge to the continuous differential equations of Maxwell.
+
+\begin{theorem}
+    The Kirchhoff Current Law (KCL) for a node $n$ in the limit of $N \to \infty$ recovers the Continuity Equation:
+    \begin{equation}
+        \sum_{i} I_{n,i} = 0 \implies \nabla \cdot \mathbf{J} + \frac{\partial \rho}{\partial t} = 0
+    \end{equation}
+\end{theorem}
+
+\section{The Madelung Internal Pressure (Q)}
+The "Quantum Potential" $Q$ found in the Bohmian formulation is identified here as the **Internal Stress** of the lattice fluid.
+\begin{equation}
+    Q = -\frac{\hbar^2}{2m} \frac{\nabla^2 \sqrt{\rho}}{\sqrt{\rho}} \equiv \text{Lattice Tension}
+\end{equation}
+
+\chapter{Simulation Manifest and Codebase}
+\label{app:code}
+
+The following Python modules constitute the core of the Vacuum Engineering simulation suite (VSS).
+
+\section{Core Code: Metric Lensing}
+\begin{lstlisting}[language=Python, caption=Calculating Refractive Index from Mass]
+def calculate_refractive_index(r, M):
+    """
+    Returns the vacuum refractive index n(r) based on
+    Lattice Stress saturation near a mass M.
+    """
+    G = 6.674e-11
+    c = 2.998e8
+    
+    # Gravitational Potential
+    phi = -G * M / r
+    
+    # Refractive Index (Stress Equation 5.1)
+    n = 1 - (2 * phi / c**2)
+    return n
+\end{lstlisting}
+
+\chapter{The Rosetta Stone}
+\label{app:rosetta}
+
+\section{Mapping Table}
+This table translates the abstract terminology of the Standard Model into the hardware specifications of Applied Vacuum Engineering.
+
+\begin{table}[h]
+    \centering
+    \begin{tabularx}{\textwidth}{@{}l|X@{}}
+        \toprule
+        \textbf{Standard Physics Term} & \textbf{Vacuum Engineering Hardware Spec} \\
+        \midrule
+        Curvature of Spacetime & Refractive Gradient of Lattice Density ($\nabla n$) \\
+        Speed of Light ($c$) & Global Slew Rate ($1/\sqrt{\mu_0 \epsilon_0}$) \\
+        Mass ($m$) & Stored Inductive Energy of a Knot ($E_L$) \\
+        Electric Charge ($q$) & Topological Winding Number ($N$) \\
+        Gravitational Lensing & Dielectric Refraction (Snell's Law) \\
+        Heisenberg Uncertainty & Nyquist Sampling Limit ($\Delta x < \lp$) \\
+        The Big Bang & Lattice Crystallization Phase Transition \\
+        Dark Matter & Viscosity of the Vacuum ($\eta_{vac}$) \\
+        \bottomrule
+    \end{tabularx}
+    \caption{The Dictionary of Reality}
+\end{table}

@@ -1,0 +1,16 @@
+\section{Hardware Quantization: Spin and Uncertainty}
+\label{sec:quantization}
+
+\subsection{Topological Helicity as Quantized Spin}
+The fundamental unit of quantum interaction is \textbf{Topological Helicity} ($h$). Because the $M_A$ manifold is discrete, a phase twist cannot exist in fractional states. It must satisfy the \textbf{Integer Winding Condition}:
+\begin{equation}
+    \oint \nabla \theta \cdot dl = 2\pi h, \quad h \in \mathbb{Z}
+\end{equation}
+This hardware constraint is the mechanical origin of quantized angular momentum (Spin). A particle cannot have "1.5" twists; it must be an integer, or the lattice topology would tear.
+
+\subsection{The Nyquist-Heisenberg Resolution}
+The Heisenberg Uncertainty Principle is redefined as the \textbf{Hardware Resolution Limit} of the manifold.
+\begin{equation}
+    \Delta x \cdot \Delta p \ge \frac{\hbar}{2} \equiv \text{Nyquist Noise of } M_{A}
+\end{equation}
+Since no information can be encoded at a scale smaller than the Lattice Pitch ($l_P$) or a frequency higher than the Saturation Frequency ($\omega_{sat}$), simultaneous measurements of position and momentum are subject to quantization noise. "Uncertainty" is simply the aliasing artifact of attempting to measure a discrete lattice as if it were a continuum.

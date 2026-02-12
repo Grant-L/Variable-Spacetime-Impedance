@@ -1,0 +1,34 @@
+\section{Simulation: The Measurement Collapse Mechanism}
+\label{sec:double_slit}
+
+The "Measurement Problem" describes the destruction of interference patterns when a particle's path is observed. In standard theory, this is treated as a metaphysical "Collapse of the Wavefunction."
+
+In the VSI framework, Measurement is a mechanical event: the coupling of a \textbf{Detector Impedance} to the lattice.
+
+\subsection{The Lattice Memory Effect}
+As a particle (soliton) traverses the lattice, it induces a phase oscillation in the surrounding nodes (the Pilot Wave).
+\begin{itemize}
+    \item \textbf{Unobserved (High Impedance):} If the slits are passive voids, the phase information propagates coherently. The lattice "remembers" both paths ($U_{1} + U_{2}$), and the particle is guided by the interference gradient of its own wake.
+    \item \textbf{Observed (Low Impedance):} A detector is not a passive observer; it is an active load. To register a "click," the detector must drain energy from the node.
+\end{itemize}
+
+\subsection{Detector Noise Injection}
+We model the detector as a \textbf{Stochastic Noise Source}. By coupling to the lattice at the slit, the detector injects random phase fluctuations ($\delta \phi_{noise}$) into the node's update cycle.
+
+\begin{equation}
+    \Psi_{total} = \Psi_{1} e^{i(\phi + \delta \phi_{noise})} + \Psi_{2}
+\end{equation}
+
+Because $\delta \phi_{noise}$ is random for each particle (uncorrelated), the time-averaged interference term vanishes:
+\begin{equation}
+    \langle I \rangle \propto \langle |\Psi_1 + \Psi_2|^2 \rangle \approx |\Psi_1|^2 + |\Psi_2|^2
+\end{equation}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1.0\textwidth]{assets/sim_outputs/double_slit_result.png}
+    \caption{\textbf{Measurement Collapse Simulation:} (Top) Without a detector, the lattice maintains phase coherence, guiding particles into interference fringes. (Bottom) An active detector at the slit injects Impedance Noise, scrambling the local phase. The lattice loses its "memory" of the path, and the particles impact the screen in ballistic (classical) clumps.}
+    \label{fig:double_slit}
+\end{figure}
+
+\textbf{Conclusion:} "Collapse" is not a decision made by the observer. It is the \textbf{decoherence of lattice memory} caused by the active impedance of the probe. We do not "collapse" the wave; we scramble it.

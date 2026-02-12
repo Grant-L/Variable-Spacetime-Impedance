@@ -1,0 +1,34 @@
+\chapter{Mathematical Proofs and Formalism}
+\label{app:math_proofs}
+
+\section{A.1 The Discrete-to-Continuum Limit (Kirchhoff)}
+To bridge the gap between electrical engineering and field theory, we derive the wave equation from the discrete nodal balance.
+The nodal current balance at node $n$ is defined by Kirchhoff's Current Law:
+\begin{equation}
+    C_{node} \frac{dV_n}{dt} = I_n - I_{n+1}
+\end{equation}
+Differentiating with respect to time and substituting the inductive voltage relation $L_{node} \frac{dI}{dt} = V_{n-1} - V_n$, we obtain the discrete equation of motion:
+\begin{equation}
+    L_{node}C_{node} \frac{d^2 V_n}{dt^2} = V_{n-1} - 2V_n + V_{n+1}
+\end{equation}
+In the continuum limit ($\Delta x \to 0$), this recovers the Wave Equation with a slew rate limit $c = 1/\sqrt{L_{node}C_{node}}$.
+
+\section{A.2 The Gravitational Bootstrap (Deriving G)}
+Standard physics requires $G$ as an input. VSI derives it as the \textbf{Yield Compliance} of the lattice.
+\begin{enumerate}
+    \item \textbf{Max Energy:} The max energy a node can store is $E_{max} = \hbar (c/l_P)$.
+    \item \textbf{Max Force:} The max force (Yield Strength) is $F_{yield} = E_{max} / l_P = \hbar c / l_P^2$.
+    \item \textbf{Identification:} In General Relativity, the "stiffness" of spacetime is $c^4/G$. Equating $F_{yield} = c^4/G$:
+    \begin{equation}
+        \frac{\hbar c}{l_P^2} = \frac{c^4}{G} \implies G = \frac{c^3 l_P^2}{\hbar}
+    \end{equation}
+\end{enumerate}
+This proves that $G$ is not arbitrary; it is the inverse stiffness of a lattice with pitch $l_P$.
+
+\section{A.3 Impedance Clamping (The Weak Interaction)}
+For a helical pulse with winding number $h$ propagating against a vacuum bias $\mathbf{\Omega}_{vac}$, the effective impedance diverges:
+\begin{equation}
+    Z_{eff}(h) = Z_0 \cdot \frac{1}{1 - \eta (h \cdot \mathbf{\Omega}_{vac})}
+\end{equation}
+If $h$ and $\mathbf{\Omega}_{vac}$ are aligned ($h=-1$), $Z \approx Z_0$ (Allowed).
+If they are opposed ($h=+1$), the denominator approaches zero, causing $Z \to \infty$ (Clamped).

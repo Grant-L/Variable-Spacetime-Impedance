@@ -1,0 +1,23 @@
+\subsection{Simulation: Resolution of the Galactic Rotation Anomaly}
+To verify the Inductive Saturation hypothesis, we modeled the orbital velocity of a test mass in a galactic potential using the \texttt{GalaxyRotationSim} physics engine.
+
+We calibrated the Lattice Relaxation Threshold ($a_{0}$) to the standard acceleration scale ($a_{0} \approx 1.2 \times 10^{-10} m/s^2$). The effective acceleration $a_{VSI}$ is given by the Inductive Gain formula:
+
+\begin{equation}
+    a_{VSI} = a_{Newton} \cdot \sqrt{1 + \frac{a_0}{a_{Newton}}}
+\end{equation}
+
+\subsubsection{Results}
+As shown in Figure \ref{fig:rotation_curve}, the VSI model (Blue Line) naturally recovers the flat rotation curve observed in spiral galaxies.
+
+\begin{itemize}
+    \item \textbf{Inner Galaxy ($a \gg a_{0}$):} The inductive gain is near unity ($\Omega \approx 1$). The curve matches the Newtonian prediction.
+    \item \textbf{Outer Galaxy ($a \ll a_{0}$):} The vacuum "relaxes," increasing the effective inductance. This boosts the gravitational coupling, maintaining a constant orbital velocity of \textbf{$v \approx 120$ km/s}, matching the specific profile of dwarf spiral galaxies (e.g., NGC 6503) without requiring non-baryonic mass.
+\end{itemize}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1.0\textwidth]{assets/sim_outputs/galaxy_rotation_v3.png}
+    \caption{\textbf{Galactic Rotation Anomaly Resolution.} The VSI Inductive Saturation model (Blue) successfully reproduces the flat rotation curve. The dashed line shows the failed Newtonian prediction. The model matches the observational plateau at $\approx 120$ km/s.}
+    \label{fig:rotation_curve}
+\end{figure}

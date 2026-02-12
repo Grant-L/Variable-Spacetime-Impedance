@@ -1,0 +1,85 @@
+\section{Experimental Proposal: The Rotational Lattice Viscosity Experiment (RLVE)}
+
+\subsection{Abstract}
+The Stochastic Vacuum Framework (VSI) posits that the vacuum is not a geometric abstraction but a constitutive hardware substrate ($M_A$) with finite saturation limits. We propose a laboratory test to detect the \textbf{Lattice Viscosity} ($\eta_{vac}$) of this substrate. By rapidly rotating a high-density Tungsten mass adjacent to a high-finesse Fabry-Perot interferometer, we aim to induce a localized saturation of the vacuum dielectric, creating a measurable refractive index shift ($\Delta n$).
+
+\subsection{Theoretical Derivation: The Viscous Drag Effect}
+In standard General Relativity, the coupling of angular momentum to spacetime (Frame Dragging) is governed by the gravitational constant $G$, resulting in effects too small for laboratory detection ($\Delta \phi \approx 10^{-20}$ rad).
+
+However, in VSI, mass is defined as a Saturation of the Vacuum Dielectric ($n(r)$). A rotating mass does not merely curve geometry; it mechanically "drags" and "thickens" the lattice flux, increasing the local refractive index.
+
+\subsubsection{The Lattice Viscosity Coefficient ($\eta_{vac}$)}
+We propose that the coupling strength of this drag is determined not by $G$, but by the Geometric Transmission Coefficient ($\alpha$), commonly known as the Fine Structure Constant. As derived in Section 2.7.2, $\alpha$ represents the efficiency with which topological stress couples to the vacuum flux.
+\begin{equation}
+    \eta_{vac} \equiv \alpha \approx \frac{1}{137.036}
+\end{equation}
+
+\subsubsection{The Refractive Index Shift ($\Delta n$)}
+The rotational kinetic energy of the flywheel creates a localized impedance spike. The magnitude of the refractive index increase is modeled as the viscous coupling of the tangential velocity ($v_{tan}$) relative to the global slew rate ($c$):
+\begin{equation}
+    \Delta n = \eta_{vac} \cdot \left(\frac{v_{tan}}{c}\right)^2 = \alpha \left(\frac{\omega R}{c}\right)^2
+\end{equation}
+
+\subsection{8.6.4 Simulation: Signal Prediction (Density Dependent)}
+To verify the experimental feasibility, we modeled the expected phase shift for both the primary (Tungsten) and control (Aluminum) rotors using the \texttt{RLVE\_Prediction\_v2} engine.
+
+The simulation incorporates the Density Scaling Factor $(\rho / \rho_{sat})$ derived in Section 8.6.2. The parameters assume a 20 cm interaction length $(L)$ and a cavity finesse of $\mathcal{F}=10,000$.
+
+\textbf{Results (Figure 8.2):}
+\begin{itemize}
+    \item \textbf{Tungsten Signal $(\rho \approx 19.3)$:} The model predicts a quadratic rise in phase shift, reaching $\Delta \phi \approx 0.72$ milli-radians at 100,000 RPM. This is well above the noise floor of modern interferometry $(\sim 10^{-6}$ rad).
+    \item \textbf{Aluminum Control $(\rho \approx 2.7)$:} The signal drops to $\approx 0.10$ milli-radians. This 7.1x reduction provides a robust "fingerprint" to distinguish the VSI effect from aerodynamic turbulence, which depends on geometry rather than mass.
+\end{itemize}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\linewidth]{assets/sim_outputs/rlve_prediction_v2.png}
+    \caption{\textbf{RLVE Signal Prediction.} The simulation confirms that the VSI effect is density-dependent. The Tungsten rotor (Orange) generates a strong 0.72 mrad signal, while the Aluminum control (Green) yields a suppressed signal. General Relativity (Black Dashed) predicts a null result at this scale.}
+    \label{fig:rlve_prediction}
+\end{figure}
+
+\textbf{Parameters:}
+\begin{itemize}
+    \item \textbf{Modulator:} Tungsten Flywheel (Radius $R=0.1$ m, Density $\rho \approx 19.25$ g/cm$^3$).
+    \item \textbf{Rotation Speed:} Target $\omega = 10,472$ rad/s (100,000 RPM).
+    \item \textbf{Laser Source:} $\lambda = 1550$ nm (Infrared).
+    \item \textbf{Interaction Length:} $L = 0.2$ m (Path parallel to rim).
+    \item \textbf{Cavity Finesse:} $\mathcal{F} = 10,000$ (Effective bounces).
+\end{itemize}
+
+\subsubsection{Phase Shift Calculation ($\Delta \phi$)}
+The single-pass phase shift is given by:
+\begin{equation}
+    \delta \phi_{single} = \frac{2\pi L}{\lambda} \Delta n
+\end{equation}
+The total amplified shift in the resonant cavity is:
+\begin{equation}
+    \Delta \phi_{total} \approx \mathcal{F} \cdot \delta \phi_{single} = \mathcal{F} \frac{2\pi L}{\lambda} \left[ \alpha \left(\frac{\omega R}{c}\right)^2 \right]
+\end{equation}
+
+\subsubsection{Experimental Controls and Systematics}
+To distinguish the Vacuum Viscosity signal ($\Delta n$) from environmental noise (vibration, acoustics), we propose three specific control protocols:
+
+\textbf{1. The Counter-Rotation Null (Symmetry Test)}
+The VSI effect depends on $v^2$ (scalar energy density) and is strictly positive.
+\begin{itemize}
+    \item \textbf{Protocol:} Reverse rotor direction ($+\omega \to -\omega$).
+    \item \textbf{Prediction:} Signal remains constant ($v^2$ is invariant).
+    \item \textbf{Differentiation:} Mechanical resonances often depend on phase/direction. A signal that flips sign is an artifact.
+\end{itemize}
+
+\textbf{2. The "Dummy Mass" Null (Density Test)}
+The effect scales with mass density ($\rho_{tungsten} \approx 19.3$).
+\begin{itemize}
+    \item \textbf{Protocol:} Replace Tungsten with Aluminum ($\rho \approx 2.7$) at identical RPM.
+    \item \textbf{Prediction:} Signal drops by factor of $\approx 7.1$.
+    \item \textbf{Differentiation:} Aerodynamic noise depends on geometry, not density. A signal that persists is air turbulence.
+\end{itemize}
+
+\textbf{3. The Geometric Offset (Range Test)}
+\begin{itemize}
+    \item \textbf{Protocol:} Shift optical path laterally by $d=5$ cm.
+    \item \textbf{Prediction:} Signal extinction (local evanescent drag).
+    \item \textbf{Differentiation:} Acoustic vibrations travel through the table. A signal that persists at distance is vibrational noise.
+\end{itemize}
+

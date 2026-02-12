@@ -1,0 +1,29 @@
+\section{Engineering Implications: Metric Drag Reduction}
+\label{sec:drag_reduction}
+
+If the vacuum behaves as a viscous fluid ($Re_{vac} < \infty$), then any object moving through it experiences **Inductive Drag**. To reach relativistic speeds without infinite energy cost, we must apply the principles of Vacuum Hydrodynamics.
+
+\subsection{The Inductive Drag Coefficient ($C_d$)}
+Standard relativity treats inertia as an immutable scalar ($m$). VCFD reveals it as a drag force dependent on geometry:
+\begin{equation}
+    F_{drag} = \frac{1}{2} \rho_{vac} v^2 C_d A_{cross}
+\end{equation}
+Where $C_d$ is the Metric Drag Coefficient.
+\begin{itemize}
+    \item \textbf{Blunt Bodies (High $C_d$):} A standard mass (proton/sphere) creates a large turbulent wake (Back-EMF), maximizing inertia.
+    \item \textbf{Streamlined Bodies (Low $C_d$):} A hull shaped to guide vacuum flux around it laminarly can reduce its effective mass.
+\end{itemize}
+
+\subsection{Active Flow Control: The Metric "Dimple"}
+Just as golf balls use dimples to energize the boundary layer and reduce wake separation, a relativistic vessel can use **Metric Actuators**.
+\begin{itemize}
+    \item \textbf{Mechanism:} High-frequency toroidal emitters ($\omega \gg \omega_{plasma}$) placed at the leading edge can "pre-stress" the vacuum, lowering the local viscosity.
+    \item \textbf{Result:} The vacuum fluid adheres to the hull surface (Laminar Flow) rather than separating into a turbulent wake. This effectively "lubricates" the spacetime trajectory, reducing the inertial mass of the vessel.
+\end{itemize}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1.0\textwidth]{assets/sim_outputs/metric_streamlining_cfd.png}
+    \caption{\textbf{Vacuum Aerodynamics.} Comparison of vacuum flow around a standard mass (Top) vs a Metrically Streamlined hull (Bottom). The blunt body creates a chaotic wake of gravitational turbulence (high inertia). The streamlined body maintains laminar flow, minimizing Inductive Drag.}
+    \label{fig:metric_streamlining}
+\end{figure}

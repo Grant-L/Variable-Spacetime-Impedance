@@ -1,9 +1,10 @@
-% --- Global SVF Constants ---
-\providecommand{\Lvac}{L_{node}}       % Lattice Inductance
-\providecommand{\Cvac}{C_{node}}       % Lattice Capacitance
-\providecommand{\Zvac}{Z_0}            % Characteristic Impedance
-\providecommand{\Wcut}{\omega_{sat}}   % Saturation Frequency
-\providecommand{\lp}{l_P}              % Lattice Pitch (Planck Length)
+% --- Global Hardware Constants ---
+% We use \ensuremath to allow these to be used in text or math mode safely.
+\providecommand{\Lvac}{\ensuremath{L_{node}}}       % Lattice Inductance
+\providecommand{\Cvac}{\ensuremath{C_{node}}}       % Lattice Capacitance
+\providecommand{\Zvac}{\ensuremath{Z_0}}            % Characteristic Impedance
+\providecommand{\Wcut}{\ensuremath{\omega_{sat}}}   % Saturation Frequency
+\providecommand{\lp}{\ensuremath{l_P}}              % Lattice Pitch (Planck Length)
 
 % --- Citation Commands ---
 \newcommand{\citestart}{}              
@@ -15,16 +16,13 @@
 \newtheorem{lemma}[theorem]{Lemma}
 
 % --- Custom Boxes ---
-
-% 1. Axiom Box: Gold/Blue for fundamental SVF postulates
 \newtcolorbox{axiombox}[1][]{
     colback=blue!2!white, colframe=blue!75!black, fonttitle=\bfseries,
-    title=SVF Postulate: #1, enhanced, breakable, attach title to upper, 
+    title=Vacuum Engineering Postulate: #1, enhanced, breakable, attach title to upper, 
     after title={:\enskip}, arc=0mm
 }
 \newenvironment{axiom}[1][]{\begin{axiombox}[#1]}{\end{axiombox}}
 
-% 2. Simulation Environment: Green for Module Results
 \newtcolorbox[auto counter, number within=chapter]{simbox}[1][]{
     colback=green!5!white, colframe=green!50!black, fonttitle=\bfseries,
     title=Computational Module \thetcbcounter: #1, enhanced, breakable

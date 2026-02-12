@@ -1,0 +1,21 @@
+
+\section{Quantization as Bandwidth: The Nyquist Limit}
+\label{sec:quantization_noise}
+
+Standard Quantum Mechanics posits that energy is quantized in discrete packets ($E = h\nu$). In VSI, this is not a magical property of light, but a **Bandwidth Constraint** of the discrete receiver.
+
+\subsection{The Discrete Sampling Theorem}
+Since the vacuum is a discrete graph with pitch $l_P$, it behaves as a digital sampling system. The Shannon-Nyquist theorem states that a discrete grid cannot support a frequency higher than half its sampling rate.
+
+\begin{equation}
+    \nu_{max} = \frac{c}{2 l_P} \approx \frac{1}{2 t_{tick}}
+\end{equation}
+
+\subsection{Re-Deriving Heisenberg Uncertainty}
+The Heisenberg Uncertainty Principle ($\Delta x \Delta p \ge \hbar/2$) is often interpreted as a fundamental limit on knowledge. In Signal Dynamics, it is re-derived as **Aliasing Noise**.
+\begin{itemize}
+    \item \textbf{Position ($\Delta x$):} Limited by the pixel size of the universe ($l_P$).
+    \item \textbf{Momentum ($\Delta p$):} Limited by the maximum slew rate of the node ($mc$).
+\end{itemize}
+Trying to measure a particle's position with precision $\Delta x < l_P$ is physically impossible because there are no nodes between the lattice points to store that information. "Uncertainty" is simply the quantization error of the vacuum hardware.
+

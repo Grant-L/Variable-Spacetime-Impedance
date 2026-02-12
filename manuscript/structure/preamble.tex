@@ -1,45 +1,31 @@
-% --- Core Packages ---
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{lmodern}                            % Modern Latin Font
-\usepackage[margin=1in]{geometry}               % Standard margins
-\usepackage{amsmath, amssymb, amsfonts, amsthm} % Essential Math
-\usepackage{bm}                                 % Bold Greek for Tensors
-\usepackage{siunitx}                            % For Z_0, L, and C values
-\usepackage{graphicx}                           % For simulation PNGs
-\usepackage{listings}                           % For code blocks
-\usepackage{xcolor}                             % Required for color styling
-\usepackage{tabularx}                           % For margin-safe tables
-\usepackage{booktabs}                           % Professional tables
+% --- Global Hardware Constants ---
+\providecommand{\Lvac}{L_{node}}       % Lattice Inductance
+\providecommand{\Cvac}{C_{node}}       % Lattice Capacitance
+\providecommand{\Zvac}{Z_0}            % Characteristic Impedance
+\providecommand{\Wcut}{\omega_{sat}}   % Saturation Frequency
+\providecommand{\lp}{l_P}              % Lattice Pitch (Planck Length)
 
-% --- Styling Containers (The Boxes) ---
-\usepackage{tcolorbox}
-\tcbuselibrary{skins, breakable}
+% --- Citation Commands ---
+\newcommand{\citestart}{}              
+\newcommand{\citeend}{}                
 
-% --- Interaction Packages (Order Critical) ---
-\usepackage{hyperref}                           % Clickable links (Must be before cleveref)
-\usepackage{cleveref}                           % Intelligent cross-referencing (Must be last)
+% --- Theorem-like Environments (amsthm) ---
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{lemma}[theorem]{Lemma}
 
-% --- Hyperlink Setup ---
-\hypersetup{
-    colorlinks=true,
-    linkcolor=blue!50!black,
-    citecolor=green!50!black,
-    urlcolor=red!50!black
+% --- Custom Boxes ---
+
+% 1. Axiom Box: Gold/Blue for fundamental Vacuum Engineering postulates
+\newtcolorbox{axiombox}[1][]{
+    colback=blue!2!white, colframe=blue!75!black, fonttitle=\bfseries,
+    title=Vacuum Engineering Postulate: #1, enhanced, breakable, attach title to upper, 
+    after title={:\enskip}, arc=0mm
 }
+\newenvironment{axiom}[1][]{\begin{axiombox}[#1]}{\end{axiombox}}
 
-% --- Code Block Styling ---
-\lstset{
-    language=Python,
-    basicstyle=\ttfamily\small,
-    keywordstyle=\color{blue}\bfseries,
-    stringstyle=\color{green!50!black},
-    commentstyle=\color{gray}\itshape,
-    numbers=left,
-    numberstyle=\tiny\color{gray},
-    stepnumber=1,
-    frame=single,
-    breaklines=true,
-    captionpos=b,
-    showstringspaces=false
+% 2. Simulation Environment: Green for Module Results
+\newtcolorbox[auto counter, number within=chapter]{simbox}[1][]{
+    colback=green!5!white, colframe=green!50!black, fonttitle=\bfseries,
+    title=Computational Module \thetcbcounter: #1, enhanced, breakable
 }

@@ -1,0 +1,50 @@
+\documentclass[11pt, letterpaper, oneside]{book}
+
+% 1. Load Structure
+\input{manuscript/structure/preamble}
+\input{manuscript/structure/commands}
+
+\begin{document}
+
+% 2. Front Matter
+\frontmatter
+\input{manuscript/structure/titlepage}
+\input{manuscript/frontmatter/00_preface}
+% \input{manuscript/frontmatter/glossary}
+\tableofcontents
+
+% 3. Main Content
+\mainmatter
+
+% Part 0: Core Theory
+\input{manuscript/chapters/00_core/_manifest}
+
+% Part I: The Hardware
+\part{The Hardware Layer}
+\input{manuscript/chapters/01_hardware/_manifest}
+\input{manuscript/chapters/02_signal/_manifest}
+
+% Part II: Emergence
+\part{The Quantum \& Weak Layers}
+\input{manuscript/chapters/03_quantum/_manifest}
+\input{manuscript/chapters/04_topology/_manifest}
+\input{manuscript/chapters/05_weak/_manifest}
+
+% Part III: Macroscale
+\part{Macroscale Dynamics \& Engineering}
+\input{manuscript/chapters/06_cosmic/_manifest}
+\input{manuscript/chapters/07_engineering/_manifest}
+
+% Part IV: Verification
+\part{Falsifiability}
+\input{manuscript/chapters/08_falsifiability/_manifest}
+
+% Part V: Application
+\part{Applications}
+\input{manuscript/chapters/09_Vacuum_CFD/_manifest}
+% 4. Back Matter
+\backmatter
+\bibliographystyle{plain}
+\bibliography{manuscript/bibliography}
+
+\end{document}
