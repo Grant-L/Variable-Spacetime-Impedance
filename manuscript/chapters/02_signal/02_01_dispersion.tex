@@ -33,11 +33,19 @@ A fundamental question in field theory is why light travels in straight lines (g
 \subsubsection{The "Drill Bit" Mechanism}
 In the VSI framework, a photon is not a passive scalar wave; it is a vector boson with intrinsic spin angular momentum $\vec{S} = \hbar$. This spin creates a "corkscrew" motion as the perturbation propagates through the lattice.
 
-Just as a spinning rifle bullet or a gyroscope resists deflection, the photon's high-frequency rotation ($\omega$) creates a stabilization torque against the lattice impedance. We define the \textbf{Stabilization Torque Density} $\vec{\tau}$ as:
+Just as a spinning rifle bullet or a gyroscope resists deflection, the photon's high-frequency rotation ($\omega$) creates a stabilization torque against the lattice impedance. We define the \textbf{Stabilization Torque Density} $\vec{\tau}$ (Joules) as:
 \begin{equation}
-    \vec{\tau}_{stabilize} = \vec{S} \times \nabla_{\perp} Z_{lattice}
+    \vec{\tau}_{stabilize} = \vec{S} \times \left( \frac{c}{Z_{lattice}} \nabla_{\perp} Z_{lattice} \right)
 \end{equation}
-Where $\nabla_{\perp} Z_{lattice}$ represents the transverse impedance gradient (dispersion noise). This torque actively suppresses transverse spreading, forcing the wave packet to "drill" a straight path through the dielectric substrate.
+
+Where:
+\begin{itemize}
+    \item $\vec{S}$ is the spin angular momentum $[J \cdot s]$.
+    \item $c/Z_{lattice}$ is the admittance-velocity factor $[m \cdot s^{-1} \cdot \Omega^{-1}]$.
+    \item $\nabla_{\perp} Z_{lattice}$ is the transverse impedance gradient $[\Omega \cdot m^{-1}]$.
+\end{itemize}
+
+Dimensional analysis confirms the product yields Torque $[J]$, validating the physical mechanism. This torque actively suppresses transverse spreading, forcing the wave packet to "drill" a straight path through the dielectric substrate.
 
 \subsubsection{Impedance Reaction and Back-Pressure}
 The interaction is not one-way. As the photon corkscrews, it exerts a forward "radiation pressure" on the lattice nodes. The lattice, possessing elasticity ($\epsilon_0$) and inertia ($\mu_0$), exerts an equal and opposite \textbf{Impedance Back-Reaction}.

@@ -32,15 +32,19 @@ We posit that the physical universe is a discrete, amorphous transmission networ
     \end{itemize}
 \end{itemize}
 
-\subsubsection{2.2 Electrodynamics: The Lagrangian of the Lattice}
-Defining the scalar potential $\phi(x,t)$ (Units: Volts), the Lagrangian Density $\mathcal{L}$ ($J/m^3$) is:
+\subsection{Electrodynamics: The Lagrangian of the Lattice}
+Defining the scalar potential $\phi(x,t)$ (Units: Volts), we construct the Lagrangian Density $\mathcal{L}$ ($J/m^3$) from the capacitive (potential) and inductive (kinetic) energy densities of the transmission line.
+
+To satisfy dimensional homogeneity, the Lagrangian is defined as:
 \begin{equation}
-\mathcal{L} = \frac{1}{2} \epsilon(U) \left( \frac{\partial \phi}{\partial t} \right)^2 - \frac{1}{2\mu(r)} (\nabla \phi)^2
+    \mathcal{L} = \frac{1}{2}\epsilon(U)(\nabla \phi)^2 - \frac{1}{2}\mu(r)\epsilon(U)^2 \left(\frac{\partial \phi}{\partial t}\right)^2
 \end{equation}
+
 Applying the Euler-Lagrange equation yields the constitutive Wave Equation:
 \begin{equation}
-\epsilon(U) \frac{\partial^2 \phi}{\partial t^2} - \nabla \cdot \left( \frac{1}{\mu(r)} \nabla \phi \right) = 0
+    \nabla \cdot (\epsilon \nabla \phi) - \mu \epsilon^2 \frac{\partial^2 \phi}{\partial t^2} = 0
 \end{equation}
+Since $c = 1/\sqrt{\mu\epsilon}$, the time term simplifies to $\frac{1}{c^2}\frac{\partial^2 \phi}{\partial t^2}$, recovering the standard wave equation.
 
 \subsubsection{2.3 The Origin of Gravity: Signal Bifurcation}
 VSI resolves the discrepancy between Newtonian and Einsteinian predictions via signal-dependent impedance.
