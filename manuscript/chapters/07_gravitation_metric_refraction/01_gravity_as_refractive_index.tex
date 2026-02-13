@@ -1,12 +1,34 @@
 \section{Gravity as Refractive Index}
-
-In General Relativity, gravity is the curvature of spacetime geometry. In AVE, it is the Refraction of Flux through a medium with variable density. 
+In General Relativity, gravity is the curvature of spacetime geometry. In AVE, it is the \textbf{Refraction of Flux} through a medium with variable density.
 
 \subsection{The Tensor Strain Field (Gordon Optical Metric)}
 If gravity were a simple scalar refractive index $n(r)$, the vacuum could only support longitudinal waves. This is falsified by the detection of transverse Gravitational Waves (LIGO).
 
-Mass does not compress the $M_A$ lattice isotropically; it exerts a directional \textit{shear stress}. We elevate the vacuum moduli from scalars to Rank-2 Symmetric Tensors ($\epsilon^{ij}$ and $\mu^{ij}$). As established by the Gordon Optical Metric, an anisotropic dielectric perfectly mimics a curved spacetime geometry:
+Mass does not compress the $M_{A}$ lattice isotropically; it exerts a directional shear stress. We elevate the vacuum moduli from scalars to \textbf{Rank-2 Symmetric Tensors} ($\epsilon^{ij}$ and $\mu^{ij}$). As established by the Gordon Optical Metric, an anisotropic dielectric perfectly mimics a curved spacetime geometry:
 \begin{equation}
-g_{\mu\nu}^{AVE} = \eta_{\mu\nu} + \left( 1 - \frac{1}{n^2(r)} \right) u_\mu u_\nu
+    g_{\mu\nu}^{AVE} = \eta_{\mu\nu} + (1 - \frac{1}{n^2(r)})u_{\mu}u_{\nu}
 \end{equation}
-By upgrading the moduli to tensors, the AVE ``Hardware Vacuum'' recovers all tensor mathematics of General Relativity. Gravity operates via \textbf{Tensor Refraction}.
+By upgrading the moduli to tensors, the AVE "Hardware Vacuum" recovers all tensor mathematics of General Relativity. Gravity operates via Tensor Refraction.
+
+\subsection{Deriving the Refractive Gradient via Green's Function}
+A skeletal critique of emergent gravity models is the origin of the $1/r$ potential. In AVE, we derive this not from assumed energy density, but from the \textbf{Linear Elasticity of a Point Defect}.
+
+We model a mass $M$ as a \textbf{Point of Dilatation} (a localized volume expansion) in the substrate. The scalar lattice strain $\chi(r)$ is governed by the Poisson equation for an elastic solid:
+\begin{equation}
+    \nabla^2 \chi(r) = -\frac{\rho_{mass}(r)}{K_{vac}}
+\end{equation}
+Where $K_{vac} \approx c^4/G$ is the Bulk Modulus of the vacuum (Inverse Compliance).
+
+\subsubsection{The Elastic Green's Function}
+For a point source $M\delta(r)$, the solution is given by the Green's Function of the 3D Laplacian:
+\begin{equation}
+    G(r, r') = -\frac{1}{4\pi |r - r'|}
+\end{equation}
+Convolving the source with the Green's function yields the scalar strain field:
+\begin{equation}
+    \chi(r) = \frac{GM}{c^2} \int \frac{\delta(r')}{|r - r'|} d^3x' = \frac{GM}{c^2 r}
+\end{equation}
+\textbf{Result:} The $1/r$ falloff is not an assumption; it is the fundamental geometric response of any 3D elastic medium to a point source. The Refractive Index $n(r)$ naturally recovers the Schwarzschild metric profile:
+\begin{equation}
+    n(r) \approx 1 + 2\chi(r) = 1 + \frac{2GM}{rc^2}
+\end{equation}
