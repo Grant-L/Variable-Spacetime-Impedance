@@ -4,8 +4,8 @@
 The "Measurement Problem" in quantum mechanics—where observation collapses the wavefunction—is treated by Copenhagen interpretation as a metaphysical event. In Vacuum Engineering, it is a simple circuit load problem.
 
 \subsection{The Observer as a Resistor}
-To measure a system, you must couple to it. Coupling extracts energy.
+To measure a system, you must couple to it. Coupling extracts energy over a measurement time interval $\Delta t$.
 \begin{equation}
-    E_{measured} = E_{system} - I^2 R_{load}
+    E_{measured} = E_{system} - \int_0^{\Delta t} I^2(t) R_{load} \, dt = E_{system} - P_{load} \Delta t
 \end{equation}
-The "Collapse" is merely the rapid damping of the pilot wave due to the sudden impedance drop introduced by the detector. The system does not "decide" to be a particle; the detector drains the wave component, leaving only the inductive core (the particle) behind.
+where $P_{load} = I^2 R_{load}$ is the power dissipated in the detector load. The "Collapse" is merely the rapid damping of the pilot wave due to the sudden impedance drop introduced by the detector. The system does not "decide" to be a particle; the detector drains the wave component, leaving only the inductive core (the particle) behind.
