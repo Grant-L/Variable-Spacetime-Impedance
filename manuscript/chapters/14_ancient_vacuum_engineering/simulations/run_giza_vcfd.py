@@ -4,6 +4,10 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.animation import FuncAnimation, PillowWriter
 import sympy as sp
 from sympy import symbols, cos, pi, atan
+import os
+
+# Get the directory where this script is located
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # ===================================================================
 # UPDATED AVE SIMULATION SUITE WITH ANIMATIONS
@@ -70,9 +74,10 @@ def animate_viscous_flow():
         return scat,
     
     ani = FuncAnimation(fig, update, frames=frames, interval=50, blit=False)
-    ani.save('viscous_flow_motion.gif', writer=PillowWriter(fps=20))
+    output_path = os.path.join(SCRIPT_DIR, 'viscous_flow_motion.gif')
+    ani.save(output_path, writer=PillowWriter(fps=20))
     plt.close()
-    print("Saved: viscous_flow_motion.gif (particles moving faster in shaft centers)")
+    print(f"Saved: {output_path} (particles moving faster in shaft centers)")
 
 # 2. Animated Helical Wave Propagation in Single Shaft
 def animate_helical_wave():
@@ -117,9 +122,10 @@ def animate_helical_wave():
         return wave,
     
     ani = FuncAnimation(fig, update, frames=100, interval=100, blit=False)
-    ani.save('helical_wave_propagation.gif', writer=PillowWriter(fps=15))
+    output_path = os.path.join(SCRIPT_DIR, 'helical_wave_propagation.gif')
+    ani.save(output_path, writer=PillowWriter(fps=15))
     plt.close()
-    print("Saved: helical_wave_propagation.gif (slowed chiral wave along shaft)")
+    print(f"Saved: {output_path} (slowed chiral wave along shaft)")
 
 # 3. Non-Linear Saturation Ramp Animation
 def animate_nonlinear_saturation():
@@ -152,9 +158,10 @@ def animate_nonlinear_saturation():
         return line,
 
     ani = FuncAnimation(fig, update, frames=150, interval=80)
-    ani.save('non_linear_saturation.gif', writer=PillowWriter(fps=15))
+    output_path = os.path.join(SCRIPT_DIR, 'non_linear_saturation.gif')
+    ani.save(output_path, writer=PillowWriter(fps=15))
     plt.close()
-    print("Saved: non_linear_saturation.gif (non-linear saturation ramp visualization)")
+    print(f"Saved: {output_path} (non-linear saturation ramp visualization)")
 
 # Run animations + statics
 if __name__ == "__main__":
