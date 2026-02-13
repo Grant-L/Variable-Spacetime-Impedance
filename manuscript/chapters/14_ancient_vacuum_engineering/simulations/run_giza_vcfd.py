@@ -105,6 +105,7 @@ def animate_helical_wave():
     wave = ax.plot_surface(X_init, Y_init, z, alpha=0.7, cmap='viridis', cstride=1, rstride=1)
     
     def update(frame):
+        nonlocal wave
         phase = 2*np.pi * frame / 50
         phi = (2*np.pi * z / wavelength - vp_ratio * phase) % (2*np.pi)
         amp = np.cos(phi)
