@@ -1,6 +1,7 @@
 This is BibTeX, Version 0.99d (TeX Live 2025)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: main.aux
+A level-1 auxiliary file: frontmatter/01_executive_summary.aux
 A level-1 auxiliary file: chapters/01_discrete_amorphous_manifold/_manifest.aux
 A level-1 auxiliary file: chapters/02_signal_dynamics/_manifest.aux
 A level-1 auxiliary file: chapters/03_fermion_sector/_manifest.aux
@@ -20,7 +21,7 @@ The style file: plain.bst
 Database file #1: bibliography.bib
 You've used 4 entries,
             2118 wiz_defined-function locations,
-            538 strings with 5126 characters,
+            539 strings with 5162 characters,
 and the built_in function-call counts, 1011 in all, are:
 = -- 97
 > -- 28
