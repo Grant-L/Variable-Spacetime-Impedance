@@ -121,6 +121,41 @@ def animate_helical_wave():
     plt.close()
     print("Saved: helical_wave_propagation.gif (slowed chiral wave along shaft)")
 
+# 3. Non-Linear Saturation Ramp Animation
+def animate_nonlinear_saturation():
+    print("\n=== Generating Non-Linear Saturation Animation (non_linear_saturation.gif) ===")
+    import numpy as np
+    import matplotlib.pyplot as plt
+    from matplotlib.animation import FuncAnimation, PillowWriter
+
+    fig, ax = plt.subplots(figsize=(10,6))
+    r = np.linspace(0, 20, 200)
+    v_base = 1 - (r/20)**2  # Linear parabolic
+
+    def velocity_profile(sat_level):
+        if sat_level < 1.0:
+            return v_base / (1 - sat_level * v_base**2)  # Non-linear softening
+        else:
+            return np.zeros_like(r)  # Breakdown "quench"
+
+    line, = ax.plot(r, v_base, lw=3, label='Linear')
+    ax.set_ylim(0, 2)
+    ax.set_xlabel('Radial position (m)')
+    ax.set_ylabel('Normalized velocity')
+    ax.legend()
+
+    def update(frame):
+        sat = frame / 100.0
+        v = velocity_profile(sat)
+        line.set_ydata(v)
+        ax.set_title(f'Non-Linear Saturation Ramp: Level {sat:.2f} (Breakdown >1.0)')
+        return line,
+
+    ani = FuncAnimation(fig, update, frames=150, interval=80)
+    ani.save('non_linear_saturation.gif', writer=PillowWriter(fps=15))
+    plt.close()
+    print("Saved: non_linear_saturation.gif (non-linear saturation ramp visualization)")
+
 # Run animations + statics
 if __name__ == "__main__":
     # Static PNGs (unchanged)
@@ -128,7 +163,9 @@ if __name__ == "__main__":
     
     animate_viscous_flow()
     animate_helical_wave()
+    animate_nonlinear_saturation()
     
     print("\nAnimations complete! GIFs show fields in motion:")
     print("- viscous_flow_motion.gif: Particle tracers with parabolic velocity (faster center)")
     print("- helical_wave_propagation.gif: Slowed rifled pulse propagating down shaft")
+    print("- non_linear_saturation.gif: Non-linear saturation ramp visualization")
