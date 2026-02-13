@@ -1,23 +1,152 @@
 \section{Theoretical Constraints on Fundamental Constants}
 
 Standard physics treats $G$ and $\hbar$ as unexplained, fundamental scalars. In the AVE framework, we propose they are strictly emergent scaling factors derived from the two fundamental hardware primitives: Lattice Pitch ($l_0$) and Vacuum Breakdown Voltage ($V_0$). We derive them here without invoking circular Planck-unit definitions.
+In particular, Planck-length identities (e.g. $l_P=\sqrt{\hbar G/c^3}$) are used only as \emph{post-hoc consistency checks} and never appear inside the derivations.
 
-\subsection{Derivation of the Planck Action ($\hbar$)}
-We derive the quantum of action as the Maximum Action Capacity of a single $M_A$ node. By the \textbf{Equipartition Theorem}, the total saturation energy ($E_{sat}$) of an LC resonant node accounts for both peak capacitive and peak inductive energy storage: $E_{sat} = 2 \times \left(\frac{1}{2} C_{node} V_0^2\right) = C_{node} V_0^2$. 
+%
+% ============================================================
+% Foundations: Independent Hardware Primitives and Derived Scales
+% ============================================================
 
-Substituting the local spatial capacitance $C_{node} \approx \epsilon_0 l_0$, and multiplying by the fundamental hardware clock cycle ($t_{tick} = l_0/c$):
-\begin{equation}
-\hbar_{AVE} \equiv E_{sat} \cdot t_{tick} = (\epsilon_0 l_0 V_0^2)\left(\frac{l_0}{c}\right) = \frac{\epsilon_0 l_0^2 V_0^2}{c}
-\end{equation}
-This is a first-principles derivation of the action quantum from classical transmission line parameters. The empirical constant $\hbar$ is not a magical property of energy; it is simply the absolute bandwidth limit of the capacitive substrate.
+\subsection{Independent Hardware Primitives and Derived Scales}
+\label{sec:foundations_primitives}
 
-\subsection{The Gravitational Constant ($G$) as Lattice Compliance}
-The Gravitational Constant is a derived measure of the lattice's Mechanical Compliance. The Yield Force $F_{yield}$ is the maximum force the lattice can transmit before displacing by one pitch ($l_0$) against the total saturation energy $E_{sat}$. Equating this to the mechanical stiffness of spacetime ($c^4/G$):
+A recurring failure mode of ``emergent constants'' models is accidental circularity:
+one introduces a parameter that is secretly defined using the very constants one claims to derive.
+To avoid this, we separate \emph{independent hardware primitives} (axioms) from
+\emph{derived scales} (consequences), and from \emph{calibration} (matching to empirically
+measured values).
+
+\subsubsection{Primitive (Axiomatic) Hardware Parameters}
+We postulate the vacuum substrate as a discrete manifold (MA) with two independent
+microphysical hardware primitives:
+\begin{enumerate}
+  \item \textbf{Lattice pitch} $l_0$ (a true microscopic length scale of the substrate).
+  \item \textbf{Breakdown voltage} $V_0$ (maximum node-to-node potential sustainable before
+        dielectric rupture / pair-production onset).
+\end{enumerate}
+No Planck-unit identities are assumed in defining $l_0$ or $V_0$.
+
+In addition, we use the \emph{measured} electromagnetic moduli $(\epsilon_0,\mu_0)$ only to
+set the low-energy continuum normalization of the substrate (i.e. the IR limit must reproduce
+standard electrodynamics). In particular,
 \begin{equation}
-\frac{c^4}{G} = \frac{E_{sat}}{l_0} \implies G = \frac{c^4 l_0}{E_{sat}}
+c \equiv \frac{1}{\sqrt{\mu_0\epsilon_0}}
+\label{eq:c_from_moduli_foundation}
 \end{equation}
-Substituting our equipartition energy $E_{sat} = \epsilon_0 l_0 V_0^2$:
+is treated as an emergent \emph{IR} propagation speed fixed by the observed moduli.
+
+\subsubsection{Geometric Reduction Factors (Order-Unity)}
+A discrete amorphous lattice requires geometric coarse-graining factors that are generically
+$\mathcal{O}(1)$ and encode coordination number / packing geometry.
+We therefore write the effective node capacitance and inductive energy partition as
 \begin{equation}
-G_{AVE} = \frac{c^4 l_0}{\epsilon_0 l_0 V_0^2} = \frac{c^4}{\epsilon_0 V_0^2}
+C_{\mathrm{node}} \equiv \kappa_C\,\epsilon_0\,l_0,
+\qquad
+E_{\mathrm{sat}} \equiv \kappa_E\,C_{\mathrm{node}}V_0^2,
+\label{eq:node_cap_energy}
 \end{equation}
-Notice that the primitive length $l_0$ cancels out entirely. Gravity is mechanically defined: a ``stiffer'' vacuum dielectric (higher $V_0$) results in a weaker macroscopic gravitational coupling $G$. This permanently removes $G$ and $\hbar$ as free parameters, reducing them to emergent engineering limits.
+where $\kappa_C,\kappa_E\sim \mathcal{O}(1)$ absorb non-universal microscopic geometry.
+(For a simple LC node with equipartition between electric and magnetic storage,
+$\kappa_E=1$ is a natural starting point.)
+
+We also define the fundamental substrate clock (update time) as
+\begin{equation}
+t_{\mathrm{tick}} \equiv \frac{l_0}{c}.
+\label{eq:tick_time}
+\end{equation}
+This is not a relativistic axiom; it is the microscopic update time of a discretized manifold.
+
+\subsubsection{Derived Action Scale (Quantum of Action)}
+We define the maximum \emph{action capacity} of a single node as
+\begin{equation}
+\hbar_{\mathrm{AVE}} \;\equiv\; E_{\mathrm{sat}}\,t_{\mathrm{tick}}
+\;=\;(\kappa_E\,C_{\mathrm{node}}V_0^2)\left(\frac{l_0}{c}\right)
+\;=\;\frac{\kappa_E\kappa_C\,\epsilon_0\,l_0^2\,V_0^2}{c}.
+\label{eq:hbar_ave_noncircular}
+\end{equation}
+Equation \eqref{eq:hbar_ave_noncircular} is a \emph{non-circular} derived relationship:
+it depends only on the primitives $(l_0,V_0)$, the observed IR modulus $\epsilon_0$,
+and an $\mathcal{O}(1)$ geometric factor.
+
+\paragraph{Calibration vs. derivation.}
+If one \emph{chooses} $(l_0,V_0,\kappa_C\kappa_E)$ such that
+$\hbar_{\mathrm{AVE}}$ matches the empirical $\hbar$, then the model has successfully
+\emph{calibrated} its microscopic limits to the observed quantum of action.
+This is not a tautology: no Planck identity is used to enforce the result.
+It is a falsifiable constraint on the product $\kappa_C\kappa_E\,l_0^2V_0^2$.
+
+\subsubsection{Derived Gravitational Coupling as Mechanical Compliance}
+We next define a mechanical stiffness scale from the statement:
+``the maximum transmissible mechanical work per lattice pitch is $E_{\mathrm{sat}}$''.
+This implies a yield force scale
+\begin{equation}
+F_{\mathrm{yield}} \equiv \frac{E_{\mathrm{sat}}}{l_0}.
+\label{eq:yield_force_def}
+\end{equation}
+To connect this to macroscopic gravity, we introduce a \emph{definition} of the substrate
+stiffness-to-curvature conversion by equating a universal stiffness scale to the familiar GR
+combination $c^4/G$:
+\begin{equation}
+\frac{c^4}{G_{\mathrm{AVE}}} \;\equiv\; \kappa_G\,F_{\mathrm{yield}}
+\;=\;\kappa_G\,\frac{E_{\mathrm{sat}}}{l_0}.
+\label{eq:G_def_compliance}
+\end{equation}
+Here $\kappa_G\sim\mathcal{O}(1)$ is a coarse-graining factor encoding how microscopic yield
+translates to macroscopic curvature response.
+
+Using \eqref{eq:node_cap_energy} yields
+\begin{equation}
+G_{\mathrm{AVE}}
+=\frac{c^4\,l_0}{\kappa_G\,E_{\mathrm{sat}}}
+=\frac{c^4\,l_0}{\kappa_G\,\kappa_E\,C_{\mathrm{node}}V_0^2}
+=\frac{c^4}{\kappa_G\kappa_E\kappa_C\,\epsilon_0\,V_0^2}.
+\label{eq:G_ave_noncircular}
+\end{equation}
+Crucially, $l_0$ cancels: in this model, the \emph{macroscopic} gravitational coupling is set
+primarily by the dielectric hardness scale $V_0$ (up to $\mathcal{O}(1)$ geometry factors).
+
+\paragraph{Interpretation.}
+A stiffer vacuum dielectric (larger $V_0$) produces a smaller $G_{\mathrm{AVE}}$.
+Gravity is thus recast as a mechanical compliance parameter of the hardware layer,
+not a primary scalar.
+
+\subsubsection{Consistency Checks (Not Inputs)}
+Once \eqref{eq:hbar_ave_noncircular} and \eqref{eq:G_ave_noncircular} are established,
+one may \emph{define} derived Planck units as consistency checks:
+\begin{equation}
+l_P^{(\mathrm{derived})} \equiv \sqrt{\frac{\hbar_{\mathrm{AVE}}G_{\mathrm{AVE}}}{c^3}},
+\qquad
+E_P^{(\mathrm{derived})}\equiv \sqrt{\frac{\hbar_{\mathrm{AVE}}c^5}{G_{\mathrm{AVE}}}},
+\end{equation}
+but these are \emph{outputs} of the model. They are never used as inputs to the derivation.
+
+\subsubsection{Parameter Counting and Falsifiability}
+This framework makes explicit what must be fixed (or measured) and what is predicted:
+\begin{itemize}
+  \item Independent primitives: $(l_0,V_0)$ plus $\mathcal{O}(1)$ geometry factors
+        $(\kappa_C,\kappa_E,\kappa_G)$.
+  \item Derived: $\hbar_{\mathrm{AVE}}$ and $G_{\mathrm{AVE}}$ via
+        \eqref{eq:hbar_ave_noncircular} and \eqref{eq:G_ave_noncircular}.
+  \item Calibration constraints: matching empirical $(\hbar,G)$ restricts combinations of
+        $(l_0,V_0,\kappa)$.
+\end{itemize}
+A decisive falsifier is the inability to simultaneously satisfy both \eqref{eq:hbar_ave_noncircular}
+and \eqref{eq:G_ave_noncircular} with geometry factors that remain $\mathcal{O}(1)$ while preserving
+the independent experimental anchoring of $V_0$ to a breakdown-scale observable (e.g. Schwinger onset).
+
+\subsection{Summary: What is Derived vs.\ What is Assumed}
+The AVE framework replaces ``fundamental'' $(G,\hbar)$ with emergent engineering limits of the
+substrate. The independent primitives are $(l_0,V_0)$, supplemented only by order-unity geometric
+coarse-graining factors $(\kappa_C,\kappa_E,\kappa_G)$ capturing microscopic packing and energy
+partition.
+
+The derived relationships are:
+\begin{align}
+\hbar_{\mathrm{AVE}} &= \frac{\kappa_E\kappa_C\,\epsilon_0\,l_0^2\,V_0^2}{c},\\
+G_{\mathrm{AVE}} &= \frac{c^4}{\kappa_G\kappa_E\kappa_C\,\epsilon_0\,V_0^2}.
+\end{align}
+Planck-unit quantities are treated strictly as \emph{outputs} (consistency checks), never as
+inputs. The model is therefore falsified if matching empirical $(\hbar,G)$ requires geometry factors
+that are not $\mathcal{O}(1)$ or if $V_0$ cannot be independently anchored to a breakdown-scale
+observable.

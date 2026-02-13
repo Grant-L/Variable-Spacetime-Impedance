@@ -38,7 +38,7 @@ The equation is perfectly dimensionally homogeneous.
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.9\textwidth]{galaxy_rotation_viscous.png}
-    \caption{Galactic Rotation Curve Simulation. The dashed gray line shows the Newtonian prediction (decaying). The solid blue line shows the VSI Navier-Stokes prediction, where the vacuum viscosity creates a velocity floor, matching the flat rotation observed in data (red dots).}
+    \caption{Galactic Rotation Curve Simulation. The dashed gray line shows the Newtonian prediction (decaying). The solid blue line shows the AVE Navier-Stokes prediction, where the vacuum viscosity creates a velocity floor, matching the flat rotation observed in data (red dots).}
     \label{fig:galaxy_rotation}
 \end{figure}
 
@@ -98,9 +98,9 @@ def plot_galaxy(r, v_newt, v_total, visc_pot):
     plt.axhline(y=v_floor, color='green', linestyle=':', alpha=0.5, 
                 label=f'Viscous Floor ({int(v_floor)} km/s)')
     
-    # Plot VSI Total (Flat)
+    # Plot AVE Total (Flat)
     plt.plot(r, v_total, '-', color='blue', linewidth=3, 
-             label='VSI Navier-Stokes Prediction')
+             label='AVE Navier-Stokes Prediction')
     
     # Synthetic Data
     noise = np.random.normal(0, 5, size=len(r))

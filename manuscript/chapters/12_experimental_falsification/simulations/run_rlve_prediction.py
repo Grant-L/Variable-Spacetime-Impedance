@@ -13,7 +13,7 @@ ALPHA = 1.0 / 137.035999  # Fine Structure Constant (Max Viscosity Limit)
 
 def calculate_viscous_shift(rpm, density, radius, length, wavelength, finesse):
     """
-    Calculates the VSI Viscous Drag Phase Shift with Density Scaling.
+    Calculates the AVE Viscous Drag Phase Shift with Density Scaling.
     
     Formula: delta_n = alpha * (rho / rho_sat) * (v/c)^2
     
@@ -49,7 +49,7 @@ def calculate_viscous_shift(rpm, density, radius, length, wavelength, finesse):
     return phi_total * 1000.0  # Convert to milli-radians
 
 def run_simulation():
-    print("--- VSI RLVE Prediction Model (v2 - Density Corrected) ---")
+    print("--- AVE RLVE Prediction Model (v2 - Density Corrected) ---")
     
     # --- Experimental Parameters ---
     R_WHEEL = 0.1         # 10 cm Radius
