@@ -1,19 +1,16 @@
 \section{Quantization as Bandwidth: The Nyquist Limit}
+Standard Quantum Mechanics posits that energy is quantized in discrete packets. In the AVE framework, we model this behavior as the \textbf{Bandwidth Constraint} of a discrete receiver.
 
-Standard Quantum Mechanics posits that energy is quantized in discrete packets ($E=h\nu$). In the AVE framework, this is not a magical property of light, but a strict \textbf{Bandwidth Constraint} of the discrete receiver.
-
-\subsection{The Discrete Sampling Theorem}
-Since the vacuum is a discrete graph with pitch $l_P$, it behaves as a digital sampling system. The Shannon-Nyquist theorem states that a discrete grid cannot support a frequency higher than half its sampling rate: $\nu_{max} = c / (2l_P)$.
-
+\subsection{The Discrete Sampling Analogy}
+Since the vacuum is a discrete graph with pitch $l_{0}$, it behaves as a digital sampling system. The Shannon-Nyquist theorem implies that such a grid cannot support a frequency higher than half its sampling rate:
 \begin{equation}
-    \nu_{max} = \frac{c}{2 l_P} \approx \frac{1}{2 t_{tick}}
+    \nu_{max} = \frac{c}{2l_{0}}
 \end{equation}
 
-\subsection{Re-Deriving Heisenberg Uncertainty}
-The Heisenberg Uncertainty Principle ($\Delta x \Delta p \ge \hbar/2$) is often interpreted as a fundamental limit on knowledge. In Signal Dynamics, it is re-derived as **Aliasing Noise**.
+\subsection{Uncertainty as Finite Information Density}
+The Heisenberg Uncertainty Principle ($\Delta x \Delta p \ge \hbar/2$) can be understood mechanically as a limit on information density.
 \begin{itemize}
-    \item \textbf{Position ($\Delta x$):} Limited by the pixel size of the universe ($l_P$).
-    \item \textbf{Momentum ($\Delta p$):} Limited by the maximum slew rate of the node ($mc$).
+    \item \textbf{Position ($\Delta x$):} Limited by the lattice pitch ($l_{0}$).
+    \item \textbf{Momentum ($\Delta p$):} Limited by the maximum slew rate of the node ($m c$).
 \end{itemize}
-Trying to measure a particle's position with precision $\Delta x < l_P$ is physically impossible because there are no nodes between the lattice points to store that information. "Uncertainty" is simply the quantization error of the vacuum hardware.
-
+In this model, "Uncertainty" arises because attempting to localize a wave packet smaller than $l_{0}$ introduces aliasing noise. While this does not essentially derive the non-commutative operator algebra of QM, it provides a hard classical mechanism for the UV cutoff and phase-space volume limits ($h^3$) observed in statistical mechanics.

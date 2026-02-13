@@ -11,12 +11,14 @@ The foundational postulate of the AVE framework is that the physical universe is
     \end{itemize}
 \end{definition}
 
-\subsection{The Fundamental Lattice Pitch ($l_P$)}
-Just as a digital image has a pixel size, the vacuum has a fundamental granularity. We define the \textbf{Lattice Pitch} ($l_P$) as the mean edge length of the graph:
+\subsection{The Fundamental Lattice Pitch ($l_{0}$)}
+Just as a digital image has a pixel size, the vacuum has a fundamental granularity. We define the \textbf{Lattice Pitch} ($l_{0}$) as the mean edge length of the graph:
 \begin{equation}
-    l_P = \langle |e_{ij}| \rangle \equiv \sqrt{\frac{\hbar G}{c^3}} \approx 1.616 \times 10^{-35} \text{ m}
+    l_{0} = \langle |e_{ij}| \rangle \approx 1.6 \times 10^{-35} \text{ m}
 \end{equation}
-This length scale is not merely a measurement limit; it is the physical separation between the inductive nodes of the substrate. It imposes a "Hardware Cutoff" frequency ($\omega_{max} \approx c/l_P$) on all physical signals, naturally preventing ultraviolet divergences.
+This length scale is the physical separation between the inductive nodes of the substrate. It imposes a "Hardware Cutoff" frequency ($\omega_{max} \approx c/l_{0}$) on all physical signals, naturally preventing ultraviolet divergences.
+
+\textit{Calibration Note:} While $l_{0}$ is numerically close to the derived Planck length ($l_P = \sqrt{\hbar G/c^3}$), in AVE $l_{0}$ is a primary input parameter of the mesh. We assume a calibration such that the hardware limit matches the observable high-energy cutoff.
 
 \subsection{Isotropy via Stochasticity: The Rifled Vacuum}
 \label{sec:isotropy}
