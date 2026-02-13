@@ -1,40 +1,37 @@
 \subsection{The Flat Rotation Curve}
-\label{subsec:flat_rotation}
 
-We model the galaxy using the Navier-Stokes equations for the vacuum substrate in a rotating reference frame. To maintain a flat rotation curve without invoking dark matter, we introduce a \textbf{Viscous Coupling Frequency} ($\omega_{gal}$), which represents the characteristic rotational update rate of the galactic core coupling to the lattice.
+We model the galaxy using the Navier-Stokes equations for the vacuum substrate in a rotating reference frame. To maintain a flat rotation curve without invoking dark matter, we introduce a Viscous Coupling Frequency ($\omega_{gal}$), which represents the characteristic rotational update rate of the galactic core coupling to the lattice.
 
 The tangential velocity $v(r)$ is derived from the radial momentum balance:
-
 \begin{equation}
-    v(r) = \sqrt{\frac{GM}{r} + \nu_{vac} \cdot \omega_{gal} \cdot r_{scale}}
-    \label{eq:rotation_curve}
+v(r) = \sqrt{\frac{GM}{r} + \nu_{vac} \cdot \omega_{gal}}
 \end{equation}
 
 Where:
 \begin{itemize}
     \item $G$: Gravitational Constant.
     \item $M$: Mass of the central bulge.
-    \item $\nu_{vac} = \frac{\eta}{\rho}$: The Kinematic Viscosity of the vacuum substrate ($m^2/s$).
-    \item $\omega_{gal}$: The angular frequency of the galactic coupling ($rad/s$).
-    \item $r_{scale}$: A characteristic length scale of the vortex coupling (approximated as unity for $r \gg r_{core}$).
+    \item $\nu_{vac} = \frac{\eta_{vac}}{\rho_{vac}}$: The Kinematic Viscosity of the vacuum substrate ($\text{m}^2/\text{s}$).
+    \item $\omega_{gal}$: The angular frequency of the galactic coupling ($\text{rad}/\text{s}$).
 \end{itemize}
 
-Dimensional Analysis check:
+\textbf{Dimensional Analysis check:}
 \begin{itemize}
     \item Gravitational Term ($\frac{GM}{r}$): $[L^3 T^{-2} M^{-1} \cdot M \cdot L^{-1}] = [L^2 T^{-2}]$ (Velocity squared).
-    \item Viscous Term ($\nu \omega$): $[L^2 T^{-1}] \cdot [T^{-1}] = [L^2 T^{-2}]$ (Velocity squared).
+    \item Viscous Term ($\nu_{vac} \cdot \omega_{gal}$): $[L^2 T^{-1}] \cdot [T^{-1}] = [L^2 T^{-2}]$ (Velocity squared).
 \end{itemize}
+The equation is perfectly dimensionally homogeneous.
 
 \textbf{Asymptotic Behavior:}
 \begin{enumerate}
-    \item \textbf{Inner Region ($r \rightarrow 0$):} Gravity dominates ($\frac{GM}{r} \gg \nu \omega$). The system exhibits standard Keplerian rotation ($v \propto r^{-1/2}$).
-    \item \textbf{Outer Region ($r \rightarrow \infty$):} The gravitational term vanishes. The velocity asymptotically approaches a constant floor determined by the substrate viscosity:
+    \item \textbf{Inner Region ($r \to 0$):} Gravity dominates ($\frac{GM}{r} \gg \nu_{vac}\omega_{gal}$). The system exhibits standard Keplerian rotation ($v \propto r^{-1/2}$).
+    \item \textbf{Outer Region ($r \to \infty$):} The gravitational term vanishes. The velocity asymptotically approaches a constant floor determined by the substrate viscosity:
     \begin{equation}
-        v_{flat} \approx \sqrt{\nu_{vac} \omega_{gal}}
+    v_{flat} \approx \sqrt{\nu_{vac} \omega_{gal}}
     \end{equation}
 \end{enumerate}
 
-Result: The rotation curve flattens naturally. We do not need ``Dark Matter''; we simply need to account for the \textbf{Viscous Floor} imposed by the fluid dynamics of the vacuum.
+\textbf{Result:} The rotation curve flattens naturally. We do not need ``Dark Matter''; we simply need to account for the Viscous Floor imposed by the fluid dynamics of the vacuum.
 
 \begin{figure}[h]
     \centering

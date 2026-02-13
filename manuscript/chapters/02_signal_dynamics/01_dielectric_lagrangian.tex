@@ -17,22 +17,18 @@ This Hamiltonian $\mathcal{H}$ represents the total hardware cost of maintaining
 \end{itemize}
 
 \subsection{The Action Principle}
-The Lagrangian density $\mathcal{L} = T - U$ for the discrete manifold becomes:
+To maintain dimensional accuracy $[J/m^3]$, the Lagrangian density $\mathcal{L} = T - U$ for the discrete manifold carrying a voltage potential $\phi$ must be written explicitly using the substrate moduli:
 \begin{equation}
-    \mathcal{L}_{vac} = \frac{1}{2} (\partial_\mu \phi)^2 - \frac{1}{2} m_{eff}^2 \phi^2
+\mathcal{L}_{AVE} = \frac{1}{2}\epsilon_0 (\nabla \phi)^2 - \frac{1}{2}\mu_0 \epsilon_0^2 \left(\frac{\partial \phi}{\partial t}\right)^2 - \frac{1}{2} \rho_{ind} \phi^2
 \end{equation}
-Where the "mass" term $m_{eff}$ arises not from a Higgs field, but from the \textbf{Self-Inductance} of the topological defect itself.
+Where the ``mass'' term ($\rho_{ind}$) arises not from a Higgs field, but from the localized inductive density of the topological defect itself. 
 
 \subsection{Deriving the Wave Equation}
-By applying the Euler-Lagrange equation to our hardware Lagrangian:
+By applying the Euler-Lagrange equation to our hardware Lagrangian for a massless region ($\rho_{ind} = 0$), we recover the standard wave equation:
 \begin{equation}
-    \partial_\mu \left( \frac{\partial \mathcal{L}}{\partial (\partial_\mu \phi)} \right) - \frac{\partial \mathcal{L}}{\partial \phi} = 0
+\epsilon_0 \nabla^2 \phi - \mu_0 \epsilon_0^2 \frac{\partial^2 \phi}{\partial t^2} = 0 \implies \nabla^2 \phi - \frac{1}{c^2} \frac{\partial^2 \phi}{\partial t^2} = 0
 \end{equation}
-We recover the standard wave equation, but with a physical constraint:
-\begin{equation}
-    \frac{1}{c^2} \frac{\partial^2 \phi}{\partial t^2} - \nabla^2 \phi = 0
-\end{equation}
-Here, $c = 1/\sqrt{\permeability\permittivity}$ is the propagation limit imposed by the grid. This derivation confirms that Maxwell's equations are simply the continuum limit of a discrete LC-network.
+Here, $c = 1/\sqrt{\mu_0\epsilon_0}$ is the propagation limit imposed by the grid.
 
 \subsection{The Rifled Pulse: Signal Stability in a Discrete Medium}
 A common critique of discrete spacetime models is the "Scattering Problem": if the vacuum is a jagged lattice of nodes, why don't high-frequency signals scatter off the bumps like a ball bearing in a pinball machine?

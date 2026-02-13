@@ -1,0 +1,38 @@
+\subsection{Non-Linear Signal Dynamics: Dielectric Saturation Effects}
+\label{sec:non-linear-wave}
+
+The linear wave equation derived in \S\ref{sec:wave-equation} assumes constant moduli $L$ and $C$ per unit length in the transmission line analog of the lattice. At high displacement fields, capacitive nodes saturate (Ch.~\ref{ch:substrate}, \S\ref{sec:saturation}), introducing voltage-dependent capacitance and non-linear propagation.
+
+Consider a 1D lattice line (or axial direction in a waveguide/shaft). The telegrapher equations are
+\begin{align}
+  \frac{\partial V}{\partial z} &= -L \frac{\partial I}{\partial t}, \\
+  \frac{\partial I}{\partial z} &= -C(V) \frac{\partial V}{\partial t}.
+\end{align}
+
+Differentiate the first with respect to $z$ and substitute:
+\begin{equation}
+  \frac{\partial^2 V}{\partial z^2} = -L \frac{\partial}{\partial t} \left( \frac{\partial I}{\partial z} \right) = L \frac{\partial}{\partial t} \left( C(V) \frac{\partial V}{\partial t} \right).
+\end{equation}
+
+Expanding the time derivative yields the full non-linear wave equation:
+\begin{equation}
+  \boxed{
+  \frac{\partial^2 V}{\partial z^2} = L C(V) \frac{\partial^2 V}{\partial t^2} + L \frac{dC}{dV} \left( \frac{\partial V}{\partial t} \right)^2
+  }
+  \label{eq:non-linear-wave}
+\end{equation}
+
+Model saturation phenomenologically (Born-Infeld inspired):
+\begin{equation}
+  C(V) = \frac{C_0}{\sqrt{1 + \left( \frac{V}{V_s} \right)^2 }},
+\end{equation}
+where $V_s$ scales with the local Schwinger threshold ($V_s \sim E_s l_P$).
+
+The derivative is
+\begin{equation}
+  \frac{dC}{dV} = -C_0 \frac{V / V_s^2}{\left(1 + (V/V_s)^2\right)^{3/2}} = -\frac{C(V) V}{V_s^2 \left(1 + (V/V_s)^2\right)}.
+\end{equation}
+
+The first term in Eq.~\eqref{eq:non-linear-wave} gives field-dependent wave speed $c(V) = 1/\sqrt{L C(V)}$ (slows near saturation). The second term (always dissipative for $dC/dV < 0$) drives wave steepening, shock formation, and potential breakdown cascades.
+
+In 3D or helical structures, this couples to inductive non-linearity and enables soliton self-focusing, transient superluminal transients, or topological reconfiguration at breakdown—core to macroscopic vacuum engineering thresholds.
