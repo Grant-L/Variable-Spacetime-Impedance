@@ -2,7 +2,26 @@
 \label{sec:gauge_layer}
 
 While the vacuum acts fundamentally as a reactive scalar medium ($\epsilon_0, \mu_0$), the Standard Model forces require vector gauge symmetries ($U(1), SU(3)$). We derive these symmetries directly from the stochastic connectivity of the $M_A$ manifold.
-
+\begin{tcolorbox}[colback=gray!10!white,colframe=black!75!black,title=Design Note 6.1: Gauge Architecture and Network Conservation]
+    To resolve the ambiguity between physical observables and mathematical redundancy, the AVE framework strictly separates the \textbf{Longitudinal} (Pressure) and \textbf{Transverse} (Shear) degrees of freedom on the $M_A$ lattice.
+    
+    \textbf{1. The Node Scalar ($\phi_n$): Longitudinal Pressure}\\
+    The scalar potential $\phi$ defined at each node $n$ is a physical state variable representing the local \textbf{Dielectric Compression} (Voltage) of the vacuum substrate.
+    \[ \phi_n \in \mathbb{R} \quad \text{(Observable: Local Vacuum Potential)} \]
+    \textit{Role:} Governs electrostatic attraction and gravitational refraction via modulation of the refractive index $n(\phi)$.
+    
+    \textbf{2. The Link Variable ($U_{nm}$): Transverse Flux}\\
+    The connection between nodes $n$ and $m$ is defined by a unitary link variable $U_{nm}$, representing the \textbf{Phase Transport} (Magnetic Flux) along the edge.
+    \[ U_{nm} = e^{i \theta_{nm}} \in U(1) \quad \text{(Gauge Variable: Phase Twist)} \]
+    \textit{Role:} Carries the magnetic helicity and transverse wave components. The physics is invariant under local rotation $\phi_n \to \phi_n'$ provided links update as $U_{nm} \to \Omega_n U_{nm} \Omega_m^\dagger$.
+    
+    \textbf{3. Recovering Maxwell and Gauss}\\
+    \begin{itemize}
+        \item \textbf{Maxwell's Lagrangian} arises from the "Plaquette" sum (closed loop product) of link variables: $S_{plaq} \approx -\frac{1}{4} F_{\mu\nu}F^{\mu\nu}$.
+        \item \textbf{Gauss's Law} emerges strictly from \textbf{Kirchhoff's Current Law (KCL)}: the sum of flux entering a node equals the rate of change of the node's potential (charge accumulation).
+    \end{itemize}
+    In AVE, "Gauge Symmetry" is simply the \textbf{Network Conservation Law} of the hardware.
+    \end{tcolorbox}
 \subsection{The Stochastic Link Variable ($U_{ij}$)}
 The physical connection between node $i$ and node $j$ is a \textbf{Flux Tube} described by a unitary link variable $U_{ij}$ that parallel-transports the internal phase state. To minimize energy, flux must flow smoothly ($U_{ij} \approx 1$). The simplest gauge-invariant quantity is the Plaquette (closed loop) product $U_P = U_{ij}U_{jk}U_{kl}U_{li}$.
 
