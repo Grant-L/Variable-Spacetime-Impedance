@@ -52,3 +52,21 @@ To rigorously distinguish AVE from General Relativity (GR), we define the \textb
 \end{itemize}
 
 \textbf{Kill Condition:} A measured value of $\Psi > 5$ would falsify the "frictionless void" model of General Relativity and provide the first direct laboratory measurement of the vacuum's kinematic viscosity ($\nu_{vac}$). Conversely, a result of $\Psi \approx 1$ would decisively falsify the AVE hydrodynamic framework.
+
+\subsubsection{RLVE Systematics and Error Budget}
+To confirm the signal $\Psi > 5$, we must isolate the constitutive density effect from mundane mechanical noise.
+The primary systematic threats and their suppression strategies are defined below.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Noise Source} & \textbf{Magnitude} & \textbf{Suppression Strategy} \\ \hline
+Aerodynamic Drag & $\sim 10^{-4}$ rad & **High Vacuum** ($<10^{-7}$ Torr) enclosure. \\ \hline
+Rotor Vibration & $\sim 10^{-5}$ rad & **Common-Mode Rejection**: Differential interferometer measures relative phase between Tungsten and Aluminum sectors on the \textit{same} rotor. \\ \hline
+Thermal Gradient & $\sim 10^{-6}$ rad & **Chopping**: Signal is modulated at rotor frequency ($f_{rot} = 1.6$ kHz), rejecting DC thermal drift. \\ \hline
+Magnetic Coupling & $\sim 10^{-8}$ rad & **Shielding**: Non-magnetic Tungsten alloy + Mu-Metal shielding. \\ \hline
+\textbf{Target Signal} & $\textbf{7.2} \times \textbf{10}^{-4}$ \textbf{rad} & **SNR > 100** (using Lock-in Amplification) \\ \hline
+\end{tabular}
+\caption{RLVE Error Budget. The density-dependent signal is isolatable via differential measurement and synchronous detection.}
+\end{table}

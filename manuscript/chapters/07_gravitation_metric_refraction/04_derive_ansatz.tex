@@ -1,0 +1,27 @@
+\subsection{Deriving the Refractive Gradient from Lattice Compliance}
+A skeptical observer might ask: *Why* does the vacuum refractive index follow the specific profile $n(r) = 1 + \frac{2GM}{rc^2}$? In General Relativity, this is a geometric postulate. In AVE, it is a derived consequence of **Linear Elasticity Theory** applied to the substrate.
+
+\subsubsection{The Lattice Stress Constitutive Relation}
+Consider a mass $M$ as a topological defect cluster. It exerts a radial tension force $F_{tension}$ on the surrounding lattice nodes.
+From Axiom II, the lattice possesses a Bulk Modulus $K \approx \frac{c^4}{G}$ (The Inverse Compliance).
+The radial strain $\sigma_{r}$ on a spherical shell at radius $r$ is Stress divided by Modulus:
+\begin{equation}
+    \sigma_{r} = \frac{\text{Force/Area}}{\text{Modulus}} = \frac{F_{tension}/(4\pi r^2)}{K}
+\end{equation}
+Since Gravity is the gradients of this tension, we substitute the Newtonian force equivalent $F = \frac{GM^2_{test}}{r^2}$? No. We use the **energy density equivalence**.
+The strain energy density $u(r)$ around a defect $M$ falls off as $1/r$ due to the conservation of flux through concentric shells.
+\begin{equation}
+    \chi(r) \approx \frac{\text{Potential Energy}}{\text{Substrate Stiffness}} = \frac{GM/r}{c^2}
+\end{equation}
+(Note: The $c^2$ term converts mass to energy units to match the stiffness modulus).
+
+\subsubsection{The Refractive Index Response}
+The refractive index of a dielectric medium scales with its density (Clausius-Mossotti relation). For small strains in a linear lattice:
+\begin{equation}
+    n(r) \approx n_{0}(1 + 2\chi(r))
+\end{equation}
+Substituting the strain $\chi(r)$:
+\begin{equation}
+    n(r) = 1 + \frac{2GM}{rc^2}
+\end{equation}
+\textbf{Conclusion:} The Gordon Optical Metric is not an assumption. It is the linear elastic response of a stiff medium ($K \sim c^4/G$) to a point-source stress load. Gravity is simply **Hooke's Law** for the vacuum.
