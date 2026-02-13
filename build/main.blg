@@ -1,52 +1,24 @@
 This is BibTeX, Version 0.99d (TeX Live 2025)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: main.aux
-A level-1 auxiliary file: chapters/01_discrete_amorphous_manifold/01_voronoi_vacuum.aux
-A level-1 auxiliary file: chapters/01_discrete_amorphous_manifold/02_moduli_of_the_void.aux
-A level-1 auxiliary file: chapters/01_discrete_amorphous_manifold/03_global_slew_rate.aux
-A level-1 auxiliary file: chapters/01_discrete_amorphous_manifold/04_saturation_limit.aux
-A level-1 auxiliary file: chapters/02_signal_dynamics/01_dielectric_lagrangian.aux
-A level-1 auxiliary file: chapters/02_signal_dynamics/02_quantization_as_bandwidth.aux
-A level-1 auxiliary file: chapters/02_signal_dynamics/03_pilot_wave.aux
-A level-1 auxiliary file: chapters/02_signal_dynamics/04_measurement_effect.aux
-A level-1 auxiliary file: chapters/03_fermion_sector/01_fundamental_theorem_of_knots.aux
-A level-1 auxiliary file: chapters/03_fermion_sector/02_electron.aux
-A level-1 auxiliary file: chapters/03_fermion_sector/03_mass_hierarchy.aux
-A level-1 auxiliary file: chapters/03_fermion_sector/04_chirality_antimatter.aux
-A level-1 auxiliary file: chapters/04_baryon_sector/01_borromean_confinement.aux
-A level-1 auxiliary file: chapters/04_baryon_sector/02_proton_mass.aux
-A level-1 auxiliary file: chapters/04_baryon_sector/03_neutron_decay.aux
-A level-1 auxiliary file: chapters/05_neutrino_star/01_twisted_unknot.aux
-A level-1 auxiliary file: chapters/05_neutrino_star/02_chiral_exlusion_principle.aux
-A level-1 auxiliary file: chapters/06_electrodynamics_weak_interaction/01_coulombs_law.aux
-A level-1 auxiliary file: chapters/06_electrodynamics_weak_interaction/02_weak_interaction.aux
-A level-1 auxiliary file: chapters/07_gravitation_metric_refraction/01_gravity_as_refractive_index.aux
-A level-1 auxiliary file: chapters/07_gravitation_metric_refraction/02_lensing_theorem.aux
-A level-1 auxiliary file: chapters/07_gravitation_metric_refraction/03_equivalence_principle.aux
-A level-1 auxiliary file: chapters/08_generative_cosmology/01_genesis_rate.aux
-A level-1 auxiliary file: chapters/08_generative_cosmology/02_dark_energy_resolution.aux
-A level-1 auxiliary file: chapters/08_generative_cosmology/03_cmb.aux
-A level-1 auxiliary file: chapters/09_viscous_dynamics_dark_matter/01_viscosity_term.aux
-A level-1 auxiliary file: chapters/09_viscous_dynamics_dark_matter/02_galactic_rotation.aux
-A level-1 auxiliary file: chapters/09_viscous_dynamics_dark_matter/03_bullet_cluster.aux
-A level-1 auxiliary file: chapters/09_viscous_dynamics_dark_matter/04_flyby_anomaly.aux
-A level-1 auxiliary file: chapters/10_vacuum_cfd/01_navier-stokes_vacuum.aux
-A level-1 auxiliary file: chapters/10_vacuum_cfd/02_black_holes.aux
-A level-1 auxiliary file: chapters/10_vacuum_cfd/03_warp_mechanics.aux
-A level-1 auxiliary file: chapters/10_vacuum_cfd/04_lid_driven_cavity.aux
-A level-1 auxiliary file: chapters/11_metric_engineering/01_stress_coefficient.aux
-A level-1 auxiliary file: chapters/11_metric_engineering/02_metric_streamlining.aux
-A level-1 auxiliary file: chapters/11_metric_engineering/03_kinetic_inductance.aux
-A level-1 auxiliary file: chapters/12_eperimental_falsification/01_falsification.aux
-A level-1 auxiliary file: chapters/12_eperimental_falsification/02_neturino_parity_kill-switch.aux
-A level-1 auxiliary file: chapters/12_eperimental_falsification/03_nyquist_limit.aux
-A level-1 auxiliary file: chapters/12_eperimental_falsification/04_metric_null-result.aux
+A level-1 auxiliary file: chapters/01_discrete_amorphous_manifold/_manifest.aux
+A level-1 auxiliary file: chapters/02_signal_dynamics/_manifest.aux
+A level-1 auxiliary file: chapters/03_fermion_sector/_manifest.aux
+A level-1 auxiliary file: chapters/04_baryon_sector/_manifest.aux
+A level-1 auxiliary file: chapters/05_neutrino_star/_manifest.aux
+A level-1 auxiliary file: chapters/06_electrodynamics_weak_interaction/_manifest.aux
+A level-1 auxiliary file: chapters/07_gravitation_metric_refraction/_manifest.aux
+A level-1 auxiliary file: chapters/08_generative_cosmology/_manifest.aux
+A level-1 auxiliary file: chapters/09_viscous_dynamics_dark_matter/_manifest.aux
+A level-1 auxiliary file: chapters/10_vacuum_cfd/_manifest.aux
+A level-1 auxiliary file: chapters/11_metric_engineering/_manifest.aux
+A level-1 auxiliary file: chapters/12_eperimental_falsification/_manifest.aux
 A level-1 auxiliary file: backmatter/00_appendcies.aux
 The style file: plain.bst
 Database file #1: bibliography.bib
 You've used 4 entries,
             2118 wiz_defined-function locations,
-            564 strings with 6756 characters,
+            536 strings with 5040 characters,
 and the built_in function-call counts, 1011 in all, are:
 = -- 97
 > -- 28

@@ -1,0 +1,18 @@
+\section{Theoretical Constraints on Fundamental Constants}
+\label{sec:constraints}
+
+We propose that $G$ and $\hbar$ are not arbitrary scalars, but emergent geometric properties of the lattice packing and saturation limits. To avoid circular definitions, we derive them strictly from \textbf{Axiom VI} ($V_{break}$).
+
+\subsection{Derivation of the Planck Action ($\hbar$)}
+We derive the Planck Action as the Maximum Action Capacity of a single node. The energy stored in a node at breakdown voltage is $E_{sat} = \frac{1}{2} C_{node} V_{break}^2$. Substituting the local capacitance $C_{node} \approx \epsilon_0 l_P$, and multiplying by the hardware clock cycle ($t_{tick} = l_P/c$):
+\begin{equation}
+\hbar \equiv E_{sat} \cdot t_{tick} = \left(\frac{1}{2} \epsilon_0 l_P V_{break}^2\right)\left(\frac{l_P}{c}\right)
+\end{equation}
+This rigorously identifies $\hbar$ not as a primary constant, but as the derived action limit of the capacitive substrate.
+
+\subsection{The Gravitational Constant ($G$) as Lattice Compliance}
+The Gravitational Constant is a derived measure of the lattice's Mechanical Compliance. The Yield Force $F_{yield}$ is the force required to displace the lattice by one pitch ($l_P$) against the saturation energy $E_{sat}$. Equating this to the Einstein Stiffness ($c^4/G$):
+\begin{equation}
+\frac{c^4}{G} = \frac{E_{sat}}{l_P} \implies G = \frac{c^4 l_P}{E_{sat}}
+\end{equation}
+Gravity is mechanically defined: a ``stiffer'' lattice (higher $V_{break}$) results in a weaker gravitational coupling $G$.
