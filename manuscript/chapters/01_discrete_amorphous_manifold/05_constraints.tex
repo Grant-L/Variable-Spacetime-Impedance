@@ -150,3 +150,11 @@ Planck-unit quantities are treated strictly as \emph{outputs} (consistency check
 inputs. The model is therefore falsified if matching empirical $(\hbar,G)$ requires geometry factors
 that are not $\mathcal{O}(1)$ or if $V_0$ cannot be independently anchored to a breakdown-scale
 observable.
+
+\subsubsection{Notation Convention: Primitives vs. Derived Units}
+To ensure rigorous separation of inputs and outputs:
+\begin{itemize}
+    \item \textbf{Hardware Inputs:} We use $l_0$ (Lattice Pitch) and $V_0$ (Breakdown Voltage) to denote the independent physical properties of the $M_A$ manifold.
+    \item \textbf{Derived Outputs:} We reserve the standard Planck symbols ($l_P, E_P$) strictly for the calculated values derived from $\hbar_{AVE}$ and $G_{AVE}$.
+    \item \textbf{Consistency:} In this text, $l_0 \equiv l_{hardware}$ and $l_P \equiv l_{calculated}$.
+\end{itemize}

@@ -3,9 +3,17 @@
 
 The "Measurement Problem" in quantum mechanics—where observation collapses the wavefunction—is treated by Copenhagen interpretation as a metaphysical event. In Vacuum Engineering, it is a simple circuit load problem.
 
-\subsection{The Observer as a Resistor}
-To measure a system, you must couple to it. Coupling extracts energy over a measurement time interval $\Delta t$.
+\subsubsection{The Observer as a Resistor}
+To measure a quantum system, one must couple to it. In circuit theory, this coupling acts as a resistive load ($R_{load}$) that dissipates energy from the oscillating pilot wave.
+
+The total energy extracted during the measurement interval $\tau$ is the integral of the instantaneous power:
 \begin{equation}
-    E_{measured} = E_{system} - \int_0^{\Delta t} I^2(t) R_{load} \, dt = E_{system} - P_{load} \Delta t
+    E_{measured} = \int_{0}^{\tau} P_{load}(t) \, dt = \int_{0}^{\tau} I(t)^2 R_{load} \, dt
 \end{equation}
-where $P_{load} = I^2 R_{load}$ is the power dissipated in the detector load. The "Collapse" is merely the rapid damping of the pilot wave due to the sudden impedance drop introduced by the detector. The system does not "decide" to be a particle; the detector drains the wave component, leaving only the inductive core (the particle) behind.
+
+If we approximate the pilot wave current as a pulse of duration $\Delta t$ with mean square amplitude $\langle I^2 \rangle$, this simplifies to:
+\begin{equation}
+    E_{measured} \approx \langle I^2 \rangle R_{load} \Delta t
+\end{equation}
+
+The "Collapse of the Wavefunction" is therefore not a metaphysical event, but the rapid damping of the lattice oscillation ($L-R$ decay) caused by the sudden insertion of the detector's impedance.
