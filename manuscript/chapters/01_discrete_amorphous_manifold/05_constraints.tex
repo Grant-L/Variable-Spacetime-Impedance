@@ -158,3 +158,17 @@ To ensure rigorous separation of inputs and outputs:
     \item \textbf{Derived Outputs:} We reserve the standard Planck symbols ($l_P, E_P$) strictly for the calculated values derived from $\hbar_{AVE}$ and $G_{AVE}$.
     \item \textbf{Consistency:} In this text, $l_0 \equiv l_{hardware}$ and $l_P \equiv l_{calculated}$.
 \end{itemize}
+
+\subsubsection{Design Note 1.1: The Universality Lemma (Constraining $\kappa$)}
+A critical requirement of the AVE framework is that the geometric coarse-graining factors $(\kappa_{C}, \kappa_{E}, \kappa_{G})$ are \textbf{Universal Constants} of the amorphous manifold, not free parameters.
+
+We postulate that these factors are determined strictly by the statistical topology of the Delaunay mesh:
+\begin{itemize}
+    \item $\kappa_{C}$ (Capacitive Geometry): Determined by the mean coordination number $\langle k \rangle \approx 15.54$.
+    \item $\kappa_{G}$ (Stiffness Coupling): Determined by the Shear/Bulk modulus ratio of the node packing.
+\end{itemize}
+\textbf{The Universality Constraint:}
+\begin{equation}
+    \frac{\partial \kappa}{\partial E} = \frac{\partial \kappa}{\partial t} = 0
+\end{equation}
+The $\kappa$ factors are invariant under local stress, temperature, or energy density (within the linear regime). They cannot be "tuned" to fit data; they must be derived from the graph statistics of the $M_{A}$ substrate.

@@ -70,3 +70,27 @@ Magnetic Coupling & $\sim 10^{-8}$ rad & **Shielding**: Non-magnetic Tungsten al
 \end{tabular}
 \caption{RLVE Error Budget. The density-dependent signal is isolatable via differential measurement and synchronous detection.}
 \end{table}
+
+\subsubsection{Experimental Protocols and Orthogonal Controls}
+To decisively isolate the Vacuum Viscosity signal from mundane environmental noise, the RLVE employs a \textbf{Tri-Phasic Control Protocol}.
+
+\textbf{Phase I: The Density Swap (The Signal)}
+We compare a Tungsten Rotor ($\rho \approx 19.3$ g/cc) against an Aluminum Rotor ($\rho \approx 2.7$ g/cc) of identical geometry.
+\begin{itemize}
+    \item \textbf{Prediction:} The Tungsten phase shift $\Delta \phi_W$ must be $\approx 7.1\times$ larger than $\Delta \phi_{Al}$.
+    \item \textbf{Control:} If $\Delta \phi_W \approx \Delta \phi_{Al}$, the signal is aerodynamic/mechanical (Null Result).
+\end{itemize}
+
+\textbf{Phase II: The Vacuum Sweep (The Drag)}
+We measure the signal as a function of chamber pressure from $10^{-3}$ Torr to $10^{-8}$ Torr.
+\begin{itemize}
+    \item \textbf{Prediction:} The AVE signal is pressure-independent below $10^{-6}$ Torr.
+    \item \textbf{Control:} If the signal scales linearly with chamber pressure, it is residual gas drag.
+\end{itemize}
+
+\textbf{Phase III: The Retrograde Reversal (The Symmetry)}
+We reverse the rotation direction of the rotor ($\omega \rightarrow -\omega$).
+\begin{itemize}
+    \item \textbf{Prediction:} The phase shift sign must invert ($\Delta \phi \rightarrow -\Delta \phi$).
+    \item \textbf{Control:} If the signal polarity does not track rotation direction, it is thermal drift or vibration.
+\end{itemize}
