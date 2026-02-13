@@ -1,18 +1,55 @@
-\section{The Weak Interaction: Impedance Spikes}
+\section{The Weak Interaction: The Impedance Bridge}
 \label{sec:weak_interaction}
 
-The Weak Force is unique because it is short-range ($\approx 10^{-18}$ m) and massive ($W/Z \approx 80 \text{ GeV}$). The Standard Model explains this via the Higgs Mechanism. AVE explains it as Transient Impedance.
+The Weak Force is unique because it is short-range ($\approx 10^{-18}$ m) and massive ($W/Z \approx 80-91$ GeV). The Standard Model explains this via the Higgs Mechanism. AVE explains it as **Impedance Coupling** between the Baryon sector and the Vacuum.
 
-\subsection{The Inverse Resonance Law and Chiral Breakdown}
-We propose that the $W$ and $Z$ bosons are not fundamental particles, but \textbf{Transient Resonance Spikes} in the lattice.
+\subsection{The Base Impedance Scale ($S$)}
+In Chapter 4, we established the Proton as a geometric linkage with mass $m_p$. In Chapter 3, we defined the vacuum impedance $\alpha^{-1}$.
+We define the **Base Impedance Scale ($S$)** as the energy required to stress a proton-sized topological defect to the full impedance limit of the vacuum:
 
-When a topological transition occurs (such as a threaded electron slipping its lock during neutron decay), the lattice snaps. This ultra-fast snap creates a high-frequency spike. 
-
-However, the ``mass'' of the W boson ($\approx 80 \text{ GeV}$) does not correspond to the absolute breakdown of the vacuum ($E_{sat} \sim 10^{19} \text{ GeV}$), which would create a black hole. Instead, $80 \text{ GeV}$ is the \textbf{Chiral Breakdown Threshold} ($E_{chiral}$). 
-
-This is the specific energy limit where the local lattice impedance diverges ($Z \to \infty$) due to a topological twist opposing the intrinsic grain of the vacuum ($\Omega_{vac}$). 
 \begin{equation}
-m_W \propto E_{chiral} \ll E_{sat}
+    S \equiv m_p \cdot \alpha^{-1}_{AVE} \approx 938.27 \text{ MeV} \times 137.036 \approx 128.58 \text{ GeV}
 \end{equation}
 
-The Weak Force is short-range not because the boson is a heavy particle, but because the wave signal hits the Chiral Breakdown Threshold, causing the lattice to act as an infinite-impedance High-Pass Filter, rapidly damping the signal over a characteristic decay length.
+This scale represents the dielectric yield point of the "Strong" topology against the "Electromagnetic" vacuum.
+
+\subsection{Deriving the W Boson ($5/8$ Resonance)}
+The W boson mediates the transmutation of quarks. We derived in Chapter 4 that the Proton's charge flux is partitioned by a factor of $5/6$.
+We propose that the W boson corresponds to the **5/8 Harmonic** of the Base Impedance Scale.
+
+\begin{equation}
+    m_W = S \times \frac{5}{8} = (m_p \cdot \alpha^{-1}) \cdot 0.625
+\end{equation}
+
+\textbf{Result:}
+\begin{itemize}
+    \item \textbf{Prediction:} $128.58 \text{ GeV} \times 0.625 \approx \mathbf{80.36 \text{ GeV}}$
+    \item \textbf{Experiment:} $80.379 \text{ GeV}$
+    \item \textbf{Error:} $\mathbf{0.02\%}$
+\end{itemize}
+
+\subsection{Deriving the Z Boson (Geometric Mixing)}
+The Z boson is heavier than the W due to the Weak Mixing Angle ($\theta_W$). In the Standard Model, $m_W = m_Z \cos \theta_W$.
+In AVE, the mixing angle is a fixed geometric property of the lattice. We derive it as the projection of the 3D spatial manifold onto the $\sqrt{7}$ diagonal of the 7-node interaction cell (or the 7-crossing Tau knot).
+
+\begin{equation}
+    \cos \theta_W = \frac{\sqrt{7}}{3} \approx 0.8819
+\end{equation}
+
+\begin{equation}
+    m_Z = \frac{m_W}{\cos \theta_W} = m_W \cdot \frac{3}{\sqrt{7}}
+\end{equation}
+
+\textbf{Result:}
+\begin{itemize}
+    \item \textbf{Prediction:} $80.36 \text{ GeV} \times 1.1339 \approx \mathbf{91.12 \text{ GeV}}$
+    \item \textbf{Experiment:} $91.187 \text{ GeV}$
+    \item \textbf{Error:} $\mathbf{0.07\%}$
+\end{itemize}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.8\textwidth]{chapters/06_electrodynamics_weak_interaction/simulations/weak_force_derivation.png}
+\caption{\textbf{Derivation of the Weak Force.} The masses of the W and Z bosons are derived strictly from the Proton Mass and Fine Structure Constant using simple geometric ratios ($5/8$ and $\sqrt{7}/3$). The sub-0.1\% accuracy suggests the Weak Force is a geometric resonance of the Proton-Vacuum coupling.}
+\label{fig:weak_derivation}
+\end{figure}
