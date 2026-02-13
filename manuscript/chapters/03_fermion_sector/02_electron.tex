@@ -18,27 +18,19 @@ The Fine Structure Constant ($\alpha \approx 1/137.036$) is one of the greatest 
 where $\mathcal{Q}_{geo}$ is the \textbf{Geometric Q-Factor} of the maximally tensioned knot.
 
 \subsection{Calculation of $\mathcal{Q}_{geo}$}
-The total geometric impedance is the sum of the normalized phase-space contributions of the manifold components. We normalize all spatial dimensions to the fundamental minimum hardware limit: the Lattice Pitch ($l_P = 1$). The total impedance invariant $\alpha^{-1}$ is derived as a multipole spatial expansion of three topological interaction terms:
+The total geometric impedance is the sum of the normalized phase-space contributions. We normalize all spatial dimensions to the fundamental hardware limit: the Lattice Pitch ($l_P = 1$). 
+
+\textit{Topological Note:} The manifold $\mathcal{T}^3 \equiv S^1_{loop} \times S^1_{cross} \times S^1_{phase}$ does not refer to the 3D hyperbolic volume of the spatial \textit{knot complement} in $\mathbb{R}^3$. A 1D mathematical knot has no volume. Rather, the electron is a physical, tubular flux manifold oscillating in time. $\mathcal{T}^3$ defines the \textbf{Phase-Space Hypersurface Area} of this 4D dynamic flux tube, allowing us to calculate its systemic impedance as a Lumped Element Transmission Line.
+
+The total impedance invariant $\alpha^{-1}$ is derived as a multipole spatial expansion of three topological interaction terms:
 \begin{equation}
     \alpha^{-1}_{AVE} = \Lambda_{vol} + \Lambda_{surf} + \Lambda_{line}
 \end{equation}
 
 \subsubsection*{Term I: The Volumetric Inductance ($\Lambda_{vol}$)}
-This term represents the 3-dimensional hypersurface volume of the 4D flux tube (the ``Bulk'' macroscopic inductance). For a resonant toroidal manifold $\mathcal{T}^3$, this is the surface area of the hypertorus:
+This term represents the 3-dimensional hypersurface area bounding the 4D phase-space flux tube (the ``Bulk'' macroscopic inductance). For a resonant toroidal manifold $\mathcal{T}^3$, this bounding hypersurface area is:
 \begin{equation}
-    \Lambda_{vol} = \text{Vol}(\mathcal{T}^3) \approx 4\pi^3 \approx 124.025
-\end{equation}
-
-\subsubsection*{Term II: The Cross-Sectional Interaction ($\Lambda_{surf}$)}
-This term represents the self-inductance arising from the mutual screening of the knot crossings (the Skin Effect). It corresponds to the surface area of the Clifford Torus ($S^1 \times S^1$) formed by the crossing topology:
-\begin{equation}
-    \Lambda_{surf} = \text{Area}(S^1 \times S^1) = (2\pi R)(2\pi r) \xrightarrow{R,r \to 1/2} \pi^2 \approx 9.870
-\end{equation}
-
-\subsubsection*{Term III: The Linear Flux ($\Lambda_{line}$)}
-This term represents the fundamental magnetic moment of the 1-dimensional core flux quantum loop ($S^1$):
-\begin{equation}
-    \Lambda_{line} = \text{Length}(S^1) = \pi \cdot d \xrightarrow{d \to 1} \pi \approx 3.142
+    \Lambda_{vol} = \text{Area}_{hyper}(\mathcal{T}^3) \approx 4\pi^3 \approx 124.025
 \end{equation}
 
 \subsection{Summation and Falsification Check}
