@@ -18,22 +18,21 @@ Just as a digital image has a pixel size, the vacuum has a fundamental granulari
 \end{equation}
 This length scale is not merely a measurement limit; it is the physical separation between the inductive nodes of the substrate. It imposes a "Hardware Cutoff" frequency ($\omega_{max} \approx c/l_P$) on all physical signals, naturally preventing ultraviolet divergences.
 
-\subsection{Isotropy via Stochasticity}
-A common critique of discrete spacetime models is the "Manhattan Distance" problem: on a regular cubic grid, diagonal movement is longer than cardinal movement ($\sqrt{2}$ vs $1$), which violates Lorentz Invariance.
+\subsection{Isotropy via Stochasticity: The Rifled Vacuum}
+\label{sec:isotropy}
 
-The $M_A$ framework evades this by requiring the lattice to be \textbf{Amorphous} (Random).
+A common critique of discrete spacetime models is the "Manhattan Distance" problem. On a regular cubic grid, diagonal movement is mathematically longer than cardinal movement ($\sqrt{2}$ vs 1), which violates Lorentz Invariance and would cause the speed of light to vary with direction.
 
-\begin{theorem}[\textbf{Isotropic Averaging}]
-    For a Delaunay graph generated from a stochastic Poisson distribution, the effective path length approaches rotational invariance at macroscopic scales ($L \gg l_P$).
-\end{theorem}
+The $M_A$ framework evades this by requiring the lattice to be \textbf{Amorphous} (Random) rather than Crystalline.
 
-\begin{itemize}
-    \item \textbf{Micro-Scale:} A photon performs a random walk along the jagged graph edges.
-    \item \textbf{Macro-Scale:} The randomness averages out. The \textbf{Graph Laplacian} ($\mathcal{L}$) converges to the continuous Laplace-Beltrami operator ($\nabla^2$):
-    \begin{equation}
-        \lim_{N \to \infty} \mathcal{L} f(x) \approx \nabla^2 f(x)
-    \end{equation}
-\end{itemize}
+\subsubsection*{Theorem 1.2 (Isotropic Averaging)}
+For a Delaunay graph generated from a stochastic Poisson distribution, the effective path length approaches rotational invariance at macroscopic scales ($L \gg l_P$).
+
+\begin{equation}
+    \lim_{N \to \infty} \mathcal{L} f(x) \approx \nabla^2 f(x)
+\end{equation}
+
+While the photon performs a random walk at the micro-scale (The Jagged Path), the Graph Laplacian ($\mathcal{L}$) converges to the continuous Laplace-Beltrami operator ($\nabla^2$) at the macro-scale. The vacuum looks smooth to us for the same reason a sandy beach looks smooth from an airplane: the grains ($l_P$) are stochastic, and the signal is gyroscopically stabilized.
 
 \textbf{Physical Result:} Light travels at the same speed in every direction. The vacuum looks smooth to us for the same reason a sandy beach looks smooth from an airplane: the grains ($l_P$) are stochastic and infinitesimally small.
 
