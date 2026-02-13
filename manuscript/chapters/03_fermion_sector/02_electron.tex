@@ -18,9 +18,11 @@ The Fine Structure Constant ($\alpha \approx 1/137.036$) is one of the greatest 
 where $\mathcal{Q}_{geo}$ is the \textbf{Geometric Q-Factor} of the maximally tensioned knot.
 
 \subsection{Calculation of $\mathcal{Q}_{geo}$}
-The total geometric impedance is the sum of the normalized phase-space contributions. We normalize all spatial dimensions to the fundamental hardware limit: the Lattice Pitch ($l_P = 1$). 
+The total geometric impedance is the sum of the normalized phase-space contributions. We normalize all spatial dimensions to the fundamental hardware limit: the Lattice Pitch ($l_0 = 1$). We normalize lengths by $l_0$. 
 
 \textit{Topological Note:} The manifold $\mathcal{T}^3 \equiv S^1_{loop} \times S^1_{cross} \times S^1_{phase}$ does not refer to the 3D hyperbolic volume of the spatial \textit{knot complement} in $\mathbb{R}^3$. A 1D mathematical knot has no volume. Rather, the electron is a physical, tubular flux manifold oscillating in time. $\mathcal{T}^3$ defines the \textbf{Phase-Space Hypersurface Area} of this 4D dynamic flux tube, allowing us to calculate its systemic impedance as a Lumped Element Transmission Line.
+
+\textbf{Selection Principle:} We restrict allowable contributions to $\alpha^{-1}$ to (i) dimensionless geometric invariants of the knot embedding under rescaling by $l_0$, (ii) terms stable under small deformations (topological robustness), and (iii) the minimal basis consistent with parity/chirality splitting. Under these constraints, the lowest-order closed basis is $\{\pi,\pi^2,\pi^3\}$; higher powers or mixed terms represent higher-order corrections suppressed by the strain parameter $\chi-1$.
 
 The total impedance invariant $\alpha^{-1}$ is derived as a multipole spatial expansion of three topological interaction terms:
 \begin{equation}
@@ -51,6 +53,7 @@ Summing the geometric components derived above yields the theoretical invariant 
 \begin{equation}
     \alpha_{ideal}^{-1} = \Lambda_{vol} + \Lambda_{surf} + \Lambda_{line} = 4\pi^3 + \pi^2 + \pi \approx 137.036304
 \end{equation}
+This is presented as a heuristic geometric ansatz pending a direct computation of $Z_{\mathrm{knot}}$ from the lattice field solution.
 
 However, the experimentally measured CODATA (2022) value is slightly lower:
 \begin{equation}
