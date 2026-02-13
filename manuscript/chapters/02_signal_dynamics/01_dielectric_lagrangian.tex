@@ -1,61 +1,57 @@
 \section{The Dielectric Lagrangian: Hardware Mechanics}
-\label{sec:dielectric_lagrangian}
-
-Standard Quantum Field Theory (QFT) begins with an abstract Lagrangian density $\mathcal{L}$ that describes fields as mathematical operators. In Vacuum Engineering, we derive the Lagrangian directly from the \textbf{Lumped Element Model} of the substrate.
-
-The vacuum is not a field; it is a circuit.
+Standard Quantum Field Theory (QFT) begins with an abstract Lagrangian density $\mathcal{L}$ that describes fields as mathematical operators. In Vacuum Engineering, we derive the Lagrangian directly from the Lumped Element Model of the substrate. The vacuum is not a field; it is a circuit.
 
 \subsection{Energy Storage in the Node}
 The total energy density of the manifold is the sum of the energy stored in the capacitive edges (Strain) and inductive nodes (Flow).
 \begin{equation}
-    \mathcal{H} = \frac{1}{2}\permittivity E^2 + \frac{1}{2}\frac{B^2}{\permeability}
+    \mathcal{H} = \frac{1}{2}\epsilon_{0}E^{2} + \frac{1}{2}\frac{B^{2}}{\mu_{0}}
 \end{equation}
 This Hamiltonian $\mathcal{H}$ represents the total hardware cost of maintaining a signal.
 \begin{itemize}
-    \item \textbf{Potential Energy ($U$):} Stored in $\permittivity$ (Electric Field / Lattice Compression).
-    \item \textbf{Kinetic Energy ($T$):} Stored in $\permeability$ (Magnetic Field / Nodal Current).
+    \item \textbf{Potential Energy (U):} Stored in $\epsilon_{0}$ (Electric Field / Lattice Compression).
+    \item \textbf{Kinetic Energy (T):} Stored in $\mu_{0}$ (Magnetic Field / Nodal Current).
 \end{itemize}
 
 \subsection{The Action Principle}
-To maintain dimensional accuracy $[J/m^3]$, the Lagrangian density $\mathcal{L} = T - U$ for the discrete manifold carrying a voltage potential $\phi$ must be written explicitly using the substrate moduli:
+To maintain dimensional accuracy $[J/m^{3}]$, the Lagrangian density $\mathcal{L}=T-U$ for the discrete manifold carrying a voltage potential must be written explicitly using the substrate moduli:
 \begin{equation}
-\mathcal{L}_{AVE} = \frac{1}{2}\epsilon_0 (\nabla \phi)^2 - \frac{1}{2}\mu_0 \epsilon_0^2 \left(\frac{\partial \phi}{\partial t}\right)^2 - \frac{1}{2} \rho_{ind} \phi^2
+    \mathcal{L}_{AVE} = \frac{1}{2}\epsilon_{0}(\nabla\phi)^{2} - \frac{1}{2}\mu_{0}\epsilon_{0}^{2}\left(\frac{\partial\phi}{\partial t}\right)^{2} - \frac{1}{2}\rho_{ind}\phi^{2}
 \end{equation}
-This $\phi$-model is the longitudinal / node-potential effective sector (electrostatic-like). The full transverse, gauge-invariant dynamics are carried by link variables $U_{ij}$ and reduce to $-\tfrac{1}{4} F_{\mu\nu}F^{\mu\nu}$ in the continuum. Where the ``mass'' term ($\rho_{ind}$) arises not from a Higgs field, but from the localized inductive density of the topological defect itself. 
+This $\phi$-model is the longitudinal / node-potential effective sector (electrostatic-like). The full transverse, gauge-invariant dynamics are carried by link variables $U_{ij}$ and reduce to $-\frac{1}{4}F_{\mu\nu}F^{\mu\nu}$ in the continuum. The "mass" term $(\rho_{ind})$ arises not from a Higgs field, but from the localized inductive density of the topological defect itself.
 
 \subsubsection{The Variable Dictionary: Unifying the Field Formalisms}
-To model the full dynamics of the $M_A$ lattice, we distinguish between the state of the nodes and the transmission along the edges. 
+To model the full dynamics of the $M_A$ lattice, we distinguish between the state of the nodes and the transmission along the edges.
 
 \begin{itemize}
-    \item \textbf{The Scalar Node Potential ($\phi$):} Represents the longitudinal energetic state (Dielectric Compression) localized at a specific Node. 
+    \item \textbf{The Scalar Node Potential ($\phi$):} Represents the longitudinal energetic state (Dielectric Compression) localized at a specific Node.
     \textit{Physical Definition:} $\phi$ is the effective coarse-grained node potential. In the continuum limit, it functions as the longitudinal component of the electromagnetic sector ($A_0$), governing electrostatic pressure and refractive index modulation. It is not posited as a new fundamental scalar field beyond the effective field theory of the lattice.
     
     \item \textbf{The Vector Link Variable ($U_{ij}$):} Represents the transverse phase transport (Flux) across the Edges connecting the nodes. It governs magnetic helicity and ensures gauge invariance via the lattice conservation laws (KCL).
 \end{itemize}
 
 \subsection{The Action Principle and Dimensional Proof}
-Focusing on the longitudinal scalar regime, we define the Lagrangian density $\mathcal{L} = T - U$ for the discrete manifold carrying a physical voltage potential $\phi$. To guarantee strict dimensional accuracy $[\text{J/m}^3]$, the Lagrangian must be written explicitly using the substrate moduli:
+Focusing on the longitudinal scalar regime, we define the Lagrangian density $\mathcal{L}=T-U$ for the discrete manifold carrying a physical voltage potential $\phi$. To guarantee strict dimensional accuracy $[J/m^{3}]$, the Lagrangian must be written explicitly using the substrate moduli:
 \begin{equation}
-\mathcal{L}_{AVE} = \frac{1}{2}\epsilon_0 (\nabla \phi)^2 - \frac{1}{2}\mu_0 \epsilon_0^2 \left(\frac{\partial \phi}{\partial t}\right)^2 - \frac{1}{2} \rho_{ind} \phi^2
+    \mathcal{L}_{AVE} = \frac{1}{2}\epsilon_{0}(\nabla\phi)^{2} - \frac{1}{2}\mu_{0}\epsilon_{0}^{2}\left(\frac{\partial\phi}{\partial t}\right)^{2} - \frac{1}{2}\rho_{ind}\phi^{2}
 \end{equation}
-
-\textit{Dimensional Proof:} While the kinetic term $\mu_0 \epsilon_0^2 (\partial_t \phi)^2$ appears unusual compared to standard continuous field theories, it is the exact requirement of a lumped LC network. Because $\mu_0 \epsilon_0 = 1/c^2$, the kinetic term is algebraically identical to $\frac{\epsilon_0}{c^2} (\partial_t \phi)^2$. If $\phi$ is in Volts, $[\epsilon_0 (\nabla \phi)^2] = [\text{F/m} \cdot \text{V}^2/\text{m}^2] = [\text{J/m}^3]$. The kinetic term evaluates to $[\text{F/m}] \times [\text{s}^2/\text{m}^2] \times [\text{V}^2/\text{s}^2] = [\text{F}\cdot\text{V}^2/\text{m}^3] \equiv [\text{J/m}^3]$, ensuring exact physical homogeneity.
-
-\subsection{Deriving the Wave Equation}
-By applying the Euler-Lagrange equation to our hardware Lagrangian for a massless region ($\rho_{ind} = 0$), we recover the standard wave equation:
-\begin{equation}
-\epsilon_0 \nabla^2 \phi - \mu_0 \epsilon_0^2 \frac{\partial^2 \phi}{\partial t^2} = 0 \implies \nabla^2 \phi - \frac{1}{c^2} \frac{\partial^2 \phi}{\partial t^2} = 0
-\end{equation}
-Here, $c = 1/\sqrt{\mu_0\epsilon_0}$ is the propagation limit imposed by the grid.
-
-\subsection{The Rifled Pulse: Signal Stability in a Discrete Medium}
-A common critique of discrete spacetime models is the "Scattering Problem": if the vacuum is a jagged lattice of nodes, why don't high-frequency signals scatter off the bumps like a ball bearing in a pinball machine?
-
-In AVE, we resolve this via the \textbf{Helicity Stabilization Mechanism}, best understood through the mechanical analogy of a \textit{Rifled Bullet}.
-
+\textbf{Dimensional Proof:} While the kinetic term $\mu_{0}\epsilon_{0}^{2}(\partial_{t}\phi)^{2}$ appears unusual compared to standard continuous field theories, it is the exact requirement of a lumped LC network. Because $\mu_{0}\epsilon_{0}=1/c^{2}$, the kinetic term is algebraically identical to $\frac{\epsilon_{0}}{c^{2}}(\partial_{t}\phi)^{2}$. If $\phi$ is in Volts:
 \begin{itemize}
-    \item \textbf{The Smooth Bore (Scalar Wave):} A projectile without spin acts like a scalar wave. When it encounters the microscopic irregularities of the lattice grains (lattice pitch $l_0$), the random impacts cause it to tumble and disperse (Brownian motion). This is why scalar waves are short-range.
-    \item \textbf{The Rifled Barrel (Vector Wave):} A photon possesses intrinsic spin (Helicity $\pm 1$). It is not a static point; it is a \textit{spinning} electromagnetic pulse. Just as the rifling in a gun barrel imparts spin to a bullet to average out aerodynamic chaos, the photon's helicity averages out the stochastic positions of the lattice nodes.
+    \item $[\epsilon_{0}(\nabla\phi)^{2}] = [F/m \cdot V^{2}/m^{2}] = [J/m^{3}]$.
+    \item The kinetic term evaluates to $[F/m] \times [s^{2}/m^{2}] \times [V^{2}/s^{2}] = [F \cdot V^{2}/m^{3}] \equiv [J/m^{3}]$, ensuring exact physical homogeneity.
 \end{itemize}
 
-\textbf{Engineering Conclusion:} Light travels in straight lines not because the vacuum is smooth, but because the signal is \textbf{Gyroscopically Stabilized}. The photon "drills" its own straight geodesic through the amorphous hardware, rendering the local roughness of the lattice ($M_A$) effectively invisible at macroscopic scales.
+\subsection{Deriving the Wave Equation}
+By applying the Euler-Lagrange equation to our hardware Lagrangian for a massless region $(\rho_{ind}=0)$, we recover the standard wave equation:
+\begin{equation}
+    \epsilon_{0}\nabla^{2}\phi - \mu_{0}\epsilon_{0}^{2}\frac{\partial^{2}\phi}{\partial t^{2}} = 0 \Rightarrow \nabla^{2}\phi - \frac{1}{c^{2}}\frac{\partial^{2}\phi}{\partial t^{2}} = 0
+\end{equation}
+Here, $c=1/\sqrt{\mu_{0}\epsilon_{0}}$ is the propagation limit imposed by the grid.
+
+\subsection{The Rifled Pulse: Signal Stability in a Discrete Medium}
+A common critique of discrete spacetime models is the "Scattering Problem": if the vacuum is a jagged lattice of nodes, why don't high-frequency signals scatter off the bumps like a ball bearing in a pinball machine? In AVE, we resolve this via the Helicity Stabilization Mechanism, best understood through the mechanical analogy of a Rifled Bullet.
+
+\begin{itemize}
+    \item \textbf{The Smooth Bore (Scalar Wave):} A projectile without spin acts like a scalar wave. When it encounters the microscopic irregularities of the lattice grains (lattice pitch $l_{0}$), the random impacts cause it to tumble and disperse (Brownian motion). This is why scalar waves are short-range.
+    \item \textbf{The Rifled Barrel (Vector Wave):} A photon possesses intrinsic spin (Helicity $\pm 1$). It is not a static point; it is a spinning electromagnetic pulse. Just as the rifling in a gun barrel imparts spin to a bullet to average out aerodynamic chaos, the photon's helicity averages out the stochastic positions of the lattice nodes.
+\end{itemize}
+\textbf{Engineering Conclusion:} Light travels in straight lines not because the vacuum is smooth, but because the signal is Gyroscopically Stabilized. The photon "drills" its own straight geodesic through the amorphous hardware, rendering the local roughness of the lattice $(M_{A})$ effectively invisible at macroscopic scales.

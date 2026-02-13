@@ -1,38 +1,28 @@
 \subsection{Non-Linear Signal Dynamics: Dielectric Saturation Effects}
-\label{sec:non-linear-wave}
+The linear wave equation derived earlier in this chapter (see §2.1) assumes constant moduli L and C per unit length in the transmission line analog of the lattice. At high displacement fields, capacitive nodes saturate (Ch. 1, §1.5), introducing voltage-dependent capacitance and non-linear propagation.
 
-The linear wave equation derived earlier in this chapter (see \S\ref{sec:dielectric_lagrangian}) assumes constant moduli $L$ and $C$ per unit length in the transmission line analog of the lattice. At high displacement fields, capacitive nodes saturate (Ch.~\ref{ch:discrete_amorphous_manifold}, \S\ref{sec:saturation}), introducing voltage-dependent capacitance and non-linear propagation.
-
-Consider a 1D lattice line (or axial direction in a waveguide/shaft). The telegrapher equations are
-\begin{align}
-  \frac{\partial V}{\partial z} &= -L \frac{\partial I}{\partial t}, \\
-  \frac{\partial I}{\partial z} &= -C(V) \frac{\partial V}{\partial t}.
-\end{align}
-
-Differentiate the first with respect to $z$ and substitute:
+Consider a 1D lattice line (or axial direction in a waveguide/shaft). The telegrapher equations are:
 \begin{equation}
-  \frac{\partial^2 V}{\partial z^2} = -L \frac{\partial}{\partial t} \left( \frac{\partial I}{\partial z} \right) = L \frac{\partial}{\partial t} \left( C(V) \frac{\partial V}{\partial t} \right).
+    \frac{\partial V}{\partial z} = -L\frac{\partial I}{\partial t}
 \end{equation}
-
+\begin{equation}
+    \frac{\partial I}{\partial z} = -C(V)\frac{\partial V}{\partial t}
+\end{equation}
+Differentiate the first with respect to z and substitute:
+\begin{equation}
+    \frac{\partial^{2}V}{\partial z^{2}} = -L\frac{\partial}{\partial t}\left(\frac{\partial I}{\partial z}\right) = L\frac{\partial}{\partial t}\left(C(V)\frac{\partial V}{\partial t}\right)
+\end{equation}
 Expanding the time derivative yields the full non-linear wave equation:
 \begin{equation}
-  \boxed{
-  \frac{\partial^2 V}{\partial z^2} = L C(V) \frac{\partial^2 V}{\partial t^2} + L \frac{dC}{dV} \left( \frac{\partial V}{\partial t} \right)^2
-  }
-  \label{eq:non-linear-wave}
+    \frac{\partial^{2}V}{\partial z^{2}} = LC(V)\frac{\partial^{2}V}{\partial t^{2}} + L\frac{dC}{dV}\left(\frac{\partial V}{\partial t}\right)^{2}
 \end{equation}
-
 Model saturation phenomenologically (Born-Infeld inspired):
 \begin{equation}
-  C(V) = \frac{C_0}{\sqrt{1 + \left( \frac{V}{V_s} \right)^2 }},
+    C(V) = \frac{C_{0}}{\sqrt{1+(\frac{V}{V_{s}})^{2}}}
 \end{equation}
-where $V_s$ scales with the local Schwinger threshold ($V_s \sim E_s l_0$).
-
-The derivative is
+where $V_{s}$ scales with the local Schwinger threshold ($V_{s} \sim E_{s} l_{0}$). The derivative is:
 \begin{equation}
-  \frac{dC}{dV} = -C_0 \frac{V / V_s^2}{\left(1 + (V/V_s)^2\right)^{3/2}} = -\frac{C(V) V}{V_s^2 \left(1 + (V/V_s)^2\right)}.
+    \frac{dC}{dV} = -C_{0}\frac{V/V_{s}^{2}}{(1+(V/V_{s})^{2})^{3/2}} = -\frac{C(V)V}{V_{s}^{2}(1+(V/V_{s})^{2})}
 \end{equation}
 
-The first term in Eq.~\eqref{eq:non-linear-wave} gives field-dependent wave speed $c(V) = 1/\sqrt{L C(V)}$ (slows near saturation). The second term (always dissipative for $dC/dV < 0$) drives wave steepening, shock formation, and potential breakdown cascades.
-
-In 3D or helical structures, this couples to inductive non-linearity and enables soliton self-focusing, transient superluminal transients, or topological reconfiguration at breakdown—core to macroscopic vacuum engineering thresholds.
+The first term in Eq. (2.12) gives field-dependent wave speed $c(V)=1/\sqrt{LC(V)}$ (slows near saturation). The second term drives \textbf{Wave Steepening and Spectral Cascade}. Mathematically, this is not Ohmic dissipation (heat), but a nonlinear reactance that pumps energy from the carrier frequency into higher harmonic modes (Blue Shifting). As the wavefront steepens into a shock, the energy accumulates at the leading edge until it exceeds the breakdown voltage $V_{0}$, at which point true thermodynamic dissipation (pair production) occurs.
