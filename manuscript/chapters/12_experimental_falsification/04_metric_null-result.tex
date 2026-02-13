@@ -6,8 +6,10 @@ If the AVE viscous vacuum hypothesis is correct, this macroscopic fluid dynamics
 \subsection{Methodology and Theoretical Prediction}
 As proven dimensionally, the Vacuum Viscosity ($\eta_{vac}$) possesses the exact units of dynamic viscosity $[\text{Pa} \cdot \text{s}]$. By rapidly rotating a mass adjacent to a high-finesse Fabry-Perot interferometer, we induce a localized viscous ``drag'' in the vacuum dielectric, creating a measurable refractive index shift ($\Delta n$). The effect scales with the tangential velocity ($v_{tan}$) and the material mass density relative to a reference saturation ($\rho_{rotor}/\rho_{ref}$):
 \begin{equation}
-\Delta n = \alpha \left(\frac{v_{tan}}{c}\right)^2 \left(\frac{\rho_{rotor}}{\rho_{ref}}\right)
+    \Delta n = \alpha \left(\frac{v_{tan}}{c}\right)^2 \left(\frac{\rho_{rotor}}{\rho_{ref}}\right)
 \end{equation}
+
+Here, $\rho_{ref} \equiv \rho_{nuc} \approx 2.3 \times 10^{17} \text{ kg/m}^3$ represents the \textbf{Nuclear Saturation Density}—the maximum matter density the lattice can support before dielectric breakdown (the event horizon limit). The ratio $(\rho_{rotor}/\rho_{ref})$ quantifies the degree to which the material stresses the vacuum substrate toward its elastic limit.
 
 \subsection{Simulation and Falsification Condition}
 Using the \texttt{run\_rlve\_prediction.py} simulation module, we model a 0.1 m radius Tungsten rotor spun to 100,000 RPM, adjacent to a 0.2 m optical cavity with a finesse of 10,000. 
