@@ -4,7 +4,6 @@
 
 \section{The Discrete-to-Continuum Limit (Kirchhoff)}
 We rigorously show that as the Lattice Pitch $\lp \to 0$, the discrete difference equations of the mesh converge to the continuous differential equations of Maxwell.
-
 \begin{theorem}
     The Kirchhoff Current Law (KCL) for a node $n$ in the limit of $N \to \infty$ recovers the Continuity Equation:
     \begin{equation}
@@ -13,7 +12,7 @@ We rigorously show that as the Lattice Pitch $\lp \to 0$, the discrete differenc
 \end{theorem}
 
 \section{The Madelung Internal Pressure (Q)}
-The "Quantum Potential" $Q$ found in the Bohmian formulation is identified here as the **Internal Stress** of the lattice fluid.
+The "Quantum Potential" $Q$ found in the Bohmian formulation is identified here as the \textbf{Internal Stress} of the lattice fluid.
 \begin{equation}
     Q = -\frac{\hbar^2}{2m} \frac{\nabla^2 \sqrt{\rho}}{\sqrt{\rho}} \equiv \text{Lattice Tension}
 \end{equation}
@@ -21,7 +20,7 @@ The "Quantum Potential" $Q$ found in the Bohmian formulation is identified here 
 \chapter{Simulation Manifest and Codebase}
 \label{app:code}
 
-The following Python modules constitute the core of the Vacuum Engineering simulation suite (VSS).
+The following Python modules constitute the core of the Vacuum Engineering simulation suite (VSS). They are located in the \texttt{simulations/} directory.
 
 \section{Core Code: Metric Lensing}
 \begin{lstlisting}[language=Python, caption=Calculating Refractive Index from Mass]
@@ -38,8 +37,17 @@ def calculate_refractive_index(r, M):
     
     # Refractive Index (Stress Equation 5.1)
     n = 1 - (2 * phi / c**2)
+    
     return n
 \end{lstlisting}
+
+\section{Module: Lepton Mass Scaling}
+Simulates the $N^9$ Inductive Scaling Law to derive the Lepton Generations ($e, \mu, \tau$).
+\lstinputlisting[language=Python, caption=Mass Hierarchy Derivation (simulations/99\_derivations/run\_derive\_mass\_scaling.py), basicstyle=\ttfamily\footnotesize, breaklines=true]{../simulations/99_derivations/run_derive_mass_scaling.py}
+
+\section{Module: Vacuum CFD Benchmark}
+Solves the Navier-Stokes equations for the Vacuum Substrate to demonstrate vortex formation (Matter Genesis).
+\lstinputlisting[language=Python, caption=Lid-Driven Cavity Solver (simulations/09\_vacuum\_cfd/run\_lid\_driven\_cavity.py), basicstyle=\ttfamily\footnotesize, breaklines=true]{../simulations/09_vacuum_cfd/run_lid_driven_cavity.py}
 
 \chapter{The Rosetta Stone}
 \label{app:rosetta}
@@ -61,6 +69,9 @@ This table translates the abstract terminology of the Standard Model into the ha
         Heisenberg Uncertainty & Nyquist Sampling Limit ($\Delta x < \lp$) \\
         The Big Bang & Lattice Crystallization Phase Transition \\
         Dark Matter & Viscosity of the Vacuum ($\eta_{vac}$) \\
+        Strong Force (Gluons) & Borromean Lattice Tension (Elastic Stress) \\
+        Weak Force (W/Z) & Impedance Clamping (High-Pass Filter) \\
+        Lepton Generations & Inductive Resonance Modes ($N^9$ Scaling) \\
         \bottomrule
     \end{tabularx}
     \caption{The Dictionary of Reality}

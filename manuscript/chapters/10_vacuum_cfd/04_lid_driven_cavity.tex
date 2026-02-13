@@ -1,0 +1,35 @@
+\section{Benchmark: The Lid-Driven Cavity}
+\label{sec:lid_cavity}
+
+To validate the VCFD (Vacuum Computational Fluid Dynamics) model, we apply the constitutive Navier-Stokes equations derived in Section 10.0.1 to the classic \textbf{Lid-Driven Cavity} problem.
+
+This benchmark simulates a 2D box of vacuum substrate where the top boundary ("The Lid") moves at a constant velocity $U_{lid} \approx c$. This shear force induces rotational vorticity in the bulk fluid.
+
+\subsection{Setup and Equations}
+We solve for the Vacuum Flux Velocity ($u, v$) and the Vacuum Potential Pressure ($P$) on a discrete $41 \times 41$ lattice. The governing momentum equation is:
+
+\begin{equation}
+    \frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u} \cdot \nabla) \mathbf{u} = -\frac{1}{\mu_0} \nabla P + \nu \nabla^2 \mathbf{u}
+\end{equation}
+
+Where $\nu$ represents the kinematic viscosity of the lattice, governed by the Fine Structure Constant ($\alpha$).
+
+\subsection{VCFD Simulation Code}
+The following Python implementation solves the discretized vacuum equations using the Pressure-Poisson method.
+
+% AUTOMATED IMPORT: Pulls code from the simulations folder
+\lstinputlisting[language=Python, caption=VCFD Solver (simulations/09\_vacuum\_cfd/run\_lid\_driven\_cavity.py), basicstyle=\ttfamily\footnotesize, breaklines=true]{../simulations/09_vacuum_cfd/run_lid_driven_cavity.py}
+
+\subsection{Results: Vortex Genesis}
+The simulation results (Figure \ref{fig:lid_cavity}) demonstrate that even in a simple geometric enclosure, shear stress induces a stable central vortex. 
+
+
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.9\textwidth]{lid_driven_cavity.png}
+    \caption{\textbf{VCFD Lid-Driven Cavity Result.} The streamlines (white) show the formation of a stable central vortex driven by the moving top boundary. In VSI theory, this rotational stability at high Reynolds numbers is the precursor to \textbf{Topological Matter formation}.}
+    \label{fig:lid_cavity}
+\end{figure}
+
+\textbf{Interpretation:} The formation of the central recirculation region confirms that the vacuum substrate supports angular momentum conservation. At the microscopic scale, these persistent vortices are identified as fundamental particles (Knots), stabilized by the viscosity of the surrounding manifold.
