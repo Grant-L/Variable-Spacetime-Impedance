@@ -1,70 +1,58 @@
 import numpy as np
+from scipy.spatial import Delaunay, Voronoi
 
-class LatticeNode:
+class AmorphousManifold:
     """
-    Represents a fundamental node in the Discrete Amorphous Manifold (MA).
-    
-    Attributes:
-        L (float): Nodal Inductance (Henry).
-        C (float): Nodal Capacitance (Farad).
-        lp (float): Lattice Pitch (meters).
+    The fundamental hardware substrate of the AVE theory.
+    Represents a Discrete Amorphous Manifold (MA) via Poisson-Delaunay triangulation.
     """
-    def __init__(self, L_node=1.256e-6, C_node=8.854e-12, lp=1.616e-35):
-        self.L = L_node
-        self.C = C_node
-        self.lp = lp
+    def __init__(self, n_nodes, box_size=10.0, seed=None):
+        self.n_nodes = n_nodes
+        self.box_size = box_size
+        self.seed = seed
+        self.points = None
+        self.delaunay = None
+        self.voronoi = None
+        self.kappa = None
         
-        # The hardware slew rate limit (Speed of Light)
-        # c = 1 / sqrt(LC)
-        self.c_limit = 1.0 / np.sqrt(self.L * self.C)
-        
-        # The Hardware Saturation Frequency (Nyquist Limit)
-        # w_sat = c / lp
-        self.w_sat = self.c_limit / self.lp
+        self._genesis()
 
-    def get_dispersion_velocity(self, k, mode='flux'):
+    def _genesis(self):
+        """Initializes the lattice nodes (Crystallization Phase)."""
+        if self.seed:
+            np.random.seed(self.seed)
+        self.points = np.random.rand(self.n_nodes, 3) * self.box_size
+        
+        # Hardware Connectivity (Flux Tubes)
+        self.delaunay = Delaunay(self.points)
+        # Metric Volume (Voronoi Cells)
+        self.voronoi = Voronoi(self.points)
+
+    def calculate_kappa(self):
         """
-        Calculates Group Velocity (vg) for a given wavenumber (k).
-        
-        Args:
-            k (float): Wavenumber (radians/meter).
-            mode (str): 'flux' (linear perturbation) or 'defect' (topological knot).
-            
-        Returns:
-            float: Group velocity in m/s.
+        Derives the Geometric Packing Factor (Kappa) for this specific universe instance.
+        Kappa = Mean_Effective_Radius / Mean_Lattice_Pitch
         """
-        # Normalize k against the Nyquist limit (pi/lp)
-        k_nyquist = np.pi / self.lp
+        # 1. Calculate Mean Lattice Pitch (l0)
+        edges = set()
+        for simplex in self.delaunay.simplices:
+            for i in range(4):
+                for j in range(i+1, 4):
+                    # Sort to ensure unique edge ID
+                    p1, p2 = sorted([simplex[i], simplex[j]])
+                    edges.add((p1, p2))
         
-        if k >= k_nyquist:
-            return 0.0 # Hard hardware cutoff (GZK limit)
+        lengths = []
+        for p1_idx, p2_idx in edges:
+            dist = np.linalg.norm(self.points[p1_idx] - self.points[p2_idx])
+            lengths.append(dist)
+        l0_mean = np.mean(lengths)
 
-        if mode == 'flux':
-            # --- FLUX MODE (Photons) ---
-            # Flux is a sub-saturation perturbation. The lattice behaves as
-            # a linear transmission line. Dispersion is negligible until
-            # the immediate vicinity of the Nyquist limit.
-            # Relation: omega = c * k
-            # vg = d(omega)/dk = c
-            return self.c_limit
+        # 2. Calculate Mean Effective Radius (R_eff)
+        # Approximation: Volume per node = Box_Volume / N
+        vol_per_node = (self.box_size ** 3) / self.n_nodes
+        r_eff_mean = (vol_per_node * 3 / (4 * np.pi)) ** (1/3)
 
-        elif mode == 'defect':
-            # --- DEFECT MODE (Matter) ---
-            # A topological defect (knot) imposes a continuous load.
-            # The node enters the saturation regime.
-            # We map the wavenumber k to the Intrinsic Spin Frequency (w_spin).
-            # Relation: v_g = c * sqrt(1 - (w_spin / w_sat)^2)
-            
-            # Simple coupling assumption: w_spin scales linearly with k
-            w_spin = k * self.c_limit
-            
-            # Calculate the relativistic gamma factor inverse
-            # If w_spin approaches w_sat, velocity drops to zero (Mass).
-            saturation_ratio = (w_spin / self.w_sat)**2
-            if saturation_ratio >= 1.0:
-                return 0.0
-            
-            return self.c_limit * np.sqrt(1.0 - saturation_ratio)
-
-        else:
-            raise ValueError(f"Unknown propagation mode: {mode}")
+        # 3. Derive Kappa
+        self.kappa = r_eff_mean / l0_mean
+        return self.kappa
