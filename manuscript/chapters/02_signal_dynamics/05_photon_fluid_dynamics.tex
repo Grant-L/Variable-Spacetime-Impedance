@@ -40,19 +40,12 @@ As visualized in Figure \ref{fig:rifled_photon}, the spiral phase twist acts as 
 \subsection{Spectral Filtering: The Momentum Sweep}
 This rheological model predicts a "Spectral Filtering" effect. High-momentum signals (High Shear) should propagate with less loss than low-momentum signals (Low Shear), as they are more efficient at liquefying the vacuum viscosity.
 
-We simulated this effect by sweeping the momentum parameter $k$ through the lattice (Figure \ref{fig:momentum_sweep}):
+We simulated this effect by sweeping the momentum parameter $k$ through the lattice (see Figure \ref{fig:momentum_sweep_sim} in Section \ref{sec:simulated_rheology}):
 
 \begin{enumerate}
     \item \textbf{Low Momentum ($k=2$):} The shear rate is insufficient to overcome the base viscosity ($\eta_0$). The signal suffers heavy damping and scattering (Viscous Regime).
     \item \textbf{High Momentum ($k=20$):} The shear rate drives the local viscosity to zero ($\eta \to 0$). The signal propagates as a crisp, undamped soliton (Superfluid Regime).
 \end{enumerate}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.85\textwidth]{chapters/02_signal_dynamics/simulations/photon_rheology.png}
-    \caption{The Rheological Momentum Sweep. Comparing wave propagation at varying momenta ($k$). \textbf{Top:} Low momentum signals ($k=2$) fail to liquefy the lattice and are damped by vacuum viscosity. \textbf{Bottom:} High momentum signals ($k=20$) induce high shear, creating a frictionless superfluid tunnel that allows long-range propagation. This explains why high-energy bosons (Photons) are long-range, while low-energy fluctuations are damped.}
-    \label{fig:momentum_sweep}
-\end{figure}
 
 \subsection{The Scale Inversion (Micro vs. Macro)}
 This establishes a fundamental symmetry in the Applied Vacuum framework, unifying the Quantum and Cosmic sectors via Rheology:
