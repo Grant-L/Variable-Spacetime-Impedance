@@ -1,0 +1,32 @@
+\section{Quantum Correlations: The Pre-Tensioned Lattice}
+\label{sec:quantum_correlations}
+
+Standard Quantum Mechanics posits non-local correlations that violate Bell's inequalities. AVE derives these correlations purely from the classical mechanics of a \textbf{Pre-Tensioned Solid}, without invoking non-locality.
+
+\subsection{The Tensioned String Derivation}
+\label{subsec:tensioned_string}
+
+Consider the vacuum substrate between two detectors $A$ and $B$ not as a relaxed beam, but as a lattice flux tube under \textbf{Critical Tension} $T_0$. The detectors impose boundary conditions (polarization angles $\theta_A$ and $\theta_B$) on the lattice grain.
+
+In a standard relaxed beam, the potential energy of a twist scales quadratically ($U \propto \theta^2$). However, for a string under high tension, the energy is geometric—it is proportional to the path length contraction required to accommodate the twist. The potential energy cost $\Delta U$ to twist the lattice between the boundaries is:
+\begin{equation}
+    U(\theta) = T_0 L (1 - \cos(\theta_A - \theta_B))
+    \label{eq:tension_energy}
+\end{equation}
+This geometric stiffness is the "Hidden Variable" ($\lambda$) of the system.
+
+\subsection{Deriving the Cosine Correlation}
+\label{subsec:cosine_correlation}
+
+The probability of a joint measurement outcome is governed by the lattice minimizing this global strain energy. The thermodynamic "force" restoring alignment is the derivative of the energy potential:
+\begin{equation}
+    F_{\mathrm{restore}} = -\frac{dU}{d\theta} \propto -\sin(\theta)
+    \label{eq:restore_force}
+\end{equation}
+The correlation $E_{\mathrm{AVE}}(A,B)$, defined as the overlap projection of the boundary states, corresponds to the integral of this restoring force. This recovers the exact quantum prediction:
+\begin{equation}
+    E_{\mathrm{AVE}}(A,B) \propto \int F_{\mathrm{restore}} \, d\theta \propto -\cos(\theta_A - \theta_B)
+    \label{eq:ave_correlation}
+\end{equation}
+
+\textbf{Conclusion:} Bell's inequality is violated in this framework because the "Independence Assumption" of the theorem fails for a solid substrate. \citestart The stress tensor $\sigma_{ij}$ is a global solution to the boundary value problem set by $A$ and $B$ simultaneously\cite{3}\citeend.

@@ -1,12 +1,10 @@
 \section{The Viscosity of Space}
 \label{sec:viscosity_term}
 
-The Standard Model assumes the vacuum is a frictionless superfluid. Vacuum Engineering asserts that the Discrete Amorphous Manifold ($M_A$) possesses a finite \textbf{Lattice Viscosity} ($\eta_{vac}$).
+The Standard Model assumes the vacuum is a frictionless superfluid. Vacuum Engineering asserts that the Discrete Amorphous Manifold ($M_A$) possesses a finite \textbf{Lattice Viscosity} ($\eta_{vac}$). Just as water resists the motion of a spoon, the vacuum lattice resists the motion of topological defects (mass). This resistance is not constant; it depends on the scale and coherence of the moving object.
 
-Just as water resists the motion of a spoon, the vacuum lattice resists the motion of topological defects (mass). This resistance is not constant; it depends on the scale and coherence of the moving object.
-
-\subsection{Deriving Vacuum Viscosity from Alpha}
-We propose that the viscosity coefficient is determined by the geometric coupling constant $\alpha$ (derived in Chapter 3):
+\subsection{9.1.1 Deriving Vacuum Viscosity from Alpha}
+We propose that the viscosity coefficient is determined by the geometric coupling constant $\alpha$ (derived in Chapter 3) and the quantum granularity of the lattice:
 \begin{equation}
     \eta_{vac} \approx \alpha \cdot \frac{\hbar}{l_0^3}
 \end{equation}
@@ -23,24 +21,28 @@ Dividing Action by Volume yields:
 \begin{equation}
     [\eta_{vac}] = \frac{\text{kg} \cdot \text{m}^2 / \text{s}}{\text{m}^3} = \left[ \frac{\text{kg}}{\text{m} \cdot \text{s}} \right] \equiv \text{Pa} \cdot \text{s}
 \end{equation}
-The standard SI unit for Dynamic Viscosity (Pascal-seconds) is defined exactly as $\text{Pa} \cdot \text{s} = (\text{N}/\text{m}^2)\text{s} = [\text{kg} / (\text{m} \cdot \text{s})]$. 
+The standard SI unit for Dynamic Viscosity (Pascal-seconds) is defined exactly as $\text{Pa} \cdot \text{s} = (\text{N}/\text{m}^2)\text{s} = [\text{kg} / (\text{m} \cdot \text{s})]$.
 
 \textbf{Result:} The dimensional mapping is exact. We have successfully derived classical fluid viscosity purely from the fundamental quantum properties of the discrete substrate.
 
-\subsubsection{Engineering Analogy: The Drill Bit in Molasses}
-To visualize why the vacuum exerts a drag force, compare the standard General Relativity model to the AVE Fluid Model:
+\subsection{9.1.2 The Hubble-MOND Unification ($a_0$)}
+A critical prediction of AVE is the unification of Cosmological Expansion and Galactic Dynamics. We derive the "Dark Matter" acceleration parameter $a_0$ (typically empirical in MOND) directly from the Genesis Rate $H_0$.
 
-\begin{itemize}
-    \item \textbf{General Relativity (The Frictionless Sheet):} A rotating mass is like a bowling ball sitting on a frictionless rubber sheet. It curves the geometry (gravity), but because there is no friction, the sheet itself does not rotate with the ball. Distant objects orbit only due to the dip in the sheet.
-    \item \textbf{AVE (The Viscous Fluid):} A rotating galaxy is like a \textbf{Drill Bit spinning in Molasses}. Because the fluid has viscosity ($\eta_{vac}$), the spinning bit physically grabs the surrounding medium and drags it along.
-\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../assets/archive/galaxy_rotation_v3.png}
+    \caption{The Hubble-MOND Unification. The viscous floor (green) prevents the velocity from decaying to zero, naturally reproducing the flat rotation curve without Dark Matter halo parameters.}
+    \label{fig:mond_unification}
+\end{figure}
 
-\textbf{Physical Consequence:} The "Dark Matter" halo is not a cloud of invisible particles; it is the \textbf{Hydrodynamic Wake} of the vacuum itself. The outer stars are not just orbiting; they are being swept along by the viscous rotation of the substrate.
+The kinematic drift acceleration $a_{genesis}$ is the projection of the scalar expansion rate onto the linear orbital frame:
+\begin{equation}
+    a_{genesis} = \frac{c H_0}{2\pi} \approx \frac{(3 \times 10^8)(2.3 \times 10^{-18})}{2\pi} \approx 1.1 \times 10^{-10} \text{ m/s}^2
+\end{equation}
+This derived value matches the empirical acceleration constant $a_0 \approx 1.2 \times 10^{-10}$ m/s$^2$ required to explain galactic rotation curves, eliminating it as a free parameter.
 
-\subsection{Eliminating the Free Parameter: The Baryonic Anchor}
-A critique of fluid dark matter models is that the coupling frequency $\omega_{gal}$ appears to be a curve-fitting parameter.
-AVE removes this freedom by identifying $\omega_{gal}$ strictly as the **Keplerian Frequency of the Galactic Bulge**.
-The viscous wake is driven by the rotation of the visible matter. Therefore:
+\subsection{9.1.3 Eliminating the Free Parameter: The Baryonic Anchor}
+A critique of fluid dark matter models is that the coupling frequency $\omega_{gal}$ appears to be a curve-fitting parameter. AVE removes this freedom by identifying $\omega_{gal}$ strictly as the \textbf{Keplerian Frequency of the Galactic Bulge}. The viscous wake is driven by the rotation of the visible matter. Therefore:
 \begin{equation}
     \omega_{gal} \equiv \sqrt{\frac{GM_{bulge}}{R_{bulge}^3}}
 \end{equation}
@@ -52,4 +54,4 @@ Squaring to find the luminosity relation:
 \begin{equation}
     M_{bulge} \propto v_{flat}^4
 \end{equation}
-\textbf{Result:} This derivation recovers the **Baryonic Tully-Fisher Relation** (BTFR) exactly. The "Dark Matter" halo is not a free component; it is the hydrodynamic wake of the visible baryon core. The scaling exponent (4) is not fitted; it is derived from the dimensionality of the viscosity operator ($L^2 T^{-1}$).
+\textbf{Result:} This derivation recovers the \textbf{Baryonic Tully-Fisher Relation} (BTFR) exactly. The "Dark Matter" halo is not a free component; it is the hydrodynamic wake of the visible baryon core. The scaling exponent (4) is not fitted; it is derived from the dimensionality of the viscosity operator ($L^2 T^{-1}$).
