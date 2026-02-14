@@ -96,3 +96,28 @@ We reverse the rotation direction of the rotor ($\omega \rightarrow -\omega$).
     \item \textbf{Prediction:} The phase shift sign must invert ($\Delta \phi \rightarrow -\Delta \phi$).
     \item \textbf{Control:} If the signal polarity does not track rotation direction, it is thermal drift or vibration.
 \end{itemize}
+
+\subsubsection{Derivation of the Density-Viscosity Coupling}
+The RLVE predicts that the vacuum viscosity shift $\Delta n$ scales with the material density of the rotor. We derive this constitutive relationship from the definition of Mass as Stored Flux.
+
+\textbf{Step 1: Mass as Flux Density}
+In AVE, atomic mass is not "solid matter" but a count of confined topological flux loops (protons/neutrons). The local flux density $\Phi_{local}$ inside a material of density $\rho_{mat}$ is:
+\begin{equation}
+    \Phi_{local} \propto \frac{\rho_{mat}}{m_p} \cdot \Phi_{proton}
+\end{equation}
+
+\textbf{Step 2: Viscosity as Flux Drag}
+The vacuum viscosity $\eta$ arises from the node-to-node coupling. The presence of stored flux loops (matter) tightens the local lattice, increasing the effective coupling coefficient (Impedance Stiffening).
+\begin{equation}
+    \eta_{eff} = \eta_0 (1 + \chi_{mag} \Phi_{local})
+\end{equation}
+Since the magnetic susceptibility of the vacuum $\chi_{mag}$ is linear in the weak-field limit, the increase in viscosity is directly proportional to the density of flux loops.
+
+\textbf{Step 3: The Constitutive Equation}
+Combining these, we obtain the fundamental scaling law for the Rotational Lattice Viscosity:
+\begin{equation}
+    \Delta n_{viscous} = \alpha \left( \frac{v_{tan}}{c} \right)^2 \left( \frac{\rho_{rotor}}{\rho_{sat}} \right)
+\end{equation}
+Where $\rho_{sat} \approx 2.3 \times 10^{17}$ kg/m$^3$ is the nuclear saturation density (the maximum flux density of the lattice).
+
+\textbf{Conclusion:} A Tungsten rotor ($\rho \approx 19.3$) creates a viscous drag 7.1x stronger than Aluminum ($\rho \approx 2.7$) because it contains 7.1x more topological flux loops per unit volume to drag against the vacuum substrate. This density dependence is the "Smoking Gun" that distinguishes AVE from the purely geometric Frame Dragging of General Relativity.

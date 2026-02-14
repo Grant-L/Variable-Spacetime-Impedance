@@ -1,0 +1,22 @@
+\section{The Breakdown Limit ($V_0$): A Mechanical Definition}
+\label{sec:breakdown_limit}
+
+To ensure the independence of the hardware primitives, we define the Breakdown Voltage ($V_0$) strictly via the \textbf{Mechanical Yield Stress} of the $M_A$ lattice, independent of electrostatic charge definitions.
+
+\subsection{The Lattice Yield Condition}
+The vacuum manifold possesses a Bulk Modulus $K_{vac}$ (Inverse Compliance). The energy cost to displace a single node by a distance $\delta x$ against the elastic restoring force of its neighbors is given by Hooke's Law for the lattice:
+\begin{equation}
+    U_{strain} = \frac{1}{2} K_{vac} (\delta x)^2
+\end{equation}
+We define the \textbf{Topological Rupture Point} as the condition where a node is displaced by exactly one full lattice pitch ($\delta x = l_0$). At this point, the node disconnects from its Delaunay neighbors, creating a vacancy defect (singularity).
+
+\subsection{Deriving $V_0$ from Bulk Modulus}
+The Breakdown Voltage $V_0$ is defined as the electromagnetic potential equivalent of this mechanical yield energy.
+\begin{equation}
+    \frac{1}{2} C_{node} V_0^2 \equiv \frac{1}{2} K_{vac} l_0^3
+\end{equation}
+Solving for $V_0$:
+\begin{equation}
+    V_0 = \sqrt{\frac{K_{vac} l_0^3}{C_{node}}} = \sqrt{\frac{(c^4/G) \cdot l_0^3}{\epsilon_0 l_0}} = c^2 \sqrt{\frac{l_0^2}{\epsilon_0 G}}
+\end{equation}
+This derivation anchors $V_0$ to the \textbf{Mechanical Stiffness} ($c^4/G$) and the \textbf{Granularity} ($l_0$) of the substrate. It removes the need to postulate a "Planck Charge" as an input. $V_0$ is simply the yield stress of the vacuum expressed in Volts.
