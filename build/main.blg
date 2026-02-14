@@ -19,9 +19,10 @@ A level-1 auxiliary file: backmatter/00_appendcies.aux
 A level-1 auxiliary file: backmatter/01_appendix_b_equations.aux
 The style file: plain.bst
 Database file #1: bibliography.bib
+Warning--I didn't find a database entry for "2307"
 You've used 4 entries,
             2118 wiz_defined-function locations,
-            539 strings with 5162 characters,
+            540 strings with 5166 characters,
 and the built_in function-call counts, 1011 in all, are:
 = -- 97
 > -- 28
@@ -60,3 +61,4 @@ warning$ -- 0
 while$ -- 12
 width$ -- 5
 write$ -- 45
+(There was 1 warning)

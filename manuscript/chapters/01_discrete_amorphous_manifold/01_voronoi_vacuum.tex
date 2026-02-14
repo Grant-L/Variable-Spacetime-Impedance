@@ -1,46 +1,51 @@
-
 \section{The Amorphous Manifold}
+\label{sec:amorphous_manifold}
+
 The foundational postulate of the AVE framework is that the physical universe is a Discrete Amorphous Manifold ($M_A$). Let $P$ be a set of stochastic points distributed in a topological volume $V$. The physical manifold $M_A$ is defined as the Delaunay Triangulation of $P$.
 
-\begin{definition}[\textbf{The Amorphous Manifold}]
-    Let $\mathcal{P}$ be a set of stochastic points distributed in a topological volume $\mathcal{V}$ with mean density $\rho_{node}$. The physical manifold $M_A$ is defined as the \textbf{Delaunay Triangulation} of $\mathcal{P}$.
-    \begin{itemize}
-        \item \textbf{Nodes ($V$):} The active processing elements of the vacuum.
-        \item \textbf{Edges ($E$):} The flux transmission lines connecting nearest neighbors.
-        \item \textbf{Cells ($\Phi$):} The Voronoi cells representing the effective volume of each node.
-    \end{itemize}
+\begin{definition}[The Amorphous Manifold]
+Let $P$ be a set of stochastic points distributed in a topological volume $V$ with mean density $\rho_{node}$. The physical manifold $M_A$ is defined as the Delaunay Triangulation of $P$.
+\begin{itemize}
+    \item \textbf{Nodes ($V$):} The active processing elements of the vacuum (Inductance $\mu_0$).
+    \item \textbf{Edges ($E$):} The flux transmission lines connecting nearest neighbors (Capacitance $\epsilon_0$).
+    \item \textbf{Cells ($\Omega$):} The Voronoi cells representing the effective volume of each node.
+\end{itemize}
 \end{definition}
 
-\subsection{The Fundamental Lattice Pitch ($l_{0}$)}
-Just as a digital image has a pixel size, the vacuum has a fundamental granularity. We define the \textbf{Lattice Pitch} ($l_{0}$) as the mean edge length of the graph:
-\begin{equation}
-    l_{0} = \langle |e_{ij}| \rangle \approx 1.6 \times 10^{-35} \text{ m}
-\end{equation}
-This length scale is the physical separation between the inductive nodes of the substrate. It imposes a "Hardware Cutoff" frequency ($\omega_{max} \approx c/l_{0}$) on all physical signals, naturally preventing ultraviolet divergences.
+\subsection{The Fundamental Lattice Pitch ($l_0$)}
+Just as a digital image has a pixel size, the vacuum has a fundamental granularity. We define the Lattice Pitch ($l_0$) as the mean edge length of the graph:
 
-\textit{Calibration Note:} Matching the derived Planck scale sets $l_0 \sim 10^{-35}\,\mathrm{m}$ (order-of-magnitude). In AVE $l_{0}$ is a primary input parameter of the mesh, not a secondary derivative of constants $G$ and $\hbar$.
+\begin{equation}
+    l_0 = \langle |e_{ij}| \rangle \approx 1.6 \times 10^{-35} \text{ m}
+\end{equation}
+
+This length scale is the physical separation between the inductive nodes of the substrate. It imposes a "Hardware Cutoff" frequency ($\omega_{max} \approx c/l_0$) on all physical signals, naturally preventing ultraviolet divergences.
 
 \subsection{Isotropy via Stochasticity: The Rifled Vacuum}
-\label{sec:isotropy}
+A common critique of discrete spacetime models is the "Manhattan Distance" problem. On a regular cubic grid, diagonal movement is mathematically longer than cardinal movement ($\sqrt{2}$ vs 1), which violates Lorentz Invariance.
 
-A common critique of discrete spacetime models is the "Manhattan Distance" problem. On a regular cubic grid, diagonal movement is mathematically longer than cardinal movement ($\sqrt{2}$ vs 1), which violates Lorentz Invariance and would cause the speed of light to vary with direction.
+The $M_A$ framework evades this by requiring the lattice to be Amorphous (Random) rather than Crystalline.
 
-The $M_A$ framework evades this by requiring the lattice to be \textbf{Amorphous} (Random) rather than Crystalline.
-
-\subsubsection*{Theorem 1.2 (Isotropic Averaging)}
+\begin{theorem}[Isotropic Averaging]
 For a Delaunay graph generated from a stochastic Poisson distribution, the effective path length approaches rotational invariance at macroscopic scales ($L \gg l_0$).
-
 \begin{equation}
     \lim_{N \to \infty} \mathcal{L} f(x) \approx \nabla^2 f(x)
 \end{equation}
+\end{theorem}
 
-While the photon performs a random walk at the micro-scale (The Jagged Path), the Graph Laplacian ($\mathcal{L}$) converges to the continuous Laplace-Beltrami operator ($\nabla^2$) at the macro-scale. The vacuum looks smooth to us for the same reason a sandy beach looks smooth from an airplane: the grains (lattice pitch $l_0$) are stochastic, and the signal is gyroscopically stabilized.
+While the photon performs a random walk at the micro-scale (The Jagged Path), the Graph Laplacian ($\mathcal{L}$) converges to the continuous Laplace-Beltrami operator ($\nabla^2$) at the macro-scale. The vacuum looks smooth to us for the same reason a sandy beach looks smooth from an airplane: the grains are stochastic and infinitesimally small.
 
-\textbf{Physical Result:} Light travels at the same speed in every direction. The vacuum looks smooth to us for the same reason a sandy beach looks smooth from an airplane: the grains (lattice pitch $l_0$) are stochastic and infinitesimally small.
+\subsection{Connectivity Analysis and Visualization}
+Unlike a crystalline lattice with a fixed coordination number (e.g., 6 for cubic), the vacuum substrate possesses a statistical distribution of connectivity. \citestart Monte Carlo analysis of $N=10,000$ nodes yields a mean coordination number $\langle k \rangle \approx 15.54$\cite{2307}\citeend.
 
-\subsection{Connectivity Analysis}
-Unlike a crystalline lattice with a fixed coordination number (e.g., 6 for cubic, 12 for FCC), the vacuum substrate possesses a statistical distribution of connectivity. Monte Carlo analysis of $N=10,000$ nodes yields a mean coordination number:
-\begin{equation}
-    \langle k \rangle \approx 15.54
-\end{equation}
-This high degree of connectivity ensures that the vacuum is "Over-Braced," providing the extreme mechanical stiffness required to support the propagation of transverse waves (light) at $c$ while minimizing dispersive loss.
+This high degree of connectivity ensures that the vacuum is "Over-Braced," providing the extreme mechanical stiffness required to support transverse waves (light) while minimizing dispersive loss.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{chapters/01_discrete_amorphous_manifold/simulations/ave_lattice_model.png}
+    \caption{\textbf{The Anatomy of the Vacuum.} A 3D simulation of the $M_A$ hardware. 
+    \textbf{Red Nodes:} The inductive centers of mass ($\mu_0$). 
+    \textbf{Cyan Edges:} The capacitive flux tubes ($\epsilon_0$) that carry photons. Note the stochastic "jagged" paths that average out to straight lines at macro scales. 
+    \textbf{Yellow Volume:} A single Voronoi cell, representing the effective metric volume of a node. The ratio of this volume to the edge length determines the geometric factor $\kappa \approx 0.437$.}
+    \label{fig:ave_lattice_model}
+\end{figure}
