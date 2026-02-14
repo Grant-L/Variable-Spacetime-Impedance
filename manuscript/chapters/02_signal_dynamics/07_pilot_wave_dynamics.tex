@@ -1,11 +1,11 @@
-\subsection{Simulation IV: Lattice Memory (The Double Slit)}
+\section{Simulation IV: Lattice Memory (The Double Slit)}
 \label{sec:pilot_wave_sim}
 
 The most persistent "mystery" of quantum mechanics is the Double Slit Experiment: how can a single particle create an interference pattern? Standard interpretation invokes acausal "superposition," claiming the particle physically passes through both slits simultaneously.
 
 Vacuum Engineering offers a strictly causal, hydrodynamic resolution: **The Particle goes through one slit; the Vacuum goes through both.**
 
-\subsubsection{The Hydrodynamic Wake Hypothesis}
+\subsection{The Hydrodynamic Wake Hypothesis}
 As established in Section 2.3, a particle moving through the $M_A$ lattice is not an isolated point but a topological defect coupled to the substrate. As it moves, it generates a "Wake" of lattice stress ($\phi_{wake}$) that propagates at the speed of light ($c$), faster than the particle ($v < c$).
 
 We simulated this "Pilot Wave" dynamics using a coupled walker-wave model on the discrete lattice. Figure \ref{fig:pilot_wave_mech} visualizes the distinct paths of the particle and its wake.
@@ -32,10 +32,21 @@ The process follows four deterministic steps:
     \label{fig:pilot_wave_result}
 \end{figure}
 
-\subsubsection{Resolution of the Measurement Problem}
-This simulation demystifies the "Collapse of the Wavefunction." The "Wavefunction" is simply the real, physical stress map of the vacuum hardware.
+\subsection{Measurement as Impedance Damping}
+Standard theory claims that observing a particle "collapses" the wavefunction. In AVE, measurement is defined as **Impedance Loading**. A detector is not a passive observer; it is a resistive load ($R_{load}$) coupled to the vacuum lattice.
+
+We simulated this "Measurement Effect" by placing a damping load at one of the slits (Figure \ref{fig:measurement_effect}).
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{chapters/02_signal_dynamics/simulations/double_slit_particle.png}
+    \caption{Simulation of the Measurement Effect. \textbf{Top Row (Coherent):} Without detectors, the vacuum wave passes through both slits, creating strong interference ridges. The particles "surf" these ridges into quantized fringes (Cyan Histogram). \textbf{Bottom Row (Measured):} A detector is placed at Slit 2, acting as an impedance load ($R_{load}$). This drains the local wave energy, destroying the interference ridges. Without the pilot wave gradient, the particles travel ballistically, forming two classical lumps (Orange Histogram). "Collapse" is simply hydrodynamic damping.}
+    \label{fig:measurement_effect}
+\end{figure}
+
 \begin{itemize}
-    \item \textbf{Before Measurement:} The vacuum stress is delocalized (Wave-like).
-    \item \textbf{During Measurement:} The particle is a localized knot (Particle-like).
+    \item \textbf{Coherent Mode (No Detector):} The vacuum wave passes through both slits. Constructive interference creates pressure ridges. Particles surfing these ridges land in quantized bands.
+    \item \textbf{Measured Mode (Detector Active):} The detector at Slit 2 acts as a resistor, absorbing the energy of the vacuum wave at that location. This removes the source of the interference pattern. Without the "Kick" from the second slit, the particle at the first slit travels ballistically.
 \end{itemize}
-The particle does not "know" about the other slit; the \textit{vacuum} knows. The particle simply follows the local pressure gradient of the substrate, which retains a "Lattice Memory" of the global geometry. This reproduces the statistical predictions of Quantum Mechanics without abandoning Local Realism.
+
+\textbf{Conclusion:} The "Collapse of the Wavefunction" is a mechanical consequence of **Impedance Mismatch**. You cannot measure a wave without draining its energy. By draining the pilot wave to gain information, the detector destroys the interference pattern that guided the particle.
