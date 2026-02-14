@@ -136,51 +136,72 @@ Variable-Spacetime-Impedance/
 │   │       └── archive/
 │   │
 │   ├── frontmatter/
-│   │   └── 00_title.tex
+│   │   ├── 00_title.tex
+│   │   └── 01_executive_summary.tex
 │   │
 │   ├── backmatter/
-│   │   └── 00_appendcies.tex
+│   │   ├── 00_appendcies.tex
+│   │   ├── 01_appendix_b_equations.tex
+│   │   └── 02_appendix_c_verification.tex
 │   │
 │   ├── structure/
-│   │   ├── commands.tex
-│   │   └── preamble.tex
+│   │   └── commands.tex
 │   │
 │   └── chapters/
+│       ├── 00_derivations/
+│       │   └── 01_derivations.tex
+│       │
 │       ├── 01_discrete_amorphous_manifold/
+│       │   ├── 00_fundamental_axioms.tex
 │       │   ├── 01_voronoi_vacuum.tex
 │       │   ├── 02_moduli_of_the_void.tex
 │       │   ├── 03_global_slew_rate.tex
-│       │   └── 04_saturation_limit.tex
+│       │   ├── 04_saturation_limit.tex
+│       │   ├── 05_constraints.tex
+│       │   ├── 06_breakdown_limit.tex
+│       │   └── simulations/
 │       │
 │       ├── 02_signal_dynamics/
 │       │   ├── 01_dielectric_lagrangian.tex
 │       │   ├── 02_quantization_as_bandwidth.tex
 │       │   ├── 03_pilot_wave.tex
-│       │   └── 04_measurement_affect.tex
+│       │   ├── 04_measurement_effect.tex
+│       │   ├── 05_dielectric_vacuum.tex
+│       │   ├── 05_photon_fluid_dynamics.tex
+│       │   ├── 06_simulated_rheology.tex
+│       │   ├── 07_pilot_wave_dynamics.tex
+│       │   └── simulations/
 │       │
 │       ├── 03_fermion_sector/
 │       │   ├── 01_fundamental_theorem_of_knots.tex
 │       │   ├── 02_electron.tex
 │       │   ├── 03_mass_hierarchy.tex
-│       │   └── 04_chirality_antimatter.tex
+│       │   ├── 04_chirality_antimatter.tex
+│       │   └── simulations/
 │       │
 │       ├── 04_baryon_sector/
 │       │   ├── 01_borromean_confinement.tex
 │       │   ├── 02_proton_mass.tex
-│       │   └── 03_neutron_decay.tex
+│       │   ├── 03_neutron_decay.tex
+│       │   ├── 04_spatial_flux_partitioning.tex
+│       │   └── simulations/
 │       │
-│       ├── 05_neutrino_star/
+│       ├── 05_neutrino_sector/
 │       │   ├── 01_twisted_unknot.tex
-│       │   └── 02_chiral_exlusion_principle.tex
+│       │   ├── 02_chiral_exclusion_principle.tex
+│       │   └── simulations/
 │       │
 │       ├── 06_electrodynamics_weak_interaction/
 │       │   ├── 01_coulombs_law.tex
-│       │   └── 02_weak_interaction.tex
+│       │   ├── 02_weak_interaction.tex
+│       │   ├── 03_derive_electromagnetism.tex
+│       │   └── simulations/
 │       │
 │       ├── 07_gravitation_metric_refraction/
 │       │   ├── 01_gravity_as_refractive_index.tex
 │       │   ├── 02_lensing_theorem.tex
-│       │   └── 03_equivalence_principle.tex
+│       │   ├── 03_equivalence_principle.tex
+│       │   └── 04_derive_ansatz.tex
 │       │
 │       ├── 08_generative_cosmology/
 │       │   ├── 01_genesis_rate.tex
@@ -191,23 +212,43 @@ Variable-Spacetime-Impedance/
 │       │   ├── 01_viscosity_term.tex
 │       │   ├── 02_galactic_rotation.tex
 │       │   ├── 03_bullet_cluster.tex
-│       │   └── 04_flyby_anomaly.tex
+│       │   ├── 04_flyby_anomaly.tex
+│       │   ├── 05_hubble_mond_unification.tex
+│       │   └── simulations/
 │       │
 │       ├── 10_vacuum_cfd/
 │       │   ├── 01_navier-stokes_vacuum.tex
 │       │   ├── 02_black_holes.tex
-│       │   └── 03_warp_mechanics.tex
+│       │   ├── 03_warp_mechanics.tex
+│       │   ├── 04_lid_driven_cavity.tex
+│       │   ├── 05_Simon_Says.tex
+│       │   └── simulations/
 │       │
-│       ├── 11_metric_engineering/
+│       ├── 11_applied_vacuum_engineering/
 │       │   ├── 01_stress_coefficient.tex
 │       │   ├── 02_metric_streamlining.tex
-│       │   └── 03_kinetic_inductance.tex
+│       │   ├── 03_kinetic_inductance.tex
+│       │   ├── 04_warp_aerodynamics.tex
+│       │   └── simulations/
 │       │
-│       └── 12_eperimental_falsification/
-│           ├── 01_falsification.tex
-│           ├── 02_neturino_parity_kill-switch.tex
-│           ├── 03_nyquist_limit.tex
-│           └── 04_metric_null-result.tex
+│       ├── 12_experimental_falsification/
+│       │   ├── 01_falsification.tex
+│       │   ├── 02_neutrino_parity_kill-switch.tex
+│       │   ├── 03_nyquist_limit.tex
+│       │   ├── 04_metric_null-result.tex
+│       │   ├── 05_existing_experimental_proof.tex
+│       │   └── simulations/
+│       │
+│       ├── 13_thermodynamic_cycle/
+│       │   ├── 01_intro.tex
+│       │   ├── 02_pre_geometric_melt.tex
+│       │   ├── 03_genesis_as_lattice_crystallization.tex
+│       │   ├── 04_black_holes_lattice_melts.tex
+│       │   └── simulations/
+│       │
+│       └── 99_ancient_vacuum_engineering/
+│           ├── 01_dielectric_inclusion_impedance_architechture.tex
+│           └── simulations/
 │
 ├── notebooks/
 │   ├── 00_template.ipynb
@@ -225,7 +266,8 @@ Variable-Spacetime-Impedance/
 ├── scripts/
 │   ├── create_file.py
 │   ├── generate_assets.py
-│   └── generate_simulations.py
+│   ├── generate_simulations.py
+│   └── verify_universe.py
 │
 ├── simulations/
 │   └── (simulation scripts organized by chapter)
