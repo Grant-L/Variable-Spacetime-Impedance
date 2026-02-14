@@ -18,16 +18,14 @@ Where $\nu$ represents the kinematic viscosity of the lattice, governed by the F
 The following Python implementation solves the discretized vacuum equations using the Pressure-Poisson method.
 
 % AUTOMATED IMPORT: Pulls code from the simulations folder
-\lstinputlisting[language=Python, caption=VCFD Solver (simulations/09\_vacuum\_cfd/run\_lid\_driven\_cavity.py), basicstyle=\ttfamily\footnotesize, breaklines=true]{../simulations/09_vacuum_cfd/run_lid_driven_cavity.py}
+\lstinputlisting[language=Python, caption=VCFD Solver (simulations/run\_lid\_driven\_cavity.py), basicstyle=\ttfamily\footnotesize, breaklines=true]{chapters/10_vacuum_cfd/simulations/run_lid_driven_cavity.py}
 
 \subsection{Results: Vortex Genesis}
 The simulation results (Figure \ref{fig:lid_cavity}) demonstrate that even in a simple geometric enclosure, shear stress induces a stable central vortex. 
 
-
-
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.9\textwidth]{lid_driven_cavity.png}
+    \includegraphics[width=0.9\textwidth]{chapters/10_vacuum_cfd/simulations/lid_driven_cavity.png}
     \caption{\textbf{VCFD Lid-Driven Cavity Result.} The streamlines (white) show the formation of a stable central vortex driven by the moving top boundary. In AVE theory, this rotational stability at high Reynolds numbers is the precursor to \textbf{Topological Matter formation}.}
     \label{fig:lid_cavity}
 \end{figure}

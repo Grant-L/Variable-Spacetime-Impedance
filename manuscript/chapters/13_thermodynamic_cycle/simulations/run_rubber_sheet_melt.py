@@ -111,7 +111,7 @@ def simulate_ave_rubber_sheet():
     ax.text2D(0.02, 0.02, info_text, transform=ax.transAxes, color='white', fontsize=12, 
               bbox=dict(facecolor='black', edgecolor='#ff0055', alpha=0.8, pad=10))
 
-    filepath = os.path.join(OUTPUT_DIR, "ave_rubber_sheet_melt.png")
+    filepath = os.path.join(OUTPUT_DIR, "rubber_sheet_melt.png")
     plt.savefig(filepath, facecolor=fig.get_facecolor(), bbox_inches='tight')
     print(f"Simulation Complete. Saved: {filepath}")
     plt.close()
