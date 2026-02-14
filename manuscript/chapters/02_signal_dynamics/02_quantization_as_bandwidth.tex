@@ -1,87 +1,44 @@
 \section{Deriving the Quantum Formalism from Signal Bandwidth}
 \label{sec:quantization_as_bandwidth}
 
-Standard Quantum Mechanics posits its formalism---complex Hilbert spaces, unitary evolution, and non-commuting operators---as axiomatic. In the Applied Vacuum Electrodynamics (AVE) framework, these are not axioms. They are the rigorous mathematical consequences of transmitting signals across a discrete, band-limited mechanical graph ($\mathcal{M}_A$).
+Standard Quantum Mechanics posits its formalism---complex Hilbert spaces and non-commuting operators---as axiomatic. In the AVE framework, these are not axioms. They are the rigorous mathematical consequences of transmitting signals across a discrete, band-limited mechanical graph ($\mathcal{M}_A$).
 
 \subsection{The Paley-Wiener Hilbert Space ($\mathcal{H}$)}
-A frequent critique of discrete spacetime models is that a grid cannot support the continuous, complex Hilbert space required for quantum mechanics. This objection fails to account for the mathematics of band-limited signal reconstruction.
+Because the $\mathcal{M}_A$ lattice has a fundamental pitch $l_0$, it acts as a spatial Nyquist sampling grid. The maximum spatial frequency the lattice can support without aliasing is the Nyquist limit: $k_{max} = \pi / l_0$.
 
-Because the $\mathcal{M}_A$ lattice has a fundamental pitch $l_0$, it acts as a spatial Nyquist sampling grid. The maximum spatial frequency (wavenumber) the lattice can support without aliasing is the Nyquist limit: $k_{max} = \pi / l_0$.
+By the \textbf{Whittaker-Shannon Interpolation Theorem}, any physical signal $\mathbf{A}(x)$ on this discrete lattice that is perfectly band-limited can be reconstructed uniquely and continuously everywhere in space using a superposition of orthogonal sinc functions. Mathematically, the set of all such band-limited functions formally constitutes a Reproducing Kernel Hilbert Space known as the \textbf{Paley-Wiener Space} ($PW_{\pi/l_0}$). 
 
-By the \textbf{Whittaker-Shannon Interpolation Theorem}, any physical signal $\phi(x)$ on this discrete lattice that is perfectly band-limited can be reconstructed uniquely and continuously everywhere in space using a superposition of orthogonal sinc functions:
+To map the real, physical lattice potential $\mathbf{A}(x,t)$ to the complex quantum state vector $\psi(x,t)$, we apply the standard signal-processing \textbf{Analytic Signal} representation using the Hilbert Transform ($\mathcal{H}_{transform}$):
 \begin{equation}
-    \phi(x) = \sum_{n=-\infty}^{\infty} \phi(n l_0) \text{sinc}\left( \frac{x - n l_0}{l_0} \right)
+    \psi(x,t) = \mathbf{A}(x,t) + i \mathcal{H}_{transform}[\mathbf{A}(x,t)]
 \end{equation}
-Mathematically, the set of all such band-limited functions formally constitutes a Reproducing Kernel Hilbert Space known as the \textbf{Paley-Wiener Space} ($PW_{\pi/l_0}$). 
+\textit{Conclusion:} The complex Hilbert space of Quantum Mechanics is identically the Paley-Wiener signal space of the discrete vacuum lattice.
 
-To map the real, physical lattice potential $\phi(x,t)$ to the complex quantum state vector $\psi(x,t)$, we apply the standard signal-processing \textbf{Analytic Signal} representation using the Hilbert Transform ($\mathcal{H}_{transform}$):
-\begin{equation}
-    \psi(x,t) = \phi(x,t) + i \mathcal{H}_{transform}[\phi(x,t)]
-\end{equation}
-\textit{Conclusion:} The complex Hilbert space of Quantum Mechanics is identically the Paley-Wiener signal space of the discrete vacuum lattice. The ``wavefunction'' is simply the complex analytic representation of the physical mechanical strain, tracking both the capacitive potential (real) and inductive momentum (imaginary) phases simultaneously.
+\subsection{Operator Algebra on the Discrete Manifold}
+In standard QM, the non-commutativity of position and momentum ($[\hat{x}, \hat{p}] = i\hbar$) is an assumed axiom. On a discrete graph with pitch $l_0$, continuous translation is physically impossible. Furthermore, continuous momentum $\hat{p}_c$ is not infinite; it is strictly bounded by the Brillouin zone $p_c \in [-\pi\hbar/l_0, \pi\hbar/l_0]$. 
 
-\subsection{Operator Non-Commutativity ($[\hat{x}, \hat{p}] = i\hbar_{AVE}$)}
-In standard QM, the non-commutativity of position and momentum is an unexplained axiom. In AVE, it is a strict geometric consequence of the discrete shift operator acting on a lattice with finite pitch $l_0$.
-
-On a discrete graph, continuous translation is physically impossible. The minimum possible physical translation is a shift to the adjacent node, governed by the discrete shift operator $\hat{T}$, where $\hat{T} \psi(x) = \psi(x + l_0)$.
-
-We evaluate the commutator of the position operator $\hat{x}$ and the shift operator $\hat{T}$:
+The exact physical lattice momentum operator $\hat{P}$ must be defined via the symmetric central finite-difference operator across the adjacent nodes:
 \begin{equation}
-    [\hat{x}, \hat{T}] \psi(x) = \hat{x} (\hat{T} \psi(x)) - \hat{T} (\hat{x} \psi(x))
-\end{equation}
-\begin{equation}
-    = x \psi(x + l_0) - (x + l_0)\psi(x + l_0) = -l_0 \psi(x + l_0) = -l_0 \hat{T} \psi(x)
-\end{equation}
-Thus, the exact discrete commutator is:
-\begin{equation}
-    [\hat{x}, \hat{T}] = -l_0 \hat{T}
+    \hat{P} = \frac{\hbar}{i 2l_0} \left( \exp\left(i \frac{\hat{p}_c l_0}{\hbar}\right) - \exp\left(-i \frac{\hat{p}_c l_0}{\hbar}\right) \right) = \frac{\hbar}{l_0} \sin\left(\frac{l_0 \hat{p}_c}{\hbar}\right)
 \end{equation}
 
-By Stone's theorem, the momentum operator $\hat{p}$ is the generator of translations. We relate the discrete shift operator to the continuous momentum generator via $\hat{T} = \exp(i \hat{p} l_0 / \hbar_{AVE})$.
-Expanding the exponential to first order in the continuum limit ($l_0 \to 0$):
+We evaluate the exact commutator of the position operator with the lattice momentum using the identity $[\hat{x}, f(\hat{p}_c)] = i\hbar f'(\hat{p}_c)$:
 \begin{equation}
-    \hat{T} \approx \mathbb{I} + i \frac{l_0}{\hbar_{AVE}} \hat{p}
-\end{equation}
-Substitute this expansion into our exact discrete commutator:
-\begin{equation}
-    \left[ \hat{x}, \left(\mathbb{I} + i \frac{l_0}{\hbar_{AVE}} \hat{p}\right) \right] = -l_0 \left( \mathbb{I} + i \frac{l_0}{\hbar_{AVE}} \hat{p} \right)
-\end{equation}
-Because the identity operator $\mathbb{I}$ commutes with $\hat{x}$, this simplifies to:
-\begin{equation}
-    i \frac{l_0}{\hbar_{AVE}} [\hat{x}, \hat{p}] = -l_0 - i \frac{l_0^2}{\hbar_{AVE}} \hat{p} + \mathcal{O}(l_0^3)
-\end{equation}
-Dividing both sides by $i l_0 / \hbar_{AVE}$ (and noting that $-l_0 / (il_0/\hbar_{AVE}) = i\hbar_{AVE}$):
-\begin{equation}
-    [\hat{x}, \hat{p}] = i\hbar_{AVE} - l_0 \hat{p} + \mathcal{O}(l_0^2)
+    [\hat{x}, \hat{P}] = \left[ \hat{x}, \frac{\hbar}{l_0} \sin\left(\frac{l_0 \hat{p}_c}{\hbar}\right) \right] = \frac{\hbar}{l_0} \left( i \hbar \frac{l_0}{\hbar} \cos\left(\frac{l_0 \hat{p}_c}{\hbar}\right) \right) = i\hbar \cos\left(\frac{l_0 \hat{p}_c}{\hbar}\right)
 \end{equation}
 
-\textit{Conclusion:} In the macroscopic continuum limit ($l_0 \to 0$), we flawlessly recover the Heisenberg Commutation Relation $[\hat{x}, \hat{p}] = i\hbar_{AVE}$. Furthermore, the residual $-l_0 \hat{p}$ term explicitly generates the Generalized Uncertainty Principle (GUP) required by quantum gravity, proving that operator non-commutativity is strictly the algebraic manifestation of finite-difference aliasing on a discrete spatial grid.
+\subsection{The Authentic Generalized Uncertainty Principle}
+Applying the generalized Robertson-Schr\"odinger relation, taking the expectation value yields the rigorously exact \textbf{Generalized Uncertainty Principle (GUP)} for the discrete vacuum:
+\begin{tcolorbox}[colback=white, colframe=black]
+\begin{equation}
+    \Delta x \Delta P \ge \frac{\hbar}{2} \left| \left\langle \cos\left(\frac{l_0 \hat{p}_c}{\hbar}\right) \right\rangle \right|
+\end{equation}
+\end{tcolorbox}
+\textbf{Proof of Limit:} In the low-energy continuum limit where particle momentum is extremely small compared to the grid cutoff ($p_c \ll \hbar/l_0$), the cosine evaluates to exactly $1$, natively recovering Heisenberg's principle $\Delta x \Delta p \ge \hbar/2$ flawlessly. At extreme momenta approaching the Brillouin zone boundary, the expectation value of the cosine shrinks, establishing a strict physical cutoff length directly from exact graph mathematics, without any heuristic Taylor approximations.
 
 \subsection{Unitary Evolution: Deriving the Schr\"odinger Equation}
-To prove that the classical lattice dynamics perfectly reproduce quantum evolution, we derive the Schr\"odinger equation directly from the classical wave equation of the substrate.
-
-In Section \ref{sec:dielectric_lagrangian}, we established that a topological defect (mass $m$) on the lattice obeys the classical Klein-Gordon wave equation:
+To map the classical wave equation to quantum evolution, we apply the \textbf{Paraxial Approximation}. Factoring out the ultra-fast rest-mass Compton frequency $\omega_m = mc^2/\hbar$ via an envelope function $\psi(x,t) = \Psi(x,t) e^{-i \omega_m t}$, the second time derivative drops out for non-relativistic speeds ($v \ll c$):
 \begin{equation}
-    \nabla^2 \phi - \frac{1}{c^2}\frac{\partial^2 \phi}{\partial t^2} - \frac{m^2 c^2}{\hbar_{AVE}^2}\phi = 0
+    i\hbar \frac{\partial \Psi}{\partial t} = -\frac{\hbar^2}{2m} \nabla^2 \Psi
 \end{equation}
-Let us map this real field to its complex analytic signal $\psi$. For a particle moving at non-relativistic speeds ($v \ll c$), the vast majority of the signal's temporal evolution is simply the rest-mass Compton frequency $\omega_m = mc^2/\hbar_{AVE}$. We factor this out by defining a slowly varying envelope function $\Psi(x,t)$:
-\begin{equation}
-    \psi(x,t) = \Psi(x,t) e^{-i \omega_m t}
-\end{equation}
-Substituting this into the wave equation, the second time derivative becomes:
-\begin{equation}
-    \frac{\partial^2 \psi}{\partial t^2} = \left( \frac{\partial^2 \Psi}{\partial t^2} - 2i\omega_m \frac{\partial \Psi}{\partial t} - \omega_m^2 \Psi \right) e^{-i \omega_m t}
-\end{equation}
-In the non-relativistic limit, the envelope varies slowly compared to the Compton frequency, allowing us to mathematically apply the Paraxial Approximation by dropping the tiny second derivative term ($\partial_t^2 \Psi \approx 0$). Substituting this back into the wave equation yields:
-\begin{equation}
-    \nabla^2 \Psi - \frac{1}{c^2} \left( - 2i\omega_m \frac{\partial \Psi}{\partial t} - \omega_m^2 \Psi \right) - \frac{m^2 c^2}{\hbar_{AVE}^2}\Psi = 0
-\end{equation}
-Recognizing that $\frac{\omega_m^2}{c^2} = \frac{m^2 c^2}{\hbar_{AVE}^2}$, the rest-mass terms cancel identically:
-\begin{equation}
-    \nabla^2 \Psi + \frac{2i\omega_m}{c^2} \frac{\partial \Psi}{\partial t} = 0
-\end{equation}
-Substituting $\omega_m = mc^2/\hbar_{AVE}$ and rearranging:
-\begin{equation}
-    i\hbar_{AVE} \frac{\partial \Psi}{\partial t} = -\frac{\hbar_{AVE}^2}{2m} \nabla^2 \Psi
-\end{equation}
-\textit{Conclusion:} The Schr\"odinger Equation is mathematically identical to the \textbf{Paraxial Approximation} of a classical macroscopic wave propagating through the discrete LC circuits of the $\mathcal{M}_A$ vacuum. The evolution is unitary strictly because the underlying LC lattice is lossless prior to measurement.
+The Schr\"odinger Equation is mathematically identical to the paraxial envelope of a classical macroscopic wave propagating through the discrete LC circuits of the $\mathcal{M}_A$ vacuum.

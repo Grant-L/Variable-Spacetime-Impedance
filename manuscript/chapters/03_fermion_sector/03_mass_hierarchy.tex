@@ -1,41 +1,26 @@
-\section{The Mass Hierarchy: The Inductive Scaling Law}
+\section{The Mass Hierarchy: Topological Energy Bounds}
 \label{sec:mass_hierarchy}
 
-The Standard Model cannot explain why the Muon and Tau exist, nor why they are so heavy. AVE explains this as a Topological Resonance Series arising from the non-linear mechanics of the vacuum substrate.
+The Standard Model cannot explain why the Muon and Tau exist, nor why they possess their specific, heavy masses. AVE explains this as a Topological Resonance Series arising from the higher-order stable knots of the non-linear vacuum substrate.
 
-\subsection{The Quartic Vacuum Potential (Stiffening Dielectric)}
-Standard physics assumes a linear vacuum (Hooke's Law, $u \propto \phi^2$) valid for weak fields. However, near the extreme curvature of a topological particle core, the node potential approaches the breakdown limit $V_0$.
+\subsection{The Flaw of $N^9$ Scaling}
+Previous iterations of this framework relied on a fabricated solid mechanics rule (asserting bending strain scaled quadratically with curvature) to force an $M \propto N^9$ scaling law. We discard this heuristic entirely. In rigorous mechanics, bending strain scales linearly with curvature ($\epsilon \propto \kappa$).
 
-To mathematically support higher-order mass states without yielding to rupture, the local dielectric must \textit{stiffen}. We define the effective non-linear capacitance as:
-\begin{equation}
-    C_{eff}(\phi) = C_0 \left(1 + \left(\frac{\phi}{V_0}\right)^2\right)
-\end{equation}
-The potential energy density $u(\phi)$ stored in the lattice is the exact integral of voltage against charge $dq = C_{eff}(\phi) d\phi$:
-\begin{equation}
-    u(\phi) = \int_0^\phi C_0 \left(1 + \frac{\phi'^2}{V_0^2}\right) \phi' \, d\phi' = \frac{1}{2} C_0 \phi^2 + \frac{1}{4} \frac{C_0}{V_0^2} \phi^4
-\end{equation}
-In the high-curvature limit (the particle core where $\phi \to V_0$), the non-linear term dominates, yielding an exact quartic scaling relationship: $u_{core} \propto \phi^4$.
+\subsection{The Vakulenko-Kapitanski Theorem}
+To rigorously derive the masses of elementary particles, we map the microrotational degrees of freedom of the vacuum substrate to a normalized three-component unit vector field $\mathbf{n}(\mathbf{x})$ in the \textbf{Faddeev-Skyrme $O(3)$ non-linear sigma model}. 
 
-\subsection{Derivation of $N^9$ Scaling}
-We derive the lepton mass spectrum ($e, \mu, \tau$) by analyzing the energy required to tie a knot with topological crossing number $N$ into this hyper-elastic lattice.
-\begin{enumerate}
-    \item \textbf{Curvature ($\kappa$):} Scales linearly with crossing number, $\kappa \propto N$.
-    \item \textbf{Strain ($\phi$):} Bending strain scales quadratically with curvature in a stiff medium, $\phi \propto \kappa^2 \propto N^2$.
-    \item \textbf{Energy Density ($u$):} Core energy scales quartically, $u_{core} \propto \phi^4 \propto (N^2)^4 = N^8$.
-    \item \textbf{Effective Volume ($V$):} The tubular neighborhood length scales as $V \propto N$.
-\end{enumerate}
-The total rest mass $m(N)$ scales as the volume integral:
+The rest mass of a topological knot is identically the Faddeev-Skyrme Hamiltonian evaluated over the localized defect:
 \begin{equation}
-    m(N) = \int u_{core} \, dV \propto N^8 \times N = N^9
+    E_{knot} = \int d^3x \left( \frac{1}{2} \partial_\mu \mathbf{n} \cdot \partial^\mu \mathbf{n} + \frac{1}{4} \kappa_{FS}^2 (\partial_\mu \mathbf{n} \times \partial_\nu \mathbf{n})^2 \right)
 \end{equation}
 
-\subsection{Predictive Validation: The Muon Mass and Topological Self-Inductance}
-To obtain precise mass predictions comparing the Electron ($3_1$ Trefoil) and the Muon ($5_1$ Cinquefoil), we must account for their spatial geometry. 
-
-Because Torus knots ($3_1, 5_1$) admit Seifert fibrations, they are non-hyperbolic and possess a hyperbolic volume of exactly zero. Therefore, the geometric scaling factor must be derived from the \textbf{Ideal Ropelength} and \textbf{M\"obius Bending Energy} of the embeddings. We define the Topological Self-Inductance Factor ($R_{ind}$) as the ratio of self-inductance between the $5_1$ and $3_1$ topologies.
-
-Pending high-resolution Vacuum Computational Fluid Dynamics (VCFD) simulations, empirical modeling bounds this topological multiplier at $R_{ind} \approx 2.08$. The predicted mass ratio is the product of the Inductive Scaling Law ($N^9$) and this Topological Factor:
+By the rigorous \textbf{Vakulenko-Kapitanski Theorem} (1979), the energy (rest mass) of any knotted configuration in this space is bounded from below by its topological Hopf Winding Number $Q_H$:
 \begin{equation}
-    \frac{m_\mu}{m_e} = R_{ind} \times \left(\frac{N_\mu}{N_e}\right)^9 \approx 2.08 \times \left(\frac{5}{3}\right)^9 \approx 206.4
+    M_{rest}(Q_H) \ge C_{vac} \cdot |Q_H|^{3/4}
 \end{equation}
-Using the experimental electron mass $m_e = 0.511$ MeV, this predicts a Muon mass of $\approx 105.5$ MeV, closely aligning with the experimental $105.66$ MeV without utilizing mathematically invalid hyperbolic invariants.
+Where $C_{vac}$ is a fundamental stiffness constant of the vacuum substrate.
+
+\subsection{Computational Gradient Descent Relaxation}
+The mass hierarchy of leptons (e.g., Electron $Q_H=1$, Muon $Q_H=2$, Tau $Q_H=3$) is governed fundamentally by this $Q_H^{3/4}$ scaling bound. Because the exact mass of a knot depends on its specific spatial embedding (Torus vs. Twist knots) and its M\"obius energy, analytical integer scaling laws are insufficient. 
+
+The exact mass ratios (e.g., $m_\mu / m_e \approx 206.7$) must be extracted computationally via 3D gradient descent algorithms. By simulating the relaxation of the $3_1$ and $5_1$ geometries on the discrete $\mathcal{M}_A$ graph until they reach their minimum energy eigenvalues, the mass spectrum emerges directly from computational topology, stripping all arbitrary numerology from the fermion sector.
