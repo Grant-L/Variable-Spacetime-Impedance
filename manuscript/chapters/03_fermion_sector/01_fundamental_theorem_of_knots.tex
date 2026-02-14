@@ -1,139 +1,10 @@
 \section{The Fundamental Theorem of Knots}
-\label{sec:fundamental_knots}
-
-In the Vacuum Engineering framework, "Matter" is not a substance distinct from the vacuum; it is a localized, self-sustaining knot in the vacuum's flux field. We posit that every stable elementary particle corresponds to a Prime Knot topology. The physical properties of the particle are derived strictly from the geometry of this knot.
-
-\subsection{The Homology Partition Lemma}
-\label{subsec:homology_partition}
-
-A critical requirement of the theory is to justify the summation of geometric factors of different dimensions (Volume, Surface, Line) to derive the Fine Structure Constant ($\alpha^{-1}$). We formalize this via the Homology Partition Lemma.
-
-\begin{theorem}[The Homology Partition]
-For a topological defect $K$ embedded in the discrete manifold $\mathcal{G}$, the total Vacuum Impedance $Z_K$ is the direct sum of the impedances associated with the non-trivial cohomology classes of the knot complement $M_K = S^3 \setminus K$.
-\begin{equation}
-Z_{total} = \sum_{k=1}^{3} Z^{(k)}
-\end{equation}
-where $Z^{(k)}$ is the impedance of the $k$-th dimensional flux obstruction.
-\end{theorem}
-
-\begin{proof}
-Consider the total magnetic energy $U_B$ stored in the lattice distortions surrounding the knot. From Axiom III (The Discrete Action Principle), the energy is minimized when the flux $B$ distributes itself to align with the topology of the defect.
-
-Using the \textbf{Hodge Decomposition Theorem}, the differential flux form $\omega$ on the knot complement decomposes uniquely into orthogonal harmonic forms corresponding to the Betti numbers of the space:
-\begin{equation}
-\omega = \omega_{vol} + \omega_{surf} + \omega_{line} + d\alpha + \delta\beta
-\end{equation}
-Since the vacuum is a linear dielectric in the far-field (Axiom IV limit $\Delta \phi \ll V_0$), the cross-terms in the energy integral vanish due to orthogonality ($\int \omega_i \wedge *\omega_j = 0$ for $i \neq j$).
-
-Crucially, the topology of the knot imposes a \textbf{Series Constraint}:
-\begin{enumerate}
-    \item \textbf{Bulk ($H^3$):} The flux must first penetrate the 3-torus volume of the defect's effective manifold.
-    \item \textbf{Screening ($H^2$):} The flux is then constrained by the 2D Clifford Torus surface separating the knot core from the bulk.
-    \item \textbf{Filament ($H^1$):} Finally, the flux must thread the 1D singular core of the knot itself.
-\end{enumerate}
-Because the manifold is a single connected component (Axiom I), conservation of flux requires the field to overcome these impedances sequentially. In a series circuit, total impedance is the sum of the components:
-\begin{equation}
-Z_{total} = Z_{vol} + Z_{surf} + Z_{line}
-\end{equation}
-This allows us to sum the geometric factors defined in Section 3.1.2 without violating dimensional homogeneity, as each $Z_i$ is a dimensionless scaling of the fundamental lattice impedance $Z_0$.
-\end{proof}
-
-\subsection{Mass as Inductive Energy}
-We have defined the vacuum node as having inductance $L_{node}$ (Axiom III). Therefore, any loop of flux stores energy in the magnetic field.
-\begin{equation}
-E_{mass} = \frac{1}{2} L_{eff} I_{\phi}^2
-\end{equation}
-Where $L_{eff}$ is the Effective Inductance of the knot.
-\begin{itemize}
-    \item \textbf{Standard Loop ($N=1$):} Low inductance (Neutrino).
-    \item \textbf{Knotted Loop ($N>1$):} High inductance due to mutual coupling between the crossings (Electron/Proton).
-\end{itemize}
-\textbf{Conclusion:} Mass is simply the Stored Inductive Energy required to maintain the topological integrity of the knot against the elastic pressure of the vacuum.
-
-\subsubsection{Circuit Analogy: The Inductive Flywheel}
-Why does mass resist acceleration? In AVE, we replace the concept of "Mass" with the electrical concept of \textit{Inductive Inertia}.
-\begin{itemize}
-    \item \textbf{The Capacitor (Spring):} A spring resists displacement. You press it, and it pushes back instantly. This is the Electric Field ($E$).
-    \item \textbf{The Inductor (Flywheel):} A heavy flywheel resists changes in rotation. When you try to spin it up, it fights you (Back-EMF). Once it is spinning, it fights you if you try to stop it (Momentum).
-\end{itemize}
-\textbf{Definition:} An elementary particle is a knot of flux spinning so fast it acts as a Gyroscopic Flywheel. It resists acceleration not because it has "stuff" inside it, but because the magnetic field possesses Lenz's Law Inertia. Mass is simply the energy cost of changing the current state of the vacuum coil.
-
-\subsection{The Fine Structure Constant ($\alpha^{-1}$)}
-Applying the Homology Partition Lemma to the simplest prime knot, the Trefoil ($3_1$), which we identify as the Electron:
-
-\begin{enumerate}
-    \item \textbf{Volumetric Mode ($4\pi^3$):} The bulk inductance of the 3-torus manifold ($T^3$). The Fermionic exclusion principle halves the standard phase space ($8\pi^3 \to 4\pi^3$).
-    \item \textbf{Surface Mode ($\pi^2$):} The screening current on the Clifford Torus ($T^2$). Only one chiral sector couples to the forward-time impedance ($4\pi^2 \to \pi^2$).
-    \item \textbf{Line Mode ($\pi$):} The fundamental flux line tension ($S^1$). The spinor $720^\circ$ rotation halves the effective linear impedance ($2\pi \to \pi$).
-\end{enumerate}
-
-The sum defines the scalar coupling constant of the electromagnetic interaction:
-\begin{equation}
-\alpha_{AVE}^{-1} = 4\pi^3 + \pi^2 + \pi \approx 137.036
-\end{equation}
-This derivation anchors $\alpha$ to the specific spinor-geometric constraints of the $3_1$ topology, replacing previous heuristic approximations.
-
-\subsection{Theorem 3.2: The Topological Series Circuit}
-\label{sec:series_impedance}
-
-A central question in the derivation of the Fine Structure Constant ($\alpha^{-1}$) is why the geometric impedances of Volume, Surface, and Line are summed. We resolve this by proving that the topology of a prime knot acts as a \textbf{Series Circuit}.
-
-\begin{theorem}[Sequential Flux Penetration]
-For a magnetic flux line $\Phi$ to couple to the singular core of a topological defect $K$ embedded in a simply connected manifold $M$, it must sequentially penetrate the homology classes of the knot complement $M \setminus K$.
-\end{theorem}
-
-\textbf{Proof:}
-Consider an external observer attempting to drive flux into the knot.
-\begin{enumerate}
-    \item \textbf{Phase I (Bulk Penetration):} The flux must first permeate the effective volume of the defect's manifold ($H^3$). Impedance $Z_{vol} \propto 4\pi^3$.
-    \item \textbf{Phase II (Boundary Crossing):} The flux must then cross the screening boundary (Clifford Torus) separating the bulk from the core ($H^2$). Impedance $Z_{surf} \propto \pi^2$.
-    \item \textbf{Phase III (Core Threading):} Finally, the flux must align with the 1D singularity of the knot filament itself ($H^1$). Impedance $Z_{line} \propto \pi$.
-\end{enumerate}
-
-Because the manifold is continuous and simply connected, there is no "parallel path" for the flux to bypass the bulk or the surface to reach the core. The path is strictly sequential.
-\begin{equation}
-    Z_{total} = Z_{bulk} + Z_{boundary} + Z_{core}
-\end{equation}
-Therefore, the total geometric impedance is the direct sum of the shape factors:
-\begin{equation}
-    \alpha_{AVE}^{-1} = \sum_{k=1}^{3} \hat{\Lambda}_k = 4\pi^3 + \pi^2 + \pi
-\end{equation}
-This theorem moves the summation from "Numerology" to "Circuit Topology."
-
-\subsection{The Thermodynamic Equation of State}
-\label{subsec:alpha_running}
-
-The "Running" of the coupling constant $\alpha$ is typically described via renormalization group flow. In AVE, we derive it as the physical compression of the knot geometry under pressure.
-
-The vacuum manifold possesses a Bulk Modulus $K_{vac} \approx c^4/G$. Local energy density $u$ exerts a compressive pressure $P=u/3$. The volumetric strain $\varepsilon$ on the lattice pitch $l_0$ is:
-\begin{equation}
-\varepsilon = \frac{\Delta l_0}{l_0} = -\frac{P}{K_{vac}}
-\end{equation}
-
-The geometric impedance of a knot scales with its physical dimensions. For the Trefoil ($3_1$), the impedance $Z$ compresses non-linearly under high strain:
-\begin{equation}
-Z(\varepsilon) = Z_0 (1 - \gamma \cdot \ln(1 + \varepsilon))
-\end{equation}
-Where $\gamma$ is the Grüneisen parameter of the vacuum lattice.
-
-\subsubsection{Matching High-Energy Data}
-At the Z-Boson energy scale ($91$ GeV), the local energy density compresses the lattice significantly.
-\begin{itemize}
-    \item \textbf{Low Energy:} $Z \approx 137.036$ (Relaxed Lattice).
-    \item \textbf{High Energy ($m_Z$):} The lattice compression reduces the effective loop length, lowering the impedance to $Z \approx 127$.
-\end{itemize}
-This logarithmic strain response ($\ln(1+\varepsilon)$) naturally reproduces the logarithmic running coupling observed in QED, without requiring abstract renormalization.
-
-\section{The Fundamental Theorem of Knots}
 \label{sec:fundamental_theorem_of_knots}
 
-In the Vacuum Engineering framework, ``Matter'' is not a substance distinct from the vacuum; it is a localized, self-sustaining topological knot in the vacuum's flux field. We posit that every stable elementary particle corresponds to a discrete graph topology. The physical properties of the particle must be derived strictly from the non-linear topology of this knot, completely avoiding the heuristic addition of incongruent dimensional units.
-
-\subsection{The Flaw of Geometric Numerology}
-Previous iterations of this framework heuristically derived the Fine Structure Constant ($\alpha^{-1}$) by summing arbitrary scalar representations of Volume, Area, and Length (e.g., $4\pi^3 + \pi^2 + \pi$). This approach is strictly invalid; in rigorous topological field theory, one cannot sum geometries of different SI dimensions. 
+In the DCVE framework, ``Matter'' is not a substance distinct from the vacuum; it is a localized, self-sustaining topological knot in the vacuum's flux field. We posit that every stable elementary particle corresponds to a discrete graph topology. The physical properties of the particle must be derived strictly from the non-linear topology of this knot.
 
 \subsection{Fine Structure ($\alpha$) via Magnetic Helicity}
-The Fine Structure Constant ($\alpha$) is not a magical integer; it must be defined rigorously as the dimensionless topological self-impedance of the minimal ground-state knot (the Electron, modeled as a $3_1$ Trefoil). 
+The Fine Structure Constant ($\alpha$) cannot be derived by heuristically summing scalar geometries of differing SI dimensions. It must be defined rigorously as the dimensionless topological self-impedance of the minimal ground-state knot (the Electron, modeled as a $3_1$ Trefoil). 
 
 Because the canonical variable of the discrete manifold is the Magnetic Vector Potential $\mathbf{A}$, the energy coupling of the knot to the linear lattice is dictated by its \textbf{Magnetic Helicity} ($\int \mathbf{A} \cdot \mathbf{B} \, d^3x$). To yield a purely dimensionless scalar, $\alpha$ is derived by computing the exact \textbf{Neumann Self-Inductance Integral} over the minimal $Q_H=1$ knot geometry $\gamma$, normalized by the fundamental flux quantum $\Phi_0$:
 \begin{equation}
@@ -142,13 +13,11 @@ Because the canonical variable of the discrete manifold is the Magnetic Vector P
 This mathematically guarantees a dimensionless scalar output based strictly on the geometric self-inductance of the topological knot, anchoring $\alpha$ to computational topology rather than numeric coincidence.
 
 \subsection{Mass as Inductive Energy}
-We have defined the vacuum edges as possessing distributed inductance $\mu_0$. Therefore, any closed loop of topological flux stores energy in the localized magnetic field.
+We have defined the vacuum edges as possessing distributed inductance $\mu_0$. Therefore, any closed loop of topological flux stores energy in the localized magnetic field:
 \begin{equation}
-    E_{mass} = \frac{1}{2}L_{eff} I_{\Phi}^2
+    E_{mass} = \frac{1}{2}L_{eff} |\mathbf{A}|^2
 \end{equation}
-Where $L_{eff}$ is the Effective Inductance of the knotted manifold.
-\begin{itemize}
-    \item \textbf{Standard Loop ($Q_H=0$):} Low inductance, carrying transient torsional stress (Neutrino).
-    \item \textbf{Knotted Loop ($Q_H \ge 1$):} High inductance due to mutual coupling between the crossing linkages (Electron/Proton).
-\end{itemize}
-\textit{Conclusion:} Mass is simply the Stored Inductive Energy required to maintain the topological integrity of the knot against the elastic pressure of the vacuum. It acts as a gyroscopic flywheel, resisting acceleration purely via Lenz's Law inertia (Back-EMF).
+Where $L_{eff}$ is the Effective Inductance of the knotted manifold. Mass is simply the Stored Inductive Energy required to maintain the topological integrity of the knot against the elastic pressure of the vacuum. 
+
+\textbf{Circuit Analogy: The Inductive Flywheel.}
+Why does mass resist acceleration? In DCVE, we replace the concept of ``Mass'' with the electrical concept of Inductive Inertia. A heavy flywheel resists changes in rotation; when you try to spin it up, it fights you (Back-EMF). An elementary particle is a knot of flux spinning so fast it acts as a Gyroscopic Flywheel. It resists acceleration not because it has ``stuff'' inside it, but because the magnetic field possesses Lenz's Law Inertia.

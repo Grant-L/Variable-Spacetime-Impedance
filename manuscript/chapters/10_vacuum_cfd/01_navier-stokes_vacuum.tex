@@ -1,23 +1,26 @@
 \section{Navier-Stokes for the Vacuum}
 \label{sec:navier_stokes_vacuum}
 
-If the vacuum is a physical fluid (the Amorphous Manifold), it must obey fluid dynamics. We propose that the fundamental equations of the universe are not the Einstein Field Equations, but the \textbf{Navier-Stokes Equations} applied to the substrate density ($\mu_0$) and stress ($\epsilon_0$).
+If the vacuum is a physical fluid (the Amorphous Manifold), it must obey continuum fluid dynamics. We propose that the macroscopic kinematics of the universe are governed by the Navier-Stokes Equations applied to the effective kinematic density ($\rho_{vac}$) and structural viscosity ($\eta_{vac}$) of the substrate.
 
-\subsection{The Momentum Equation}
-The flow of the vacuum substrate ($u$) is governed by:
+\subsection{The Dimensionally Exact Momentum Equation}
+To apply classical fluid dynamics to the electromagnetic vacuum, we must rigorously define the effective mass density of the substrate. Previous heuristic models incorrectly mapped density to magnetic permeability ($\mu_0$); however, this violates SI dimensional analysis, as $[\text{H}/\text{m}] \neq [\text{kg}/\text{m}^3]$. 
+
+We define the effective kinematic vacuum density ($\rho_{vac}$) via mass-energy equivalence applied to the local electromagnetic energy density $u_{local}$:
 \begin{equation}
-\rho \left( \frac{\partial u}{\partial t} + u \cdot \nabla u \right) = - \nabla P + \eta \nabla^2 u + f_{ext}
+    \rho_{vac} = \frac{u_{local}}{c^2} = \frac{\frac{1}{2}\epsilon_0 |\mathbf{E}|^2 + \frac{1}{2\mu_0}|\mathbf{B}|^2}{c^2} \quad \left[\frac{\text{kg}}{\text{m}^3}\right]
+\end{equation}
+
+The flow of the vacuum substrate ($\mathbf{u}$) is governed by the dimensionally exact momentum equation:
+\begin{equation}
+    \rho_{vac} \left( \frac{\partial \mathbf{u}}{\partial t} + \mathbf{u} \cdot \nabla \mathbf{u} \right) = -\nabla u_{local} + \eta_{vac} \nabla^2 \mathbf{u} + \mathbf{f}_{ext}
 \end{equation}
 Where:
 \begin{itemize}
-    \item $\rho \to \mu_0$ (Magnetic Inductance / Inertial Density).
-    \item $P \to$ The scalar potential (Voltage/Pressure).
-    \item $\eta \to$ The Lattice Viscosity (Gravitational coupling).
+    \item $\rho_{vac}$: Equivalent Kinematic Mass Density $[\text{kg}/\text{m}^3]$.
+    \item $u_{local}$: The scalar energy potential (Pressure) $[\text{J}/\text{m}^3] = [\text{Pa}]$.
+    \item $\eta_{vac}$: The dynamic Lattice Viscosity (Dark Matter coupling) $[\text{Pa} \cdot \text{s}]$.
 \end{itemize}
 
 \subsection{Recovering Gravity}
-In the limit where viscosity is dominant ($\eta \gg 0$) and flow is steady, the AVE Navier-Stokes equation reduces to a form identical to the Poisson equation for gravity:
-\begin{equation}
-\nabla^2 \Phi = 4\pi G\rho
-\end{equation}
-This confirms that \textbf{General Relativity is simply the hydrodynamics of the vacuum substrate.} Curvature is pressure gradients; Gravity is the pressure differential pushing objects into the sink.
+In the limit where viscosity is dominant ($\eta \gg 0$) and flow is steady, the spatial pressure gradient in the fluid maps exactly to the Newtonian gravitational potential, confirming that General Relativity operates as the macroscopic hydrodynamics of the substrate.

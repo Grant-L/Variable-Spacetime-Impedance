@@ -34,7 +34,16 @@
 
 % --- Navigation & Linking ---
 \usepackage[hidelinks]{hyperref} 
-\usepackage{tocloft} 
+\usepackage{tocloft}
+
+% Custom abstract environment for book class
+\newenvironment{abstract}
+  {\small
+   \begin{center}
+   \bfseries Abstract\vspace{-.5em}\vspace{0pt}
+   \end{center}
+   \quotation}
+  {\endquotation} 
 
 % --- Code & Verbatim ---
 \usepackage{listings}
