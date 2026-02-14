@@ -1,37 +1,36 @@
 \section{Gravity as Refractive Index}
 \label{sec:gravity_as_refractive_index}
 
-In General Relativity, gravity is the curvature of spacetime geometry. In AVE, it is the Refraction of Flux through a medium with variable density, explicitly derived from classical continuum mechanics.
+In General Relativity, gravity is the curvature of spacetime geometry. In DCVE, it is the Refraction of Flux through a medium with variable density, explicitly derived from classical continuum mechanics.
 
 \subsection{The Tensor Strain Field (Gordon Optical Metric)}
 Mass does not compress the $\mathcal{M}_A$ lattice isotropically; it exerts a directional shear stress. We elevate the vacuum moduli from scalars to Rank-2 Symmetric Tensors ($\epsilon^{ij}$ and $\mu^{ij}$). As established by the Gordon Optical Metric, an anisotropic dielectric perfectly mimics a curved spacetime geometry:
 \begin{equation}
-    g_{\mu\nu}^{AVE} = \eta_{\mu\nu} + \left(1 - \frac{1}{n^2(r)}\right) u_\mu u_\nu
+    g_{\mu\nu}^{DCVE} = \eta_{\mu\nu} + \left(1 - \frac{1}{n^2(r)}\right) u_\mu u_\nu
 \end{equation}
 
-\subsection{Deriving the Refractive Gradient via Green's Function}
-A skeletal critique of emergent gravity models is the origin of the $1/r$ potential. In AVE, we derive this not from assumed metric tensors, but strictly from the Linear Elasticity of a Point Defect.
+\subsection{Deriving the Refractive Gradient: The Lattice Yield Force}
+A skeletal critique of emergent gravity models is the origin of the $1/r$ potential. We derive this strictly from the linear elasticity of a point defect.
 
-We model a mass $M$ as a localized energy density source $\rho_E(r) = M c^2 \delta^3(\vec{r})$. We define the mechanical Bulk Modulus $K_{vac}$ of the vacuum. To ensure exact dimensional homogeneity where the Laplacian of the dimensionless scalar strain $\nabla^2 \chi$ has units of $1/m^2$, $K_{vac}$ must possess units of Force (Newtons). We define it via the fundamental Planck Force limit:
+\textbf{Correction of Terminology:} Previous formulations defined a "Bulk Modulus" as $K_{vac} \equiv c^4/4\pi G$ and incorrectly assigned it units of Force $[N]$. A Bulk Modulus is a pressure $[N/m^2]$. To ensure exact dimensional homogeneity where the Laplacian of the dimensionless scalar strain $\nabla^2 \chi$ has units of $[1/m^2]$, the coupling constant must be a Force. 
+
+We redefine this parameter correctly as the \textbf{Fundamental Lattice Tension} ($T_{vac}$), representing the 1D string tension between adjacent vacuum nodes, anchored to the Planck force limit:
 \begin{equation}
-    K_{vac} \equiv \frac{c^4}{4\pi G} \quad [\text{N}]
+    T_{vac} \equiv \frac{c^4}{4\pi G} \quad [\text{Newtons}]
 \end{equation}
 
-The scalar strain $\chi(r)$ of the surrounding lattice obeys the Hookean Poisson equation:
+Let a mass $M$ be a localized energy density source $\rho_E(r) = M c^2 \delta^3(\vec{r})$. The scalar strain $\chi(r)$ of the surrounding lattice obeys the Hookean Poisson equation:
 \begin{equation}
-    \nabla^2 \chi(r) = - \frac{\rho_E(r)}{K_{vac}} = - \frac{M c^2 \delta^3(\vec{r})}{\left(\frac{c^4}{4\pi G}\right)} = - \frac{4\pi G M}{c^2} \delta^3(\vec{r})
+    \nabla^2 \chi(r) = - \frac{\rho_E(r)}{T_{vac}} = - \frac{M c^2 \delta^3(\vec{r})}{\left(\frac{c^4}{4\pi G}\right)} = - \frac{4\pi G M}{c^2} \delta^3(\vec{r})
 \end{equation}
 
-\textbf{Exact Green's Function Convolution:}\\
+\subsection{Exact Green's Function Convolution}
 The rigorous fundamental Green's function for the 3D Laplacian is $G(\vec{r}) = -\frac{1}{4\pi r}$. Convolving our source with this exact function yields the scalar strain field:
 \begin{equation}
-    \chi(r) = \left( - \frac{4\pi G M}{c^2} \right) \ast \left( \frac{-1}{4\pi r} \right) = \mathbf{\frac{G M}{c^2 r}}
+    \chi(r) = \left(-\frac{4\pi G M}{c^2}\right) * \left(\frac{-1}{4\pi r}\right) = \frac{GM}{c^2 r}
 \end{equation}
-The $4\pi$ mathematically cancels completely seamlessly. 
-
-For light tracking spatial curvature, the effective optical refractive index $n(r)$ isomorphic to the Schwarzschild metric time dilation is strictly defined as $n(r) = 1 + 2\chi(r)$:
+The $4\pi$ mathematically cancels completely seamlessly. For light tracking spatial strain, the effective optical refractive index $n(r)$ isomorphic to the Schwarzschild metric time dilation is strictly defined as $n(r) = 1 + 2\chi(r)$:
 \begin{equation}
-    n(r) = 1 + \frac{2 G M}{c^2 r}
+    n(r) = 1 + \frac{2GM}{c^2 r}
 \end{equation}
-
-\textit{Conclusion:} The Schwarzschild weak-field refractive profile is derived flawlessly from classical continuum mechanics, without manual deletion of constants or algebraic manipulation.
+\textit{Conclusion:} The Schwarzschild weak-field refractive profile is derived flawlessly from classical continuum mechanics, using exact linear tension and rigorous dimensional homogeneity.

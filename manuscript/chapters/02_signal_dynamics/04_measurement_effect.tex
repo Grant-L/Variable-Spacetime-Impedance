@@ -1,29 +1,25 @@
 \section{The Measurement Effect: Impedance Loading}
 \label{sec:measurement_effect}
 
-The "Measurement Problem"---where observation induces the "collapse" of the wavefunction---is treated by the Copenhagen interpretation as a metaphysical discontinuity. In Vacuum Engineering, it is formally resolved as a thermodynamic circuit problem: \textbf{Impedance Loading}.
+The "Measurement Problem"---where observation induces the "collapse" of the wavefunction---is treated by the Copenhagen interpretation as a metaphysical discontinuity. In the DCVE framework, it is formally resolved as a thermodynamic circuit problem: \textbf{Impedance Loading}.
 
-\subsection{Deriving the Born Rule ($P \propto |\psi|^2$)}
-To measure a quantum state, a macroscopic detector must couple to the vacuum lattice. A detector is not a passive mathematical observer; it is a physical entity with an activation energy threshold $E_{thresh}$. It functions as a resistive load ($R_{load}$) drawing power from the local $\mathcal{M}_A$ substrate.
+\subsection{Deriving the Born Rule}
+To measure a quantum state, a macroscopic detector must physically couple to the vacuum lattice. A detector is not a passive mathematical observer; it is a physical thermodynamic system with an activation energy threshold $E_{thresh}$. It functions as a resistive load ($R_{load}$) drawing power from the local $\mathcal{M}_A$ substrate.
 
-From classical electrodynamics, the energy density $u_n$ of a wave in a dielectric medium is proportional to the square of its amplitude: $u_n \propto |\psi(x_n)|^2$. The power dissipated into the detector over a measurement interval $\Delta t$ is governed by Joule's Law:
+From classical electrodynamics, the intensity $I$ (energy density) of a wave in a dielectric medium is strictly proportional to the square of its amplitude: $I \propto |\mathbf{A}|^2$. The power dissipated into the detector over a measurement interval $\Delta t$ is governed by Joule heating:
 \begin{equation}
-    W_{extracted} = \int P_{load} dt \propto \frac{|\psi(x_n)|^2}{R_{load}} \Delta t
+    W_{extracted} = \int P_{load} dt \propto \frac{|\mathbf{A}(x_n)|^2}{R_{load}} \Delta t
 \end{equation}
 
-Because the vacuum lattice possesses a fundamental stochastic noise floor (due to the amorphous geometry and zero-point vibrations), the exact energy transferred fluctuates. A physical detector requires a minimum threshold of energy ($E_{thresh}$) to register a discrete ``click'' (e.g., ionizing an atom, triggering a photomultiplier cascade) against this noise floor.
-
-In signal detection theory, the probability of an analog signal triggering a discrete threshold logic gate is strictly proportional to the Signal-to-Noise Ratio (SNR). Because the available signal power is proportional to $|\psi|^2$, the statistical probability that the extracted work exceeds the detector's deterministic threshold ($W_{extracted} \ge E_{thresh}$) scales identically with the squared amplitude:
+For a detector to register a discrete "click" (e.g., ionizing an atom, triggering a photomultiplier cascade), the local wave intensity must overcome the thermodynamic activation barrier $E_{thresh}$. In a stochastic substrate fluctuating around a zero-point energy floor, the statistical probability that the extracted work exceeds the detector's deterministic threshold ($W_{extracted} \ge E_{thresh}$) scales identically with the squared amplitude of the local wave envelope.
 \begin{equation}
-    P(click | x_n) = \frac{|\psi(x_n)|^2}{\int |\psi(x)|^2 dx}
+    P(click | x_n) = \frac{|\mathbf{A}(x_n)|^2}{\int |\mathbf{A}(x)|^2 dx}
 \end{equation}
 \textbf{Conclusion:} The Born Rule is not an axiomatic postulate of probability. It is the deterministic thermodynamic equation for energy extraction from a wave-bearing lattice by a thresholded resistive load.
 
 \subsection{Decoherence as Ohmic Dissipation}
-Standard quantum mechanics utilizes non-unitary Lindblad equations to model wavefunction collapse via environmental decoherence. AVE provides the direct physical mechanism for this mathematical structure.
+Standard quantum mechanics utilizes non-unitary Lindblad equations to model wavefunction collapse via environmental decoherence. DCVE provides the direct physical mechanism for this mathematical structure.
 
-Prior to measurement, the pilot wave evolves unitarily according to the energy-conserving discrete Lagrangian (Section \ref{sec:dielectric_lagrangian}). The insertion of the detector introduces a non-conservative Ohmic damping term (friction) to the local lattice nodes.
+Prior to measurement, the pilot wave evolves unitarily according to the energy-conserving continuous Lagrangian. The insertion of the detector introduces a non-conservative Ohmic damping term (friction) to the local lattice nodes. 
 
-The ``Collapse of the Wavefunction'' is nothing more than rapid critical damping. By draining the pilot wave's energy to gain information, the detector acts as an electrical short-circuit. The spatial interference fringes (the off-diagonal coherence terms of the density matrix) decay exponentially to zero as energy is extracted, causing the particle to decouple from the wave and resume localized ballistic motion. 
-
-The transition from quantum to classical physics is identically the transition from an isolated, lossless $LC$ circuit to a dissipative $RLC$ circuit.
+The "Collapse of the Wavefunction" is nothing more than rapid critical damping. By draining the wave's energy to gain information, the detector acts as an electrical short-circuit. The spatial interference fringes (the off-diagonal coherence terms of the density matrix) decay exponentially to zero as energy is extracted, causing the particle to decouple from the wave and resume localized ballistic motion.
