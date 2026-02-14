@@ -21,45 +21,45 @@ A level-1 auxiliary file: backmatter/02_appendix_c_verification.aux
 The style file: plain.bst
 Database file #1: bibliography.bib
 Warning--I didn't find a database entry for "3"
-You've used 4 entries,
+You've used 3 entries,
             2118 wiz_defined-function locations,
-            540 strings with 5203 characters,
-and the built_in function-call counts, 1011 in all, are:
-= -- 97
-> -- 28
+            533 strings with 5104 characters,
+and the built_in function-call counts, 763 in all, are:
+= -- 73
+> -- 21
 < -- 0
-+ -- 15
-- -- 8
-* -- 61
-:= -- 182
-add.period$ -- 12
-call.type$ -- 4
-change.case$ -- 15
++ -- 12
+- -- 6
+* -- 44
+:= -- 138
+add.period$ -- 9
+call.type$ -- 3
+change.case$ -- 11
 chr.to.int$ -- 0
-cite$ -- 4
-duplicate$ -- 45
-empty$ -- 93
-format.name$ -- 8
-if$ -- 205
+cite$ -- 3
+duplicate$ -- 34
+empty$ -- 70
+format.name$ -- 6
+if$ -- 154
 int.to.chr$ -- 0
-int.to.str$ -- 4
-missing$ -- 5
-newline$ -- 23
-num.names$ -- 8
-pop$ -- 14
+int.to.str$ -- 3
+missing$ -- 4
+newline$ -- 18
+num.names$ -- 6
+pop$ -- 12
 preamble$ -- 1
-purify$ -- 12
+purify$ -- 9
 quote$ -- 0
-skip$ -- 27
+skip$ -- 20
 stack$ -- 0
-substring$ -- 60
-swap$ -- 4
+substring$ -- 46
+swap$ -- 3
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 14
+type$ -- 10
 warning$ -- 0
-while$ -- 12
-width$ -- 5
-write$ -- 45
+while$ -- 9
+width$ -- 4
+write$ -- 34
 (There was 1 warning)
