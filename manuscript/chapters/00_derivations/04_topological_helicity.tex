@@ -1,25 +1,13 @@
-\section{Topological Helicity and the Winding Number}
-
-To account for the discrete nature of particles and their varying masses, we introduce Topological Helicity ($h$). If Mass is Geometric Inductance, then the specific particle type is determined by the "Winding Number" of the flux trapped within the $M_A$ lattice.
-
-\subsection{The Helicity Quotient}
-The helicity $h$ represents the number of times a wave-front wraps around a localized manifold defect before closing its loop. This is defined by the integral of the vector potential $\mathbf{A}$ over the volume of the node:
-\begin{equation}
-h = \int_{V_{node}} \mathbf{A} \cdot (\nabla \times \mathbf{A}) \, dV
-\end{equation}
-
-In our circuit-equivalent model, $h$ is the dimensionless "turns ratio" ($N$) of the node. 
-
-\subsection{Quantized Mass-Inductance}
-The total effective inductance $L_{eff}$ (and thus the Mass $M$) of a particle is proportional to the square of its winding number, following standard inductive laws ($L \propto N^2$):
-\begin{equation}
-M = M_{base} \cdot h^2
-\end{equation}
-Where $M_{base}$ is the minimum mass-energy required to saturate a single $M_A$ node. 
-
 \subsection{The Chiral Bias Equation (CBE)}
-The interaction between the particle's internal helicity ($h$) and the vacuum's background vorticity ($\mathbf{\Omega}_{vac}$) creates a geometric bias in the local metric impedance. Since $h$ is a quantized winding number, the coupling is unitary:
+The local metric impedance is modified by two factors: the local energy density ($\rho_E$) which strains the lattice, and the geometric alignment of the particle's spin ($\mathbf{S}$) with the vacuum vorticity ($\mathbf{\Omega}_{vac}$).
+
+To quantify the structural overlap without recursively double-counting the directional phase, we define the Chiral Coefficient $\alpha$ strictly as a positive scalar representing the volumetric overlap fraction of the localized flux knot ($V_p$) relative to the nodal volume ($V_{node}$):
 \begin{equation}
-Z_{metric} = Z_{0} \left( 1 + \frac{h \cdot \mathbf{\Omega}_{vac}}{|\mathbf{\Omega}_{vac}|} \right)
+\alpha = \frac{V_p}{V_{node}} < 1
 \end{equation}
-This implies that impedance increases when the particle's "spin" opposes the vacuum vorticity (friction) and decreases when aligned (super-fluidity), derived purely from topological alignment without arbitrary coupling constants.
+
+To maintain strict dimensional homogeneity, the continuous energy density field ($\rho_E$, with units of pressure $[N/m^2]$) must be converted into a localized discrete force by multiplying it by the nodal cross-sectional area ($l_{node}^2$). This perfectly cancels the metric compliance ($[N^{-1}]$). The total Local Metric Impedance is thus derived without circularity or dimensional collapse:
+\begin{equation}
+Z_{metric} = Z_{g} \left( 1 + \sigma_Z (\rho_E \cdot l_{node}^2) + \alpha \frac{\mathbf{S} \cdot \mathbf{\Omega}_{vac}}{|\mathbf{S}| |\mathbf{\Omega}_{vac}|} \right)
+\end{equation}
+Here, $\sigma_Z (\rho_E \cdot l_{node}^2)$ correctly resolves to a strictly dimensionless scalar representing the "stiffness" increase due to localized stress (Gravity), while the single explicit unit-vector dot product exactly handles the directional phase ($\pm$) for spin alignment (Chirality).

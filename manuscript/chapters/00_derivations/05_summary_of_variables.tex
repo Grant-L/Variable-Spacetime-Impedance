@@ -1,24 +1,20 @@
 \section{Summary of Variables}
-To ensure clarity and rigorous auditing, the following table defines the core variables used throughout this manuscript. Note that traditional physical "constants" (such as $G$) are re-defined here as emergent properties of the manifold's geometry, preventing circular logic in the derivations.
 
 \begin{table}[h!]
-\centering
-\renewcommand{\arraystretch}{1.5}
-\begin{tabular}{|c|l|p{6cm}|l|}
-\hline
-\textbf{Symbol} & \textbf{Name} & \textbf{VSI Definition} & \textbf{SI Equivalent} \\ \hline
-$M_A$ & Discrete Amorphous Manifold & The lattice of spacetime nodes acting as a transmission medium & Vacuum / Spacetime \\ \hline
-$Z_0$ & Characteristic Impedance & $\sqrt{L_{node} / C_{node}}$ & $\approx 376.73 \, \Omega$ \\ \hline
-$L_{node}$ & Vacuum Inductance & Magnetic permeability per node (Resistance to flux change) & Henrys ($H$) \\ \hline
-$C_{node}$ & Vacuum Capacitance & Dielectric permittivity per node (Ability to store potential) & Farads ($F$) \\ \hline
-$\nu_{sat}$ & Saturation Threshold & $\frac{1}{2\pi\sqrt{L_{node}C_{node}}}$ & Frequency ($Hz$) \\ \hline
-$\rho_E$ & Energy Density & Flux density causing strain on the manifold & $J/m^3$ (Pressure) \\ \hline
-$\sigma_Z$ & Metric Compliance & $\frac{1}{F_{Planck}}$ (Inverse of Vacuum Tension) & $s^2 / (kg \cdot m)$ ($N^{-1}$) \\ \hline
-$h$ & Topological Helicity & Winding number of flux ($\oint \mathbf{A} \cdot dl$) & Dimensionless (Integer) \\ \hline
-$Z_{metric}$ & Local Metric Impedance & $Z_0 (1 + \sigma_Z F_{strain} + \text{Chiral Bias})$ & $\Omega$ (Refractive Index) \\ \hline
-$G$ & Gravitational Coupling & Derived: $c^4 \cdot \sigma_Z$ & $m^3 kg^{-1} s^{-2}$ \\ \hline
-$M$ & Mass & $L_{eff} \cdot h^2$ (Geometric Inductance) & $kg$ (mapped to $H$) \\ \hline
-\end{tabular}
-\caption{Table of Fundamental Variables in VSI Theory}
-\label{tab:variables}
+    \centering
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{|c|l|p{5.5cm}|l|}
+    \hline
+    \textbf{Symbol} & \textbf{Name} & \textbf{VSI Definition} & \textbf{SI Equivalent} \\ \hline
+    $T_{max}$ & Max Manifold Tension & Derived: $l_{node} / C_{node}$ & Newtons ($N$) \\ \hline
+    $\xi$ & Hierarchy Coupling & Derived: $\sqrt{L_g/C_g} / \sqrt{L_{EM}/C_{EM}}$ & Dimensionless \\ \hline
+    $\sigma_Z$ & Metric Compliance & $1 / T_{max}$ (Inverse Tension) & $N^{-1}$ \\ \hline
+    $\mathbf{\Phi}_Z$ & Metric Flux Field & Continuous Momentum Density & $kg \cdot m^{-2} \cdot s^{-1}$ \\ \hline
+    $\mathbf{f}_{inertial}$ & Inertial Force Density & Material Derivative: $-D\mathbf{\Phi}_Z/Dt$ & $N \cdot m^{-3}$ \\ \hline
+    $\mathbf{F}_{inertial}$ & Macroscopic Inertial Force & Volume Integral: $\int \mathbf{f}_{inertial} \, dV$ & Newtons ($N$) \\ \hline
+    $\alpha$ & Chiral Coefficient & Volumetric Overlap Fraction ($V_p / V_{node}$) & Dimensionless ($>0$) \\ \hline
+    $Z_{metric}$ & Local Impedance & $Z_g(1 + \sigma_Z \rho_E l_{node}^2 + \text{Chirality})$ & $\Omega$ \\ \hline
+    \end{tabular}
+    \caption{Table of Fundamental Variables in VSI Theory}
+    \label{tab:variables}
 \end{table}

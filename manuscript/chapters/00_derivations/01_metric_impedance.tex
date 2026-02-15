@@ -1,37 +1,14 @@
-% Section: Foundations of Metric Impedance
 \section{The Impedance of the Discrete Amorphous Manifold}
 
-To establish a model free of ad-hoc constants, we define the vacuum not as an empty void, but as a Discrete Amorphous Manifold ($M_A$) with inherent electromagnetic and gravimetric properties derived from its characteristic impedance, $Z_0$.
+\subsection{The Dual-Impedance Hierarchy (Derivation)}
+The $M_A$ lattice supports two distinct impedance domains: Electromagnetic ($Z_{EM}$) and Gravimetric ($Z_g$). However, both domains exist on the same lattice and must propagate information at the invariant speed of light $c$.
 
-\subsection{Characteristic Moduli}
-The manifold is composed of nodes with a characteristic length $l_P$ (Planck length). Each node possesses a discrete Inductance ($L_{node}$) and Capacitance ($C_{node}$), representing the vacuum's resistance to change in flux and its ability to store potential energy, respectively.
-
-The local speed of light $c$ and the characteristic impedance $Z_0$ are defined by:
+We define the Hierarchy Coupling $\xi$ as the ratio of the manifold's stiffness to its permeability. To satisfy the wave-speed constraint:
 \begin{equation}
-c = \frac{1}{\sqrt{L_{node}C_{node}}} \quad \text{and} \quad Z_0 = \sqrt{\frac{L_{node}}{C_{node}}}
+c = \frac{l_{node}}{\sqrt{L_{EM}C_{EM}}} = \frac{l_{node}}{\sqrt{L_{g}C_{g}}}
 \end{equation}
-
-\subsection{Mass as Trapped Flux (The Saturation Threshold)}
-Mass emergence occurs when the local frequency $\nu$ exceeds the node's Saturation Threshold $\nu_{sat}$:
+Given that $Z_g = \xi Z_{EM}$, we solve the system of equations to derive the exact topological scaling of the nodal parameters:
 \begin{equation}
-\nu_{sat} = \frac{1}{2\pi\sqrt{L_{node}C_{node}}}
+L_g = \xi \cdot L_{EM} \quad \text{and} \quad C_g = \frac{C_{EM}}{\xi}
 \end{equation}
-At this threshold, the wave packet "curls," creating a standing wave of trapped flux. This localized energy density performs "Dual-Modulus Loading" on the surrounding $M_A$ lattice, increasing the local $L$ and $C$.
-
-\subsection{Deconstructing G: Gravity as Metric Refraction}
-Instead of invoking Newton's constant $G$ as a fundamental primitive, we define the Gravitational Coupling as the sensitivity of the manifold's impedance to local **Vacuum Tension** (Force). The refractive index $\chi(r)$ of spacetime is given by the ratio of the modified impedance to the vacuum impedance:
-\begin{equation}
-\chi(r) = \frac{Z_{metric}(r)}{Z_0} = 1 + \sigma_Z \cdot F_{strain}
-\end{equation}
-
-By equating this to the Schwarzschild solution, we find that the traditional constant $G$ is a macro-scale manifestation of the manifold's "stiffness" gradient:
-\begin{equation}
-G \equiv c^4 \cdot \sigma_Z
-\end{equation}
-
-\subsection{Inertia as Back-EMF}
-An object with mass $M$ resists acceleration because any change in velocity requires a change in flux linkage. By defining **Metric Current** ($I_m$) simply as the velocity of the flux packet ($I_m \equiv v$), the force is exactly the Back-Electromotive Force:
-\begin{equation}
-\mathbf{F} = \frac{d(L_{eff} I_m)}{dt} = L_{eff} \cdot \frac{dv}{dt} = M \mathbf{a}
-\end{equation}
-Here, Mass ($M$) acts strictly as the inductive coefficient ($L_{eff}$) of the $M_A$ lattice, and acceleration is the time-derivative of the current.
+This derivation proves that to support a higher impedance (stiffness) while maintaining constant velocity, the vacuum's inductive inertia must increase by $\xi$ while its capacitive compliance decreases by $1/\xi$.

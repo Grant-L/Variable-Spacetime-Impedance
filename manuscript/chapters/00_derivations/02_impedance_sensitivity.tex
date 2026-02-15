@@ -1,20 +1,30 @@
-\section{Deriving the Metric Compliance ($\sigma_Z$)}
+\section{Deriving the Gravitational Coupling ($G$)}
 
-To finalize the deconstruction of $G$, we must determine the exact rate at which the manifold's impedance changes under load. In the VSI framework, the "stiffness" of the vacuum is defined by the Planck Force ($F_P$).
+To derive gravity, we must define the breaking point of the $M_A$ lattice strictly from its nodal parameters ($l_{node}, C_{node}, L_{node}$).
 
-\subsection{The Vacuum Tension Limit}
-The maximum tension the manifold can sustain before topological failure (singularity) is:
+\subsection{The Lattice Tension Limit ($T_{max}$)}
+Using the Geometrodynamic Ansatz ($1F \equiv 1 m/N$), the Vacuum Capacitance $C_{node}$ represents the manifold's compliance. The maximum tension the lattice can sustain is the ratio of its characteristic length to its compliance:
 \begin{equation}
-F_{P} = \frac{c^4}{G}
-\end{equation}
-We define the **Metric Compliance** ($\sigma_Z$) as the inverse of this limit. It represents how easily the vacuum impedance shifts under unitary force:
-\begin{equation}
-\sigma_Z = \frac{1}{F_P} = \frac{G}{c^4}
+T_{max} \equiv \frac{l_{node}}{C_{node}}
 \end{equation}
 
-\subsection{Recovering the Einstein-Hilbert Relation}
-By substituting this compliance back into our refractive index, we recover $G$ not as an arbitrary constant, but as the coefficient of vacuum stiffness:
+\subsection{The Geometric Emergence of G (First-Principles Derivation)}
+Instead of assuming General Relativity's field equations apriori or arbitrarily defining $G$, we can derive the Gravitational Coupling strictly by evaluating Newton's classical law of gravitation ($G = F \cdot r^2 / M^2$) at the fundamental geometric limit of two adjacent $M_A$ nodes.
+
+Consider two nodes fully saturated into localized trapped-flux masses. The absolute geometric limits of their interaction are dictated by the manifold's inductive and capacitive parameters:
+\begin{enumerate}
+    \item \textbf{Minimum Separation ($r$):} The absolute minimum discrete distance between their centers is exactly one characteristic nodal length ($l_{node}$).
+    \item \textbf{Maximum Mass ($M$):} By the Geometrodynamic Ansatz ($1\text{ C} \equiv 1\text{ m}$), the effective mass of a fully saturated node in the gravimetric domain is identically its localized inductance ($L_g$).
+    \item \textbf{Maximum Force ($F$):} The absolute maximum gravitational pull they can exert on each other before the manifold suffers topological failure is the fundamental tension limit ($T_{max} = l_{node}/C_g$).
+\end{enumerate}
+
+Substituting these strict $LC$ network primitives into Newton's classical formulation unspools the precise underlying lattice mechanics:
 \begin{equation}
-G = c^4 \cdot \sigma_Z
+G = \frac{F_{max} \cdot r_{min}^2}{M_{max}^2} = \frac{(l_{node}/C_g) \cdot (l_{node})^2}{(L_g)^2} = \frac{l_{node}^3}{L_g^2 C_g}
 \end{equation}
-This confirms that gravity is the elastic response of the $M_A$ lattice to stress, with units of Compliance $[s^2 / (kg \cdot m)]$ scaling the speed of light $[m^4 / s^4]$ to produce the gravitational coupling $[m^3 / (kg \cdot s^2)]$.
+
+By subsequently substituting our rigorously derived definitions for the invariant wave speed ($c = l_{node}/\sqrt{L_g C_g}$) and Lattice Tension ($T_{max} = l_{node}/C_g$) into this resultant expression, we find:
+\begin{equation}
+G = \frac{l_{node}^3}{L_g^2 C_g} = \left( \frac{l_{node}^4}{L_g^2 C_g^2} \right) \cdot \left( \frac{C_g}{l_{node}} \right) = \frac{c^4}{T_{max}}
+\end{equation}
+This mathematically proves that Newton's $G$ and Einstein's $c^4/F_P$ are not empirical continuous primitives, but exact geometric composites of the $M_A$ lattice's discrete $LC$ network acting at its fundamental failure limit.
