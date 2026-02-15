@@ -1,0 +1,33 @@
+\section{The Macroscopic Moduli of the Void}
+\label{sec:moduli}
+
+In standard physics, $\mu_0$ and $\epsilon_0$ are treated as macroscopic continuous densities (Henrys/meter and Farads/meter). In Vacuum Engineering, they are strictly defined as the \textbf{Constitutive Moduli} of the discrete mechanical substrate, bridging the discrete network parameters ($L_{node}, C_{EM}$) to continuous fields.
+
+\subsection{Magnetic Permeability ($\mu_0$) as Linear Mass Density}
+The magnetic constant $\mu_0 \approx 1.256 \times 10^{-6} \text{ H/m}$ represents the \textbf{Inductive Inertia} of the lattice nodes distributed over the fundamental length:
+\begin{equation}
+    \mu_0 \equiv \frac{L_{node}}{l_{node}} 
+\end{equation}
+Mechanically, this is analogous to fluid density ($\rho$). We can rigorously prove its physical identity using the Geometrodynamic Ansatz ($1\text{ C} \equiv 1\text{ m}$). Since Inductance maps to Mass ($[H] \equiv [kg]$):
+\begin{equation}
+    [\mu_0] = \frac{\text{H}}{\text{m}} \xrightarrow{1\text{ C} \equiv 1\text{ m}} \mathbf{\frac{kg}{m}}
+\end{equation}
+This mathematically proves that $\mu_0$ is the exact mechanical Linear Mass Density of the vacuum lattice. It determines how "heavy" the vacuum is, forming the continuous physical origin of inertial lag.
+
+\subsection{Electric Permittivity ($\epsilon_0$) as Capacitive Compliance}
+The electric constant $\epsilon_0 \approx 8.854 \times 10^{-12} \text{ F/m}$ represents the \textbf{Capacitive Compliance} of the lattice edges distributed over the fundamental length:
+\begin{equation}
+    \epsilon_0 \equiv \frac{C_{EM}}{l_{node}} 
+\end{equation}
+Applying the Ansatz, Capacitance maps to mechanical compliance ($[F] \equiv [m/N]$):
+\begin{equation}
+    [\epsilon_0] = \frac{\text{F}}{\text{m}} \xrightarrow{1\text{ C} \equiv 1\text{ m}} \frac{\text{m/N}}{\text{m}} = \mathbf{\frac{1}{N}}
+\end{equation}
+This proves that $\epsilon_0$ is the exact physical inverse of a string tension ($T$). It quantifies how much the vacuum lattice stretches under a unitary mechanical force before snapping back.
+
+\subsection{Characteristic Impedance ($Z_0$)}
+The ratio of these two continuum moduli natively cancels the length scale, yielding the exact \textbf{Characteristic Impedance} of the discrete nodes:
+\begin{equation}
+    Z_0 = \sqrt{\frac{\mu_0}{\epsilon_0}} = \sqrt{\frac{L_{node}}{C_{EM}}} \approx 376.73 \, \Omega
+\end{equation}
+This finite "acoustic impedance" is the only physical reason electromagnetic waves can propagate without instantaneous energy dissipation.

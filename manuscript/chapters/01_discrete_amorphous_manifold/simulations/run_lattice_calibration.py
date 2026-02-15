@@ -32,9 +32,8 @@ def generate_amorphous_manifold(size, min_dist):
 def analyze_lattice_statistics(points):
     print(f"Triangulating {len(points)} nodes...")
     delaunay = spatial.Delaunay(points)
-    voronoi = spatial.Voronoi(points)
     
-    # Identify boundary nodes to strictly filter out convex hull artifacts
+    # Identify boundary nodes to strictly filter out convex hull edge artifacts
     hull = spatial.ConvexHull(points)
     boundary_nodes = set(hull.vertices)
     
@@ -44,7 +43,6 @@ def analyze_lattice_statistics(points):
         for i in range(4):
             for j in range(i+1, 4):
                 idx1, idx2 = sorted([simplex[i], simplex[j]])
-                # Only include edge if BOTH nodes are in the interior bulk
                 if idx1 not in boundary_nodes and idx2 not in boundary_nodes:
                     edges.add((idx1, idx2))
                     
@@ -52,26 +50,15 @@ def analyze_lattice_statistics(points):
     l0_mean = np.mean(edge_lengths)
     print(f"Mean Bulk Lattice Pitch (l_node): {l0_mean:.4f}")
 
-    # 2. Extract true bulk Voronoi cell volumes (V_node)
-    bulk_volumes = []
-    for i, region_idx in enumerate(voronoi.point_region):
-        if i not in boundary_nodes:
-            region = voronoi.regions[region_idx]
-            # Ensure it is a closed, valid geometric region
-            if -1 not in region and len(region) > 0:
-                poly = voronoi.vertices[region]
-                try:
-                    bulk_volumes.append(spatial.ConvexHull(poly).volume)
-                except Exception:
-                    pass
-                    
-    v_mean = np.mean(bulk_volumes)
-    print(f"Mean Bulk Nodal Volume (V_node): {v_mean:.4f}")
+    # 2. Extract true theoretical Nodal Volume (V_node)
+    # For a uniform space-filling packing, the exact mean volume is identically Total Volume / N.
+    v_mean_exact = (BOX_SIZE**3) / len(points)
+    print(f"Exact Analytical Nodal Volume (V_node): {v_mean_exact:.4f}")
 
-    # 3. Calculate Kappa exactly as defined in the VSE manuscript
-    kappa = v_mean / (l0_mean**3)
+    # 3. Calculate Kappa exactly as defined in the AVE manuscript
+    kappa = v_mean_exact / (l0_mean**3)
     
-    return l0_mean, v_mean, kappa, edge_lengths
+    return l0_mean, v_mean_exact, kappa, edge_lengths
 
 def plot_lattice_distribution(edge_lengths, l0, kappa):
     plt.figure(figsize=(10, 6))
