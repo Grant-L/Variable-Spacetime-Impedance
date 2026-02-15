@@ -6,13 +6,13 @@
     \begin{tabular}{|c|l|p{5.5cm}|l|}
     \hline
     \textbf{Symbol} & \textbf{Name} & \textbf{VSI Definition} & \textbf{SI Equivalent} \\ \hline
-    $T_{max}$ & Max Manifold Tension & Derived: $l_{node} / C_{node}$ & Newtons ($N$) \\ \hline
+    $T_{max}$ & Max Manifold Tension & Derived: $l_{node} / C_g$ & Newtons ($N$) \\ \hline
     $\xi$ & Hierarchy Coupling & Derived: $\sqrt{L_g/C_g} / \sqrt{L_{EM}/C_{EM}}$ & Dimensionless \\ \hline
     $\sigma_Z$ & Metric Compliance & $1 / T_{max}$ (Inverse Tension) & $N^{-1}$ \\ \hline
-    $\mathbf{\Phi}_Z$ & Metric Flux Field & Continuous Momentum Density & $kg \cdot m^{-2} \cdot s^{-1}$ \\ \hline
-    $\mathbf{f}_{inertial}$ & Inertial Force Density & Material Derivative: $-D\mathbf{\Phi}_Z/Dt$ & $N \cdot m^{-3}$ \\ \hline
+    $\mathbf{\phi}_Z$ & Metric Flux Density & Continuous Momentum Density & $kg \cdot m^{-2} \cdot s^{-1}$ \\ \hline
+    $\mathbf{f}_{inertial}$ & Inertial Force Density & Eulerian Divergence: $-\frac{\partial \mathbf{\phi}_Z}{\partial t} - \nabla \cdot (\mathbf{\phi}_Z \otimes \mathbf{v})$ & $N \cdot m^{-3}$ \\ \hline
     $\mathbf{F}_{inertial}$ & Macroscopic Inertial Force & Volume Integral: $\int \mathbf{f}_{inertial} \, dV$ & Newtons ($N$) \\ \hline
-    $\alpha$ & Chiral Coefficient & Volumetric Overlap Fraction ($V_p / V_{node}$) & Dimensionless ($>0$) \\ \hline
+    $\alpha$ & Chiral Coefficient & Nodal Saturation Fraction ($V_{core} / V_{node}$) & Dimensionless ($<1$) \\ \hline
     $Z_{metric}$ & Local Impedance & $Z_g(1 + \sigma_Z \rho_E l_{node}^2 + \text{Chirality})$ & $\Omega$ \\ \hline
     \end{tabular}
     \caption{Table of Fundamental Variables in VSI Theory}

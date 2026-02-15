@@ -1,51 +1,51 @@
 \section{The Fundamental Axioms of Vacuum Engineering}
 \label{sec:axioms}
 
-To eliminate circular definitions and reduce the universe to a mechanical substrate, the Applied Vacuum Electrodynamics (AVE) framework rests entirely on four fundamental hardware axioms. Unlike standard physics, which postulates laws (e.g., Maxwell's Equations) as primary, AVE postulates a \textit{Discrete Action Principle} from which these laws emerge.
+To eliminate circular definitions and reduce the universe to a mechanical substrate, the Applied Vacuum Electrodynamics (AVE) framework operationalizes the Variable Spacetime Impedance (VSI) theory into four hardware axioms.
 
 \begin{axiom}[The Topological Domain $\mathcal{G}$]
 The physical universe is strictly defined as a dynamic graph $\mathcal{G}(V, E, t)$ resulting from the Delaunay Triangulation of a stochastic point process $P \subset \mathbb{R}^3$.
 \begin{itemize}
-    \item \textbf{Fundamental Length ($l_0$):} The expectation value of the edge length distribution is fixed: $\langle |e_{ij}| \rangle \equiv l_0$.
+    \item \textbf{Fundamental Length ($l_{node}$):} The expectation value of the edge length distribution is fixed: $\langle |e_{ij}|\rangle \equiv l_{node}$.
     \item \textbf{Constraint:} The graph is simple, undirected, and globally connected.
 \end{itemize}
 \end{axiom}
 
 \begin{axiom}[The State Variables]
-Physics is encoded entirely in two conjugate variables defined on the graph elements:
+Physics is encoded entirely in two conjugate variables defined on the graph elements, governed by the Geometrodynamic Ansatz ($1V \equiv 1m$):
 \begin{enumerate}
-    \item \textbf{Node Potential ($\phi_n$):} A scalar field $\phi: V \rightarrow \mathbb{R}$ representing the longitudinal dielectric strain (Compression).
-    \item \textbf{Edge Flux ($U_{ij}$):} A unitary link variable $U: E \rightarrow U(1)$ representing the transverse phase transport (Twist).
+    \item \textbf{Node Potential ($\phi_n$):} A scalar field $\phi: V \rightarrow \mathbb{R}$ representing the longitudinal dielectric strain (Displacement/Voltage).
+    \item \textbf{Metric Flux ($\Phi_{ij}$):} A vector link variable representing the momentum density state of the edge.
 \end{enumerate}
 There are no other fundamental fields.
 \end{axiom}
 
 \begin{axiom}[The Discrete Action Principle]
-The system evolves to minimize the \textbf{Hardware Action} $S_{AVE}$. The action is defined not as a continuous integral, but as a discrete sum over nodes ($n$) and edges ($ij$):
+The system evolves to minimize the \textbf{Hardware Action} $S_{AVE}$. The action is the discrete sum of the Nodal Lagrangian:
 \begin{equation}
 S_{AVE} = \int dt \sum_{n \in V} \mathcal{L}_{node}
 \end{equation}
-Where the discrete Lagrangian density $\mathcal{L}_{node}$ is:
+To ensure dimensional homogeneity (Joules), the Lagrangian relates the Dielectric Potential Energy to the Inductive Kinetic Energy:
 \begin{equation}
 \label{eq:discrete_lagrangian}
-\mathcal{L}_{node} = \underbrace{\frac{1}{2} C_{eff}(\Delta \phi) \sum_{j \in \text{neigh}(n)} (\phi_n - \phi_j)^2}_{\text{Dielectric Strain (Potential)}} - \underbrace{\frac{1}{2} L_{node} (\partial_t \phi_n)^2}_{\text{Inductive Inertia (Kinetic)}}
+\mathcal{L}_{node} = \underbrace{\frac{1}{2} C_{eff}(\Delta \phi) \sum_{j \in \text{neigh}(n)} (\phi_n - \phi_j)^2}_{\text{Dielectric Potential ($CV^2$)}} - \underbrace{\frac{1}{2} (L_{node} C_{node}^2) (\partial_t \phi_n)^2}_{\text{Inductive Kinetic ($LI^2$)}}
 \end{equation}
-Here, $L_{node} \equiv \mu_0 l_0$ represents the inertial mass of the node.
+Here, the kinetic term explicitly accounts for the conversion of potential rate ($\dot{\phi}$) to displacement current ($I \approx C \dot{\phi}$).
 \end{axiom}
 
 \begin{axiom}[The Saturation Operator]
-The vacuum is a non-linear dielectric. The effective capacitance $C_{eff}$ is not constant but is a function of the local potential gradient, governed by the Breakdown Voltage ($V_0$):
+The vacuum is a non-linear dielectric. The effective capacitance $C_{eff}$ is a function of the local potential gradient relative to the \textbf{Lattice Tension Limit} ($V_{max}$):
 \begin{equation}
 \label{eq:saturation_op}
-C_{eff}(\Delta \phi) = \frac{C_0}{\sqrt{1 + \left(\frac{\Delta \phi}{V_0}\right)^4}}
+C_{eff}(\Delta \phi) = \frac{C_0}{\sqrt{1 + \left(\frac{\Delta \phi}{V_{max}}\right)^4}}
 \end{equation}
-where $C_0 \equiv \epsilon_0 l_0$ is the vacuum capacitance in the linear (low-energy) limit.
+where $V_{max} \equiv T_{max} \cdot C_0 / C_{node}$ represents the potential equivalent of the mechanical breaking force.
 \end{axiom}
 
 \subsection{Implications of the Axiom Set}
 From these four hardware specifications, the standard "laws" of physics are derived as theorems of the substrate limit:
 \begin{itemize}
-    \item \textbf{The Wave Equation:} In the limit $\Delta \phi \ll V_0$, the Lagrangian in Eq.~\ref{eq:discrete_lagrangian} reduces to the standard discrete wave equation, recovering the speed of light $c = 1/\sqrt{L_{node}C_{node}}$.
-    \item \textbf{Mass Hierarchy:} In the limit $\Delta \phi \to V_0$, the Quartic term in Eq.~\ref{eq:saturation_op} dominates, forcing the $N^9$ scaling law observed in lepton generations.
-    \item \textbf{Breakdown:} If $\Delta \phi > V_0$, the real-valued solution to the capacitance ceases to exist, representing the physical rupture of the manifold (Event Horizon).
+    \item \textbf{The Wave Equation:} In the limit $\Delta \phi \ll V_{max}$, the Lagrangian recovers the invariant speed of light $c = l_{node}/\sqrt{L_{node}C_{node}}$.
+    \item \textbf{Mass Hierarchy:} In the limit $\Delta \phi \to V_{max}$, the Quartic term in Eq.~\ref{eq:saturation_op} dominates, forcing the discrete scaling laws observed in particle generations.
+    \item \textbf{Event Horizon:} If $\Delta \phi > V_{max}$, the real-valued solution to the capacitance ceases to exist, representing the physical rupture of the manifold (Singularity).
 \end{itemize}

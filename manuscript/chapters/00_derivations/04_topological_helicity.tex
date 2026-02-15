@@ -1,13 +1,13 @@
 \subsection{The Chiral Bias Equation (CBE)}
 The local metric impedance is modified by two factors: the local energy density ($\rho_E$) which strains the lattice, and the geometric alignment of the particle's spin ($\mathbf{S}$) with the vacuum vorticity ($\mathbf{\Omega}_{vac}$).
 
-To quantify the structural overlap without recursively double-counting the directional phase, we define the Chiral Coefficient $\alpha$ strictly as a positive scalar representing the volumetric overlap fraction of the localized flux knot ($V_p$) relative to the nodal volume ($V_{node}$):
+To quantify the structural overlap without recursively double-counting the directional phase or suffering macroscopic divergent scaling, we define the Chiral Coefficient $\alpha$ strictly as a positive scalar representing the \textbf{nodal saturation fraction}—the volume of the topological defect's core ($V_{core}$) exclusively contained within a single nodal volume ($V_{node}$):
 \begin{equation}
-\alpha = \frac{V_p}{V_{node}} < 1
+\alpha = \frac{V_{core}}{V_{node}} < 1
 \end{equation}
 
 To maintain strict dimensional homogeneity, the continuous energy density field ($\rho_E$, with units of pressure $[N/m^2]$) must be converted into a localized discrete force by multiplying it by the nodal cross-sectional area ($l_{node}^2$). This perfectly cancels the metric compliance ($[N^{-1}]$). The total Local Metric Impedance is thus derived without circularity or dimensional collapse:
 \begin{equation}
 Z_{metric} = Z_{g} \left( 1 + \sigma_Z (\rho_E \cdot l_{node}^2) + \alpha \frac{\mathbf{S} \cdot \mathbf{\Omega}_{vac}}{|\mathbf{S}| |\mathbf{\Omega}_{vac}|} \right)
 \end{equation}
-Here, $\sigma_Z (\rho_E \cdot l_{node}^2)$ correctly resolves to a strictly dimensionless scalar representing the "stiffness" increase due to localized stress (Gravity), while the single explicit unit-vector dot product exactly handles the directional phase ($\pm$) for spin alignment (Chirality).
+Here, $\sigma_Z (\rho_E \cdot l_{node}^2)$ correctly resolves to a strictly dimensionless scalar representing the "stiffness" increase due to localized stress (Gravity), while the single explicit unit-vector dot product exactly handles the geometric projection ($\pm 1$) for spin alignment (Chirality).
