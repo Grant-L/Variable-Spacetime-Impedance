@@ -68,7 +68,7 @@ def analyze_lattice_statistics(points):
     v_mean = np.mean(bulk_volumes)
     print(f"Mean Bulk Nodal Volume (V_node): {v_mean:.4f}")
 
-    # 3. Calculate Kappa exactly as defined in the VSI manuscript
+    # 3. Calculate Kappa exactly as defined in the VSE manuscript
     kappa = v_mean / (l0_mean**3)
     
     return l0_mean, v_mean, kappa, edge_lengths
@@ -101,7 +101,7 @@ if __name__ == "__main__":
     l0, v_mean, kappa, edges = analyze_lattice_statistics(points)
     
     print("-" * 40)
-    print(f"VSI LATTICE CALIBRATION RESULTS:")
+    print(f"VSE LATTICE CALIBRATION RESULTS:")
     print(f"Kappa (Volumetric Geometric Factor): {kappa:.5f}")
     print("-" * 40)
     

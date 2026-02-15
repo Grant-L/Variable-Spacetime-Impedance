@@ -96,7 +96,7 @@ def visualize_ave_lattice():
     ax.zaxis.pane.fill = False
     ax.grid(False)
 
-    # Custom Legend strictly using VSI terminology
+    # Custom Legend strictly using VSE terminology
     from matplotlib.lines import Line2D
     custom_lines = [
         Line2D([0], [0], marker='o', color='w', markerfacecolor='red', markersize=10, linestyle='None'),

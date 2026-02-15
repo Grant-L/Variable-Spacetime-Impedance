@@ -29,8 +29,8 @@ S_{AVE} = \int dt \sum_{n \in V} \mathcal{L}_{node}
 \end{equation}
 To ensure dimensional homogeneity (Joules), the Lagrangian relates Dielectric Potential Energy to Inductive Kinetic Energy:
 \begin{equation}
-\label{eq:discrete_lagrangian}
-\mathcal{L}_{node} = \underbrace{\frac{1}{2} C_{eff}(\Delta \phi) \sum_{j \in \text{neigh}(n)} (\phi_n - \phi_j)^2}_{\text{Potential ($CV^2$)}} - \underbrace{\frac{1}{2} (L_{node} C_{node}^2) (\partial_t \phi_n)^2}_{\text{Kinetic ($L I^2$)}}
+    \label{eq:discrete_lagrangian}
+    \mathcal{L}_{node} = \underbrace{\frac{1}{2} (L_{node} C_{node}^2) (\partial_t \phi_n)^2}_{\text{Kinetic ($L I^2$)}} - \underbrace{\frac{1}{2} C_{eff}(\Delta \phi) \sum_{j \in \text{neigh}(n)} (\phi_n - \phi_j)^2}_{\text{Potential ($CV^2$)}}
 \end{equation}
 Here, the kinetic term explicitly accounts for the conversion of potential rate ($\dot{\phi}$) to displacement current ($I \approx C \dot{\phi}$).
 \end{axiom}
