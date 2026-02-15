@@ -1,31 +1,31 @@
 \section{Non-Linear Signal Dynamics: Dielectric Saturation}
 \label{sec:nonlinear_dynamics}
 
-The linear wave equation derived earlier assumes constant moduli $L_{node}$ and $C_{EM}$ per unit length. However, at extreme displacement fields, the capacitive nodes saturate according to \textbf{Axiom 4}, introducing voltage-dependent capacitance and non-linear propagation.
+The linear wave equation derived earlier assumes constant moduli per unit length ($\mu_0$ and $\epsilon_0$). However, at extreme displacement fields, the capacitive edges saturate according to \textbf{Axiom 4}, introducing voltage-dependent permittivity and non-linear propagation.
 
-Consider a 1D lattice transmission line. The telegrapher equations are:
+Consider a 1D continuous transmission line. To preserve dimensional homogeneity ($[V/m]$), the telegrapher equations must utilize the continuous macroscopic moduli derived in Chapter 1 ($\mu_0 = L_{node}/l_{node}$ and $\epsilon(V) = C_{eff}(V)/l_{node}$):
 \begin{equation}
-    \frac{\partial V}{\partial z} = -L_{node}\frac{\partial I}{\partial t} \quad \text{and} \quad \frac{\partial I}{\partial z} = -C(V)\frac{\partial V}{\partial t}
+    \frac{\partial V}{\partial z} = -\mu_0\frac{\partial I}{\partial t} \quad \text{and} \quad \frac{\partial I}{\partial z} = -\epsilon(V)\frac{\partial V}{\partial t}
 \end{equation}
-Differentiating the first with respect to $z$ and substituting yields the exact non-linear wave equation:
+Differentiating the first with respect to $z$ and substituting yields the dimensionally exact non-linear wave equation:
 \begin{equation}
 \label{eq:nonlinear_wave}
-    \frac{\partial^{2}V}{\partial z^{2}} = L_{node} C(V)\frac{\partial^{2}V}{\partial t^{2}} + L_{node}\frac{dC}{dV}\left(\frac{\partial V}{\partial t}\right)^{2}
+    \frac{\partial^{2}V}{\partial z^{2}} = \mu_0 \epsilon(V)\frac{\partial^{2}V}{\partial t^{2}} + \mu_0 \frac{d\epsilon}{dV}\left(\frac{\partial V}{\partial t}\right)^{2}
 \end{equation}
 
-To evaluate this accurately, we must rigorously enforce the physical Saturation Operator defined in Axiom 4:
+To evaluate this accurately, we rigorously enforce the physical Saturation Operator defined in Axiom 4, scaled for continuous permittivity:
 \begin{equation}
-    C(V) = \frac{C_{0}}{\sqrt{1 - \left(\frac{V}{V_{0}}\right)^4}}
+    \epsilon(V) = \frac{\epsilon_{0}}{\sqrt{1 - \left(\frac{V}{V_{0}}\right)^4}}
 \end{equation}
 Taking the exact mathematical derivative of this saturation limit with respect to voltage yields:
 \begin{equation}
-    \frac{dC}{dV} = \frac{2 C(V) V^3}{V_0^4 \left[ 1 - \left(\frac{V}{V_0}\right)^4 \right]}
+    \frac{d\epsilon}{dV} = \frac{2 \epsilon(V) V^3}{V_0^4 \left[ 1 - \left(\frac{V}{V_0}\right)^4 \right]}
 \end{equation}
 
 \textbf{The Kerr Effect Derivation:}
 Notice that the non-linear derivative scales exactly with $V^3$. When substituted back into Eq. \ref{eq:nonlinear_wave}, this strictly derives the third-order optical non-linearity ($\chi^{(3)}$) known as the \textbf{Kerr Effect}, where dielectric polarization scales cubically with the field amplitude. The AVE framework analytically proves that high-energy vacuum birefringence (light-by-light scattering) is an emergent geometric consequence of the Axiom 4 topological rupture limit!
 
-The first term in the non-linear wave equation dictates a field-dependent wave speed $c(V)=1/\sqrt{L_{node}C(V)}$, which slows to zero as $V \to V_0$, establishing an event horizon. The second term ($\propto V^3$) drives \textbf{Violent Wave Steepening}. Mathematically, this acts as a topological shockwave generator, continuously pumping energy into higher spatial harmonics (Blue Shifting). As the wavefront steepens into a sheer cliff, it guarantees that the energy gradient hits the yield limit $V_{0}$, at which point the mathematics physically terminate in topological rupture (pair production).
+The first term in the non-linear wave equation dictates a field-dependent wave speed $c(V)=1/\sqrt{\mu_0 \epsilon(V)}$, which slows to zero as $V \to V_0$, establishing an event horizon. The second term ($\propto V^3$) drives \textbf{Violent Wave Steepening}. Mathematically, this acts as a topological shockwave generator, continuously pumping energy into higher spatial harmonics (Blue Shifting). As the wavefront steepens into a sheer cliff, it guarantees that the energy gradient hits the yield limit $V_{0}$, at which point the mathematics physically terminate in topological rupture (pair production).
 
 \begin{figure}[h]
     \centering

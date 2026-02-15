@@ -4,7 +4,7 @@
 This appendix consolidates the rigorous mathematical framework of Discrete Cosserat Vacuum Electrodynamics (DCVE). It demonstrates how standard constants and laws are re-derived as emergent properties of the discrete $\mathcal{M}_A$ manifold, strictly preserving SI dimensional homogeneity and classical continuum mechanics.
 
 \section{B.1 The Hardware Substrate}
-Standard physics assumes $c, \hbar$, and $G$ are fundamental scalars. DCVE identifies them as the emergent operating limits of the vacuum hardware, derived entirely from the Lattice Pitch ($l_0$) and the Schwinger Yield Energy Density ($u_{sat}$).
+Standard physics assumes $c, \hbar$, and $G$ are fundamental scalars. DCVE identifies them as the emergent operating limits of the vacuum hardware, derived entirely from the Lattice Pitch ($l_{node}$) and the Schwinger Yield Energy Density ($u_{sat}$).
 
 \begin{table}[h]
 \centering
@@ -12,10 +12,10 @@ Standard physics assumes $c, \hbar$, and $G$ are fundamental scalars. DCVE ident
 \hline
 \textbf{Parameter} & \textbf{DCVE Derivation} & \textbf{Physical Meaning} \\ \hline
 Global Slew Rate ($c$) & $c = 1 / \sqrt{\mu_0\epsilon_0}$ & Max transverse signal update rate. \\ \hline
-Yield Energy ($E_{sat}$) & $E_{sat} = u_{sat} l_0^3$ & Dielectric topological rupture limit. \\ \hline
+Yield Energy ($E_{sat}$) & $E_{sat} = u_{sat} l_{node}^3$ & Dielectric topological rupture limit. \\ \hline
 Cosserat Bulk Modulus ($K$) & $K = \lambda + \frac{2}{3}\mu > 0$ & Ensures absolute thermodynamic stability. \\ \hline
-Quantum of Action ($\hbar$) & $\hbar = u_{sat} l_0^4 / c$ & Maximum action capacity per node. \\ \hline
-Lattice Tension ($T_{vac}$) & $T_{vac} = u_{sat} l_0^2 = c^4/4\pi G$ & Linear yield force of the substrate. \\ \hline
+Quantum of Action ($\hbar$) & $\hbar = u_{sat} l_{node}^4 / c$ & Maximum action capacity per node. \\ \hline
+Lattice Tension ($T_{vac}$) & $T_{vac} = u_{sat} l_{node}^2 = c^4/4\pi G$ & Linear yield force of the substrate. \\ \hline
 \end{tabular}
 \caption{The Fundamental Hardware Specifications.}
 \end{table}
@@ -30,7 +30,7 @@ DCVE uses the Magnetic Vector Potential ($\mathbf{A}$) to ensure exact $[\text{J
 \textbf{The Authentic Generalized Uncertainty Principle:}\\
 Derived without Taylor truncation errors from the exact finite-difference lattice shift operator acting within the Brillouin zone limits:
 \begin{equation}
-    \Delta x \Delta P \ge \frac{\hbar}{2} \left| \left\langle \cos\left(\frac{l_0 \hat{p}_c}{\hbar}\right) \right\rangle \right|
+    \Delta x \Delta P \ge \frac{\hbar}{2} \left| \left\langle \cos\left(\frac{l_{node} \hat{p}_c}{\hbar}\right) \right\rangle \right|
 \end{equation}
 
 \textbf{The Thermodynamic Born Rule:}\\

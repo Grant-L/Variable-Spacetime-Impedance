@@ -41,9 +41,9 @@ The fundamental failure of the original AVE Lagrangian was the use of node scala
 \subsection{The Rigorous Repair: Magnetic Flux Linkage}
 To rigorously map a discrete 3D LC network to a continuous field theory, the canonical coordinate must be the \textbf{Magnetic Flux Linkage Vector} ($\mathbf{\Phi}$), analogous to the classical Vector Potential ($\mathbf{A}$), measured in Webers ($[\text{Wb}] = [\text{V} \cdot \text{s}]$).
 
-Let the vacuum be a discrete lattice of spacing $l_0$. A single node possesses a lumped capacitance $C_0$ (Farads) and the connecting edges possess lumped inductance $L_0$ (Henrys). The capacitance and inductance per unit volume are defined as the vacuum permittivities:
+Let the vacuum be a discrete lattice of spacing $l_{node}$. A single node possesses a lumped capacitance $C_0$ (Farads) and the connecting edges possess lumped inductance $L_0$ (Henrys). The capacitance and inductance per unit volume are defined as the vacuum permittivities:
 \begin{equation}
-    \epsilon_0 = \frac{C_0}{l_0}, \quad \mu_0 = \frac{L_0}{l_0}
+    \epsilon_0 = \frac{C_0}{l_{node}}, \quad \mu_0 = \frac{L_0}{l_{node}}
 \end{equation}
 The continuous Lagrangian density $\mathcal{L}_{DCVE}$ for this network is the difference between the capacitive kinetic energy density and the inductive potential energy density:
 \begin{equation}
@@ -89,26 +89,26 @@ where $\lambda, \mu$ are classical Lamé parameters, and $\alpha_c, \beta, \gamm
 \section{Exact Lattice Operator Algebra (The True GUP)}
 
 \subsection{The Truncation Error Flaw}
-The original framework artificially truncated a Taylor expansion of the translation operator ($\hat{T} \approx 1 + i\hat{p}l_0/\hbar$) to force a residual $-l_0 \hat{p}$ term in the Heisenberg commutator, falsely passing off a mathematical truncation error as a new physical principle.
+The original framework artificially truncated a Taylor expansion of the translation operator ($\hat{T} \approx 1 + i\hat{p}l_{node}/\hbar$) to force a residual $-l_{node} \hat{p}$ term in the Heisenberg commutator, falsely passing off a mathematical truncation error as a new physical principle.
 
 \subsection{The Rigorous Repair: Finite-Difference Commutators}
-We replace this with the exact finite-difference algebra of a discrete Hilbert space. On a lattice of pitch $l_0$, the continuous canonical momentum $\hat{p}_c$ is strictly bounded by the Brillouin zone $p_c \in [-\pi\hbar/l_0, \pi\hbar/l_0]$. 
+We replace this with the exact finite-difference algebra of a discrete Hilbert space. On a lattice of pitch $l_{node}$, the continuous canonical momentum $\hat{p}_c$ is strictly bounded by the Brillouin zone $p_c \in [-\pi\hbar/l_{node}, \pi\hbar/l_{node}]$. 
 
-The continuous translation operator is replaced by the exact discrete shift operator $\hat{T} = \exp(i \hat{p}_c l_0 / \hbar)$. The physical lattice momentum operator $\hat{P}$ is defined via the symmetric central difference:
+The continuous translation operator is replaced by the exact discrete shift operator $\hat{T} = \exp(i \hat{p}_c l_{node} / \hbar)$. The physical lattice momentum operator $\hat{P}$ is defined via the symmetric central difference:
 \begin{equation}
-    \hat{P} = \frac{\hbar}{i 2l_0} \left( \hat{T} - \hat{T}^\dagger \right) = \frac{\hbar}{l_0} \sin\left(\frac{l_0 \hat{p}_c}{\hbar}\right)
+    \hat{P} = \frac{\hbar}{i 2l_{node}} \left( \hat{T} - \hat{T}^\dagger \right) = \frac{\hbar}{l_{node}} \sin\left(\frac{l_{node} \hat{p}_c}{\hbar}\right)
 \end{equation}
 We evaluate the commutator of position with the exact lattice momentum using the identity $[\hat{x}, f(\hat{p}_c)] = i\hbar f'(\hat{p}_c)$:
 \begin{equation}
-    [\hat{x}, \hat{P}] = \left[ \hat{x}, \frac{\hbar}{l_0} \sin\left(\frac{l_0 \hat{p}_c}{\hbar}\right) \right] = \frac{\hbar}{l_0} \left( i \hbar \frac{l_0}{\hbar} \cos\left(\frac{l_0 \hat{p}_c}{\hbar}\right) \right) = i\hbar \cos\left(\frac{l_0 \hat{p}_c}{\hbar}\right)
+    [\hat{x}, \hat{P}] = \left[ \hat{x}, \frac{\hbar}{l_{node}} \sin\left(\frac{l_{node} \hat{p}_c}{\hbar}\right) \right] = \frac{\hbar}{l_{node}} \left( i \hbar \frac{l_{node}}{\hbar} \cos\left(\frac{l_{node} \hat{p}_c}{\hbar}\right) \right) = i\hbar \cos\left(\frac{l_{node} \hat{p}_c}{\hbar}\right)
 \end{equation}
 Applying the generalized Robertson-Schrödinger relation, taking the expectation value yields the rigorously exact \textbf{Generalized Uncertainty Principle (GUP)} for the discrete vacuum:
 \begin{tcolorbox}[colback=white, colframe=black]
 \begin{equation}
-    \Delta x \Delta P \ge \frac{\hbar}{2} \left| \left\langle \cos\left(\frac{l_0 \hat{p}_c}{\hbar}\right) \right\rangle \right|
+    \Delta x \Delta P \ge \frac{\hbar}{2} \left| \left\langle \cos\left(\frac{l_{node} \hat{p}_c}{\hbar}\right) \right\rangle \right|
 \end{equation}
 \end{tcolorbox}
-\textbf{Proof of Limit:} In the low-energy continuum limit ($p_c \ll \hbar/l_0$), the cosine evaluates to exactly $1$, natively recovering Heisenberg's $\Delta x \Delta p \ge \hbar/2$. At extreme momenta approaching the Brillouin zone boundary, the expectation value of the cosine shrinks, establishing a strict physical cutoff length directly from graph mathematics, without any heuristic Taylor approximations.
+\textbf{Proof of Limit:} In the low-energy continuum limit ($p_c \ll \hbar/l_{node}$), the cosine evaluates to exactly $1$, natively recovering Heisenberg's $\Delta x \Delta p \ge \hbar/2$. At extreme momenta approaching the Brillouin zone boundary, the expectation value of the cosine shrinks, establishing a strict physical cutoff length directly from graph mathematics, without any heuristic Taylor approximations.
 
 \section{Topological Solitons and Mass Scaling}
 
