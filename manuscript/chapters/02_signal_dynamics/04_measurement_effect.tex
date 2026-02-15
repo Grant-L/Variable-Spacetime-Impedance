@@ -1,25 +1,22 @@
 \section{The Measurement Effect: Impedance Loading}
 \label{sec:measurement_effect}
 
-The "Measurement Problem"---where observation induces the "collapse" of the wavefunction---is treated by the Copenhagen interpretation as a metaphysical discontinuity. In the DCVE framework, it is formally resolved as a thermodynamic circuit problem: \textbf{Impedance Loading}.
+The "Measurement Problem"---where observation induces the "collapse" of the wavefunction---is formally resolved in the AVE framework as a thermodynamic circuit problem: \textbf{Impedance Loading}.
 
 \subsection{Deriving the Born Rule}
-To measure a quantum state, a macroscopic detector must physically couple to the vacuum lattice. A detector is not a passive mathematical observer; it is a physical thermodynamic system with an activation energy threshold $E_{thresh}$. It functions as a resistive load ($R_{load}$) drawing power from the local $\mathcal{M}_A$ substrate.
+To measure a quantum state, a macroscopic detector must physically couple to the vacuum lattice. A detector is not a passive mathematical observer; it is a physical thermodynamic system with an activation energy threshold $E_{thresh}$. It functions as a resistive load ($R_{load}$) drawing power from the local $M_A$ substrate.
 
-From classical electrodynamics, the intensity $I$ (energy density) of a wave in a dielectric medium is strictly proportional to the square of its amplitude: $I \propto |\mathbf{A}|^2$. The power dissipated into the detector over a measurement interval $\Delta t$ is governed by Joule heating:
+From classical electrodynamics, the intensity $I$ (energy density) of a dynamic field is proportional to the square of the local Electric Field ($\mathbf{E} = -\partial_t \mathbf{A}$). The physical work extracted into the detector over a measurement interval $\Delta t$ is governed by strictly classical Joule heating ($P = V^2 / R$):
 \begin{equation}
-    W_{extracted} = \int P_{load} dt \propto \frac{|\mathbf{A}(x_n)|^2}{R_{load}} \Delta t
+    W_{extracted} = \int P_{load} dt \propto \frac{|\partial_t \mathbf{A}(x_n)|^2}{R_{load}} \Delta t
 \end{equation}
 
-For a detector to register a discrete "click" (e.g., ionizing an atom, triggering a photomultiplier cascade), the local wave intensity must overcome the thermodynamic activation barrier $E_{thresh}$. In a stochastic substrate fluctuating around a zero-point energy floor, the statistical probability that the extracted work exceeds the detector's deterministic threshold ($W_{extracted} \ge E_{thresh}$) scales identically with the squared amplitude of the local wave envelope.
+For a detector to register a discrete "click" (e.g., ionizing an atom), the local wave intensity must overcome the thermodynamic activation barrier $E_{thresh}$. In a stochastic substrate fluctuating around a zero-point energy floor, the statistical probability that the extracted work exceeds the deterministic threshold scales identically with the squared amplitude of the local wave envelope.
 \begin{equation}
-    P(click | x_n) = \frac{|\mathbf{A}(x_n)|^2}{\int |\mathbf{A}(x)|^2 dx}
+    P(click | x_n) = \frac{|\partial_t \mathbf{A}(x_n)|^2}{\int |\partial_t \mathbf{A}(x)|^2 dx} \equiv |\Psi|^2
 \end{equation}
-\textbf{Conclusion:} The Born Rule is not an axiomatic postulate of probability. It is the deterministic thermodynamic equation for energy extraction from a wave-bearing lattice by a thresholded resistive load.
+\textbf{Conclusion:} The Born Rule is the deterministic thermodynamic equation for energy extraction from a wave-bearing lattice by a thresholded resistive load.
 
 \subsection{Decoherence as Ohmic Dissipation}
-Standard quantum mechanics utilizes non-unitary Lindblad equations to model wavefunction collapse via environmental decoherence. DCVE provides the direct physical mechanism for this mathematical structure.
+Prior to measurement, the pilot wave evolves unitarily. The insertion of the detector introduces a non-conservative Ohmic damping term (friction) to the local lattice nodes. The "Collapse of the Wavefunction" is nothing more than rapid critical damping. By draining the pilot wave's energy to gain information, the detector acts as an electrical short-circuit. The spatial interference fringes decay exponentially to zero as energy is extracted, causing the particle to decouple from the wave and resume localized ballistic motion.
 
-Prior to measurement, the pilot wave evolves unitarily according to the energy-conserving continuous Lagrangian. The insertion of the detector introduces a non-conservative Ohmic damping term (friction) to the local lattice nodes. 
-
-The "Collapse of the Wavefunction" is nothing more than rapid critical damping. By draining the wave's energy to gain information, the detector acts as an electrical short-circuit. The spatial interference fringes (the off-diagonal coherence terms of the density matrix) decay exponentially to zero as energy is extracted, causing the particle to decouple from the wave and resume localized ballistic motion.

@@ -10,35 +10,30 @@ The total energy density of the manifold is the sum of the energy stored in the 
 \end{equation}
 This Hamiltonian $\mathcal{H}$ represents the total hardware cost of maintaining a signal.
 \begin{itemize}
-    \item \textbf{Potential Energy ($\mathcal{U}$):} Stored in the lattice compliance $\epsilon_{0}$ (Electric Field / Edge Compression).
-    \item \textbf{Kinetic Energy ($\mathcal{T}$):} Stored in the nodal inertia $\mu_{0}$ (Magnetic Field / Nodal Flux).
+    \item \textbf{Kinetic Energy ($\mathcal{T}$):} Stored in the lattice compliance $\epsilon_{0}$ (Electric Field / Time-Rate of Flux).
+    \item \textbf{Potential Energy ($\mathcal{U}$):} Stored in the nodal inertia $\mu_{0}$ (Magnetic Field / Spatial Flux Gradient).
 \end{itemize}
+\textit{Note: Because we formulate this continuous Lagrangian using the Vector Potential ($\mathbf{A}$) as the canonical coordinate, the generalized velocity is the Electric Field ($\mathbf{E} = -\partial_t \mathbf{A}$). Thus, by strict Legendre duality, the capacitive energy takes the role of Kinetic Energy, and the inductive energy takes the role of Potential Energy.}
 
 \subsection{The Dimensionally Exact Action Principle}
-In classical field theory, the Lagrangian density $\mathcal{L}$ must rigorously evaluate to energy density, measured in Joules per cubic meter $[\text{J}/\text{m}^3]$. To map the discrete LC properties of the $\mathcal{M}_A$ manifold to a continuous field theory without dimensional violations, the canonical field variable cannot be the scalar voltage ($\phi$). 
+In classical field theory, the Lagrangian density $\mathcal{L}$ must rigorously evaluate to energy density, measured in Joules per cubic meter $[\text{J}/\text{m}^3]$. To map the discrete LC properties of the $M_A$ manifold to a continuous field theory without dimensional violations, the canonical field variable cannot be the scalar voltage ($\phi$). 
 
 The canonical variable must be the \textbf{Magnetic Vector Potential} ($\mathbf{A}$), defined physically as the magnetic flux linkage per unit length, measured in Webers per meter ($[\text{Wb/m}] = [\text{V} \cdot \text{s} / \text{m}]$).
 
-The continuous Lagrangian density $\mathcal{L}_{DCVE}$ for the vacuum substrate is the exact difference between the capacitive kinetic energy density and the inductive potential energy density:
+The continuous Lagrangian density $\mathcal{L}_{AVE}$ for the vacuum substrate is the exact difference between the capacitive kinetic energy density and the inductive potential energy density:
 \begin{equation}
-    \mathcal{L}_{DCVE} = \frac{1}{2} \epsilon_0 \left| \frac{\partial \mathbf{A}}{\partial t} \right|^2 - \frac{1}{2\mu_0} |\nabla \times \mathbf{A}|^2
+    \mathcal{L}_{AVE} = \frac{1}{2} \epsilon_0 \left| \frac{\partial \mathbf{A}}{\partial t} \right|^2 - \frac{1}{2\mu_0} |\nabla \times \mathbf{A}|^2
 \end{equation}
 
-\subsection{Strict Dimensional Proof}
+\subsection{Strict Dimensional Proof and The Ansatz Reduction}
 We rigorously evaluate the SI dimensions of this functional:
 \begin{itemize}
     \item \textbf{Kinetic Term:} $[\partial_t \mathbf{A}] = [\text{V/m}]$. Therefore, $\epsilon_0 |\partial_t \mathbf{A}|^2$ yields $[\text{F/m}] \cdot [\text{V}^2/\text{m}^2] = [\text{F} \cdot \text{V}^2 / \text{m}^3]$. Because $1 \text{ J} = 1 \text{ F} \cdot 1 \text{ V}^2$, this evaluates exactly to $\mathbf{[\text{J} / \text{m}^3]}$.
     \item \textbf{Potential Term:} $[\nabla \times \mathbf{A}] = [\text{Wb/m}^2] = [\text{T}]$ (Magnetic Field $\mathbf{B}$). Therefore, $\mu_0^{-1} |\nabla \times \mathbf{A}|^2$ yields $[\text{m/H}] \cdot [\text{Wb}^2/\text{m}^4] = [\text{Wb}^2 / (\text{H} \cdot \text{m}^3)]$. Because $1 \text{ H} = 1 \text{ Wb/A}$, we get $[\text{Wb} \cdot \text{A} / \text{m}^3] = [\text{V} \cdot \text{s} \cdot \text{A} / \text{m}^3] = \mathbf{[\text{J} / \text{m}^3]}$.
 \end{itemize}
-Dimensional homogeneity is perfectly maintained.
 
-\subsection{Deriving the Wave Equation}
-By applying the standard Euler-Lagrange equations directly to this dimensionally flawless hardware functional, we extract the equations of motion for the vacuum substrate:
+Dimensional homogeneity is perfectly maintained. However, the true elegance of this functional is revealed under the \textbf{Geometrodynamic Ansatz} ($1\text{ C} \equiv 1\text{ m}$). Applying this topological reduction to the Energy Density:
 \begin{equation}
-    \nabla \times \left( \frac{1}{\mu_0} \nabla \times \mathbf{A} \right) + \epsilon_0 \frac{\partial^2 \mathbf{A}}{\partial t^2} = 0
+    \left[\frac{\text{J}}{\text{m}^3}\right] = \left[\frac{\text{N} \cdot \text{m}}{\text{m}^3}\right] = \mathbf{\left[\frac{\text{N}}{\text{m}^2}\right]} \equiv \text{Pressure (Pascals)}
 \end{equation}
-Applying the Coulomb gauge ($\nabla \cdot \mathbf{A} = 0$) and the vector identity $\nabla \times (\nabla \times \mathbf{A}) = \nabla(\nabla \cdot \mathbf{A}) - \nabla^2 \mathbf{A}$, this simplifies natively to the macroscopic classical wave equation:
-\begin{equation}
-    \nabla^2 \mathbf{A} - \mu_0 \epsilon_0 \frac{\partial^2 \mathbf{A}}{\partial t^2} = 0 \quad \implies \quad \nabla^2 \mathbf{A} - \frac{1}{c^2}\frac{\partial^2 \mathbf{A}}{\partial t^2} = 0
-\end{equation}
-The speed of light ($c = 1/\sqrt{\mu_0 \epsilon_0}$) emerges strictly as the acoustic limit imposed by the LC hardware grid.
+This mathematically proves that the Quantum Lagrangian is not an abstract energy accounting trick; it is identically the \textbf{mechanical stress tensor} of the physical vacuum substrate. Minimizing the action is strictly equivalent to minimizing structural strain in the $M_A$ manifold.

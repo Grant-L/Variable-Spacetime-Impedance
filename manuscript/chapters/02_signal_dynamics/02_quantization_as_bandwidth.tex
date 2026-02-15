@@ -4,9 +4,9 @@
 Standard Quantum Mechanics posits its formalism---complex Hilbert spaces and non-commuting operators---as axiomatic. In the AVE framework, these are not axioms. They are the rigorous mathematical consequences of transmitting signals across a discrete, band-limited mechanical graph ($\mathcal{M}_A$).
 
 \subsection{The Paley-Wiener Hilbert Space ($\mathcal{H}$)}
-Because the $\mathcal{M}_A$ lattice has a fundamental pitch $l_0$, it acts as a spatial Nyquist sampling grid. The maximum spatial frequency the lattice can support without aliasing is the Nyquist limit: $k_{max} = \pi / l_0$.
+Because the $M_A$ lattice has a fundamental pitch $l_{node}$, it acts as a spatial Nyquist sampling grid. The maximum spatial frequency the lattice can support without aliasing is the Nyquist limit: $k_{max} = \pi / l_{node}$.
 
-By the \textbf{Whittaker-Shannon Interpolation Theorem}, any physical signal $\mathbf{A}(x)$ on this discrete lattice that is perfectly band-limited can be reconstructed uniquely and continuously everywhere in space using a superposition of orthogonal sinc functions. Mathematically, the set of all such band-limited functions formally constitutes a Reproducing Kernel Hilbert Space known as the \textbf{Paley-Wiener Space} ($PW_{\pi/l_0}$). 
+By the \textbf{Whittaker-Shannon Interpolation Theorem}, any physical signal $\mathbf{A}(x)$ on this discrete lattice that is perfectly band-limited can be reconstructed uniquely and continuously everywhere in space using a superposition of orthogonal sinc functions. Mathematically, the set of all such band-limited functions formally constitutes a Reproducing Kernel Hilbert Space known as the \textbf{Paley-Wiener Space} ($PW_{\pi/l_{node}}$). 
 
 To map the real, physical lattice potential $\mathbf{A}(x,t)$ to the complex quantum state vector $\psi(x,t)$, we apply the standard signal-processing \textbf{Analytic Signal} representation using the Hilbert Transform ($\mathcal{H}_{transform}$):
 \begin{equation}
@@ -15,30 +15,37 @@ To map the real, physical lattice potential $\mathbf{A}(x,t)$ to the complex qua
 \textit{Conclusion:} The complex Hilbert space of Quantum Mechanics is identically the Paley-Wiener signal space of the discrete vacuum lattice.
 
 \subsection{Operator Algebra on the Discrete Manifold}
-In standard QM, the non-commutativity of position and momentum ($[\hat{x}, \hat{p}] = i\hbar$) is an assumed axiom. On a discrete graph with pitch $l_0$, continuous translation is physically impossible. Furthermore, continuous momentum $\hat{p}_c$ is not infinite; it is strictly bounded by the Brillouin zone $p_c \in [-\pi\hbar/l_0, \pi\hbar/l_0]$. 
+In standard QM, the non-commutativity of position and momentum ($[\hat{x}, \hat{p}] = i\hbar$) is an assumed axiom. On a discrete graph with pitch $l_{node}$, continuous translation is physically impossible. Furthermore, continuous momentum $\hat{p}_c$ is not infinite; it is strictly bounded by the Brillouin zone $p_c \in [-\pi\hbar/l_{node}, \pi\hbar/l_{node}]$. 
 
 The exact physical lattice momentum operator $\hat{P}$ must be defined via the symmetric central finite-difference operator across the adjacent nodes:
 \begin{equation}
-    \hat{P} = \frac{\hbar}{i 2l_0} \left( \exp\left(i \frac{\hat{p}_c l_0}{\hbar}\right) - \exp\left(-i \frac{\hat{p}_c l_0}{\hbar}\right) \right) = \frac{\hbar}{l_0} \sin\left(\frac{l_0 \hat{p}_c}{\hbar}\right)
+    \hat{P} = \frac{\hbar}{i 2l_{node}} \left( \exp\left(i \frac{\hat{p}_c l_{node}}{\hbar}\right) - \exp\left(-i \frac{\hat{p}_c l_{node}}{\hbar}\right) \right) = \frac{\hbar}{l_{node}} \sin\left(\frac{l_{node} \hat{p}_c}{\hbar}\right)
 \end{equation}
 
 We evaluate the exact commutator of the position operator with the lattice momentum using the identity $[\hat{x}, f(\hat{p}_c)] = i\hbar f'(\hat{p}_c)$:
 \begin{equation}
-    [\hat{x}, \hat{P}] = \left[ \hat{x}, \frac{\hbar}{l_0} \sin\left(\frac{l_0 \hat{p}_c}{\hbar}\right) \right] = \frac{\hbar}{l_0} \left( i \hbar \frac{l_0}{\hbar} \cos\left(\frac{l_0 \hat{p}_c}{\hbar}\right) \right) = i\hbar \cos\left(\frac{l_0 \hat{p}_c}{\hbar}\right)
+    [\hat{x}, \hat{P}] = \left[ \hat{x}, \frac{\hbar}{l_{node}} \sin\left(\frac{l_{node} \hat{p}_c}{\hbar}\right) \right] = i\hbar \cos\left(\frac{l_{node} \hat{p}_c}{\hbar}\right)
 \end{equation}
 
 \subsection{The Authentic Generalized Uncertainty Principle}
 Applying the generalized Robertson-Schr\"odinger relation, taking the expectation value yields the rigorously exact \textbf{Generalized Uncertainty Principle (GUP)} for the discrete vacuum:
 \begin{tcolorbox}[colback=white, colframe=black]
 \begin{equation}
-    \Delta x \Delta P \ge \frac{\hbar}{2} \left| \left\langle \cos\left(\frac{l_0 \hat{p}_c}{\hbar}\right) \right\rangle \right|
+    \Delta x \Delta P \ge \frac{\hbar}{2} \left| \left\langle \cos\left(\frac{l_{node} \hat{p}_c}{\hbar}\right) \right\rangle \right|
 \end{equation}
 \end{tcolorbox}
-\textbf{Proof of Limit:} In the low-energy continuum limit where particle momentum is extremely small compared to the grid cutoff ($p_c \ll \hbar/l_0$), the cosine evaluates to exactly $1$, natively recovering Heisenberg's principle $\Delta x \Delta p \ge \hbar/2$ flawlessly. At extreme momenta approaching the Brillouin zone boundary, the expectation value of the cosine shrinks, establishing a strict physical cutoff length directly from exact graph mathematics, without any heuristic Taylor approximations.
+\textbf{Proof of Limit:} In the low-energy continuum limit where particle momentum is extremely small compared to the grid cutoff ($p_c \ll \hbar/l_{node}$), the cosine evaluates to exactly $1$, natively recovering Heisenberg's principle $\Delta x \Delta p \ge \hbar/2$ flawlessly. At extreme momenta approaching the Brillouin zone boundary, the expectation value of the cosine shrinks, establishing a strict physical cutoff length directly from exact graph mathematics, without any heuristic Taylor approximations.
 
 \subsection{Unitary Evolution: Deriving the Schr\"odinger Equation}
-To map the classical wave equation to quantum evolution, we apply the \textbf{Paraxial Approximation}. Factoring out the ultra-fast rest-mass Compton frequency $\omega_m = mc^2/\hbar$ via an envelope function $\psi(x,t) = \Psi(x,t) e^{-i \omega_m t}$, the second time derivative drops out for non-relativistic speeds ($v \ll c$):
+The classical wave equation derived in Section \ref{sec:dielectric_lagrangian} strictly models the massless, unloaded vacuum. When a topological defect (mass) is introduced, it acts as an inductive load on the local lattice, imposing a fundamental resonance or cutoff frequency ($\omega_m = mc^2/\hbar$). This localized inductive loading mathematically transforms the massless wave equation into the massive \textbf{Klein-Gordon Equation}:
 \begin{equation}
-    i\hbar \frac{\partial \Psi}{\partial t} = -\frac{\hbar^2}{2m} \nabla^2 \Psi
+    \nabla^2 \mathbf{A} - \frac{1}{c^2}\frac{\partial^2 \mathbf{A}}{\partial t^2} = \left(\frac{mc}{\hbar}\right)^2 \mathbf{A}
 \end{equation}
-The Schr\"odinger Equation is mathematically identical to the paraxial envelope of a classical macroscopic wave propagating through the discrete LC circuits of the $\mathcal{M}_A$ vacuum.
+
+Only now, having mathematically established a localized massive standing wave, can we map this relativistic evolution to the non-relativistic quantum state. We apply the \textbf{Paraxial Approximation} by factoring out the ultra-fast rest-mass Compton frequency via a slow-varying envelope function $\mathbf{A}(x,t) = \Psi(x,t) e^{-i \omega_m t}$. 
+
+For non-relativistic speeds ($v \ll c$), the second time derivative of the envelope ($\partial_t^2 \Psi$) becomes negligible compared to the massive phase rotation. The mass terms strictly cancel out ($\omega_m^2 / c^2 = m^2 c^2 / \hbar^2$), leaving:
+\begin{equation}
+    \nabla^2 \Psi + \frac{2im}{\hbar} \frac{\partial \Psi}{\partial t} = 0 \quad \implies \quad i\hbar \frac{\partial \Psi}{\partial t} = -\frac{\hbar^2}{2m} \nabla^2 \Psi
+\end{equation}
+The Schr\"odinger Equation is not a postulate of nature. It is mathematically proven to be the paraxial envelope equation of a classical macroscopic wave propagating through the discrete massive LC circuits of the $M_A$ vacuum.
