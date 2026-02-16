@@ -1,30 +1,38 @@
 \section{Borromean Confinement: Deriving the Strong Force}
-\label{sec:borromean_confinement}
 
-In the Standard Model, the Strong Force is mediated by the exchange of gluons between quarks carrying "Color Charge." In Vacuum Engineering, we replace this abstract symmetry with **Topological Geometry**.
+In the Standard Model, the Strong Force is mediated by the exchange of gluons between quarks carrying abstract ``Color Charge.'' In Vacuum Engineering, we replace this abstract symmetry with \textbf{Topological Geometry}.
 
-We identify the Proton not as a bag of particles, but as a **Borromean Linkage** of three flux loops ($6_2^3$).
+We identify the Proton not as a bag of independent point particles, but as a \textbf{Borromean Linkage} of three continuous flux loops ($6^3_2$).
 
 \subsection{The Borromean Topology}
-The Borromean Rings consist of three loops interlinked such that no two loops are linked, but the three together are inseparable.
+
+The Borromean Rings consist of three loops interlinked such that no two individual loops are linked to each other directly, but the three together are topologically inseparable.
 
 \begin{itemize}
-    \item \textbf{Quark ($q$):} A single flux loop. Unstable on its own (cannot exist in isolation).
-    \item \textbf{Confinement:} If any single loop is cut or removed, the other two immediately fall apart. This geometrically enforces **Quark Confinement**. It is topologically impossible to isolate a single quark because the linkage requires the triad to exist.
+    \item \textbf{Quark ($q$):} A single flux loop. Unstable on its own (cannot exist in isolation without shedding its energy).
+    \item \textbf{Confinement:} If any single loop is cut or removed, the other two immediately fall apart.
 \end{itemize}
 
-\subsection{The Gluon Field as Lattice Tension}
-In this framework, "Gluons" are not discrete particles flying between quarks. They represent the **Elastic Stress** of the vacuum lattice trapped between the loops.
-\begin{equation}
-    F_{strong} \propto k_{lattice} \cdot \Delta x
-\end{equation}
-As the loops try to separate, the lattice between them stretches, storing immense potential energy. This "Flux Tube" does not break until the energy density exceeds the pair-production threshold ($E > 2mc^2$), creating a new meson rather than releasing a free quark.
+This geometry intrinsically enforces \textbf{Quark Confinement}. It is topologically impossible to isolate a single quark because the Borromean linkage requires the complete triad to maintain its structural integrity.
 
-\subsubsection{Structural Analogy: The Tripod Stool}
-Why is the Proton stable while free Quarks are forbidden?
-Consider a three-legged stool where the legs are not screwed in, but held together by mutual tension (Tensegrity).
-\begin{enumerate}
-    \item \textbf{The Triad:} The three loops (legs) lock each other into a rigid volume.
-    \item \textbf{The Failure Mode:} If you remove one leg, the other two act as loose cables and collapse instantly.
-\end{enumerate}
-\textbf{Confinement:} You cannot isolate a "leg" (Quark) because the leg defines the structural integrity of the whole. The Proton is not a bag of parts; it is a \textbf{Topological Truss}.
+\subsection{The Gluon Field as 1D Lattice Tension}
+
+In standard Quantum Chromodynamics (QCD), the strong force does not drop off with distance like electromagnetism ($1/r^2$); it remains constant, forming a ``flux tube'' that binds quarks together with a force of roughly 10,000 Newtons. The Standard Model inserts this linear potential phenomenologically. AVE derives it strictly from the hardware limits of the $\mathcal{M}_A$ substrate.
+
+Because the vacuum is a non-linear dielectric, extreme field separation causes the flux lines connecting the Borromean loops to collimate into a 1D cylindrical tube rather than spreading out into 3D space. The force required to stretch this flux tube is exactly the absolute tensile breaking strength of the discrete edges.
+
+As derived in Chapter 1, the maximum force a discrete electromagnetic flux tube can sustain before the lattice ruptures is the \textbf{EM Tension Limit ($T_{EM}$)}:
+\begin{equation}
+    F_{confinement} = T_{EM} = u_{sat} \kappa_V l_{node}^2
+\end{equation}
+
+``Gluons'' are not discrete particles flying between quarks. They are the mathematical representation of the extreme \textbf{Elastic Stress} of the vacuum lattice trapped between the separating loops. As the loops are pulled apart, the force remains absolutely constant ($T_{EM}$). The flux tube does not break until the stored elastic energy exceeds the pair-production threshold ($E > 2mc^2$), at which point the lattice snaps and re-triangulates, creating a new meson rather than releasing a free quark.
+
+\textbf{Structural Analogy: The Tripod Stool.} Consider a three-legged stool where the legs are not screwed in, but held together by mutual tension (Tensegrity). The three loops (legs) lock each other into a rigid volume. If you remove one leg, the other two act as loose cables and collapse instantly. You cannot isolate a ``leg'' (Quark) because the leg defines the structural integrity of the whole. The Proton is not a bag of parts; it is a Topological Truss.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{chapters/04_baryon_sector/simulations/outputs/proton_borromean.png}
+    \caption{\textbf{AVE Simulation: The Borromean Proton ($6^3_2$).} The discrete physical representation of Quark Confinement. The three distinct topological loops are mutually entangled. The ``Gluon Field'' is mathematically identical to the mechanical strain exerted on the $\mathcal{M}_A$ lattice nodes occupying the interstitial space. The $\mathbb{Z}_3$ symmetry naturally dictates the SU(3) color rules (Cyan, Magenta, Yellow).}
+    \label{fig:proton_borromean}
+\end{figure}
