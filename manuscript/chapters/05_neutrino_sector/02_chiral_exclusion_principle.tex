@@ -1,25 +1,32 @@
 \section{The Chiral Exclusion Principle}
-\label{sec:chiral_exclusion}
 
-The Standard Model has a glaring asymmetry: All observed neutrinos are Left-Handed. The Right-Handed neutrino is ``missing.'' AVE explains this not as a broken symmetry, but as a Hardware Filter.
+The Standard Model contains a glaring geometric asymmetry: all experimentally observed neutrinos are Left-Handed. The Right-Handed neutrino is completely ``missing.'' The AVE framework completely abandons heuristic explanations (like macroscopic ``Venetian Blinds'') and derives Parity Violation directly from the microrotational mechanics of a \textbf{Cosserat Solid}.
 
-\subsection{The Impedance of Chirality}
-The vacuum manifold $M_A$ has an intrinsic grain orientation ($\Omega_{vac}$). When a topological twist propagates:
-\begin{itemize}
-    \item \textbf{Left-Handed ($h = -1$):} The twist aligns with the lattice grain. The node impedance remains at baseline $Z \approx 377 \ \Omega$. The signal propagates freely.
-    \item \textbf{Right-Handed ($h = +1$):} The twist opposes the lattice grain. This conflict triggers a non-linear impedance spike: $Z_{RH} \to \infty$.
-\end{itemize}
+\subsection{The Chiral Phononic Bandgap}
 
-\subsection{The High-Pass Filter}
-This ``Impedance Clamping'' prevents right-handed twists from propagating beyond a single lattice pitch ($l_{node}$). 
+As established in Chapter 7, the $\mathcal{M}_A$ substrate is not a continuous empty void; it is a discrete Micropolar (Cosserat) continuum. We posit that the fundamental topological linkages of this graph possess a structural chiral bias---an intrinsic ambient macroscopic vorticity ($\Omega_{vac}$). 
 
-\textbf{Result:} The Right-Handed Neutrino is not ``missing''; it is Hardware Forbidden. If we ever detect a stable Right-Handed neutrino, the AVE framework is falsified (Kill Signal \#1). Parity Violation is not a law of physics; it is the Bandwidth Limitation of a chiral substrate.
+In solid-state physics, transverse waves propagating through a chiral lattice exhibit an asymmetric dispersion relation. The wave equation for the microrotational spin ($\theta$) of the propagating twist couples to this ambient grain, taking the form of a generalized Klein-Gordon equation with a chiral mass term:
 
-\subsubsection{Filter Analogy: The Venetian Blind}
-How does the vacuum distinguish between Left and Right?
-Imagine the vacuum nodes as a series of \textbf{Venetian Blinds} slanted at a $45^{\circ}$ angle.
-\begin{itemize}
-    \item \textbf{Left-Handed (With the Grain):} A particle twisting parallel to the slats slides through the gaps with zero resistance ($Z_0$).
-    \item \textbf{Right-Handed (Against the Grain):} A particle twisting perpendicular to the slats hits the flat face of the blinds. The effective impedance becomes infinite ($Z \to \infty$).
-\end{itemize}
-\textbf{Result:} The Right-Handed Neutrino isn't missing; it is simply blocked by the "Check Valve" geometry of the lattice grain.
+\begin{equation}
+    \omega^2_{L/R} = c^2 k^2 \mp \gamma_c (k \cdot \Omega_{vac})
+\end{equation}
+
+Where $\gamma_c$ is the intrinsic microrotational stiffness of the Cosserat vacuum. 
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{chapters/05_neutrino_sector/simulations/outputs/chiral_evanescence.png}
+    \caption{\textbf{Parity Violation via Cosserat Bandgap.} Left-handed twists align with the structural grain, yielding a real frequency and infinite propagation. Right-handed twists mathematically yield an imaginary frequency, instantly triggering Anderson localization (Evanescent Decay).}
+    \label{fig:chiral_evanescence}
+\end{figure}
+
+\subsection{Evanescent Localization of the Right-Handed Neutrino}
+
+When a \textbf{Left-Handed} torsional wave ($h = -1$) propagates, the negative sign algebraically matches the intrinsic grain of the substrate. The frequency squared ($\omega^2$) remains positive, yielding a strictly real frequency. The signal propagates freely as a standard wave.
+
+However, when a \textbf{Right-Handed} torsional wave ($h = +1$) attempts to propagate, it mechanically opposes the microrotational stiffness of the local lattice. At the spatial scale of a single lattice pitch ($l_{node}$), the massive $\gamma_c$ term overwhelms the kinetic term. The frequency squared becomes strictly negative ($\omega^2 < 0$), yielding an \textbf{Imaginary Frequency}.
+
+In wave mechanics, a solution with an imaginary frequency is not a propagating wave; it is an \textbf{Evanescent Wave}.
+
+\textbf{Result:} The Right-Handed Neutrino is not ``missing''; it is physically forbidden from propagating. The lattice immediately subjects it to Anderson Localization, causing the wave envelope to decay exponentially to zero within a single fundamental node length. Parity Violation is not an arbitrary law of physics; it is the strict mathematical consequence of a chiral phononic bandgap in a discrete solid.

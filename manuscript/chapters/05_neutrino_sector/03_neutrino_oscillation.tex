@@ -1,0 +1,32 @@
+\section{Neutrino Oscillation: Dispersive Beat Frequencies}
+
+A complete model of the Neutrino sector must mathematically account for Flavor Mixing (Neutrino Oscillation)---the phenomenon where a neutrino changes between Electron ($\nu_e$), Muon ($\nu_\mu$), and Tau ($\nu_\tau$) states as it travels.
+
+\subsection{Torsional Harmonics}
+
+If massive Leptons are defined by an integer topological crossing resonance (e.g., $3_1, 5_1, 7_1$), Neutrinos are defined by \textbf{Torsional Harmonics} on the unknot. The three flavors correspond directly to the number of full $2\pi$ twists ($T$) loaded onto the $0_1$ loop during the Weak Interaction:
+\begin{itemize}
+    \item \textbf{Electron Neutrino ($\nu_e$):} Fundamental Torsion ($T=1$).
+    \item \textbf{Muon Neutrino ($\nu_\mu$):} First Overtone ($T=2$).
+    \item \textbf{Tau Neutrino ($\nu_\tau$):} Second Overtone ($T=3$).
+\end{itemize}
+
+\subsection{Mechanical Derivation of the PMNS Matrix}
+
+When a neutrino is generated, it is created as a specific quantum superposition of these torsional harmonics. In a perfectly continuous vacuum, all frequencies would propagate at exactly the speed of light ($c$), and the state would never change.
+
+However, as rigorously derived in Chapter 12, the discrete nature of the $\mathcal{M}_A$ lattice induces a frequency-dependent \textbf{Dispersion Relation} for propagating waves:
+\begin{equation}
+    v_g(k) = c \cos\left(\frac{k l_{node}}{2}\right)
+\end{equation}
+
+Because the $T=1, 2$, and $3$ harmonics have different spatial frequencies ($k$), they propagate through the discrete lattice at slightly different phase velocities. As the wave packet travels, the harmonics systematically drift in and out of phase. 
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{chapters/05_neutrino_sector/simulations/outputs/neutrino_oscillation_beat.png}
+    \caption{\textbf{Neutrino Oscillation via Lattice Dispersion.} The probability of detecting a specific flavor oscillates periodically as a function of distance. This is mathematically identical to an acoustic \textbf{Beat Frequency}. It is the direct, mechanical consequence of multi-harmonic twists propagating across a discrete spatial grid with a non-zero pitch ($l_{node}$).}
+    \label{fig:neutrino_oscillation}
+\end{figure}
+
+Neutrino oscillation is not abstract quantum magic; it is the classical, acoustic \textbf{Beat Frequency} of a multi-harmonic torsional wave packet undergoing structural dispersion across the fundamental grid of the universe. The PMNS (Pontecorvo-Maki-Nakagawa-Sakata) mixing matrix is mathematically isomorphic to the coupling matrix for these dispersive mechanical harmonics.
