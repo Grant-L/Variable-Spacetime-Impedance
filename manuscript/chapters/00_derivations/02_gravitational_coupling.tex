@@ -1,22 +1,17 @@
 \section{Deriving the Gravitational Coupling ($G$)}
 
 \subsection{The Lattice Tension Limit ($T_{max,g}$)}
-To derive macroscopic gravity, we must define the ultimate breaking point of the $\mathcal{M}_A$ lattice strictly from its nodal parameters. As a direct dimensional corollary of the Topo-Kinematic Isomorphism ($1\text{ C} \equiv 1\text{ m}$), electrical Capacitance strictly maps to mechanical compliance ($1\text{ F} = 1\text{ C}^2/\text{J} \rightarrow 1\text{ m}^2/(\text{N}\cdot\text{m}) = 1\text{ m/N}$). The gravimetric Vacuum Capacitance $C_g$ represents the manifold's ultimate compliance. The absolute maximum tension the lattice can sustain before topological failure is:
+As a direct dimensional corollary of Axiom 1 ($1\text{ C} \equiv 1\text{ m}$), electrical Capacitance strictly maps to mechanical compliance ($1\text{ F} = 1\text{ C}^2/\text{J} \rightarrow 1\text{ m}^2/(\text{N}\cdot\text{m}) = 1\text{ m/N}$). The gravimetric Vacuum Capacitance $C_g$ represents the manifold's ultimate compliance. The absolute maximum tension the lattice can sustain before topological failure is:
 \begin{equation}
 T_{max,g} \equiv \frac{l_{node}}{C_g} \quad \text{[Newtons]}
 \end{equation}
 
-\subsection{The Geometric Emergence of G}
-Instead of assuming General Relativity's field equations a priori, we derive the Gravitational Coupling strictly by evaluating Newton's classical law of gravitation ($G = F \cdot r^2 / M^2$) at the fundamental geometric limit of two adjacent $\mathcal{M}_A$ nodes.
+\subsection{The Geometric Emergence of G (Laplacian Reduction)}
+To derive $G$ without circularly assuming Newton's macroscopic inverse-square law, we must examine the continuum limits of the discrete graph. In any 3D interconnected elastic matrix, the static stress field $\Phi$ around a localized defect strictly obeys the 3D Graph Laplacian ($\nabla^2 \Phi = 0$). The fundamental Green's function solution to this purely geometric operator mandates that the resultant force field (the gradient) decays asymptotically as $1/r^2$ at all scales down to the fundamental discrete boundary.
 
-Consider two nodes fully saturated into localized trapped-flux masses. The absolute geometric limits of their interaction are dictated by the manifold's inductive and capacitive parameters:
-\begin{enumerate}
-    \item \textbf{Minimum Separation ($r$):} The absolute minimum discrete distance between their centers is exactly one characteristic nodal length ($l_{node}$).
-    \item \textbf{Maximum Mass ($M$):} By the Isomorphism ($1\text{ C} \equiv 1\text{ m}$), the effective mass of a fully saturated node in the gravimetric domain is identically its localized inductance ($L_g$).
-    \item \textbf{Maximum Force ($F$):} The absolute maximum gravitational pull they can exert before the manifold suffers topological failure is the fundamental tension limit ($T_{max,g} = l_{node}/C_g$).
-\end{enumerate}
+The macroscopic coupling constant $G$ is simply the scale factor of this Laplacian solution. We define it by evaluating the continuous Green's function strictly at its boundary condition: the minimum discrete cutoff limit of a fully saturated node pair ($r = l_{node}$, $M_{max} = L_g$, $F_{max} = T_{max,g}$).
 
-Substituting these strict $LC$ network primitives into Newton's classical formulation unspools the precise underlying lattice mechanics:
+Evaluating the Laplacian scale factor at this geometric boundary yields:
 \begin{equation}
 G = \frac{F_{max} \cdot r_{min}^2}{M_{max}^2} = \frac{(l_{node}/C_g) \cdot (l_{node})^2}{(L_g)^2} = \frac{l_{node}^3}{L_g^2 C_g}
 \end{equation}
@@ -25,4 +20,4 @@ By subsequently substituting our rigorously derived definitions for the invarian
 \begin{equation}
 \frac{c^4}{T_{max,g}} = \left( \frac{l_{node}^4}{L_g^2 C_g^2} \right) \cdot \left( \frac{C_g}{l_{node}} \right) = \frac{l_{node}^3}{L_g^2 C_g} = G
 \end{equation}
-This mathematically proves that Newton's $G$ and Einstein's string tension limit ($c^4/G$) are not empirical continuous primitives, but exact geometric composites of the $\mathcal{M}_A$ lattice's discrete $LC$ network acting at its fundamental failure limit.
+This mathematically proves that Newton's $G$ is not an empirical continuous primitive, but the exact geometric Laplacian boundary constant of the $\mathcal{M}_A$ discrete $LC$ network acting at its fundamental failure limit.

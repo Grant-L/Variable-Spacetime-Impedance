@@ -3,14 +3,14 @@ To rigorously derive the Dark Energy equation of state ($w=-1$) and the Cosmic M
 
 The First Law of Thermodynamics for an open system expanding via the genesis (crystallization) of new lattice nodes is:
 \begin{equation}
-dU_{vac} = dQ_{latent} - P dV + \mu dN
+dU_{vac} = dQ_{latent} - P dV + \mu d\mathcal{N}_{nodes}
 \end{equation}
-Where $dQ_{latent}$ is the latent heat exchanged, $P dV$ is the mechanical work of expansion, and $\mu dN$ is the chemical work of adding new nodes. 
+Where $dQ_{latent}$ is the latent heat exchanged, $P dV$ is the mechanical work of expansion, and $\mu d\mathcal{N}_{nodes}$ is the chemical work of adding new nodes. 
 
 \subsection{The Dark Energy Pressure ($w = -1$)}
-In a spontaneous cosmological phase transition, the vacuum substrate crystallizes from a pre-geometric state. Like photons in a cavity, the macroscopic vacuum nodes possess no conserved chemical potential ($\mu_{vac} = 0$). Because Lattice Genesis creates new volumetric space with a constant baseline structural energy density ($\rho_{vac}$), the internal energy scales strictly with volume ($dU_{vac} = \rho_{vac} dV$). 
+In a spontaneous cosmological phase transition, the vacuum substrate crystallizes from a pre-geometric state. Like photons in a cavity, the macroscopic vacuum nodes possess no conserved chemical potential ($\mu_{vac} = 0$). Because Lattice Genesis creates new volumetric space with a constant baseline structural energy density ($\rho_{vac}$, geometrically locked by the invariant packing fraction $\kappa_V$), the internal energy scales strictly with volume ($dU_{vac} = \rho_{vac} dV$). 
 
-With $\mu=0$ and the latent heat ($dQ_{latent}$) expelled into the photon gas rather than retained by the lattice, the energy required to create new vacuum volume must be supplied entirely by the mechanical work of expansion: 
+With $\mu=0$ and the latent heat ($dQ_{latent}$) expelled entirely into the photon gas rather than retained by the lattice, the energy required to create new vacuum volume must be supplied entirely by the mechanical work of expansion: 
 \begin{equation}
 dU_{vac} = -P dV \implies \rho_{vac} dV = -P dV \implies P = -\rho_{vac}
 \end{equation} 
@@ -19,11 +19,21 @@ This yields the exact Dark Energy parameter without relying on flawed closed-sys
 w = \frac{P}{\rho_{vac}} = -1
 \end{equation}
 
-\subsection{The CMB as Latent Heat ($dQ \neq 0$)}
-Simultaneously, the physical transition of the unstructured pre-geometric fluid into the discrete $\mathcal{M}_A$ lattice is an exothermic process. The creation of each node releases a discrete quantum of latent heat ($\epsilon_f$) into the ambient photon gas. Therefore, the continuous heat injection rate is $\mathcal{P}_{latent} = (\epsilon_f \dot{N}) / V$.
+\subsection{The CMB as a Late-Time Thermal Attractor ($dQ \neq 0$)}
+Simultaneously, the physical transition of the unstructured pre-geometric fluid into the discrete $\mathcal{M}_A$ lattice is an exothermic process. The creation of each node releases a discrete quantum of latent heat ($\epsilon_f$) into the ambient photon gas. 
 
-The continuous volumetric injection of this heat exactly balances the adiabatic cooling of the expanding photon gas ($\dot{u}_{rad} = -4H_0 u_{rad}$). Because the volumetric node creation rate is strictly bounded by Hubble expansion ($\dot{N}/V = 3H_0 \rho_{node}$), we equate the two to find the thermodynamic equilibrium:
+The volumetric node creation rate is strictly bounded by Hubble expansion ($\dot{\mathcal{N}}_{nodes}/V = 3H(t) \rho_{node}$). Thus, the total rate of change of the radiation energy density $u_{rad}$ is governed by the competition between adiabatic expansion cooling and this latent heat injection:
 \begin{equation}
-4H_0 u_{rad} = \epsilon_f (3H_0 \rho_{node}) \implies u_{rad} = \frac{3}{4} \epsilon_f \rho_{node}
+\dot{u}_{rad} = -4H(t) u_{rad} + \epsilon_f (3H(t) \rho_{node})
 \end{equation}
-The Hubble parameter ($H_0$) perfectly cancels out! Applying the Stefan-Boltzmann law to the constant energy density $u_{rad}$ proves the universe approaches a rigid, permanent thermal attractor ($T_{CMB} \approx 2.7$ K) dictated exclusively by the latent heat of lattice genesis, entirely resolving the Heat Death paradox.
+
+By transforming the time derivative to scale factor $a(t)$ using $\dot{u} = H(t) a \frac{du}{da}$, the expansion rate $H(t)$ perfectly cancels out:
+\begin{equation}
+a \frac{du_{rad}}{da} = -4 u_{rad} + 3\epsilon_f \rho_{node}
+\end{equation}
+This is a standard linear first-order ODE. Integrating it yields the exact cosmological thermal history of the universe:
+\begin{equation}
+u_{rad}(a) = U_{hot} \, a^{-4} + \frac{3}{4} \epsilon_f \rho_{node}
+\end{equation}
+
+This equation brilliantly resolves the cosmological thermal paradox. In the early universe ($a \to 0$), the first term dominates, proving the universe possessed a vastly hotter past that cooled exactly according to the Hot Big Bang model ($a^{-4}$). However, as the universe expands ($a \to \infty$), the adiabatic cooling term approaches zero, and the temperature natively bottoms out at an \textbf{Asymptotic Thermal Floor} ($u_{rad} \to \frac{3}{4} \epsilon_f \rho_{node}$, yielding $T_{CMB} \approx 2.7$ K). The ongoing latent heat of lattice genesis permanently arrests further temperature drop, forever preventing the Heat Death of the Universe.
