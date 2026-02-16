@@ -16,11 +16,11 @@ To translate this exact dimensional equivalence into macroscopic SI units withou
 \xi_{topo} \equiv \frac{e}{l_{node}} \quad \text{[Coulombs / Meter]}
 \end{equation}
 
-By substituting the dimensional conversion $1\text{ C} \equiv (1/\xi_{topo}) \text{ m}$ into the standard SI definition of electrical impedance, we mathematically prove that Ohms reduce exactly to mechanical kinematic impedance:
+By substituting the strict dimensional conversion $1\text{ C} \equiv \xi_{topo} \text{ m}$ into the standard SI definition of electrical impedance, we mathematically map Ohms to mechanical kinematic impedance:
 \begin{equation}
-1 \, \Omega = 1 \frac{\text{V}}{\text{A}} = 1 \frac{\text{J/C}}{\text{C/s}} = 1 \frac{\text{J}\cdot\text{s}}{\text{C}^2} \equiv 1 \frac{\text{J}\cdot\text{s}}{( \frac{1}{\xi_{topo}} \text{ m} )^2} = \xi_{topo}^2 \frac{\text{J}\cdot\text{s}}{\text{m}^2} = \xi_{topo}^2 \left( \frac{\text{N}\cdot\text{m}\cdot\text{s}}{\text{m}^2} \right) = \xi_{topo}^2 \text{ kg/s}
+1 \, \Omega = 1 \frac{\text{V}}{\text{A}} = 1 \frac{\text{J/C}}{\text{C/s}} = 1 \frac{\text{J}\cdot\text{s}}{\text{C}^2} \equiv 1 \frac{\text{J}\cdot\text{s}}{( \xi_{topo} \text{ m} )^2} = \frac{1}{\xi_{topo}^2} \frac{\text{J}\cdot\text{s}}{\text{m}^2} = \frac{1}{\xi_{topo}^2} \left( \frac{\text{N}\cdot\text{m}\cdot\text{s}}{\text{m}^2} \right) = \mathbf{\frac{1}{\xi_{topo}^2} \text{ kg/s}}
 \end{equation}
-This establishes a rigorous dimensional proof that Electrical Resistance is physically identical to the mechanical inertial drag of the vacuum substrate, scaled by the geometric constant $\xi_{topo}^2$.
+This establishes a rigorous dimensional proof that Electrical Resistance is physically isomorphic to the \textit{inverse} of mechanical inertial drag within the vacuum substrate, strictly scaled by the geometric constant $\xi_{topo}^2$.
 
 \subsection{The Geometric Interpretation of the Fine Structure Constant ($\alpha$)}
 To ensure no empirical "hidden variables" arbitrarily govern later derivations, we must define the geometric role of the Fine Structure Constant ($\alpha$) within the $\mathcal{M}_A$ lattice. 
@@ -28,7 +28,7 @@ To ensure no empirical "hidden variables" arbitrarily govern later derivations, 
 The discrete vacuum graph is governed by two fundamental geometric scales:
 \begin{enumerate}
     \item \textbf{The Kinematic Lattice Pitch ($l_{node}$)}: The fundamental center-to-center spacing of the manifold, strictly scaled to the kinematic mass-gap resolution (the electron's reduced Compton limit, $\bar{\lambda}_c = \hbar / m_e c$).
-    \item \textbf{The Structural Core Radius ($r_{core}$)}: The physical cross-section of the finite-element node where the dielectric strain energy density reaches absolute saturation.
+    \item \textbf{The Structural Core Radius ($r_{core}$)}: The physical cross-section of the finite-element node where the dielectric strain energy density reaches absolute classical saturation.
 \end{enumerate}
 
 The structural core radius is strictly bounded by the classical limit where the electrostatic potential energy of the topological defect equals its total mass-energy ($U_E = m_e c^2$). Solving for the radius $r_{core}$ at this saturation limit yields:
@@ -59,7 +59,7 @@ Because the inverse of the fine structure constant is $(4\pi\alpha)^{-1} = \epsi
 \begin{equation}
 \kappa_V = 8\pi\alpha \approx 0.1834
 \end{equation}
-We do not have to guess or manually parameterize the packing fraction of the universe; the quantization of action dictates that the geometric density of the Delaunay graph is strictly defined by the fine-structure duty cycle.
+We do not have to guess or manually parameterize the packing fraction of the universe; the quantization of action dictates that the geometric density of the spatial graph is strictly defined by the fine-structure duty cycle.
 
 \subsection{Cosserat Trace-Reversal and the Longitudinal P-Wave Paradox ($\nu_{vac} = 2/7$)}
 To support purely transverse massless shear waves (gravitons and photons) without longitudinal artifacts, General Relativity requires the metric perturbation to be mathematically Trace-Reversed ($\bar{h}_{\mu\nu} = h_{\mu\nu} - \frac{1}{2}\eta_{\mu\nu}h$). We derive this absolute requirement directly from the microscopic geometry of the discrete lattice.
@@ -73,7 +73,7 @@ K_{vac} = K_{Cauchy} + K_{Cosserat} = \frac{5}{3}G_{vac} + \frac{1}{3}G_{vac} = 
 
 Substituting this rigorous geometric constraint into the standard 3D isotropic Poisson's ratio formula yields the exact vacuum Poisson's Ratio ($\nu_{vac}$):
 \begin{equation}
-\nu_{vac} = \frac{3K_{vac} - 2G_{vac}}{2(3K_{vac} + G_{vac})} = \frac{6G_{vac} - 2G_{vac}}{2(6G_{vac} + G_{vac})} = \frac{4}{14} = \frac{2}{7} \approx 0.2857
+\nu_{vac} = \frac{3K_{vac} - 2G_{vac}}{2(3K_{vac} + G_{vac})} = \frac{6G_{vac} - 2G_{vac}}{2(6G_{vac} + G_{vac})} = \frac{4}{14} = \mathbf{\frac{2}{7}} \approx 0.2857
 \end{equation}
 
 \textbf{The Trace-Reversal Triumph:} This mathematically proves that the Standard Model Weak Mixing Angle ($\theta_W$) is the exact macroscopic acoustic cutoff of the Cosserat vacuum. Evaluating the mechanical ratio of longitudinal twisting ($W$-boson) to transverse bending ($Z$-boson) flawlessly derives the empirical mass ratio strictly from this geometry, requiring absolutely zero parameter tuning:
@@ -86,7 +86,7 @@ This mirrors the Standard Model empirical ratio ($\approx 0.8815$) to profound p
 
 No. \textbf{AVE is strictly a Mono-metric theory.} By the Scalar-Vector-Tensor (SVT) Decomposition Theorem, scalar (P-wave), vector, and tensor modes strictly decouple. In the AVE framework, all Standard Model matter is defined entirely by topologically conserved curl fields (Hopf charges). Furthermore, General Relativity dictates that information-carrying gravitational waves are strictly confined to the \textbf{Transverse-Traceless (TT) Gauge} (spin-2). 
 
-Because the superluminal P-wave is purely a spin-0 volumetric dilation, it strictly couples \textit{only} to the metric trace ($h^\mu_\mu$). Therefore, matter and gravitational waves are mathematically and geometrically orthogonal to the P-wave ($\int (\nabla \Phi) \cdot (\nabla \times \mathbf{A}) dV \equiv 0$). Information cannot leak from the TT gauge into the Trace gauge. Crucially, this P-wave is \textit{not} a secondary signal-carrying background metric propagating through space (which would imply pathological Bimetric Gravity); it identically represents the continuous volumetric expansion \textit{of the coordinate grid itself} ($\nabla \cdot \mathbf{u}_p = \dot{V}/V$). It manifests macroscopically as the recession velocity of the Hubble Flow, which natively exceeds $c$ globally in standard cosmology without permitting local causal violation.
+Because the superluminal P-wave is purely a spin-0 volumetric dilation, it strictly couples \textit{only} to the metric trace ($h^\mu_\mu$). Therefore, matter and gravitational waves are mathematically and geometrically orthogonal to the P-wave ($\int (\nabla \Phi) \cdot (\nabla \times \mathbf{A}) dV \equiv 0$). Information cannot leak from the TT gauge into the Trace gauge. Crucially, this P-wave is \textit{not} a secondary signal-carrying background metric propagating through space; it identically represents the continuous volumetric expansion \textit{of the coordinate grid itself} ($\nabla \cdot \mathbf{u}_p = \dot{V}/V$). It manifests macroscopically as the recession velocity of the Hubble Flow, which natively exceeds $c$ globally in standard cosmology without permitting local causal violation.
 
 \subsection{The Emergence of Lorentz Invariance and GRB Dispersion}
 A historic critique of physical lattice theories (Aether) is the apparent violation of Special Relativity: why do observers not measure a preferred reference frame as they move through the discrete grid? 

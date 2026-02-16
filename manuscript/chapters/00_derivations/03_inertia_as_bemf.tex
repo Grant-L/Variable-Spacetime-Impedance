@@ -5,15 +5,15 @@ To rigorously map continuum mechanics to a discrete lattice in SI units, we invo
 
 Consequently, discrete Macroscopic Inductive Flux ($\mathbf{\Phi}_Z = L \cdot \mathbf{I}$) is mathematically isomorphic to discrete mechanical momentum ($\mathbf{p} = M \mathbf{v}$). We prove this absolute equivalence by evaluating the SI unit of magnetic flux (the Weber) carrying the $\xi_{topo}$ conversion factor:
 \begin{equation}
-    1 \text{ Wb} = 1 \text{ V}\cdot\text{s} = 1 \frac{\text{J}}{\text{C}}\cdot\text{s} \equiv 1 \frac{\text{J}}{(1/\xi_{topo}) \text{ m}}\cdot\text{s} = \xi_{topo} \left( \frac{\text{N}\cdot\text{m}}{\text{m}}\cdot\text{s} \right) = \xi_{topo} \left[ \text{kg}\cdot\frac{\text{m}}{\text{s}} \right]
+    1 \text{ Wb} = 1 \text{ V}\cdot\text{s} = 1 \frac{\text{J}}{\text{C}}\cdot\text{s} \equiv 1 \frac{\text{J}}{\xi_{topo} \text{ m}}\cdot\text{s} = \frac{1}{\xi_{topo}} \left( \frac{\text{N}\cdot\text{m}}{\text{m}}\cdot\text{s} \right) = \mathbf{\frac{1}{\xi_{topo}} \left[ \text{kg}\cdot\frac{\text{m}}{\text{s}} \right]}
 \end{equation}
-Thus, 1 Weber of magnetic flux is dimensionally identical to mechanical momentum, strictly proportional by the topological conversion constant $\xi_{topo}$ ($\mathbf{p} = \xi_{topo}^{-1} \mathbf{\Phi}_Z$). Transitioning to a continuous fluidic model, we define the Metric Flux Density Field $\mathbf{\phi}_Z$ by substituting discrete mass with continuous mass density ($\rho_{mass}$):
+Thus, mechanical momentum is strictly mapped to magnetic flux by the equivalence $\mathbf{p} = \xi_{topo} \mathbf{\Phi}_Z$. Transitioning to a continuous fluidic model, we define the Metric Flux Density Field $\mathbf{\phi}_Z$ by substituting discrete mass with continuous mass density ($\rho_{mass}$):
 \begin{equation}
 \mathbf{\phi}_Z(\mathbf{x},t) \equiv \rho_{mass} \mathbf{v}
 \end{equation}
 
 \subsection{Inertial Force as the Eulerian Momentum Rate}
-Because the Metric Flux Density $\mathbf{\phi}_Z$ resolves to mechanical units of $[kg \cdot m^{-2} \cdot s^{-1}]$, its total time rate of change as it convects through the manifold yields an Inertial Force Density ($\mathbf{f}_{inertial}$) with strictly balanced units of $[N/m^3]$. To rigorously conserve momentum per the Reynolds Transport Theorem (Cauchy momentum equation), we must apply the Eulerian conservative form using the divergence of the flux tensor:
+Because the Metric Flux Density $\mathbf{\phi}_Z$ resolves to mechanical units of $[kg \cdot m^{-2} \cdot s^{-1}]$, its total time rate of change as it convects through the manifold yields an Inertial Force Density ($\mathbf{f}_{inertial}$) with strictly balanced units of $[N/m^3]$. To rigorously conserve momentum per the Reynolds Transport Theorem, we must apply the Eulerian conservative form using the divergence of the flux tensor:
 \begin{equation}
 \mathbf{f}_{inertial} = -\left( \frac{\partial \mathbf{\phi}_Z}{\partial t} + \nabla \cdot (\mathbf{\phi}_Z \otimes \mathbf{v}) \right)
 \end{equation}
