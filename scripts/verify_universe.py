@@ -10,7 +10,7 @@ import numpy as np
 import scipy.constants as const
 import os
 
-OUTPUT_DIR = "manuscript/appendices/outputs"
+OUTPUT_DIR = "manuscript/backmatter/simulations/outputs"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 def verify_universe():
@@ -28,13 +28,17 @@ def verify_universe():
     e = const.e
     mu_0 = const.mu_0
     
+    # Use same alpha value as run_ave_cosserat_lattice.py for consistency
+    alpha = 1.0 / 137.035999
+    
     # 2. SECTOR 1: HARDWARE SUBSTRATE (Axioms)
     log.append("[SECTOR 1: GEOMETRY & TOPOLOGY]")
     
     alpha_ideal_inv = 4 * np.pi**3 + np.pi**2 + np.pi
     l_node = hbar / (m_e * c)
     xi_topo = e / l_node
-    kappa_v = 8 * np.pi * alpha_emp
+    # Use same formula as run_ave_cosserat_lattice.py: 8 * pi * alpha
+    kappa_v = 8 * np.pi * alpha
     
     log.append(f"> Golden Torus Q-Factor (alpha^-1):      {alpha_ideal_inv:.6f}")
     log.append(f"> Axiom 1 Lattice Pitch (l_node):        {l_node:.4e} m")
