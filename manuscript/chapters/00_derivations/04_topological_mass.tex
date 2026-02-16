@@ -2,14 +2,21 @@
 
 \textit{Methodological Note on Calibration:} The absolute dimensional energy scale of the universe is empirically anchored by the fundamental hardware pitch $l_{node}$ (calibrated via the electron limit in Section 2). We do not circularly claim to derive the absolute mass of the electron from itself. A framework that requires exactly one empirical input parameter to anchor the scale is not a tautology; it is a profound theoretical calibration. This section proves that the \textbf{Dimensionless Hierarchy of Mass Ratios} (Muon/Electron and Proton/Electron) emerges natively from topological bounds on the discrete grid.
 
+\subsection{Topological Selection Rules ($Q_H = 4n+1$)}
+To evaluate these topologies correctly, we use the 3D topological \textbf{Hopf Charge ($Q_H$)} (the structural linking invariant driving the energy functional) as the fundamental operator. Why does the universe exclusively manifest stable particles at $Q_H \in \{1, 5, 9\}$, while skipping intermediate integers?
+
+In the $\mathcal{M}_A$ discrete lattice, topological solitons must map a continuous $S^3 \to S^2$ Hopf fibration onto a discrete coordinate grid. For a knot to be absolutely stable (a ground-state fermion or baryon) rather than a rapidly decaying resonance (a meson or hyperon), its phase topology must possess strict spatial symmetry that aligns with the mean coordination geometry of the underlying amorphous graph. 
+
+To prevent destructive geometric interference (phase frustration), the Hopf charge must satisfy the symmetry congruence rule $Q_H \equiv 1 \pmod 4$. On a 3D grid, to add a complete set of symmetric twists that will not self-annihilate or cause asymmetric stress, the topology must accrue exactly \textbf{4 additional crossing twists} (one for each tetrahedral spatial quadrant). 
+
+This imposes a strict topological selection rule for stable fermions: $Q_H = 4n + 1$. Thus, the generations strictly follow $Q_H \in \{1, 5, 9 \dots\}$. The Electron is the fundamental soliton ($Q_H=1$), the Muon represents the first stable resonance ($Q_H=5$), and the Borromean Proton represents the highly frustrated composite ($Q_H=9$). Intermediate states ($Q_H = 2, 3, 4$) are geometrically frustrated (misaligned with the lattice grain) and represent unstable, short-lived resonances that instantly decay.
+
 \subsection{Deriving the Energy Functional from Cosserat Elasticity}
 Rather than arbitrarily importing the Faddeev-Skyrme model, we rigorously derive the functional exponents directly from the Strain Energy Density ($W$) of a Cosserat solid and \textbf{Derrick's Theorem}.
 
 A Cosserat continuum supports two independent deformation fields: translational displacement (yielding the standard strain tensor $\epsilon_{ij}$) and microrotation (yielding the curvature-twist tensor $\kappa_{ij}$). For a topological defect mapped by a unit phase vector field $\mathbf{n}$, the linear strain energy scales with the squared gradient $\epsilon_{ij} \sim (\partial_\mu \mathbf{n})^2$. Since $\partial_\mu \sim 1/r$, this identically yields the $(1/r^2)^2$ kinetic energy density. 
 
 Furthermore, by Derrick's Theorem, any 3D topological soliton will instantly collapse unless stabilized by higher-order, scale-invariant derivative terms. The microrotational curvature energy scales with the squared cross-product of the twist $\kappa_{ij} \sim (\partial_\mu \mathbf{n} \times \partial_\nu \mathbf{n})^2$, strictly yielding the $(1/r^4)^2$ highly localized Skyrme term. This term is not an arbitrary choice; it is mathematically mandatory to prevent core collapse in a 3D manifold.
-
-To evaluate these topologies correctly, we use the 3D topological \textbf{Hopf Charge ($Q_H$)} (the structural linking invariant driving the energy functional) as the fundamental operator. The Electron is the fundamental soliton ($Q_H=1$). The Muon represents a higher-order resonance ($Q_H=5$), and the Borromean Proton represents a highly frustrated composite ($Q_H=9$).
 
 The baseline scalar mass is found by minimizing this exact Cosserat elastodynamic functional evaluated over the discrete $\mathcal{M}_A$ hardware, bounded strictly by the non-linear dielectric saturation yield limit ($V_0$) representing classical lattice breakdown:
 \begin{equation}
