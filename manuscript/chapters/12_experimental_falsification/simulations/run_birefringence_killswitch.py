@@ -1,5 +1,5 @@
 """
-AVE MODULE 43: THE BIREFRINGENCE KILL SWITCH (QED vs AVE)
+AVE MODULE 48: THE BIREFRINGENCE KILL SWITCH (QED vs AVE)
 ---------------------------------------------------------
 The ultimate binary falsification test for high-energy colliders.
 Standard QED (Euler-Heisenberg) predicts vacuum refractive index 
