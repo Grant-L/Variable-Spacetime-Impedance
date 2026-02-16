@@ -1,23 +1,45 @@
-\section{The Equivalence Principle: $\mu$ vs $\epsilon$}
-Why do all objects fall at the same rate? Standard physics invokes the Weak Equivalence Principle as an axiom. AVE derives it from \textbf{Constitutive Scaling}.
+\section{The Equivalence Principle: Ponderomotive Force}
 
-\subsection{Constitutive Law: Impedance Invariance}
-We postulate that the vacuum substrate maintains a constant Characteristic Impedance ($Z_0$) even under elastic strain.
+Why do all objects, regardless of mass, fall at the same rate? Standard physics invokes the Weak Equivalence Principle ($m_i = m_g$) as an unexplained axiom. AVE derives it strictly from \textbf{Macroscopic Wave Mechanics} and Impedance Matching.
+
+In Chapters 3 and 4, we mathematically proved that fermions and baryons are not solid point particles; they are localized topological standing waves resonating within the $\mathcal{M}_A$ substrate. 
+
+\subsection{Impedance Invariance}
+
+We postulate that the vacuum substrate maintains a strictly constant Characteristic Impedance ($Z_0$) even under elastic strain to prevent wave scattering:
 \begin{equation}
-    Z(r) = \sqrt{\frac{\mu(r)}{\epsilon(r)}} \equiv Z_0 \text{ (Constant)}
-\end{equation}
-This implies that any local strain $\chi$ must scale the Inductance ($\mu$) and Capacitance ($\epsilon$) identically:
-\begin{equation}
-    \mu(r) = \mu_0 \chi, \quad \epsilon(r) = \epsilon_0 \chi
+    Z_{local}(r) = \sqrt{\frac{\mu(r)}{\epsilon(r)}} \equiv Z_0 \text{ (Constant)}
 \end{equation}
 
-\subsection{The Identity Proof}
-\begin{itemize}
-    \item \textbf{Inertial Mass ($m_i$):} Resistance to acceleration (Back-EMF). Proportional to Lattice Inductance ($\mu$).
-    \item \textbf{Gravitational Mass ($m_g$):} Coupling to the refractive gradient. Proportional to Lattice Capacitance ($\epsilon$).
-\end{itemize}
-The ratio of gravitational pull to inertial resistance is:
+To maintain this invariant ratio while simultaneously altering the local wave speed ($v = c/n = 1/\sqrt{\mu\epsilon}$), both the physical Inductance ($\mu$) and Capacitance ($\epsilon$) must scale identically and proportionally to the refractive index $n(r)$:
 \begin{equation}
-    \frac{m_g}{m_i} = \frac{\epsilon}{\mu} = \frac{\epsilon_0 \chi}{\mu_0 \chi} = \text{Constant}
+    \mu(r) = \mu_0 \cdot n(r), \quad \epsilon(r) = \epsilon_0 \cdot n(r)
 \end{equation}
-\textbf{Conclusion:} Objects fall at the same rate because the property that pulls them (Capacitance) is mechanically linked to the property that slows them (Inductance) by the fixed impedance of the substrate itself. The Equivalence Principle is an \textbf{Impedance Matching} condition.
+As $r \to \infty$, $n(r) \to 1$, completely recovering the zero-density vacuum baseline.
+
+\subsection{The Ponderomotive Force}
+
+When any bounded wave packet enters a medium with a variable refractive index $n(r)$, it experiences a macroscopic kinematic drift toward the denser medium to minimize its energy. This is a purely classical phenomenon known as the \textbf{Ponderomotive Force}:
+
+\begin{equation}
+    \mathbf{F}_{grav} = -\nabla U_{wave}
+\end{equation}
+
+The localized energy of the trapped topological knot is its rest mass ($m_i c^2$) scaled inversely by the refractive density of the local environment:
+\begin{equation}
+    U_{wave}(\mathbf{r}) = \frac{m_i c^2}{n(\mathbf{r})}
+\end{equation}
+
+Taking the spatial gradient of this energy functional directly yields the gravitational force:
+\begin{equation}
+    \mathbf{F}_{grav} = -\nabla \left( \frac{m_i c^2}{n(\mathbf{r})} \right) = m_i c^2 \left( \frac{\nabla n}{n^2} \right)
+\end{equation}
+
+\textbf{Conclusion:} Notice that the gravitational force $\mathbf{F}_{grav}$ is identically and algebraically proportional to the particle's internal inductive inertia $m_i$. There is no separate "gravitational charge" ($m_g$). The Equivalence Principle is mechanically guaranteed by the refraction of a localized wave packet seeking the lowest energy state in a dielectric gradient.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{chapters/07_gravitation_metric_refraction/simulations/outputs/ponderomotive_equivalence.png}
+    \caption{\textbf{The Equivalence Principle via Ponderomotive Force.} When a wave packet enters a refractive density gradient, its stored energy scales inversely with the local index $n(x)$. The spatial derivative of this energy drives acceleration. Because the energy is fundamentally defined by the particle's inductive mass $m_i$, the resulting acceleration is independent of the mass magnitude, strictly deriving $m_i \equiv m_g$.}
+    \label{fig:ponderomotive_equivalence}
+\end{figure}

@@ -1,28 +1,35 @@
 \section{The Lensing Theorem: Deriving Einstein}
-With the refractive profile $n(r)$ rigorously derived from lattice elasticity, we now calculate the bending of light purely via Snell's Law.
+
+With the refractive profile $n(r)$ rigorously derived from lattice elasticity, we now calculate the bending of light purely via Snell's Law and optical transit mechanics.
 
 \subsection{Deflection of Light}
-Consider a photon passing a mass $M$ with impact parameter $b$. The trajectory is governed by the gradient of the refractive index perpendicular to the path ($\nabla_{\perp} n$):
+
+Consider a photon passing a mass $M$ with impact parameter $b$. In AVE, light curves not because "space is bent," but because the wavefront velocity is physically slower in the denser compressed lattice near the mass ($v = c/n$), causing the ray to refract inward according to Huygens' Principle.
+
+The trajectory is governed by the gradient of the refractive index perpendicular to the path ($\nabla_\perp n$). Substituting our rigorously derived index $n(r) = 1 + \frac{2GM}{r c^2}$:
+
 \begin{equation}
-    \delta = \int_{-\infty}^{\infty} \nabla_{\perp} n \, dz
+    \delta = \int_{-\infty}^{\infty} \nabla_\perp n \, dz = \int_{-\infty}^{\infty} \frac{2GM}{c^2} \frac{b}{(b^2 + z^2)^{3/2}} \, dz
 \end{equation}
-Substituting the gradient of our derived index $n(r) = 1 + \frac{2GM}{rc^2}$:
-\begin{equation}
-    \delta = \int_{-\infty}^{\infty} \frac{2GM}{c^2} \frac{b}{(b^2 + z^2)^{3/2}} \, dz
-\end{equation}
-Evaluating this integral yields:
+
+Evaluating this standard geometrical integral yields exactly:
+
 \begin{equation}
     \delta = \frac{4GM}{bc^2}
 \end{equation}
-\textbf{Result:} This perfectly recovers the Einstein deflection angle. In AVE, light curves not because space is bent, but because the wavefront velocity is slower near the mass ($v = c/n$), causing the ray to refract inward.
+
+\textbf{Result:} This perfectly recovers the exact Einstein deflection angle solely through fluidic refraction.
 
 \subsection{Shapiro Delay (The Refractive Delay)}
-The "slowing" of light near a mass is measured as a time delay $\Delta t$. In AVE, this is simply the transit time integral through the denser medium:
+
+The ``slowing'' of light near a massive body is measured as the Shapiro time delay $\Delta t$. In AVE, this is simply the physical transit time integral of a wave traversing a denser dielectric fluid medium:
+
 \begin{equation}
-    \Delta t = \int_{path} (\frac{1}{v(r)} - \frac{1}{c}) dl = \frac{1}{c} \int_{path} (n(r) - 1) dl
+    \Delta t = \int_{path} \left(\frac{1}{v(r)} - \frac{1}{c}\right) dl = \frac{1}{c} \int_{path} (n(r) - 1) dl
 \end{equation}
-Substituting $n(r)$:
+
+Substituting $n(r) = 1 + \frac{2GM}{rc^2}$ recovers the exact empirical Shapiro Delay:
 \begin{equation}
-    \Delta t \approx \frac{4GM}{c^3} \ln(\frac{4x_e x_p}{b^2})
+    \Delta t \approx \frac{4GM}{c^3} \ln\left(\frac{4 x_e x_p}{b^2}\right)
 \end{equation}
-This confirms that the Shapiro Delay is a \textbf{Dielectric Delay}. The vacuum near the sun is "thicker," so signals take longer to propagate.
+This confirms that the Shapiro Delay is a Dielectric Delay. The vacuum near the sun is physically "thicker," increasing the node-to-node signal processing time.
