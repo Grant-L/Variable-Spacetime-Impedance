@@ -1,0 +1,20 @@
+\section{Summary of Variables}
+
+\begin{table}[h!]
+    \centering
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{|c|l|p{5.5cm}|l|}
+    \hline
+    \textbf{Symbol} & \textbf{Name} & \textbf{VSI Definition} & \textbf{SI Equivalent} \\ \hline
+    $T_{max}$ & Max Manifold Tension & Derived: $l_{node} / C_g$ & Newtons ($N$) \\ \hline
+    $\xi$ & Hierarchy Coupling & Derived: $\sqrt{L_g/C_g} / \sqrt{L_{EM}/C_{EM}}$ & Dimensionless \\ \hline
+    $\sigma_Z$ & Metric Compliance & $1 / T_{max}$ (Inverse Tension) & $N^{-1}$ \\ \hline
+    $\mathbf{\phi}_Z$ & Metric Flux Density & Continuous Momentum Density & $kg \cdot m^{-2} \cdot s^{-1}$ \\ \hline
+    $\mathbf{f}_{inertial}$ & Inertial Force Density & Eulerian Divergence: $-\frac{\partial \mathbf{\phi}_Z}{\partial t} - \nabla \cdot (\mathbf{\phi}_Z \otimes \mathbf{v})$ & $N \cdot m^{-3}$ \\ \hline
+    $\mathbf{F}_{inertial}$ & Macroscopic Inertial Force & Volume Integral: $\int \mathbf{f}_{inertial} \, dV$ & Newtons ($N$) \\ \hline
+    $\alpha_{c}$ & Chiral Coefficient & Nodal Saturation Fraction  ($\frac{V_{core}}{V_{node}} < 1$) & Dimensionless ($<1$) \\ \hline
+    $Z_{metric}$ & Local Impedance & $Z_{g} \left( 1 + \sigma_Z (\rho_E \cdot l_{node}^2) + \alpha_c \frac{\mathbf{S} \cdot \mathbf{\Omega}_{vac}}{|\mathbf{S}| |\mathbf{\Omega}_{vac}|} \right)$ & Ohms ($\Omega$) \\ \hline
+    \end{tabular}
+    \caption{Table of Fundamental Variables in VSI Theory}
+    \label{tab:variables}
+\end{table}
