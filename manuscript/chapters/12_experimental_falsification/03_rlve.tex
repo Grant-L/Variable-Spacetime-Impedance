@@ -1,44 +1,60 @@
-\section{The Ultimate Kill-Switch: The RLVE}
+\section{The Ultimate Kill-Switch: The Sagnac-RLVE}
 
-Because we cannot measurably drag the hyper-dense vacuum fluid using pure electromagnetism, we must entrain it mechanically. We propose the \textbf{Rotational Lattice Viscosity Experiment (RLVE)} as the definitive tabletop falsification test.
+Because we physically cannot measurably advect the hyper-dense vacuum fluid using pure electromagnetic momentum without building a stellar-scale magnet, we must rigorously entrain it \textit{mechanically}. We propose the \textbf{Sagnac Rotational Lattice Viscosity Experiment (Sagnac-RLVE)} as the definitive, sub-\$5,000 tabletop falsification test.
 
-By rapidly rotating a high-density physical mass adjacent to a high-finesse optical cavity, we mechanically induce a localized viscous boundary-layer "drag" in the vacuum fluid, creating a massive, directly measurable Fresnel-Fizeau optical phase shift ($\Delta \phi$). 
+By rapidly rotating a high-density physical mass adjacent to a high-finesse Sagnac fiber-optic loop, we mechanically induce a localized viscous boundary-layer "drag" in the vacuum fluid via the no-slip condition, creating a massive, directly measurable Fresnel-Fizeau optical phase shift ($\Delta \phi$). 
 
 \subsection{Exact Derivation of the Macroscopic Shift}
-A macroscopic physical rotor is composed of fundamental nucleons (topological knots). The degree to which these knots physically pack and kinematically couple to the vacuum fluid is strictly proportional to the object's physical mass density ratio ($\rho_{rotor} / \rho_{bulk}$). 
+A macroscopic physical rotor is composed of fundamental nucleons (topological knots). The degree to which these knots physically pack and kinematically couple to the vacuum fluid via the no-slip boundary condition is strictly proportional to the object's physical mass density ratio ($\rho_{rotor} / \rho_{bulk}$). 
 
 For a solid Tungsten rotor ($\rho_W = 19,300$ kg/m$^3$), the volumetric entrainment coupling is precisely:
 \begin{equation}
-    \kappa_{entrain} = \frac{19,300}{7.92 \times 10^6} \approx \mathbf{0.00243}
+    \kappa_{entrain} = \frac{19,300}{7.916 \times 10^6} \approx \mathbf{0.00244}
 \end{equation}
 
-As the Tungsten mass rotates at a tangential velocity $v_{tan}$, the no-slip boundary condition of the embedded topological knots entrains the bulk continuous vacuum fluid. If a safe, easily engineered Tungsten rotor ($15$ cm radius) spins at $10,000$ RPM ($v_{tan} \approx 157$ m/s), the macroscopic kinematic drift velocity of the local vacuum is exactly:
+As the Tungsten mass rotates at a tangential velocity $v_{tan}$, the embedded topological knots structurally entrain the bulk continuous vacuum fluid. If a safe, standard machine-shop Tungsten rotor ($15$ cm radius) spins at $10,000$ RPM ($v_{tan} \approx 157$ m/s), the macroscopic kinematic drift velocity of the local vacuum is exactly:
 \begin{equation}
-    v_{fluid} = 157 \text{ m/s} \times 0.00243 \approx \mathbf{0.38 \text{ m/s}}
+    v_{fluid} = 157 \text{ m/s} \times 0.00244 \approx \mathbf{0.38 \text{ m/s}}
 \end{equation}
 
-\textbf{The Phase Shift Breakthrough:} When light passes through this moving fluid, its phase velocity is dragged. For a multi-pass optical cavity of effective length $L_{eff} = 100$ m using a $1064$ nm laser:
-\begin{equation}
-    \Delta \phi = \frac{4\pi (100) (0.38)}{(1064 \times 10^{-9}) (299792458)} \approx \mathbf{1.49 \text{ Radians}} 
-\end{equation}
-
-A shift of nearly $1.5$ Radians is absolutely massive. It is trivially detectable by the naked eye on a wall-projected interference pattern.
-
-\subsection{The Falsification Protocol}
-To rigorously distinguish AVE from standard General Relativity (GR), we define the Metric Viscosity Ratio ($\Psi$). While GR predicts a Lense-Thirring Frame-Dragging effect that is purely geometric and inherently independent of the rotor’s material mass density (yielding a near-zero phase shift of $\sim 10^{-20}$ rad), AVE predicts that the refractive index shift is a strictly constitutive fluid response to density. 
-
-If the experiment is repeated using an Aluminum rotor ($\rho_{Al} = 2,700$ kg/m$^3$) of the exact same physical dimensions, AVE predicts the signal will plummet strictly in proportion to the material density:
+\textbf{The Fiber-Optic Amplification:} When light passes through this moving fluid, its phase velocity is dragged. We utilize a Sagnac topology, where a $1550$ nm telecom laser is split and sent in counter-propagating directions through a $L_{fiber} = 200$ m spool of standard SMF-28 single-mode optical fiber wound co-linearly around the perimeter of the rotor, geometrically multiplying the signal length:
 \begin{tcolorbox}[colback=white, colframe=black]
 \begin{equation}
-    \Psi = \frac{\Delta \phi_{Tungsten}}{\Delta \phi_{Aluminum}} = \frac{\rho_W}{\rho_{Al}} \approx \mathbf{7.1}
+    \Delta \phi = \frac{4\pi L_{fiber} v_{fluid}}{\lambda c} = \frac{4\pi (200) (0.38)}{(1550 \times 10^{-9}) (299792458)} \approx \mathbf{2.05 \text{ Radians}} 
 \end{equation}
 \end{tcolorbox}
 
-\textbf{The Metric Null-Result Kill-Switch:} If the RLVE is performed and yields a null result ($\Delta\phi = 0$, or $\Psi = 1$), the macroscopic fluid dynamics of the AVE framework are decisively falsified (see Figure \ref{fig:rlve_prediction}). Conversely, a measured value of $\Psi \approx 7$ physically falsifies the ``frictionless void'' model of General Relativity and provides the first direct laboratory measurement of the vacuum's kinematic fluid viscosity.
+A shift of over $2.0$ Radians is absolutely massive. It is trivially detectable by standard commercial photodetectors on a sub-\$5,000 optical bench.
+
+\subsection{Hardware Specification \& Protocol}
+To rigorously distinguish AVE from standard General Relativity (GR), the experiment employs a specific comparative protocol using standard optical hardware.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Component} & \textbf{Specification} & \textbf{Est. Cost} \\ \hline
+Laser Source & 1550nm Telecom Diode (Thorlabs S1FC1550) & \$450 \\ \hline
+Fiber Coupler & 50/50 SMF-28 Splitter (Thorlabs TN1550R5A2) & \$120 \\ \hline
+Sensing Fiber Coil & 200m SMF-28 Ultra (Bare) & \$50 \\ \hline
+Photodetector & InGaAs PIN Diode (Thorlabs DET01CFC) & \$180 \\ \hline
+Mechanical Rotors & 15cm Radius (1x Tungsten, 1x Aluminum) & \$800 \\ \hline
+\end{tabular}
+\caption{Fiber-Optic Sagnac-RLVE Hardware List}
+\end{table}
+
+We define the Metric Viscosity Ratio ($\Psi$). While GR predicts a Lense-Thirring Frame-Dragging effect that is purely geometric and inherently independent of the rotor’s material mass density (yielding a theoretical null phase shift of $\sim 10^{-20}$ rad at this scale), AVE predicts that the refractive index shift is a strictly constitutive fluid response to the physical density of the rotor. 
+
+If the exact same experiment is run using an Aluminum rotor ($\rho_{Al} = 2,700$ kg/m$^3$) of identical physical dimensions, AVE strictly predicts the optical signal will plummet exactly in proportion to the material density:
+\begin{equation}
+    \Psi = \frac{\Delta \phi_{Tungsten}}{\Delta \phi_{Aluminum}} = \frac{\rho_W}{\rho_{Al}} \approx \mathbf{7.1}
+\end{equation}
+
+\textbf{The Metric Null-Result Kill-Switch:} If the Sagnac-RLVE is performed and yields a null result ($\Delta\phi \approx 0$, or $\Psi = 1$), the macroscopic fluid dynamics of the AVE framework are decisively and permanently falsified (see Figure \ref{fig:sagnac_rlve_prediction}). Conversely, a measured value of $\Psi \approx 7.1$ physically falsifies the ``frictionless void'' model of General Relativity and provides the first direct laboratory measurement of the vacuum's kinematic fluid viscosity.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.9\textwidth]{chapters/12_experimental_falsification/simulations/outputs/rlve_prediction.png}
-    \caption{\textbf{RLVE Exact Parameter-Free Prediction.} By correctly utilizing the immense physical density of the vacuum ($\rho_{bulk} = 7.9 \times 10^6$), spinning a Tungsten rotor at 10k RPM physically drags the vacuum fluid at $0.38$ m/s. The pure parameter-free derivation yields a massive, easily detectable $\sim 1.5$ Radian signal. Standard General Relativity strictly predicts a near-zero density-independent frame-dragging effect at this lab scale.}
-    \label{fig:rlve_prediction}
+    \includegraphics[width=0.95\textwidth]{chapters/12_experimental_falsification/simulations/outputs/sagnac_rlve_prediction.png}
+    \caption{\textbf{Sagnac-RLVE Exact Parameter-Free Prediction.} By coiling 200m of optical fiber around a Tungsten rotor spinning at 10k RPM, the mechanically entrained vacuum fluid ($0.38$ m/s) drags the counter-propagating 1550nm laser beams. The pure parameter-free derivation yields a colossal, easily detectable $\sim 2.05$ Radian signal. Standard General Relativity strictly predicts a near-zero density-independent frame-dragging effect at this laboratory scale.}
+    \label{fig:sagnac_rlve_prediction}
 \end{figure}

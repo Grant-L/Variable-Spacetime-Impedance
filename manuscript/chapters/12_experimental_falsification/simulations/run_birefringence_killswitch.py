@@ -1,5 +1,5 @@
 """
-AVE MODULE 40: THE BIREFRINGENCE KILL SWITCH (QED vs AVE)
+AVE MODULE 43: THE BIREFRINGENCE KILL SWITCH (QED vs AVE)
 ---------------------------------------------------------
 The ultimate binary falsification test for high-energy colliders.
 Standard QED (Euler-Heisenberg) predicts vacuum refractive index 
@@ -45,7 +45,7 @@ def simulate_birefringence_killswitch():
         r"AVE formally rejects the Euler-Heisenberg Lagrangian." + "\n" +
         r"Because discrete topological capacitance diverges asymptotically at $\alpha$, " + "\n" +
         r"the AVE refractive index rigorously scales with the 4th power of the field." + "\n" +
-        r"High-intensity laser interferometry (e.g., at ELI) testing the $E^2$ vs $E^4$ " + "\n" +
+        r"High-intensity laser interferometry testing the $E^2$ vs $E^4$ " + "\n" +
         r"slope will definitively falsify one of the two frameworks."
     )
     ax.text(0.05, 0.65, textstr, transform=ax.transAxes, color='white', fontsize=12, bbox=dict(facecolor='#111111', edgecolor='white', alpha=0.9, pad=10))
