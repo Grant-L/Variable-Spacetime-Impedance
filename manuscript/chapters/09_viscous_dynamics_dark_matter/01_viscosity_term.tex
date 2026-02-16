@@ -1,51 +1,18 @@
-\section{The Rheology of Space: Why Planets Don't Crash}
-\label{sec:viscosity_rheology}
+\section{The Rheology of Space: The Bingham Transition}
 
-A critical objection to any hydrodynamic model of the vacuum is the "Viscosity Paradox": if space is viscous enough to drag galaxies (Dark Matter), it should effectively stop the Earth in its orbit within millions of years.
+A critical classical objection to any hydrodynamic or discrete substrate model of the vacuum is the ``Viscosity Paradox'': if space is a physical substance dense enough to drag galaxies together (Dark Matter), its viscosity should effectively stop the Earth in its orbit around the Sun within millions of years.
 
-We resolve this by defining the vacuum substrate ($M_A$) not as a Newtonian fluid, but as a \textbf{Non-Newtonian Shear-Thinning Superfluid}.
+We rigorously resolve this by treating the vacuum substrate ($\mathcal{M}_A$) identically to a solid-state \textbf{Bingham Plastic}---a non-Newtonian shear-thinning material.
 
-\subsection{The Bingham Plastic Vacuum}
-Standard fluids have constant viscosity. The vacuum lattice, however, is a structured solid that yields under stress. We propose the constitutive relation:
-\begin{equation}
-\eta(\dot{\gamma}) = \frac{\eta_0}{1 + (\frac{\dot{\gamma}}{\dot{\gamma}_c})^2}
-\end{equation}
-Where:
-\begin{itemize}
-    \item $\eta_0$: The base vacuum viscosity (Dark Matter limit).
-    \item $\dot{\gamma}$: The local shear rate (Gravitational Gradient $\nabla g$).
-    \item $\dot{\gamma}_c$: The critical shear threshold (Transition point).
-\end{itemize}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\textwidth]{chapters/09_viscous_dynamics_dark_matter/simulations/rheology_2d_curve.png}
-    \caption{The Rheological Shield. The log-log plot demonstrates the dual nature of the vacuum. In the Solar System (Green Zone), the high gravitational shear liquefies the lattice, reducing drag to zero (Superfluid). In the Galactic outskirts (Blue Zone), the low shear allows the lattice to relax into a high-viscosity gel, creating the Dark Matter effect.}
-    \label{fig:rheology_curve}
-\end{figure}
+In solid mechanics, a Bingham Plastic behaves as a rigid solid at low stress but physically fractures and flows as a zero-drag fluid when subjected to a high shear rate ($\nabla g \gg \text{Yield}$). The discrete topological edges of the vacuum lattice physically break and relink when sheared beyond their critical relaxation threshold.
 
 \subsection{The Two Regimes of Gravity}
-This rheology creates two distinct dynamic regimes based on the scale of the system:
 
-\subsubsection{Regime I: High Shear (Solar System Stability)}
-Near a star or planet, the gravitational gradient is immense ($\dot{\gamma} \gg \dot{\gamma}_c$).
-\begin{equation}
-\eta_{local} \approx \frac{\eta_0}{(\dot{\gamma}/\dot{\gamma}_c)^2} \to 0
-\end{equation}
-The intense curvature "liquefies" the local lattice boundaries, effectively reducing drag to zero. This ensures that planetary orbits are conservative and stable over billions of years, matching observations of the Earth and Hulse-Taylor binary pulsars.
+This exact rheological property creates two distinct dynamic regimes natively dependent on the scale of the system:
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.9\textwidth]{chapters/09_viscous_dynamics_dark_matter/simulations/rheology_3d_well.png}
-    \caption{Volumetric View of the Viscosity Well. A 3D slice of the viscosity field $\eta(x,y,z)$ around a star. The star creates a "hole" in the cosmic viscosity fluid. Planets orbiting inside this well feel no drag, while the galaxy outside floats on the viscous plateau.}
-    \label{fig:rheology_3d}
-\end{figure}
+\textbf{Regime I: High Shear (Solar System Stability)} \\
+Near a dense stellar mass like the Sun, the gravitational gradient (shear rate) is immense. The extreme curvature continuously liquefies the local lattice boundaries, effectively reducing the structural viscosity to zero ($\eta \to 0$). This localized \textbf{Superfluid} transition ensures that planetary orbits are perfectly conservative and stable over billions of years, flawlessly matching General Relativity and pulsar timing observations.
 
-\subsubsection{Regime II: Low Shear (Galactic Rotation)}
-In the outer reaches of a galaxy, the gravitational gradient is minuscule ($\dot{\gamma} \ll \dot{\gamma}_c$).
-\begin{equation}
-\eta_{local} \approx \eta_0
-\end{equation}
-The lattice relaxes into its "gel" state, exhibiting the full structural viscosity derived in Eq 9.1. This macroscopic drag forces the rotation curve to flatten, manifesting as "Dark Matter."
+\textbf{Regime II: Low Shear (Galactic Rotation)} \\
+In the deep outer reaches of a galaxy, the gravitational gradient is minuscule. The shear stress falls below the critical threshold required to break the local $\mathcal{M}_A$ lattice bonds. The lattice relaxes back into its rigid state, exhibiting its full baseline structural viscosity ($\eta \approx \eta_0$). This macroscopic network stiffness physically drags on the orbiting stars, manifesting macroscopically as the phenomenon of ``Dark Matter.''
 
-\textbf{Conclusion:} Dark Matter is not a particle halo; it is the phase transition of the vacuum fluid from a local superfluid (near stars) to a global viscous gum (interstellar space).

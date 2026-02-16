@@ -1,15 +1,55 @@
 \section{Dark Energy Resolution: Geometric Acceleration}
-\label{sec:dark_energy}
 
-Why is the expansion accelerating? In the $\Lambda$CDM model, this requires a mysterious repulsive pressure. In Generative Cosmology, it is a mathematical inevitability of \textbf{Exponential Growth}.
+Why is the expansion of the universe accelerating? In the standard $\Lambda$CDM model, this requires the ad-hoc injection of a mysterious repulsive ``Dark Energy.'' In Generative Cosmology, it is a mathematical inevitability of the Lattice Continuity Equation.
 
-If the lattice multiplies at a constant rate $R_g$, the scale factor $a(t)$ grows exponentially:
+\subsection{Deriving the Equation of State ($w = -1$)}
+
+The AVE Generative framework strictly derives $w = -1$ without inventing any new forces, utilizing only the \textbf{First Law of Thermodynamics}.
+
+In standard metric stretching, as volume increases, the internal energy density of the universe dilutes ($\rho \propto V^{-1}$). However, in AVE, macroscopic volume increases because \textit{new physical nodes are being created}. Because every newly crystallized node possesses an identical baseline structural rest energy ($E_{sat}$), the macroscopic energy density of the vacuum ($\rho_{vac}$) remains completely invariant as the universe expands.
+
+The First Law of Thermodynamics for a closed volume is:
 \begin{equation}
-    a(t) = e^{H_0 t}
+    dU = dQ - P dV
 \end{equation}
-The "acceleration" $\ddot{a}$ is simply the second derivative of this growth:
+
+For the adiabatic expansion of the vacuum, $dQ = 0$. The total energy of the manifold is the constant lattice density multiplied by the changing volume ($U = \rho_{vac} V$). Substituting this into the First Law:
 \begin{equation}
-    \ddot{a} = H_0^2 e^{H_0 t} > 0
+    d(\rho_{vac} V) = -P dV
 \end{equation}
-\textbf{Result:} The universe appears to accelerate not because of Dark Energy, but because \textbf{Growth is Compound}. More space creates more space. The "Jerk" parameter ($j = \dddot{a} a / \dot{a}^3$) equals 1, which matches high-precision Supernova measurements.
+Because $\rho_{vac}$ is a hardware constant, $d\rho_{vac} = 0$, leaving:
+\begin{equation}
+    \rho_{vac} dV = -P dV \implies P = -\rho_{vac}
+\end{equation}
+
+Dividing by density yields the exact Dark Energy Equation of State:
+\begin{equation}
+    w = \frac{P}{\rho_{vac}} = -1
+\end{equation}
+Dark Energy is not a repulsive quantum pressure. It is the unyielding thermodynamic consequence of multiplying hardware capacity.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{chapters/08_generative_cosmology/simulations/outputs/dark_energy_eos.png}
+    \caption{\textbf{The Thermodynamics of Dark Energy.} While baryonic matter dilutes as the universe expands, Lattice Genesis spawns new nodes, holding the vacuum energy density constant. By the First Law of Thermodynamics, any process that creates volume at a constant energy density strictly requires a negative pressure ($P = -\rho$), rigorously enforcing $w = -1$.}
+    \label{fig:dark_energy_eos}
+\end{figure}
+
+\subsection{The Deceleration and Jerk Parameters}
+
+If the lattice multiplies at a constant crystallization rate $H_0$, the macroscopic cosmic scale factor $a(t)$ grows exponentially: $a(t) = e^{H_0 t}$. The ``acceleration'' ($\ddot{a}$) is simply the second derivative of this compounding structural growth:
+\begin{equation}
+    \dot{a} = H_0 a(t), \quad \ddot{a} = H_0^2 a(t) > 0
+\end{equation}
+
+To mathematically prove this matches empirical reality, we evaluate the Cosmological \textbf{Deceleration Parameter} ($q$) and \textbf{Jerk Parameter} ($j$):
+\begin{equation}
+    q = -\frac{\ddot{a} a}{\dot{a}^2}, \quad j = \frac{\dddot{a}}{a H^3}
+\end{equation}
+Substituting our exact hardware derivatives ($\dddot{a} = H_0^3 a$ and $H = \dot{a}/a = H_0$):
+\begin{equation}
+    q = -\frac{(H_0^2 a) a}{(H_0 a)^2} \equiv -1.0, \quad j = \frac{H_0^3 a}{a H_0^3} \equiv 1.0
+\end{equation}
+
+A Deceleration parameter of exactly $q=-1$ and a Jerk parameter of $j=1$ flawlessly match high-precision Type Ia Supernova measurements without requiring any cosmological constant ($\Lambda$). 
 
