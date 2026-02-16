@@ -1,0 +1,62 @@
+\section{The Electromechanical Mapping}
+
+To evaluate physical kinematics within a circuit solver, we define an exact dimensional mapping between mechanics and electromagnetics. This mapping relies on the Topological Conversion Constant introduced in Chapter 1 ($\xi_{topo} \equiv e/l_{node}$). By applying this scalar, SI units of mass, force, and velocity translate consistently into inductance, voltage, and current.
+
+\begin{table}[htbp]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|p{4.0cm}|p{5.5cm}|p{5.0cm}|}
+\hline
+\textbf{Mechanical Property} & \textbf{Electrical Equivalent (SPICE)} & \textbf{AVE Mapping Identity} \\
+\hline
+Topological Stress ($F$) & \textbf{Voltage ($V$)} & $V \equiv \xi_{topo}^{-1} F$ \\
+\hline
+Kinematic Velocity ($v$) & \textbf{Current ($I$)} & $I \equiv \xi_{topo} v$ \\
+\hline
+Inertial Mass ($m$) & \textbf{Inductance ($L_{vac}$)} & $L_{vac} \equiv \xi_{topo}^{-2} m$ \\
+\hline
+Structural Compliance ($1/k$) & \textbf{Capacitance ($C_{vac}$)} & $C_{vac} \equiv \xi_{topo}^2 k^{-1}$ \\
+\hline
+Bingham Fluidic Drag ($\eta$) & \textbf{Resistance ($R_{vac}$)} & $R_{vac} \equiv \xi_{topo}^{-2} \eta$ \\
+\hline
+\end{tabular}
+\caption{Equivalent Component Mapping for Spacetime Circuit Analysis.}
+\label{tab:spice_mapping}
+\end{table}
+
+\textbf{Dimensional Consistency Check:} The transient electrical power ($P = VI$) of this mapping perfectly recovers macroscopic mechanical power ($P = Fv$):
+\begin{equation}
+    P_{elec} = V \cdot I = (\xi_{topo}^{-1} F)(\xi_{topo} v) = F \cdot v = P_{mech} \quad [\text{Watts}]
+\end{equation}
+This indicates that the dimensional translation is mathematically consistent and preserves energy conservation.
+
+\section{Equivalent Circuit Models for Vacuum Non-Linearities}
+
+Standard circuit simulators typically rely on ideal linear RLC components. However, physical materials and fluid dynamics frequently exhibit highly non-linear behaviors under extreme stress. We can model these physical thresholds using equivalent non-linear electronic components.
+
+\subsection{1. The Metric Varactor (Modeling Dielectric Yield)}
+As discussed in Chapter 3 regarding dielectric saturation, the vacuum lattice exhibits an upper bound on allowable stress ($V_{crit} \equiv \alpha$). As the local topological potential approaches this limit, the effective compliance (capacitance) increases non-linearly. This behavior can be modeled using an idealized \textbf{Varactor Diode}:
+\begin{equation}
+    C_{vac}(V) = \frac{C_0}{\sqrt{1 - (V/V_{crit})^4}}
+\end{equation}
+In a circuit simulation, this capacitance spike mimics the elastic yield of a solid. Approaching $V_{crit}$ models the threshold for spontaneous pair production (dielectric breakdown).
+
+\subsection{2. The Bingham Resistor (Modeling Shear-Thinning)}
+Chapter 9 explored the hypothesis that the vacuum may act as a \textbf{Bingham Plastic}, exhibiting high viscosity at low shear and shear-thinning at high shear. In an equivalent circuit, this is modeled as a non-linear, current-dependent resistor (similar in profile to a Zener Diode):
+\begin{equation}
+    R_{vac}(I) = \frac{R_0}{1 + (I / I_{crit})^2}
+\end{equation}
+In this model, low currents face high resistance (analogous to the drag postulated in dark matter halos), while currents exceeding the yield threshold ($I_{crit}$) experience a dramatic drop in resistance.
+
+\subsection{3. The Relativistic Inductor (Modeling the Lorentz Factor)}
+As a mass accelerates toward the speed of light ($c$), its inertial resistance increases according to the Lorentz factor ($\gamma$). Because inertia maps to inductance and velocity to current, Special Relativity can be approximated in SCA as an inductor that saturates as current approaches the propagation limit ($I_{max}$):
+\begin{equation}
+    L_{vac}(I) = \frac{L_0}{\sqrt{1 - (I / I_{max})^2}}
+\end{equation}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{chapters/13_spacetime_circuit_analysis/simulations/outputs/metric_spice_components.png}
+    \caption{\textbf{Equivalent Circuit Profiles.} By plotting the constitutive equations, we can map physical non-linearities to electronic components. Dielectric saturation acts as a voltage-dependent capacitor; Bingham shear-thinning acts as a current-dependent resistor; and Relativistic inertia behaves as an inductor nearing current saturation.}
+    \label{fig:metric_spice_components}
+\end{figure}

@@ -1,0 +1,30 @@
+\section{Application II: Exploring Asymmetric Rectification}
+
+One of the more speculative applications of the AVE framework involves exploring potential mechanisms for asymmetric force generation (often discussed in the context of experimental resonant cavities). 
+
+If the vacuum substrate exhibits a non-linear, Bingham-like rheology (high resistance at low shear, low resistance at high shear), it may theoretically act as a \textbf{Fluidic Diode}. In electrical engineering, driving a non-linear resistive element with a zero-mean asymmetric AC waveform (such as a sawtooth wave) can result in a non-zero time-averaged DC offset.
+
+\subsection{Switch-Mode Fluidic Rectification}
+We can model this hypothesis using a simple L-R circuit, where the resistor is replaced by the non-linear Bingham component ($R_{vac}$). We drive the circuit with a transient sawtooth pulse featuring a rapid rise time and a slow decay.
+
+\begin{enumerate}
+    \item \textbf{The Fast Edge (Low Resistance):} The rapid voltage spike induces a current that quickly exceeds the yield threshold ($V \gg V_{yield}$). The effective resistance drops significantly ($R_{eff} \to 0$), analogous to the medium entering a low-viscosity (shear-thinned) state. The system slips forward with minimal reaction force.
+    \item \textbf{The Slow Edge (High Resistance):} During the slow decay, the applied voltage remains below the yield threshold. The medium remains in its high-viscosity (solid-like) state. The system encounters higher resistance, generating a disproportionate reaction force in the opposite direction.
+\end{enumerate}
+
+As demonstrated in Figure \ref{fig:asymmetric_rectification}, a standard symmetric sine wave integrates to a net-zero displacement over time. However, the asymmetric drive waveform theoretically rectifies into a continuous, time-averaged DC offset. 
+
+While this remains a highly theoretical extrapolation, formulating the problem as an equivalent circuit provides a clear, testable mathematical model for evaluating claims of propellantless thrust and designing future asymmetric resonant cavities.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{chapters/13_spacetime_circuit_analysis/simulations/outputs/asymmetric_rectification.png}
+    \caption{\textbf{Transient Asymmetric Rectification Model.} Evaluated using an equivalent L-R circuit with a non-linear Bingham resistor. A symmetric sine wave (dashed) yields zero net time-averaged reaction force. An asymmetric sawtooth pulse (solid) selectively triggers the low-resistance state on the fast edge and the high-resistance state on the slow edge, resulting in a theoretical non-zero time-averaged DC offset.}
+    \label{fig:asymmetric_rectification}
+\end{figure}
+
+\section{Conclusion: A Collaborative Engineering Paradigm}
+
+The Spacetime Circuit Analysis (SCA) approach does not seek to replace the profound insights of Quantum Field Theory or General Relativity. Instead, it offers a complementary translation layer. 
+
+By modeling complex physical interactions as equivalent electronic circuits, we provide an accessible paradigm for engineers to prototype, simulate, and design experiments. Whether investigating inertial damping mechanisms, dielectric breakdown thresholds, or novel propulsion concepts, treating the universe as a complex, non-linear RLC network allows us to apply a century of established electrical engineering expertise to the frontiers of applied physics.
