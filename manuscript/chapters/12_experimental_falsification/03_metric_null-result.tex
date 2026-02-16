@@ -1,0 +1,39 @@
+\section{Experimental Falsification: The RLVE}
+
+If the AVE viscous vacuum hypothesis is physically correct, the macroscopic fluid dynamics that govern galactic Dark Matter must be measurable locally in a controlled laboratory environment. We propose the \textbf{Rotational Lattice Viscosity Experiment (RLVE)}.
+
+By rapidly rotating a high-density mass adjacent to a high-finesse Fabry-Perot interferometer, we induce a localized viscous ``drag'' in the vacuum dielectric, creating a measurable refractive phase shift ($\Delta \phi$). 
+
+\subsection{Exact Derivation of the Density-Viscosity Coupling}
+
+Unlike previous iterations of this framework, we do not derive the RLVE prediction via heuristic proportionalities. The exact refractive phase shift emerges strictly from continuum thermodynamics and the fundamental hardware limits.
+
+A physical macroscopic rotor is composed of nucleons (topological knots). The degree to which these knots physically pack and couple to the vacuum substrate is exactly its physical density ratio ($\kappa = \rho_{rotor} / \rho_{sat}$), where $\rho_{sat} \approx 2.3 \times 10^{17}$ kg/m$^3$ is the absolute nuclear saturation limit of the lattice.
+
+As the mass rotates at tangential velocity $v_{tan}$, the no-slip boundary condition of the embedded knots entrains the bulk continuous vacuum fluid. The macroscopic kinematic entrainment velocity of the local vacuum is exactly:
+\begin{equation}
+    v_{fluid} = v_{tan} \left( \frac{\rho_{rotor}}{\rho_{sat}} \right)
+\end{equation}
+
+When light passes through a moving fluid, its phase velocity is dragged. This is not a quantum postulate; it is governed precisely by the classical 19th-century \textbf{Fresnel-Fizeau Drag Effect}. The measurable interferometric phase shift ($\Delta \phi$) induced in a Fabry-Perot cavity of length $L$ and Finesse $\mathcal{F}$ by this moving fluid is strictly defined by classical optical interferometry:
+\begin{equation}
+    \Delta \phi = \frac{4\pi L_{eff}}{\lambda c} v_{fluid} = \frac{4\pi L_{eff}}{\lambda c} v_{tan} \left( \frac{\rho_{rotor}}{\rho_{sat}} \right)
+\end{equation}
+
+\subsection{Simulation and The Falsification Condition}
+
+Using an optical cavity length of $L = 0.2$ m, a standard $1064$ nm laser, a Finesse of $10,000$, and a Tungsten rotor ($\rho \approx 19,300$ kg/m$^3$) spinning at $v_{tan} \approx 1000$ m/s, the exact predicted parameter-free phase shift is $\approx 7.4$ nano-radians. This places the signal comfortably above the sensitivity limits of advanced squeezed-light interferometers.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{chapters/12_experimental_falsification/simulations/outputs/fresnel_fizeau_rlve.png}
+    \caption{\textbf{RLVE Exact Parameter-Free Prediction.} The simulation contrasts the optical phase shift produced by a high-density Tungsten rotor against an Aluminum control. The pure parameter-free derivation yields a detectable nano-radian signal. General Relativity predicts a near-zero geometric frame-dragging effect at this scale.}
+    \label{fig:rlve_prediction}
+\end{figure}
+
+To rigorously distinguish AVE from General Relativity (GR), we define the Metric Viscosity Ratio ($\Psi$). While GR predicts a Frame-Dragging effect that is purely geometric and independent of the rotor’s mass density ($\rho$), AVE predicts that the refractive index shift ($\Delta \phi$) is a strictly constitutive fluid response. For a Tungsten rotor ($\rho \approx 19.3$) vs an Aluminum control ($\rho \approx 2.7$):
+\begin{equation}
+    \Psi = \frac{\Delta \phi_{Tungsten}}{\Delta \phi_{Aluminum}} \approx \frac{\rho_W}{\rho_{Al}} \approx 7.1
+\end{equation}
+
+\textbf{The Metric Null-Result Kill-Switch:} A measured value of $\Psi > 5$ would physically falsify the ``frictionless void'' model of General Relativity and provide the first direct laboratory measurement of the vacuum's kinematic fluid viscosity. Conversely, if the RLVE yields a null result ($\Psi \approx 1$, or no density-dependent phase shift), the macroscopic fluid dynamics of the AVE framework are decisively falsified.

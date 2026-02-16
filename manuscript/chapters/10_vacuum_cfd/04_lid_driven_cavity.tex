@@ -1,33 +1,19 @@
-\section{Benchmark: The Lid-Driven Cavity}
-\label{sec:lid_cavity}
+\section{VCFD Benchmark: Discrete Graph Calculus}
 
-To validate the VCFD (Vacuum Computational Fluid Dynamics) model, we apply the constitutive Navier-Stokes equations derived in Section 10.0.1 to the classic \textbf{Lid-Driven Cavity} problem.
+To computationally validate the VCFD model, we evaluate the classical ``Lid-Driven Cavity'' benchmark utilizing the exact topological discrete operators of the $\mathcal{M}_A$ graph.
 
-This benchmark simulates a 2D box of vacuum substrate where the top boundary ("The Lid") moves at a constant velocity $U_{lid} \approx c$. This shear force induces rotational vorticity in the bulk fluid.
+Rather than relying on continuous partial differential equations, the true physics of the vacuum must be evaluated via finite-difference operations across adjacent nodes. The graph divergence ($\mathbf{D}$) and gradient ($\mathbf{G}$) matrices map potentials from nodes to edges, strictly conserving local flux. 
 
-\subsection{Setup and Equations}
-We solve for the Vacuum Flux Velocity ($u, v$) and the Vacuum Potential Pressure ($P$) on a discrete $41 \times 41$ lattice. The governing momentum equation is:
-
+The discrete Laplacian operator ($\mathbf{L} = \mathbf{D} \mathbf{G}$) allows us to solve the Pressure-Poisson equation exactly on the $\mathcal{M}_A$ hardware:
 \begin{equation}
-    \frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u} \cdot \nabla) \mathbf{u} = -\frac{1}{\mu_0} \nabla P + \nu \nabla^2 \mathbf{u}
+    \mathbf{L} P^{n+1} = \frac{\rho_{bulk}}{\Delta t} \mathbf{D} \mathbf{u}^*
 \end{equation}
 
-Where $\nu$ represents the kinematic viscosity of the lattice, governed by the Fine Structure Constant ($\alpha$).
+Where $\mathbf{u}^*$ is the intermediate velocity field. Evaluating this purely algebraic matrix equation under constant shear from a moving boundary flawlessly generates a stable central vortex. 
 
-\subsection{VCFD Simulation Code}
-The following Python implementation solves the discretized vacuum equations using the Pressure-Poisson method.
-
-% AUTOMATED IMPORT: Pulls code from the simulations folder
-\lstinputlisting[language=Python, caption=VCFD Solver (simulations/run\_lid\_driven\_cavity.py), basicstyle=\ttfamily\footnotesize, breaklines=true]{chapters/10_vacuum_cfd/simulations/run_lid_driven_cavity.py}
-
-\subsection{Results: Vortex Genesis}
-The simulation results (Figure \ref{fig:lid_cavity}) demonstrate that even in a simple geometric enclosure, shear stress induces a stable central vortex. 
-
-\begin{figure}[h!]
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.9\textwidth]{chapters/10_vacuum_cfd/simulations/lid_driven_cavity.png}
-    \caption{\textbf{VCFD Lid-Driven Cavity Result.} The streamlines (white) show the formation of a stable central vortex driven by the moving top boundary. In AVE theory, this rotational stability at high Reynolds numbers is the precursor to \textbf{Topological Matter formation}.}
+    \includegraphics[width=0.85\textwidth]{chapters/10_vacuum_cfd/simulations/outputs/lid_driven_cavity.png}
+    \caption{\textbf{VCFD Lid-Driven Cavity Result.} By applying the rigorously derived kinematic viscosity ($\nu_{vac} = \alpha c l_{node}$), the Navier-Stokes momentum equations force the formation of a stable central vortex. In AVE theory, this macroscopic rotational stability is the hydrodynamic precursor to Topological Matter generation.}
     \label{fig:lid_cavity}
 \end{figure}
-
-\textbf{Interpretation:} The formation of the central recirculation region confirms that the vacuum substrate supports angular momentum conservation. At the microscopic scale, these persistent vortices are identified as fundamental particles (Knots), stabilized by the viscosity of the surrounding manifold.

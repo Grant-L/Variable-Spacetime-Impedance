@@ -1,63 +1,34 @@
-\chapter{Appendix A: The Unified Translation Matrix}
-\label{app:rosetta_stone}
+% ====================================================================
+% APPENDICES
+% ====================================================================
+\appendix
+
+\chapter{The Unified Translation Matrix}
 
 To bridge the gap between abstract theoretical physics and applied engineering, this appendix translates the fundamental concepts of the Standard Model into the hardware specifications of the Applied Vacuum Electrodynamics (AVE) framework.
 
 \section{The Rosetta Stone of Physics}
-\label{sec:rosetta_table}
 
-The following table serves as a dictionary, translating the "Laws of Nature" into the "Operating Specifications" of the Discrete Amorphous Manifold ($M_A$).
-
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
-\caption{The Unified Translation Matrix: Mapping Physics Across Disciplines}
-\label{tab:rosetta}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{|l|l|l|l|l|}
+\begin{tabular}{|l|l|l|}
 \hline
-\textbf{Standard Model} & \textbf{Vacuum Engineering (AVE)} & \textbf{Electrical Engineering} & \textbf{Fluid Dynamics} & \textbf{Materials Science} \\ \hline
-\textbf{Speed of Light ($c$)} & Global Slew Rate ($1/\sqrt{LC}$) & Signal Propagation Delay & Sonic Speed ($c_s$) & Phonon Group Velocity \\ \hline
-\textbf{Mass ($m$)} & Stored Inductive Energy ($E_L$) & Inductive Inertia ($L \cdot I^2$) & Added Mass (Wake Drag) & Local Strain Energy \\ \hline
-\textbf{Charge ($q$)} & Topological Winding Number ($N$) & Circuit Topology & Vortex Circulation ($\Gamma$) & Burgers Vector (Dislocation) \\ \hline
-\textbf{Gravity ($G$)} & Refractive Gradient ($\nabla n$) & Dielectric Lens Profile & Pressure Gradient ($\nabla P$) & Stress Field Tensor ($\sigma_{ij}$) \\ \hline
-\textbf{Permittivity ($\epsilon_0$)} & Lattice Compliance (Inverse Stiffness) & Capacitance per Unit Length & Fluid Compressibility ($\beta$) & Elastic Modulus ($1/E$) \\ \hline
-\textbf{Permeability ($\mu_0$)} & Lattice Inertial Density & Inductance per Unit Length & Fluid Density ($\rho$) & Mass Density \\ \hline
-\textbf{Fine Structure ($\alpha$)} & Geometric Impedance Coupling & Impedance Mismatch Ratio & Reynolds Number ($Re$) & Coupling Efficiency \\ \hline
-\textbf{Dark Matter} & Vacuum Viscosity ($\eta_{vac}$) & Resistance / Damping ($R$) & Kinematic Viscosity ($\nu$) & Internal Friction \\ \hline
-\textbf{Big Bang} & Lattice Crystallization Phase & Power-On Transient & Nucleation Event & Phase Transition (Solidification) \\ \hline
-\end{tabular}%
-}
+\textbf{Standard Model} & \textbf{Vacuum Engineering (AVE)} & \textbf{Fluid/Solid Mechanics} \\
+\hline
+Speed of Light ($c$) & Global Slew Rate ($1/\sqrt{LC}$) & Phonon Group Velocity \\
+Mass ($m$) & Stored Inductive Energy ($E_L$) & Local Strain Energy \\
+Charge ($q$) & Topological Winding Number ($N$) & Burgers Vector (Dislocation) \\
+Gravity ($G$) & Refractive Gradient ($\nabla n$) & Stress Field Tensor ($\sigma_{ij}$) \\
+Permittivity ($\epsilon_0$) & Lattice Compliance ($1/T_{max}$) & Fluid Compressibility ($\beta$) \\
+Permeability ($\mu_0$) & Lattice Inertial Density & Mass Density ($\rho$) \\
+Fine Structure ($\alpha$) & Geometric Impedance Q-Factor & Structural Dissipation \\
+Dark Matter & Vacuum Viscosity ($\eta_{vac}$) & Internal Friction \\
+Big Bang & Lattice Crystallization Phase & Phase Transition \\
+\hline
+\end{tabular}
+\caption{The Unified Translation Matrix: Mapping Physics Across Disciplines}
 \end{table}
 
 \section{Parameter Accounting: Inputs vs. Outputs}
-\label{sec:parameter_audit}
 
-To rigorously establish the falsifiability of the theory, we present a strict audit of all variables used in the framework. We distinguish between \textbf{Hardware Primitives} (Axiomatic Inputs) and \textbf{Derived Predictions} (Outputs).
-
-\begin{itemize}
-    \item \textbf{Input (Axiom):} A fundamental setting of the hardware. Cannot be derived, must be measured (calibrated).
-    \item \textbf{Output (Prediction):} A value mathematically forced by the Inputs and Topology. \textit{Zero tuning allowed.}
-    \item \textbf{Status:} Indicates whether the value matches experiment and if heuristic tuning was removed.
-\end{itemize}
-
-\begin{table}[h]
-    \centering
-    \caption{The Universal Means Test: Parameter Audit (Strict Substrate Framework)}
-    \label{tab:parameter_audit}
-    \renewcommand{\arraystretch}{1.3}
-    \begin{tabular}{|l|c|l|p{6cm}|}
-    \hline
-    \textbf{Parameter} & \textbf{Type} & \textbf{Source} & \textbf{Derivation Status} \\ \hline
-    Lattice Pitch $l_{node}$ & Input & Axiom I (Nyquist Limit) & Derived natively from Schwinger Yield / Electron Compton Scale \\ \hline
-    Breakdown Volt. $V_0$ & Input & Axiom IV (Rupture Limit) & Derived natively from $c \cdot Z_0$ impedance bounds \\ \hline
-    Speed of Light $c$ & Input & Axiom III ($1/\sqrt{\mu_0\epsilon_0}$) & Hardware Slew Rate \\ \hline
-    Fine Structure $\alpha^{-1}$ & Output & Holomorphic Impedance & Exact Geometric Prediction ($4\pi^3 + \pi^2 + \pi$) \\ \hline
-    Muon Mass $m_\mu$ & Output & $O(3)$ Soliton Gradient Descent & Computable 3D topological minimum \\ \hline
-    Weak Bosons $W, Z$ & Output & Cosserat Continuum Limit & Derived natively from Micropolar cutoff length ($l_c$) \\ \hline
-    Hubble Const. $H_0$ & Input & Observation (Latent Heat) & Environmental Boundary Condition \\ \hline
-    Dark Matter $v_{flat}$ & Output & Fluid Boundary Layer & Exact Match to Bekenstein-Milgrom AQUAL floor \\ \hline
-    \end{tabular}
-\end{table}
-
-\subsection{Verification Statement}
-This framework reduces the 26+ arbitrary parameters of the Standard Model down to \textbf{4 Hardware Primitives} ($l_{node}, V_0, \mu_0, \epsilon_0$) and \textbf{1 Environmental Condition} ($H_0$). All other constants ($\alpha, G, m_e, m_p, \dots$) emerge as geometric consequences of the lattice topology.
+This framework reduces the 26+ arbitrary parameters of the Standard Model down to 4 Hardware Primitives ($l_{node}$, $V_0$, $\mu_0$, $\epsilon_0$) and 1 Environmental Condition ($H_0$). All other constants ($\alpha$, $G$, $m_e$, $m_p$, etc.) emerge strictly as geometric consequences of the lattice topology.

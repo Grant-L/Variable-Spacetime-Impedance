@@ -1,27 +1,31 @@
 \section{Metric Streamlining: Reducing Inertial Mass}
-\label{sec:metric_streamlining}
 
-Standard physics treats inertia ($m$) as an immutable scalar. Vacuum Computational Fluid Dynamics (VCFD) reveals it as a dynamic drag force dependent on hull geometry ($C_d$) and local vacuum density. To reach relativistic speeds without requiring infinite energy, we must apply the principles of \textbf{Vacuum Aerodynamics}.
+Standard physics treats inertia ($m$) as an immutable scalar. VCFD reveals it as a dynamic fluidic drag force ($F_{drag} = \frac{1}{2} \rho_{bulk} v^2 C_d A$) dependent on hull geometry and local vacuum density. To reach relativistic speeds without requiring infinite energy, we must apply the principles of Vacuum Aerodynamics.
 
 \subsection{The Dimensionally Exact Drag Coefficient ($C_d$)}
-A moving physical object (a complex topological knot) creates a turbulent inductive wake in the lattice (Back-EMF). The dynamic force required to push it through the substrate is governed by the classical drag equation:
+
+A moving physical object (a complex topological knot of mass $m$) creates a turbulent inductive wake in the $\mathcal{M}_A$ lattice. The dynamic force required to push it through the substrate is governed perfectly by the classical fluid drag equation:
+
 \begin{equation}
-    F_{drag} = \frac{1}{2} \rho_{vac} v^2 C_d A_{cross} \quad [\text{Newtons}]
+    F_{inertia} = \frac{1}{2} \rho_{bulk} v^2 C_d A_{cross} \quad [\text{Newtons}]
 \end{equation}
-Where:
-\begin{itemize}
-    \item $\rho_{vac} = u_{local}/c^2$: The effective kinematic mass density of the vacuum $[\text{kg}/\text{m}^3]$.
-    \item $C_d$: The dimensionless Metric Drag Coefficient.
-    \item $A_{cross}$: The cross-sectional interaction area of the topological defect $[\text{m}^2]$.
-\end{itemize}
-Because $\rho_{vac}$ is rigorously defined in SI mass density units, this equation evaluates flawlessly to Newtons $[\text{kg} \cdot \text{m} / \text{s}^2]$.
+
+Where $\rho_{bulk}$ is the effective kinematic mass density of the vacuum, $C_d$ is the dimensionless Metric Drag Coefficient, and $A_{cross}$ is the magnetic interaction cross-section of the topological defect. Because $\rho_{bulk}$ is rigorously defined in SI mass density units [$kg/m^3$], this equation evaluates flawlessly to Newtons.
 
 \begin{itemize}
-    \item \textbf{Blunt Body ($C_d \approx 1$):} A standard baryonic mass generates a large turbulent wake, manifesting macroscopically as high inertial mass.
-    \item \textbf{Streamlined Body ($C_d \ll 1$):} A hull shaped to guide vacuum flux around it laminarly reduces its effective inertial mass.
+    \item \textbf{Blunt Body ($C_d \approx 1$):} A standard, unshielded baryonic mass generates extreme transverse shear, resulting in a large turbulent wake. This manifests macroscopically as severe inertial mass.
+    \item \textbf{Streamlined Body ($C_d \ll 1$):} A hull actively shaped to guide vacuum flux around it laminarly drastically reduces its effective inertial mass footprint.
 \end{itemize}
 
-\subsection{Active Flow Control: The Metric "Dimple"}
-Just as golf balls use dimples to energize the boundary layer and reduce drag, a relativistic vessel can utilize Metric Actuators. 
+\subsection{Active Flow Control: The Metric ``Dimple''}
 
-By emitting high-frequency toroidal shear fields ($\omega \gg \omega_{plasma}$) at the leading edge, the vessel "pre-stresses" the vacuum, triggering non-Newtonian shear-thinning. The vacuum fluid adheres to the hull surface (Laminar Flow) rather than separating into a turbulent wake. This effectively "lubricates" the spacetime trajectory, mechanically reducing the inertial mass of the vessel without violating conservation laws.
+Just as golf balls use physical dimples to energize the aerodynamic boundary layer and delay wake separation, a relativistic vessel can utilize \textbf{Metric Actuators}.
+
+By emitting high-frequency toroidal shear fields ($\omega \gg \omega_{cutoff}$) at the leading edge, the vessel ``pre-stresses'' the vacuum, triggering the non-Newtonian shear-thinning derived in Chapter 9. The local vacuum fluid adheres to the hull surface (Laminar Flow) rather than separating into a massive, turbulent shockwave. This effectively ``lubricates'' the spacetime trajectory, mechanically reducing the apparent inertial mass of the vessel ($C_d \ll 1$) without violating a single conservation law.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{chapters/11_applied_vacuum_engineering/simulations/outputs/vacuum_aerodynamics.png}
+    \caption{\textbf{Vacuum Aerodynamics and Metric Streamlining.} \textbf{Top:} Standard Relativistic Flight. The vessel pushes a massive ``Bow Shock'' of compressed vacuum pressure, resulting in high drag ($C_d \approx 1$) and massive inertial resistance. \textbf{Bottom:} Active Metric Streamlining. A forward-projected high-frequency ``Shear Beam'' liquefies the lattice ahead of the ship, dropping the local kinematic viscosity and completely collapsing the inductive bow shock ($C_d \ll 1$).}
+    \label{fig:warp_aerodynamics}
+\end{figure}

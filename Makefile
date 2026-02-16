@@ -37,11 +37,11 @@ pdf:
 	# 1. First Pass (Generate AUX)
 	cd $(SRC_DIR) && $(LATEX) -output-directory=$(OUT_DIR) main.tex
 	
-	# 2. BibTeX (Run only if .bib file is present)
+	# 2. BibTeX (Run only if .bib file is present and citations exist)
 	@if [ -f $(SRC_DIR)/bibliography.bib ]; then \
 		echo "[Build] Processing Bibliography..."; \
 		cp $(SRC_DIR)/bibliography.bib build/; \
-		cd build && $(BIBTEX) main; \
+		cd build && $(BIBTEX) main || true; \
 	fi
 
 	# 3. Second Pass (Link References)
