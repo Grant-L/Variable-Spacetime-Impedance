@@ -1,0 +1,33 @@
+\section{The Vacuum-Flux Drag Paradox: A Lesson in Stability}
+
+To directly test the Topo-Kinematic Isomorphism (Axiom 1: $\mathbf{A} \equiv \mathbf{p}_{vac}$), one might propose a Vacuum-Flux Drag Test (VFDT). If a toroidal magnetic field is identically a fluidic flywheel of vacuum momentum, shouldn't it mechanically drag a laser beam passing through its core and induce a measurable Fresnel-Fizeau optical phase shift?
+
+In Chapter 2, we established the exact dimensional homogeneity of Magnetic Flux ($\Phi$) and Mechanical Momentum ($p$). 
+\begin{align}
+    1\,\text{Weber} &= 1\,\text{V}\cdot\text{s} = 1\,\frac{\text{J}}{\text{C}}\cdot\text{s} \nonumber \\
+    &\text{Substitute exactly } 1\,\text{C} = \xi_{topo}\,\text{m}: \nonumber \\
+    1\,\text{Wb} &= \frac{1\,\text{J}\cdot\text{s}}{\xi_{topo}\,\text{m}} = \frac{1}{\xi_{topo}} \left( \frac{\text{N}\cdot\text{m}\cdot\text{s}}{\text{m}} \right) = \mathbf{\frac{1}{\xi_{topo}} \left[ \text{kg} \cdot \frac{\text{m}}{\text{s}} \right]}
+\end{align}
+Thus, the total macroscopic mechanical momentum ($p_{vac}$) stored in a magnetic flux loop is exactly $p_{vac} = \Phi \cdot \xi_{topo}$. 
+
+For a colossal laboratory-scale toroidal pulse ($R=0.25$m, $r=0.05$m, $I = 50,000$ A), it generates a $\sim 4.0$ Tesla field, enclosing a total flux of $\Phi \approx 0.0314$ Webers. The total vacuum momentum evaluates to $p_{vac} \approx 1.30 \times 10^{-8} \text{ kg m/s}$.
+
+\subsection{Dimensional Exactness of the Drift Velocity}
+To find the physical drift velocity of the continuous space ($v_{vac} = p_{vac} / M_{vac}$), we must divide this momentum by the true mass of the vacuum fluid occupying the torus core. In Chapter 10, we proved the physical bulk mass density of the spatial vacuum is $\rho_{bulk} \approx 7.9 \times 10^6 \text{ kg/m}^3$. The physical mass of the vacuum fluid inside a small $0.012$ m$^3$ torus is an immense \textbf{$97,450 \text{ kg}$}.
+\begin{equation}
+    v_{vac} = \frac{1.30 \times 10^{-8} \text{ kg m/s}}{97,450 \text{ kg}} \approx \mathbf{1.33 \times 10^{-13} \text{ m/s}}
+\end{equation}
+
+For a standard Michelson interferometer, a fluid drift velocity of $10^{-13}$ m/s yields a Fresnel-Fizeau optical phase shift of $\Delta \phi \approx 10^{-14}$ radians, rendering the electromagnetic signal entirely undetectable.
+
+\subsection{The Triumph of the Null Result}
+While this nullifies the VFDT as a viable tabletop experiment, the mathematical result is a \textbf{triumphant theoretical proof of the framework's macroscopic optical stability}. 
+
+If a simple 50 kA magnet could easily drag the vacuum fluid at macroscopic speeds (e.g., mm/s), the spatial metric inside a standard hospital MRI machine would aggressively and visibly warp the path of light, violently violating standard Lorentz invariance. The fact that AVE mathematically forces the kinematic drift to $10^{-13}$ m/s directly because of the immense, White Dwarf-level density of the vacuum ($\rho_{bulk}$) proves exactly and mechanically why light propagates in straight, stable lines through intense classical magnetic fields (see Figure \ref{fig:vfdt_correction}).
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{chapters/12_experimental_falsification/simulations/outputs/vfdt_dimensional_correction.png}
+    \caption{\textbf{The VFDT and Optical Stability.} Due to the immense macroscopic density of the $\mathcal{M}_A$ substrate ($\rho_{bulk} \approx 7.9 \times 10^6$ kg/m$^3$), massive electromagnetic momentum fields generate negligible fluid advection ($v_{vac} \sim 10^{-13}$ m/s). This rigidly protects macroscopic Lorentz invariance, proving why intense laboratory magnetic fields do not visibly bend light via fluidic frame-dragging.}
+    \label{fig:vfdt_correction}
+\end{figure}
