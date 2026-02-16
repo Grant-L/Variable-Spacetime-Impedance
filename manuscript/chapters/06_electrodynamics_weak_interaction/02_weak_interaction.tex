@@ -1,76 +1,34 @@
 \section{The Weak Interaction: Micropolar Cutoff Dynamics}
 
-The Weak Force is profoundly unique in the Standard Model because it is extraordinarily short-ranged ($\approx 10^{-18}$ m) and is mediated by massively heavy gauge bosons ($W \approx 80.4$ GeV, $Z \approx 91.2$ GeV). The Standard Model heuristically explains this via spontaneous symmetry breaking and the abstract Higgs Mechanism. DCVE derives this natively and mechanically from the \textbf{Characteristic Cutoff Scale} of a Cosserat continuum.
+The Weak Force is profoundly unique in the Standard Model because it is extraordinarily short-ranged ($\approx 10^{-18}$ m) and is mediated by massively heavy gauge bosons ($W \approx 80.4$ GeV, $Z \approx 91.2$ GeV). The Standard Model heuristically explains this via spontaneous symmetry breaking and the mathematically abstract Higgs Mechanism. The AVE framework derives this natively and mechanically from the \textbf{Characteristic Cutoff Scale} of a trace-reversed Cosserat continuum.
 
 \subsection{Rigorous Derivation: The Cosserat Cutoff Length}
+In Chapter 1, we mathematically established that to prevent catastrophic causality violations (superluminal longitudinal P-waves), the vacuum substrate must act structurally as a \textbf{Trace-Reversed Cosserat Solid}. A Cosserat solid natively possesses an independent microrotational couple-stress stiffness ($\gamma_c$) alongside its standard macroscopic shear modulus ($G_{vac}$).
 
-In Chapter 7, we mathematically establish that to prevent catastrophic thermodynamic collapse, the vacuum substrate must be modeled as a \textbf{Cosserat (Micropolar) Continuum}. Unlike simple fluids, a Cosserat solid possesses an independent microrotational stiffness ($\gamma_c$) alongside its standard shear modulus ($G$).
-
-In any Cosserat solid, the ratio of the microrotational bending stiffness to the macroscopic shear modulus strictly defines a fundamental \textbf{Characteristic Length Scale} ($l_c$). This length scale dictates the maximum spatial extent to which localized couple-stresses (isolated twists) can propagate before the intrinsic stiffness of the solid damps them out:
-
+In classical solid mechanics, the ratio of the microrotational bending stiffness to the macroscopic shear modulus rigidly defines a fundamental \textbf{Characteristic Length Scale} ($l_c$). This length scale dictates the maximum spatial extent to which localized couple-stresses (isolated twists) can propagate before the intrinsic ambient stiffness of the solid completely damps them out:
 \begin{equation}
-    l_c = \sqrt{\frac{\gamma_c}{G}}
+    l_c = \sqrt{\frac{\gamma_c}{G_{vac}}}
 \end{equation}
-
-We formally identify this exact mechanical decay length $l_c$ as the physical range of the Weak Force ($r_W \approx 10^{-18}$ m). 
+We formally identify this exact mechanical decay length ($l_c$) as the physical origin of the Weak Force range ($r_W \approx 10^{-18}$ m). 
 
 \subsection{Mechanical Origin of the Yukawa Potential}
+Why does the Weak Force die off so rapidly while Electromagnetism possesses infinite range? 
 
-Why does the Weak Force die off so rapidly while Electromagnetism has infinite range? 
+Electromagnetism operates \textit{above} the vacuum's acoustic mass gap (it is massless), allowing the signal to propagate freely as a standard inverse-square Laplace field. However, static Weak interactions lack the immense kinetic energy required to overcome the ambient Cosserat rotational stiffness. 
 
-Electromagnetism operates \textit{above} the vacuum's mass gap (it is massless), allowing the signal to propagate freely as an inverse-square field. However, static Weak interactions lack the immense acoustic energy required to overcome the Cosserat rotational mass gap. 
-
-In wave mechanics, any excitation operating \textit{below} a medium's cutoff frequency cannot propagate; it becomes an \textbf{Evanescent Wave} that decays exponentially. Because the Weak Force operates below the Cosserat cutoff frequency, its field equation transforms from the standard Laplace equation to the massive Helmholtz equation ($\nabla^2 \theta - \frac{1}{l_c^2}\theta = 0$). The spherically symmetric solution to this equation natively yields the exact \textbf{Yukawa Potential}:
-
+In wave mechanics, any physical excitation operating \textit{below} a medium's natural cutoff frequency cannot physically propagate; it is mathematically forced to become an \textbf{Evanescent Wave} that decays exponentially. Because the Weak Force operates below the Cosserat cutoff frequency, its static field equation mathematically transforms from the standard Laplace equation ($\nabla^2 \theta = 0$) to the massive Helmholtz equation:
+\begin{equation}
+    \nabla^2 \theta - \frac{1}{l_c^2}\theta = 0
+\end{equation}
+The unique spherically symmetric solution to this damped equation natively yields the exact \textbf{Yukawa Potential}:
 \begin{equation}
     V_{weak}(r) \propto \frac{e^{-r/l_c}}{r}
 \end{equation}
-
-The Weak Force is short-range because it is mathematically and physically evanescent.
+The Weak Force is short-range exclusively because it is mathematically and physically evanescent (see Figure \ref{fig:weak_yukawa}).
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\textwidth]{chapters/06_electrodynamics_weak_interaction/simulations/outputs/weak_yukawa_cutoff.png}
-    \caption{\textbf{Mechanical Origin of the Weak Force.} The $\mathcal{M}_A$ Cosserat vacuum acts as a high-pass mechanical filter. Electromagnetism (massless) propagates infinitely as $1/r$. The Weak interaction lacks the energy to overcome the Cosserat rotational mass gap. Because it operates below the cutoff frequency, it propagates as a mechanical Evanescent Wave, perfectly reproducing the exponential decay of the Yukawa Potential.}
+    \includegraphics[width=0.9\textwidth]{chapters/06_electrodynamics_weak_interaction/simulations/outputs/weak_yukawa_cutoff.png}
+    \caption{\textbf{Mechanical Origin of the Weak Force Cutoff.} The $\mathcal{M}_A$ Cosserat vacuum acts as a strict high-pass mechanical filter. Massless electromagnetism operates above the gap, propagating infinitely. The Weak interaction lacks the energy to overcome the Cosserat rotational mass gap ($\gamma_c$). Operating below the spatial cutoff, it propagates purely as a mechanical Evanescent Wave, perfectly reproducing the exponential decay of the Yukawa Potential without Higgs fields.}
     \label{fig:weak_yukawa}
-\end{figure}
-
-\subsection{Deriving the W and Z Bosons as Acoustic Modes}
-
-The gauge bosons of the Weak interaction are not point particles acquiring mass from a magical field; they are the fundamental macroscopic wave excitations required to induce a localized phase twist at this absolute cutoff scale. The mass of the $W$ boson is strictly defined by the acoustic mass gap (cutoff frequency) required to excite a rotational mode of wavelength $\lambda = l_c$ in the rigid lattice:
-
-\begin{equation}
-    m_W = \frac{\hbar}{l_c c}
-\end{equation}
-
-\textbf{The Weak Mixing Angle (Poisson's Ratio):} In a Cosserat beam network, there are two distinct ways to deform a lattice link: twist it axially (\textbf{Torsion}) or bend it transversely (\textbf{Flexure}). 
-\begin{itemize}
-    \item The charged $W^\pm$ bosons correspond to the pure Longitudinal-Torsional mode.
-    \item The neutral $Z^0$ boson corresponds to the Transverse-Bending mode.
-\end{itemize}
-
-By classical continuum beam theory, torsional stiffness ($k_{torsion}$) is governed by the Shear Modulus ($G$) and the polar moment of inertia ($J$). Bending stiffness ($k_{bending}$) is governed by Young's Modulus ($E$) and the area moment of inertia ($I$). For a uniform cylindrical bond, $J = 2I$. 
-
-Because the mass of an acoustic cutoff mode is directly proportional to the square root of its propagation stiffness, the ratio of their masses is:
-\begin{equation}
-    \frac{m_W}{m_Z} = \sqrt{\frac{k_{torsion}}{k_{bending}}} = \sqrt{\frac{G J}{E I}} = \sqrt{\frac{2G}{E}}
-\end{equation}
-
-In solid mechanics, Young's Modulus and the Shear Modulus are fundamentally linked by \textbf{Poisson's Ratio ($\nu$)} via the exact identity $E = 2G(1+\nu)$. Substituting this in perfectly cancels the moduli, leaving a pure geometric scaling factor representing the \textbf{Weak Mixing Angle} ($\theta_W$, the Weinberg Angle):
-\begin{equation}
-    \cos \theta_W = \frac{m_W}{m_Z} = \frac{1}{\sqrt{1+\nu}}
-\end{equation}
-
-If we evaluate this using the empirical mass ratio of the $W$ and $Z$ bosons ($80.379 / 91.187 \approx 0.8814$), we can solve directly for the Poisson's ratio of the vacuum substrate:
-\begin{equation}
-    \frac{1}{\sqrt{1+\nu}} \approx 0.8814 \implies \nu_{vac} \approx 0.287
-\end{equation}
-
-This is a breathtaking mathematical revelation. Standard physical solids (like metals and metallic glasses) have a Poisson's ratio strictly between 0.25 and 0.33. We have rigorously derived that the \textbf{Weak Mixing Angle ($\theta_W$)} is not an abstract gauge parameter; it is exactly the classical \textbf{Poisson's Ratio} of the physical vacuum substrate ($\nu_{vac} \approx 0.287$).
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.95\textwidth]{chapters/06_electrodynamics_weak_interaction/simulations/outputs/weak_boson_modes.png}
-    \caption{\textbf{Weak Force Gauge Bosons as Cosserat Acoustic Modes.} The $W^\pm$ mass corresponds to the torsional deformation mode of the lattice bonds, while the heavier $Z^0$ corresponds to transverse bending. The mass ratio between them is governed entirely by the Poisson's Ratio ($\nu \approx 0.287$) of the vacuum substrate.}
-    \label{fig:weak_boson_modes}
 \end{figure}
