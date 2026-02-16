@@ -9,6 +9,7 @@ the same discrete volume organically yields exponential mass spikes.
 """
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy import integrate
 import os
 
 OUTPUT_DIR = "manuscript/chapters/03_fermion_sector/simulations/outputs"
@@ -40,7 +41,7 @@ def compute_dielectric_mass_eigenvalues():
         dielectric_multiplier = 1.0 / np.sqrt(1 - strain_ratio**4)
         
         # Total Inductive Mass is the integrated geometric energy bounded by C_eff
-        energy_integral = np.trapz(local_strain**2 * dielectric_multiplier, t)
+        energy_integral = integrate.trapezoid(local_strain**2 * dielectric_multiplier, t)
         return energy_integral
 
     mass_e = calculate_knot_mass(3)   # 3_1 Trefoil
