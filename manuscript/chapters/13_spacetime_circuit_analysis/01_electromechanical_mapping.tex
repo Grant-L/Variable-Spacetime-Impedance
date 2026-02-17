@@ -31,3 +31,15 @@ Because the $\mathcal{M}_A$ vacuum is a Bingham Plastic, it possesses \textit{th
 
 Therefore, the physical vacuum substrate is formally and mathematically defined as a \textbf{Macroscopic Memristor}. 
 If we drive a localized vacuum gap with a continuous sinusoidal AC topological voltage, the finite relaxation time delays the onset of superfluidity. As simulated in the AVE-SPICE solver, mapping the topological Voltage against the Kinematic Current produces the universally recognized fingerprint of memristance: \textbf{The Pinched Hysteresis Loop} (see Figure \ref{fig:memristor_and_skineffect}). This perfectly completes the physical spacetime realization of all four fundamental electronic circuit elements (R, L, C, M).
+
+\subsection{The Charge-Displacement Identity}
+While the mapping of Voltage and Current is vital, we must also derive the absolute mechanical identity of Electrical Charge ($Q$). In SI units, charge is the time integral of current ($Q = \int I dt$). By substituting our Topo-Kinematic Identity ($I \equiv \xi_{topo} v$):
+\begin{equation}
+    Q = \int (\xi_{topo} v) dt = \xi_{topo} \int v dt = \mathbf{\xi_{topo} x}
+\end{equation}
+
+Electrical Charge is physically and mathematically identical to \textbf{Macroscopic Spatial Displacement} ($x$). We can rigorously prove this using the Work-Energy Theorem. The work done to charge a capacitor is $W = \int V dQ$. Substituting our identities ($V \equiv \xi_{topo}^{-1} F$ and $dQ \equiv \xi_{topo} dx$):
+\begin{equation}
+    W = \int (\xi_{topo}^{-1} F) (\xi_{topo} dx) = \mathbf{\int F dx}
+\end{equation}
+The topological constants flawlessly cancel. A capacitor storing electrical charge is literally the mechanical lattice storing spatial displacement (elastic strain). Dielectric breakdown (Axiom 4) occurs precisely when the spatial lattice is displaced beyond its absolute physical elastic limit.
