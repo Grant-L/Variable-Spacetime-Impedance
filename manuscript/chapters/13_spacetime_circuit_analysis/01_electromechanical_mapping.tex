@@ -23,3 +23,11 @@ Because inertia maps to inductance and velocity to current, Special Relativity i
     L_{vac}(I) = \frac{L_0}{\sqrt{1 - (I / I_{max})^2}}
 \end{equation}
 This mathematically enforces the universal speed limit natively in software, proving exactly why SPICE simulators physically cannot push vacuum current (matter) past $c$.
+
+\subsection{4. The Vacuum Memristor (Thixotropic Hysteresis)}
+In 1971, Leon Chua mathematically postulated the existence of a fourth fundamental circuit element: the \textbf{Memristor} (Memory Resistor), an element whose instantaneous resistance depends intrinsically on the historical integral of the current or voltage passing through it.
+
+Because the $\mathcal{M}_A$ vacuum is a Bingham Plastic, it possesses \textit{thixotropy}---a finite geometric relaxation time ($\tau_{macro} \approx L/c$) required for the structural lattice edges to physically break down and liquefy. The vacuum cannot change its fluidic resistance instantaneously. Its current state of viscosity is rigidly dependent on the history of the stress applied to it over the preceding $\tau$ window.
+
+Therefore, the physical vacuum substrate is formally and mathematically defined as a \textbf{Macroscopic Memristor}. 
+If we drive a localized vacuum gap with a continuous sinusoidal AC topological voltage, the finite relaxation time delays the onset of superfluidity. As simulated in the AVE-SPICE solver, mapping the topological Voltage against the Kinematic Current produces the universally recognized fingerprint of memristance: \textbf{The Pinched Hysteresis Loop} (see Figure \ref{fig:memristor_and_skineffect}). This perfectly completes the physical spacetime realization of all four fundamental electronic circuit elements (R, L, C, M).
