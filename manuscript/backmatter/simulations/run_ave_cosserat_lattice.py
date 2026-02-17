@@ -20,7 +20,7 @@ import os
 import warnings
 warnings.filterwarnings('ignore')
 
-OUTPUT_DIR = "manuscript/backmatter/simulations/outputs"
+OUTPUT_DIR = "manuscript/appendices/simulations/outputs"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 class TraceReversedCosseratManifold:

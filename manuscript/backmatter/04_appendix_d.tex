@@ -13,30 +13,32 @@ The first step in simulating the vacuum is establishing the 3D coordinate positi
 
 \textbf{The Poisson-Disk Solution:} To satisfy macroscopic isotropy while strictly enforcing the microscopic hardware cutoff, the software must generate the node coordinates using a \textbf{Poisson-Disk Hard-Sphere Sampling Algorithm}. This algorithm enforces a strict minimum exclusion radius ($r_{min} = l_{node}$) between all generated points. 
 
-This computational crystallization perfectly mimics the physical generative phase transition of the spatial metric, ensuring a perfectly smooth, singularity-free baseline topology.
+This computational crystallization perfectly mimics the physical generative phase transition of the spatial metric, ensuring a perfectly smooth, singularity-free amorphous baseline topology.
 
 \section{Cosserat Over-Bracing and The $\kappa_V$ Constraint}
 
-Once the spatial nodes are safely crystallized, the computational algorithm must generate the connective spatial edges (The Capacitive Flux Tubes, $\epsilon_0$). 
+Once the spatial nodes are safely crystallized via the Poisson-Disk algorithm, the computational architecture must generate the connective spatial edges (The Capacitive Flux Tubes, $\epsilon_0$). 
 
-\textbf{The Cauchy Delaunay Failure:} If the physics engine simply computes a standard nearest-neighbor Delaunay Triangulation, the resulting discrete volumetric packing fraction naturally evaluates to $\kappa_{cauchy} \approx 0.43$. As rigorously proven in Chapter 7, a standard Cauchy elastic solid ($K = -\frac{4}{3}G$) is violently thermodynamically unstable and will instantly implode during macroscopic simulation.
+\textbf{The Cauchy Delaunay Failure:} If the physics engine simply computes a standard nearest-neighbor Delaunay Triangulation on the Poisson-Disk point cloud, the resulting discrete volumetric packing fraction of the amorphous manifold natively evaluates to $\kappa_{cauchy} \approx 0.3068$. While less dense than a perfect crystal (FCC $\approx 0.74$), it is still too dense to survive. As rigorously proven in Chapter 7, a standard Cauchy elastic solid ($K = -\frac{4}{3}G$) is violently thermodynamically unstable and will instantly implode during macroscopic continuous simulation.
 
 \textbf{Enforcing QED Saturation:} In Chapter 1, we mathematically derived that the fundamental fine-structure dielectric limit of the universe strictly bounded the geometric packing fraction of the vacuum to exactly $\kappa_{QED} \equiv 8\pi\alpha \approx \mathbf{0.1834}$. 
 
-To computationally force the effective geometric packing fraction ($\kappa_{eff}$) down from the unstable $\sim 0.43$ baseline to the exact stable $0.1834$ limit, the software must structurally enforce \textbf{Cosserat Over-Bracing}. The connective array of the physics engine cannot be limited to nearest neighbors; the internal structural logic must span outward to secondary lattice shells.
+To computationally force the effective geometric packing fraction ($\kappa_{eff}$) down from the unstable $\sim 0.3068$ baseline to the exact stable $0.1834$ limit, the software must structurally enforce \textbf{Cosserat Over-Bracing}. The connective array of the physics engine cannot be limited exclusively to primary nearest neighbors; the internal structural logic must span outward to incorporate the next-nearest-neighbor lattice shell.
 
-Because packing fraction scales inversely with the cube of the effective structural pitch ($\kappa_{eff} = V_{node} / l_{eff}^3$), the required spatial extension for the Cosserat links evaluates identically to:
+Because the volumetric packing fraction scales inversely with the cube of the effective structural pitch ($\kappa_{eff} = V_{node} / l_{eff}^3$), the required spatial extension for the Cosserat links evaluates identically to:
+\begin{tcolorbox}[colback=white, colframe=black]
 \begin{equation}
-    C_{ratio} = \frac{l_{eff}}{l_{cauchy}} = \left( \frac{\kappa_{cauchy}}{\kappa_{QED}} \right)^{1/3} \approx \left( \frac{0.433}{0.1834} \right)^{1/3} \approx \mathbf{1.33}
+    C_{ratio} = \frac{l_{eff}}{l_{cauchy}} = \left( \frac{\kappa_{cauchy}}{\kappa_{QED}} \right)^{1/3} \approx \left( \frac{0.3068}{0.1834} \right)^{1/3} \approx \mathbf{1.187}
 \end{equation}
+\end{tcolorbox}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.9\textwidth]{backmatter/simulations/outputs/ave_cosserat_lattice.png}
-    \caption{\textbf{The Trace-Reversed Cosserat Vacuum Graph.} Generated strictly via the AVE Genesis Algorithm. The White nodes are placed via Poisson-Disk hard-sphere exclusion ($l_{node}$). The primary kinematic nearest-neighbor links are shown in Cyan. To structurally achieve the required QED volumetric packing fraction ($\kappa_V \equiv 8\pi\alpha$), the software automatically generates the secondary transverse Cosserat links (Magenta) spanning $\approx 1.33\times$ the baseline pitch. This geometric over-bracing computationally generates the $\frac{1}{3} G_{vac}$ ambient couple-stress, yielding the strict $\nu = 2/7$ Poisson Ratio necessary for stable metric mechanics.}
+    \includegraphics[width=0.9\textwidth]{appendices/simulations/outputs/ave_cosserat_lattice.png}
+    \caption{\textbf{The Trace-Reversed Cosserat Vacuum Graph.} Generated strictly via the AVE Genesis Algorithm. The White nodes are placed via Poisson-Disk hard-sphere exclusion ($l_{node}$). The primary kinematic nearest-neighbor links are shown in Cyan. To structurally achieve the required QED volumetric packing fraction ($\kappa_V \equiv 8\pi\alpha \approx 0.1834$), the software automatically generates the secondary transverse Cosserat links (Magenta) spanning $\approx 1.187\times$ the baseline pitch. This geometric $\sim 19\%$ over-bracing natively locks into the next-nearest-neighbor shell, generating the $\frac{1}{3} G_{vac}$ ambient couple-stress and yielding the strict $\nu = 2/7$ Poisson Ratio necessary for stable metric mechanics.}
     \label{fig:cosserat_lattice_gen}
 \end{figure}
 
-By structurally connecting all spatial nodes within a $1.33 \, l_{node}$ radius, the discrete graph inherently and organically generates the $\frac{1}{3} G_{vac}$ ambient transverse couple-stress required by micropolar elasticity. 
+By structurally connecting all spatial nodes within a $\approx 1.187 \, l_{node}$ radius, the discrete graph inherently and organically cross-links the first and second coordination shells of the amorphous manifold. This natively generates the $\frac{1}{3} G_{vac}$ ambient transverse couple-stress rigorously required by micropolar elasticity. 
 
-This exact computational architecture guarantees that all subsequent continuous macroscopic evaluations of the generated graph (e.g., metric refraction, VCFD Navier-Stokes flow, and trace-reversed gravitational strain) will perfectly align with empirical observation without requiring any further numerical calibration or mass-tuning.
+This exact computational architecture guarantees that all subsequent continuous macroscopic evaluations of the generated graph (e.g., metric refraction, VCFD Navier-Stokes flow, and trace-reversed gravitational strain) will perfectly align with empirical observation without requiring any further numerical calibration or arbitrary mass-tuning.
