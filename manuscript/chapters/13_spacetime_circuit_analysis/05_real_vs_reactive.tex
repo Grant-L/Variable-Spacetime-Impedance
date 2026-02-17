@@ -1,0 +1,27 @@
+\section{Real vs. Reactive Power (The Orbital Paradox)}
+
+A historical and persistent critique of any mechanical aether theory is the "Friction Paradox": \textit{If the Earth is physically moving through a dense spatial fluid, why doesn't fluidic drag drain its kinetic energy, causing its orbit to decay into the Sun?}
+
+In SCA, this paradox is resolved flawlessly utilizing classical AC Power Analysis.
+
+In electrical engineering, total apparent power ($S$) is divided into two distinct components depending on the phase angle ($\theta$) between Voltage ($V$) and Current ($I$):
+\begin{enumerate}
+    \item \textbf{Real Power ($P$):} Measured in Watts. $P = VI \cos(\theta)$. This represents energy physically dissipated from the system (e.g., heat, friction).
+    \item \textbf{Reactive Power ($Q$):} Measured in Volt-Amperes Reactive (VARs). $Q = VI \sin(\theta)$. This represents energy conservatively exchanged back and forth without permanent dissipation.
+\end{enumerate}
+
+By applying the Topo-Kinematic Identity, the Gravitational Force acts as the AC Voltage ($V_{vac}$), and the Orbital Velocity acts as the AC Current ($I_{vac}$). In a stable, circular planetary orbit, the radial gravitational force vector is perfectly mathematically orthogonal ($90^\circ$) to the tangential velocity vector. 
+
+Therefore, the phase angle between the vacuum Voltage and Current is exactly $\theta = 90^\circ$. Evaluating the Real Power dissipated by the Earth into the vacuum yields:
+\begin{equation}
+    P_{real} = F \cdot v \cdot \cos(90^\circ) \equiv \mathbf{0 \text{ Watts}}
+\end{equation}
+
+The Earth experiences absolutely zero fluidic friction. A stable planetary orbit is not a frictionless void; it is the macroscopic mechanical equivalent of a \textbf{Lossless LC Tank Circuit} operating purely in the reactive power domain (VARs) (see Figure \ref{fig:orbital_reactive_power}).
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{chapters/13_spacetime_circuit_analysis/simulations/outputs/orbital_reactive_power.png}
+    \caption{\textbf{Orbital Mechanics as Reactive Power.} Because the topological voltage (gravitational force) is perfectly 90-degrees out of phase with the vacuum current (orbital velocity), the Real Power (Watts) dissipated by the planet evaluates identically to zero. The orbit is a pure LC reactive circuit, perfectly resolving the classical fluid friction paradox.}
+    \label{fig:orbital_reactive_power}
+\end{figure}

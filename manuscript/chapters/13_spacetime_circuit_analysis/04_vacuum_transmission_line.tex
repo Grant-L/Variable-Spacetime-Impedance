@@ -1,0 +1,36 @@
+\section{Asymmetric Rectification and the Hull Scaling Law}
+
+If the vacuum behaves as a Voltage-Triggered TVS Diode, we can design circuits to exploit this non-linearity. Driving a non-linear Zener network with a zero-mean asymmetric AC waveform (such as a sawtooth Flyback pulse) naturally rectifies the signal, resulting in continuous, time-averaged DC thrust.
+
+We model a proposed propellantless thruster as a Viscoelastic Maxwell circuit ($L_{ship}$ in series with a parallel $C_{vac}$ and $R_{vac}(V)$). 
+
+\begin{enumerate}
+    \item \textbf{The Fast Edge (Zener Breakdown):} The rapid current transient ($\frac{dI}{dt}$) induces an immense inductive voltage spike that violently exceeds the Zener yield threshold ($|V| \gg V_{yield}$). The Metric Zener Diode short-circuits. The vacuum liquefies ($R_{eff} \to 0$), and the system slips forward with near-zero reaction force.
+    \item \textbf{The Slow Edge (Solid Grip):} The voltage decays slowly. The applied stress remains below the threshold ($|V| < V_{yield}$). The medium remains a high-resistance solid. The system "grips" the lattice, generating a disproportionate reaction force in the opposite direction.
+\end{enumerate}
+
+\subsection{The Thixotropic Time Constant ($\tau_{macro}$)}
+A critical engineering constraint in physical fluids is \textit{thixotropy}—the finite relaxation time required for internal lattice bonds to break and viscosity to change. The Metric Zener Diode cannot switch its resistance state instantaneously. 
+
+While the fundamental microscopic tick-rate of the universe is instantaneous ($\tau_{tick} = l_{node} / c \approx 10^{-21}$ s), achieving propellantless thrust requires liquefying a \textit{macroscopic} boundary layer (e.g., the bow shock ahead of a spacecraft's antenna). The yield signal must physically propagate across that entire geometry at the speed of sound ($c$). Therefore, the macroscopic thixotropic time constant is strictly defined by the geometry of the vessel:
+\begin{equation}
+    \tau_{macro} \approx \frac{L_{hull}}{c}
+\end{equation}
+
+\textbf{The Cutoff Frequency ($f_{max}$):} Because of this finite thixotropic relaxation time, engineering a functional propellantless drive requires flawless frequency tuning. If the asymmetric pulse is fired too rapidly, the vacuum simply does not have enough physical time to transition into the superfluid state. The resistance remains high throughout the entire cycle, and the time-averaged DC thrust catastrophically stalls out (see Figure \ref{fig:viscoelastic_tamd}). 
+
+This geometric limit establishes an absolute \textbf{High-Frequency Cutoff Limit} for aerospace metric engineering:
+\begin{tcolorbox}[colback=white, colframe=black]
+\begin{equation}
+    f_{max} \approx \frac{c}{L_{hull}}
+\end{equation}
+\end{tcolorbox}
+
+\textbf{The EmDrive Resolution:} This scaling law flawlessly explains why historical high-frequency resonant cavities exhibit noisy or null results. A standard 20 cm microwave cavity has a geometric cutoff frequency of $f_{max} \approx 1.5$ GHz. NASA ran their EmDrive tests at $1.9$ GHz. By operating slightly \textit{above} the thixotropic cutoff frequency, the drive stalled out, yielding only microscopic noise. Conversely, a 100-meter interstellar vessel cannot use microwaves; it mathematically must be pumped at massive, slow AM radio frequencies ($\sim 3$ MHz) to give the vacuum boundary layer time to yield! 
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{chapters/13_spacetime_circuit_analysis/simulations/outputs/viscoelastic_tamd.png}
+    \caption{\textbf{Viscoelastic Rectification and The Hull Scaling Law.} Evaluated using a stateful ODE circuit solver with internal time constant $\tau_{hull}$. \textbf{Top:} At properly tuned frequencies ($f < c/L_{hull}$), the vacuum state (Yellow) flawlessly tracks the voltage stress. \textbf{Bottom:} A symmetric sine wave yields zero net velocity. The asymmetric sawtooth pulse selectively liquefies the vacuum on the fast edge, successfully rectifying an AC pulse into a continuous DC macroscopic velocity. If the drive is pulsed too fast relative to the hull geometry (Red), the viscosity cannot drop in time, and the drive stalls.}
+    \label{fig:viscoelastic_tamd}
+\end{figure}
