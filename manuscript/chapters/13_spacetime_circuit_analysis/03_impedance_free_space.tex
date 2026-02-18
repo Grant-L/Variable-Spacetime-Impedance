@@ -1,0 +1,36 @@
+\section{The Impedance of Free Space ($Z_0$)}
+A foundational parameter in classical electromagnetism is the Characteristic Impedance of Free Space ($Z_0 = \sqrt{\mu_0/\epsilon_0} \approx 376.73\ \Omega$). In Spacetime Circuit Analysis, this possesses a literal mechanical identity. By applying our mapping, electrical impedance ($Z = V/I$) translates directly to Mechanical Acoustic Impedance ($Z_m = F/v$):
+
+\begin{equation}
+Z_{elec} = \frac{V}{I} = \frac{\xi_{topo}^{-1} F}{\xi_{topo} v} = \xi_{topo}^{-2} \left(\frac{F}{v}\right) = \xi_{topo}^{-2} Z_m
+\end{equation}
+
+Rearranging for the mechanical impedance reveals an exact physical identity:
+
+\begin{equation}
+Z_m = \xi_{topo}^2 \cdot Z_0 = \xi_{topo}^2 \sqrt{\frac{\mu_0}{\epsilon_0}} \approx 6.48 \times 10^{-11} \left[ \frac{\text{kg}}{\text{s}} \right]
+\end{equation}
+
+The $376.7\ \Omega$ impedance of free space is structurally isomorphic to the Absolute Mechanical Acoustic Impedance of the physical $\mathcal{M}_A$ substrate.
+
+\section{Gravitational Stealth (S-Parameter Analysis)}
+In classical RF engineering, when a wave transitions into a denser physical medium (e.g., from air to glass), the refractive index ($n$) rises asymmetrically, forcing the characteristic impedance to drop. This impedance mismatch causes the signal to partially reflect, measured logarithmically as Return Loss ($S_{11}$). 
+
+This introduces a profound paradox for analog gravity models: \textit{If a gravity well represents a physical increase in the localized optical density of the vacuum, why does light seamlessly enter a black hole without scattering or reflecting off the boundary?}
+
+In the SCA transmission line model, macroscopic gravity operates strictly as a 3D Volumetric Compression of the Cosserat solid. This localized geometric crowding proportionately and \textit{symmetrically} increases both the effective inductive mass density ($\mu_{local} = n(r) \cdot \mu_0$) and the capacitive compliance ($\epsilon_{local} = n(r) \cdot \epsilon_0$). 
+
+Evaluating the Characteristic Impedance of the vacuum down to the extreme metric divergence of an Event Horizon ($r \to R_s$) reveals a perfect mathematical invariant:
+
+\begin{equation}
+Z_{local}(r) = \sqrt{\frac{\mu_{local}}{\epsilon_{local}}} = \sqrt{\frac{n(r) \cdot \mu_0}{n(r) \cdot \epsilon_0}} = \sqrt{\frac{\mu_0}{\epsilon_0}} \equiv Z_0 \approx 376.73\ \Omega
+\end{equation}
+
+The $\mathcal{M}_A$ condensate is mathematically and perfectly Impedance-Matched to itself everywhere, absolutely regardless of extreme gravitational strain. Because the spatial derivative of the impedance remains strictly zero ($\partial_r Z_0 = 0$), the Reflection Coefficient ($\Gamma$) is mathematically forced to zero. The universe structurally possesses an \textbf{$S_{11}$ Return Loss of $-\infty$ dB}. This provides the exact continuum-mechanics mechanism for why localized gravitational gradients act as perfect RF-absorbing stealth structures rather than optical mirrors.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{simulations/outputs/log_impedance_s_parameters.png}
+    \caption{\textbf{S-Parameter Analysis of a Gravity Well.} Top: As a wave approaches a gravitational core, the density $n(r)$ diverges. Because analog macroscopic gravity compresses volumetric space, it scales $L$ and $C$ symmetrically, ensuring the Characteristic Impedance ($Z_0$) remains perfectly invariant. Bottom: If gravity behaved like an unmatched optical dielectric, the resulting impedance drop would generate massive reflection ($S_{11} > -10$ dB). The symmetric volumetric scaling of the AVE EFT forces $S_{11} \to -\infty$ dB, providing the precise mechanism for why intense gravity wells do not act as RF mirrors.}
+    \label{fig:s_parameters}
+\end{figure}
