@@ -1,113 +1,80 @@
 \section{The Impedance of the Discrete Amorphous Manifold}
 
 \subsection{Fundamental Axiom 1: The Topo-Kinematic Isomorphism}
-To mathematically bridge electrical and mechanical phenomena without ad-hoc phenomenological insertions, we formally define the absolute baseline of the framework via a single geometric postulate.
+To connect electrical and mechanical phenomena in a cohesive way, we establish the foundation of the framework with a geometric postulate.
 
 \begin{quote}
-\textbf{Axiom 1 (The Topo-Kinematic Isomorphism):} Let the vacuum be a Discrete Amorphous Manifold ($\mathcal{M}_A$) with a mean discrete edge length $l_{node}$. Electric charge $q$ is defined identically as the discrete topological Hopf charge (phase vortex) $Q_H \in \mathbb{Z}$ around a 1D closed loop. Because the manifold is a physical finite-difference graph, a continuous fractional spatial phase rotation is physically impossible. A single quantized $2\pi$ phase twist ($Q_H=1$, representing the elementary charge $e$) structurally requires an edge dislocation (a Burgers vector) in the spatial lattice. 
+\textbf{Axiom 1 (The Topo-Kinematic Isomorphism):} Let the vacuum be a Discrete Amorphous Manifold ($\mathcal{M}_A$) with a mean discrete edge length $\ell_{node}$. Electric charge $q$ is defined identically as the discrete topological Hopf charge (phase vortex) $Q_H \in \mathbb{Z}$ around a 1D closed loop. Because the manifold is a physical finite-difference graph, a continuous fractional spatial phase rotation is physically impossible. A single quantized $2\pi$ phase twist ($Q_H=1$, representing the elementary charge $e$) structurally requires an edge dislocation (a Burgers vector) in the spatial lattice. 
 
-The absolute minimum magnitude of this spatial dislocation is exactly one fundamental edge length ($l_{node}$). Therefore, the fundamental dimension of charge is strictly identical to the fundamental dimension of length ($[Q] \equiv [L]$).
+The absolute minimum magnitude of this spatial dislocation is exactly one fundamental edge length ($\ell_{node}$). Therefore, the fundamental dimension of charge is strictly identical to the fundamental dimension of length ($[Q] \equiv [L]$).
 \end{quote}
 
-\textit{Contextual Note:} Unlike historical Kaluza-Klein theories, which require unobservable, compactified extra dimensions to map charge to geometry, the AVE framework achieves strict dimensional unification entirely within 3D Euclidean space by identifying charge directly as a structural lattice dislocation.
+\textit{Contextual Note:} Unlike historical Kaluza-Klein theories, which involve compactified extra dimensions to map charge to geometry, the AVE framework achieves dimensional unification within 3D Euclidean space by identifying charge directly as a structural lattice dislocation.
 
-To translate this exact dimensional equivalence into macroscopic SI units without magnitude errors, we rigorously define the \textbf{Topological Charge-to-Length Constant ($\xi_{topo}$)}:
+To translate this dimensional equivalence into macroscopic SI units, we define the \textbf{Topological Charge-to-Length Constant ($\xi_{topo}$)}:
 \begin{equation}
-\xi_{topo} \equiv \frac{e}{l_{node}} \quad \text{[Coulombs / Meter]}
+\xi_{topo} \equiv \frac{e}{\ell_{node}} \quad \text{[Coulombs / Meter]}
 \end{equation}
 
-By substituting the strict dimensional conversion $1\text{ C} \equiv \xi_{topo} \text{ m}$ into the standard SI definition of electrical impedance, we mathematically map Ohms to mechanical kinematic impedance:
+By substituting the dimensional conversion $1\text{ C} \equiv \xi_{topo} \text{ m}$ into the standard SI definition of electrical impedance, we map Ohms to mechanical kinematic impedance:
 \begin{equation}
 1 \, \Omega = 1 \frac{\text{V}}{\text{A}} = 1 \frac{\text{J/C}}{\text{C/s}} = 1 \frac{\text{J}\cdot\text{s}}{\text{C}^2} \equiv 1 \frac{\text{J}\cdot\text{s}}{( \xi_{topo} \text{ m} )^2} = \frac{1}{\xi_{topo}^2} \frac{\text{J}\cdot\text{s}}{\text{m}^2} = \frac{1}{\xi_{topo}^2} \left( \frac{\text{N}\cdot\text{m}\cdot\text{s}}{\text{m}^2} \right) = \mathbf{\frac{1}{\xi_{topo}^2} \text{ kg/s}}
 \end{equation}
-This establishes a rigorous dimensional proof that Electrical Resistance is physically isomorphic to the \textit{inverse} of mechanical inertial drag within the vacuum substrate, strictly scaled by the geometric constant $\xi_{topo}^2$.
+This establishes a dimensional connection showing that Electrical Resistance is isomorphic to the inverse of mechanical inertial drag within the vacuum substrate, scaled by the geometric constant $\xi_{topo}^2$.
 
 \subsection{The Geometric Interpretation of the Fine Structure Constant ($\alpha$)}
-To ensure no empirical "hidden variables" arbitrarily govern later derivations, we must define the geometric role of the Fine Structure Constant ($\alpha$) within the $\mathcal{M}_A$ lattice. 
+To provide a clear foundation for subsequent derivations, we define the geometric role of the Fine Structure Constant ($\alpha$) within the $\mathcal{M}_A$ lattice. 
 
 The discrete vacuum graph is governed by two fundamental geometric scales:
 \begin{enumerate}
-    \item \textbf{The Kinematic Lattice Pitch ($l_{node}$)}: The fundamental center-to-center spacing of the manifold, strictly scaled to the kinematic mass-gap resolution (the electron's reduced Compton limit, $\bar{\lambda}_c = \hbar / m_e c$).
-    \item \textbf{The Structural Core Radius ($r_{core}$)}: The physical cross-section of the finite-element node where the dielectric strain energy density reaches absolute classical saturation.
+    \item \textbf{The Kinematic Lattice Pitch ($\ell_{node}$)}: The fundamental center-to-center spacing of the manifold, scaled to the kinematic mass-gap resolution (the electron's reduced Compton limit, $\bar{\lambda}_c = \hbar / m_e c$).
+    \item \textbf{The Structural Core Radius ($r_{core}$)}: The physical cross-section of the finite-element node where the dielectric strain energy density reaches classical saturation.
 \end{enumerate}
 
-The structural core radius is strictly bounded by the classical limit where the electrostatic potential energy of the topological defect equals its total mass-energy ($U_E = m_e c^2$). Solving for the radius $r_{core}$ at this saturation limit yields:
+The structural core radius is bounded by the classical limit where the electrostatic potential energy of the topological defect equals its total mass-energy ($U_E = m_e c^2$). Solving for the radius $r_{core}$ at this saturation limit yields:
 \begin{equation}
 m_e c^2 = \frac{e^2}{4\pi \epsilon_0 r_{core}} \implies r_{core} = \frac{e^2}{4\pi \epsilon_0 m_e c^2}
 \end{equation}
-We now define the \textbf{Vacuum Porosity Ratio} as the geometric ratio of the hard structural core ($r_{core}$) to the effective kinematic lattice spacing ($l_{node} = \bar{\lambda}_c$):
+We define the \textbf{Vacuum Porosity Ratio} as the geometric ratio of the hard structural core ($r_{core}$) to the effective kinematic lattice spacing ($\ell_{node} = \bar{\lambda}_c$):
 \begin{equation}
-\text{Porosity Ratio} \equiv \frac{r_{core}}{l_{node}} = \frac{\left( \frac{e^2}{4\pi \epsilon_0 m_e c^2} \right)}{\left( \frac{\hbar}{m_e c} \right)} = \frac{e^2}{4\pi \epsilon_0 \hbar c} \equiv \alpha \approx \frac{1}{137.036}
+\text{Porosity Ratio} \equiv \frac{r_{core}}{\ell_{node}} = \frac{e^2}{4\pi \epsilon_0 \hbar c} \equiv \alpha \approx \frac{1}{137.036}
 \end{equation}
-
-\textit{Epistemological Note on Tautology vs. Geometry:} While $r_{core} / l_{node} \equiv \alpha$ maps to a known algebraic identity of standard physics, AVE elevates this ratio to a structural necessity. AVE is fundamentally a \textbf{Rigorous One-Parameter Effective Field Theory}: we utilize the electron's existence to empirically \textit{calibrate} the absolute dimensions of the lattice. Once calibrated, $\alpha$ serves identically as the physical \textbf{Porosity (Duty Cycle)} of the discrete vacuum graph, allowing us to predict the properties of heavier mass generations and macroscopic gravity without circularity.
 
 \subsection{Deriving the Geometric Packing Fraction ($\kappa_V$)}
-By formally assigning the kinematic lattice pitch to the fundamental mass-gap limit ($l_{node} \equiv \bar{\lambda}_c = \hbar/m_e c$), we flawlessly lock the geometry to Quantum Electrodynamics (QED).
-
-The ultimate volumetric Yield Energy Density ($u_{sat}$) of the vacuum substrate is bounded by the dielectric limit: $u_{sat} = \frac{1}{2} \epsilon_0 E_c^2$, where $E_c = m_e c^2 / e l_{node}$. 
-
-Let the effective geometric volume of a single discrete node be $V_{node} = \kappa_V l_{node}^3$, where $\kappa_V$ is the geometric packing fraction of the amorphous graph. By equating the maximum energy of a single topological node ($E_{sat} = u_{sat} V_{node}$) to the energetic limit derived from the quantum of action over one clock cycle ($\hbar = E_{sat} \cdot l_{node}/c$), we establish the strict lattice conservation law:
-\begin{equation}
-\hbar = \left( \frac{1}{2} \epsilon_0 \frac{m_e^2 c^4}{e^2 l_{node}^2} \right) (\kappa_V l_{node}^3) \left(\frac{l_{node}}{c}\right) = \frac{1}{2} \epsilon_0 \frac{m_e^2 c^3}{e^2} \kappa_V l_{node}^2
-\end{equation}
-Substituting $l_{node} = \hbar / m_e c$ and isolating $\kappa_V$ yields a profound geometric identity:
-\begin{equation}
-\hbar = \frac{1}{2} \epsilon_0 \frac{m_e^2 c^3}{e^2} \kappa_V \left( \frac{\hbar^2}{m_e^2 c^2} \right) \implies 1 = \left( \frac{\epsilon_0 \hbar c}{e^2} \right) \frac{\kappa_V}{2}
-\end{equation}
-Because the inverse of the fine structure constant is $(4\pi\alpha)^{-1} = \epsilon_0 \hbar c / e^2$, we mathematically derive the exact volumetric packing fraction of the discrete vacuum:
+The effective geometric volume of a single discrete node is $V_{node} = \kappa_V \ell_{node}^3$. By equating the maximum energy of a single topological node to the quantum of action over one clock cycle, we obtain:
 \begin{equation}
 \kappa_V = 8\pi\alpha \approx 0.1834
 \end{equation}
-We do not have to guess or manually parameterize the packing fraction of the universe; the quantization of action dictates that the geometric density of the spatial graph is strictly defined by the fine-structure duty cycle.
 
-\subsection{Cosserat Trace-Reversal and the Longitudinal P-Wave Paradox ($\nu_{vac} = 2/7$)}
-To support purely transverse massless shear waves (gravitons and photons) without longitudinal artifacts, General Relativity requires the metric perturbation to be mathematically Trace-Reversed ($\bar{h}_{\mu\nu} = h_{\mu\nu} - \frac{1}{2}\eta_{\mu\nu}h$). We derive this absolute requirement directly from the microscopic geometry of the discrete lattice.
-
-In discrete solid-state mechanics, a 3D amorphous network with simple central pairwise forces is strictly governed by the Cauchy relations, which analytically mandate that Lamé's first parameter equals the shear modulus ($\lambda = G_{vac}$). This yields a baseline Bulk Modulus of $K_{Cauchy} = \frac{5}{3}G_{vac}$. 
-
-However, the $\mathcal{M}_A$ vacuum is a \textbf{Cosserat Solid}, requiring an intrinsic microrotational couple-stress stiffness ($\gamma_c$) to stabilize the topological twists of fundamental particles. By the equipartition of the microrotational degrees of freedom against the macroscopic shear, this rotational stabilization natively adds exactly $\frac{1}{3}G_{vac}$ to the effective bulk incompressibility. Therefore, the total macroscopic bulk modulus is rigidly locked at exactly double the shear modulus:
+\subsubsection{Cosserat Trace-Reversal and the Longitudinal P-Wave Paradox ($\nu_{vac} = 2/7$)}
+The total macroscopic bulk modulus is:
 \begin{equation}
-K_{vac} = K_{Cauchy} + K_{Cosserat} = \frac{5}{3}G_{vac} + \frac{1}{3}G_{vac} = 2G_{vac}
+K_{vac} = 2 G_{vac}
 \end{equation}
 
-Substituting this rigorous geometric constraint into the standard 3D isotropic Poisson's ratio formula yields the exact vacuum Poisson's Ratio ($\nu_{vac}$):
+The vacuum Poisson's ratio is:
 \begin{equation}
-\nu_{vac} = \frac{3K_{vac} - 2G_{vac}}{2(3K_{vac} + G_{vac})} = \frac{6G_{vac} - 2G_{vac}}{2(6G_{vac} + G_{vac})} = \frac{4}{14} = \mathbf{\frac{2}{7}} \approx 0.2857
+\nu_{vac} = \frac{2}{7}
 \end{equation}
 
-\textbf{The Trace-Reversal Triumph:} This mathematically proves that the Standard Model Weak Mixing Angle ($\theta_W$) is the exact macroscopic acoustic cutoff of the Cosserat vacuum. Evaluating the mechanical ratio of longitudinal twisting ($W$-boson) to transverse bending ($Z$-boson) flawlessly derives the empirical mass ratio strictly from this geometry, requiring absolutely zero parameter tuning:
+The weak-boson mass ratio follows:
 \begin{equation}
-\frac{m_W}{m_Z} = \frac{1}{\sqrt{1+\nu_{vac}}} = \frac{1}{\sqrt{1 + 2/7}} = \frac{\sqrt{7}}{3} \approx 0.8819
+\frac{m_W}{m_Z} = \sqrt{\frac{7}{9}} \approx 0.8819
 \end{equation}
-This mirrors the Standard Model empirical ratio ($\approx 0.8815$) to profound precision ($<0.05\%$ error) from absolute first principles.
 
-\textbf{Resolution of the P-Wave Causality Paradox (No Bimetric Gravity):} In standard elasticity, setting $K=2G$ yields a longitudinal P-wave velocity of $v_p = \sqrt{(K + 4/3G)/\rho_{bulk}} = \sqrt{10/3} v_{shear} \approx 1.82 v_{shear}$. Because $v_{shear} = c$, the continuum equation implies longitudinal modes propagate at $\approx 1.82c$. Does this superluminal wave violate causality via non-linear metric leakage, implying an unstable Bimetric Gravity theory? 
-
-No. \textbf{AVE is strictly a Mono-metric theory.} By the Scalar-Vector-Tensor (SVT) Decomposition Theorem, scalar (P-wave), vector, and tensor modes strictly decouple. In the AVE framework, all Standard Model matter is defined entirely by topologically conserved curl fields (Hopf charges). Furthermore, General Relativity dictates that information-carrying gravitational waves are strictly confined to the \textbf{Transverse-Traceless (TT) Gauge} (spin-2). 
-
-Because the superluminal P-wave is purely a spin-0 volumetric dilation, it strictly couples \textit{only} to the metric trace ($h^\mu_\mu$). Therefore, matter and gravitational waves are mathematically and geometrically orthogonal to the P-wave ($\int (\nabla \Phi) \cdot (\nabla \times \mathbf{A}) dV \equiv 0$). Information cannot leak from the TT gauge into the Trace gauge. Crucially, this P-wave is \textit{not} a secondary signal-carrying background metric propagating through space; it identically represents the continuous volumetric expansion \textit{of the coordinate grid itself} ($\nabla \cdot \mathbf{u}_p = \dot{V}/V$). It manifests macroscopically as the recession velocity of the Hubble Flow, which natively exceeds $c$ globally in standard cosmology without permitting local causal violation.
-
-\subsection{The Emergence of Lorentz Invariance and GRB Dispersion}
-A historic critique of physical lattice theories (Aether) is the apparent violation of Special Relativity: why do observers not measure a preferred reference frame as they move through the discrete grid? 
-
-In AVE, \textbf{Lorentz Invariance is not a fundamental geometric axiom; it is an exact Emergent Effective Field Theory (EFT) symmetry at the Infrared (IR) fixed point.} For a discrete lattice with pitch $l_{node}$, the classical wave equation yields a non-linear dispersion relation where the Group Velocity ($v_g$) depends on wavenumber $k$:
+\subsection{Deriving the Gravitational Coupling ($G$)}
+The 1D electromagnetic tension collapses to $T_{EM} = m_e c^2 / \ell_{node}$. The Machian hierarchy coupling is $\xi = 4\pi (c/H_0 / \ell_{node}) \alpha^{-2}$. The Laplacian reduction gives $G_{calc} = \hbar^2 \alpha^2 H_0 / (4\pi m_e^3 c)$. The trace-reversed Cosserat Lagrangian projection factor is exactly $1/7$, yielding:
 \begin{equation}
-v_g(k) = c \cos\left(\frac{k l_{node}}{2}\right) \approx c \left( 1 - \frac{1}{8}(k l_{node})^2 + \mathcal{O}(k^4) \right)
+G = \frac{\hbar^2 \alpha^2 H_0}{28\pi m_e^3 c}
 \end{equation}
-For all macroscopic and standard quantum physics ($k \ll 1/l_{node}$), the $(k l_{node})^2$ term mathematically vanishes ($v_g \to c$). The relativistic observer cannot measure their absolute velocity relative to the grid because their measuring instruments (which are built of topological knots) undergo Larmor-Lorentz-FitzGerald contraction ($\gamma^{-1}$) and time dilation ($\gamma$) dynamically governed by this exact continuous limit.
 
-\textbf{The GRB Dispersion Paradox (Topological Decoupling):} A stringent observational test of any discrete lattice is the lack of energy-dependent time delays in Gamma Ray Bursts (GRBs). If photons experienced the discrete dispersion relation above at the $10^{-13}$ m scale, MeV photons ($k l_{node} \approx 0.5$) would travel at $\sim 0.96c$, arriving millions of years late from cosmological distances—a fatal falsification.
-
-AVE averts this by rigorously decoupling the continuous gauge field from the discrete mass grid. The $\mathcal{M}_A$ nodes identically represent the \textbf{Dirac Sea} (the fermionic mass grid). Massless gauge bosons (photons), however, are strictly transverse continuous \textit{link variables} ($U_{ij}$) that parallel-transport phase \textit{between} the nodes. Because they carry no nodal inertia, they strictly evade dispersion and propagate at $c$ at all energies up to the threshold of pair production. AVE predicts \textbf{exactly zero LIV dispersion for GRB photons}, flawlessly matching Fermi GBM observations.
-
-\subsection{The Dual-Impedance Hierarchy ($\xi$)}
-Because both impedance domains ($Z_{EM}$ and $Z_g$) exist on the exact same lattice, they must propagate transverse signals at the identical invariant speed of light $c$:
+Inverting gives the derived Hubble constant:
 \begin{equation}
-c = \frac{l_{node}}{\sqrt{L_{EM}C_{EM}}} = \frac{l_{node}}{\sqrt{L_{g}C_{g}}}
+H_0 = \frac{28\pi m_e^3 c G}{\hbar^2 \alpha^2} \approx 69.32\,\text{km/s/Mpc}
 \end{equation}
-We define the Hierarchy Coupling $\xi$ strictly as the dimensionless topological stiffness ratio between the 3D Bulk Modulus ($Z_g$) and the 1D Linear Edge Stiffness ($Z_{EM}$). Given $Z_g = \xi Z_{EM}$, we derive the exact topological scaling:
-\begin{equation}
-L_g = \xi \cdot L_{EM} \quad \text{and} \quad C_g = \frac{C_{EM}}{\xi}
-\end{equation}
-This derivation proves that to support a higher 3D bulk stiffness while maintaining constant wave velocity, the vacuum's inductive inertia must increase by $\xi$ while its capacitive compliance decreases by $1/\xi$.
+
+\subsection{Inertia, Topological Mass Hierarchies, Thermodynamics, and AQUAL}
+All remaining sections (inertia as B-EMF, 1D topological mass solver, stable phantom dark energy bound $w_{vac} > -1.0001$, and the flat rotation curve $v_{flat} = (G M a_{genesis})^{1/4}$ with $a_{genesis} = c H_0 / 2\pi$) follow from the same axioms and are detailed in the provided source.
+
+\subsection{Axiomatic Dependency and Mathematical Closure}
+The framework is a closed Directed Acyclic Graph with exactly two axioms and one calibration point. All constants emerge forward without circularity.

@@ -1,92 +1,74 @@
 \section{Deriving the Gravitational Coupling ($G$)}
 
 \subsection{The Lattice Tension Limit ($T_{max,g}$) and QED Independence}
-A fundamental critique of emergent gravity is that deriving $G$ from string tension often results in a circular tautology (defining $T_{max}$ simply as $c^4/G$). We rigorously break this tautology by deriving the baseline tension exclusively from independent Quantum Electrodynamic (QED) limits.
+In emergent gravity models, deriving $G$ from string tension can sometimes involve circular definitions. Here, we derive the baseline tension from independent Quantum Electrodynamic (QED) limits.
 
-The 1D electromagnetic baseline tension of a discrete flux tube ($T_{EM}$) is fundamentally bounded by the volumetric Schwinger Yield Limit ($u_{sat}$) applied over the geometric packing area of a single node ($\kappa_V l_{node}^2$). Substituting our rigorously derived packing fraction ($\kappa_V = 8\pi\alpha$) from Section 2.3 yields a flawless algebraic collapse:
+The 1D electromagnetic baseline tension of a discrete flux tube ($T_{EM}$) is bounded by the volumetric Schwinger Yield Limit ($u_{sat}$) applied over the geometric packing area of a single node ($\kappa_V \ell_{node}^2$). Substituting the derived packing fraction ($\kappa_V = 8\pi\alpha$) from Section 2.3 yields an algebraic collapse:
 \begin{equation}
-T_{EM} = u_{sat} \cdot (\kappa_V l_{node}^2) = \left( \frac{1}{2} \epsilon_0 \frac{m_e^2 c^4}{e^2 l_{node}^2} \right) (8\pi\alpha) l_{node}^2
+T_{EM} = u_{sat} \cdot (\kappa_V \ell_{node}^2) = \left( \frac{1}{2} \epsilon_0 \frac{m_e^2 c^4}{e^2 \ell_{node}^2} \right) (8\pi\alpha) \ell_{node}^2
 \end{equation}
-Using the identity $\alpha = e^2 / 4\pi\epsilon_0\hbar c$, this reduces exactly to the classical rest-mass energy distributed over the edge length:
+Using the identity $\alpha = e^2 / 4\pi\epsilon_0\hbar c$, this reduces to the classical rest-mass energy distributed over the edge length:
 \begin{equation}
-T_{EM} = \frac{m_e c^2}{\hbar / m_e c} = \mathbf{\frac{m_e c^2}{l_{node}}} \quad \text{[Newtons]}
+T_{EM} = \frac{m_e c^2}{\hbar / m_e c} = \mathbf{\frac{m_e c^2}{\ell_{node}}} \quad \text{[Newtons]}
 \end{equation}
-This proves that the 3D volumetric saturation limit and the 1D linear rest-mass limit are mathematically identical, completely unifying the geometry. 
+This connects the 3D volumetric saturation limit and the 1D linear rest-mass limit, unifying the geometry. 
 
-Because macroscopic gravitation is a 3D volumetric strain of the heavily over-braced Delaunay graph, the Gravimetric Tension Limit ($T_{max,g}$) is simply the 1D EM tension scaled by the \textbf{Hierarchy Coupling ($\xi$)}.
+Because macroscopic gravitation is a 3D volumetric strain of the Delaunay graph, the Gravimetric Tension Limit ($T_{max,g}$) is the 1D EM tension scaled by the \textbf{Hierarchy Coupling ($\xi$)}.
 \begin{equation}
 T_{max,g} = \xi \cdot T_{EM}
 \end{equation}
 
 \subsection{Eliminating the Hidden Variable: The Machian Topological Coupling}
-In previous frameworks, $\xi$ acts as an arbitrary "hidden variable" tuned to $10^{44}$ to force the math to match $G$. In AVE, $\xi$ is strictly derived from the boundary conditions of the universe. 
+In some models, $\xi$ serves as an adjustable parameter to match $G$. In AVE, $\xi$ is derived from the boundary conditions of the universe. 
 
-In a connected graph, the maximum structural ratio between the macroscopic 3D bulk and the microscopic 1D edge is strictly bounded by the Information Capacity of the Cosmic Horizon. By applying Mach's Principle to the discrete lattice, the macroscopic impedance is exactly the sum of all microscopic nodes spanning the causal radius of the universe. 
+In a connected graph, the structural ratio between the macroscopic 3D bulk and the microscopic 1D edge is bounded by the Information Capacity of the Cosmic Horizon. By applying Mach's Principle to the discrete lattice, the macroscopic impedance is the sum of all microscopic nodes spanning the causal radius of the universe. 
 
-To evaluate this macroscopic boundary without arbitrarily inserting continuous Dark Energy parameters, we lock the Machian coupling strictly to the instantaneous \textbf{Hubble Radius} ($R_H = c/H_0$)—the apparent geometric causal boundary of the visible universe. The coupling is dynamically damped by the structural porosity of the lattice ($\alpha^{-2}$, derived geometrically in Section 2.2).
+To evaluate this boundary, we use the \textbf{Hubble Radius} ($R_H = c/H_0$)—the apparent causal boundary of the visible universe. The coupling is scaled by the structural porosity of the lattice ($\alpha^{-2}$, derived geometrically in Section 2.2).
 \begin{equation}
-\xi \equiv 4\pi \left( \frac{R_H}{l_{node}} \right) \alpha^{-2} = 4\pi \left( \frac{c/H_0}{l_{node}} \right) \alpha^{-2}
+\xi \equiv 4\pi \left( \frac{R_H}{\ell_{node}} \right) \alpha^{-2} = 4\pi \left( \frac{c/H_0}{\ell_{node}} \right) \alpha^{-2}
 \end{equation}
-Because $\alpha$ is derived from pure geometry, the $10^{44}$ hierarchy scale is not a free parameter; it emerges natively from the exact geometric ratio of the instantaneous cosmic horizon to the electron pitch.
+Because $\alpha$ is derived from geometry, the $10^{44}$ hierarchy scale emerges from the ratio of the cosmic horizon to the electron pitch.
 
-\subsection{The Geometric Emergence of G (Laplacian Reduction)}
-To derive $G$ without circularly assuming Newton's macroscopic inverse-square law a priori, we evaluate the continuum limits of the discrete graph. In any 3D interconnected elastic matrix, the static stress field $\Phi$ around a localized defect strictly obeys the 3D Graph Laplacian ($\nabla^2 \Phi = 0$). The fundamental Green's function solution to this geometric operator yields a resultant force field that mandates an attractive inverse-square decay ($\propto 1/r^2$).
-
-The macroscopic coupling constant $G_{calc}$ is the specific scale factor of this Laplacian solution. We define it by evaluating the continuous Green's function strictly at its physical boundary condition: the minimum discrete cutoff limit of a fully saturated node pair ($r_{min} = l_{node}$, $M_{max} = L_g$, $F_{max} = T_{max,g}$).
+\subsection{The Geometric Emergence of $G$ (Laplacian Reduction)}
+In any 3D interconnected elastic matrix, the static stress field $\Phi$ around a localized defect obeys the 3D Graph Laplacian ($\nabla^2 \Phi = 0$). The macroscopic coupling constant $G_{calc}$ is the scale factor of this Laplacian solution, evaluated at the boundary condition ($r_{min} = \ell_{node}$, $M_{max} = L_g$, $F_{max} = T_{max,g}$):
 \begin{equation}
-G_{calc} = \frac{F_{max} \cdot r_{min}^2}{M_{max}^2} = \frac{(\xi T_{EM}) \cdot l_{node}^2}{L_g^2}
+G_{calc} = \frac{F_{max} \cdot r_{min}^2}{M_{max}^2} = \frac{(\xi T_{EM}) \cdot \ell_{node}^2}{L_g^2}
 \end{equation}
-Substituting the invariant wave speed squared ($c^2 = l_{node}^2 / (L_g C_g) \implies L_g = l_{node}^2 / (c^2 C_g)$), we find the algebraic reduction:
+Substituting the invariant wave speed squared ($c^2 = \ell_{node}^2 / (L_g C_g)$) yields:
 \begin{equation}
-G_{calc} = \frac{c^4 C_g}{l_{node}} = \frac{c^4}{T_{max,g}} = \frac{c^4}{\xi T_{EM}}
+G_{calc} = \frac{c^4 C_g}{\ell_{node}} = \frac{c^4}{T_{max,g}} = \frac{c^4}{\xi T_{EM}}
 \end{equation}
-
-By substituting our geometrically derived $\xi$ and $T_{EM} = m_e c^2 / l_{node}$ into this reduction, we yield a direct 1D scalar formula linking Gravitation to the cosmic horizon:
+Substituting the derived $\xi$ and $T_{EM} = m_e c^2 / \ell_{node}$ yields:
 \begin{equation}
-G_{calc} = \frac{c^4}{4\pi \left( \frac{c/H_0}{l_{node}} \alpha^{-2} \right) \left( \frac{m_e c^2}{l_{node}} \right)} = \frac{l_{node}^2 \alpha^2 H_0 c}{4\pi m_e} = \mathbf{\frac{\hbar^2 \alpha^2 H_0}{4\pi m_e^3 c}}
+G_{calc} = \frac{\ell_{node}^2 \alpha^2 H_0 c}{4\pi m_e} = \frac{\hbar^2 \alpha^2 H_0}{4\pi m_e^3 c}
 \end{equation}
 
 \subsection{The Lagrangian Derivation of the Cosserat Projection (1/7)}
-To bridge the exact 1D scalar bound ($G_{calc}$) to the empirically measured continuous isotropic 3D constant ($G \approx 6.67 \times 10^{-11}$), we must rigorously derive the geometric projection factor directly from the Interaction Lagrangian of General Relativity, entirely eliminating phenomenological parameter tuning. 
-
-In General Relativity, the interaction energy density (the Lagrangian coupling term) between a metric strain $h_{\mu\nu}$ and a localized stress-energy source $T_{\mu\nu}$ is governed by:
+In General Relativity, the interaction energy density between a metric strain $h_{\mu\nu}$ and a localized stress-energy source $T_{\mu\nu}$ is governed by:
 \begin{equation}
 \mathcal{L}_{int} = \frac{1}{2} h_{\mu\nu} T^{\mu\nu} \equiv \frac{1}{2} \bar{T}_{\mu\nu} h^{\mu\nu}
 \end{equation}
-Where $\bar{T}_{\mu\nu} = T_{\mu\nu} - \frac{1}{2}\eta_{\mu\nu}T$ is the mathematically required trace-reversed source. To find the effective 3D isotropic gravitational coupling of a 1D topological string (a flux tube with uniaxial tension $T_{EM}$ along the z-axis), we must evaluate the transverse components of this Lagrangian action. 
+where $\bar{T}_{\mu\nu} = T_{\mu\nu} - \frac{1}{2} \eta_{\mu\nu} T$ is the trace-reversed source.
 
-\begin{enumerate}
-    \item \textbf{The Transverse Trace-Reversed Source:} For a 1D uniaxial string under absolute saturation, the fundamental tension is identically the mass-energy density ($\rho = T_{EM}$). Using the $(-,+,+,+)$ metric signature, the exact 4D stress tensor is $T_{\mu\nu} = \text{diag}(T_{EM}, 0, 0, -T_{EM})$. 
-    The full 4D scalar trace evaluates to: $T = \eta^{\mu\nu} T_{\mu\nu} = -T_{EM} + 0 + 0 + (-T_{EM}) = \mathbf{-2T_{EM}}$.
-    The trace-reversed source components for the transverse spatial axes ($\eta_{11} = \eta_{22} = 1$) thus evaluate exactly to:
-    \begin{equation}
-    \bar{T}_{11} = \bar{T}_{22} = 0 - \frac{1}{2}(1)(-2T_{EM}) = \mathbf{T_{EM}}
-    \end{equation}
-    
-    \item \textbf{The Transverse Cosserat Strain:} Simultaneously, the physical transverse metric strain ($h_{\perp}$) induced by this longitudinal stress in a Cosserat continuum is strictly governed by Hooke's Law via the vacuum's Poisson's ratio: $h_{\perp} = \mathbf{\nu_{vac} h_{\parallel}}$.
-\end{enumerate}
-
-By substituting these exact components back into the Interaction Lagrangian, the transverse isotropic interaction energy strictly governing the spatial dilation (gravity) is:
+For a 1D uniaxial string under absolute saturation, the stress tensor is $T_{\mu\nu} = \text{diag}(T_{EM}, 0, 0, -T_{EM})$. 
+The trace $T = -2 T_{EM}$. The trace-reversed transverse components are:
 \begin{equation}
-\mathcal{L}_{\perp} = \frac{1}{2} \bar{T}_{\perp} h_{\perp} = \frac{1}{2} (T_{EM}) (\nu_{vac} h_{\parallel}) = \left( \mathbf{\frac{1}{2} \nu_{vac}} \right) T_{EM} h_{\parallel}
+\bar{T}_{11} = \bar{T}_{22} = T_{EM}
 \end{equation}
 
-Because we rigorously derived $\nu_{vac} = 2/7$ in Section 2.4 from trace-free Cosserat elastodynamics, the geometric Lagrangian coupling factor evaluates mathematically to:
+The transverse Cosserat strain is $h_\perp = \nu_{vac} h_\parallel$. Substituting gives the transverse isotropic interaction energy:
 \begin{equation}
-\text{Lagrangian Projection Factor} = \frac{1}{2} \left( \frac{2}{7} \right) = \mathbf{\frac{1}{7}}
+\mathcal{L}_\perp = \frac{1}{2} \bar{T}_\perp h_\perp = \frac{1}{2} T_{EM} (\nu_{vac} h_\parallel) = \left( \frac{\nu_{vac}}{2} \right) T_{EM} h_\parallel
 \end{equation}
+With $\nu_{vac} = 2/7$, the Lagrangian coupling factor is:
+\begin{equation}
+\text{Lagrangian Projection Factor} = \frac{1}{2} \cdot \frac{2}{7} = \frac{1}{7}
+\end{equation}
+Applying this projection to $G_{calc}$ yields $G = \hbar^2 \alpha^2 H_0 / (28\pi m_e^3 c)$.
 
-Applying this exact parameter-free projection to our 1D scalar bound yields the true macroscopic gravitational constant:
+\subsection{Quantitative Resolution of the Hubble Tension}
+Rearranging gives:
 \begin{equation}
-G = \frac{G_{calc}}{7} = \mathbf{\frac{\hbar^2 \alpha^2 H_0}{28\pi m_e^3 c}}
+H_0 = \frac{28\pi m_e^3 c G}{\hbar^2 \alpha^2} \approx 69.32\,\text{km/s/Mpc}
 \end{equation}
-
-\textbf{Quantitative Resolution of the Hubble Tension:} By recognizing that this equation directly defines the Hubble parameter, we can rearrange this exact geometric Lagrangian identity to solve for the absolute present-day expansion rate of the universe strictly from local quantum constants and empirical $G$:
-\begin{equation}
-H_0 = \frac{28\pi m_e^3 c G}{\hbar^2 \alpha^2} 
-\end{equation}
-When evaluating this algebraically flawless equation with the exact 2018 CODATA empirical values ($m_e$, $c$, $G$, $\hbar$, $\alpha$), the calculation natively yields:
-\begin{equation}
-H_0 \approx 2.2465 \times 10^{-18} \text{ s}^{-1} \implies \mathbf{69.32 \text{ km/s/Mpc}}
-\end{equation}
-This provides an absolute first-principles resolution to the \textbf{Hubble Tension}. Falling perfectly into the exact center of the current observational window (between CMB's $67.4$ and Cepheid's $73.0$), the apparent expansion rate of the universe is mathematically locked to the gravitational and quantum limits of the solid-state substrate, completely free of arbitrary parameter insertions.
+This value falls in the center of the current observational range, offering a geometric perspective on the Hubble tension.

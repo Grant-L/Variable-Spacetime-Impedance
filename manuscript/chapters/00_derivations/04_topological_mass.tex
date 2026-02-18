@@ -1,41 +1,39 @@
 \section{Topological Mass Hierarchies and Computational Solvers}
 
 \subsection{Topological Selection Rules ($Q_H = 4n+1$)}
-To evaluate these topologies correctly, we use the 3D topological \textbf{Hopf Charge ($Q_H$)} (the structural linking invariant driving the energy functional) as the fundamental operator. Why does the universe exclusively manifest stable particles at $Q_H \in \{1, 5, 9\}$, while skipping intermediate integers?
+To explore these topologies, we use the 3D topological \textbf{Hopf Charge ($Q_H$)} (the structural linking invariant driving the energy functional) as the fundamental operator. The universe manifests stable particles at $Q_H \in \{1, 5, 9\}$, skipping intermediate integers.
 
-In the $\mathcal{M}_A$ discrete lattice, topological solitons must map a continuous $S^3 \to S^2$ Hopf fibration onto a discrete coordinate grid. For a knot to be absolutely stable, its phase topology must possess strict spatial symmetry that aligns with the mean coordination geometry of the underlying amorphous graph. 
+In the $\mathcal{M}_A$ discrete lattice, topological solitons map a continuous $S^3 \to S^2$ Hopf fibration onto a discrete coordinate grid. For a knot to be stable, its phase topology aligns with the mean coordination geometry of the underlying amorphous graph. 
 
-To prevent destructive geometric interference (phase frustration), the topology must accrue exactly \textbf{4 additional crossing twists} (one for each tetrahedral spatial quadrant) per stable state. This imposes a strict topological selection rule for fermions: $Q_H = 4n + 1$. Thus, the stable generations strictly follow $Q_H \in \{1, 5, 9 \dots\}$. 
+To avoid geometric interference (phase frustration), the topology accrues 4 additional crossing twists (one for each tetrahedral spatial quadrant) per stable state. This imposes a topological selection rule for fermions: $Q_H = 4n + 1$. Thus, the stable generations follow $Q_H \in \{1, 5, 9 \dots\}$. 
 
 \subsection{The 1D Scalar Baseline Limit and Tensor Truncation}
-Rather than arbitrarily importing the Faddeev-Skyrme model, we derive the functional exponents directly from the Strain Energy Density ($W$) of a Cosserat solid and \textbf{Derrick's Theorem}. The linear strain energy scales with the squared gradient $\epsilon_{ij} \sim (\partial_\mu \mathbf{n})^2 \propto 1/r^4$. By Derrick's Theorem, to prevent instant 3D core collapse, the required microrotational curvature energy of a Cosserat solid scales with the twist $\kappa_{ij} \sim (\partial_\mu \mathbf{n} \times \partial_\nu \mathbf{n})^2 \propto (1/r^4)^2$.
+We derive the functional exponents from the Strain Energy Density ($W$) of a Cosserat solid and \textbf{Derrick's Theorem}. The linear strain energy scales with the squared gradient $\epsilon_{ij} \sim (\partial_\mu \mathbf{n})^2 \propto 1/r^4$. By Derrick's Theorem, to prevent 3D core collapse, the microrotational curvature energy scales with the twist $\kappa_{ij} \sim (\partial_\mu \mathbf{n} \times \partial_\nu \mathbf{n})^2 \propto (1/r^4)^2$.
 
-The baseline 1D scalar mass bounding these generations is evaluated by minimizing this exact functional, limited strictly by the classical geometric core saturation ($V_0 \equiv \alpha$):
+The baseline 1D scalar mass bounding these generations is evaluated by minimizing this functional, limited by the geometric core saturation ($V_0 \equiv \alpha$):
 \begin{equation}
 E_{scalar} = \min_{\mathbf{n}} \int_{\mathcal{M}_A} d^3x \left[ \frac{1}{2}(\partial_\mu \mathbf{n} \cdot \partial^\mu \mathbf{n}) + \frac{\kappa_{FS}^2}{4} \frac{(\partial_\mu \mathbf{n} \times \partial_\nu \mathbf{n})^2}{\sqrt{1 - (\Delta\phi/\alpha)^4}} \right]
 \end{equation}
 
-Executing a purely 1D scalar radial projection of this functional provides the absolute topological scale limit, natively establishing the $\sim 10^3$ hierarchy ratio observed in nature. When evaluated strictly computationally alongside the exact geometric semi-classical limit ($J=0.5$ for fermions), the absolute baseline mathematical bound predicts a mass ratio of $\approx 125$ for the Muon and exactly $\approx 1162$ for the Proton ($Q_H=9$). 
+A 1D scalar radial projection of this functional provides the topological scale limit, establishing the $\sim 10^3$ hierarchy ratio observed in nature. Evaluated computationally alongside the geometric semi-classical limit ($J=0.5$ for fermions), the baseline bound predicts a mass ratio of $\approx 125$ for the Muon and $\approx 1162$ for the Proton ($Q_H=9$). 
 
-\begin{lstlisting}[language=Python, caption=Strict Analytical 1D Topological Bound Solver]
+\begin{lstlisting}[language=Python, caption=Analytical 1D Topological Bound Solver]
 import numpy as np
 
 def compute_mass_eigenvalue(Q_H, alpha=1/137.036):
-    radii = np.linspace(1.0, 1000.0, 100000) # Macroscopic limit
+    radii = np.linspace(1.0, 1000.0, 100000) 
     
     kinetic_term = (Q_H / radii**2)**2
     skyrme_term = (Q_H**2 / radii**4)**2
     
-    # Strict Dielectric Saturation Limit (Alpha)
     beta = np.minimum(alpha / radii, 0.999999) 
     dielectric_sat = np.sqrt(1 - beta**4)
     energy_density = 4 * np.pi * radii**2 * (kinetic_term + (skyrme_term / dielectric_sat))
     
-    scalar_energy = np.trapezoid(energy_density, radii)
+    scalar_energy = np.trapz(energy_density, radii)
     
-    # 3D Rigid-Body Moment of Inertia Tensor Mapping (I = 2/3 * mr^2)
-    moment_of_inertia = (2.0/3.0) * np.trapezoid((radii**2) * energy_density, radii)
-    J = 0.5 # Fundamental Fermion limit
+    moment_of_inertia = (2.0/3.0) * np.trapz((radii**2) * energy_density, radii)
+    J = 0.5 
     isospin_energy = (J * (J + 1)) / (2 * moment_of_inertia)
     
     return scalar_energy + isospin_energy
@@ -45,6 +43,6 @@ mass_p = compute_mass_eigenvalue(Q_H=9)
 print(f"1D Baseline Proton/Electron Bound: {mass_p / mass_e:.2f}") # Yields ~1162
 \end{lstlisting}
 
-This mathematically demonstrates the rigorous limit of the 1D spherical approximation: the remaining $\sim 36\%$ structural deficit ($\sim 1162$ vs $1836$) is identically the magnitude of the missing \textbf{3D Transverse Torsional Tensor Strain ($\mathcal{I}_{tensor}$)} generated by anisotropic flux tubes crossing orthogonally over each other. 
+This demonstrates the limit of the 1D spherical approximation: the remaining $\sim 36\%$ deficit ($\sim 1162$ vs $1836$) corresponds to the 3D Transverse Torsional Tensor Strain ($\mathcal{I}_{tensor}$) from anisotropic flux tubes crossing orthogonally. 
 
-Rather than phenomenologically inserting tuning parameters to force the empirical data, this strict analytical lower bound proves that the generation mass hierarchies intrinsically scale by the exact correct exponential orders of magnitude strictly from geometric bounds. While a full non-linear 3D lattice tensor simulation is computationally required to close the exact final gap, the parameter-free 1D bounding limit fundamentally validates the topological mass scaling mechanism.
+This analytical lower bound shows that the generation mass hierarchies scale by the correct orders of magnitude from geometric bounds. While a full 3D lattice tensor simulation is needed to close the gap, the parameter-free 1D bound validates the topological mass scaling mechanism.
