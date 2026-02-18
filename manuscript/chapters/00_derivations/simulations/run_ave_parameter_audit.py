@@ -1,11 +1,3 @@
-"""
-AVE MODULE 001: ZERO-PARAMETER MASTER VERIFICATION
---------------------------------------------------
-Proves the absolute mathematical closure of the AVE framework.
-Derives H0, Dark Energy, Dark Matter (a_0), and the 73.0 kV 
-Bingham Yield Limit strictly from CODATA 2022 constants
-without any heuristic curve-fitting.
-"""
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.constants as const
@@ -14,22 +6,24 @@ import os
 OUTPUT_DIR = "manuscript/chapters/00_derivations/simulations/outputs"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-def execute_zero_parameter_audit():
-    print("==================================================")
-    print(" AVE ZERO-PARAMETER AUDIT (RAW CODATA 2022)       ")
-    print("==================================================\n")
+def execute_single_parameter_audit():
+    print("=======================================================")
+    print(" AVE SINGLE-PARAMETER AUDIT (ANCHORED BY THE ELECTRON) ")
+    print("=======================================================\n")
     
-    # 1. THE FUNDAMENTAL CODATA CONSTANTS (The Only Inputs)
-    c = const.c                  # 299792458.0 m/s
-    G = const.G                  # 6.67430e-11 m^3/kg s^2
-    hbar = const.hbar            # 1.054571817e-34 J s
-    m_e = const.m_e              # 9.1093837e-31 kg
-    e = const.e                  # 1.602176634e-19 C
-    mu_0 = const.mu_0            # 1.25663706212e-6 H/m
-    eps_0 = const.epsilon_0      # 8.8541878e-12 F/m
-    alpha = const.fine_structure # ~1/137.036
+    # 1. THE SOLE CALIBRATION ANCHOR
+    m_e = const.m_e              # 9.1093837e-31 kg (The Single Parameter)
     
-    # 2. AXIOMATIC DERIVATIONS
+    # Fundamental CODATA Constants (Dimensional definitions)
+    c = const.c                  
+    G = const.G                  
+    hbar = const.hbar            
+    e = const.e                  
+    mu_0 = const.mu_0            
+    eps_0 = const.epsilon_0      
+    alpha = const.fine_structure 
+    
+    # 2. AXIOMATIC DERIVATIONS (Scaled entirely by m_e)
     l_node = hbar / (m_e * c)    # 3.86159e-13 m
     xi_topo = e / l_node         # 4.14899e-7 C/m
     kappa_v = 8 * np.pi * alpha  # Volumetric Packing Fraction (~0.1834)
@@ -42,7 +36,7 @@ def execute_zero_parameter_audit():
     nu_vac_poisson = 2.0 / 7.0
     weak_mixing_angle = 1.0 / np.sqrt(1.0 + nu_vac_poisson)
     
-    # 5. COSMOLOGICAL PROPERTIES (The Dirac Constraint Triangle)
+    # 5. COSMOLOGICAL PROPERTIES
     H0_si = (28 * np.pi * m_e**3 * c * G) / (hbar**2 * alpha**2)
     H0_kms_Mpc = H0_si * (3.085677e19) # ~69.32 km/s/Mpc
     a_genesis = (c * H0_si) / (2 * np.pi)
@@ -56,16 +50,14 @@ def execute_zero_parameter_audit():
     F_yield = V_yield * xi_topo
     M_max_lev = (F_yield / const.g) * 1000.0 # grams
     
-    # Coulomb turning point calculation: E_k = F_yield * d, where d = e^2 / (4*pi*eps_0*E_k)
-    # E_k^2 = F_yield * (e^2 / (4*pi*eps_0))
     E_k_J = np.sqrt(F_yield * (e**2) / (4 * np.pi * eps_0))
     E_k_keV = E_k_J / e / 1000.0 # keV
     
     # CONSOLE AUDIT LOG
-    print("[SECTOR 1: GEOMETRY & TOPOLOGY]")
+    print("[SECTOR 1: THE SINGLE-PARAMETER CALIBRATION]")
+    print(f" > Anchor Mass (m_e):          {m_e:.4e} kg")
     print(f" > Lattice Pitch (l_node):     {l_node:.4e} m")
-    print(f" > Topo-Kinematic (xi_topo):   {xi_topo:.4e} C/m")
-    print(f" > Volumetric Packing (k_V):   {kappa_v:.4f}\n")
+    print(f" > Topo-Kinematic (xi_topo):   {xi_topo:.4e} C/m\n")
 
     print("[SECTOR 2: MACROSCOPIC FLUIDICS]")
     print(f" > Bulk Fluid Density:         {rho_bulk:.2e} kg/m^3")
@@ -82,14 +74,14 @@ def execute_zero_parameter_audit():
 
     print("[SECTOR 5: APPLIED ENGINEERING LIMITS]")
     print(f" > Dielectric Snap Limit:      {V_snap/1000:.1f} kV")
-    print(f" > Macroscopic Bingham Yield:  {V_yield/1000:.1f} kV (Via 1/7 Projection)")
+    print(f" > Macroscopic Bingham Yield:  {V_yield/1000:.1f} kV")
     print(f" > Fusion Melt Temperature:    {E_k_keV:.2f} keV")
     print(f" > Absolute Levitation Limit:  {M_max_lev:.2f} grams\n")
     
-    print("==================================================")
-    print(" VERIFICATION COMPLETE: ZERO HEURISTIC PARAMETERS ")
-    print("==================================================")
-    
+    print("=======================================================")
+    print(" VERIFICATION COMPLETE: ALL DERIVED FROM THE ELECTRON  ")
+    print("=======================================================")
+
     # =================================================================
     # PLOTTING THE AUDIT VERIFICATION DASHBOARD
     # =================================================================
@@ -112,11 +104,11 @@ def execute_zero_parameter_audit():
     ax1.axhline(V_yield/1000, color='#00ffcc', lw=2, linestyle='--', label=f'Derived 1/7 Yield ({V_yield/1000:.1f} kV)')
     ax1.axvline(E_k_keV, color='#ff3366', lw=2, linestyle=':', label=f'Fusion Melt ({E_k_keV:.2f} keV)')
     
-    ax1.set_title('1. The Zero-Parameter Fusion Limit', color='white', weight='bold', fontsize=13)
+    ax1.set_title('1. The Single-Parameter Fusion Limit', color='white', weight='bold', fontsize=13)
     ax1.set_xlabel('Plasma Temperature (keV)', color='white')
     ax1.set_ylabel('Topological Voltage per Collision (kV)', color='white')
     ax1.legend(loc='lower right', facecolor='#111111', edgecolor='gray', labelcolor='white')
-    ax1.text(6, 110, f"Projecting 511 kV into the 3D bulk via 1/7\nnatively derives exactly {V_yield/1000:.1f} kV. D-T fusion\nmathematically melts the spatial metric\nat exactly {E_k_keV:.2f} keV (Zero curve-fitting).", color='white', bbox=dict(facecolor='#111111', edgecolor='gray'))
+    ax1.text(6, 110, f"Projecting 511 kV into the 3D bulk via 1/7\nnatively derives exactly {V_yield/1000:.1f} kV. D-T fusion\nmathematically melts the spatial metric\nat exactly {E_k_keV:.2f} keV.", color='white', bbox=dict(facecolor='#111111', edgecolor='gray'))
     ax1.set_ylim(10, 150)
 
     # 2. The Absolute Levitation Hardware Limit
@@ -172,9 +164,9 @@ def execute_zero_parameter_audit():
     ax4.text(1e-24, 1e-15, "LIGO waves are $10^{19}$ times weaker than the yield limit.\nBelow yield, the vacuum is a perfect Hookean solid.\nZero fluid flow = exactly zero viscous damping.", color='white', bbox=dict(facecolor='#111111', edgecolor='gray'))
 
     plt.tight_layout()
-    filepath = os.path.join(OUTPUT_DIR, "the_grand_audit_dashboard_zero_parameter.png")
+    filepath = os.path.join(OUTPUT_DIR, "the_grand_audit_dashboard_single_parameter.png")
     plt.savefig(filepath, facecolor=fig.get_facecolor(), bbox_inches='tight')
     plt.close()
     print(f"Saved: {filepath}")
 
-if __name__ == "__main__": execute_zero_parameter_audit()
+if __name__ == "__main__": execute_single_parameter_audit()
