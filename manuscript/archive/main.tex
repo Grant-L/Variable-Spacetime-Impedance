@@ -1,50 +1,110 @@
-\documentclass[11pt, letterpaper, oneside]{book}
+\documentclass[11pt, letterpaper, openright]{book}
 
-% 1. Load Structure
-\input{manuscript/structure/preamble}
-\input{manuscript/structure/commands}
+% =========================================
+% PREAMBLE: THE ENGINEERING AESTHETIC
+% =========================================
+
+% --- Typography & Encoding ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern} 
+\usepackage{microtype} 
+
+% --- Layout & Geometry ---
+\usepackage[margin=1.2in, headheight=14pt]{geometry}
+\usepackage{fancyhdr} 
+\usepackage{emptypage} 
+
+% --- Mathematics & Science ---
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{siunitx} 
+\usepackage{bm} 
+
+% --- Graphics & Floats ---
+\usepackage{graphicx}
+\graphicspath{{../assets/}{../assets/sim_outputs/}{../assets/derivations/}{../assets/archive/}}
+\usepackage{float}
+\usepackage{booktabs} 
+\usepackage{tabularx}
+\usepackage{caption}
+\usepackage[table,xcdraw]{xcolor}
+
+% --- Navigation & Linking ---
+\usepackage[hidelinks]{hyperref} 
+\usepackage{tocloft}
+
+% Custom abstract environment for book class
+\newenvironment{abstract}
+  {\small
+   \begin{center}
+   \bfseries Abstract\vspace{-.5em}\vspace{0pt}
+   \end{center}
+   \quotation}
+  {\endquotation} 
+
+% --- Code & Verbatim ---
+\usepackage{listings}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins, breakable}
+
+% =========================================
+% CUSTOM COMMANDS & DEFINITIONS
+% =========================================
+\input{structure/commands.tex}
+
+% Define the "Vacuum Engineering" constants
+\newcommand{\vacuum}{\ensuremath{M_A}}
+\newcommand{\slew}{\ensuremath{c}}
+\newcommand{\planck}{\ensuremath{\hbar}}
+\newcommand{\permeability}{\ensuremath{\mu_0}}
+\newcommand{\permittivity}{\ensuremath{\epsilon_0}}
+\newcommand{\impedance}{\ensuremath{Z_0}}
+
+% Header/Footer Configuration
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[RE]{\itshape Applied Vacuum Engineering}
+\fancyhead[LO]{\itshape\nouppercase{\leftmark}}
+
+% =========================================
+% DOCUMENT STRUCTURE
+% =========================================
 
 \begin{document}
 
-% 2. Front Matter
+% --- FRONT MATTER ---
 \frontmatter
-\input{manuscript/structure/titlepage}
-\input{manuscript/frontmatter/00_preface}
-% \input{manuscript/frontmatter/glossary}
+
+\input{frontmatter/00_title.tex}
+
 \tableofcontents
 
-% 3. Main Content
+% --- MAIN MATTER ---
 \mainmatter
 
-% Part 0: Core Theory
-\input{manuscript/chapters/00_core/_manifest}
+% Reset chapter counter to start at 1
+\setcounter{chapter}{0}
 
-% Part I: The Hardware
-\part{The Hardware Layer}
-\input{manuscript/chapters/01_hardware/_manifest}
-\input{manuscript/chapters/02_signal/_manifest}
+\include{chapters/00_derivations/_manifest.tex}
+\include{chapters/13_spacetime_circuit_analysis/_manifest.tex}
+\include{chapters/14_active_metric_engineering/_manifest.tex}
 
-% Part II: Emergence
-\part{The Quantum \& Weak Layers}
-\input{manuscript/chapters/03_quantum/_manifest}
-\input{manuscript/chapters/04_topology/_manifest}
-\input{manuscript/chapters/05_weak/_manifest}
+% --- APPENDICES ---
+% Setting \appendix here ensures chapters are lettered A, B, C!
+\appendix
+\renewcommand{\thechapter}{\Alph{chapter}}
 
-% Part III: Macroscale
-\part{Macroscale Dynamics \& Engineering}
-\input{manuscript/chapters/06_cosmic/_manifest}
-\input{manuscript/chapters/07_engineering/_manifest}
+% Appendices
+\include{backmatter/_manifest.tex}
 
-% Part IV: Verification
-\part{Falsifiability}
-\input{manuscript/chapters/08_falsifiability/_manifest}
-
-% Part V: Application
-\part{Applications}
-\input{manuscript/chapters/09_Vacuum_CFD/_manifest}
-% 4. Back Matter
+% --- BACK MATTER ---
 \backmatter
-\bibliographystyle{plain}
-\bibliography{manuscript/bibliography}
+
+% Bibliography
+%\bibliographystyle{plain}
+%\bibliography{bibliography}
 
 \end{document}
