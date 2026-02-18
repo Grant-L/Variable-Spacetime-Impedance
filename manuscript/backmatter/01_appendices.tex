@@ -1,30 +1,33 @@
+% ====================================================================
+% APPENDICES
+% ====================================================================
 \chapter{The Unified Translation Matrix}
-\label{app:translation_matrix}
 
 To bridge the historical epistemological gap between abstract theoretical physics and applied macroscopic engineering, this appendix formally translates the fundamental, often-mystified concepts of the Standard Model and General Relativity directly into the strict physical solid-state hardware specifications of the Applied Vacuum Engineering (AVE) framework.
 
 \section{The Rosetta Stone of Physics}
 
-\begin{table}[h!]
+\begin{table}[htbp]
     \centering
     \renewcommand{\arraystretch}{1.5}
     \small
-    \begin{tabularx}{\textwidth}{@{} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X @{}}
-    \toprule
-    \textbf{Standard Model / QFT} & \textbf{Vacuum Engineering (AVE)} & \textbf{Fluid/Solid Mechanics} \\ \midrule
-    Speed of Light ($c$) & Global Hardware Slew Rate & Acoustic Wave Velocity ($c_s$) \\
-    Inertial Mass ($m_i$) & Stored Inductive Energy ($E_L$) & Hydrodynamic Wave Drag \\
-    Electric Charge ($q$) & Topological Phase Vortex ($Q_H$) & Edge Dislocation (Burgers Vector) \\
-    Gravitation ($G$) & Macro. Transverse Strain Projection (1/7) & Gordon Optical Refractive Index \\
-    Permittivity ($\epsilon_0$) & Capacitive Lattice Compliance & Inverse Tensile Stiffness ($1/T$) \\
-    Permeability ($\mu_0$) & Node Inductive Inertia & Fluid Mass Density ($\rho_{bulk}$) \\
-    Fine Structure Constant ($\alpha$) & Topological Saturation Limit ($V_0$) & Structural Dissipation Factor \\
-    Dark Matter Halo & Low-Shear Vacuum Viscosity & Bingham Plastic Friction \\
-    Dark Energy ($\Lambda$) & Lattice Genesis Rate ($H_0$) & Exothermic Phase Transition \\
-    Magnetic Vector Potential ($\mathbf{A}$) & Continuous Phase-Flux & Kinematic Momentum Flow \\
-    Weak Mixing Angle ($\theta_W$) & Trace-Reversed Stability Limit & Poisson's Ratio ($\nu \equiv 2/7$) \\
-    Special Relativity ($\gamma$) & Discrete Dispersion Asymptote & Prandtl-Glauert Compressibility \\ \bottomrule
-    \end{tabularx}
+    \begin{tabular}{|p{4.5cm}|p{5.5cm}|p{4.5cm}|}
+    \hline
+    \rowcolor[HTML]{EFEFEF} 
+    \textbf{Standard Model / QFT} & \textbf{Vacuum Engineering (AVE)} & \textbf{Fluid/Solid Mechanics} \\ \hline
+    Speed of Light ($c$) & Global Hardware Slew Rate & Acoustic Wave Velocity ($c_s$) \\ \hline
+    Inertial Mass ($m_i$) & Stored Inductive Energy ($E_L$) & Hydrodynamic Wave Drag \\ \hline
+    Electric Charge ($q$) & Topological Phase Vortex ($Q_H$) & Edge Dislocation (Burgers Vector) \\ \hline
+    Gravitation ($G$) & Macro. Transverse Strain Projection (1/7) & Gordon Optical Refractive Index \\ \hline
+    Permittivity ($\epsilon_0$) & Capacitive Lattice Compliance & Inverse Tensile Stiffness ($1/T$) \\ \hline
+    Permeability ($\mu_0$) & Node Inductive Inertia & Fluid Mass Density ($\rho_{bulk}$) \\ \hline
+    Fine Structure Constant ($\alpha$) & Topological Saturation Limit ($V_0$) & Structural Dissipation Factor \\ \hline
+    Dark Matter Halo & Low-Shear Vacuum Viscosity & Bingham Plastic Friction \\ \hline
+    Dark Energy ($\Lambda$) & Lattice Genesis Rate ($H_0$) & Exothermic Phase Transition \\ \hline
+    Magnetic Vector Potential ($\mathbf{A}$) & Continuous Phase-Flux & Kinematic Momentum Flow \\ \hline
+    Weak Mixing Angle ($\theta_W$) & Trace-Reversed Stability Limit & Poisson's Ratio ($\nu \equiv 2/7$) \\ \hline
+    Special Relativity ($\gamma$) & Discrete Dispersion Asymptote & Prandtl-Glauert Compressibility \\ \hline
+    \end{tabular}
     \caption{The Unified Translation Matrix: Mapping Abstract Physics to Continuum Mechanics}
     \label{tab:rosetta_stone}
 \end{table}
@@ -34,7 +37,6 @@ The Standard Model requires the manual, heuristic injection of over 26 arbitrary
 
 
 \chapter{Summary of Exact Analytical Derivations}
-\label{app:exact_derivations}
 
 The following absolute mathematical bounds and identities were rigorously derived within the text from first-principles continuum elastodynamics and finite-element graph limits.
 
@@ -106,6 +108,11 @@ All abstract parameter tuning, arbitrary fractional scaling approximations, miss
 \end{verbatim}
 \end{tcolorbox}
 
+\section*{Source Code}
+
+The complete verification script is provided below for reproducibility:
+
+\lstinputlisting[language=Python, basicstyle=\small\ttfamily, breaklines=true]{../scripts/verify_universe.py}
 
 \chapter{Computational Graph Architecture}
 \label{app:computational_graph}
@@ -118,7 +125,7 @@ This appendix formally defines the software architecture constraints required to
 
 The first step in simulating the vacuum is establishing the 3D coordinate positions of the discrete inductive nodes ($\mu_0$). 
 
-\textbf{The Random Noise Fallacy:} A common error in discrete simulation is utilizing unconstrained uniformly distributed random noise (e.g., \texttt{numpy.random.rand()}). This generates a standard continuous Poisson point process, which fundamentally allows spatial nodes to cluster infinitesimally close to each other. In physical reality, this violates Axiom 1 (The Dielectric Ropelength Limit), which strictly mandates that no two flux tubes can compress below the absolute fundamental lattice pitch $\ell_{node}$. Unconstrained random noise inherently generates trans-Planckian black hole singularities (UV Catastrophes) in the baseline unstrained graph.
+\textbf{The Random Noise Fallacy:} A common error in discrete simulation is utilizing unconstrained uniformly distributed random noise. This generates a standard continuous Poisson point process, which fundamentally allows spatial nodes to cluster infinitesimally close to each other. In physical reality, this violates Axiom 1 (The Dielectric Ropelength Limit), which strictly mandates that no two flux tubes can compress below the absolute fundamental lattice pitch $\ell_{node}$. Unconstrained random noise inherently generates trans-Planckian black hole singularities (UV Catastrophes) in the baseline unstrained graph.
 
 \textbf{The Poisson-Disk Solution:} To satisfy macroscopic isotropy while strictly enforcing the microscopic hardware cutoff, the software must generate the node coordinates using a \textbf{Poisson-Disk Hard-Sphere Sampling Algorithm}. This algorithm enforces a strict minimum exclusion radius ($r_{min} = \ell_{node}$) between all generated points. 
 
