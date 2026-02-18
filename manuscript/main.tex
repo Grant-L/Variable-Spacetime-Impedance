@@ -3,185 +3,77 @@
 % =========================================
 % PREAMBLE: THE ENGINEERING AESTHETIC
 % =========================================
-
-% --- Typography & Encoding ---
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern} 
 \usepackage{microtype} 
-
-% --- Layout & Geometry ---
 \usepackage[margin=1.2in, headheight=14pt]{geometry}
 \usepackage{fancyhdr} 
 \usepackage{emptypage} 
 
 % --- Mathematics & Science ---
-\usepackage{amsmath, amssymb, amsfonts}
-\usepackage{amsthm}
-\usepackage{mathtools}
+\usepackage{amsmath, amssymb, amsfonts, amsthm, mathtools}
 \usepackage{siunitx} 
 \usepackage{bm} 
 
-% --- Graphics & Floats ---
+% --- Graphics & Tables ---
 \usepackage{graphicx}
-\graphicspath{{../assets/}{../assets/sim_outputs/}{../assets/derivations/}{../assets/archive/}}
 \usepackage{float}
-\usepackage{booktabs} 
+\usepackage{booktabs} % << CRITICAL FOR BEAUTIFUL TABLES
 \usepackage{tabularx}
 \usepackage{caption}
-\usepackage{tabularx} % For tabularx environment
 \usepackage[table,xcdraw]{xcolor}
 
-% --- Navigation & Linking ---
+% --- Navigation, Code & Boxes ---
 \usepackage[hidelinks]{hyperref} 
 \usepackage{tocloft}
-
-% Custom abstract environment for book class
-\newenvironment{abstract}
-  {\small
-   \begin{center}
-   \bfseries Abstract\vspace{-.5em}\vspace{0pt}
-   \end{center}
-   \quotation}
-  {\endquotation} 
-
-% --- Code & Verbatim ---
 \usepackage{listings}
 \usepackage{tcolorbox}
 \tcbuselibrary{skins, breakable}
 
-% =========================================
-% CUSTOM COMMANDS & DEFINITIONS
-% =========================================
-\input{structure/commands.tex}
+% --- Custom Abstract ---
+\newenvironment{abstract}
+  {\small\begin{center}\bfseries Abstract\vspace{-.5em}\vspace{0pt}\end{center}\quotation}
+  {\endquotation} 
 
-% Define the "Vacuum Engineering" constants (Wrapped in \ensuremath for safety)
-\newcommand{\vacuum}{\ensuremath{M_A}}
-\newcommand{\slew}{\ensuremath{c}}
-\newcommand{\planck}{\ensuremath{\hbar}}
-\newcommand{\permeability}{\ensuremath{\mu_0}}
-\newcommand{\permittivity}{\ensuremath{\epsilon_0}}
-\newcommand{\impedance}{\ensuremath{Z_0}}
-
-% Header/Footer Configuration
+% --- Header/Footer Configuration ---
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[LE,RO]{\thepage}
 \fancyhead[RE]{\itshape Applied Vacuum Engineering}
 \fancyhead[LO]{\itshape\nouppercase{\leftmark}}
 
-% =========================================
-% DOCUMENT STRUCTURE
-% =========================================
-
 \begin{document}
 
-% --- FRONT MATTER ---
+% =========================================
+% FRONT MATTER
+% =========================================
 \frontmatter
 
-\input{frontmatter/00_title.tex}
-
+% IMPORTANT: Make sure your 00_title.tex file ONLY contains the Title and Abstract!
+% Delete the Appendices from the bottom of 00_title.tex if they are in there!
+\input{frontmatter/00_title.tex} 
 \tableofcontents
 
-% --- MAIN MATTER ---
+% =========================================
+% MAIN MATTER (The 14 Core Chapters)
+% =========================================
 \mainmatter
+\input{chapters/00_derivations/_manifest.tex}
+\input{chapters/13_spacetime_circuit_analysis/_manifest.tex}
+\input{chapters/14_active_metric_engineering/_manifest.tex}
 
-% Reset chapter counter to start at 1
-\setcounter{chapter}{0}
+% The Capstone
+\input{backmatter/12_mathematical_closure.tex}
 
-\include{chapters/00_derivations/_manifest.tex}
-
-% =================================================
-% PART I: THE CONSTITUTIVE SUBSTRATE
-% =================================================
-%\part{The Constitutive Substrate}
-%\label{part:substrate}
-
-%\include{chapters/01_discrete_amorphous_manifold/_manifest.tex}
-
-% =================================================
-% PART II: TOPOLOGICAL MATTER
-% =================================================
-%\part{Topological Matter}
-%\label{part:matter}
-
-% Signal Dynamics
-%\include{chapters/02_signal_dynamics/_manifest.tex}
-
-% Fermion Sector
-%\include{chapters/03_fermion_sector/_manifest.tex}
-
-% Baryon Sector
-%\include{chapters/04_baryon_sector/_manifest.tex}
-
-% Neutrino Sector
-%\include{chapters/05_neutrino_sector/_manifest.tex}
-
-% =================================================
-% PART III: INTERACTIVE DYNAMICS
-% =================================================
-%\part{Interactive Dynamics}
-%\label{part:interaction}
-
-% Electrodynamics and Weak Interaction
-%\include{chapters/06_electrodynamics_weak_interaction/_manifest.tex}
-
-% Gravitation and Metric Refraction
-%\include{chapters/07_gravitation_metric_refraction/_manifest.tex}
-
-% =================================================
-% PART IV: COSMOLOGICAL DYNAMICS
-% =================================================
-%\part{Cosmological Dynamics}
-%\label{part:cosmology}
-
-% Generative Cosmology
-%\include{chapters/08_generative_cosmology/_manifest.tex}
-
-% Viscous Dynamics and Dark Matter
-%\include{chapters/09_viscous_dynamics_dark_matter/_manifest.tex}
-
-% =================================================
-% PART V: APPLIED VACUUM MECHANICS
-% =================================================
-%\part{Applied Vacuum Mechanics}
-%\label{part:applied}
-
-% Vacuum CFD
-%\include{chapters/10_vacuum_cfd/_manifest.tex}
-
-% Applied Vacuum Engineering
-%\include{chapters/11_applied_vacuum_engineering/_manifest.tex}
-
-% Experimental Falsification
-%\include{chapters/12_experimental_falsification/_manifest.tex}
-
-%Transient Metric Engineering
-\include{chapters/13_spacetime_circuit_analysis/_manifest.tex}
-
-\include{chapters/14_active_metric_engineering/_manifest.tex}
-
-% High-Fidelity Astrophysical Simulations
-%\include{chapters/14_hifi_vcfd/_manifest.tex}
-
-% Quantum Mechanics Demystification
-%\include{chapters/15_quantum_mechanics/_manifest.tex}
-
-% Applied Energy Systems: The Nuclear Fusion Crisis
-%\include{chapters/16_fusion/_manifest.tex}
-
-% Auditing Modern Physics Crises against AVE Limits
-%\include{chapters/17_ave_resolutions/_manifest.tex}
-
-% --- BACK MATTER ---
+% =========================================
+% BACK MATTER (Appendices)
+% =========================================
 \backmatter
+\appendix
+\renewcommand{\thechapter}{\Alph{chapter}}
 
-% Appendices
-\include{backmatter/_manifest.tex}
-
-
-% Bibliography
-%\bibliographystyle{plain}
-%\bibliography{bibliography}
+% Put your appendices in a single file or call them individually here:
+\input{backmatter/01_appendices.tex}
 
 \end{document}
