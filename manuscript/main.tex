@@ -82,10 +82,14 @@
 \input{frontmatter/00_title.tex}
 
 \tableofcontents
-\include{chapters/00_derivations/_manifest.tex}
 
 % --- MAIN MATTER ---
 \mainmatter
+
+% Reset chapter counter to start at 1
+\setcounter{chapter}{0}
+
+\include{chapters/00_derivations/_manifest.tex}
 
 % =================================================
 % PART I: THE CONSTITUTIVE SUBSTRATE
