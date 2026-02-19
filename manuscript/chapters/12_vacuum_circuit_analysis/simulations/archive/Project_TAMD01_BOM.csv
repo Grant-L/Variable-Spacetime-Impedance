@@ -1,0 +1,10 @@
+Subsystem,Component,Manufacturer,Part Number,Est. Cost (USD),Purpose
+Environment,2-Gallon Vacuum Chamber,Best Value Vacs,VE115,$250,Eliminates Ion Wind false positives
+Metrology,Precision Analytical Balance,Ohaus,Pioneer PX124,"$1,450",Measures down to 0.1mg (1uN) inside vacuum
+Actuator,Ferrite Toroid Core,Fair-Rite,5977003801,$15,Closed magnetic path eliminates Lorentz forces
+Switching,Silicon Carbide MOSFETs,Wolfspeed,C3M0030090K,$80,"1200V, 60A. Achieves 10ns quench time"
+Driver,Isolated Dual Gate Driver,Texas Instruments,UCC21520,$15,Drives SiC MOSFETs cleanly
+Control,Teensy 4.0 Microcontroller,PJRC,TEENSY40,$25,Generates precise nanosecond PWM timing
+Power,0-60V DC Power Supply,Siglent,SPD3303X-E,$350,Provides massive current for the charge cycle
+Misc,High-Voltage Snubber Diode,Vishay,VS-HFA16TB120,$15,Routes quench current into snubber resistor
+TOTAL,,,,"$2,200",Sub-$2500 Complete Falsification Protocol

@@ -1,0 +1,29 @@
+\section{The Measurement Effect: Ohmic Decoherence}
+\label{sec:measurement_effect}
+
+The "Measurement Problem"—where observation magically induces the collapse of the wavefunction—is formally resolved as a classic thermodynamic circuit problem: \textbf{Impedance Loading}.
+
+To measure a quantum state, a macroscopic detector must physically couple to the vacuum lattice. A detector is not a passive mathematical observer; it is a physical thermodynamic system. By Axiom 1, any device that couples to the $\mathbf{A}$-field and extracts kinetic energy acts exactly as a resistive mechanical load (where $1 \, \Omega \equiv \xi_{topo}^{-2} \text{ kg/s}$).
+
+The physical work extracted into the detector over a measurement interval $\Delta t$ is governed by classical continuous Joule heating ($P = V^2 / R$):
+\begin{equation}
+    W_{extracted} = \int P_{load} dt \propto \frac{|\partial_t \mathbf{A}(x_n)|^2}{Z_{detector}} \Delta t
+\end{equation}
+
+In a stochastic thermal substrate, the probability that the extracted work triggers a macroscopic discrete event (e.g., an avalanche in a photomultiplier) scales identically with the squared amplitude of the local wave envelope.
+\begin{equation}
+    P(click | x_n) = \frac{|\partial_t \mathbf{A}(x_n)|^2}{\int |\partial_t \mathbf{A}(\mathbf{x})|^2 d^3x} \equiv |\Psi|^2
+\end{equation}
+\textbf{The Born Rule} is strictly the deterministic thermodynamic equation for momentum extraction from a wave-bearing lattice by a thresholded Ohmic load.
+
+\subsection{Decoherence as Hydrodynamic Damping}
+The "Collapse of the Wavefunction" is nothing more than localized critical damping. By physically bleeding the pilot wave's kinetic energy into the detector to register a measurement, the device acts as a spatial fluidic drag on the substrate. 
+
+As explicitly demonstrated in our discrete FDTD simulation (Figure \ref{fig:double_slit_decoherence}), placing a detector at Slit B irreversibly thermalizes the incoming spatial pressure wave. The spatial interference fringes dynamically decay to zero as the energy is dissipated. Deprived of the transverse guiding gradients of the pilot wave, the particle exiting Slit A decouples and resumes standard, localized classical ballistic motion.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{chapters/02_signal_dynamics/simulations/outputs/impedance_decoherence.png}
+    \caption{\textbf{Deterministic Interference and Ohmic Decoherence.} \textbf{Top:} The pilot-wave (pressure wake) diffracts through both slits. The particle (cyan path) deterministically "surfs" the resulting pressure gradients. \textbf{Bottom:} A detector is modeled strictly as a physical Impedance Load (Mechanical Drag). The load physically dissipates the wave, irreversibly destroying the spatial pressure gradients. Deprived of the pilot wave, the particle follows a classical Newtonian scatter.}
+    \label{fig:double_slit_decoherence}
+\end{figure}
