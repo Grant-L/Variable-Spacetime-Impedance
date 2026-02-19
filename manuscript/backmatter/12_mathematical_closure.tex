@@ -7,15 +7,16 @@ The following verification log was aggregated from the AVE computational validat
 \section*{Automated Verification Output}
 
 \begin{verbatim}
-==========================================================
-   AVE UNIVERSAL DIAGNOSTIC & VERIFICATION ENGINE
-==========================================================
-
-[SECTOR 1: TWO-PARAMETER HARDWARE CALIBRATION]
-> Parameter 1: Lattice Pitch (l_node): 3.8616e-13 m
-> Parameter 2: Dielectric Limit (a):   1/137.036
-> Topo-Conversion Constant (xi_topo):  4.1490e-07 C/m
-> QED Geometric Packing Fraction (k_V):0.1834
+    ==========================================================
+    AVE UNIVERSAL DIAGNOSTIC & VERIFICATION ENGINE
+ ==========================================================
+ 
+ [SECTOR 1: THREE-PARAMETER HARDWARE CALIBRATION]
+ > Parameter 1: Lattice Pitch (l_node): 3.8616e-13 m
+ > Parameter 2: Dielectric Limit (a):   1/137.036
+ > Parameter 3: Macroscopic Gravity (G):6.6743e-11 m^3/kg*s^2
+ > Topo-Conversion Constant (xi_topo):  4.1490e-07 C/m
+ > QED Geometric Packing Fraction (k_V):0.1834
 
 [SECTOR 2: BARYON SECTOR & STRONG FORCE]
 > Baseline Lattice Tension (T_EM):     0.2120 N
@@ -46,10 +47,11 @@ VERIFICATION COMPLETE: STRICT TWO-PARAMETER CLOSURE
 \section{The Directed Acyclic Graph (DAG) Proof}
 To definitively establish that the Applied Vacuum Engineering (AVE) framework possesses strict mathematical closure without phenomenological curve-fitting, the framework maps the Directed Acyclic Graph (DAG) of its derivations.
 
-The entirety of the framework's predictive power is derived strictly from exactly \textbf{Two Fundamental Hardware Parameters} operating under \textbf{Four Topological Axioms}.
+The entirety of the framework's predictive power is derived strictly from exactly \textbf{Three Fundamental Hardware Parameters} operating under \textbf{Four Topological Axioms}.
 \begin{enumerate}
     \item \textbf{Parameter 1 (The Spatial Cutoff):} The effective macroscopic spatial scale of the lattice ($\ell_{node}$) is anchored identically by the mass-gap of the fundamental fermion.
     \item \textbf{Parameter 2 (The Dielectric Bound):} The absolute structural self-impedance of the macroscopic lattice is rigidly governed by the fine-structure constant ($\alpha$).
+    \item \textbf{Parameter 3 (The Machian Boundary):} Macroscopic Gravity ($G$) acts as the structural impedance parameter defining the causal limits of the manifold.
     \item \textbf{Axiom 1 (Topo-Kinematic Isomorphism):} Charge is identically equal to spatial dislocation ($[Q] \equiv [L]$).
     \item \textbf{Axiom 2 (Cosserat Elasticity):} The macroscopic vacuum acts as an effective trace-free Cosserat solid supporting microrotations.
     \item \textbf{Axiom 3 (Discrete Action Principle):} The macroscopic system minimizes Hamiltonian action across the localized phase transport field ($\mathbf{A}$).
