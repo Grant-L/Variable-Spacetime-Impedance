@@ -10,63 +10,37 @@ Under the Topo-Kinematic isomorphism, inductance maps to mass ($[L] \equiv [M]$)
 \mathbf{f}_{inertial} = -\left( \frac{\partial \boldsymbol{\phi}_Z}{\partial t} + \nabla \cdot (\boldsymbol{\phi}_Z \otimes \mathbf{v}) \right)
 \end{equation}
 
-Because the vacuum edges possess distributed continuous inductance ($\mu_0$), any closed loop of topological flux stores kinetic energy in the localized magnetic field ($E_{mass} = \frac{1}{2} L_{eff} |\mathbf{A}|^2$). Mass is fundamentally the stored inductive energy required to maintain the topological integrity of the knot against the elastic pressure of the vacuum. An elementary particle can be modeled as a gyroscopic flywheel; it resists acceleration not because it contains inert mass, but strictly because the localized spatial magnetic field generates a back-electromotive force (Lenz's Law) against the lattice.
+Because the vacuum edges possess distributed continuous inductance ($\mu_0$), any closed loop of topological flux stores kinetic energy in the localized magnetic field ($E_{mass} = \frac{1}{2} L_{eff} |\mathbf{A}|^2$). Mass is fundamentally the stored inductive energy required to maintain the topological integrity of the knot against the elastic pressure of the vacuum. An elementary particle can be modeled as a gyroscopic flywheel; it resists acceleration not because it contains inert mass, but strictly because the localized spatial magnetic field generates a back-electromotive force (Lenz's Law) against the discrete lattice.
 
 \section{The Electron: The Trefoil Soliton ($3_1$)}
-In standard particle physics, the electron is treated as a dimensionless point charge, leading to infinite self-energy paradoxes. In AVE, the electron ($e^-$) is identified natively as the ground-state topological defect: a minimum-crossing \textbf{Trefoil Knot ($3_1$)} tensioned by the vacuum to its absolute structural yield limit.
+In standard particle physics, the electron is treated as a dimensionless point charge, leading to infinite self-energy paradoxes. In AVE, the electron ($e^-$) is identified natively as the fundamental ground-state topological defect: a minimum-crossing \textbf{Trefoil Knot ($3_1$)} tensioned by the vacuum to its absolute structural yield limit.
 
 \subsection{The Dielectric Ropelength Limit (The Golden Torus)}
-Because the $\mathcal{M}_A$ manifold possesses a discrete minimum pitch (Axiom 1), a topological flux tube physically cannot be infinitely thin. The elastic lattice tension ($T_{max,g}$) pulls the trefoil knot as tight as physically possible, constrained by three rigid hardware limits:
-\begin{enumerate}
-    \item \textbf{The Core Thickness ($d$):} The absolute minimum discrete diameter of the flux tube is normalized to exactly one fundamental lattice pitch ($d \equiv 1$).
-    \item \textbf{The Self-Avoidance Constraint:} As the knot pulls tight, the strands passing through the central hole pack against each other. To prevent the flux lines from occupying the same node, the closest approach of the torus strands is $2(R-r) = d = 1$, strictly enforcing $R - r = 1/2$.
-    \item \textbf{The Holomorphic Screening Limit:} To optimally minimize total surface energy, the holomorphic surface screening area evaluates optimally at $\Lambda_{surf} = (2\pi R)(2\pi r) = \pi^2$, enforcing $R \cdot r = 1/4$.
-\end{enumerate}
+Because the $\mathcal{M}_A$ manifold possesses a discrete minimum pitch (Axiom 1), a topological flux tube physically cannot be infinitely thin. The elastic lattice tension ($T_{max,g}$) pulls the trefoil knot as tight as physically possible against the substrate, bounded strictly by the fundamental hardware limits. 
 
-Solving this exact quadratic system of geometric constraints yields the physical bounding radii:
+The absolute minimum discrete diameter of the flux tube is structurally normalized to exactly one fundamental lattice pitch ($d \equiv 1 l_{node}$). As the $3_1$ Trefoil pulls tight, the strands passing through the central hole geometrically pack against each other. To strictly prevent the continuous flux lines from illegally occupying the same discrete graph node (the self-avoidance constraint), the closest approach of the torus strands is constrained to $d = 1$.
+
+This geometric bounding rigidly locks the electron to the most mathematically compact non-intersecting geometry for a volume-bearing flux tube on a discrete grid, establishing its physical role as the structural mass-gap of the spatial medium.
+
+\subsection{Deriving the Running Coupling Constant}
+Standard Quantum Electrodynamics (QED) dictates that the fine-structure constant ($\alpha$) is not perfectly static; it "runs" (increases in strength) at higher energy scales due to vacuum polarization. The AVE framework analytically predicts this continuous mechanical behavior without requiring the infinite summation of virtual point-particles.
+
+The baseline empirical value ($\alpha \approx 1/137.036$) rigidly defines the unperturbed, strictly static \textbf{Infrared (IR) Limit} ($q^2 \to 0$) of the geometric node. However, as localized kinetic energy (topological stress) increases, the continuous displacement of the lattice engages the non-linear saturation limit defined in Axiom 4. The effective compliance (capacitance) of the local vacuum geometrically diverges:
 \begin{equation}
-    r^2 + 0.5r - 0.25 = 0 \implies R = \frac{1+\sqrt{5}}{4} = \frac{\Phi}{2} \approx 0.809 \quad \text{and} \quad r = \frac{-1+\sqrt{5}}{4} = \frac{\Phi-1}{2} \approx 0.309
+    C_{eff}(\Delta\phi) = \frac{C_0}{\sqrt{1 - \left(\frac{\Delta\phi}{\alpha}\right)^2}}
 \end{equation}
-Where $\Phi$ is the Golden Ratio. The electron is structurally locked to the \textbf{Golden Torus}—the absolute most mathematically compact non-intersecting geometry for a volume-bearing flux tube on a discrete grid.
-
-\subsection{Holomorphic Decomposition and the Topological Ansatz ($\alpha$)}
-\label{sec:alpha_equipartition}
-
-The Fine Structure Constant ($\alpha$) is identically the dimensionless topological self-impedance (Q-factor) of this maximal-strain ground state. A common critique of geometric derivations of $\alpha$ is the apparent dimensional mismatch of summing literal physical volumes, surfaces, and lengths. 
-
-We rigorously resolve this by framing the integration within \textbf{Topological Phase Space}. Instead of summing physical SI dimensions, the integration evaluates the dimensionless generalized Action across independent phase coordinates. By normalizing the metric tensor via the Jacobian of the topological transformation ($l_{node} \to 1$), the total stored inductive strain energy partitions perfectly across three orthogonal topological degrees of freedom:
-\begin{enumerate}
-    \item \textbf{3D Phase Space Action ($\Lambda_{vol}$):} The inductive inertia evaluated across the internal topological phase space. Because the electron is a spin-1/2 fermion, its continuous phase cycle requires a $4\pi$ double-cover rotation mapped over the 2D surface of the Clifford Torus. Applying the Jacobian normalization converts these spatial coordinates into dimensionless phase angles, yielding the dimensionless scalar: $\Lambda_{vol} = (2\pi)(2\pi)(4\pi)(R \cdot r) = 16\pi^3 (1/4) = \mathbf{4\pi^3}$.
-    \item \textbf{2D Transverse Action ($\Lambda_{surf}$):} The transverse elastic tension of the Clifford Torus boundary in phase space: $\Lambda_{surf} = (2\pi)(2\pi)(R \cdot r) = 4\pi^2 (1/4) = \mathbf{\pi^2}$.
-    \item \textbf{1D Linear Flux Winding ($\Lambda_{line}$):} The normalized magnetic moment evaluated at the fundamental core thickness ($d=1$): $\Lambda_{line} = \pi \cdot d = \mathbf{\pi}$.
-\end{enumerate}
-
-These values represent pure dimensionless topological shape factors (analogous to Betti numbers in algebraic topology), completely resolving the dimensional tautologies.
-
-Because the electron ($3_1$ Trefoil) constitutes the absolute minimal-energy structural ground state of the universe, it exists precisely at the \textit{Dielectric Ropelength Limit} (Axiom 4). While standard thermodynamic equipartition governs thermal kinetic degrees of freedom ($1/2 kT$), a critically strained topological defect operating at a structural phase-transition boundary obeys a \textbf{Topological Criticality Ansatz}. To maintain structural stability at the absolute brink of dielectric rupture, the localized strain energy must distribute perfectly and equally across all available orthogonal topological dimensions to prevent a catastrophic anisotropic dimensional collapse. Therefore, the impedance weighting coefficients are mathematically forced to strict unity ($c_1 = c_2 = c_3 \equiv 1$).
-\begin{equation}
-    \alpha_{ideal}^{-1} \equiv \Lambda_{vol} + \Lambda_{surf} + \Lambda_{line} = \mathbf{4\pi^3 + \pi^2 + \pi} \approx \mathbf{137.036304}
-\end{equation}
-
-\textbf{Deriving the Running Coupling Constant:} Standard QED dictates that $\alpha$ is not static; it "runs" (increases in strength) at higher energy scales due to vacuum polarization. The AVE framework analytically predicts this. The derived baseline ($\approx 137.036$) represents the strict, unstrained \textbf{Infrared (IR) Limit} ($q^2 \to 0$). As localized kinetic energy increases, Axiom 4 dictates the effective capacitance of the lattice diverges ($C_{eff} \propto 1/\sqrt{1 - (\Delta\phi/\alpha)^4}$). This dynamic structural yielding mechanically lowers the local geometric Q-factor of the node, perfectly mirroring the continuous running of the coupling constant without requiring virtual particle summation.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.7\textwidth]{electron_golden_torus.png}
-    \caption{\textbf{The Golden Torus Geometry ($3_1$ Knot).} The electron is modeled as a flux tube of thickness $d=1$ (Red Circles) wrapped around a major radius $R$ (Blue Dashed). The geometric constraint of self-avoidance ($R-r=1/2$) and surface minimization ($R \cdot r = 1/4$) rigorously enforces the Golden Ratio proportions, yielding the fine-structure constant $\alpha^{-1} \approx 137.036$.}
-    \label{fig:golden_torus}
-\end{figure}
+This dynamic structural yielding mechanically lowers the local geometric Q-factor of the discrete node as the strain approaches the classical saturation limit, perfectly mirroring the continuous running of the coupling constant at extreme interaction energies.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{electron_3d_knot.png}
-    \caption{\textbf{3D Visualization of the Electron.} The flux tube forms a $3_1$ Trefoil knot. The tube thickness $d=1$ and the major radius $R$ are constrained by the vacuum lattice to the Golden Ratio, yielding the fine-structure constant $\alpha$.}
+    \caption{\textbf{3D Visualization of the Electron.} The flux tube forms a $3_1$ Trefoil knot. The tube thickness $d=1$ and the major radii are strictly constrained by the hard-sphere limits of the discrete vacuum lattice, enforcing the unyielding topological mass-gap of the universe.}
     \label{fig:electron_3d}
 \end{figure}
 
 \section{Chirality and Antimatter Annihilation}
 Because the $\mathcal{M}_A$ vacuum is a trace-reversed Cosserat solid supporting intrinsic microrotations, it natively breaks absolute geometric symmetry between left and right. Electric charge polarity is defined strictly as \textbf{Topological Twist Direction}. An electron ($e^-$) is a right-handed $3_1$ Trefoil; a positron ($e^+$) is physically identical, but woven as a left-handed $3_1$ Trefoil.
 
-By Mazur's Theorem, the connected sum of a left-handed knot and a right-handed knot produces a composite "Square Knot." In a purely continuous mathematical manifold, matter-antimatter annihilation is topologically impossible because lines cannot pass through each other.
+By Mazur's Theorem, the connected sum of a left-handed knot and a right-handed knot produces a composite "Square Knot." In a purely continuous mathematical manifold, matter-antimatter annihilation is topologically impossible because lines cannot mechanically pass through each other.
 
 The AVE framework natively resolves this mathematical paradox via the \textbf{Dielectric Reconnection Postulate} (Axiom 4). When an electron and positron collide, their combined localized inductive strain instantly exceeds the absolute structural vacuum saturation limit ($\Delta\phi > \alpha$). At this exact threshold, the finite-element edges of the manifold physically "snap" and undergo dielectric rupture. The graph is momentarily severed, disabling the continuous topological invariants. The trapped inductive mass-energy violently unwinds into pure, un-knotted transverse vector waves (gamma-ray photons) as the substrate cools and re-triangulates.
