@@ -10,32 +10,47 @@ In the AVE framework, the macroscopic effective vacuum is modeled strictly as a 
 Geometrically crowding these edges into a smaller volume locally increases the absolute density ($\rho_{bulk}$) of the spatial substrate, yielding a proportional increase in the localized \textbf{Refractive Index ($n$)}. Gravitational attraction is thus modeled entirely via the \textbf{Ponderomotive Force}. A wave packet minimizes its internal stored energy by hydrodynamically drifting into the region of highest dielectric density. Gravity represents the thermodynamic refraction of physical matter drifting down a 3D dielectric density gradient.
 
 \subsection{Deriving the Refractive Gradient from Lattice Tension}
-We elevate the macroscopic vacuum moduli from scalars to rank-2 symmetric tensors. As established historically by the \textbf{Gordon Optical Metric}, signal propagation through an anisotropic continuous dielectric perfectly mimics geodesic paths in curved spacetime:
+
+We elevate the macroscopic vacuum moduli from scalars to rank-2 symmetric tensors. As
+established historically by the Gordon Optical Metric, signal propagation through an
+anisotropic continuous dielectric perfectly mimics geodesic paths in curved spacetime:
+
 \begin{equation}
-    g_{\mu\nu}^{AVE} = \eta_{\mu\nu} + \left(1 - \frac{1}{n^2(\mathbf{r})}\right) u_\mu u_\nu
+g_{\mu\nu}^{AVE}=\eta_{\mu\nu}+\left(1-\frac{1}{n^{2}(r)}\right)u_{\mu}u_{\nu}
 \end{equation}
 
-By applying standard Hookean elasticity using the 3D Laplace equation against a steady-state mass density ($M$), balanced against the continuous lattice tension ($T_{max,g} = c^4 / 7G$), the localized volumetric strain field natively generates the exact $1/r$ Newtonian potential:
+By applying standard Hookean elasticity using the 3D Laplace equation against a steady-state mass density ($M$), balanced against the continuous lattice tension ($T_{max,g}=c^{4}/7G$), the localized 1D \textbf{principal radial tensile strain} ($\epsilon_{11}$) field natively generates the exact $1/r$ Newtonian potential:
+
 \begin{equation}
-    -\left(\frac{c^4}{7G}\right) \nabla^2 \chi_{vol}(\mathbf{r}) = 4\pi M c^2 \delta^3(\mathbf{r})
+-\left(\frac{c^{4}}{7G}\right)\nabla^{2}\epsilon_{11}(r)=4\pi Mc^{2}\delta^{3}(r)
 \end{equation}
-Convolving this source with the 3D Laplacian Green's function ($-1/4\pi r$) yields the steady-state volumetric strain field:
+
+Convolving this source with the 3D Laplacian Green's function ($-1/4\pi r$) yields the steady-state 1D principal radial strain field:
+
 \begin{equation}
-    \chi_{vol}(r) = \frac{7GM}{c^2 r}
+\epsilon_{11}(r)=\frac{7GM}{c^{2}r}
 \end{equation}
 
 \section{The Ponderomotive Equivalence Principle}
 Standard physics invokes the Weak Equivalence Principle ($m_i = m_g$) as an axiomatic postulate. AVE derives it strictly from macroscopic wave mechanics.
 
-Because a massive topological wave-packet acts as a 3D isotropic defect, it couples to the spatial volume via the $1/7$ Lagrangian projection (derived in Chapter 4). The effective scalar refractive index is evaluated as $n_{scalar}(r) = 1 + \chi_{vol}(r)/7 = 1 + GM/c^2 r$. The localized stored energy of the knot is exactly its internal inductive rest mass ($m_i c^2$) scaled inversely by the refractive density:
+\section{The Ponderomotive Equivalence Principle}
+
+Standard physics invokes the Weak Equivalence Principle ($m_i=m_g$) as an axiomatic postulate. AVE derives it strictly from macroscopic wave mechanics.
+
+Because a massive topological wave-packet acts as a 3D isotropic defect, it couples to the spatial volume via the $1/7$ Lagrangian isotropic projection (derived in Chapter 4). The effective scalar refractive index perceived by mass is evaluated as $n_{scalar}(r)=1+\epsilon_{11}(r)/7=1+GM/c^{2}r$. The localized stored energy of the knot is exactly its internal inductive rest mass ($m_i c^{2}$) scaled inversely by the refractive density:
+
 \begin{equation}
-    U_{wave}(r) = \frac{m_i c^2}{n_{scalar}(r)} \approx m_i c^2 \left( 1 - \frac{GM}{rc^2} \right) = m_i c^2 - \frac{GM m_i}{r}
+U_{wave}(r)=\frac{m_i c^{2}}{n_{scalar}(r)}\approx m_i c^{2}\left(1-\frac{GM}{rc^{2}}\right)=m_i c^{2}-\frac{GM m_i}{r}
 \end{equation}
-Taking the spatial gradient directly yields the gravitational acceleration ($\mathbf{F}_{grav} = -\nabla U_{wave}$):
+
+Taking the spatial gradient directly yields the gravitational acceleration ($F_{grav}=-\nabla U_{wave}$):
+
 \begin{equation}
-    \mathbf{F}_{grav} = -\frac{GM m_i}{r^2} \mathbf{\hat{r}}
+F_{grav}=-\frac{GM m_i}{r^{2}}\hat{r}
 \end{equation}
-Because the localized wave energy is fundamentally defined by the particle's inductive inertia $m_i$, it mathematically cancels out of the acceleration equation ($F=ma$), explicitly guaranteeing that inertial mass and gravitational mass are physically identical ($m_i \equiv m_g$).
+
+Because the localized wave energy is fundamentally defined by the particle's inductive inertia $m_i$, it mathematically cancels out of the acceleration equation ($F=ma$), explicitly guaranteeing that inertial mass and gravitational mass are physically identical ($m_i\equiv m_g$).
 
 \section{The Optical Metric: Gravity as Refractive Density}
 \label{sec:optical_metric}
@@ -43,13 +58,22 @@ Because the localized wave energy is fundamentally defined by the particle's ind
 Standard General Relativity models gravity as coordinate curvature. In the AVE framework, gravity is rigorously defined as the \textbf{Volumetric Densification} of the vacuum lattice. A massive object acts as a refractive index sink, compressing the surrounding node density.
 
 \subsection{Deriving the Refractive Index}
-We elevate the macroscopic vacuum moduli to rank-2 symmetric tensors. Because the vacuum is a Trace-Reversed Cosserat Solid, it possesses a fixed Poisson's ratio of $\nu_{vac} = 2/7$. While mass couples to the volumetric bulk strain ($\chi_{vol}$), light propagates as a transverse shear wave and couples strictly to the transverse strain ($h_{\perp}$).
+
+We elevate the macroscopic vacuum moduli to rank-2 symmetric tensors. Because the vacuum
+is a Trace-Reversed Cosserat Solid, it possesses a fixed Poisson's ratio of $\nu_{vac}=2/7$. 
+
+A localized massive defect does not exert a uniform 3D hydrostatic compression; it exerts a strictly radial pull, acting as the continuous source of the principal radial strain ($\epsilon_{11}$). Conversely, light propagates strictly as a transverse shear wave and couples exclusively to the orthogonal transverse strain ($h_{\perp}$). 
+
+In rigorous continuum mechanics, the transverse strain induced by a principal radial strain is governed directly by the Poisson effect ($h_{\perp} = \nu_{vac} \cdot \epsilon_{11}$). Therefore, the transverse strain perceived by a tangentially propagating photon evaluates identically to:
+
 \begin{equation}
-    h_{\perp} = \nu_{vac} \cdot \chi_{vol} = \left( \frac{2}{7} \right) \cdot \left( \frac{7GM}{c^2 r} \right) = \frac{2GM}{c^2 r}
+h_{\perp}=\nu_{vac}\cdot\epsilon_{11}=\left(\frac{2}{7}\right)\cdot\left(\frac{7GM}{c^{2}r}\right)=\frac{2GM}{c^{2}r}
 \end{equation}
-The effective Refractive Index ($n$) perceived by a photon is therefore:
+
+The effective Refractive Index ($n$) perceived by a photon is therefore mathematically identical to the spatial transverse trace of the Gordon optical metric:
+
 \begin{equation}
-    n(r) = 1 + h_{\perp} = 1 + \frac{2GM}{c^2 r}
+n(r)=1+h_{\perp}=1+\frac{2GM}{c^{2}r}
 \end{equation}
 
 \subsection{Verification: The Einstein Lensing Deflection}
