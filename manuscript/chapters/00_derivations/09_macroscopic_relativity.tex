@@ -4,7 +4,7 @@
 Standard pedagogical models of General Relativity often rely on the heuristic of a 2D elastic membrane warping into an additional spatial dimension. The AVE framework offers an alternative formulation grounded in the solid-state mechanics of a \textbf{3D Trace-Reversed Optical Metric}.
 
 \section{Gravity as 3D Volumetric Compression}
-In the AVE framework, the macroscopic effective vacuum is modeled strictly as a 3D Cosserat elastic condensate. When a massive topological defect (a star) forms, its highly localized inductive rest-energy structurally pulls on the surrounding spatial discrete edges. This tension \textbf{compresses the 3D grid inward} toward the center of mass. 
+In the AVE framework, the macroscopic effective vacuum is modeled strictly as a 3D Cosserat elastic condensate. When a massive topological defect (a star) forms, its highly localized inductive rest-energy structurally pulls on the surrounding spatial discrete edges. This tension \textbf{compresses the 3D grid inward} toward the center of mass.
 
 Geometrically crowding these edges into a smaller volume locally increases the absolute density ($\rho_{bulk}$) of the spatial substrate, yielding a proportional increase in the localized \textbf{Refractive Index ($n$)}. Gravitational attraction is thus modeled entirely via the \textbf{Ponderomotive Force}. A wave packet minimizes its internal stored energy by hydrodynamically drifting into the region of highest dielectric density. Gravity represents the thermodynamic refraction of physical matter drifting down a 3D dielectric density gradient.
 
@@ -20,35 +20,54 @@ By applying standard Hookean elasticity using the 3D Laplace equation against a 
 \end{equation}
 Convolving this source with the 3D Laplacian Green's function ($-1/4\pi r$) yields the steady-state volumetric strain field:
 \begin{equation}
-    \chi_{vol}(r) = \mathbf{\frac{7GM}{c^2 r}}
+    \chi_{vol}(r) = \frac{7GM}{c^2 r}
 \end{equation}
 
 \section{The Ponderomotive Equivalence Principle}
 Standard physics invokes the Weak Equivalence Principle ($m_i = m_g$) as an axiomatic postulate. AVE derives it strictly from macroscopic wave mechanics.
 
-Because a massive topological wave-packet acts as a 3D isotropic defect, it couples to the spatial volume via the $1/7$ Lagrangian projection. The effective scalar refractive index is evaluated as $n_{scalar}(r) = 1 + \chi_{vol}(r)/7 = 1 + GM/c^2 r$.
-
-The localized stored energy of the knot is exactly its internal inductive rest mass ($m_i c^2$) scaled inversely by the refractive density:
+Because a massive topological wave-packet acts as a 3D isotropic defect, it couples to the spatial volume via the $1/7$ Lagrangian projection. The effective scalar refractive index is evaluated as $n_{scalar}(r) = 1 + \chi_{vol}(r)/7 = 1 + GM/c^2 r$. The localized stored energy of the knot is exactly its internal inductive rest mass ($m_i c^2$) scaled inversely by the refractive density:
 \begin{equation}
-    U_{wave}(r) = \frac{m_i c^2}{n_{scalar}(r)} \approx m_i c^2 \left( 1 - \frac{GM}{rc^2} \right) = \mathbf{m_i c^2 - \frac{GM m_i}{r}}
+    U_{wave}(r) = \frac{m_i c^2}{n_{scalar}(r)} \approx m_i c^2 \left( 1 - \frac{GM}{rc^2} \right) = m_i c^2 - \frac{GM m_i}{r}
 \end{equation}
 Taking the spatial gradient directly yields the gravitational acceleration ($\mathbf{F}_{grav} = -\nabla U_{wave}$):
 \begin{equation}
-    \mathbf{F}_{grav} = \mathbf{-\frac{GM m_i}{r^2} \mathbf{\hat{r}}}
+    \mathbf{F}_{grav} = -\frac{GM m_i}{r^2} \mathbf{\hat{r}}
 \end{equation}
 Because the localized wave energy is fundamentally defined by the particle's inductive inertia $m_i$, it mathematically cancels out of the acceleration equation ($F=ma$), explicitly guaranteeing that inertial mass and gravitational mass are physically identical ($m_i \equiv m_g$).
 
-\section{The Lensing Theorem: Deriving Einstein's Factor of 2}
-A pure 1D scalar metric natively yields only half the required optical deflection of starlight. In the AVE framework, the full Einstein deflection emerges strictly from the exact physical \textbf{Poisson's Ratio} of the Cosserat solid.
+\section{The Optical Metric: Gravity as Refractive Density}
+\label{sec:optical_metric}
 
-Unlike massive particles, a photon propagates as a purely transverse, massless shear wave. It couples \textit{exclusively} to the transverse spatial strain of the solid. In classical mechanics, transverse strain is governed exactly by Poisson's ratio. Because the trace-reversed Cosserat vacuum is locked to exactly $\nu_{vac} \equiv 2/7$, the transverse metric strain physically perceived exclusively by light evaluates to:
+Standard General Relativity models gravity as coordinate curvature. In the AVE framework, gravity is rigorously defined as the \textbf{Volumetric Densification} of the vacuum lattice. A massive object acts as a refractive index sink, compressing the surrounding node density.
+
+\subsection{Deriving the Refractive Index}
+We elevate the macroscopic vacuum moduli to rank-2 symmetric tensors. Because the vacuum is a Trace-Reversed Cosserat Solid (proven in Chapter 4), it possesses a fixed Poisson's ratio of $\nu_{vac} = 2/7$.
+While mass couples to the volumetric bulk strain ($\chi_{vol}$), light propagates as a transverse shear wave and couples strictly to the transverse strain ($h_{\perp}$).
 \begin{equation}
-    h_\perp = \nu_{vac} \chi_{vol}(r) = \frac{2}{7} \left( \frac{7GM}{c^2 r} \right) = \mathbf{\frac{2GM}{c^2 r}}
+    h_{\perp} = \nu_{vac} \cdot \chi_{vol} = \left( \frac{2}{7} \right) \cdot \left( \frac{7GM}{c^2 r} \right) = \frac{2GM}{c^2 r}
+\end{equation}
+The effective Refractive Index ($n$) perceived by a photon is therefore:
+\begin{equation}
+    n(r) = 1 + h_{\perp} = 1 + \frac{2GM}{c^2 r}
 \end{equation}
 
-The effective refractive index governing transverse optical photons is natively $n_\perp(r) = 1 + 2GM/c^2 r$. Because the transverse photon coupling ($2/7$) is exactly double the isotropic mass coupling ($1/7$), the photon structurally refracts \textbf{twice as severely} as the massive particle. Integrating this refractive gradient via Snell's Law and Huygens' Principle natively yields the exact Einstein deflection ($\delta = 4GM/bc^2$) and the Shapiro time delay without invoking abstract non-Euclidean geometries.
+\subsection{Verification: The Einstein Lensing Deflection}
+To falsify this Optical Metric, we performed a numerical ray-tracing simulation of a photon passing the Sun. Integrating Snell's Law through this specific refractive gradient yields a total deflection angle of:
+\begin{equation}
+    \delta = \frac{4GM}{b c^2}
+\end{equation}
+This result matches the Einstein prediction exactly, distinguishing the AVE framework from Newtonian corpuscular models ($\delta = 2GM/bc^2$) without invoking higher-dimensional curvature.
 
 \section{Resolving the Cauchy Implosion Paradox}
-Standard 19th-century aether models were challenged by the Cauchy Implosion Paradox: enforcing purely transverse wave limits natively required a negative bulk modulus ($K_{cauchy} = -4/3G_{vac}$), implying the universe would thermodynamically implode. 
+Standard 19th-century aether models were challenged by the Cauchy Implosion Paradox: enforcing purely transverse wave limits natively required a negative bulk modulus ($K_{cauchy} = -4/3G_{vac}$), implying the universe would thermodynamically implode. The $\mathcal{M}_A$ substrate resolves this via Cosserat micropolar elasticity. As analytically proven in Chapter \ref{ch:gravity_and_yield}, the trace-reversed equilibrium rigidly locks the macroscopic bulk modulus at strictly double the shear modulus ($K_{vac} \equiv 2G_{vac}$). This massive positive bulk modulus structurally guarantees that the spatial condensate is highly incompressible and thermodynamically stable against gravitational collapse.
 
-The $\mathcal{M}_A$ substrate resolves this via Cosserat micropolar elasticity. As analytically proven in Chapter \ref{ch:gravity_and_yield}, the trace-reversed equilibrium rigidly locks the macroscopic bulk modulus at strictly double the shear modulus ($K_{vac} \equiv 2G_{vac}$). This massive positive bulk modulus structurally guarantees that the spatial condensate is highly incompressible and thermodynamically stable against gravitational collapse.
+\section{The Event Horizon as Dielectric Rupture}
+\label{sec:dielectric_rupture}
+
+The Event Horizon is classically defined as a coordinate singularity. In the AVE framework, it is identified as a \textbf{Dielectric Breakdown Boundary}.
+As matter aggregates, the local refractive strain ($n(r)-1$) increases. The absolute structural limit of the vacuum lattice is reached when the strain reaches 100\% (Unitary Strain).
+\begin{equation}
+    \text{Strain} = \frac{2GM}{c^2 R_{rupture}} \equiv 1.0 \implies R_{rupture} = \frac{2GM}{c^2}
+\end{equation}
+This mathematically identities the Schwarzschild Radius not as a point of infinite curvature, but as the physical radius where the vacuum lattice exceeds its elastic yield point and liquefies into a continuous plasma.
