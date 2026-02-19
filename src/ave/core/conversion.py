@@ -42,7 +42,7 @@ def current_to_velocity(amperes):
 def resistance_to_viscosity(ohms):
     """
     Converts Electrical Resistance (Ohms) to Mechanical Impedance/Drag (kg/s).
-    Rule: 1 Ohm = xi_topo^-2 kg/s
-    Source: Eq 2.1
+    Rule: 1 Ohm = xi_topo^2 kg/s
+    Source: Eq 12.6
     """
-    return ohms / (k.xi_topo**2)
+    return ohms * (k.xi_topo**2)

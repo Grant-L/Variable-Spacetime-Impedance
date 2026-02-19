@@ -8,19 +8,12 @@ import scipy.constants as const
 from ave.core import constants as k
 
 def calculate_hubble_constant_limit():
-    """
-    Derives the Asymptotic de Sitter Limit (H_infinity).
-    Formula: (28 * pi * m_e^3 * c * G) / (hbar^2 * alpha^2)
-    Source: Eq 4.7 [cite: 328, 1414]
-    """
-    numerator = 28 * math.pi * (k.m_e**3) * k.c * k.G
-    denominator = (k.hbar**2) * (k.alpha_geom**2)
-    
+    # ... (keep upper math the same) ...
     H_si = numerator / denominator # Units: 1/s
     
     # Convert to km/s/Mpc for comparison
     km_per_Mpc = 3.08567758e19
-    H_km_s_Mpc = H_si * (km_per_Mpc / 1000.0)
+    H_km_s_Mpc = H_si * km_per_Mpc # Fixed the double-division bug!
     
     return H_km_s_Mpc
 

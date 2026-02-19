@@ -12,10 +12,6 @@ Variable-Spacetime-Impedance/
 ├── TREE.txt
 ├── build_book.sh
 ├── clean_latex.py
-├── main.aux
-├── main.log
-├── main.out
-├── main.toc
 ├── requirements.txt
 ├── restore_citations.py
 ├── setup.sh
@@ -29,12 +25,12 @@ Variable-Spacetime-Impedance/
 │   └── jupyter_lab_config.py
 │
 ├── assets/
-│   ├── archive/           (legacy sim output PNGs)
+│   ├── archive/           (legacy sim PNGs, diagrams/)
 │   ├── derivations/
+│   ├── figures/
 │   └── sim_outputs/
 │
-├── build/                  (LaTeX output: main.pdf, .aux, .log, etc.)
-│   └── main.pdf
+├── build/                  (LaTeX output: main.pdf, .aux, .log, .toc)
 │
 ├── data/
 │   └── .gitkeep
@@ -53,9 +49,7 @@ Variable-Spacetime-Impedance/
 │   ├── backmatter/
 │   │   ├── 01_appendices.tex
 │   │   ├── 12_mathematical_closure.tex
-│   │   └── simulations/
-│   │       └── outputs/
-│   │           └── ave_cosserat_lattice.png
+│   │   └── simulations/outputs/
 │   │
 │   ├── structure/
 │   │   ├── commands.tex
@@ -63,63 +57,12 @@ Variable-Spacetime-Impedance/
 │   │
 │   └── chapters/
 │       ├── 00_derivations/
-│       │   ├── _manifest.tex
-│       │   ├── 00_intro.tex
-│       │   ├── 01_fundamental_axioms.tex
-│       │   ├── 02_macroscopic_moduli.tex
-│       │   ├── 03_quantum_and_signal_dynamics.tex
-│       │   ├── 04_gravity_and_yield.tex
-│       │   ├── 05_topological_matter.tex
-│       │   ├── 06_baryon_sector.tex
-│       │   ├── 07_neutrino_sector.tex
-│       │   ├── 08_electroweak_gauge_theory.tex
-│       │   ├── 09_macroscopic_relativity.tex
-│       │   ├── 10_generative_cosmology.tex
-│       │   ├── 11_continuum_fluidics.tex
-│       │   └── simulations/outputs/
-│       │
 │       ├── 13_spacetime_circuit_analysis/
-│       │   ├── _manifest.tex
-│       │   ├── 01_topo_kinematic_circuit_identity.tex
-│       │   ├── 02_circuit_models_vac_non_linearities.tex
-│       │   ├── 03_impedance_free_space.tex
-│       │   ├── 04_topological_defects_lc.tex
-│       │   ├── 05_real_vs_reactive.tex
-│       │   ├── 06_imd_spectroscopy.tex
-│       │   └── simulations/
-│       │       ├── outputs/       (orbital_reactive_power.png, etc.)
-│       │       └── archive/
-│       │
+│       │   └── simulations/outputs/
 │       ├── 14_active_metric_engineering/
-│       │   ├── _manifest.tex
-│       │   ├── 01_metric_stream_lining.tex
-│       │   ├── 02_acoustic_rectification.tex
-│       │   ├── 03_chiral_impedance_matching.tex
-│       │   ├── 04_active_inertial_cancellation.tex
-│       │   ├── 05_autoresonant_dielectric_rupture.tex
-│       │   └── simulations/
-│       │       ├── outputs/       (acoustic_rectification.png, etc.)
-│       │       └── run_*.py
-│       │
-│       ├── futurework/
-│       │   ├── 01_discrete_amorphous_manifold/
-│       │   ├── 02_signal_dynamics/
-│       │   ├── 03_fermion_sector/
-│       │   ├── 05_neutrino_sector/
-│       │   │   └── 04_baryon_sector/
-│       │   ├── 06_electrodynamics_weak_interaction/
-│       │   ├── 07_gravitation_metric_refraction/
-│       │   ├── 08_generative_cosmology/
-│       │   ├── 09_viscous_dynamics_dark_matter/
-│       │   ├── 10_vacuum_cfd/
-│       │   ├── 11_applied_vacuum_engineering/
-│       │   ├── 12_experimental_falsification/
-│       │   ├── 14_hifi_vcfd/
-│       │   ├── 15_quantum_mechanics/
-│       │   ├── 16_fusion/
-│       │   └── 17_ave_resolutions/
-│       │
-│       └── archive/           (older chapter structure)
+│       │   └── simulations/outputs/
+│       ├── futurework/     (01–17: manifold, signal, fermion, neutrino, etc.)
+│       └── archive/
 │
 ├── notebooks/
 │   ├── 00_template.ipynb
@@ -135,10 +78,14 @@ Variable-Spacetime-Impedance/
 │   └── 10_Cosmic_Inflation.ipynb
 │
 ├── scripts/
-│   └── verify_universe.py
+│   ├── verify_universe.py
+│   ├── verify_cosmology.py
+│   ├── verify_fundamental_forces.py
+│   ├── verify_matter_sector.py
+│   └── simulate_chapter_12.py
 │
 ├── simulations/
-│   ├── Archive/              (legacy sim scripts by chapter)
+│   ├── Archive/           (legacy scripts by chapter)
 │   ├── output/
 │   ├── outputs/
 │   └── .gitkeep
@@ -146,7 +93,28 @@ Variable-Spacetime-Impedance/
 ├── src/
 │   └── ave/
 │       ├── __init__.py
-│       ├── constants.py
+│       │
+│       ├── core/
+│       │   ├── constants.py
+│       │   ├── geometry.py
+│       │   └── conversion.py
+│       │
+│       ├── matter/
+│       │   ├── leptons.py
+│       │   ├── baryons.py
+│       │   └── neutrinos.py
+│       │
+│       ├── cosmology/
+│       │   ├── gravity.py
+│       │   └── expansion.py
+│       │
+│       ├── electrodynamics/
+│       │   ├── transmission.py
+│       │   └── circuits.py
+│       │
+│       ├── mechanics/
+│       │   └── moduli.py
+│       │
 │       └── utils/
 │
 └── tests/

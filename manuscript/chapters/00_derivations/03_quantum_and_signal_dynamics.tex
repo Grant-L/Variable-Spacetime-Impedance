@@ -18,15 +18,15 @@ Evaluating the SI dimensions of this continuous field confirms its mechanical id
 \begin{equation}
     [\mathbf{A}] = \left[ \frac{\text{V} \cdot \text{s}}{\text{m}} \right] = \left[ \frac{\text{J} \cdot \text{s}}{\text{C} \cdot \text{m}} \right] = \left[ \frac{\text{kg} \cdot \text{m}^2 \cdot \text{s}}{\text{s}^2 \cdot \text{C} \cdot \text{m}} \right] = \left[ \frac{\text{kg} \cdot \text{m}}{\text{s} \cdot \text{C}} \right]
 \end{equation}
-By substituting the topological conversion $1\text{ C} \equiv \xi_{topo} \text{ m}$, the spatial metric meters cancel:
+By substituting the exact topological conversion $1\text{ C} \equiv \xi_{topo}^{-1} \text{ m}$, the spatial metric evaluates to:
 \begin{equation}
-    [\mathbf{A}] = \left[ \frac{\text{kg} \cdot \text{m}}{\text{s} \cdot (\xi_{topo} \text{ m})} \right] = \mathbf{\frac{1}{\xi_{topo}} \left[ \frac{\text{kg}}{\text{s}} \right]}
+    [\mathbf{A}] = \left[ \frac{\text{kg} \cdot \text{m}}{\text{s} \cdot (\xi_{topo}^{-1} \text{ m})} \right] = \mathbf{\xi_{topo} \left[ \frac{\text{kg}}{\text{s}} \right]}
 \end{equation}
 This establishes a fundamental dimensional equivalence: the magnetic vector potential ($\mathbf{A}$) is physically isomorphic to the continuous \textbf{Mass Flow Rate} (linear momentum density) of the vacuum lattice, scaled by the topological dislocation constant. 
 
-When evaluating the full kinetic energy density term using this mechanical substitution (where $\epsilon_0 \equiv \xi_{topo}^2 [\text{N}^{-1}]$), the fundamental topological scaling constants strictly cancel out:
+When evaluating the full kinetic energy density term using this mechanical substitution (where $\epsilon_0 \equiv \xi_{topo}^{-2} [\text{N}^{-1}]$), the fundamental topological scaling constants strictly cancel out:
 \begin{equation}
-    [\mathcal{L}_{kin}] = \frac{1}{2} \epsilon_0 |\partial_t \mathbf{A}|^2 \implies \left( \xi_{topo}^2 \frac{\text{s}^2}{\text{kg}\cdot\text{m}} \right) \left( \frac{1}{\xi_{topo}} \frac{\text{kg}}{\text{s}^2} \right)^2 = \left( \frac{\xi_{topo}^2}{\xi_{topo}^2} \right) \frac{\text{kg}^2 \cdot \text{s}^2}{\text{kg}\cdot\text{m}\cdot\text{s}^4} = \mathbf{\left[\frac{\text{N}}{\text{m}^2}\right]}
+    [\mathcal{L}_{kin}] = \frac{1}{2} \epsilon_0 |\partial_t \mathbf{A}|^2 \implies \left( \xi_{topo}^{-2} \frac{\text{s}^2}{\text{kg}\cdot\text{m}} \right) \left( \xi_{topo} \frac{\text{kg}}{\text{s}^2} \right)^2 = \left( \frac{\xi_{topo}^2}{\xi_{topo}^2} \right) \frac{\text{kg}^2 \cdot \text{s}^2}{\text{kg}\cdot\text{m}\cdot\text{s}^4} = \frac{\text{kg}}{\text{m}\cdot\text{s}^2} \equiv \mathbf{\left[\frac{\text{N}}{\text{m}^2}\right]}
 \end{equation}
 Minimizing the quantum action is mathematically equivalent to minimizing the continuous fluidic bulk stress (Pascals) of the $\mathcal{M}_A$ manifold.
 

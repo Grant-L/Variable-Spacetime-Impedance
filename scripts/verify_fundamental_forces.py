@@ -49,7 +49,8 @@ def run():
     charges = proton_geo.charge_fractionalization()
     print(f"\nQuark Charge Fractionalization:")
     print(f"  AVE Theory (Z3 Witten Effect): {['{:.2f}'.format(c) for c in charges]}")
-    if 1.0/3.0 in [round(c, 5) for c in charges]:
+    # Use math.isclose to prevent floating-point failure
+    if any(math.isclose(1.0/3.0, c, abs_tol=1e-5) for c in charges):
         print("  [PASS] Recovers 1/3e and 2/3e")
     else:
         print("  [FAIL]")
