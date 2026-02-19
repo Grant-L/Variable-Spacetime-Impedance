@@ -107,6 +107,7 @@ Variable-Spacetime-Impedance/
 │   ├── verify_cosmology.py
 │   ├── verify_fundamental_forces.py
 │   ├── verify_matter_sector.py
+│   ├── verify_rheology.py
 │   └── simulate_chapter_12.py
 │
 ├── simulations/
@@ -125,7 +126,8 @@ Variable-Spacetime-Impedance/
 │       ├── matter/
 │       │   ├── leptons.py
 │       │   ├── baryons.py
-│       │   └── neutrinos.py
+│       │   ├── neutrinos.py
+│       │   └── bosons.py
 │       ├── cosmology/
 │       │   ├── gravity.py
 │       │   └── expansion.py
@@ -133,7 +135,8 @@ Variable-Spacetime-Impedance/
 │       │   ├── transmission.py
 │       │   └── circuits.py
 │       ├── mechanics/
-│       │   └── moduli.py
+│       │   ├── moduli.py
+│       │   └── rheology.py
 │       └── utils/
 │
 └── tests/
