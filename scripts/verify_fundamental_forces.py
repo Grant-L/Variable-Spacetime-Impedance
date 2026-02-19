@@ -48,8 +48,9 @@ def run():
     proton_geo = geometry.BorromeanLinkage()
     charges = proton_geo.charge_fractionalization()
     print(f"\nQuark Charge Fractionalization:")
-    print(f"  AVE Theory (Z3 Witten Effect): {['{:.2f}'.format(c) for c in charges]}")
-    # Use math.isclose to prevent floating-point failure
+    print(f"  AVE Theory (Z3 Witten Effect): {[f'{c:.2f}' for c in charges]}")
+    
+    # FIXED: Use math.isclose to prevent floating-point failure!
     if any(math.isclose(1.0/3.0, c, abs_tol=1e-5) for c in charges):
         print("  [PASS] Recovers 1/3e and 2/3e")
     else:

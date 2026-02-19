@@ -33,14 +33,18 @@ all: verify sims pdf
 verify:
 	@echo "[Verify] Running Single-Parameter Kernel Check..."
 	$(PYTHON) $(SCRIPT_DIR)/verify_universe.py
-	@echo "[Verify] Checking Fundamental Forces..."
+	@echo "\n[Verify] Checking Fundamental Forces..."
 	$(PYTHON) $(SCRIPT_DIR)/verify_fundamental_forces.py
-	@echo "[Verify] Checking Matter Sector (Leptons/Baryons/Neutrinos)..."
+	@echo "\n[Verify] Checking Matter Sector (Leptons/Baryons/Neutrinos)..."
 	$(PYTHON) $(SCRIPT_DIR)/verify_matter_sector.py
-	@echo "[Verify] Checking Cosmological Dynamics..."
+	@echo "\n[Verify] Checking Cosmological Dynamics..."
 	$(PYTHON) $(SCRIPT_DIR)/verify_cosmology.py
-	@echo "[Verify] All physics protocols PASSED."
-
+	@echo "\n[Verify] Checking Condensate Rheology & Phase Transitions..."
+	$(PYTHON) $(SCRIPT_DIR)/verify_rheology.py
+	@echo "\n=================================================="
+	@echo "[Verify] ALL PHYSICS PROTOCOLS PASSED."
+	@echo "=================================================="
+	
 # -----------------------------------------------------------------------------
 # 2. Dynamic Simulations (Visual Assets & Time-Domain Solvers)
 # -----------------------------------------------------------------------------

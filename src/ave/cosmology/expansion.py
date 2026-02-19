@@ -13,7 +13,7 @@ def calculate_hubble_constant_limit():
     
     # Convert to km/s/Mpc for comparison
     km_per_Mpc = 3.08567758e19
-    H_km_s_Mpc = H_si * km_per_Mpc # Fixed the double-division bug!
+    H_km_s_Mpc = H_si * km_per_Mpc 
     
     return H_km_s_Mpc
 
