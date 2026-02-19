@@ -8,8 +8,14 @@ import scipy.constants as const
 from ave.core import constants as k
 
 def calculate_hubble_constant_limit():
-    # ... (keep upper math the same) ...
-    H_si = numerator / denominator # Units: 1/s
+    """
+    Derives the asymptotic de Sitter Hubble limit from lattice genesis.
+    Formula: H_0 = (28 * pi * m_e^3 * c * G) / (hbar^2 * alpha^2)
+    Source: Ch 4 (04_gravity_and_yield.tex), Appendix
+    """
+    numerator = 28 * math.pi * (k.m_e**3) * k.c * k.G
+    denominator = (k.hbar**2) * (const.fine_structure**2)
+    H_si = numerator / denominator  # Units: 1/s
     
     # Convert to km/s/Mpc for comparison
     km_per_Mpc = 3.08567758e19
