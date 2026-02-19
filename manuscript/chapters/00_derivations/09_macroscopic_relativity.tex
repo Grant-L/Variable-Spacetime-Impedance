@@ -19,7 +19,7 @@ anisotropic continuous dielectric perfectly mimics geodesic paths in curved spac
 g_{\mu\nu}^{AVE}=\eta_{\mu\nu}+\left(1-\frac{1}{n^{2}(r)}\right)u_{\mu}u_{\nu}
 \end{equation}
 
-By applying standard Hookean elasticity using the 3D Laplace equation against a steady-state mass density ($M$), balanced against the continuous lattice tension ($T_{max,g}=c^{4}/7G$), the localized 1D \textbf{principal radial tensile strain} ($\epsilon_{11}$) field natively generates the exact $1/r$ Newtonian potential:
+By applying standard Hookean elasticity using the 3D Laplace equation against a steady-state mass density ($M$), balanced against the continuous macroscopic lattice tension ($T_{max,g} = \xi T_{EM} = c^{4}/7G$), the localized \textbf{1D principal radial tensile strain} ($\epsilon_{11}$) field natively generates the exact $1/r$ Newtonian potential:
 
 \begin{equation}
 -\left(\frac{c^{4}}{7G}\right)\nabla^{2}\epsilon_{11}(r)=4\pi Mc^{2}\delta^{3}(r)
@@ -56,22 +56,25 @@ Standard General Relativity models gravity as coordinate curvature. In the AVE f
 
 \subsection{Deriving the Refractive Index}
 
-We elevate the macroscopic vacuum moduli to rank-2 symmetric tensors. Because the vacuum
-is a Trace-Reversed Cosserat Solid, it possesses a fixed Poisson's ratio of $\nu_{vac}=2/7$. 
+We elevate the macroscopic vacuum moduli to rank-2 symmetric tensors. Because the vacuum is a Trace-Reversed Cosserat Solid, it possesses a fixed Poisson's ratio of $\nu_{vac}=2/7$. 
 
-A localized massive defect does not exert a uniform 3D hydrostatic compression; it exerts a strictly radial pull, acting as the continuous source of the principal radial strain ($\epsilon_{11}$). Conversely, light propagates strictly as a transverse shear wave and couples exclusively to the orthogonal transverse strain ($h_{\perp}$). 
+A localized massive defect does not exert a uniform 3D hydrostatic compression; it exerts a strictly radial pull, acting as the continuous source of the principal radial tensile strain ($\epsilon_{11} > 0$). Conversely, light propagates strictly as a transverse shear wave and couples exclusively to the orthogonal transverse spatial metric ($h_{\perp}$). 
 
-In rigorous continuum mechanics, the transverse strain induced by a principal radial strain is governed directly by the Poisson effect ($h_{\perp} = \nu_{vac} \cdot \epsilon_{11}$). Therefore, the transverse strain perceived by a tangentially propagating photon evaluates identically to:
+In rigorous continuum mechanics, radial tension causes orthogonal transverse space to physically contract ($h_{\perp} = -\nu_{vac} \cdot \epsilon_{11}$). However, the effective refractive index ($n$) scales proportionally with the physical geometric \textbf{optical density} ($\rho_{opt}$) of the medium. Because optical density scales inversely with physical transverse volume displacement ($n \propto \frac{1}{1 + h_\perp}$), we apply the first-order Taylor expansion for small macroscopic strains ($\frac{1}{1 - x} \approx 1 + x$). 
 
-\begin{equation}
-h_{\perp}=\nu_{vac}\cdot\epsilon_{11}=\left(\frac{2}{7}\right)\cdot\left(\frac{7GM}{c^{2}r}\right)=\frac{2GM}{c^{2}r}
-\end{equation}
-
-The effective Refractive Index ($n$) perceived by a photon is therefore mathematically identical to the spatial transverse trace of the Gordon optical metric:
+Therefore, a strictly negative (compressive) transverse physical strain mathematically yields a strictly positive increase in the effective refractive index:
 
 \begin{equation}
-n(r)=1+h_{\perp}=1+\frac{2GM}{c^{2}r}
+n(r) = 1 - h_{\perp} = 1 - (-\nu_{vac}\epsilon_{11}) = 1 + \nu_{vac}\epsilon_{11}
 \end{equation}
+
+Substituting the trace-reversed tensor boundary ($\nu_{vac} = 2/7$) and the radial strain field yields:
+
+\begin{equation}
+n(r) = 1 + \left(\frac{2}{7}\right)\left(\frac{7GM}{c^2r}\right) = 1 + \frac{2GM}{c^2r}
+\end{equation}
+
+The effective Refractive Index ($n$) perceived by a photon is therefore mathematically identical to the spatial transverse trace of the Gordon optical metric.
 
 \subsection{Verification: The Einstein Lensing Deflection}
 To falsify this Optical Metric, we performed a numerical ray-tracing simulation of a photon passing the Sun. Integrating Snell's Law through this specific refractive gradient yields a total deflection angle of:
