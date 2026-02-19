@@ -1,61 +1,49 @@
+"""
+AVE Core Constants
+Implements the Single-Parameter calibration anchored to the electron.
+Source: Chapter 1 & Appendix F of main.pdf
+"""
 import math
+import scipy.constants as const
 
-class VacuumHardware:
-    """
-    The Constitutive Properties of the Discrete Amorphous Manifold (M_A).
-    Source: Variable Spacetime Impedance, 'Nomenclature and Fundamental Constants'
-    """
-    
-    # --- The Hardware Layer (Constitutive Properties) ---
-    
-    # Lattice Inductance Density (mu_0) - Inertial Resistance
-    # "Inertia is the back-reaction of the manifold to flux displacement (Back-EMF)"
-    L_NODE = 1.2566370614e-6  # H/m
+# ==========================================
+# 1. INPUTS (Standard Model Empirical Data)
+# ==========================================
+c = const.c                  # Speed of Light
+hbar = const.hbar            # Reduced Planck Constant
+m_e = const.m_e              # Electron Rest Mass
+e_charge = const.e           # Elementary Charge
+mu_0 = const.mu_0            # Vacuum Permeability
+epsilon_0 = const.epsilon_0  # Vacuum Permittivity
+G = const.G                  # Gravitational Constant (Macroscopic)
 
-    # Lattice Capacitance Density (epsilon_0) - Elastic Potential
-    # "Elastic potential energy storage capacity"
-    C_NODE = 8.854187817e-12  # F/m
+# ==========================================
+# 2. AVE DERIVED CONSTANTS (The Kernel)
+# ==========================================
 
-    # Lattice Pitch (l_P) - The Nyquist Limit
-    # "Nodal Spacing" and hard limit for information density.
-    L_PITCH = 1.616255e-35    # m
+# AXIOM 1: The Topological Coherence Length (l_node)
+# Calibration: Anchored to the electron Compton scale.
+# Source: [cite: 12, 43, 72, 104]
+l_node = hbar / (m_e * c)
 
-    # --- Emergent Properties (Calculated) ---
+# AXIOM 2: The Topo-Kinematic Conversion Constant (xi_topo)
+# Definition: Charge is spatial dislocation ([Q] == [L]).
+# Source: [cite: 86, 121, 1399]
+xi_topo = e_charge / l_node
 
-    @property
-    def Z_0(self):
-        """
-        Characteristic Impedance (Base Load).
-        Z_0 = sqrt(L_node / C_node)
-        """
-        return math.sqrt(self.L_NODE / self.C_NODE) # approx 376.73 Ohms
+# AXIOM 4: The Geometric Fine Structure Constant (alpha_geom)
+# Derivation: The topological impedance of a Golden Torus (3_1 knot).
+# Calculation: 1 / (4*pi^3 + pi^2 + pi)
+# Source: [cite: 114, 422, 1400]
+alpha_geom_inv = (4 * math.pi**3) + (math.pi**2) + math.pi
+alpha_geom = 1.0 / alpha_geom_inv
 
-    @property
-    def c(self):
-        """
-        Global Slew Rate Limit (Speed of Light).
-        c = 1 / sqrt(L_node * C_node)
-        """
-        return 1.0 / math.sqrt(self.L_NODE * self.C_NODE) #
+# The Vacuum Packing Fraction (kappa_v)
+# Derivation: Collapsing the QED yield density to the discrete node volume.
+# Source: [cite: 133, 139, 1401]
+kappa_v = 8 * math.pi * alpha_geom
 
-    @property
-    def omega_sat(self):
-        """
-        Saturation Frequency (Global Slew Rate / Pitch).
-        The frequency at which a node enters a non-linear regime.
-        """
-        return self.c / self.L_PITCH #
-
-    # --- Simulation Tuning ---
-    
-    @staticmethod
-    def get_coupling_strength(alpha_fine_structure):
-        """
-        Returns the effective coupling based on current Z_0.
-        To be used in 'Spectroscopic Invariance' checks.
-        """
-        # Placeholder for Chapter 6 "Metric Aging" logic
-        return alpha_fine_structure
-
-# Singleton instance for easy import
-HARDWARE = VacuumHardware()
+# The 1D Topological String Tension (T_EM)
+# Derivation: Maximum tension before a single flux line snaps.
+# Source: [cite: 296, 452]
+T_EM = (m_e * c**2) / l_node
