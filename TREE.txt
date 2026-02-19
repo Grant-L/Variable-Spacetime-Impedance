@@ -25,12 +25,13 @@ Variable-Spacetime-Impedance/
 │   └── jupyter_lab_config.py
 │
 ├── assets/
-│   ├── archive/           (legacy sim PNGs, diagrams/)
+│   ├── archive/
 │   ├── derivations/
 │   ├── figures/
 │   └── sim_outputs/
 │
-├── build/                  (LaTeX output: main.pdf, .aux, .log, .toc)
+├── build/
+│   └── main.pdf, .aux, .log, .toc
 │
 ├── data/
 │   └── .gitkeep
@@ -43,25 +44,49 @@ Variable-Spacetime-Impedance/
 │   ├── main.tex
 │   ├── bibliography.bib
 │   ├── frontmatter/
-│   │   ├── 00_title.tex
-│   │   └── simulations/outputs/
-│   │
+│   │   └── 00_title.tex
 │   ├── backmatter/
 │   │   ├── 01_appendices.tex
 │   │   ├── 12_mathematical_closure.tex
 │   │   └── simulations/outputs/
-│   │
 │   ├── structure/
 │   │   ├── commands.tex
 │   │   └── preamble.tex
-│   │
 │   └── chapters/
 │       ├── 00_derivations/
+│       │   ├── 00_intro.tex … 11_continuum_fluidics.tex
+│       │   └── simulations/outputs/
 │       ├── 13_spacetime_circuit_analysis/
-│       │   └── simulations/outputs/
+│       │   ├── 01_topo_kinematic_circuit_identity.tex
+│       │   ├── 02_circuit_models_vac_non_linearities.tex
+│       │   ├── 03_impedance_free_space.tex
+│       │   ├── 04_topological_defects_lc.tex
+│       │   ├── 05_real_vs_reactive.tex
+│       │   ├── 06_imd_spectroscopy.tex
+│       │   └── simulations/outputs/, archive/
 │       ├── 14_active_metric_engineering/
-│       │   └── simulations/outputs/
-│       ├── futurework/     (01–17: manifold, signal, fermion, neutrino, etc.)
+│       │   ├── 01_metric_stream_lining.tex
+│       │   ├── 02_active_inertial_cancellation.tex
+│       │   ├── 03_acoustic_rectification.tex
+│       │   ├── 04_chiral_impedance_matching.tex
+│       │   ├── 05_autoresonant_dielectric_rupture.tex
+│       │   └── simulations/ (run_*.py, outputs/)
+│       ├── futurework/
+│       │   ├── 01_discrete_amorphous_manifold/
+│       │   ├── 02_signal_dynamics/
+│       │   ├── 03_fermion_sector/
+│       │   ├── 05_neutrino_sector/
+│       │   ├── 06_electrodynamics_weak_interaction/
+│       │   ├── 07_gravitation_metric_refraction/
+│       │   ├── 08_generative_cosmology/
+│       │   ├── 09_viscous_dynamics_dark_matter/
+│       │   ├── 10_vacuum_cfd/
+│       │   ├── 11_applied_vacuum_engineering/
+│       │   ├── 12_experimental_falsification/
+│       │   ├── 14_hifi_vcfd/
+│       │   ├── 15_quantum_mechanics/
+│       │   ├── 16_fusion/
+│       │   └── 17_ave_resolutions/
 │       └── archive/
 │
 ├── notebooks/
@@ -85,7 +110,7 @@ Variable-Spacetime-Impedance/
 │   └── simulate_chapter_12.py
 │
 ├── simulations/
-│   ├── Archive/           (legacy scripts by chapter)
+│   ├── Archive/
 │   ├── output/
 │   ├── outputs/
 │   └── .gitkeep
@@ -93,28 +118,22 @@ Variable-Spacetime-Impedance/
 ├── src/
 │   └── ave/
 │       ├── __init__.py
-│       │
 │       ├── core/
 │       │   ├── constants.py
 │       │   ├── geometry.py
 │       │   └── conversion.py
-│       │
 │       ├── matter/
 │       │   ├── leptons.py
 │       │   ├── baryons.py
 │       │   └── neutrinos.py
-│       │
 │       ├── cosmology/
 │       │   ├── gravity.py
 │       │   └── expansion.py
-│       │
 │       ├── electrodynamics/
 │       │   ├── transmission.py
 │       │   └── circuits.py
-│       │
 │       ├── mechanics/
 │       │   └── moduli.py
-│       │
 │       └── utils/
 │
 └── tests/
