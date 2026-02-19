@@ -1,40 +1,12 @@
-% 03_impedance_free_space.tex
 \section{The Impedance of Free Space ($Z_0$)}
 
-A foundational parameter in classical electromagnetism is the Characteristic Impedance of Free Space ($Z_0 = \sqrt{\mu_0/\epsilon_0} \approx 376.73\ \Omega$)[cite: 2112]. In Vacuum Circuit Analysis, this possesses a literal mechanical identity[cite: 2113]. By applying our mapping, electrical impedance ($Z = V/I$) translates directly to Mechanical Acoustic Impedance ($Z_m = F/v$)[cite: 2114]:
+A foundational parameter in classical electromagnetism is the Characteristic Impedance of Free Space ($Z_0 = \sqrt{\mu_0/\epsilon_0} \approx 376.73\ \Omega$) \cite{feynman1964}. In Vacuum Circuit Analysis, this possesses a literal mechanical identity. By applying our mapping, electrical impedance ($Z = V/I$) translates directly to Mechanical Acoustic Impedance ($Z_m = F/v$):
 \begin{equation}
 Z_{elec} = \frac{V}{I} = \frac{\xi_{topo}^{-1} F}{\xi_{topo} v} = \xi_{topo}^{-2} \left(\frac{F}{v}\right) = \xi_{topo}^{-2} Z_m
 \end{equation}
 
-Rearranging for the mechanical impedance reveals an exact physical identity[cite: 2114]:
+Rearranging for the mechanical impedance reveals an exact physical identity:
 \begin{equation}
 Z_m = \xi_{topo}^2 \cdot Z_0 = \xi_{topo}^2 \sqrt{\frac{\mu_0}{\epsilon_0}} \approx 6.48 \times 10^{-11} \left[ \frac{\text{kg}}{\text{s}} \right]
 \end{equation}
-The $376.7\ \Omega$ impedance of free space is structurally isomorphic to the Absolute Mechanical Acoustic Impedance of the physical $\mathcal{M}_A$ substrate[cite: 2114].
-
-\section{Gravitational Stealth (S-Parameter Analysis)}
-
-In classical RF engineering, when a wave transitions into a denser physical medium (e.g., from air to glass), the refractive index ($n$) rises asymmetrically, forcing the characteristic impedance to drop[cite: 2115, 2116]. This impedance mismatch causes the signal to partially reflect, measured logarithmically as Return Loss ($S_{11}$)[cite: 2116]. This introduces a profound paradox for analog gravity models: \textit{If a gravity well represents a physical increase in the localized optical density of the vacuum, why does light seamlessly enter a black hole without scattering or reflecting off the boundary?} [cite: 2117]
-
-In the VCA transmission line model, macroscopic gravity operates strictly as a 3D Volumetric Compression of the Cosserat solid[cite: 2118]. This localized geometric crowding proportionately and \textit{symmetrically} increases both the effective inductive mass density ($\mu_{local} = n(r) \cdot \mu_0$) and the capacitive compliance ($\epsilon_{local} = n(r) \cdot \epsilon_0$)[cite: 2118]. Evaluating the Characteristic Impedance of the vacuum down to the extreme metric divergence of an Event Horizon ($r \to R_s$) reveals a perfect mathematical invariant[cite: 2119]:
-\begin{equation}
-Z_{local}(r) = \sqrt{\frac{\mu_{local}}{\epsilon_{local}}} = \sqrt{\frac{n(r) \cdot \mu_0}{n(r) \cdot \epsilon_0}} = \sqrt{\frac{\mu_0}{\epsilon_0}} \equiv Z_0 \approx 376.73\ \Omega
-\end{equation}
-
-The $\mathcal{M}_A$ condensate is mathematically and perfectly Impedance-Matched to itself everywhere, absolutely regardless of extreme gravitational strain[cite: 2119]. Because the spatial derivative of the impedance remains strictly zero ($\partial_r Z_0 = 0$), the Reflection Coefficient ($\Gamma$) is mathematically forced to zero[cite: 2120]. The universe structurally possesses an \textbf{$S_{11}$ Return Loss of $-\infty$ dB}[cite: 2121]. This provides the exact continuum-mechanics mechanism for why localized gravitational gradients act as perfect RF-absorbing stealth structures rather than optical mirrors[cite: 2122]. 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=\textwidth]{log_impedance_s_parameters.png}
-\caption{\textbf{S-Parameter Analysis of a Gravity Well.} Top: As a wave approaches a gravitational core, the density $n(r)$ diverges[cite: 2123]. Because analog macroscopic gravity compresses volumetric space, it scales $L$ and $C$ symmetrically, ensuring the Characteristic Impedance ($Z_0$) remains perfectly invariant[cite: 2124]. Bottom: If gravity behaved like an unmatched optical dielectric, the resulting impedance drop would generate massive reflection ($S_{11} > -10$ dB)[cite: 2125]. The symmetric volumetric scaling of the AVE EFT forces $S_{11} \to -\infty$ dB, providing the precise mechanism for why intense gravity wells do not act as RF mirrors[cite: 2126].}
-    \label{fig:s_parameters}
-\end{figure}
-
-\subsection{The Condensate Transmission Line (Emergence of $c$)}
-To computationally prove that macroscopic Special Relativity emerges deterministically from these discrete components, we modeled the 1D spatial vacuum grid as a cascaded LC transmission line using the AVE-SPICE ordinary differential equation solver[cite: 2127]. By normalizing the discrete Inductors ($\mu_0 \ell_{node}$) and Capacitors ($\epsilon_0 \ell_{node}$) to the hardware pitch, the injection of a transient topological voltage pulse confirms that the signal propagates through the discrete components at exactly the continuous group velocity $v_g = 1/\sqrt{LC} \equiv c$[cite: 2127]. The continuous, invariant speed of light is mathematically identically the macroscopic slew-rate of a discrete transmission line[cite: 2128].
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=\textwidth]{condensate_transmission_line.png}
-\caption{\textbf{The EFT Transmission Line.} A time-domain simulation of a discrete 100-node vacuum grid[cite: 2129]. By cascading the discrete inductive mass and capacitive compliance of the analog lattice, the signal propagates flawlessly at $v_g = c$, proving that continuous spacetime kinematics emerge natively from lumped-element circuit analysis[cite: 2130].}
-    \label{fig:transmission_line}
-\end{figure}
+The $376.7\ \Omega$ impedance of free space is structurally isomorphic to the Absolute Mechanical Acoustic Impedance of the physical $\mathcal{M}_A$ substrate.

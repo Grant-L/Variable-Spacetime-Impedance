@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp
 import os
 
-OUTPUT_DIR = "manuscript/chapters/13_spacetime_circuit_analysis/simulations/outputs"
+OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "outputs")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 def simulate_impedance_matched_gravity():

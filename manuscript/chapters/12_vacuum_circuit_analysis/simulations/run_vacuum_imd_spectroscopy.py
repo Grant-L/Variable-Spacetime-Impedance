@@ -4,7 +4,7 @@ from scipy.integrate import solve_ivp
 from scipy.signal.windows import blackmanharris
 import os
 
-OUTPUT_DIR = "manuscript/chapters/13_spacetime_circuit_analysis/simulations/outputs"
+OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "outputs")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 def simulate_condensate_imd_spectroscopy():
