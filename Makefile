@@ -13,17 +13,18 @@ SOURCE_DIR = src
 # Export PYTHONPATH so scripts can import 'ave' modules from src/
 export PYTHONPATH := $(shell pwd)/$(SOURCE_DIR)
 
-.PHONY: all clean verify sims test pdf help
+.PHONY: all clean verify sims test pdf experiments help
 
 help:
 	@echo "Applied Vacuum Engineering (AVE) Build System"
 	@echo "---------------------------------------------"
-	@echo "  make verify : Run physics verification protocols (The Kernel Check)"
-	@echo "  make sims   : Run dynamic simulations (Transmission Lines, etc.)"
-	@echo "  make test   : Run unit tests (pytest)"
-	@echo "  make pdf    : Compile the LaTeX textbook"
-	@echo "  make clean  : Remove build artifacts"
-	@echo "  make all    : Run verify, sims, and pdf"
+	@echo "  make verify     : Run physics verification protocols (The Kernel Check)"
+	@echo "  make sims       : Run dynamic simulations (Transmission Lines, etc.)"
+	@echo "  make test       : Run unit tests (pytest)"
+	@echo "  make pdf        : Compile the LaTeX textbook"
+	@echo "  make experiments: Compile the Experimental Protocols LaTeX document"
+	@echo "  make clean      : Remove build artifacts"
+	@echo "  make all        : Run verify, sims, and pdf"
 
 all: verify sims pdf
 
@@ -91,6 +92,14 @@ pdf:
 	# 4. Third Pass (Resolve Citations & Layout)
 	cd $(SRC_DIR) && $(LATEX) -output-directory=$(OUT_DIR) main.tex
 	@echo "[Build] PDF generated at build/main.pdf"
+
+# -----------------------------------------------------------------------------
+# 5. Experimental Protocols Compilation
+# -----------------------------------------------------------------------------
+experiments:
+	@echo "[Build] Compiling Experimental Protocols..."
+	@cd experiments && $(MAKE) pdf
+	@echo "[Build] Experimental Protocols PDF generated at experiments/main/main.pdf"
 
 clean:
 	@echo "[Clean] Removing build artifacts..."

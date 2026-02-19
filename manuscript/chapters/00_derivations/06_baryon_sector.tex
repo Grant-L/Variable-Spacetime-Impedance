@@ -12,16 +12,14 @@ The $0.84 \text{ fm}$ measurement is not the literal bounding box of the geometr
 
 \subsection{The Topological Scaling Ansatz}
 
-Because the vacuum operates as an over-braced Cosserat solid, extreme spatial separation
-causes the phase-flux lines connecting the Borromean loops to collimate tightly into a 1D
-cylindrical tube rather than spreading out isotropically.
+Because the vacuum operates as an over-braced Cosserat solid, extreme spatial separation causes the phase-flux lines connecting the Borromean loops to collimate tightly into a 1D cylindrical tube rather than spreading out isotropically.
 
-The baseline 1D continuous string tension of the unperturbed $\mathcal{M}_{A}$ lattice evaluates to
-$T_{EM}=m_{e}c^{2}/l_{node}\approx0.212\text{ N}$. Standard Lattice QCD measures the empirical macroscopic
-strong force string tension at exactly $\approx 1\text{ GeV/fm}$ ($\approx 160,200\text{ N}$).
+The baseline 1D continuous string tension of the unperturbed $\mathcal{M}_{A}$ lattice evaluates to $T_{EM}=m_{e}c^{2}/\ell_{node}\approx0.212\text{ N}$. Standard Lattice QCD measures the empirical macroscopic strong force string tension at exactly $\approx 1\text{ GeV/fm}$ ($\approx 160,200\text{ N}$).
+
+While the exact 3D non-linear orthogonal tensor trace ($\mathcal{I}_{tensor}$) of the saturated $6_2^3$ Borromean linkage requires future supercomputing integration to solve analytically, the physical boundary conditions dictate an explicit scaling relationship. We propose a strict \textbf{Topological Scaling Ansatz:} because the proton constitutes a highly saturated Borromean linkage, the baseline tension bounding the quarks is geometrically amplified by its three primary structural multipliers: the number of topological loops (3), the relative inductive resonance mass ratio ($m_p/m_e$), and the absolute dielectric saturation boundary ($\alpha^{-1}$).
 
 \begin{equation}
-    F_{confinement} \approx 3\left(\frac{m_p}{m_e}\right)\alpha^{-1}T_{EM} = 3(1821.4)(137.036)(0.212\text{ N}) \approx 158,742\text{ N}
+    F_{confinement} \approx 3\left(\frac{m_p}{m_e}\right)\alpha^{-1}T_{EM} = 3(1821.4)(137.036)(0.212\text{ N}) \approx \mathbf{158,742\text{ N}}
 \end{equation}
     
 Converting this mechanical force back to standard particle physics units yields exactly \textbf{$0.991\text{ GeV/fm}$}. Pending full computational evaluation of the $\mathbb{Z}_3$ tensor trace, this phenomenological ansatz accurately bounds the macroscopic strong force precisely at the expected $\approx 1\text{ GeV/fm}$ target strictly using the framework's native theoretical outputs.
@@ -38,7 +36,7 @@ While the 1D scalar radial projection of the saturated topological Hamiltonian i
 
 We mathematically decompose this total energy integral into two distinct geometric trace components: the continuous spherical scalar trace ($\mathcal{I}_{scalar}$), and the discrete orthogonal intersection trace ($\mathcal{I}_{tensor}$):
 \begin{equation}
-m_p c^2 = \mathcal{I}_{scalar} (1D) + \mathcal{I}_{tensor} (3D~Orthogonal~Crossings)
+m_p c^2 = \mathcal{I}_{scalar} (1D) + \mathcal{I}_{tensor} (3D\text{ Orthogonal Crossings})
 \end{equation}
 
 Our analytical 1D solver rigorously evaluates the scalar component to $\mathcal{I}_{scalar} \approx 1162 m_e$. The remaining mass generation is locked entirely within the orthogonal topological interference vectors of the intersecting flux loops:
@@ -50,7 +48,7 @@ Our analytical 1D solver rigorously evaluates the scalar component to $\mathcal{
 
 To analytically resolve the 3D orthogonal tensor trace ($\mathcal{I}_{tensor}$), we must evaluate the non-linear geometric frustration of the proton's spatial topology. The $6_2^3$ Borromean linkage is mathematically defined by exactly six orthogonal topological crossings. 
 
-To evaluate this macroscopic continuum mechanics penalty without introducing arbitrary phenomenological parameters, we constructed a 3D finite-element tensor simulation of the framework's strict geometric boundary conditions. By projecting two orthogonal continuous flux loops onto a discrete spatial grid, strictly enforcing the Axiom 1 hard-sphere exclusion limit ($d_{min} = 1\ l_{node}$ and physical FWHM $= 1\ l_{node}$), and natively pushing the localized core strain to the absolute Axiom 4 varactor limit ($\Delta\phi \to \alpha$), the numerical integration of the volumetric singularity gracefully resolves. 
+To evaluate this macroscopic continuum mechanics penalty without introducing arbitrary phenomenological parameters, we constructed a 3D finite-element tensor simulation of the framework's strict geometric boundary conditions. By projecting two orthogonal continuous flux loops onto a discrete spatial grid, strictly enforcing the Axiom 1 hard-sphere exclusion limit ($d_{min} = 1\ \ell_{node}$ and physical FWHM $= 1\ \ell_{node}$), and natively pushing the localized core strain to the absolute Axiom 4 varactor limit ($\Delta\phi \to \alpha$), the numerical integration of the volumetric singularity gracefully resolves. 
 
 Because the cross-product of orthogonal flux gradients evaluates to identically zero at the exact geometrical center of the intersection, the mass generation physically cannot collapse into a point singularity. The localized spatial metric is strictly pushed outward, forming a stable \textbf{3D Toroidal Halo} of extreme tensor shear surrounding the crossing (Figure 6.1). The pure, dimensionless continuous geometric volume of a single localized intersection mathematically evaluates to exactly $\approx 0.329$. For the six discrete crossings of the Borromean linkage, the total macroscopic geometric volume evaluates strictly to $\approx 1.974$.
 
@@ -68,7 +66,7 @@ x = 1162 + (1.974 \cdot 0.1834) \cdot x \implies x = 1162 + 0.36203x
 
 By isolating the target mass ratio ($x$), we mathematically factor the empirical mass out of the input entirely, allowing the rest mass of the proton to strictly emerge as a pure geometric eigenvalue of the topology:
 \begin{equation}
-x(1 - 0.36203) = 1162 \implies x = \frac{1162}{0.63797} \approx 1821.4\ m_e
+x(1 - 0.36203) = 1162 \implies x = \frac{1162}{0.63797} \approx \mathbf{1821.4\ m_e}
 \end{equation}
 
 By substituting this geometric eigenvalue back into the tensor trace component ($\mathcal{I}_{tensor} = 1821.4\ m_e - 1162\ m_e$), the 3D orthogonal topological interference evaluates strictly to $659.4\ m_e$. The extreme mass of the baryon is not derived from arbitrary phenomenological potentials or circular parameter inputs; it is computationally proven to be the strict, self-consistent geometric eigenvalue of weaving three orthogonal topological flux tubes through an unyielding, highly porous discrete spatial lattice.
@@ -80,36 +78,27 @@ The fractional quark charge paradox is resolved via the rigorous mathematics of 
 
 In a non-linear dielectric substrate, a composite defect with internal permutation symmetry natively generates a discrete CP-violating $\theta$-vacuum phase. By the exact application of the \textbf{Witten Effect}, a topological magnetic defect embedded in a $\theta$-vacuum mathematically acquires a fractionalized effective electric charge:
 
+\begin{equation}
+    q_{eff} = n + \frac{\theta}{2\pi}e
+\end{equation}
+
+The $6_{2}^{3}$ Borromean linkage possesses a strict three-fold permutation symmetry ($\mathbb{Z}_{3}$). This rigid topological constraint restricts the allowed degenerate phase angles of the local trapped vacuum strictly to perfect mathematical thirds ($\theta\in\{0,\pm2\pi/3,\pm4\pi/3\}$). Substituting these discrete angles into the Witten charge equation analytically yields the exact effective fractional charges observed in nature ($q_{eff}\in\{\pm1/3e,\pm2/3e\}$). Quarks are thus defined strictly as deconfined topological quasiparticles.
+
 \section{Neutron Decay: The Threading Instability}
 
-The neutron is identified structurally as a composite architecture: a proton ($6_{2}^{3}$) with an
-electron ($3_{1}$ Trefoil) Topologically Linked ($\cup$) within its central structural void. Because
-Axiom 1 dictates that no flux tube can shrink below a transverse thickness of exactly $1 l_{node}$, forcing
-an electron tube into the proton's core requires the Borromean rings to physically stretch
-outward.
+The neutron is identified structurally as a composite architecture: a proton ($6_{2}^{3}$) with an electron ($3_{1}$ Trefoil) Topologically Linked ($\cup$) within its central structural void. Because Axiom 1 dictates that no flux tube can shrink below a transverse thickness of exactly $1 \ell_{node}$, forcing an electron tube into the proton's core requires the Borromean rings to physically stretch outward.
 
 This continuous elastic expansion tension mathematically accounts for the phenomenological mass surplus the neutron natively possesses relative to the bare proton.
 
-Beta decay is formally modeled as a topological phase transition: $6_{2}^{3}\cup3_{1} \xrightarrow{\text{Dielectric Tunneling}} 6_{2}^{3}+3_{1}+\overline{\nu}_{e}$. Driven by stochastic background lattice perturbations (CMB noise), the highly
-tensioned electron eventually slips its topological lock and is ejected. The expanded proton
-core abruptly elastically relaxes to its ground state. To conserve angular momentum during
-this rapid structural relaxation, the local lattice sheds a pure transverse spatial torsional
-shockwave---the antineutrino ($\overline{\nu}_{e}$).
+Beta decay is formally modeled as a topological phase transition: $6_{2}^{3}\cup3_{1} \xrightarrow{\text{Dielectric Tunneling}} 6_{2}^{3}+3_{1}+\overline{\nu}_{e}$. Driven by stochastic background lattice perturbations (CMB noise), the highly tensioned electron eventually slips its topological lock and is ejected. The expanded proton core abruptly elastically relaxes to its ground state. To conserve angular momentum during this rapid structural relaxation, the local lattice sheds a pure transverse spatial torsional shockwave---the antineutrino ($\overline{\nu}_{e}$).
 
 \section{The Helium-4 Nucleus: A Tetrahedral Borromean Braid}
 
-Standard nuclear physics models the Alpha particle (Helium-4) as a tight cluster of four
-nucleons, but often struggles to explain its anomalous binding energy (28.3 MeV) without
-heuristic potential wells. In the AVE framework, the Alpha particle is rigorously defined
-as a Tetrahedral Borromean Braid of four interlocked topological defects (2 protons, 2
-neutrons).
+Standard nuclear physics models the Alpha particle (Helium-4) as a tight cluster of four nucleons, but often struggles to explain its anomalous binding energy (28.3 MeV) without heuristic potential wells. In the AVE framework, the Alpha particle is rigorously defined as a Tetrahedral Borromean Braid of four interlocked topological defects (2 protons, 2 neutrons).
 
 \subsection{The Mass-Stiffened Strong Force}
 
-A critical discovery in the computational audit of this topology is the Mass-Stiffening Scaling
-Law. While the baseline vacuum tension for an electron flux tube is $T_{EM}\approx0.212\text{ N}$, the
-flux tubes connecting heavy baryons are stiffened by the inductive inertia of the nodes they
-connect. The effective nuclear tension ($T_{nuc}$) scales strictly by the proton-electron mass ratio:
+A critical discovery in the computational audit of this topology is the Mass-Stiffening Scaling Law. While the baseline vacuum tension for an electron flux tube is $T_{EM}\approx0.212\text{ N}$, the flux tubes connecting heavy baryons are stiffened by the inductive inertia of the nodes they connect. The effective nuclear tension ($T_{nuc}$) scales strictly by the proton-electron mass ratio:
 
 \begin{equation}
     T_{nuc} = T_{EM}\left(\frac{m_p}{m_e}\right) \approx 0.212\text{ N} \times 1821.4 \approx 386.1\text{ N}
@@ -123,9 +112,8 @@ This is resolved by rigorously distinguishing between \textit{Node Spacing} and 
 
 The 28.3 MeV total binding energy is stored entirely as elastic potential energy distributed across the six flux tubes of the $K_{4}$ tetrahedral cage. The energy per bond is $\approx 4.72\text{ MeV}$ ($7.55 \times 10^{-13}\text{ J}$).
 
-Dividing this energy by the mass-stiffened nuclear tension derived above ($T_{nuc} \approx 389.3\text{ N}$) yields the exact structural displacement ($\Delta x$) of the local vacuum nodes:
+Dividing this energy by the mass-stiffened nuclear tension derived above ($T_{nuc} \approx 386.1\text{ N}$) yields the exact structural displacement ($\Delta x$) of the local vacuum nodes:
 
-% Replace Eq 6.11, Eq 6.12, and the text between them in Section 6.5.2
 \begin{equation}
     \Delta x = \frac{E_{bond}}{T_{nuc}} = \frac{7.55 \times 10^{-13}\text{ J}}{386.1\text{ N}} \approx 1.955 \times 10^{-15}\text{ m} = 1.955\text{ fm}
 \end{equation}
@@ -135,10 +123,10 @@ Crucially, $1.955\text{ fm}$ is not the physical Euclidean distance between the 
 Evaluating this geometric displacement as a continuous mechanical strain over the fundamental 386 fm flux tube yields:
     
 \begin{equation}
-    \epsilon_{strain} = \frac{\Delta x}{l_{node}} = \frac{1.955\text{ fm}}{386.16\text{ fm}} \approx 0.00506 \implies \textbf{0.51\% Strain}
+    \epsilon_{strain} = \frac{\Delta x}{\ell_{node}} = \frac{1.955\text{ fm}}{386.16\text{ fm}} \approx 0.00506 \implies \textbf{0.51\% Strain}
 \end{equation}
 
-This constitutes a profound structural proof. A $0.5\%$ mechanical strain is a highly stable, linear elastic deformation. It resides safely below the $100\%$ Unitary Strain dielectric rupture threshold. The vacuum does not mathematically densify, nor does it physically collapse into a trans-Planckian singularity to support the nucleus.
+This constitutes a profound structural proof. A $0.51\%$ mechanical strain is a highly stable, linear elastic deformation. It resides safely below the $100\%$ Unitary Strain dielectric rupture threshold. The vacuum does not mathematically densify, nor does it physically collapse into a trans-Planckian singularity to support the nucleus.
 
 \subsection{Spacetime Circuit Analysis: The Quadrupole Oscillator}
 
@@ -147,16 +135,13 @@ a Spacetime Circuit, the Alpha particle forms a "Full Mesh" ($K_{4}$) network. E
 as a parallel LC tank circuit to ground ($L_{mass}||C_{vac}$), while the Strong Force is represented
 by the six Mutual Inductance bridges ($M_{ij}$) connecting every node.
 
-This circuit topology supports a stable, lossless Quadrupole oscillation mode. The system
-cycles energy between Dielectric Potential (Strain Displacement) and Magnetic Kinetic Flux
-(Tube Tension) at the nuclear Compton frequency, visualized as a "breathing mode" that
-maintains the particle's existence against vacuum decay.
+This circuit topology supports a stable, lossless Quadrupole oscillation mode. The system cycles energy between Dielectric Potential (Strain Displacement) and Magnetic Kinetic Flux (Tube Tension) at the nuclear Compton frequency, visualized as a "breathing mode" that maintains the particle's existence against vacuum decay.
 
 \subsection{Simulation of Topological Core Gradients}
 
 High-energy scattering experiments probing the sub-fermi structure of the Helium-4 nucleus are not measuring a physically crushed coordinate grid; they are strictly measuring the high-intensity RMS scattering cross-section of these $1.94\text{ fm}$ elastic displacement amplitudes.
 
-The underlying $\mathcal{M}_{A}$ hardware mathematically maintains its strict $386\text{ fm}$ pitch. The extreme binding energy represents orthogonal geometric frustration ($\partial_{\mu}n\times\partial_{\nu}n$) mechanically distributed across multiple structurally stable macroscopic nodes. This accurately generates the macroscopic 3D refractive index (Gravity) via trace-reversed bulk tension, completely averting the densification paradox and preserving the rigorous geometric limits of the Effective Field Theory.
+The underlying $\mathcal{M}_{A}$ hardware mathematically maintains its strict $386\text{ fm}$ pitch. The extreme binding energy represents orthogonal geometric frustration ($\partial_{\mu}\mathbf{n}\times\partial_{\nu}\mathbf{n}$) mechanically distributed across multiple structurally stable macroscopic nodes. This accurately generates the macroscopic 3D refractive index (Gravity) via trace-reversed bulk tension, completely averting the densification paradox and preserving the rigorous geometric limits of the Effective Field Theory.
 
 \subsection{The Hierarchy Bridge: Unifying the Strong Force and Gravity}
 
@@ -167,24 +152,24 @@ The classical gravitational force between two protons is:
 F_g = G \frac{m_p^2}{r^2}
 \end{equation}
 
-By substituting the rigorously derived macroscopic boundary limit of Gravity ($G = c^4 / 7\xi T_{EM}$) and the fundamental baseline vacuum tension ($T_{EM} = m_e c^2 / l_{node}$), we expand the gravitational coupling:
+By substituting the rigorously derived macroscopic boundary limit of Gravity ($G = c^4 / 7\xi T_{EM}$) and the fundamental baseline vacuum tension ($T_{EM} = m_e c^2 / \ell_{node}$), we expand the gravitational coupling:
 \begin{equation}
-F_g = \left( \frac{c^4 l_{node}}{7 \xi m_e c^2} \right) \frac{m_p^2}{r^2} = \frac{c^2 l_{node} m_p^2}{7 \xi m_e r^2}
+F_g = \left( \frac{c^4 \ell_{node}}{7 \xi m_e c^2} \right) \frac{m_p^2}{r^2} = \frac{c^2 \ell_{node} m_p^2}{7 \xi m_e r^2}
 \end{equation}
 
-We previously established that the bare, localized Strong Force exerted by the baryon is strictly its mass-stiffened inductive tension ($T_{nuc} = m_p c^2 / l_{node}$). Factoring this exact nuclear tension term out of the expanded gravity equation yields:
+We previously established that the bare, localized Strong Force exerted by the baryon is strictly its mass-stiffened inductive tension ($T_{nuc} = m_p c^2 / \ell_{node}$). Factoring this exact nuclear tension term out of the expanded gravity equation yields:
 
 \begin{equation}
-F_g = \left( \frac{m_p c^2}{l_{node}} \right) \left[ \frac{1}{7 \xi} \left(\frac{l_{node}}{r}\right)^2 \left(\frac{m_p}{m_e}\right) \right]
+F_g = \left( \frac{m_p c^2}{\ell_{node}} \right) \left[ \frac{1}{7 \xi} \left(\frac{\ell_{node}}{r}\right)^2 \left(\frac{m_p}{m_e}\right) \right]
 \end{equation}
 
 \begin{equation}
-\mathbf{F_g = T_{nuc} \left[ \frac{1}{7 \xi} \left(\frac{l_{node}}{r}\right)^2 \left(\frac{m_p}{m_e}\right) \right]}
+\mathbf{F_g = T_{nuc} \left[ \frac{1}{7 \xi} \left(\frac{\ell_{node}}{r}\right)^2 \left(\frac{m_p}{m_e}\right) \right]}
 \end{equation}
 
 This equation represents a profound, parameter-free algebraic unification of the fundamental forces. It formally proves that Macroscopic Gravity ($F_g$) is strictly and physically identical to the bare Strong Nuclear Force ($T_{nuc}$), mechanically diluted by exactly four geometric properties of the spatial hardware:
 \begin{enumerate}
-    \item \textbf{$(l_{node}/r)^2$:} The classical 3D inverse-square spatial dispersion of the elastic wake.
+    \item \textbf{$(\ell_{node}/r)^2$:} The classical 3D inverse-square spatial dispersion of the elastic wake.
     \item \textbf{$1/7$:} The Trace-Reversed Cosserat tensor projection mapping a 1D flux-tube pull into a 3D volumetric strain.
     \item \textbf{$1/\xi$:} The Machian structural impedance (shielding) exerted by the mass-energy of the entire cosmological horizon.
     \item \textbf{$m_p/m_e$:} The topological mass-stiffening ratio.
