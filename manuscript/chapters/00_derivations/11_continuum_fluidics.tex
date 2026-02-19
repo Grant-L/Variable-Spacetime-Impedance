@@ -1,3 +1,4 @@
+% 11_continuum_fluidics.tex
 \chapter{Continuum Fluidics and The Dark Sector}
 \label{ch:fluidics}
 
@@ -7,8 +8,7 @@ If the discrete spatial vacuum is a physical hardware graph ($\mathcal{M}_A$) su
 \subsection{The Dimensionally Exact Mass Density ($\rho_{bulk}$)}
 Previous classical aether models failed because they incorrectly attempted to map vacuum mass density directly to the magnetic permeability constant ($\mu_0$), violating SI dimensional analysis ($[\text{H/m}] \neq [\text{kg/m}^3]$).
 
-We rigorously define the baseline macroscopic bulk mass density ($\rho_{bulk}$) of the spatial vacuum fluid using the exact, invariant hardware primitives derived in Chapter \ref{ch:fundamental_axioms}, coupled via our Topological Conversion Constant ($\xi_{topo} \equiv e/\ell_{node}$).
-Dividing the discrete node mass by the rigorously derived Voronoi geometric volume of a single spatial node ($V_{node} = 8\pi\alpha \ell_{node}^3$) seamlessly yields a constant, stable background substrate density:
+We rigorously define the baseline macroscopic bulk mass density ($\rho_{bulk}$) of the spatial vacuum fluid using the exact, invariant hardware primitives derived in Chapter 1, coupled via our Topological Conversion Constant ($\xi_{topo} \equiv e/\ell_{node}$). Dividing the discrete node mass by the rigorously derived Voronoi geometric volume of a single spatial node ($V_{node} = 8\pi\alpha \ell_{node}^3$) seamlessly yields a constant, stable background substrate density:
 \begin{equation}
     \rho_{bulk} = \frac{m_{node}}{V_{node}} = \frac{\xi_{topo}^2 \mu_0 \ell_{node}}{8\pi\alpha \ell_{node}^3} = \frac{\xi_{topo}^2 \mu_0}{8\pi\alpha \ell_{node}^2} \approx 7.92 \times 10^6 \text{ kg/m}^3
 \end{equation}
@@ -24,9 +24,9 @@ For the $\mathcal{M}_A$ hardware lattice, the absolute internal signal velocity 
 This parameter-free quantum geometric derivation mathematically proves that the discrete quantum vacuum condensate possesses nearly the exact macroscopic kinematic fluid viscosity of liquid water.
 
 \section{The Rheology of Space: The Bingham Plastic Transition}
-To resolve the "Viscosity Paradox" (why planets do not lose orbital energy to fluidic drag), we recognize that the trace-reversed Cosserat vacuum does not behave as a linear Newtonian fluid. It acts identically to a macroscopic \textbf{Bingham Plastic}—a strictly non-Newtonian, shear-thinning fluidic solid.
+To resolve the "Viscosity Paradox" (why planets do not lose orbital energy to fluidic drag), we recognize that the trace-reversed Cosserat vacuum does not behave as a linear Newtonian fluid. It acts identically to a macroscopic \textbf{Bingham Plastic}—a strictly non-Newtonian, shear-thinning fluidic solid. 
 
-In regions of high gravitational shear (e.g., inside a solar system), the local metric shear rate ($|\nabla\Phi|$) violently exceeds the critical yield threshold. The lattice structurally liquefies, driving the kinematic viscosity to near absolute zero ($\eta_{eff} \to 0$), creating a frictionless \textbf{Superfluid Slipstream} that mathematically guarantees stable, conservative planetary orbits.
+In regions of high gravitational shear (e.g., inside a solar system), the local metric shear rate ($|\nabla\Phi|$) violently exceeds the critical yield threshold. The lattice structurally liquefies, driving the kinematic viscosity to near absolute zero ($\eta_{eff} \to 0$), creating a frictionless \textbf{Superfluid Slipstream}. Because the local viscosity drops to zero, the anti-parallel macroscopic drag force ($F_{drag}$) is mathematically eliminated. This completely neutralizes non-conservative power dissipation ($P_{drag} = 0$), mathematically guaranteeing stable, conservative planetary orbits.
 
 In the deep, diffuse outer reaches of a rotating galaxy, the spatial metric shear falls completely below the critical threshold. The lattice relaxes into its native, rigid state ($\eta_{eff} \to \eta_0$). This macroscopic network stiffness mechanically drags on the orbiting outer stars, artificially accelerating their centripetal velocity. This boundary-layer transition manifests observationally as the phantom mass misattributed to "Dark Matter."
 
@@ -40,17 +40,15 @@ Unlike standard relativistic frame-dragging (the Lense-Thirring effect), which s
 \section{Deriving MOND from Unruh-Hawking Lattice Drift}
 We mathematically prove that Dark Matter is physically identical to the fluid dynamics of a shear-thinning $\mathcal{M}_A$ condensate. The phenomenological MOND acceleration threshold ($a_0$) is not a free parameter; it corresponds exactly to the fundamental \textbf{Unruh-Hawking Drift} of the expanding cosmic lattice:
 \begin{equation}
-    a_{genesis} = \frac{c \cdot H_0}{2\pi}
+    a_{genesis} = \frac{c \cdot H_\infty}{2\pi}
 \end{equation}
-Using the parameter-free derivation of $H_0 \approx 69.32$ km/s/Mpc from our gravity derivations (Chapter 10), this yields:
+Using the asymptotic geometric bound of $H_\infty \approx 69.32$ km/s/Mpc from our gravity derivations (Chapter 4), this yields:
 \begin{equation}
     a_{genesis} \approx 1.07 \times 10^{-10} \text{ m/s}^2
 \end{equation}
 This matches the empirical MOND boundary ($a_0 \approx 1.2 \times 10^{-10}$ m/s$^2$) within 10.7\%.
 
-The non-linear permeability of the shear-thinning $\mathcal{M}_A$ fluid interpolates smoothly against this physical drift limit ($\mu_g \approx |\nabla\Phi| / a_{genesis}$). Substituting this continuous permeability into the generalized Gauss-Poisson equation ($\nabla \cdot (\mu_g \nabla\Phi) = 4\pi G\rho$) natively recovers the Bekenstein-Milgrom AQUAL fluid stress limit.
-
-Integrating this over a galactic mass $M$ analytically derives the asymptotic flat velocity curve:
+The non-linear permeability of the shear-thinning $\mathcal{M}_A$ fluid interpolates smoothly against this physical drift limit ($\mu_g \approx |\nabla\Phi| / a_{genesis}$). Substituting this continuous permeability into the generalized Gauss-Poisson equation ($\nabla \cdot (\mu_g \nabla\Phi) = 4\pi G\rho$) natively recovers the Bekenstein-Milgrom AQUAL fluid stress limit. Integrating this over a galactic mass $M$ analytically derives the asymptotic flat velocity curve:
 \begin{equation}
 v_{flat} = (GM_{baryon} a_{genesis})^{1/4}
 \end{equation}
@@ -64,8 +62,10 @@ The empirically verified \textbf{Baryonic Tully-Fisher Relation} ($v_{flat} \pro
 \end{figure}
 
 \section{The Bullet Cluster: Refractive Tensor Shockwaves}
-The "Bullet Cluster" is frequently cited as proof of particulate Dark Matter because the gravitational lensing center is physically separated from the visible baryonic gas. Standard theory claims this proves dark matter consists of collisionless particles. The AVE framework formally identifies this phenomenon not as collisionless particles, but as a \textbf{Decoupled Refractive Transverse Tensor Shockwave}.
+The "Bullet Cluster" is frequently cited as proof of particulate Dark Matter because the gravitational lensing center is physically separated from the visible baryonic gas. Standard theory claims this proves dark matter consists of collisionless particles.
 
-When two hyper-massive galactic clusters collide, they generate a colossal structural pressure wave in the underlying Cosserat substrate. The baryonic matter (hot gas) interacts electromagnetically, experiencing thermal friction, and slows down in the center of the collision zone. However, gravity and the optical metric are strictly governed by Transverse-Traceless (TT) Tensor Shear Waves.
+The AVE framework formally identifies this phenomenon not as collisionless particles, but as a \textbf{Decoupled Refractive Transverse Tensor Shockwave}. When two hyper-massive galactic clusters collide, they generate a colossal structural pressure wave in the underlying Cosserat substrate. The baryonic matter (hot gas) interacts electromagnetically, experiencing thermal friction, and slows down in the center of the collision zone.
 
-The collision generates a massive Acoustic Tensor Shockwave. Because it is a purely mechanical acoustic strain wave, it inherently does not interact via electromagnetism. It passes completely through the baryonic collision zone unimpeded, continuing ballistically. Because macroscopic gravitational lensing is caused exclusively by the Gordon Optical Metric ($n_\perp = 1 + h_\perp$), this propagating acoustic tensor strain physically bends background light, even in the complete physical absence of topological defects (baryons). The "Dark Matter" map of the Bullet Cluster is simply a continuous optical mapping of the residual transverse acoustic stress ringing in the spatial metric.
+However, gravity and the optical metric are strictly governed by Transverse-Traceless (TT) Tensor Shear Waves. The collision generates a massive Acoustic Tensor Shockwave. Because it is a purely mechanical acoustic strain wave, it inherently does not interact via electromagnetism. It passes completely through the baryonic collision zone unimpeded, continuing ballistically. 
+
+Because macroscopic gravitational lensing is caused exclusively by the Gordon Optical Metric ($n_\perp = 1 + h_\perp$), this propagating acoustic tensor strain physically bends background light, even in the complete physical absence of topological defects (baryons). The "Dark Matter" map of the Bullet Cluster is simply a continuous optical mapping of the residual transverse acoustic stress ringing in the spatial metric.
