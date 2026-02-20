@@ -13,7 +13,7 @@ SOURCE_DIR = src
 # Export PYTHONPATH so scripts can import 'ave' modules from src/
 export PYTHONPATH := $(shell pwd)/$(SOURCE_DIR)
 
-.PHONY: all clean verify sims test pdf experiments help
+.PHONY: all clean verify sims test pdf experiments knots help
 
 help:
 	@echo "Applied Vacuum Engineering (AVE) Build System"
@@ -23,6 +23,7 @@ help:
 	@echo "  make test       : Run unit tests (pytest)"
 	@echo "  make pdf        : Compile the LaTeX textbook"
 	@echo "  make experiments: Compile the Experimental Protocols LaTeX document"
+	@echo "  make knots      : Compile the Periodic Table of Knots LaTeX document"
 	@echo "  make clean      : Remove build artifacts"
 	@echo "  make all        : Run verify, sims, and pdf"
 
@@ -100,6 +101,14 @@ experiments:
 	@echo "[Build] Compiling Experimental Protocols..."
 	@cd experiments && $(MAKE) pdf
 	@echo "[Build] Experimental Protocols PDF generated at experiments/main/main.pdf"
+
+# -----------------------------------------------------------------------------
+# 6. Periodic Table of Knots Compilation
+# -----------------------------------------------------------------------------
+knots:
+	@echo "[Build] Compiling Periodic Table of Knots..."
+	@cd periodic_table_of_knots && $(MAKE) pdf
+	@echo "[Build] Periodic Table of Knots PDF generated at periodic_table_of_knots/main/main.pdf"
 
 clean:
 	@echo "[Clean] Removing build artifacts..."

@@ -1,9 +1,10 @@
 """
-AVE COMPUTATIONAL SOLVER v2.0: 3D Borromean Tensor Trace
+AVE COMPUTATIONAL SOLVER v2.1: 3D Borromean Tensor Trace
 ------------------------------------------------------------------
 A parameter-free finite-element integration of the localized 
 orthogonal crossing energy required by the 6^3_2 proton topology.
-Strictly bounded by the physical QED Packing Fraction and Mass Stiffening.
+Strictly bounded by the physical QED Packing Fraction and 
+the authentic self-consistent eigenvalue feedback loop.
 """
 
 import torch
@@ -16,7 +17,13 @@ def compute_physical_tensor_deficit():
     print(" AVE 3D TENSOR SOLVER: PURE GEOMETRIC INTEGRATION")
     print("==========================================================")
     
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    # Enable Apple Silicon GPU acceleration if available
+    if torch.backends.mps.is_available():
+        device = torch.device('mps')
+    elif torch.cuda.is_available():
+        device = torch.device('cuda')
+    else:
+        device = torch.device('cpu')
     print(f"[*] Compute Engine: {device}")
     
     start_time = time.time()
@@ -82,34 +89,36 @@ def compute_physical_tensor_deficit():
     # --- 5. THE PHYSICAL SCALING PROJECTION ---
     ALPHA = 1 / 137.036
     KAPPA_V = 8 * np.pi * ALPHA  # QED Volumetric Packing Fraction (~0.1834)
-    MASS_STIFFENING = 1836.15    # Proton-Electron Mass Ratio
     
-    # Convert pure geometry to physical mass using AVE framework axioms
-    Tensor_Deficit = Total_Geometric_Volume * MASS_STIFFENING * KAPPA_V
+    # --- 6. THE SELF-CONSISTENT EIGENVALUE FEEDBACK LOOP ---
+    # The mass generation forms a non-linear, self-consistent loop:
+    # x = I_scalar + (Total_Geometric_Volume * KAPPA_V * x)
     
-    TARGET_DEFICIT = 1836.15 - 1162.0  # 674.15 m_e
+    feedback_factor = Total_Geometric_Volume * KAPPA_V
+    derived_eigenvalue = 1162.0 / (1.0 - feedback_factor)
+    
+    CODATA_PROTON = 1836.15267
     
     calc_time = time.time() - start_time
     
     print("\n==========================================================")
     print("                      RESULTS                             ")
     print("==========================================================")
-    print(f"Geometric Volume of 1 crossing:        {Crossing_Volume:.4f}")
-    print(f"Total Borromean Geometric Volume (x6): {Total_Geometric_Volume:.4f}")
+    print(f"Geometric Volume of 1 crossing:        {Crossing_Volume:.5f}")
+    print(f"Total Borromean Geometric Volume (x6): {Total_Geometric_Volume:.5f}")
     print("----------------------------------------------------------")
-    print(f"Applying Physical Multipliers:")
-    print(f"  * Mass Stiffening:         x {MASS_STIFFENING}")
-    print(f"  * QED Packing Fraction:    x {KAPPA_V:.4f}")
+    print(f"Solving non-linear feedback loop for X (Mass Ratio)...")
+    print(f"X = 1162 / (1 - {feedback_factor:.5f})")
     print("----------------------------------------------------------")
-    print(f"Calculated Tensor Deficit:             {Tensor_Deficit:.2f} m_e")
-    print(f"Empirical Target (1836 - 1162):        {TARGET_DEFICIT:.2f} m_e")
+    print(f"Derived Proton Eigenvalue:             {derived_eigenvalue:.3f} m_e")
+    print(f"CODATA Empirical Target:               {CODATA_PROTON:.3f} m_e")
     
-    error = abs(Tensor_Deficit - TARGET_DEFICIT) / TARGET_DEFICIT * 100
-    print(f"Deviation from Empirical Mass:         {error:.3f}%")
+    error = abs(derived_eigenvalue - CODATA_PROTON) / CODATA_PROTON * 100
+    print(f"Deviation from Reality:                {error:.3f}%")
     print(f"Integration computed in {calc_time:.3f} seconds.")
     print("==========================================================")
 
-    # --- 6. VISUALIZATION ---
+    # --- 7. VISUALIZATION ---
     center_idx = RESOLUTION // 2
     slice_2d = Energy_Density[:, :, center_idx].cpu().numpy()
     
@@ -133,9 +142,9 @@ def compute_physical_tensor_deficit():
     ax.tick_params(colors='white')
     
     plt.tight_layout()
-    plt.savefig("manuscript/chapters/00_derivations/simulations/outputs/topological_tensor_halo.png", dpi=300, facecolor='#0B0F19')
+    plt.savefig("topological_tensor_halo.png", dpi=300, facecolor='#0B0F19')
     print("\n[*] Saved visualization to 'topological_tensor_halo.png'")
-    #plt.show()
+    # plt.show() # Uncomment to display interactively
 
 if __name__ == "__main__":
     compute_physical_tensor_deficit()
