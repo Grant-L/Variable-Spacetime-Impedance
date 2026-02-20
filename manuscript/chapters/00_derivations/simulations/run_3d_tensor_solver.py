@@ -142,7 +142,7 @@ def compute_physical_tensor_deficit():
     ax.tick_params(colors='white')
     
     plt.tight_layout()
-    plt.savefig("topological_tensor_halo.png", dpi=300, facecolor='#0B0F19')
+    plt.savefig("manuscript/chapters/00_derivations/simulations/outputs/topological_tensor_halo.png", dpi=300, facecolor='#0B0F19')
     print("\n[*] Saved visualization to 'topological_tensor_halo.png'")
     # plt.show() # Uncomment to display interactively
 
