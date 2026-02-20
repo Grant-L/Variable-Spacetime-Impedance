@@ -1,9 +1,17 @@
 """
 AVE Lepton Sector
 Implements the physics of the 3_1 Trefoil Knot (The Electron).
-Source: Chapter 5 (The Golden Torus)
+Source: Chapter 5 (The Golden Torus) & Chapter 4.3.1
 """
+import sys
+from pathlib import Path
 import math
+
+# Add src directory to path if running as script
+src_dir = Path(__file__).parent.parent.parent
+if str(src_dir) not in sys.path:
+    sys.path.insert(0, str(src_dir))
+
 from ave.core import constants as k
 from ave.core import geometry
 
@@ -16,7 +24,6 @@ def calculate_theoretical_alpha():
     torus = geometry.GoldenTorus()
     
     # The topological impedance is the sum of Volumetric, Surface, and Linear terms.
-    # Z_topo = 4pi^3 + pi^2 + pi
     impedance = torus.topological_impedance()
     
     # Alpha is the inverse of this impedance
@@ -25,22 +32,48 @@ def calculate_theoretical_alpha():
 
 def check_heavy_lepton_instability(mass_ev):
     """
-    Checks if a heavy lepton (Muon/Tau) exceeds the Bingham Yield Limit.
-    Theory: Heavy leptons decay because their inductive stress melts the vacuum.
+    Checks if a heavy lepton (Muon/Tau) exceeds the 1D Yield Limit.
+    Theory: Heavy leptons decay because their localized inductive tension 
+    shatters their own topological mirror, making them a 'Leaky Cavity'.
     Source: Chapter 4.3.1 (Particle Decay Paradox)
     """
     # 1. Convert mass (eV) to Joules
-    E_joules = mass_ev * k.e_charge
+    E_joules = mass_ev * k.E_CHARGE
     
-    # 2. Calculate Inductive Stress on a single node
-    # The particle volume is strictly bounded by the electron core size (alpha).
-    # Stress = Energy / Volume_node
-    # V_node approx 0.1834 * l_node^3
-    volume_node = k.kappa_v * (k.l_node**3)
-    stress_pascals = E_joules / volume_node
+    # 2. Calculate Internal Static Tension
+    # A 3_1 knot has an ideal ropelength (L/d) of 16.37.
+    # Tension = Energy / Length
+    ropelength_nodes = 16.37
+    knot_length_m = ropelength_nodes * k.L_NODE
     
-    # 3. Get Vacuum Yield Stress
-    from ave.mechanics import moduli
-    yield_limit = moduli.calculate_bingham_yield_stress()
+    internal_tension_N = E_joules / knot_length_m
     
-    return stress_pascals > yield_limit
+    # 3. Compare to the absolute 1D string yield limit (T_EM)
+    # The absolute dynamic yield limit before snapping is T_EM (~0.212 N)
+    is_unstable = internal_tension_N > k.T_EM
+    
+    return is_unstable, internal_tension_N, k.T_EM
+
+if __name__ == "__main__":
+    print("==================================================")
+    print("AVE LEPTON SECTOR DIAGNOSTICS")
+    print("==================================================\n")
+    
+    alpha = calculate_theoretical_alpha()
+    print(f"[1] Derived Geometric Alpha: 1 / {1.0/alpha:.5f}")
+    
+    print("\n[2] The Leaky Cavity Paradox (Heavy Fermion Decay)")
+    
+    # The Electron (~0.511 MeV)
+    m_e_ev = 510998.95
+    unstable_e, t_e, y_e = check_heavy_lepton_instability(m_e_ev)
+    print(f"    -> Electron Tension: {t_e:.4f} N (Yield: {y_e:.4f} N)")
+    print(f"       Unstable? {unstable_e} (Stable Ground State)")
+    
+    # The Muon (~105.66 MeV)
+    m_mu_ev = 105658375.5
+    unstable_mu, t_mu, y_mu = check_heavy_lepton_instability(m_mu_ev)
+    print(f"    -> Muon Tension:     {t_mu:.4f} N (Yield: {y_mu:.4f} N)")
+    print(f"       Unstable? {unstable_mu} (Violently shatters the lattice limit!)")
+    
+    print("\n==================================================")

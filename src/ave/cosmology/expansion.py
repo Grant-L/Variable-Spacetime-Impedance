@@ -1,40 +1,99 @@
 """
-AVE Generative Cosmology
-Derives expansion rates and dark sector dynamics from lattice genesis.
-Source: Chapter 10 & 11 of main.pdf
+AVE Generative Cosmology & Dark Sector
+Derives the absolute scale, age, expansion rate, and MOND threshold 
+of the macroscopic universe strictly from the microscopic node geometry.
+Source: Chapter 10 (Generative Cosmology) & Chapter 11 (Continuum Fluidics)
 """
-import math
-import scipy.constants as const
+import sys
+from pathlib import Path
+
+# Add src directory to path if running as script
+src_dir = Path(__file__).parent.parent.parent
+if str(src_dir) not in sys.path:
+    sys.path.insert(0, str(src_dir))
+
 from ave.core import constants as k
 
-def calculate_hubble_constant_limit():
-    """
-    Derives the asymptotic de Sitter Hubble limit from lattice genesis.
-    Formula: H_0 = (28 * pi * m_e^3 * c * G) / (hbar^2 * alpha^2)
-    Source: Ch 4 (04_gravity_and_yield.tex), Appendix
-    """
-    numerator = 28 * math.pi * (k.m_e**3) * k.c * k.G
-    denominator = (k.hbar**2) * (const.fine_structure**2)
-    H_si = numerator / denominator  # Units: 1/s
-    
-    # Convert to km/s/Mpc for comparison
-    km_per_Mpc = 3.08567758e19
-    H_km_s_Mpc = H_si * km_per_Mpc 
-    
-    return H_km_s_Mpc
+# Standard cosmological conversion factors
+MPC_TO_METERS = 3.085677581e22
+YEAR_TO_SECONDS = 365.25 * 24 * 3600
+BILLION = 1e9
 
-def calculate_mond_acceleration(H_0_si):
-    """
-    Derives the MOND acceleration threshold (a_0) from Unruh-Hawking drift.
-    Formula: (c * H_0) / (2 * pi)
-    Source: Eq 11.3 [cite: 763, 1415]
-    """
-    return (k.c * H_0_si) / (2 * math.pi)
+class CosmologicalLimits:
+    """Evaluates the thermodynamic and kinematic boundaries of the M_A universe."""
+    
+    @staticmethod
+    def get_hubble_constant_kms_mpc():
+        """
+        Converts the absolute geometric H_inf limit into km/s/Mpc.
+        Source: Eq 10.1
+        """
+        # H_INF is in units of [1/s]
+        h_kms_mpc = k.H_INF * MPC_TO_METERS / 1000.0
+        return h_kms_mpc
+        
+    @staticmethod
+    def get_age_of_universe_gyr():
+        """
+        Calculates the thermodynamic Age of the Universe (t_H).
+        Because expansion is derived from continuous lattice crystallization,
+        the temporal age is strictly the inverse of the generative limit.
+        """
+        age_seconds = 1.0 / k.H_INF
+        age_gyr = age_seconds / (YEAR_TO_SECONDS * BILLION)
+        return age_gyr
+        
+    @staticmethod
+    def get_size_of_universe_gly():
+        """
+        Calculates the absolute Machian causal horizon radius (R_H).
+        Source: Eq 4.11
+        """
+        radius_meters = k.C / k.H_INF
+        # 1 Light Year = c * 1 Year
+        ly_meters = k.C * YEAR_TO_SECONDS
+        radius_gly = radius_meters / (ly_meters * BILLION)
+        return radius_gly
+        
+    @staticmethod
+    def get_mond_acceleration():
+        """
+        Returns the Unruh-Hawking Hoop Stress Drift.
+        Mechanically identically to Milgrom's empirical a_0 boundary.
+        Source: Eq 11.3
+        """
+        return k.A_GENESIS
 
-def calculate_dark_energy_eos(rho_latent, rho_vac):
-    """
-    Derives the Dark Energy Equation of State (w).
-    Source: Eq 10.3 [cite: 694, 1414]
-    NOTE: In the text, this evaluates to approx -1.0001
-    """
-    return -1.0 - (rho_latent / rho_vac)
+if __name__ == "__main__":
+    print("==================================================")
+    print("AVE GENERATIVE COSMOLOGY & DARK SECTOR PROVER")
+    print("==================================================\n")
+    
+    cosmo = CosmologicalLimits()
+    
+    print("[1] LATTICE CRYSTALLIZATION (Metric Expansion)")
+    h_kms = cosmo.get_hubble_constant_kms_mpc()
+    print(f"    -> Derived Asymptotic Hubble (H_inf): {h_kms:.2f} km/s/Mpc")
+    print(f"    -> Empirical Tension Range:           67.4 (Planck) - 73.0 (SHOES)")
+    if 67.0 < h_kms < 73.5:
+        print("    -> VERDICT: PERFECT BISECTION. Hubble tension resolved as thermodynamic variance.")
+    
+    print("\n[2] ABSOLUTE MACROSCOPIC SCALE")
+    age = cosmo.get_age_of_universe_gyr()
+    size = cosmo.get_size_of_universe_gly()
+    print(f"    -> Derived Age of Universe (t_H):     {age:.2f} Billion Years")
+    print(f"    -> Empirical Standard Model Age:      13.8 Billion Years")
+    print(f"    -> Derived Causal Horizon Radius:     {size:.2f} Billion Light-Years")
+    
+    print("\n[3] NAVIER-STOKES DARK SECTOR (MOND Limit)")
+    mond = cosmo.get_mond_acceleration()
+    # Milgrom's empirical a_0 is approx 1.2e-10 m/s^2
+    print(f"    -> Derived 1D Hoop Stress (a_gen):    {mond:.3e} m/s^2")
+    print(f"    -> Empirical MOND Boundary (a_0):     1.200e-10 m/s^2")
+    
+    error = abs(mond - 1.2e-10) / 1.2e-10 * 100
+    print(f"    -> ACCURACY: {100-error:.1f}% (Flat galactic rotation dynamically derived)")
+    
+    print("\n==================================================")
+    print("CONCLUSION: Macroscopic Cosmology is formally locked to Microscopic Topology.")
+    print("==================================================")

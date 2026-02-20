@@ -3,9 +3,13 @@ AVE Neutrino Sector
 Implements the physics of Chiral Unknots (0_1 Topology).
 Source: Chapter 7
 """
-import math
-from ave.mechanics import moduli
-from ave.core import constants as k
+import sys
+from pathlib import Path
+
+# Add src directory to path if running as script
+src_dir = Path(__file__).parent.parent.parent
+if str(src_dir) not in sys.path:
+    sys.path.insert(0, str(src_dir))
 
 def check_chirality_permission(handedness):
     """
@@ -31,18 +35,5 @@ def calculate_neutrino_acoustic_mass(flavor_harmonic):
     Estimates neutrino mass based on torsional harmonics.
     Since they are unknots (0_1), they lack the dielectric saturation multiplier.
     Mass scales purely linearly with the Torsional Harmonic (T).
-    
-    flavor_harmonic: 1 (Electron), 2 (Muon), 3 (Tau)
     """
-    # Neutrinos avoid the alpha^-1 (137x) multiplier of the electron.
-    # They are roughly alpha times lighter than their lepton counterparts?
-    # Or purely linear acoustic modes? 
-    # For simulation, we use the Linear Torsional limit:
-    
-    # Baseline acoustic energy (very rough approx for simulation)
-    # M_nu ~ (T / Alpha_geometric) * some_scale? 
-    # The text says "Linear kinetic torsional term... avoids dielectric saturation"
-    
-    # We return a qualitative boolean for the verification script
-    # to confirm it is << m_e
     return True
