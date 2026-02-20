@@ -157,3 +157,38 @@ if __name__ == "__main__":
     print("\n==================================================")
     print("HIERARCHY ACHIEVED: Chemistry emerges natively from continuous knot topology.")
     print("==================================================")
+
+class HeliumAtom:
+    def __init__(self):
+        self.Z = 2
+        self.nucleus = Proton(position=(0.0, 0.0, 0.0), velocity=(0.0, 0.0, 0.0))
+        self.nucleus.R_core = 0.3 * k.L_NODE
+        self.a_0 = k.L_NODE / k.ALPHA_GEOM
+        self.a_He = 0.31 * self.a_0
+        
+        # FIXED: Orbital Velocity scales linearly with Z_eff (Z - 0.30 shielding)
+        self.Z_eff = self.Z - 0.30
+        self.v_orbital = self.Z_eff * k.ALPHA_GEOM * k.C
+        
+        self.e1 = Electron(position=(self.a_He, 0.0, 0.0), velocity=(0.0, self.v_orbital, 0.0))
+        self.e2 = Electron(position=(-self.a_He, 0.0, 0.0), velocity=(0.0, -self.v_orbital, 0.0))
+
+class LithiumAtom:
+    def __init__(self):
+        self.Z = 3
+        self.nucleus = Proton(position=(0.0, 0.0, 0.0), velocity=(0.0, 0.0, 0.0))
+        self.nucleus.R_core = 0.25 * k.L_NODE
+        self.a_0 = k.L_NODE / k.ALPHA_GEOM
+        self.a_1s = 0.28 * self.a_0
+        self.a_2s = 4.0 * self.a_0
+        
+        # FIXED: Velocities scale linearly with Z_eff / n
+        self.Z_eff_1s = self.Z - 0.30
+        self.Z_eff_2s = self.Z - 1.70
+        
+        self.v_1s = self.Z_eff_1s * k.ALPHA_GEOM * k.C
+        self.v_2s = (self.Z_eff_2s / 2.0) * k.ALPHA_GEOM * k.C
+        
+        self.e1 = Electron(position=(self.a_1s, 0.0, 0.0), velocity=(0.0, self.v_1s, 0.0))
+        self.e2 = Electron(position=(-self.a_1s, 0.0, 0.0), velocity=(0.0, -self.v_1s, 0.0))
+        self.e3 = Electron(position=(self.a_2s, 0.0, 0.0), velocity=(-self.v_2s, 0.0, 0.0))

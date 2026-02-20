@@ -55,7 +55,15 @@ def render_hydrogen_strain_field():
     # Plot the classical orbital track
     orbit = plt.Circle((0, 0), 1.0, color='white', fill=False, linestyle='--', alpha=0.3, linewidth=1)
     ax.add_patch(orbit)
+    # Plot the classical orbital track
+    orbit = plt.Circle((0, 0), 1.0, color='white', fill=False, linestyle='--', alpha=0.3, linewidth=1)
+    ax.add_patch(orbit)
     
+    # NEW: Explicitly mark the Topological Solitons so they don't vanish between pixels
+    ax.scatter([0], [0], color='white', s=60, edgecolor='yellow', zorder=5, label='Proton Core')
+    ax.scatter([h_atom.electron.pos[0]/a0], [h_atom.electron.pos[1]/a0], 
+               color='cyan', s=40, edgecolor='white', zorder=5, label='3_1 Trefoil (Electron)')
+    ax.legend(loc='upper right', framealpha=0.3, labelcolor='white')
     # Formatting
     ax.set_aspect('equal')
     ax.set_title(r"Topological Hydrogen (Protium) Metric Strain ($\mathcal{M}_A$ Lattice)", fontsize=14, pad=15)

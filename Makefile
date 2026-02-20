@@ -108,7 +108,7 @@ experiments:
 knots:
 	@echo "[Build] Compiling Periodic Table of Knots..."
 	@cd periodic_table_of_knots && $(MAKE) pdf
-	@echo "[Build] Periodic Table of Knots PDF generated at periodic_table_of_knots/main/main.pdf"
+	@echo "[Build] Periodic Table of Knots PDF generated at periodic_table_of_knots/build/main.pdf"
 
 clean:
 	@echo "[Clean] Removing build artifacts..."

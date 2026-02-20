@@ -4,7 +4,7 @@ LATEX = pdflatex
 BIBTEX = bibtex
 
 # Directory Configuration
-OUT_DIR = main
+OUT_DIR = build
 SRC_DIR = .
 
 .PHONY: all clean knots pdf help
@@ -27,8 +27,8 @@ knots: pdf
 pdf:
 	@echo "[Build] Setting up build directories..."
 	@mkdir -p $(OUT_DIR)
-	# Mirror the directory structure into main/
-	@cd $(SRC_DIR) && find . -type d -not -path "./main*" -not -path "./.git*" -exec mkdir -p $(OUT_DIR)/{} \;
+	# Mirror the directory structure into build/
+	@cd $(SRC_DIR) && find . -type d -not -path "./build*" -not -path "./.git*" -exec mkdir -p $(OUT_DIR)/{} \;
 	
 	@echo "[Build] Compiling LaTeX Document..."
 	# Clean potentially corrupted bookmark files
@@ -36,7 +36,7 @@ pdf:
 	
 	# 1. First Pass (Generate AUX)
 	@echo "[Build] First Pass (pdflatex)..."
-	cd $(SRC_DIR) && $(LATEX) -interaction=nonstopmode -output-directory=$(OUT_DIR) main.tex
+	cd $(SRC_DIR) && $(LATEX) -interaction=nonstopmode -output-directory=$(OUT_DIR) main.tex || true
 	
 	# 2. BibTeX (Run only if .bib file is present and citations exist)
 	@if [ -f $(SRC_DIR)/bibliography.bib ]; then \
@@ -47,19 +47,25 @@ pdf:
 	
 	# 3. Second Pass (Link References)
 	@echo "[Build] Second Pass (pdflatex)..."
-	cd $(SRC_DIR) && $(LATEX) -interaction=nonstopmode -output-directory=$(OUT_DIR) main.tex
+	cd $(SRC_DIR) && $(LATEX) -interaction=nonstopmode -output-directory=$(OUT_DIR) main.tex || true
 	
 	# 4. Third Pass (Resolve Citations & Layout)
 	@echo "[Build] Third Pass (pdflatex)..."
-	cd $(SRC_DIR) && $(LATEX) -interaction=nonstopmode -output-directory=$(OUT_DIR) main.tex
+	cd $(SRC_DIR) && $(LATEX) -interaction=nonstopmode -output-directory=$(OUT_DIR) main.tex || true
 	@echo ""
-	@echo "=================================================="
-	@echo "[Build] PDF generated at $(OUT_DIR)/main.pdf"
-	@echo "=================================================="
+	@if [ -f $(OUT_DIR)/main.pdf ]; then \
+		echo "=================================================="; \
+		echo "[Build] PDF generated successfully at $(OUT_DIR)/main.pdf"; \
+		echo "[Build] Build folder location: $(OUT_DIR)/"; \
+		echo "=================================================="; \
+	else \
+		echo "[Build] ERROR: PDF was not generated!"; \
+		exit 1; \
+	fi
 
 clean:
 	@echo "[Clean] Removing build artifacts..."
 	@rm -rf $(OUT_DIR)/*
 	@rm -f *.aux *.log *.out *.toc *.blg *.bbl
-	@find . -name "*.aux" -not -path "./main/*" -delete
+	@find . -name "*.aux" -not -path "./build/*" -delete
 	@echo "[Clean] Build artifacts removed."
