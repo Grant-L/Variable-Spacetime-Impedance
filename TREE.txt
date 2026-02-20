@@ -40,6 +40,23 @@ Variable-Spacetime-Impedance/
 │   ├── INSTALLATION.md
 │   └── USAGE.md
 │
+├── experiments/
+│   ├── main.tex
+│   ├── bibliography.bib
+│   ├── Makefile
+│   ├── build.sh
+│   ├── frontmatter/
+│   │   └── 00_title.tex
+│   ├── structure/
+│   │   └── commands.tex
+│   ├── chapters/
+│   │   ├── 00_intro.tex
+│   │   ├── 01_sagnac_rlve/
+│   │   ├── 02_autoresonant_birefringence/
+│   │   ├── 03_lc_lattice_analog/
+│   │   └── 04_superfluid_helium/
+│   └── main/ (build output)
+│
 ├── manuscript/
 │   ├── main.tex
 │   ├── bibliography.bib
@@ -100,7 +117,28 @@ Variable-Spacetime-Impedance/
 │   ├── 07_Quantum_Hall.ipynb
 │   ├── 08_Gravitational_Waves.ipynb
 │   ├── 09_Atomic_Spectra.ipynb
-│   └── 10_Cosmic_Inflation.ipynb
+│   ├── 10_Cosmic_Inflation.ipynb
+│   ├── cosmology/
+│   ├── lattice/
+│   ├── macroscopic/
+│   ├── periodic/
+│   └── skunkworks/
+│
+├── periodic_table_of_knots/
+│   ├── main.tex
+│   ├── bibliography.bib
+│   ├── Makefile
+│   ├── manifest_includes.txt
+│   ├── frontmatter/
+│   │   └── 00_title.tex
+│   ├── structure/
+│   │   └── commands.tex
+│   └── chapters/
+│       ├── 001_hydrogen/ … 180_unoctnilium/
+│       │   ├── simulations/
+│       │   ├── _manifest.tex
+│       │   └── 01_xx.tex (element symbol)
+│       └── (180 element folders total)
 │
 ├── scripts/
 │   ├── verify_universe.py

@@ -1,49 +1,63 @@
 """
 AVE Core Constants
-Implements the Single-Parameter calibration anchored to the electron.
-Source: Chapter 1 & Appendix F of main.pdf
+Implements the rigorously closed Four-Parameter generative root.
+No external empirical physics libraries (e.g., scipy.constants) are allowed 
+to smuggle downstream variables. Everything is derived algebraically.
 """
 import math
-import scipy.constants as const
 
 # ==========================================
-# 1. INPUTS (Standard Model Empirical Data)
+# 1. KINEMATIC & SI ANCHORS (The Only Hardcoded Floats)
+# c, hbar, and e_charge are exact defined values in the 2019 SI redefinition.
+# m_e and G are the only two measured physical properties of the manifold.
 # ==========================================
-c = const.c                  # Speed of Light
-hbar = const.hbar            # Reduced Planck Constant
-m_e = const.m_e              # Electron Rest Mass
-e_charge = const.e           # Elementary Charge
-mu_0 = const.mu_0            # Vacuum Permeability
-epsilon_0 = const.epsilon_0  # Vacuum Permittivity
-G = const.G                  # Gravitational Constant (Macroscopic)
+C = 299792458.0                  # [m/s] Speed of Light (Exact SI)
+H_BAR = 1.054571817e-34          # [J*s] Reduced Planck Constant (Exact SI)
+E_CHARGE = 1.602176634e-19       # [C] Elementary Charge (Exact SI anchor)
+M_E = 9.1093837015e-31           # [kg] Electron Rest Mass (CODATA)
+G = 6.67430e-11                  # [m^3/kg*s^2] Macroscopic Gravity (CODATA)
 
 # ==========================================
-# 2. AVE DERIVED CONSTANTS (The Kernel)
+# 2. PURE GEOMETRY (The 3_1 Golden Torus)
 # ==========================================
+# The Fine Structure Constant is analytically derived from topological impedance.
+ALPHA_GEOM_INV = (4 * math.pi**3) + (math.pi**2) + math.pi
+ALPHA_GEOM = 1.0 / ALPHA_GEOM_INV
 
-# AXIOM 1: The Topological Coherence Length (l_node)
-# Calibration: Anchored to the electron Compton scale.
-# Source: [cite: 12, 43, 72, 104]
-l_node = hbar / (m_e * c)
+# The Vacuum Packing Fraction (QED volumetric collapse limit)
+KAPPA_V = 8 * math.pi * ALPHA_GEOM
 
-# AXIOM 2: The Topo-Kinematic Conversion Constant (xi_topo)
-# Definition: Charge is spatial dislocation ([Q] == [L]).
-# Source: [cite: 86, 121, 1399]
-xi_topo = e_charge / l_node
+# ==========================================
+# 3. EMERGENT HARDWARE LIMITS
+# ==========================================
+# Axiom 1: Topological Coherence Length
+L_NODE = H_BAR / (M_E * C)
 
-# AXIOM 4: The Geometric Fine Structure Constant (alpha_geom)
-# Derivation: The topological impedance of a Golden Torus (3_1 knot).
-# Calculation: 1 / (4*pi^3 + pi^2 + pi)
-# Source: [cite: 114, 422, 1400]
-alpha_geom_inv = (4 * math.pi**3) + (math.pi**2) + math.pi
-alpha_geom = 1.0 / alpha_geom_inv
+# Axiom 2: Topo-Kinematic Conversion Constant
+XI_TOPO = E_CHARGE / L_NODE
 
-# The Vacuum Packing Fraction (kappa_v)
-# Derivation: Collapsing the QED yield density to the discrete node volume.
-# Source: [cite: 133, 139, 1401]
-kappa_v = 8 * math.pi * alpha_geom
+# The 1D Topological String Tension (Absolute Yield Limit)
+T_EM = (M_E * C**2) / L_NODE
 
-# The 1D Topological String Tension (T_EM)
-# Derivation: Maximum tension before a single flux line snaps.
-# Source: [cite: 296, 452]
-T_EM = (m_e * c**2) / l_node
+# ==========================================
+# 4. DERIVED ELECTROMAGNETISM (The DAG Closure)
+# Geometry dictates the permittivity of free space.
+# ==========================================
+EPSILON_0 = (E_CHARGE**2) / (4 * math.pi * ALPHA_GEOM * H_BAR * C)
+MU_0 = 1.0 / (EPSILON_0 * C**2)
+Z_0 = math.sqrt(MU_0 / EPSILON_0)
+
+# ==========================================
+# 5. MACROSCOPIC FLUIDICS & COSMOLOGY
+# ==========================================
+# Macroscopic Bulk Density
+RHO_BULK = ((XI_TOPO**2) * MU_0) / (8 * math.pi * ALPHA_GEOM * L_NODE**2)
+
+# Kinematic Vacuum Viscosity
+NU_VAC = ALPHA_GEOM * C * L_NODE
+
+# Asymptotic de Sitter Expansion Rate
+H_INF = (28 * math.pi * (M_E**3) * C * G) / ((H_BAR**2) * (ALPHA_GEOM**2))
+
+# Unruh-Hawking Drift (MOND Acceleration Boundary)
+A_GENESIS = (C * H_INF) / (2 * math.pi)

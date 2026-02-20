@@ -23,11 +23,11 @@ class GoldenTorus:
 
     def physical_major_radius(self):
         """Returns physical Major Radius (R) in meters."""
-        return self.R_norm * k.l_node
+        return self.R_norm * k.L_NODE
 
     def physical_minor_radius(self):
         """Returns physical Minor Radius (r) in meters."""
-        return self.r_norm * k.l_node
+        return self.r_norm * k.L_NODE
         
     def topological_impedance(self):
         """
@@ -54,7 +54,7 @@ class BorromeanLinkage:
         Source: Eq 6.6 - 6.8
         """
         # Theta vacuums allowed by Z3
-        thetas = [0, (2*math.pi)/3, (4*math.pi)/3]
+        thetas = [0.0, (2 * math.pi) / 3.0, (4 * math.pi) / 3.0]
         
         charges = []
         for theta in thetas:
@@ -63,4 +63,4 @@ class BorromeanLinkage:
             q_fract = theta / (2 * math.pi)
             charges.append(q_fract)
             
-        return charges # Returns [0, 1/3, 2/3] (and symmetric negatives)
+        return charges # Returns [0.0, 0.333..., 0.666...] (and symmetric negatives)
