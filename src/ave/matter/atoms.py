@@ -192,3 +192,81 @@ class LithiumAtom:
         self.e1 = Electron(position=(self.a_1s, 0.0, 0.0), velocity=(0.0, self.v_1s, 0.0))
         self.e2 = Electron(position=(-self.a_1s, 0.0, 0.0), velocity=(0.0, -self.v_1s, 0.0))
         self.e3 = Electron(position=(self.a_2s, 0.0, 0.0), velocity=(-self.v_2s, 0.0, 0.0))
+
+class BerylliumAtom:
+    def __init__(self):
+        self.Z = 4
+        self.nucleus = Proton(position=(0.0, 0.0, 0.0), velocity=(0.0, 0.0, 0.0))
+        self.nucleus.R_core = 0.20 * k.L_NODE
+        self.a_0 = k.L_NODE / k.ALPHA_GEOM
+        
+        # 1s Shell (Phase 0, 180)
+        self.Z_eff_1s = self.Z - 0.30
+        self.a_1s = self.a_0 / self.Z_eff_1s
+        self.v_1s = self.Z_eff_1s * k.ALPHA_GEOM * k.C
+        self.e1 = Electron(position=(self.a_1s, 0.0, 0.0), velocity=(0.0, self.v_1s, 0.0))
+        self.e2 = Electron(position=(-self.a_1s, 0.0, 0.0), velocity=(0.0, -self.v_1s, 0.0))
+        
+        # 2s Shell (Phase 90, 270 to minimize strain with 1s)
+        self.Z_eff_2s = self.Z - 1.80
+        self.a_2s = (4.0 * self.a_0) / self.Z_eff_2s
+        self.v_2s = (self.Z_eff_2s / 2.0) * k.ALPHA_GEOM * k.C
+        self.e3 = Electron(position=(0.0, self.a_2s, 0.0), velocity=(-self.v_2s, 0.0, 0.0))
+        self.e4 = Electron(position=(0.0, -self.a_2s, 0.0), velocity=(self.v_2s, 0.0, 0.0))
+
+class BoronAtom:
+    def __init__(self):
+        self.Z = 5
+        self.nucleus = Proton(position=(0.0, 0.0, 0.0), velocity=(0.0, 0.0, 0.0))
+        self.nucleus.R_core = 0.17 * k.L_NODE
+        self.a_0 = k.L_NODE / k.ALPHA_GEOM
+        
+        # 1s Shell
+        self.Z_eff_1s = self.Z - 0.30
+        self.a_1s = self.a_0 / self.Z_eff_1s
+        self.v_1s = self.Z_eff_1s * k.ALPHA_GEOM * k.C
+        self.e1 = Electron(position=(self.a_1s, 0.0, 0.0), velocity=(0.0, self.v_1s, 0.0))
+        self.e2 = Electron(position=(-self.a_1s, 0.0, 0.0), velocity=(0.0, -self.v_1s, 0.0))
+        
+        # 2s/2p Shell (3 nodes spaced by 120 degrees)
+        self.Z_eff_2s = self.Z - 2.40
+        self.a_2s = (4.0 * self.a_0) / self.Z_eff_2s
+        self.v_2s = (self.Z_eff_2s / 2.0) * k.ALPHA_GEOM * k.C
+        
+        # 90 degrees
+        self.e3 = Electron(position=(0.0, self.a_2s, 0.0), velocity=(-self.v_2s, 0.0, 0.0))
+        # 210 degrees
+        ang1 = math.radians(210)
+        self.e4 = Electron(position=(self.a_2s*math.cos(ang1), self.a_2s*math.sin(ang1), 0.0), 
+                           velocity=(-self.v_2s*math.sin(ang1), self.v_2s*math.cos(ang1), 0.0))
+        # 330 degrees
+        ang2 = math.radians(330)
+        self.e5 = Electron(position=(self.a_2s*math.cos(ang2), self.a_2s*math.sin(ang2), 0.0), 
+                           velocity=(-self.v_2s*math.sin(ang2), self.v_2s*math.cos(ang2), 0.0))
+
+class CarbonAtom:
+    def __init__(self):
+        self.Z = 6
+        self.nucleus = Proton(position=(0.0, 0.0, 0.0), velocity=(0.0, 0.0, 0.0))
+        self.nucleus.R_core = 0.15 * k.L_NODE
+        self.a_0 = k.L_NODE / k.ALPHA_GEOM
+        
+        # 1s Shell
+        self.Z_eff_1s = self.Z - 0.30
+        self.a_1s = self.a_0 / self.Z_eff_1s
+        self.v_1s = self.Z_eff_1s * k.ALPHA_GEOM * k.C
+        self.e1 = Electron(position=(self.a_1s, 0.0, 0.0), velocity=(0.0, self.v_1s, 0.0))
+        self.e2 = Electron(position=(-self.a_1s, 0.0, 0.0), velocity=(0.0, -self.v_1s, 0.0))
+        
+        # 2s/2p Shell (4 nodes spaced by 90 degrees offset from inner shell)
+        self.Z_eff_2s = self.Z - 2.80
+        self.a_2s = (4.0 * self.a_0) / self.Z_eff_2s
+        self.v_2s = (self.Z_eff_2s / 2.0) * k.ALPHA_GEOM * k.C
+        
+        angles = [45, 135, 225, 315]
+        self.outer_electrons = []
+        for ang_deg in angles:
+            ang = math.radians(ang_deg)
+            pos = (self.a_2s*math.cos(ang), self.a_2s*math.sin(ang), 0.0)
+            vel = (-self.v_2s*math.sin(ang), self.v_2s*math.cos(ang), 0.0)
+            self.outer_electrons.append(Electron(position=pos, velocity=vel))
