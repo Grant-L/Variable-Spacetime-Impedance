@@ -440,7 +440,7 @@ class TopologicalElementFactory:
         for n, capacity in enumerate(shell_capacities, start=1):
             if remaining <= 0: break
             
-            num_in_shell = min(remaining, capacity)
+            num_in_shell = int(min(remaining, capacity))
             z_eff = cls.derive_z_eff(Z, n, num_in_shell)
             
             # Topological harmonic boundary

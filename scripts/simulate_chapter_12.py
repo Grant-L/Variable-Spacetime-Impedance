@@ -100,7 +100,7 @@ def run_transmission_test():
         r"macroscopic electrical transmission line."
     )
     ax.text(0.02, 0.95, textstr, transform=ax.transAxes, color='white', fontsize=10, 
-            verticalalignment='top', bbox=dict(facecolor='#111111', edgecolor='#00ffcc', alpha=0.9, pad=8))
+            verticalalignment='top', bbox={"facecolor": '#111111', "edgecolor": '#00ffcc', "alpha": 0.9, "pad": 8})
     
     # Save the output visualization directly to assets
     out_path = os.path.join(OUTPUT_DIR, 'eft_transmission_line.png')

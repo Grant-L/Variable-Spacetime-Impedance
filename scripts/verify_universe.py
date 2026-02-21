@@ -83,9 +83,9 @@ def run_verification():
     print("Hunting for smuggled Standard Model parameters...")
     print("==================================================\n")
     
-    total_files = 0
-    clean_files = 0
-    global_violations = 0
+    total_files: int = 0
+    clean_files: int = 0
+    global_violations: int = 0
     
     # The absolute root of the DAG is exempt from the Magic Float checks
     EXEMPT_FILES = ["constants.py"]
@@ -111,9 +111,9 @@ def run_verification():
             print(f"[FAIL] {py_file.relative_to(PROJECT_ROOT)}")
             for v in validator.violations:
                 print(f"       -> {v}")
-                global_violations += 1
+                global_violations = global_violations + 1
         else:
-            clean_files += 1
+            clean_files = clean_files + 1
             print(f"[PASS] {py_file.relative_to(PROJECT_ROOT)}")
 
     print("\n==================================================")
