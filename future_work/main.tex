@@ -78,7 +78,10 @@
 % --- FRONT MATTER ---
 \frontmatter
 
-\input{frontmatter/00_title.tex}
+\title{Applied Vacuum Engineering: Future Work \& Speculative Dynamics}
+\author{Grant Lindblom}
+\date{\today}
+\maketitle
 
 \tableofcontents
 
@@ -89,15 +92,12 @@
 \setcounter{chapter}{0}
 
 % IMPORTANT: Use \input instead of \include for manifests to prevent LaTeX caching bugs!
-\input{chapters/00_derivations/_manifest.tex}
-\input{chapters/12_vacuum_circuit_analysis/_manifest.tex}
-\input{chapters/13_falsifiable_predictions/_manifest.tex}
-% --- APPENDICES ---
-% (Appendices MUST go before \backmatter so they receive A, B, C lettering!)
-\appendix
-\renewcommand{\thechapter}{\Alph{chapter}}
-\input{backmatter/01_appendices.tex}
-\input{backmatter/12_mathematical_closure.tex}
+
+\input{chapters/14_thermodynamic_cycle/_manifest.tex}
+\input{chapters/15_vacuum_cfd/_manifest.tex}
+\input{chapters/16_futurework/17_ave_resolutions/_manifest.tex}
+
+
 
 % --- BACK MATTER ---
 \backmatter

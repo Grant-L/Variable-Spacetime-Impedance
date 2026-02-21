@@ -21,7 +21,7 @@ help:
 	@echo "  make verify     : Run physics verification protocols (The Kernel Check)"
 	@echo "  make sims       : Run dynamic simulations (Transmission Lines, etc.)"
 	@echo "  make test       : Run unit tests (pytest)"
-	@echo "  make pdf        : Compile the LaTeX textbook"
+	@echo "  make pdf        : Compile BOTH the rigorous textbook and future work"
 	@echo "  make experiments: Compile the Experimental Protocols LaTeX document"
 	@echo "  make knots      : Compile the Periodic Table of Knots LaTeX document"
 	@echo "  make clean      : Remove build artifacts"
@@ -67,13 +67,15 @@ test:
 # -----------------------------------------------------------------------------
 # 4. Manuscript Compilation
 # -----------------------------------------------------------------------------
-pdf:
-	@echo "[Build] Setting up build directories..."
+pdf: pdf_manuscript pdf_future_work
+
+pdf_manuscript:
+	@echo "[Build] Setting up build directories for manuscript..."
 	@mkdir -p build
 	# Mirror the manuscript directory structure into build/
 	@cd $(SRC_DIR) && find . -type d -exec mkdir -p ../build/{} \;
 	
-	@echo "[Build] Compiling LaTeX Manuscript..."
+	@echo "[Build] Compiling Main LaTeX Manuscript..."
 	# Clean potentially corrupted bookmark files
 	rm -f build/main.out build/main.aux build/main.toc
 	
@@ -92,7 +94,24 @@ pdf:
 	
 	# 4. Third Pass (Resolve Citations & Layout)
 	cd $(SRC_DIR) && $(LATEX) -output-directory=$(OUT_DIR) main.tex
-	@echo "[Build] PDF generated at build/main.pdf"
+	@echo "[Build] Academic PDF generated at build/main.pdf"
+
+pdf_future_work:
+	@echo "[Build] Setting up build directories for future work..."
+	@mkdir -p build_future
+	@cd future_work && find . -type d -exec mkdir -p ../build_future/{} \;
+	
+	@echo "[Build] Compiling Future Work LaTeX Manuscript..."
+	rm -f build_future/main.out build_future/main.aux build_future/main.toc
+	cd future_work && $(LATEX) -output-directory=../build_future main.tex
+	@if [ -f future_work/bibliography.bib ]; then \
+		echo "[Build] Processing Bibliography..."; \
+		cp future_work/bibliography.bib build_future/; \
+		cd build_future && $(BIBTEX) main || true; \
+	fi
+	cd future_work && $(LATEX) -output-directory=../build_future main.tex
+	cd future_work && $(LATEX) -output-directory=../build_future main.tex
+	@echo "[Build] Future Work PDF generated at build_future/main.pdf"
 
 # -----------------------------------------------------------------------------
 # 5. Experimental Protocols Compilation
@@ -113,5 +132,6 @@ knots:
 clean:
 	@echo "[Clean] Removing build artifacts..."
 	rm -rf build/*
+	rm -rf build_future/*
 	rm -rf __pycache__
 	find . -type d -name "__pycache__" -exec rm -rf {} +

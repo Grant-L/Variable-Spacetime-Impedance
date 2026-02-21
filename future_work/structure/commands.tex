@@ -1,0 +1,34 @@
+% --- Table of Contents Formatting ---
+% Ensure chapters start at 1 and subsections are numbered as 1.1, 1.2, etc.
+\setcounter{tocdepth}{2}  % Show chapters and sections in TOC
+\setcounter{secnumdepth}{3}  % Number down to subsections
+
+% --- Global Hardware Constants ---
+% We use \ensuremath to allow these to be used in text or math mode safely.
+\providecommand{\Lvac}{\ensuremath{L_{node}}}       % Lattice Inductance
+\providecommand{\Cvac}{\ensuremath{C_{node}}}       % Lattice Capacitance
+\providecommand{\Zvac}{\ensuremath{Z_0}}            % Characteristic Impedance
+\providecommand{\Wcut}{\ensuremath{\omega_{sat}}}   % Saturation Frequency
+\providecommand{\lp}{\ensuremath{l_{node}}}              % Lattice Pitch
+
+% --- Citation Commands ---
+\newcommand{\citestart}{}              
+\newcommand{\citeend}{}                
+
+% --- Theorem-like Environments (amsthm) ---
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{lemma}[theorem]{Lemma}
+
+% --- Custom Boxes ---
+\newtcolorbox{axiombox}[1][]{
+    colback=blue!2!white, colframe=blue!75!black, fonttitle=\bfseries,
+    title=Vacuum Engineering Postulate: #1, enhanced, breakable, attach title to upper, 
+    after title={:\enskip}, arc=0mm
+}
+\newenvironment{axiom}[1][]{\begin{axiombox}[#1]}{\end{axiombox}}
+
+\newtcolorbox[auto counter, number within=chapter]{simbox}[1][]{
+    colback=green!5!white, colframe=green!50!black, fonttitle=\bfseries,
+    title=Computational Module \thetcbcounter: #1, enhanced, breakable
+}
