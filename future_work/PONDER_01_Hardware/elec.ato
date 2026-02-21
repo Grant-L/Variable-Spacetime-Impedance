@@ -1,0 +1,55 @@
+import components
+
+module PONDER_01_Thruster:
+    """
+    Top-Level Schematic for the PONDER-01 Solid State Metric Engine.
+    This module wires the 1000V source through the fast SiC switch
+    to pulse the asymmetric high-dielectric array.
+    """
+    
+    # Define Core Interfaces
+    signal gnd
+    signal vbat  # e.g., 12V Lipo battery input
+    signal mcu_pwm # 100kHz logic-level switching signal
+    
+    # Instantiate Components
+    hv_supply = new components.DCDC_Converter_1kV
+    gate_driver = new components.Gate_Driver_UCC27531
+    sic_switch = new components.SiC_MOSFET_900V
+    
+    # The active dielectric array (20 parallel metric-coupling capacitors)
+    mlcc_array = new components.MLCC_X7R_10nF_3kV[20]
+
+    # --- Power Architecture ---
+    
+    # 1. Drive the 1000V HV Supply
+    vbat ~ hv_supply.v_in_pos
+    gnd ~ hv_supply.v_in_neg
+    
+    # 2. Gate Driver Loop
+    vbat ~ gate_driver.vcc
+    gnd ~ gate_driver.gnd
+    mcu_pwm ~ gate_driver.input_pwm
+    gate_driver.out ~ sic_switch.gate
+    
+    # Secure the SiC source to the HV return (Ground)
+    hv_supply.hv_rtn ~ sic_switch.source
+    gnd ~ sic_switch.source
+
+    # --- The Ponderomotive Thrust Loop (Extreme dV/dt) ---
+    
+    # All 20 BaTiO3 capacitors share the high-voltage trace (Pad 1)
+    for cap in mlcc_array:
+        hv_supply.hv_out ~ cap.p1
+        
+        # The other side (Pad 2) hits the SiC Drain.
+        # When the switch closes, Pad 2 is slammed to ground, dragging 1000V 
+        # instantly across the ceramic dielectric core.
+        sic_switch.drain ~ cap.p2
+
+    # --- Physical Layout Note (The Asymmetric Wedge) ---
+    # In the CAD export, the copper trace connecting `cap.p2` to the `sic_switch.drain`
+    # MUST be routed on the bottom layer as a sharp geometric wedge/chevron pointing 
+    # in the desired thrust vector. This asymmetric ground plane rectifies the fringing
+    # E-fields into an unbalanced d(u)/dx gradient.
+    # [See `PONDER_01_BUILD_GUIDE.md` for geometry rules]

@@ -1,0 +1,55 @@
+# PONDER-01: Component Definitions
+# These modules represent the required power electronics for 
+# the Solid-State Micro-Drive in atopile's Hardware-as-Code.
+
+module MLCC_X7R_10nF_3kV:
+    """
+    TDK High-Voltage Barium Titanate Capacitor
+    Core element for Ponderomotive gradient generation (er ~ 3000)
+    """
+    signal p1
+    signal p2
+    
+    # Parametric constraints
+    capacitance = 10nF +/- 10%
+    voltage = 3000V
+    dielectric = "X7R"
+    package = "1812"
+
+module SiC_MOSFET_900V:
+    """
+    Wolfspeed C3M0030090K 
+    900V Silicon Carbide MOSFET for extreme dV/dt transient switching.
+    """
+    signal drain
+    signal gate
+    signal source
+    
+    # Parametric spec constraints
+    v_ds_max = 900V
+    r_ds_on = 30mOhm
+    package = "TO-247-4"
+
+module DCDC_Converter_1kV:
+    """
+    XP Power FS10 Miniature PCB-Mount High Voltage Supply.
+    Steps isolated battery voltage up to 1000V DC.
+    """
+    signal v_in_pos
+    signal v_in_neg
+    signal hv_out
+    signal hv_rtn
+    
+    v_out = 1000V
+    power_max = 10W
+
+module Gate_Driver_UCC27531:
+    """
+    Texas Instruments fast SiC Gate Driver.
+    """
+    signal vcc
+    signal gnd
+    signal input_pwm
+    signal out
+    
+    peak_current = 2.5A
