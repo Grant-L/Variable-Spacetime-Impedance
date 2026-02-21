@@ -3,4 +3,4 @@ AVE Cosmology
 """
 
 from .gravity import OpticalMetric
-from .expansion import GeneralizedExpansionSolver
+from .expansion import CosmologicalLimits
