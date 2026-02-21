@@ -22,13 +22,11 @@ This establishes a rigorous dimensional proof that electrical resistance is phys
 to mechanical inertial drag within the vacuum substrate, correctly yielding $Z_{elec}=\xi_{topo}^{-2}Z_{m}$,
 matching the macroscopic derivation required in Chapter 12.
 
-In Vacuum Engineering, $\mu_{0}$ and $\epsilon_{0}$ are strictly defined as the constitutive moduli of the
-discrete mechanical substrate:
+In Vacuum Engineering, $\mu_{0}$ and $\epsilon_{0}$ are strictly defined as the constitutive fundamental parameters of the discrete LC resonant network:
 
 \begin{itemize}
-\item \textbf{Inductive Inertia ($\mu_0$):} Since inductance ($H/m$) maps to mass scaled by the topology,
-$\mu_{0}$ is isomorphic to the exact linear mass density of the vacuum lattice. $[\mu_{0}] = (\Omega\cdot\text{s})/\text{m} \rightarrow (\xi_{topo}^{-2}\text{kg/s})\cdot\text{s/m} = \xi_{topo}^{-2}[\text{kg/m}]$.
-\item \textbf{Capacitive Compliance ($\epsilon_0$):} Capacitance ($F/m$) maps directly to mechanical compliance. $\epsilon_{0}$ is the exact physical inverse of the manifold's string tension. $[\epsilon_{0}] = \text{C}/(\text{V}\cdot\text{m}) = (\xi_{topo}\text{m}) / ((\xi_{topo}^{-1}\text{N})\cdot\text{m}) = \xi_{topo}^2[\text{N}^{-1}]$.
+\item \textbf{Inductive Inertia ($\mu_0$):} Since inductance ($H/m$) maps to mass scaled by the topology, $\mu_{0}$ is isomorphic to the exact linear mass density of the vacuum lattice. $[\mu_{0}] = (\Omega\cdot\text{s})/\text{m} \rightarrow (\xi_{topo}^{-2}\text{kg/s})\cdot\text{s/m} = \xi_{topo}^{-2}[\text{kg/m}]$. Mass is explicitly not a fundamental property; it is the macroscopic \textit{Lenz's Law} reaction of the $\mu_0$ inductive field resisting changes in local magnetic flux.
+\item \textbf{Capacitive Compliance ($\epsilon_0$):} Capacitance ($F/m$) maps directly to mechanical compliance. $\epsilon_{0}$ is the exact physical inverse of the manifold's apparent string tension. $[\epsilon_{0}] = \text{C}/(\text{V}\cdot\text{m}) = (\xi_{topo}\text{m}) / ((\xi_{topo}^{-1}\text{N})\cdot\text{m}) = \xi_{topo}^2[\text{N}^{-1}]$.
 \end{itemize}
 
 \section{Dielectric Rupture and The Volumetric Energy Collapse}
@@ -45,8 +43,8 @@ To determine the dimensionless geometric packing fraction ($\kappa_V$), this yie
 \end{equation}
 This mathematically demonstrates that bridging the continuous macroscopic QED breakdown limit with the discrete fundamental mass-gap rigorously forces the manifold's spatial geometry to an exact volumetric packing density of $\approx 0.1834$.
 
-\subsection{Computational Proof of Cosserat Over-Bracing}
-In standard computational geometry, a basic nearest-neighbor Delaunay mesh natively yields a packing fraction of $\approx 0.3068$ (a standard Cauchy solid). To achieve the mathematically required sparse QED density of $0.1834$, computational solvers indicate that the spatial graph must structurally span secondary spatial links out to $\approx 1.67 \times \ell_{node}$. This mathematically necessitates that the $\mathcal{M}_A$ lattice is a \textbf{Structurally Over-Braced Trace-Free Cosserat Solid}, dynamically possessing the intrinsic microrotational rigidity ($\gamma_c$) required to satisfy Axiom 1.
+\subsection{Computational Proof of Effective Over-Bracing}
+In standard computational geometry, a basic nearest-neighbor Delaunay mesh natively yields a packing fraction of $\approx 0.3068$ (a standard Cauchy solid). To achieve the mathematically required sparse QED density of $0.1834$, computational solvers indicate that the spatial graph must structurally span secondary spatial links out to $\approx 1.67 \times \ell_{node}$. This mathematically necessitates that the $\mathcal{M}_A$ lattice acts \textit{macroscopically} as a \textbf{Structurally Over-Braced Trace-Free Cosserat Solid}. This effective mechanical over-bracing dynamically provides the intrinsic microrotational rigidity ($\gamma_c$) required to satisfy Axiom 1, while actually originating from complex non-linear multipole electromagnetic interference at the sub-node level.
 
 \subsection{The Dielectric Snap Limit ($V_{snap} = 511.0$ kV)}
 Because the physical node size is identical to the pitch ($\ell_{node}$), the absolute maximum discrete electrical potential difference that can exist between two adjacent nodes before the string permanently snaps is the Nodal Breakdown Voltage ($V_{snap}$):
