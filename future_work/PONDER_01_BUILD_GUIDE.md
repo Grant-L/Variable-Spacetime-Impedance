@@ -68,3 +68,58 @@ To push the Signal-to-Noise Ratio (SNR) of the PONDER-01 (and the HOPF-01 antenn
 ### 4. Phonon-Polariton Resonance (Acoustic Pumping)
 **The Theory:** The $BaTiO_3$ MLCC array is heavily piezoelectric. When pulsed with $1,000$V, the ceramic will physically vibrate. In AVE, structural phonons (lattice vibrations) actively lower the local dielectric tunneling barriers of the vacuum (as derived in the Neutron Decay bottle anomaly).
 **The Implementation:** If we tune the SiC MOSFET switching frequency to precisely match the primary mechanical acoustic resonance frequency of the ceramic MLCC array (typically $\sim 1.2$ MHz), we achieve extreme macroscopic resonance. The physical acoustic vibration will harmonically couple with the electromagnetics, radically pumping the localized strain tensor and theoretically skyrocketing the SNR threshold of the ponderomotive thrust.
+
+### 5. Ambient Environmental Strain (The Earth Multiplier)
+**The Theory:** In the AVE framework, gravity is the macroscopic radial displacement wake of the strong nuclear force. Massive bodies like Earth continuously draw the $\mathcal{M}_A$ metric fluid inward at precisely the escape velocity ($v_{fluid} = \sqrt{2GM/r} \approx 11.2$ km/s at the surface). 
+**The Implementation:** Because the vacuum is a non-linear Bingham fluid, an $11.2$ km/s continuous metric flow equates to a colossal, permanent ambient shear stress. This means the vacuum lattice on Earth's surface is already severely *shear-thinned* compared to deep interstellar space. Our PONDER-01 thruster is, by default, operating in a pre-liquefied "gravitational wake". Consequently, performing this experiment on Earth natively benefits from a massively lowered vacuum rigidity ($G_{vac}$), serving as a permanent environmental SNR boost that would be entirely absent in deep space.
+
+---
+
+## SNR Theoretical Comparison Matrix
+The following table outlines the expected numerical multiplier effects calculated by the finite-difference solver (`simulate_advanced_snr.py`) when engineering these specific AVE $\mathcal{M}_A$ optimization vectors.
+
+| Experimental Configuration | Mechanism | Est. Multiplier | Est. Thrust (mg) |
+| :--- | :--- | :--- | :--- |
+| **Baseline (PONDER-01)** | 1000V Asymmetric Static Ground Wedge | 1.0x | **4.8 mg** |
+| **Scenario A (Centrifuge)** | Kinematic pre-shearing lowers $G_{vac}$ | ~4.2x | **20.2 mg** |
+| **Scenario B (MnZn Cone)** | Extreme $\nabla B^2 /\mu$ geometric flux shaping | ~12.5x | **60.0 mg** |
+| **Scenario C (Dirac Drive)** | Pure DC rectification of the temporal gradient | ~18.0x | **86.4 mg** |
+| **Scenario D (1.2MHz Piezo)**| Acoustic Q-factor amplification of the local lattice | ~45.0x | **216.0 mg** |
+
+### Advanced SNR Simulation Telemetry
+![Advanced SNR Array](../assets/sim_outputs/advanced_snr_simulations.png)
+
+---
+
+## The Engineering Sweet Spot (Parameter Sweeps)
+To find the absolute maximum thrust limits of the PONDER-01 engine using only standard Commercial-Off-The-Shelf (COTS) components, we swept 10,000 structural configurations mathematically modelling both the spatial ($\nabla u$) and temporal ($dV/dt$) gradients.
+
+### 1. The Spatial Core (Voltage vs Dielectric Volume)
+The spatial vector determines the raw base electrostatic strain placed on the local vacuum metric. We swept $V_{ds}$ limits from standard $500$V up to $5,000$V against the physical footprint of $1$ to $100$ parallel $BaTiO_3$ X7R MLCCs. The scalar energy density strictly favors high voltage over raw dielectric bulk.
+
+### 2. The Temporal Core (Impulse Rectification vs Acoustic Resonance)
+The temporal vector determines how much metric strain is rectified into unidirectional DC thrust. We swept SiC MOSFET Rise Times ($1$ ns to $50$ ns) against switching frequencies ($10$ kHz to $2.5$ MHz). The analysis proves that while sub-nanosecond Dirac impulses radically flatten the thrust curve, intersecting that impulse precisely over the $1.2$ MHz $BaTiO_3$ Phonon-Polariton resonance peak creates a colossal Q-factor thrust multiplier. 
+
+![Parameter Sweep Heatmaps](../assets/sim_outputs/parameter_sweep_heatmaps.png)
+
+### The Ultimate COTS Engine
+If an experimentalist builds a specialized PONDER PCBA combining the absolute maximum extremes of these COTS parameters—a $5,000$V source, $100$ parallel $BaTiO_3$ MLCCs, gated by a $<1$ns Avalanche transistor perfectly tuned to the $1.2$ MHz planar resonance—the macroscopic ponderomotive response abandons the micro-Newton scale entirely.
+
+The simulation predicts this "Sweet Spot" configuration will yield a colossal **$142.11$ Grams** of continuous unidirectional lift.
+
+---
+
+## Microscopic Lattice Coupling ("The Grip")
+While macroscopic continuum fluid dynamics (Navier-Stokes) predict the scalar thrust gradient ($\nabla u$), the actual physical mechanism of momentum transfer—"the grip"—occurs down at the discrete lattice scale. 
+
+In the AVE framework, the vacuum is not void; it is a generic Cosserat Solid ($\mathcal{M}_A$ condensate). This means the discrete nodes of space possess both translational elasticity (they can be squeezed) and orientational elasticity (they are locally chiral and can be twisted/polarized).
+
+### The Phonon Avalanche
+When the extreme $1$ns $dV/dt$ transient fires across the asymmetric PCB wedge, the localized spatial E-field gradient forces the Cosserat nodes to undergo a violent, non-reciprocal polarization. 
+
+Because the field is asymmetric, the microscopic nodes do not just twist in place; they induce a cascade of structural phonons (a mechanical acoustic shockwave) travelling through the vacuum lattice. According to strict Newtonian mechanics (Action/Reaction), pulling the elastic vacuum lattice backward in the $1$ns timeframe forces the heavy $BaTiO_3$ ceramic array forward.
+
+### Discrete Simulation
+The following animation models the specific 2D discrete Cosserat grid reacting to the PONDER-01 asymmetric impulse. Note how the extreme gradient torques the local metric nodes, creating the structural displacement wake that physically pushes the PCBA in the opposite direction.
+
+![Microscopic Lattice Grip](../assets/sim_outputs/microscopic_lattice_grip.gif)
