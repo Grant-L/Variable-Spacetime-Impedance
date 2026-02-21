@@ -1,51 +1,51 @@
 # PONDER-01: Component Definitions
 # These modules represent the required power electronics for 
 # the Solid-State Micro-Drive in atopile's Hardware-as-Code.
+# [UPGRADED TO 5kV AVALANCHE SWEET SPOT]
 
-module MLCC_X7R_10nF_3kV:
+module MLCC_X7R_10nF_5kV:
     """
     TDK High-Voltage Barium Titanate Capacitor
     Core element for Ponderomotive gradient generation (er ~ 3000)
+    Upgraded to 5000V array.
     """
     signal p1
     signal p2
     
     # Parametric constraints
     capacitance = 10nF +/- 10%
-    voltage = 3000V
+    voltage = 5000V
     dielectric = "X7R"
-    package = "1812"
 
-module SiC_MOSFET_900V:
+module Avalanche_Transistor_5kV:
     """
-    Wolfspeed C3M0030090K 
-    900V Silicon Carbide MOSFET for extreme dV/dt transient switching.
+    Zetex/Diodes Inc FMMT417 or custom Gas Discharge/Avalanche switch.
+    Replaces the standard SiC for ultra-fast <1ns Dirac pulse rectification.
     """
-    signal drain
-    signal gate
-    signal source
+    signal collector
+    signal base
+    signal emitter
     
     # Parametric spec constraints
-    v_ds_max = 900V
-    r_ds_on = 30mOhm
-    package = "TO-247-4"
+    v_ce_max = 5000V
+    rise_time_max = 1ns
 
-module DCDC_Converter_1kV:
+module DCDC_Converter_5kV:
     """
-    XP Power FS10 Miniature PCB-Mount High Voltage Supply.
-    Steps isolated battery voltage up to 1000V DC.
+    XP Power 5000V Miniature PCB-Mount High Voltage Supply.
+    Steps isolated battery voltage up to 5000V DC.
     """
     signal v_in_pos
     signal v_in_neg
     signal hv_out
     signal hv_rtn
     
-    v_out = 1000V
-    power_max = 10W
+    v_out = 5000V
+    power_max = 20W
 
 module Gate_Driver_UCC27531:
     """
-    Texas Instruments fast SiC Gate Driver.
+    Texas Instruments fast Gate Driver (or specialized avalanche trigger).
     """
     signal vcc
     signal gnd

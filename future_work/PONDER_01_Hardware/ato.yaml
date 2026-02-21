@@ -1,0 +1,4 @@
+requires-atopile: ">=0.2.0"
+builds:
+  default:
+    entry: elec.ato:PONDER_01_Thruster

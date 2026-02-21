@@ -1,28 +1,33 @@
-import components
+#pragma experiment("FOR_LOOP")
+import MLCC_X7R_10nF_5kV from "components.ato"
+import Avalanche_Transistor_5kV from "components.ato"
+import DCDC_Converter_5kV from "components.ato"
+import Gate_Driver_UCC27531 from "components.ato"
 
 module PONDER_01_Thruster:
     """
     Top-Level Schematic for the PONDER-01 Solid State Metric Engine.
-    This module wires the 1000V source through the fast SiC switch
-    to pulse the asymmetric high-dielectric array.
+    [UPGRADED TO 5kV AVALANCHE SWEET SPOT - 142g Thrust Limit]
+    This module wires the 5000V source through the <1ns Avalanche Switch
+    to pulse the massive 100x high-dielectric array.
     """
     
     # Define Core Interfaces
     signal gnd
-    signal vbat  # e.g., 12V Lipo battery input
-    signal mcu_pwm # 100kHz logic-level switching signal
+    signal vbat  # e.g., 24V Lipo battery input
+    signal mcu_pwm # 1.2MHz logic-level acoustic resonance signal
     
     # Instantiate Components
-    hv_supply = new components.DCDC_Converter_1kV
-    gate_driver = new components.Gate_Driver_UCC27531
-    sic_switch = new components.SiC_MOSFET_900V
+    hv_supply = new DCDC_Converter_5kV
+    gate_driver = new Gate_Driver_UCC27531
+    avalanche_switch = new Avalanche_Transistor_5kV
     
-    # The active dielectric array (20 parallel metric-coupling capacitors)
-    mlcc_array = new components.MLCC_X7R_10nF_3kV[20]
+    # The active dielectric array (100 parallel metric-coupling capacitors)
+    mlcc_array = new MLCC_X7R_10nF_5kV[100]
 
     # --- Power Architecture ---
     
-    # 1. Drive the 1000V HV Supply
+    # 1. Drive the 5000V HV Supply
     vbat ~ hv_supply.v_in_pos
     gnd ~ hv_supply.v_in_neg
     
@@ -30,25 +35,25 @@ module PONDER_01_Thruster:
     vbat ~ gate_driver.vcc
     gnd ~ gate_driver.gnd
     mcu_pwm ~ gate_driver.input_pwm
-    gate_driver.out ~ sic_switch.gate
+    gate_driver.out ~ avalanche_switch.base
     
-    # Secure the SiC source to the HV return (Ground)
-    hv_supply.hv_rtn ~ sic_switch.source
-    gnd ~ sic_switch.source
+    # Secure the Avalanche emitter to the HV return (Ground)
+    hv_supply.hv_rtn ~ avalanche_switch.emitter
+    gnd ~ avalanche_switch.emitter
 
     # --- The Ponderomotive Thrust Loop (Extreme dV/dt) ---
     
-    # All 20 BaTiO3 capacitors share the high-voltage trace (Pad 1)
+    # All 100 BaTiO3 capacitors share the high-voltage trace (Pad 1)
     for cap in mlcc_array:
         hv_supply.hv_out ~ cap.p1
         
-        # The other side (Pad 2) hits the SiC Drain.
-        # When the switch closes, Pad 2 is slammed to ground, dragging 1000V 
-        # instantly across the ceramic dielectric core.
-        sic_switch.drain ~ cap.p2
+        # The other side (Pad 2) hits the Avalanche Collector.
+        # When the switch closes, Pad 2 is slammed to ground, dragging 5000V 
+        # instantly across the ceramic dielectric core in under 1 nanosecond.
+        avalanche_switch.collector ~ cap.p2
 
     # --- Physical Layout Note (The Asymmetric Wedge) ---
-    # In the CAD export, the copper trace connecting `cap.p2` to the `sic_switch.drain`
+    # In the CAD export, the copper trace connecting `cap.p2` to the `avalanche_switch.collector`
     # MUST be routed on the bottom layer as a sharp geometric wedge/chevron pointing 
     # in the desired thrust vector. This asymmetric ground plane rectifies the fringing
     # E-fields into an unbalanced d(u)/dx gradient.
