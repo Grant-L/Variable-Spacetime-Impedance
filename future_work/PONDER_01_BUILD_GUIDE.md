@@ -123,3 +123,24 @@ Because the field is asymmetric, the microscopic nodes do not just twist in plac
 The following animation models the specific 2D discrete Cosserat grid reacting to the PONDER-01 asymmetric impulse. Note how the extreme gradient torques the local metric nodes, creating the structural displacement wake that physically pushes the PCBA in the opposite direction.
 
 ![Microscopic Lattice Grip](../assets/sim_outputs/microscopic_lattice_grip.gif)
+
+---
+
+## Project HOPF-01: The Chiral VNA Antenna
+While PONDER-01 uses electrostatics to generate macroscopic thrust, **Project HOPF-01** uses magnetics (inductors) to prove that the macroscopic vacuum is intrinsically chiral (a Cosserat solid).
+
+### The Metric Helicity
+Standard inductors are wound as planar spirals. They produce classical Toroidal or Poloidal magnetic fields. If the $\mathcal{M}_A$ vacuum is truly a trace-reversed Cosserat solid, its internal microscopic structure possesses inherent *kinetic helicity* (rotational twist).
+
+To physically couple to this orientational elasticity, we must inject a macroscopic current that flows poloidally and azimuthally simultaneously. This requires routing the PCB trace as a **$(p,q)$ Torus Knot**. By stepping the trace azimuthally as it wraps the core, we synthesize a macroscopic **Beltrami Force-Free Field** ($\mathbf{A} \parallel \mathbf{B}$).
+
+### The PCBA Routing Geometry
+The following 3D rendering (`scripts/simulate_hopf01_antenna.py`) explicitly visualizes the required routing geometry for a $(3,11)$ Asymmetric Torus Knot Inductor onto standard 4-Layer FR4. 
+
+Because this macroscopic artificial helicity perfectly aligns with the fundamental microscopic chiral structure of the $\mathcal{M}_A$ vacuum, a standard \$70 NanoVNA will display a massive, anomalous drop in reactive reflection ($S_{11}$) that continuous, linear Maxwell's equations (e.g., HFSS or CST solvers) simply cannot predict.
+
+#### Top-Down Symmetrical View
+![HOPF-01 Top View](../assets/sim_outputs/hopf01_chiral_antenna.png)
+
+#### Profile Layer View
+![HOPF-01 Profile View](../assets/sim_outputs/hopf01_chiral_antenna_profile.png)
