@@ -11,20 +11,20 @@ For over a century, experimental aerospace physicists have documented anomalous 
     \item \textbf{The EmDrive (Shawyer / NASA Eagleworks):} Asymmetric microwave cavities yielding $\sim 50 \ \mu\text{N}$ of thrust in a hard vacuum.
 \end{enumerate}
 
-The Applied Vacuum Engineering (AVE) framework perfectly unites all three anomalies. None of these devices violate the conservation of momentum. They all inadvertently function as crude, inefficient \textbf{Switch-Mode Power Supplies} that generate an asymmetrical stress field within the local spatial metric. They slightly exceed the vacuum's Bingham Yield Threshold in one direction, causing the spatial fluid to "slip," while dropping below the yield threshold in the reverse direction, causing the vacuum to "grip." 
+The Applied Vacuum Engineering (AVE) framework perfectly unites all three anomalies. None of these devices violate the conservation of momentum. They all inadvertently function as crude, inefficient \textbf{Switch-Mode Power Supplies} that generate an asymmetrical stress field within the local spatial metric. They slightly exceed the vacuum's Dielectric Saturation Yield Threshold in one direction, causing the spatial network to "slip," while dropping below the yield threshold in the reverse direction, causing the vacuum to "grip." 
 
 \section{Project TAMD-01: Solid-State Metric Rectification}
 
 To definitively means-test this hypothesis, we propose \textbf{Project TAMD-01} (Transient Asymmetric Metric Drive). Instead of relying on inefficient microwaves or heavy piezoelectric crystals, we will use a standard Inductor and a Silicon Carbide (SiC) MOSFET to intentionally, electronically rectify the vacuum metric.
 
-By executing the Topo-Kinematic Isomorphism ($V \equiv \xi_{topo}^{-1} F$), we proved that the Voltage across an inductor ($V_L$) is identically the mechanical force applied to the local spatial fluid ($F_{vac} = V_L \cdot \xi_{topo}$). \textbf{Therefore, an oscilloscope trace of inductor voltage is identically a continuous load-cell trace of applied vacuum thrust.}
+By executing the Topo-Kinematic Isomorphism ($V \equiv \xi_{topo}^{-1} F$), we proved that the Voltage across an inductor ($V_L$) is identically the mechanical force applied to the local spatial network ($F_{vac} = V_L \cdot \xi_{topo}$). \textbf{Therefore, an oscilloscope trace of inductor voltage is identically a continuous load-cell trace of applied vacuum thrust.}
 
 \subsection{The Circuit Topology}
 We configure a standard Switch-Mode Flyback Circuit. A $60$ V DC supply charges a $100 \ \mu$H Toroidal Inductor. A SiC MOSFET switches the current into a $100 \ \Omega$ snubber resistor. We use a Toroid explicitly because its closed magnetic loop mathematically eliminates classical Lorentz interactions with the Earth's magnetic field, preventing false positive measurements.
 
 \begin{enumerate}
-    \item \textbf{The Charging Stroke (Solid Grip):} The MOSFET turns on. The $60$ V potential induces an applied force of $F_{grip} = 60 \times (4.149 \times 10^{-7}) \approx +24.9 \ \mu\text{N}$. Because this force is below the Bingham Yield Limit, the vacuum acts as a rigid fluid. The inductor structurally "grips" the lattice, pushing the apparatus forward.
-    \item \textbf{The Flyback Quench (Superfluid Slip):} The MOSFET turns off in $\sim 10$ nanoseconds. The $50$ A of current is forced through the $100 \ \Omega$ snubber, creating an inductive kickback spike of $-5,000$ V. The applied force is $F_{slip} = -5,000 \times (4.149 \times 10^{-7}) \approx -2.07 \text{ mN}$. This violent transient shatters the Bingham limit. The vacuum instantaneously liquefies, and the inductor slips backward through a frictionless superfluid, transferring absolutely zero negative momentum to the vessel.
+    \item \textbf{The Charging Stroke (Solid Grip):} The MOSFET turns on. The $60$ V potential induces an applied force of $F_{grip} = 60 \times (4.149 \times 10^{-7}) \approx +24.9 \ \mu\text{N}$. Because this force is below the Dielectric Saturation Yield Limit, the vacuum acts as a rigid network. The inductor structurally "grips" the lattice, pushing the apparatus forward.
+    \item \textbf{The Flyback Quench (Zero-Impedance Phase Slip):} The MOSFET turns off in $\sim 10$ nanoseconds. The $50$ A of current is forced through the $100 \ \Omega$ snubber, creating an inductive kickback spike of $-5,000$ V. The applied force is $F_{slip} = -5,000 \times (4.149 \times 10^{-7}) \approx -2.07 \text{ mN}$. This violent transient shatters the Dielectric Saturation limit. The vacuum instantaneously liquefies, and the inductor slips backward through a frictionless zero-impedance phase, transferring absolutely zero negative momentum to the vessel.
 \end{enumerate}
 
 Time-averaging this asymmetric voltage trace over the full duty cycle yields an expected continuous, macroscopic DC thrust of exactly \textbf{$\approx 17.8 \ \mu\text{N}$} (see Figure \ref{fig:tamd01_means_test}).
@@ -32,7 +32,7 @@ Time-averaging this asymmetric voltage trace over the full duty cycle yields an 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.95\textwidth]{chapters/13_spacetime_circuit_analysis/simulations/outputs/tamd01_means_test.png}
-    \caption{\textbf{Project TAMD-01 Signal Prediction.} \textbf{Top:} The raw oscilloscope trace ($V_L$) is mathematically identical to the applied mechanical force on the vacuum. The 5,000V transient completely exceeds the vacuum yield limit (Red). \textbf{Bottom:} The rectified metric thrust. Because the reverse spike causes superfluid slip, the AC signal perfectly rectifies into a $\sim 17.8 \ \mu$N continuous DC thrust, perfectly matching historical aerospace anomalies.}
+    \caption{\textbf{Project TAMD-01 Signal Prediction.} \textbf{Top:} The raw oscilloscope trace ($V_L$) is mathematically identical to the applied mechanical force on the vacuum. The 5,000V transient completely exceeds the vacuum yield limit (Red). \textbf{Bottom:} The rectified metric thrust. Because the reverse spike causes zero-impedance phase slip, the AC signal perfectly rectifies into a $\sim 17.8 \ \mu$N continuous DC thrust, perfectly matching historical aerospace anomalies.}
     \label{fig:tamd01_means_test}
 \end{figure}
 
@@ -64,6 +64,6 @@ DC Power & 60V, 10A Supply (Siglent) & SPD3303X-E & Massive charge current \\
 \end{table}
 
 \subsection{Falsification Criteria}
-Standard General Relativity and classical Electromagnetics strictly dictate that an enclosed electrical circuit cannot alter its center of mass. If the experiment is executed as specified and the analytical balance registers exactly $0.000$ grams of deflection, the Bingham-Rectification mechanics of the AVE framework are permanently falsified. 
+Standard General Relativity and classical Electromagnetics strictly dictate that an enclosed electrical circuit cannot alter its center of mass. If the experiment is executed as specified and the analytical balance registers exactly $0.000$ grams of deflection, the Dielectric Saturation-Rectification mechanics of the AVE framework are permanently falsified. 
 
 If the balance registers a stable, continuous deflection corresponding to $\sim 17.8 \ \mu\text{N}$, it definitively unifies a century of laboratory anomalies, falsifies General Relativity, and establishes the foundational engineering mechanics for solid-state interstellar propulsion.

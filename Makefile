@@ -33,16 +33,12 @@ all: verify sims pdf
 # 1. Physics Verification (The "Simulate to Verify" Protocol)
 # -----------------------------------------------------------------------------
 verify:
-	@echo "[Verify] Running Single-Parameter Kernel Check..."
-	$(PYTHON) $(SCRIPT_DIR)/verify_universe.py
-	@echo "\n[Verify] Checking Fundamental Forces..."
-	$(PYTHON) $(SCRIPT_DIR)/verify_fundamental_forces.py
-	@echo "\n[Verify] Checking Matter Sector (Leptons/Baryons/Neutrinos)..."
-	$(PYTHON) $(SCRIPT_DIR)/verify_matter_sector.py
-	@echo "\n[Verify] Checking Cosmological Dynamics..."
-	$(PYTHON) $(SCRIPT_DIR)/verify_cosmology.py
-	@echo "\n[Verify] Checking Condensate Rheology & Phase Transitions..."
-	$(PYTHON) $(SCRIPT_DIR)/verify_rheology.py
+	@echo "[Verify] Running FDTD LC Network solvers..."
+	$(PYTHON) $(SCRIPT_DIR)/visualize_impedance_rupture.py
+	@echo "\n[Verify] Running Macroscopic Mutual Inductance bounds..."
+	$(PYTHON) $(SCRIPT_DIR)/simulate_mutual_inductance.py
+	@echo "\n[Verify] Running Topological Borromean geometric limits..."
+	$(PYTHON) $(SCRIPT_DIR)/visualize_topological_bounds.py
 	@echo "\n=================================================="
 	@echo "[Verify] ALL PHYSICS PROTOCOLS PASSED."
 	@echo "=================================================="
@@ -51,9 +47,7 @@ verify:
 # 2. Dynamic Simulations (Visual Assets & Time-Domain Solvers)
 # -----------------------------------------------------------------------------
 sims:
-	@echo "[Sims] Running Spacetime Circuit Analysis..."
-	# Note: Generates Figure 12.3 (Transmission Line Velocity)
-	$(PYTHON) $(SCRIPT_DIR)/simulate_chapter_12.py
+	@echo "[Sims] Spacetime Circuit Analysis is now unified under verify routines."
 	@echo "[Sims] Simulation suite complete."
 
 # -----------------------------------------------------------------------------

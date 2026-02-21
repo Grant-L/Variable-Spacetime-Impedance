@@ -1,9 +1,9 @@
 \chapter{Trace-Reversal, Gravity, and Macroscopic Yield}
 \label{ch:gravity_and_yield}
 
-\section{Cosserat Trace-Reversal ($K=2G$)}
+\section{Chiral LC Trace-Reversal ($K=2G$)}
 
-To support strictly transverse waves matching the kinematics of General Relativity, the 3D isotropic vacuum must natively accommodate a 4D trace-reversed metric signature ($\bar{h}_{\mu\nu} = h_{\mu\nu} - \frac{1}{2}\eta_{\mu\nu}h$). While previously modeled in AVE as a mechanical Cosserat solid, this macroscopic tensor behavior is fundamentally derived from the **Variable Spacetime Impedance** of the underlying $\mathcal{M}_A$ LC network.
+To support strictly transverse waves matching the kinematics of General Relativity, the 3D isotropic vacuum must natively accommodate a 4D trace-reversed metric signature ($\bar{h}_{\mu\nu} = h_{\mu\nu} - \frac{1}{2}\eta_{\mu\nu}h$). While previously modeled in AVE as a mechanical Chiral LC Network, this macroscopic tensor behavior is fundamentally derived from the **Variable Spacetime Impedance** of the underlying $\mathcal{M}_A$ LC network.
 
 As established in Section 1.4, the discrete $\mathcal{M}_A$ lattice natively undergoes rigidity percolation, locking into a macroscopic state of strictly $K=2G$. Because the 3D solid naturally emerges from the bottom-up in this highly specific mechanical state, its continuous macroscopic limit intrinsically balances the exact $1/2$ geometric projection factor required by General Relativity without suffering thermodynamic Cauchy instability.
 
@@ -17,10 +17,10 @@ While the $\nu_{vac} \equiv 2/7$ ratio is dictated by the macroscopic 4D metric 
 
 In a perfect affine crystal or a standard random spring network, pure hydrostatic compression yields a baseline Cauchy solid ($K \approx \frac{5}{3}G$). However, the true macroscopic vacuum cannot support affine geometry. To satisfy the absolute QED volumetric packing fraction ($\kappa_V \approx 0.1834$), the spatial graph must structurally span secondary spatial links out to strictly $1.187 \times l_{node}$. 
 
-Under macroscopic shear, this specific geometric over-bracing forces a strictly \textbf{non-affine microscopic deformation}. As the volume compresses, the randomly oriented secondary links are physically forced to buckle. This localized, non-affine buckling couples directly to the independent microrotational degrees of freedom ($\theta_i$) of the Cosserat solid, structurally engaging the transverse couple-stress modulus. 
+Under macroscopic shear, this specific geometric over-bracing forces a strictly \textbf{non-affine microscopic deformation}. As the volume compresses, the randomly oriented secondary links are physically forced to buckle. This localized, non-affine buckling couples directly to the independent microrotational degrees of freedom ($\theta_i$) of the Chiral LC Network, structurally engaging the transverse couple-stress modulus. 
 
 \subsection{Computational Proof: Rigidity Percolation via PBC}
-To verify this analytical requirement, the framework's Directed Acyclic Graph (DAG) computational solver evaluates the exact elastodynamics of the $\mathcal{M}_A$ spatial fluid. A 3D subset of the vacuum is generated via Poisson-Disk hard-sphere sampling and subjected to macroscopic volumetric and deviatoric strain tensors.
+To verify this analytical requirement, the framework's Directed Acyclic Graph (DAG) computational solver evaluates the exact elastodynamics of the $\mathcal{M}_A$ spatial network. A 3D subset of the vacuum is generated via Poisson-Disk hard-sphere sampling and subjected to macroscopic volumetric and deviatoric strain tensors.
 
 Crucially, the simulation applies \textbf{Periodic Boundary Conditions (PBC)} to explicitly eliminate finite-size affine boundary pinning. Freed from rigid boundary walls, the internal nodes are permitted to non-affinely buckle. As the connectivity of the simulated network crosses the QED over-bracing threshold, the shear modulus ($G$) geometrically collapses relative to the bulk modulus ($K$). The computational solver explicitly tracks the $K/G$ ratio as it diverges dynamically from the $\sim 1.67$ Cauchy limit, cleanly crossing the exact $2.0$ threshold. 
 
@@ -29,7 +29,7 @@ This provides an absolute computational proof: the trace-reversed tensor signatu
 \begin{figure}[h]
     \centering
     \includegraphics[width=1.0\textwidth]{trace_reversal_percolation.png}
-    \caption{\textbf{Rigidity Percolation of the Vacuum Graph.} As the vacuum packing density geometrically increases, the dense Cauchy topology structurally gives way to pure Trace-Reversed Cosserat geometry exactly at the required QED fine-structure packing fraction ($\kappa_V \approx 0.1834$). General Relativity's 4D metric signature natively emerges as the phase transition point for the universe.}
+    \caption{\textbf{Rigidity Percolation of the Vacuum Graph.} As the vacuum packing density geometrically increases, the dense Cauchy topology structurally gives way to pure Trace-Reversed Chiral LC geometry exactly at the required QED fine-structure packing fraction ($\kappa_V \approx 0.1834$). General Relativity's 4D metric signature natively emerges as the phase transition point for the universe.}
     \label{fig:trace_reversal_percolation}
 \end{figure}
 
@@ -51,7 +51,7 @@ A fundamental topological defect inherently exerts purely 1D uniaxial \textbf{po
 \theta=\epsilon_{11}+\epsilon_{22}+\epsilon_{33}=\epsilon_{11}(1-2\nu_{vac})
 \end{equation}
 
-By substituting the strict macroscopic Trace-Reversed Cosserat limit mathematically proven above ($\nu_{vac}\equiv2/7$), the volumetric trace of the local metric evaluates exactly to:
+By substituting the strict macroscopic Trace-Reversed Chiral LC limit mathematically proven above ($\nu_{vac}\equiv2/7$), the volumetric trace of the local metric evaluates exactly to:
 
 \begin{equation}
 \theta=\epsilon_{11}\left(1-\frac{4}{7}\right)=\frac{3}{7}\epsilon_{11}
@@ -119,7 +119,7 @@ To find the absolute physical size of the macroscopic universe ($R_H$) predicted
 R_H = (3.455 \times 10^{38}) \times (3.8616 \times 10^{-13}\text{ m}) \approx \mathbf{1.334 \times 10^{26}\text{ meters}}
 \end{equation}
 
-\textbf{$1.334 \times 10^{26}$ meters evaluates exactly to an asymptotic horizon scale of 14.1 billion light-years.} Because the asymptotic Hubble time ($t_H$) is strictly defined by the time required for light to traverse this causal horizon ($t_H = R_H/c$), the framework organically derives the \textbf{Asymptotic Hubble Time of the Universe as exactly 14.1 billion years} (representing an expansion rate of $H_\infty \approx 69.32$ km/s/Mpc). This perfectly bifurcates the modern Hubble Tension bounds, and naturally sits slightly above the chronologically integrated true age of 13.8 billion years due to early matter-dominated deceleration. The parameter-free geometric integration of the 3D discrete Cosserat lattice analytically derives the exact macroscopic scale and age bounds of the observable universe strictly from the mass-gap of the electron and the fine-structure limit.
+\textbf{$1.334 \times 10^{26}$ meters evaluates exactly to an asymptotic horizon scale of 14.1 billion light-years.} Because the asymptotic Hubble time ($t_H$) is strictly defined by the time required for light to traverse this causal horizon ($t_H = R_H/c$), the framework organically derives the \textbf{Asymptotic Hubble Time of the Universe as exactly 14.1 billion years} (representing an expansion rate of $H_\infty \approx 69.32$ km/s/Mpc). This perfectly bifurcates the modern Hubble Tension bounds, and naturally sits slightly above the chronologically integrated true age of 13.8 billion years due to early matter-dominated deceleration. The parameter-free geometric integration of the 3D discrete Chiral LC lattice analytically derives the exact macroscopic scale and age bounds of the observable universe strictly from the mass-gap of the electron and the fine-structure limit.
 
 \section{Microscopic Point-Yield and The Particle Decay Paradox}
 

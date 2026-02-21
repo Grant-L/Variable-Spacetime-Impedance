@@ -2,29 +2,29 @@
 
 In standard fusion science, plasma behavior is modeled almost entirely using "Empirical Scaling Laws." Because orthodox physics relies on classical Magnetohydrodynamics (MHD)---which assumes the vacuum is an empty, linear void---it consistently fails to predict macroscopic plasma instabilities from absolute first principles. When experimental data deviates, physicists are forced to manually curve-fit the data. 
 
-The two most famous, unsolved mysteries in magnetic confinement fusion are \textbf{Anomalous Transport} (confinement degradation) and the \textbf{L-H Transition} (the sudden appearance of an edge transport barrier). The AVE framework perfectly resolves both from absolute first principles using the $60$ kV Bingham Yield limit.
+The two most famous, unsolved mysteries in magnetic confinement fusion are \textbf{Anomalous Transport} (confinement degradation) and the \textbf{L-H Transition} (the sudden appearance of an edge transport barrier). The AVE framework perfectly resolves both from absolute first principles using the $60$ kV Dielectric Saturation Yield limit.
 
-\subsection{Anomalous Transport as Superfluid Leakage}
+\subsection{Anomalous Transport as Zero-Impedance Phase Leakage}
 As heating power is pumped into a Tokamak to raise the temperature ($T$), the energy confinement time ($\tau_E$) inexplicably and catastrophically drops. Standard empirical scaling laws (e.g., ITER IPB98(y,2)) document this degradation as roughly $\tau_E \propto P^{-0.69}$. The hotter the plasma gets, the faster it leaks. Standard physics blames chaotic "micro-turbulence."
 
 In Section 16.1, we proved that a D-T collision at $14.96$ keV natively generates exactly $60.0$ kV of topological stress, violently melting the vacuum metric. However, a plasma is not thermally uniform; it strictly follows a Maxwell-Boltzmann statistical distribution. 
 
 Even if the bulk plasma temperature is only $5$ keV, the "Maxwellian Tail" contains a specific percentage of ions possessing $14.96$ keV or higher. Every time two ions in this high-energy tail collide, they generate $>60$ kV of topological stress. The local vacuum metric momentarily liquefies ($\eta_{eff} \to 0$). The magnetic flux tube confining those specific ions physically snaps, and the high-energy ions slip frictionlessly out of the magnetic bottle.
 
-"Anomalous Heat Transport" is not mysterious micro-turbulence; it is \textbf{Superfluid Leakage}. 
+"Anomalous Heat Transport" is not mysterious micro-turbulence; it is \textbf{Zero-Impedance Phase Leakage}. 
 
 If we mathematically integrate the exact fraction of the Maxwellian tail that exceeds the $60$ kV yield limit as the bulk temperature rises, the \textit{inverse} of this leakage fraction should precisely predict the empirical confinement time ($\tau_E \propto 1/f_{leak}$). As proven computationally in Figure \ref{fig:empirical_reactor_data_audit}, the parameter-free AVE derivation flawlessly tracks the exact shape of the empirical Tokamak degradation curve. We mathematically predict the exact heat loss of a Tokamak using zero curve-fitting parameters.
 
-\subsection{The L-H Transition (Bingham Viscosity Bifurcation)}
+\subsection{The L-H Transition (Dielectric Saturation Mutual Inductance Bifurcation)}
 In 1982, the ASDEX tokamak observed a bizarre phenomenon: if operators pumped enough power into the plasma, the turbulence at the outer edge suddenly and magically suppressed, forming a "Transport Barrier." Confinement time instantly doubled (High-Confinement Mode, or H-mode). After forty years, the exact first-principles trigger mechanism for this sudden bifurcation remains hotly debated in standard physics.
 
-The AVE framework provides the exact mechanical trigger. As the reactor heats up, the $\mathbf{E} \times \mathbf{B}$ fluidic drift velocity at the outer edge of the plasma increases. Because the topological ions physically entrain the hyper-dense $\mathcal{M}_A$ vacuum fluid, this bulk macroscopic rotation creates intense hydrodynamic shear against the stationary vacuum near the physical reactor wall.
+The AVE framework provides the exact mechanical trigger. As the reactor heats up, the $\mathbf{E} \times \mathbf{B}$ inductive drift velocity at the outer edge of the plasma increases. Because the topological ions physically entrain the hyper-dense $\mathcal{M}_A$ vacuum network, this bulk macroscopic rotation creates intense hydrodynamic shear against the stationary vacuum near the physical reactor wall.
 
-When the macroscopic shear stress of the rotating plasma boundary layer natively hits the \textbf{Bingham Yield Stress ($60$ kV)}, the entire outer shell of the vacuum geometrically liquefies into a frictionless superfluid slipstream. 
+When the macroscopic shear stress of the rotating plasma boundary layer natively hits the \textbf{Dielectric Saturation Yield Stress ($60$ kV)}, the entire outer shell of the vacuum geometrically liquefies into a frictionless zero-impedance phase slipstream. 
 
-Standard fluid turbulence (which convects heat out of the core) relies strictly on the structural viscosity of a fluid to transmit eddy currents. Because the vacuum at the edge has melted into a zero-viscosity superfluid ($\eta_{eff} = 0$), the turbulent eddies mechanically decouple from the wall. The heat physically cannot cross the frictionless gap. 
+Standard network turbulence (which convects heat out of the core) relies strictly on the structural mutual inductance of a network to transmit eddy currents. Because the vacuum at the edge has melted into a zero-mutual inductance zero-impedance phase ($\eta_{eff} = 0$), the turbulent eddies mechanically decouple from the wall. The heat physically cannot cross the frictionless gap. 
 
-The L-H transition is mathematically identical to a \textbf{Bingham-Plastic Viscosity Bifurcation}. The Transport Barrier is a self-generated Metric Slipstream. The periodic bursting of this barrier (Edge Localized Modes, or ELMs) is exactly the cyclic thermodynamic re-solidification and subsequent re-melting of the spatial metric. 
+The L-H transition is mathematically identical to a \textbf{Dielectric Saturation-Plastic Mutual Inductance Bifurcation}. The Transport Barrier is a self-generated Metric Slipstream. The periodic bursting of this barrier (Edge Localized Modes, or ELMs) is exactly the cyclic thermodynamic re-solidification and subsequent re-melting of the spatial metric. 
 
 \subsection{Advanced Fuels (D-D and p-B11): The Dielectric Death Sentence}
 Because D-T fusion produces damaging neutron radiation, physicists have relentlessly pursued "aneutronic" advanced fuels like D-D (Deuterium-Deuterium) or p-B11 (Proton-Boron). However, these require significantly higher ignition temperatures: $\sim 50$ keV for D-D, and $\sim 150$ keV for p-B11. For 50 years, these plasmas have suffered from inexplicable, catastrophic radiation losses (Bremsstrahlung) that poison the burn before it can ignite.
@@ -43,6 +43,6 @@ Brute-force thermal heating of advanced fuels physically tears the universe. The
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=1.0\textwidth]{empirical_reactor_data_audit.png}
-    \caption{\textbf{Empirical Reactor Data vs. AVE Limits.} \textbf{Left:} Anomalous heat transport perfectly matches the AVE integration of the Maxwell-Boltzmann tail exceeding the 60 kV (14.96 keV) metric yield limit, flawlessly reproducing Tokamak degradation data without curve fitting. \textbf{Center:} The L-H Transition (H-Mode). When the $E \times B$ edge shear hits the 60 kV topological threshold, a Superfluid Boundary Layer forms, acting as a perfect thermal thermos. \textbf{Right:} Advanced fuels require kinetic energies that violently exceed the 511 kV Dielectric Snap limit. D-D and p-B11 inherently tear the vacuum, synthesizing antimatter and thermodynamically poisoning the burn.}
+    \caption{\textbf{Empirical Reactor Data vs. AVE Limits.} \textbf{Left:} Anomalous heat transport perfectly matches the AVE integration of the Maxwell-Boltzmann tail exceeding the 60 kV (14.96 keV) metric yield limit, flawlessly reproducing Tokamak degradation data without curve fitting. \textbf{Center:} The L-H Transition (H-Mode). When the $E \times B$ edge shear hits the 60 kV topological threshold, a Zero-Impedance Phase Boundary Layer forms, acting as a perfect thermal thermos. \textbf{Right:} Advanced fuels require kinetic energies that violently exceed the 511 kV Dielectric Snap limit. D-D and p-B11 inherently tear the vacuum, synthesizing antimatter and thermodynamically poisoning the burn.}
     \label{fig:empirical_reactor_data_audit}
 \end{figure}

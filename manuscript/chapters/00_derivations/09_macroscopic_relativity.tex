@@ -76,6 +76,23 @@ n(r) = 1 + \left(\frac{2}{7}\right)\left(\frac{7GM}{c^2r}\right) = 1 + \frac{2GM
 
 The effective Refractive Index ($n$) perceived by a photon is therefore mathematically identical to the spatial transverse trace of the Gordon optical metric.
 
+\subsection{Achromatic Impedance Matching}
+\label{sec:achromatic_matching}
+A critical phenomenon of astrophysical gravity is that it behaves as a perfectly transparent lens. If gravity is an optical dense metric where the speed of light slows down locally ($c' = 1/\sqrt{\epsilon' \mu'} = c/n(r)$), classical optics dictates that light should suffer partial reflection when crossing an impedance gradient ($Z_1 \neq Z_2$). 
+
+In the AVE framework, this is resolved because the geometric polarization of the LC network scales its dual reactive components symmetrically. The absolute values of local magnetic permeability ($\mu$) and dielectric permittivity ($\epsilon$) both scale directly and proportionately with the local scalar strain: 
+\begin{equation}
+    \mu' = n(r)\mu_0 \quad \text{and} \quad \epsilon' = n(r)\epsilon_0
+\end{equation}
+
+Consequently, while the local phase velocity is reduced ($c' = 1/\sqrt{n^2\mu_0 \epsilon_0} = c/n(r)$), the local characteristic transverse impedance of the vacuum \textbf{remains strictly invariant}:
+\begin{equation}
+    Z_0' = \sqrt{\frac{\mu'}{\epsilon'}} = \sqrt{\frac{n(r)\mu_0}{n(r)\epsilon_0}} = \sqrt{\frac{\mu_0}{\epsilon_0}} \equiv Z_0 \approx 376.73\ \Omega
+\end{equation}
+
+Because the transverse impedance ratio is perfectly preserved across all gravitational gradients, the spatial vacuum operates as an \textbf{Achromatic Impedance-Matched Lens}. This rigorously guarantees that propagating transverse light seamlessly diffracts and bends through deep gravity wells without suffering chromatic dispersion, internal scattering, or boundary back-reflection.
+
+
 \subsection{Verification: The Einstein Lensing Deflection}
 To falsify this Optical Metric, we performed a numerical ray-tracing simulation of a photon passing the Sun. Integrating Snell's Law through this specific refractive gradient yields a total deflection angle of:
 \begin{equation}
@@ -89,10 +106,10 @@ Standard 19th-century aether models were challenged by the Cauchy Implosion Para
 enforcing purely transverse wave limits natively required a negative bulk modulus ($K_{cauchy}=
 -4/3G_{vac}$), implying the universe would thermodynamically implode.
 
-The $\mathcal{M}_{A}$ substrate resolves this via Cosserat micropolar elasticity. As structurally established
+The $\mathcal{M}_{A}$ substrate resolves this via its fundamental \textbf{LC Network Topology}. As structurally established
 in Chapter 4, the trace-reversed equilibrium of the non-affine amorphous substrate rigidly
-locks the macroscopic bulk modulus at strictly double the shear modulus ($K_{vac}\equiv2G_{vac}$).
-This massive positive bulk modulus structurally guarantees that the spatial condensate is
+locks the macroscopic bulk impedance to strictly double the transverse shear impedance ($K_{vac}\equiv2G_{vac}$).
+This massive positive bulk resistance structurally guarantees that the spatial condensate is
 highly incompressible and thermodynamically stable against gravitational collapse.
 
 \section{The Event Horizon as Dielectric Rupture}
@@ -102,17 +119,17 @@ The Event Horizon is classically defined as a coordinate singularity. In the AVE
 \begin{equation}
     \text{Strain} = \frac{2GM}{c^2 R_{rupture}} \equiv 1.0 \implies R_{rupture} = \frac{2GM}{c^2}
 \end{equation}
-This mathematically identities the Schwarzschild Radius not as a point of infinite curvature, but as the physical radius where the vacuum lattice exceeds its elastic yield point and liquefies into a continuous plasma.
+This mathematically identities the Schwarzschild Radius not as a point of infinite curvature, but as the physical radius where the vacuum lattice exceeds its dielectric saturation limit and undergoes absolute impedance rupture.
 
-\section{Gravitomagnetism: Frame Dragging as Fluid Viscosity}
+\section{Gravitomagnetism: Frame Dragging as Mutual Inductance}
 \label{sec:gravitomagnetism_viscosity}
-In standard General Relativity, a rotating massive body drags the geometric fabric of spacetime along with it—a phenomenon known as the Lense-Thirring effect (Gravitomagnetism). In the AVE framework, because the physical vacuum operates dynamically as a Cosserat superfluid ($\mathcal{M}_A$), this effect is analytically identical to classical Newtonian \textbf{Shear Viscosity}.
+In standard General Relativity, a rotating massive body drags the geometric fabric of spacetime along with it—a phenomenon known as the Lense-Thirring effect (Gravitomagnetism). In the AVE framework, because the physical vacuum operates dynamically as an LC network ($\mathcal{M}_A$), this effect is analytically identical to classical \textbf{Macroscopic Mutual Inductance}.
 
-As a massive macroscopic boundary (a spinning planet) rotates, its surface viscously grips the adjacent spatial metric layer. Navier-Stokes momentum transport continuous across the lattice, inducing a localized, steady-state Couette-flow vortex in the surrounding vacuum. For a 2D continuous fluid plane (an equatorial slice), the exact steady-state angular velocity of the dragged fluid natively decays as a strict inverse square ($\Omega_{\text{drag}} \propto 1/r^2$). This matches the rigorously validated weak-field General Relativistic prediction ($\Omega_{LT}$) flawlessly, securely deriving Gravitomagnetism as standard macroscopic hydrodynamic drag without invoking additional geometrical abstractions.
+As a massive macroscopic boundary (a spinning planet) rotates, its massive circulating current ($I_{mass}$) couples to the adjacent spatial metric layer via mutual inductance ($M_{12}$). Macroscopic inductive momentum transport continuous across the lattice, inducing a localized, steady-state magnetic bias field in the surrounding vacuum. For a 2D equatorial slice, the exact steady-state induced rotational vector potential of the LC lattice natively decays as a strict inverse square ($\Omega_{\text{induced}} \propto 1/r^2$). This matches the rigorously validated weak-field General Relativistic prediction ($\Omega_{LT}$) flawlessly, securely deriving Gravitomagnetism as standard macroscopic mutual inductance without invoking additional geometrical abstractions.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=1.0\textwidth]{lense_thirring_fluid_drag.png}
-    \caption{\textbf{Gravitomagnetism as Fluid Drag.} The Lense-Thirring frame-dragging effect is identically modeled as the Navier-Stokes viscous shear of the $\mathcal{M}_A$ substrate. A rotating massive body mechanically grips the adjacent vacuum lattice; due to the structural bulk viscosity ($\mu_{vac}$), angular momentum diffuses radially outward, forming a steady-state Couette flow vortex that perfectly replicates the General Relativistic $1/r^2$ decay field.}
+    \caption{\textbf{Gravitomagnetism as Mutual Inductance.} The Lense-Thirring frame-dragging effect is identically modeled as the mutual inductance of the $\mathcal{M}_A$ LC substrate. A rotating massive body inductively biases the adjacent vacuum lattice; due to the structural macroscopic inductance ($\mu_{vac}$), angular momentum diffuses radially outward, forming a steady-state magnetic bias field that perfectly replicates the General Relativistic $1/r^2$ decay field.}
     \label{fig:lense_thirring_fluid_drag}
 \end{figure}
