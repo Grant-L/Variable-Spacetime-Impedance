@@ -31,7 +31,7 @@ Variable-Spacetime-Impedance/
 │   └── sim_outputs/
 │
 ├── build/
-│   └── main.pdf, .aux, .log, .toc
+│   └── main_core.pdf, .aux, .log, .toc (main manuscript build)
 │
 ├── data/
 │   └── .gitkeep
@@ -55,7 +55,7 @@ Variable-Spacetime-Impedance/
 │   │   ├── 02_autoresonant_birefringence/
 │   │   ├── 03_lc_lattice_analog/
 │   │   └── 04_superfluid_helium/
-│   └── main/ (build output)
+│   └── main/ (build output directory)
 │
 ├── manuscript/
 │   ├── main.tex
@@ -133,20 +133,31 @@ Variable-Spacetime-Impedance/
 │   │   └── 00_title.tex
 │   ├── structure/
 │   │   └── commands.tex
+│   ├── build/ (build output directory)
+│   │   └── main_knots.pdf, .aux, .log, .toc
 │   └── chapters/
-│       ├── 001_hydrogen/ … 180_unoctnilium/
+│       ├── 001_hydrogen/ … 120_unbinilium/ (120 element folders)
 │       │   ├── simulations/
+│       │   │   ├── plot_xx.py (visualization scripts)
+│       │   │   └── outputs/ (strain field PNGs)
 │       │   ├── _manifest.tex
 │       │   └── 01_xx.tex (element symbol)
-│       └── (180 element folders total)
+│       └── (Elements 121-180 commented out in main.tex)
 │
 ├── scripts/
+│   ├── render_n2_elements.py (renders Nitrogen, Oxygen, Fluorine, Neon)
 │   ├── verify_universe.py
 │   ├── verify_cosmology.py
 │   ├── verify_fundamental_forces.py
 │   ├── verify_matter_sector.py
 │   ├── verify_rheology.py
-│   └── simulate_chapter_12.py
+│   ├── verify_proton_mass.py
+│   ├── verify_golden_toros.py
+│   ├── verify_alpha_binding_topology.py
+│   ├── generate_figures.py
+│   ├── simulate_chapter_12.py
+│   ├── simulate_imd_spectroscopy.py
+│   └── simulate_lattice_relaxation.py
 │
 ├── simulations/
 │   ├── Archive/
@@ -162,10 +173,14 @@ Variable-Spacetime-Impedance/
 │       │   ├── geometry.py
 │       │   └── conversion.py
 │       ├── matter/
+│       │   ├── atoms.py (HydrogenAtom, HeliumAtom, LithiumAtom, BerylliumAtom,
+│       │   │             BoronAtom, CarbonAtom, NitrogenAtom, OxygenAtom,
+│       │   │             FluorineAtom, NeonAtom)
 │       │   ├── leptons.py
 │       │   ├── baryons.py
 │       │   ├── neutrinos.py
-│       │   └── bosons.py
+│       │   ├── bosons.py
+│       │   └── solitons.py (TopologicalSoliton base class)
 │       ├── cosmology/
 │       │   ├── gravity.py
 │       │   └── expansion.py
@@ -175,6 +190,8 @@ Variable-Spacetime-Impedance/
 │       ├── mechanics/
 │       │   ├── moduli.py
 │       │   └── rheology.py
+│       ├── visualizations/
+│       │   └── plot_periodic.py
 │       └── utils/
 │
 └── tests/
