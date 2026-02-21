@@ -3,24 +3,22 @@ Core physical primitives and invariant constants for the
 Applied Vacuum Electrodynamics (AVE) Framework.
 """
 
-import scipy.constants as const
-from math import pi
-
 import numpy as np
+from math import pi
 
 # ---------------------------------------------------------
 # Electromagnetic Constants derived from standard physics
 # ---------------------------------------------------------
-C_0 = const.c                           # Speed of light in vacuum [m/s]
-MU_0 = const.mu_0                       # Vacuum permeability (Macroscopic Mutual Inductance) [H/m or kg*m/C^2]
-EPSILON_0 = const.epsilon_0             # Vacuum permittivity (Macroscopic Compliance) [F/m or C^2/(N*m^2)]
+C_0 = 299792458.0                       # Speed of light in vacuum [m/s]
+MU_0 = 1.25663706e-06                   # Vacuum permeability (4*pi*10^-7) [H/m]
+EPSILON_0 = 8.85418782e-12              # Vacuum permittivity (1/(mu_0*c^2)) [F/m]
 Z_0 = np.sqrt(MU_0 / EPSILON_0)         # Characteristic impedance [Ohms] (approx 376.73)
 
 # ---------------------------------------------------------
 # AVE Specific Topological Constants
 # ---------------------------------------------------------
-G = const.G                             # Newtonian Gravitational Constant [m^3/(kg*s^2)]
-ALPHA = const.alpha                     # Fine-structure constant (Porosity factor)
+G = 6.67430e-11                         # Newtonian Gravitational Constant [m^3/(kg*s^2)]
+ALPHA = 7.29735256e-3                   # Fine-structure constant (Porosity factor)
 
 # Topological Conversion Constant (xi_topo)
 # Maps Electrical Impedance to Mechanical Acoustic Impedance

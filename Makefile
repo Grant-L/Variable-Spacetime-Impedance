@@ -33,7 +33,9 @@ all: verify sims pdf
 # 1. Physics Verification (The "Simulate to Verify" Protocol)
 # -----------------------------------------------------------------------------
 verify:
-	@echo "[Verify] Running FDTD LC Network solvers..."
+	@echo "[Verify] Running DAG Anti-Cheat Scan..."
+	$(PYTHON) $(SCRIPT_DIR)/verify_universe.py
+	@echo "\n[Verify] Running FDTD LC Network solvers..."
 	$(PYTHON) $(SCRIPT_DIR)/visualize_impedance_rupture.py
 	@echo "\n[Verify] Running Macroscopic Mutual Inductance bounds..."
 	$(PYTHON) $(SCRIPT_DIR)/simulate_mutual_inductance.py
