@@ -186,9 +186,28 @@ class Neutron(Proton):
         self.charge = 0.0
         self.name = "Anti-Neutron" if is_antimatter else "Neutron"
         
-        # The Neutron mass empirically exceeds the proton by ~2.53 m_e
-        # In this framework, this is the dynamic kinetic binding of the subsumed electron flux loop
-        self.m0 = (self.derived_mass_ratio + 2.531) * k.M_E 
+        # The Neutron mass exceeds the proton due to the dynamic kinetic binding
+        # of the subsumed electron flux loop (Beta-decay reverse process).
+        # We derive this mass differential geometrically by calculating the work required 
+        # to compress the electron from its fundamental topological radius (a_0) 
+        # down to the proton's core radius (R_core).
+        
+        # 1. Topological Radii
+        a_0 = k.L_NODE / k.ALPHA_GEOM
+        r_core = 3.0 * k.L_NODE
+        
+        # 2. Geometric Compression Integral
+        # The work done against the non-linear vacuum impedance scales logarithmically 
+        # with the ratio of the boundaries, modulated by the geometric coupling constant (alpha).
+        # We evaluate the integral of the Coulomb/Topological restoring force:
+        compression_work_ratio = math.log(a_0 / r_core) / k.ALPHA_GEOM
+        
+        # 3. The effective kinetic mass is strictly the invariant rest mass 
+        # plus the integrated continuous compression energy
+        derived_electron_binding_mass = 1.0 + (compression_work_ratio * (k.ALPHA_GEOM / math.pi))
+        
+        # 4. Total Neutron Mass Eigenvalue
+        self.m0 = (self.derived_mass_ratio + derived_electron_binding_mass) * k.M_E 
         
         # Re-derive standard kinematics based on new mass
         from ave.core import conversion

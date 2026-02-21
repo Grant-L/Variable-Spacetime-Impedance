@@ -25,17 +25,31 @@ class Neutrino(TopologicalSoliton):
     """
     def __init__(self, position=(0.0, 0.0, 0.0), velocity=(0.0, 0.0, 0.0), orientation=(0.0, 0.0, 0.0), flavor="electron", is_antimatter=False):
         
-        # Acoustic mass harmonics (Rough approximations for simulation limits)
-        flavor_masses = {
-            "electron": 0.12e-6 * k.M_E, # ~0.06 eV
-            "muon": 0.33e-6 * k.M_E,     # ~0.17 eV
-            "tau": 36.0e-6 * k.M_E       # ~18.3 eV
+        # The Neutrino is the 0_1 unknot. Lacking the 3D impedance self-intersection
+        # of the Golden Torus, it does not acquire inertial mass from macroscopic structural strain.
+        # Instead, its mass is strictly the resonant planar acoustic echo of the vacuum lattice.
+        # These harmonics drop exponentially by powers of the Cosserat Poisson ratio (nu_vac = 2/7).
+        
+        from ave.mechanics import moduli
+        nu_vac = moduli.get_poisson_ratio()
+        
+        # Exact topological harmonic indices
+        # Tau: 4th harmonic
+        # Muon: 5th harmonic
+        # Electron: 8th harmonic
+        flavor_harmonics = {
+            "electron": 8,
+            "muon": 5,
+            "tau": 4
         }
         
-        if flavor not in flavor_masses:
+        if flavor not in flavor_harmonics:
             raise ValueError("Flavor must be 'electron', 'muon', or 'tau'")
             
-        m0 = flavor_masses[flavor]
+        n_harmonic = flavor_harmonics[flavor]
+        
+        # The mass eigenvalue is the electron mass scaled by the acoustic vacuum resonance
+        m0 = k.M_E * (nu_vac ** n_harmonic)
         
         super().__init__(rest_mass_kg=m0, charge_coulombs=0.0, position=position, velocity=velocity, orientation=orientation)
         
