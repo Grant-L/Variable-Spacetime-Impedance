@@ -1,9 +1,10 @@
 """
 AVE Core Constants
 Implements the rigorously closed Four-Parameter generative root.
-No external empirical physics libraries (e.g., scipy.constants) are allowed 
+No external empirical physics libraries (e.g., scipy.constants) are allowed
 to smuggle downstream variables. Everything is derived algebraically.
 """
+
 import math
 
 # ==========================================
@@ -11,11 +12,11 @@ import math
 # c, hbar, and e_charge are exact defined values in the 2019 SI redefinition.
 # m_e and G are the only two measured physical properties of the manifold.
 # ==========================================
-C = 299792458.0                  # [m/s] Speed of Light (Exact SI)
-H_BAR = 1.054571817e-34          # [J*s] Reduced Planck Constant (Exact SI)
-E_CHARGE = 1.602176634e-19       # [C] Elementary Charge (Exact SI anchor)
-M_E = 9.1093837015e-31           # [kg] Electron Rest Mass (CODATA)
-G = 6.67430e-11                  # [m^3/kg*s^2] Macroscopic Gravity (CODATA)
+C = 299792458.0  # [m/s] Speed of Light (Exact SI)
+H_BAR = 1.054571817e-34  # [J*s] Reduced Planck Constant (Exact SI)
+E_CHARGE = 1.602176634e-19  # [C] Elementary Charge (Exact SI anchor)
+M_E = 9.1093837015e-31  # [kg] Electron Rest Mass (CODATA)
+G = 6.67430e-11  # [m^3/kg*s^2] Macroscopic Gravity (CODATA)
 
 # ==========================================
 # 2. PURE GEOMETRY (The 3_1 Golden Torus)

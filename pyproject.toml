@@ -1,2 +1,28 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ave"
+version = "0.1.0"
+description = "Mathematical Framework for Applied Vacuum Engineering (AVE)"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "numpy>=1.24.0",
+    "scipy>=1.10.0",
+    "networkx>=3.0",
+    "matplotlib>=3.7.0",
+    "pandas>=2.0.0",
+    "jupyter>=1.0.0"
+]
+
 [tool.pyright]
 extraPaths = ["src"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
