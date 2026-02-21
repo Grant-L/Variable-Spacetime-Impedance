@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 # Add src directory to path if running as script (before imports)
-src_dir = Path(__file__).parent.parent.parent.parent
+src_dir = Path(__file__).resolve().parent.parent.parent
 if str(src_dir) not in sys.path:
     sys.path.insert(0, str(src_dir))
 
@@ -27,9 +27,23 @@ def calculate_kinematic_viscosity():
     return k.NU_VAC
 
 def calculate_bingham_yield_stress():
-    """Calculates the macroscopic shear stress required to liquefy the vacuum."""
-    V_snap = (k.M_E * k.C**2) / k.E_CHARGE
-    V_yield = V_snap / 7.0
-    F_yield = V_yield * k.XI_TOPO
-    area_node = k.L_NODE**2
-    return F_yield / area_node
+    """
+    Calculates the macroscopic shear stress required to liquefy the vacuum.
+    Derived as the scalar sum of the 6^3_2 tensor crossings evaluated 
+    over the macroscopic bulk energy density.
+    """
+    from ave.matter.baryons import BorromeanTensorSolver
+    
+    # 1. Macroscopic Baseline Energy Density (J/m^3 or Pa)
+    energy_density = k.RHO_BULK * (k.C**2)
+    
+    # 2. Integrate the 6^3_2 Topological Crossings
+    solver = BorromeanTensorSolver(grid_resolution=60)
+    v_single = solver.evaluate_tensor_crossing_volume()
+    n_crossings = 6.0
+    tensor_scalar = n_crossings * v_single
+    
+    # 3. Apply geometric porosity (alpha) to yield the macroscopic plastic limit
+    tau_yield = energy_density * tensor_scalar * k.ALPHA_GEOM
+    
+    return tau_yield

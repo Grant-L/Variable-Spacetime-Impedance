@@ -68,6 +68,22 @@ class BorromeanTensorSolver:
         proton_mass_me = I_scalar / (1.0 - tensor_multiplier)
         return {"proton_mass_me": proton_mass_me}
 
+def calculate_strong_force_tension():
+    """
+    Derives the macroscopic strong force string tension (F_confinement)
+    from the geometric amplified baseline continuous string tension (T_EM).
+    """
+    # 1. Topological loops (3 for Borromean)
+    n_loops = 3.0
+    
+    # 2. Inductive mass ratio (m_p / m_e)
+    solver = BorromeanTensorSolver(grid_resolution=60)
+    mass_ratio = solver.derive_proton_mass_eigenvalue()['proton_mass_me']
+    
+    # F_confinement = 3 * (m_p / m_e) * alpha^-1 * T_EM
+    tension = n_loops * mass_ratio * (1.0 / k.ALPHA_GEOM) * k.T_EM
+    return tension
+
 
 # =======================================================================
 # OOP DYNAMIC BARYON INSTANTIATIONS

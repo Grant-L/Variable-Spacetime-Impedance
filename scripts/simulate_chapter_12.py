@@ -56,7 +56,7 @@ def run_transmission_test():
     else:
         velocity = 0.0
         
-    c_theory = const.c
+    c_theory = const.C
     
     # Calculate error margin
     error = abs(velocity - c_theory) / c_theory

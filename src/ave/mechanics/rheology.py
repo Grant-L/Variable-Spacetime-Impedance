@@ -3,7 +3,9 @@ AVE Rheology
 Implements Bingham-Plastic non-Newtonian dynamics, Sagnac-RLVE, and yield limits.
 Source: Chapter 4 (Macroscopic Yield) & Chapter 11 (Continuum Fluidics)
 """
+import sys
 import math
+from pathlib import Path
 
 # Add src directory to path if running as script (before imports)
 src_dir = Path(__file__).parent.parent.parent

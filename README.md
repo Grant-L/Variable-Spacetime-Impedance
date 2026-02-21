@@ -1,36 +1,24 @@
-# Variable Spacetime Impedance
+# Variable Spacetime Impedance / Applied Vacuum Engineering (AVE)
 
-![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
+![Build Status](https://img.shields.io/badge/run-protocols-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
-## Description
+## Overview
 
-Variable Spacetime Impedance is a research project that explores the concepts of spacetime and impedance in variable conditions. This repository contains various implementations and documentation surrounding these principles.
+Theoretical physics has reached a juncture where the mathematical complexity of our models has outpaced our mechanical understanding. This text and repository proposes a return to hardware: treating the vacuum not as a geometric abstraction, but as a **Discrete Amorphous Manifold ($M_A$)**.
 
-## Features
-- Detailed explanations of spacetime concepts.
-- Various implementations demonstrating impedance variability.
-- Comprehensive documentation and examples.
+The central thesis of this work is that the vacuum is a physical substrate governed by finite inductive and capacitive densities. By redefining the fundamental constants of nature as the bulk engineering properties of this substrate, we move from a descriptive physics to an operational one.
 
-## Installation
+### Project Components
+- **Theoretical Physics Engine**: Python-based simulators validating fundamental forces, cosmological dynamics, and condensate rheology.
+- **Dynamic Simulations**: Time-domain solvers and spacetime circuit analysis tools.
+- **LaTeX Manuscripts**: Full source code for the textbook, *Experimental Protocols*, and the *Periodic Table of Knots*.
 
-To install the required dependencies, run:
+---
+
+## 🚀 Installation & Setup
+
+To install the required Python dependencies, run:
 ```bash
 pip install -r requirements.txt
-```
 
-## Usage
-
-To utilize the features of this repository, you can run the main script as follows:
-```bash
-python main.py
-```
-
-## Documentation
-For complete documentation, please visit [Documentation Link].
-
-## Contributing
-Contributions are welcome! Please read the [CONTRIBUTING.md](CONTRIBUTING.md) for more information.
-
-## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

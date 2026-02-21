@@ -71,6 +71,13 @@ class Neutrino(TopologicalSoliton):
         else:
             return False, "Evanescent Wave / Anderson Localization (omega^2 < 0)"
 
+def check_chirality_permission(chirality_str):
+    """
+    Module-level helper to evaluate the Chiral Exclusion Principle.
+    """
+    if chirality_str.lower() == "left":
+        return True
+    return False
 
 if __name__ == "__main__":
     print("==================================================")
