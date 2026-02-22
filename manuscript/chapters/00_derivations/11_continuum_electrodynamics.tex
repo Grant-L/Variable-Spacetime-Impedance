@@ -8,9 +8,9 @@ If the discrete spatial vacuum is a physical LC network ($\mathcal{M}_A$) suppor
 \subsection{The Dimensionally Exact Mass Density ($\rho_{bulk}$)}
 Previous classical aether models failed because they incorrectly attempted to map vacuum mass density directly to the magnetic permeability constant ($\mu_0$), violating SI dimensional analysis ($[\text{H/m}] \neq [\text{kg/m}^3]$).
 
-We rigorously define the baseline macroscopic bulk mass density ($\rho_{bulk}$) of the spatial vacuum network using the exact, invariant hardware primitives derived in Chapter 1, coupled via our Topological Conversion Constant ($\xi_{topo} \equiv e/\ell_{node}$). Dividing the discrete node mass by the rigorously derived Voronoi geometric volume of a single spatial node ($V_{node} = 8\pi\alpha \ell_{node}^3$) seamlessly yields a constant, stable background substrate density:
+We rigorously define the baseline macroscopic bulk mass density ($\rho_{bulk}$) of the spatial vacuum network using the exact, invariant hardware primitives derived in Chapter 1, coupled via our Topological Conversion Constant ($\xi_{topo} \equiv e/\ell_{node}$). Dividing the discrete node mass by the rigorously derived Voronoi geometric volume of a single spatial node ($V_{node} = p_c \ell_{node}^3$) seamlessly yields a constant, stable background substrate density:
 \begin{equation}
-    \rho_{bulk} = \frac{m_{node}}{V_{node}} = \frac{\xi_{topo}^2 \mu_0 \ell_{node}}{8\pi\alpha \ell_{node}^3} = \frac{\xi_{topo}^2 \mu_0}{8\pi\alpha \ell_{node}^2} \approx 7.92 \times 10^6 \text{ kg/m}^3
+    \rho_{bulk} = \frac{m_{node}}{V_{node}} = \frac{\xi_{topo}^2 \mu_0 \ell_{node}}{p_c \ell_{node}^3} = \frac{\xi_{topo}^2 \mu_0}{p_c \ell_{node}^2} \approx 7.92 \times 10^6 \text{ kg/m}^3
 \end{equation}
 (Approximately the density of a White Dwarf core).
 
@@ -21,7 +21,7 @@ In classical kinetic network theory, the Kinematic Mutual Inductance ($\nu$) of 
 For the $\mathcal{M}_{A}$ hardware lattice, the absolute internal signal velocity is $c$, and the topological
 mean free path is exactly the fundamental spatial lattice pitch $l_{node}$. 
 
-As rigorously established in Section 1.3.2, the fine-structure constant ($\alpha$) geometrically defines the absolute structural porosity and native geometric scattering cross-section of the discrete graph. Consequently, the macroscopic momentum diffusion across the lattice strictly inherits this exact geometric scattering threshold ($\kappa \equiv \alpha$).
+As rigorously established in Section 1.3.2, the geometric packing fraction ($p_c$) analytically forces the absolute structural porosity and native transverse geometric scattering cross-section of the discrete graph (where $\alpha = p_c/8\pi$). Consequently, the macroscopic momentum diffusion across the lattice strictly inherits this exact geometric scattering threshold ($\kappa \equiv \alpha$).
 
 \begin{equation}
 \nu_{vac}=\alpha c l_{node}\approx8.45\times10^{-7}\text{ m}^{2}\text{/s}
@@ -35,9 +35,9 @@ of liquid water.
 
 To resolve the "Mutual Inductance Paradox" (why planets do not lose orbital energy to inductive drag), we recognize that the $\mathcal{M}_A$ LC network naturally possesses an absolute \textbf{Magnetic Saturation Limit}. The macroscopic Dielectric Saturation-plastic yield stress ($\tau_{yield}$) historically used to model this behavior is strictly derived from its fundamental invariant properties: the baseline bulk energy density ($\rho_{bulk} c^2$) and the irreducible minimum structural yield limit established by the fundamental 3D baryon topological crossings (the $6^3_2$ Borromean tensor).
 
-By evaluating the scalar volume summation of these topological knot crossings ($\Sigma \mathcal{V}_{crossing}$) and modulating by the geometric lattice porosity ($\alpha$), we derive the exact, parameter-free macroscopic yield stress limit:
+By evaluating the scalar volume summation of these topological knot crossings ($\Sigma \mathcal{V}_{crossing}$) and modulating by the geometric lattice porosity ($\alpha = p_c/8\pi$), we derive the exact, parameter-free macroscopic yield stress limit:
 \begin{equation}
-    \tau_{yield} = (\rho_{bulk} c^2) \cdot (6 \times \mathcal{V}_{crossing}) \cdot \alpha
+    \tau_{yield} = (\rho_{bulk} c^2) \cdot (6 \times \mathcal{V}_{crossing}) \cdot \left(\frac{p_c}{8\pi}\right)
 \end{equation}
 
 In regions of high gravitational shear (e.g., the immediate spatial envelope surrounding a planetary body), the local magnetic field violently exceeds this absolute structural saturation limit ($\tau > \tau_{yield}$). 

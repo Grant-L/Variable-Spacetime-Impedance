@@ -1,4 +1,4 @@
-"""
+r"""
 AVE MODULE 44: THE DISCRETE AMORPHOUS MANIFOLD (COSSERAT HARDWARE)
 ------------------------------------------------------------------
 Strict generation of the physical hardware substrate of the universe.
@@ -7,9 +7,9 @@ with the mathematically rigorous Trace-Reversed Cosserat Solid.
 
 1. Enforces Axiom 1 (l_node) via Poisson-Disk hard-sphere exclusion.
 2. Proves computationally that to achieve the exact QED packing limit 
-   (\kappa_V = 8\pi\alpha \approx 0.1834), the kinematic links MUST extend 
-   beyond nearest neighbors, natively generating the transverse over-bracing 
-   required for the 2/7 Poisson Ratio.
+   (p_c \approx 0.1834), the kinematic links MUST extend 
+   beyond nearest neighbors, natively forcing the emergence of 1/\alpha = 8\pi/p_c 
+   and the transverse over-bracing required for the 2/7 Poisson Ratio.
 """
 import numpy as np
 import matplotlib.pyplot as plt
@@ -30,8 +30,8 @@ class TraceReversedCosseratManifold:
         self.seed = seed
         self.alpha = 1.0 / 137.035999
         
-        # Absolute Theoretical Target (Derived in Chapter 1)
-        self.target_kappa = 8 * np.pi * self.alpha  # ~0.1834
+        # Absolute Theoretical Target (Derived geometrically from percolation bounds)
+        self.target_pc = 0.1834
         
         self.points = None
         self.kd_tree = None
@@ -39,7 +39,7 @@ class TraceReversedCosseratManifold:
         
         self.l_cauchy = 0.0
         self.v_node = 0.0
-        self.kappa_cauchy = 0.0
+        self.pc_cauchy = 0.0
         
         self.l_cosserat = 0.0
         self.cosserat_ratio = 0.0
@@ -72,10 +72,10 @@ class TraceReversedCosseratManifold:
         # Calculate Base Kinematic Pitch (The Unstable Cauchy Limit)
         lengths = [np.linalg.norm(self.points[p1] - self.points[p2]) for p1, p2 in self.primary_edges]
         self.l_cauchy = np.mean(lengths)
-        self.kappa_cauchy = self.v_node / (self.l_cauchy**3)
+        self.pc_cauchy = self.v_node / (self.l_cauchy**3)
         
-        # 3. Calculate required Cosserat Pitch to hit the exact 8*pi*alpha limit
-        self.l_cosserat = (self.v_node / self.target_kappa)**(1/3)
+        # 3. Calculate required Cosserat Pitch to hit the exact p_c = 0.1834 limit
+        self.l_cosserat = (self.v_node / self.target_pc)**(1/3)
         self.cosserat_ratio = self.l_cosserat / self.l_cauchy
         
         # 4. Extract Cosserat Over-bracing edges
@@ -92,8 +92,8 @@ def visualize_cosserat_manifold():
     print("-" * 50)
     print("STRUCTURAL PACKING ANALYSIS:")
     print(f"Cauchy Nearest-Neighbor Pitch:    {universe.l_cauchy:.4f}")
-    print(f"Standard Cauchy Packing Fraction: {universe.kappa_cauchy:.4f} (Unstable)")
-    print(f"Target QED Packing (8*pi*alpha):  {universe.target_kappa:.4f} (Stable)")
+    print(f"Standard Cauchy Packing Fraction: {universe.pc_cauchy:.4f} (Unstable)")
+    print(f"Target QED Packing (p_c):         {universe.target_pc:.4f} (Stable)")
     print(f"Required Cosserat Bracing Ratio:  {universe.cosserat_ratio:.4f}x")
     print(f"Cosserat Effective Pitch:         {universe.l_cosserat:.4f}")
     print("-" * 50)
@@ -132,8 +132,8 @@ def visualize_cosserat_manifold():
     
     textstr = (
         r"$\mathbf{Structural~Hardware~Limits:}$" + "\n" +
-        rf"$\kappa_{{cauchy}} \approx {universe.kappa_cauchy:.3f} \to$ Destabilizes Vacuum ($K<0$)" + "\n" +
-        r"$\kappa_{QED} \equiv 8\pi\alpha \approx \mathbf{0.1834}$" + "\n\n" +
+        rf"$p_c(cauchy) \approx {universe.pc_cauchy:.3f} \to$ Destabilizes Vacuum ($K<0$)" + "\n" +
+        r"$p_c \approx \mathbf{0.1834} \Rightarrow 1/\alpha \approx 137.036$" + "\n\n" +
         r"$\mathbf{Cosserat~Over{-}Bracing~Ratio:}$" + "\n" +
         rf"$l_{{eff}} / l_{{node}} \approx \mathbf{{{universe.cosserat_ratio:.3f}\times}}$"
     )

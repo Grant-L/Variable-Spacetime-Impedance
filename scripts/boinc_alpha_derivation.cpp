@@ -9,10 +9,15 @@
 #include <algorithm>
 #include <chrono>
 #include <cmath>
+#include <fstream> // Added for file output
 #include <iostream>
 #include <queue>
 #include <random>
+#include <string>
 #include <vector>
+
+// BOINC Application API
+#include "boinc_api.h"
 
 struct Node3D {
   double x, y, z;
@@ -27,8 +32,8 @@ private:
       directed_edges; // directed graph for pebble flow
 
 public:
-  PebbleGame3D(int N, double box_size) : num_nodes(N) {
-    std::mt19937 rng(42); // deterministic seed for chunk reproducibility
+  PebbleGame3D(int N, double box_size, unsigned int seed) : num_nodes(N) {
+    std::mt19937 rng(seed); // deterministic seed for chunk reproducibility
     std::uniform_real_distribution<double> dist(0.0, box_size);
 
     lattice.reserve(N);
@@ -145,16 +150,14 @@ public:
   }
 };
 
-void process_boinc_workunit(int workunit_id, int N, double L) {
-  std::cout << "[BOINC CLIENT] Initializing AVE Rigidity Percolation Workunit #"
-            << workunit_id << "\n";
-  std::cout << "Allocating " << N
-            << " nodes. Executing (3,6) 3D Pebble Game Matrix Search...\n\n";
+void process_boinc_workunit(int workunit_id, int N, double L, unsigned int seed,
+                            const std::string &output_file) {
+  boinc_begin_critical_section();
+  // Simulate BOINC computation locally logging progress
+  boinc_end_critical_section();
 
-  auto start_time = std::chrono::high_resolution_clock::now();
-  PebbleGame3D engine(N, L);
+  PebbleGame3D engine(N, L, seed);
 
-  // Grid Binning for O(N) spatial neighbor search
   double R_max = 2.5;
   int num_cells = std::max(1, (int)(L / R_max));
   double cell_size = L / num_cells;
@@ -171,14 +174,13 @@ void process_boinc_workunit(int workunit_id, int N, double L) {
     grid[cx + cy * num_cells + cz * num_cells * num_cells].push_back(i);
   }
 
-  // Sweep simulation packing fractions (r)
   int total_independent = 0;
   int total_redundant = 0;
 
   double sweep_radii[] = {0.8, 1.2, 1.6, 2.0};
+  double final_alpha_prediction = 0.0;
 
   for (double r : sweep_radii) {
-    std::cout << "-> Sweeping Geometric Connection Radius: " << r << std::endl;
     double r2 = r * r;
     int active_bonds = 0;
     int redundant = 0;
@@ -190,7 +192,6 @@ void process_boinc_workunit(int workunit_id, int N, double L) {
           auto &cell = grid[grid_idx];
 
           for (int i : cell) {
-            // Check neighbors
             for (int j : cell) {
               if (i >= j)
                 continue;
@@ -214,40 +215,51 @@ void process_boinc_workunit(int workunit_id, int N, double L) {
 
     double p_c = (N * (4.0 / 3.0) * M_PI * std::pow(r / 2.0, 3)) / (L * L * L);
     double derived_inv_alpha = (8.0 * M_PI) / p_c;
+    final_alpha_prediction = derived_inv_alpha;
 
-    std::cout << "   [+] Added Independent Bonds: " << active_bonds << "\n";
-    std::cout << "   [!] Redundant Rigid Locks: " << redundant << "\n";
-    std::cout << "   [+] Derived 1/Alpha Tracking: " << derived_inv_alpha
-              << "\n\n";
+    // Report incremental progress fraction roughly to BOINC Daemon
+    boinc_fraction_done(r / 2.0);
 
     if (redundant > active_bonds * 0.1 && redundant > 100) {
-      std::cout << "==========================================================="
-                   "========\n";
-      std::cout << " [!!!] MACROSCOPIC 3D RIGIDITY PERCOLATION METRIC REACHED "
-                   "[!!!]\n";
-      std::cout << " -> Analytical Geometric Prediction: 1/alpha = "
-                << derived_inv_alpha << "\n";
-      std::cout << " -> Empirical Target: 1/alpha = 137.036\n";
-      std::cout << "==========================================================="
-                   "========\n";
       break;
     }
   }
 
-  auto end_time = std::chrono::high_resolution_clock::now();
-  std::chrono::duration<double> elapsed = end_time - start_time;
-  std::cout << "[+] BOINC Workunit processed in " << elapsed.count()
-            << " seconds.\n";
+  char resolved_path[256];
+  boinc_resolve_filename(output_file.c_str(), resolved_path,
+                         sizeof(resolved_path));
+  std::ofstream out(resolved_path);
+  out << "DERIVED_1_ALPHA=" << final_alpha_prediction << "\n";
+  out.close();
 }
 
 int main(int argc, char **argv) {
-  // A standard massive BOINC client chunk computation.
-  // Pushing the raw C++ engine to 500,000 nodes structurally validates the
-  // computational superiority of the integer Pebble Game over floating-point
-  // matrices.
+  boinc_init();
+
+  unsigned int seed = 42;
   int chunk_size = 500000;
   double bounding_box = 100.0;
 
-  process_boinc_workunit(42, chunk_size, bounding_box);
+  char input_path[256];
+  boinc_resolve_filename("in.txt", input_path, sizeof(input_path));
+  std::ifstream in(input_path);
+  if (in.is_open()) {
+    std::string line;
+    while (std::getline(in, line)) {
+      if (line.find("SEED=") == 0)
+        seed = std::stoul(line.substr(5));
+      if (line.find("CHUNK_SIZE=") == 0)
+        chunk_size = std::stoi(line.substr(11));
+      if (line.find("BOUNDING_BOX=") == 0)
+        bounding_box = std::stod(line.substr(13));
+    }
+    in.close();
+  } else {
+    std::cerr << "Failed to open input file: " << input_path << std::endl;
+  }
+
+  process_boinc_workunit(seed, chunk_size, bounding_box, seed, "out.txt");
+
+  boinc_finish(0);
   return 0;
 }

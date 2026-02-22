@@ -1,0 +1,53 @@
+\documentclass[11pt,letterpaper,twoside]{book}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{graphicx}
+\usepackage{geometry}
+\geometry{letterpaper, margin=1in}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    citecolor=black,
+}
+
+% Centralized Graphics Path
+\graphicspath{{assets/}{simulations/outputs/}}
+
+% Custom Commands (Shared AVE Framework Nomenclature)
+\input{structure/commands.tex}
+
+\begin{document}
+
+\frontmatter
+\title{\textbf{The Periodic Table of Knots}\\ \Large{Topological Atomic Nuclei in the AVE Framework}}
+\author{Grant Lindblom}
+\date{\today}
+\maketitle
+
+\tableofcontents
+
+\mainmatter
+
+% -------------------------
+% CHAPTERS
+% -------------------------
+\input{chapters/00_introduction.tex}
+\input{chapters/01_hydrogen.tex}
+\input{chapters/02_helium.tex}
+\input{chapters/03_lithium.tex}
+\input{chapters/04_simulations.tex}
+\input{chapters/05_beryllium.tex}
+
+
+% -------------------------
+% BACKMATTER
+% -------------------------
+\backmatter
+\bibliographystyle{plain}
+\bibliography{bibliography}
+
+\end{document}
