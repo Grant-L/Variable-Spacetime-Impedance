@@ -1,0 +1,109 @@
+"""
+AVE MODULE: SPICE NETLIST GENERATOR
+---------------------------------------------
+Translates the 3D topological arrays produced by `simulate_element.py` into 
+executable formal SPICE netlists (.cir). 
+
+This allows users to load elements (Hydrogen through Nitrogen) directly 
+into LTspice, Ngspice, or Xyce as classical Resonant LC Networks to 
+simulate their AC properties, Q-factors, and scattering/resonance parameters.
+"""
+import os
+import numpy as np
+
+# A baseline SPICE sub-circuit representing a single localized Nucleon (defect).
+# It's an ultra-high Q parallel LC tank. 
+# We use standard 1uH and 1pF values to define a normalized 159.1 MHz resonant baseline.
+NUCLEON_SUBCKT = """
+* -----------------------------------------------------------------
+* NUCLEON (Baseline 6^3_2 Topological Defect)
+* -----------------------------------------------------------------
+.SUBCKT NUCLEON IN OUT
+L_CORE IN OUT 1uH
+C_CORE IN OUT 1pF
+.ENDS NUCLEON
+"""
+
+# The scaling factor bridging AVE Topological d_ij directly to the SPICE Coupling 'K' Coefficient.
+# Ensures LTSpice limits K values strictly between 0 and 0.999.
+SPICE_K_SCALAR = 0.5 
+
+def generate_spice_netlist(element_name, z, a, nodes, output_dir):
+    """
+    Parses the (x,y,z) spatial coordinates for the component nucleons
+    and generates an identical SPICE LC tank array mapping mutual inductance
+    based purely on Euclidean distance (1/d_ij).
+    """
+    if len(nodes) == 0:
+        return
+        
+    netlist = []
+    
+    # Header
+    netlist.append(f"* Variable Spacetime Impedance (AVE) - SPICE Netlist")
+    netlist.append(f"* Element: {element_name} (Z={z}, A={a})")
+    netlist.append(f"* Auto-generated topological mutual impedance array")
+    netlist.append(f"* Nodes: {len(nodes)}")
+    netlist.append("\n")
+    
+    # Subcircuit definitions
+    netlist.append(NUCLEON_SUBCKT)
+    netlist.append("\n")
+    
+    # Instantiate Nucleons as parallel LC Tanks
+    netlist.append("* -----------------------------------------------------------------")
+    netlist.append("* MACROSCOPIC TOPOLOGY (Nucleon Array)")
+    netlist.append("* -----------------------------------------------------------------")
+    
+    # SPICE needs a global ground (0) to simulate accurately.
+    # We will tie one side of all tanks to ground, and cascade the other sides.
+    # We inject an AC sweep source to ping the impedance of the matrix.
+    netlist.append("V_STIM NODE_1 0 AC 1\n")
+    
+    for i in range(len(nodes)):
+        # Syntax: X<name> <terminal 1> <terminal 2> <subcircuit_name>
+        # We tie all nodes sequentially to create an open lattice we can sweep.
+        node_id = i + 1
+        netlist.append(f"X_NUC_{node_id} NODE_{node_id} 0 NUCLEON")
+    
+    netlist.append("\n")
+    netlist.append("* -----------------------------------------------------------------")
+    netlist.append("* SPATIAL MUTUAL INDUCTANCE (K-FACTORS)")
+    netlist.append("* -----------------------------------------------------------------")
+    
+    # Calculate Spatial Distance and translate to SPICE Mutual Inductance (K coeff)
+    # the format is K1 L1 L2 <value>
+    k_index = 1
+    for i in range(len(nodes)):
+        for j in range(i + 1, len(nodes)):
+            # Calculate 3D Euclidean Distance
+            dist = np.linalg.norm(np.array(nodes[i]) - np.array(nodes[j]))
+            
+            # Translate to physical K factor (Must be strictly < 1.0)
+            k_val = SPICE_K_SCALAR / dist
+            k_val = min(k_val, 0.999) # LTspice enforcement limit
+            
+            # The inductors exist INSIDE the subcircuit blocks (X_NUC_n).
+            # To couple them in LTSpice we reference the buried inductor: X_NUC_1.L_CORE
+            netlist.append(f"K_{k_index} X_NUC_{i+1}.L_CORE X_NUC_{j+1}.L_CORE {k_val:.6f}")
+            k_index += 1
+            
+    netlist.append("\n")
+    netlist.append("* -----------------------------------------------------------------")
+    netlist.append("* SIMULATION DIRECTIVES")
+    netlist.append("* -----------------------------------------------------------------")
+    netlist.append("* Perform a broadband AC sweep from 1 MHz to 1 GHz to ping macro-resonance")
+    netlist.append(".AC DEC 100 1MEG 1G")
+    netlist.append(".OPTIONS METHOD=GEAR")
+    netlist.append("\n.END\n")
+    
+    # Write to file
+    os.makedirs(output_dir, exist_ok=True)
+    filename = f"{element_name.lower().replace(' ', '_').replace('-', '_')}.cir"
+    filepath = os.path.join(output_dir, filename)
+    
+    with open(filepath, 'w') as f:
+        f.write("\n".join(netlist))
+        
+    print(f"[*] SPICE Netlist Generated: {filepath} (Contains {len(nodes)} NUCLEON subcircuits and {k_index-1} Mutual K mappings)")
+
