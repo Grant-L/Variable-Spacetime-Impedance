@@ -1,0 +1,43 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage{circuitikz}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usetikzlibrary{arrows}
+
+\begin{document}
+\begin{tikzpicture}[>=latex']
+
+\definecolor{neonblue}{RGB}{0, 255, 255}
+\definecolor{neongreen}{RGB}{0, 255, 128}
+\definecolor{darkbg}{RGB}{15, 15, 15}
+\definecolor{neonpurple}{RGB}{200, 0, 255}
+\definecolor{neonorange}{RGB}{255, 128, 0}
+
+% Fill background
+\fill[darkbg] (-5,-5) rectangle (14,5);
+
+% NEON-20 CORE (20 Nucleons)
+\node[text=white, font=\bfseries\Large] at (0, 4) {Neon-20 Core ($5\alpha$)};
+
+% Core Tank
+\draw[neonblue, thick] (-3, 0) to[C, l=\color{white}$C_{\Sigma1}$, *-*] (-3, 2);
+\draw[neonblue, thick] (-3, 0) to[L, l=\color{white}$L_{\Sigma1}$, *-*] (-1, 0) -- (-1, 2) to[short] (-3, 2);
+\node[text=white] at (-2, -0.5) {20-Node Resonator matrix};
+
+\draw[<->, neongreen, thick, dashed] (-1, 1) -- (2, 1) node[midway, above] {$M_{bipyr}$};
+
+% TRITIUM HALO (3 Nucleons)
+\node[text=white, font=\bfseries\Large] at (5, 4) {Tritium Halo ($^3\text{H}$)};
+
+% Halo Tank
+\draw[neonorange, thick] (2, 0) to[C, l=\color{white}$C_{halo}$, *-*] (2, 2);
+\draw[neonorange, thick] (2, 0) to[L, l=\color{white}$L_{halo}$, *-*] (4, 0) -- (4, 2) to[short] (2, 2);
+\node[text=white] at (3, -0.5) {3-Node Reactance};
+
+\draw[<->, neongreen, thick, dashed] (4, 1) -- (8, 1) node[midway, above] {$M_{alkali}$};
+
+% The 253 Matrix 
+\node[text=white, text width=5cm, align=center] at (10.5, 1) {+ 253 Active\\$M_{ij}$ Cross-Couplings\\($Z=11, A=23$)};
+
+\end{tikzpicture}
+\end{document}

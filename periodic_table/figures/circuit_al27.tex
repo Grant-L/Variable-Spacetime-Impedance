@@ -1,0 +1,43 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage{circuitikz}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usetikzlibrary{arrows}
+
+\begin{document}
+\begin{tikzpicture}[>=latex']
+
+\definecolor{neonblue}{RGB}{0, 255, 255}
+\definecolor{neongreen}{RGB}{0, 255, 128}
+\definecolor{darkbg}{RGB}{15, 15, 15}
+\definecolor{neonpurple}{RGB}{200, 0, 255}
+\definecolor{neonorange}{RGB}{255, 128, 0}
+
+% Fill background
+\fill[darkbg] (-5,-5) rectangle (15,5);
+
+% MG-24 CORE (24 Nucleons)
+\node[text=white, font=\bfseries\Large] at (0, 4) {Magnesium-24 Core ($6\alpha$)};
+
+% Core Tank
+\draw[neonblue, thick] (-3, 0) to[C, l=\color{white}$C_{\Sigma1}$, *-*] (-3, 2);
+\draw[neonblue, thick] (-3, 0) to[L, l=\color{white}$L_{\Sigma1}$, *-*] (-1, 0) -- (-1, 2) to[short] (-3, 2);
+\node[text=white] at (-2, -0.5) {24-Node Resonator matrix};
+
+\draw[<->, neongreen, thick, dashed] (-1, 1) -- (2, 1) node[midway, above] {$M_{octahedron}$};
+
+% TRITIUM HALO (3 Nucleons)
+\node[text=white, font=\bfseries\Large] at (5, 4) {Tritium Halo ($^3\text{H}$)};
+
+% Halo Tank
+\draw[neonorange, thick] (2, 0) to[C, l=\color{white}$C_{halo}$, *-*] (2, 2);
+\draw[neonorange, thick] (2, 0) to[L, l=\color{white}$L_{halo}$, *-*] (4, 0) -- (4, 2) to[short] (2, 2);
+\node[text=white] at (3, -0.5) {3-Node Reactance};
+
+\draw[<->, neongreen, thick, dashed] (4, 1) -- (9, 1) node[midway, above] {$M_{transition}$};
+
+% The 351 Matrix 
+\node[text=white, text width=6cm, align=center] at (11.5, 1) {+ 351 Active\\$M_{ij}$ Cross-Couplings\\($Z=13, A=27$)};
+
+\end{tikzpicture}
+\end{document}

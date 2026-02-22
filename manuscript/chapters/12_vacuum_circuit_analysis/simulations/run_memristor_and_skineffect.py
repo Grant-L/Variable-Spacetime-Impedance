@@ -10,7 +10,7 @@ def simulate_memristor_and_skin_effect():
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6), dpi=150)
     fig.patch.set_facecolor('#0a0a12'); ax1.set_facecolor('#0a0a12'); ax2.set_facecolor('#0a0a12')
     
-    R_solid = 50.0; R_fluid = 1.0; V_yield = 2.0; tau_vac = 0.05
+    R_solid = 50.0; R_ruptured = 1.0; V_yield = 2.0; tau_vac = 0.05
     freq = 2.0
     
     def memristor_ode(t, y):
@@ -22,7 +22,7 @@ def simulate_memristor_and_skin_effect():
     sol = solve_ivp(memristor_ode, [0, 2.0], [0.0], t_eval=t_eval, method='RK45')
     
     V_history = 5.0 * np.sin(2 * np.pi * freq * t_eval)
-    R_memristor = R_solid * (1 - sol.y[0]) + R_fluid * sol.y[0]
+    R_memristor = R_solid * (1 - sol.y[0]) + R_ruptured * sol.y[0]
     I_history = V_history / R_memristor
     
     mask = t_eval > 1.0 
@@ -38,13 +38,13 @@ def simulate_memristor_and_skin_effect():
     
     V_sweep = np.linspace(0, 5, 1000)
     S_eq = 0.5 * (1.0 + np.tanh(10.0 * (np.abs(V_sweep) - V_yield)))
-    skin_depth = np.sqrt((R_solid * (1 - S_eq) + R_fluid * S_eq) / R_solid) * 100.0 
+    skin_depth = np.sqrt((R_solid * (1 - S_eq) + R_ruptured * S_eq) / R_solid) * 100.0 
     
     ax2.plot(V_sweep, skin_depth, color='#FFD54F', lw=4, label='AC Metric Skin Depth ($\delta \propto \sqrt{R_{eff}}$)')
-    ax2.axvline(V_yield, color='#ff3366', linestyle=':', lw=2, label='Bingham Yield Limit')
+    ax2.axvline(V_yield, color='#ff3366', linestyle=':', lw=2, label='Dielectric Saturation Limit')
     ax2.fill_between(V_sweep, 0, skin_depth, color='#FFD54F', alpha=0.15)
     
-    ax2.set_title('Metric Faraday Cage: The Superfluid Skin Effect', color='white', fontsize=14, weight='bold')
+    ax2.set_title('Metric Faraday Cage: The Zero-Impedance Skin Effect', color='white', fontsize=14, weight='bold')
     ax2.set_xlabel('Applied Stress Amplitude ($V$)', color='white', weight='bold')
     ax2.set_ylabel('Boundary Layer Penetration Depth (% of Max)', color='white', weight='bold')
     ax2.legend(loc='upper right', facecolor='#111111', edgecolor='white', labelcolor='white')
@@ -52,8 +52,8 @@ def simulate_memristor_and_skin_effect():
     textstr = (
         r"$\mathbf{Structural~Boundary~Layer~Mechanics:}$" + "\n" +
         r"Because AC skin depth scales with the square root of resistance," + "\n" +
-        r"when the condensate liquefies ($R_{eff} \to 0$), the penetration depth collapses." + "\n" +
-        r"The destructive superfluid shear is strictly confined to the exterior boundary." + "\n" +
+        r"when the metric yields ($R_{eff} \to 0$), the penetration depth collapses." + "\n" +
+        r"The destructive inductive shear is strictly confined to the exterior boundary." + "\n" +
         r"The interior metric is physically shielded from macroscopic turbulence."
     )
     ax2.text(0.1, 20, textstr, color='white', fontsize=11, bbox=dict(facecolor='#111111', edgecolor='#FFD54F', alpha=0.9, pad=10))
