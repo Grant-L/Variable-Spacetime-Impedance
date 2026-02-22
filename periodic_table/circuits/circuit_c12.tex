@@ -1,0 +1,48 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage{circuitikz}
+\usepackage{amsmath}
+
+\begin{document}
+\begin{circuitikz}[scale=1.5, transform shape]
+
+    % --- Top Alpha Tank ---
+    \draw (0, 3) to[L, l=$L_{\alpha_1}$, -*] (0, 1.5) to[C, l=$C_{\alpha_1}$] (0, 0);
+    \node at (-0.8, 2.25) [align=center] {\textbf{Top}\\\textbf{Alpha Core}};
+    
+    % --- Bottom Left Alpha Tank ---
+    \draw (-2.5, -1.5) to[L, l=$L_{\alpha_2}$, -*] (-1.25, -0.75) to[C, l=$C_{\alpha_2}$] (0, 0);
+    \node at (-2.5, -0.5) [align=center] {\textbf{Left}\\\textbf{Alpha Core}};
+    
+    % --- Bottom Right Alpha Tank ---
+    \draw (2.5, -1.5) to[L, l=$L_{\alpha_3}$, -*] (1.25, -0.75) to[C, l=$C_{\alpha_3}$] (0, 0);
+    \node at (2.5, -0.5) [align=center] {\textbf{Right}\\\textbf{Alpha Core}};
+    
+    % --- High-Impedance Mutual Coupling Links (The Vacuum Ring) ---
+    % These represent the massive 50.8d spatial separation
+    \draw[color=red, thick, dashed] (0, 3) to[L, l=$M_{12}$, color=red] (-2.5, -1.5);
+    \draw[color=red, thick, dashed] (-2.5, -1.5) to[L, l=$M_{23}$, color=red] (2.5, -1.5);
+    \draw[color=red, thick, dashed] (2.5, -1.5) to[L, l=$M_{31}$, color=red] (0, 3);
+    
+    % Ground Connection at the Central Node
+    \draw (0,0) node[ground]{};
+    
+    % Orbital Electrons (6e-)
+    \draw[color=orange, dashed, thick] circle (4.5cm);
+    \node[color=orange, align=center] at (0, -5) {\large \textbf{Orbital Shell ($6e^-$ Displacement Currents)}};
+    
+    % Couplings from Alphas to Orbit
+    \draw[<->, dashed, red, thick] (0, 3) -- (0, 4.5) node[midway, right] {$M_{orbit}$};
+    \draw[<->, dashed, red, thick] (-2.5, -1.5) -- (-3.45, -2.85) node[midway, above left] {$M_{orbit}$};
+    \draw[<->, dashed, red, thick] (2.5, -1.5) -- (3.45, -2.85) node[midway, above right] {$M_{orbit}$};
+    
+    % Annotations
+    \node at (0, 5.5) [font=\large\bfseries] {Carbon-12 ($^{12}\text{C}$) EE Topology};
+    \node at (0, 5.1) [color=gray] {$3\alpha$ Equilateral Ring Network};
+    \node at (0, -1.5) [align=center, text width=5cm] {
+        \textit{Equilateral parallel $LC$ array.}\\
+        \textit{Empirical spatial separation enforces}\\
+        \textit{a strictly high-impedance $M_{xy}$ inductive loop.}
+    };
+
+\end{circuitikz}
+\end{document}
