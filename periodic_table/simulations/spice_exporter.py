@@ -57,8 +57,9 @@ def generate_spice_netlist(element_name, z, a, nodes, output_dir):
     
     # SPICE needs a global ground (0) to simulate accurately.
     # We will tie one side of all tanks to ground, and cascade the other sides.
-    # We inject an AC sweep source to ping the impedance of the matrix.
-    netlist.append("V_STIM NODE_1 0 AC 1\n")
+    # We inject an AC sweep source and a Transient Pulse to ping the impedance of the matrix.
+    # Pulse format: PULSE(Vinitial Vpeak Tdelay Trise Tfall Ton Tperiod)
+    netlist.append("V_STIM NODE_1 0 AC 1 PULSE(0 100k 10n 1n 1n 50n 100n)\n")
     
     for i in range(len(nodes)):
         # Syntax: X<name> <terminal 1> <terminal 2> <subcircuit_name>
@@ -92,7 +93,9 @@ def generate_spice_netlist(element_name, z, a, nodes, output_dir):
     netlist.append("* -----------------------------------------------------------------")
     netlist.append("* SIMULATION DIRECTIVES")
     netlist.append("* -----------------------------------------------------------------")
-    netlist.append("* Perform a broadband AC sweep from 1 MHz to 1 GHz to ping macro-resonance")
+    netlist.append("* Transient Analysis: 100kV Step Pulse (1ns rise) to test dielectric rupture limits")
+    netlist.append(".TRAN 0.1n 200n")
+    netlist.append("* Broadband AC sweep: 1 MHz to 1 GHz to ping macro-resonance Q-factors")
     netlist.append(".AC DEC 100 1MEG 1G")
     netlist.append(".OPTIONS METHOD=GEAR")
     netlist.append("\n.END\n")
