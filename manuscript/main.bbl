@@ -1,3 +1,41 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{1}
+
+\bibitem{flyby2008}
+John~D Anderson, James~K Campbell, John~E Ekelund, Jordan Ellis, and James~F
+  Jordan.
+\newblock Anomalous orbital-energy changes observed during spacecraft flybys of
+  earth.
+\newblock {\em Physical Review Letters}, 100(9):091102, 2008.
+
+\bibitem{cahill2005}
+Reginald~T Cahill.
+\newblock The michelson and morley 1887 experiment and the discovery of
+  absolute motion.
+\newblock {\em Progress in Physics}, 3:25--29, 2005.
+
+\bibitem{einstein1916}
+Albert Einstein.
+\newblock {\em The Foundation of the General Theory of Relativity}.
+\newblock Annalen der Physik, 1916.
+
+\bibitem{feynman1964}
+Richard~P Feynman.
+\newblock {\em The Feynman Lectures on Physics}, volume~2.
+\newblock Addison-Wesley, 1964.
+
+\bibitem{misner1973}
+Charles~W Misner, Kip~S Thorne, and John~Archibald Wheeler.
+\newblock {\em Gravitation}.
+\newblock W.H. Freeman, 1973.
+
+\bibitem{nyquist1928}
+Harry Nyquist.
+\newblock Thermal agitation of electric charge in conductors.
+\newblock {\em Physical Review}, 32(1):110, 1928.
+
+\bibitem{shannon1949}
+Claude~E. Shannon.
+\newblock Communication in the presence of noise.
+\newblock {\em Proceedings of the IRE}, 37(1):10--21, 1949.
 
 \end{thebibliography}

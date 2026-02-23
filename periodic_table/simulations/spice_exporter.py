@@ -110,3 +110,87 @@ def generate_spice_netlist(element_name, z, a, nodes, output_dir):
         
     print(f"[*] SPICE Netlist Generated: {filepath} (Contains {len(nodes)} NUCLEON subcircuits and {k_index-1} Mutual K mappings)")
 
+def generate_fusion_netlist(fusion_name, nodes_a, name_a, nodes_b, name_b, output_dir):
+    """
+    Generates a specialized SPICE netlist modeling the collision of two distinct topological networks.
+    Demonstrates the energetic cost of forcing phase-lock via a continuous AC Ramp (Ponderomotive force).
+    """
+    netlist = []
+    
+    # Header
+    netlist.append(f"* Variable Spacetime Impedance (AVE) - DUAL NETWORK FUSION")
+    netlist.append(f"* Collision: {name_a} + {name_b} -> {fusion_name}")
+    netlist.append(f"* Auto-generated topological mutual impedance transient array")
+    netlist.append("\n")
+    netlist.append(NUCLEON_SUBCKT)
+    netlist.append("\n")
+    
+    netlist.append("* -----------------------------------------------------------------")
+    netlist.append("* MACROSCOPIC TOPOLOGY (Dual Array)")
+    netlist.append("* -----------------------------------------------------------------")
+    
+    # We apply an extreme AC ramp to Array A to force it into Array B
+    netlist.append("* V_PONDEROMOTIVE provides the kinetic forcing required to overcome 1/d repulsion")
+    netlist.append("V_POND NODE_A_1 0 SINE(0 1MEG 1G) AC 1\n")
+    
+    all_nodes = nodes_a + nodes_b
+    
+    for i in range(len(nodes_a)):
+        node_id = i + 1
+        netlist.append(f"X_NUC_A_{node_id} NODE_A_{node_id} 0 NUCLEON")
+        
+    for i in range(len(nodes_b)):
+        node_id = i + 1
+        netlist.append(f"X_NUC_B_{node_id} NODE_B_{node_id} 0 NUCLEON")
+        
+    netlist.append("\n")
+    netlist.append("* -----------------------------------------------------------------")
+    netlist.append("* SPATIAL MUTUAL INDUCTANCE (K-FACTORS)")
+    netlist.append("* -----------------------------------------------------------------")
+    
+    k_index = 1
+    # Internal coupling Array A
+    for i in range(len(nodes_a)):
+        for j in range(i + 1, len(nodes_a)):
+            dist = np.linalg.norm(np.array(nodes_a[i]) - np.array(nodes_a[j]))
+            k_val = min(SPICE_K_SCALAR / dist, 0.999)
+            netlist.append(f"K_{k_index} X_NUC_A_{i+1}.L_CORE X_NUC_A_{j+1}.L_CORE {k_val:.6f}")
+            k_index += 1
+            
+    # Internal coupling Array B
+    for i in range(len(nodes_b)):
+        for j in range(i + 1, len(nodes_b)):
+            dist = np.linalg.norm(np.array(nodes_b[i]) - np.array(nodes_b[j]))
+            k_val = min(SPICE_K_SCALAR / dist, 0.999)
+            netlist.append(f"K_{k_index} X_NUC_B_{i+1}.L_CORE X_NUC_B_{j+1}.L_CORE {k_val:.6f}")
+            k_index += 1
+            
+    # Transient bridging coupling (A to B)
+    # We model them at a collision distance of R=1.5d
+    collision_offset = np.array([1.5, 0, 0])
+    for i in range(len(nodes_a)):
+        for j in range(len(nodes_b)):
+            pt_a = np.array(nodes_a[i])
+            pt_b = np.array(nodes_b[j]) + collision_offset
+            dist = np.linalg.norm(pt_a - pt_b)
+            k_val = min(SPICE_K_SCALAR / dist, 0.999)
+            netlist.append(f"K_{k_index} X_NUC_A_{i+1}.L_CORE X_NUC_B_{j+1}.L_CORE {k_val:.6f}")
+            k_index += 1
+            
+    netlist.append("\n")
+    netlist.append("* -----------------------------------------------------------------")
+    netlist.append("* SIMULATION DIRECTIVES")
+    netlist.append("* -----------------------------------------------------------------")
+    netlist.append("* Transient Analysis to track the AC ramp phase-locking threshold")
+    netlist.append(".TRAN 0.1n 500n")
+    netlist.append("\n.END\n")
+    
+    os.makedirs(output_dir, exist_ok=True)
+    filename = f"{fusion_name.lower().replace(' ', '_').replace('-', '_')}.cir"
+    filepath = os.path.join(output_dir, filename)
+    
+    with open(filepath, 'w') as f:
+        f.write("\n".join(netlist))
+        
+    print(f"[*] SPICE Fusion Netlist Generated: {filepath}")
+
