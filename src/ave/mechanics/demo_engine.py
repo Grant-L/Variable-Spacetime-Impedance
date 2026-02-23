@@ -19,9 +19,8 @@ def main():
     
     # 1. Initialize the Environment
     NX, NY = 100, 100
-    grid = VacuumGrid(nx=NX, ny=NY, z0=377.0)
-    grid.set_temperature(0.0) # Cold vacuum
-    
+    grid = VacuumGrid(nx=NX, ny=NY)
+    grid.set_temperature(0.5)  # Inject significant background thermal noise   
     # 2. Instantiate Topological Nodes (e.g. A cluster of mass)
     num_particles = 15
     nodes = []
@@ -51,7 +50,7 @@ def main():
                          s=40, color='cyan', edgecolors='white', zorder=5)
                          
     ax.axis('off')
-    ax.set_title("Unified Engine: Nodes Traversing Vacuum Fluid", color='white', pad=20, fontsize=14)
+    ax.set_title("Unified Engine: Nodes Traversing LC Vacuum", color='white', pad=20, fontsize=14)
 
     dt = 0.5
 

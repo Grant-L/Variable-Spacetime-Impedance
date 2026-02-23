@@ -21,7 +21,7 @@ def main():
 
     # 1. Initialize the Environment
     NX, NY = 120, 120
-    grid = VacuumGrid(nx=NX, ny=NY, z0=377.0, c2=0.20)
+    grid = VacuumGrid(nx=NX, ny=NY, c2=0.20)
     
     # We will expand on interact_with_vacuum to explicitly include
     # the Ponderomotive Force (drag caused by grid strain gradients)

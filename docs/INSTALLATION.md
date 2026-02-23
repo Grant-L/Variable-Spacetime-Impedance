@@ -1,6 +1,6 @@
-# Installation Instructions for Variable Spacetime Impedance
+# Installation Instructions for Applied Vacuum Engineering
 
-Follow these instructions to install the Variable Spacetime Impedance project on your local system.
+Follow these instructions to install the Applied Vacuum Engineering project on your local system.
 
 ## Prerequisites
 

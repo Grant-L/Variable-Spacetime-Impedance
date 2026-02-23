@@ -67,47 +67,40 @@ pdf: pdf_manuscript pdf_future_work
 
 pdf_manuscript:
 	@echo "[Build] Setting up build directories for manuscript..."
-	@mkdir -p build
-	# Mirror the manuscript directory structure into build/
-	@cd $(SRC_DIR) && find . -type d -exec mkdir -p ../build/{} \;
+	@mkdir -p build/aux
 	
-	@echo "[Build] Compiling Main LaTeX Manuscript..."
-	# Clean potentially corrupted bookmark files
-	rm -f build/main.out build/main.aux build/main.toc
-	
-	# 1. First Pass (Generate AUX)
-	cd $(SRC_DIR) && $(LATEX) -output-directory=$(OUT_DIR) main.tex
-	
-	# 2. BibTeX (Run only if .bib file is present and citations exist)
-	@if [ -f $(SRC_DIR)/bibliography.bib ]; then \
-		echo "[Build] Processing Bibliography..."; \
-		cp $(SRC_DIR)/bibliography.bib build/; \
-		cd build && $(BIBTEX) main || true; \
-	fi
-
-	# 3. Second Pass (Link References)
-	cd $(SRC_DIR) && $(LATEX) -output-directory=$(OUT_DIR) main.tex
-	
-	# 4. Third Pass (Resolve Citations & Layout)
-	cd $(SRC_DIR) && $(LATEX) -output-directory=$(OUT_DIR) main.tex
-	@echo "[Build] Academic PDF generated at build/main.pdf"
+	@echo "[Build] Compiling Books 1 to 4..."
+	@for dir in book_1_foundations book_2_topological_matter book_3_macroscopic_continuity book_4_applied_engineering book_5_topological_biology; do \
+		echo "[Build] Compiling $$dir..."; \
+		rm -f build/aux/$$dir.out build/aux/$$dir.aux build/aux/$$dir.toc; \
+		cd $(SRC_DIR)/$$dir && $(LATEX) -jobname=$$dir -output-directory=../../build/aux -interaction=nonstopmode main.tex; \
+		if [ -f ../bibliography.bib ]; then \
+			cp ../bibliography.bib ../../build/aux/; \
+			cd ../../build/aux && $(BIBTEX) $$dir || true; \
+			cd ../$(SRC_DIR)/$$dir && $(LATEX) -jobname=$$dir -output-directory=../../build/aux -interaction=nonstopmode main.tex; \
+		fi; \
+		cd ../../$(SRC_DIR)/$$dir && $(LATEX) -jobname=$$dir -output-directory=../../build/aux -interaction=nonstopmode main.tex; \
+		cd ../.. ; \
+		mv build/aux/$$dir.pdf build/ 2>/dev/null || true; \
+	done
+	@echo "[Build] Manuscript PDFs generated in build/ directory."
 
 pdf_future_work:
 	@echo "[Build] Setting up build directories for future work..."
-	@mkdir -p build_future
-	@cd future_work && find . -type d -exec mkdir -p ../build_future/{} \;
+	@mkdir -p build_future/aux
 	
 	@echo "[Build] Compiling Future Work LaTeX Manuscript..."
-	rm -f build_future/main.out build_future/main.aux build_future/main.toc
-	cd future_work && $(LATEX) -output-directory=../build_future main.tex
+	rm -f build_future/aux/future_work.out build_future/aux/future_work.aux build_future/aux/future_work.toc
+	cd future_work && $(LATEX) -jobname=future_work -output-directory=../build_future/aux main.tex
 	@if [ -f future_work/bibliography.bib ]; then \
 		echo "[Build] Processing Bibliography..."; \
-		cp future_work/bibliography.bib build_future/; \
-		cd build_future && $(BIBTEX) main || true; \
+		cp future_work/bibliography.bib build_future/aux/; \
+		cd build_future/aux && $(BIBTEX) future_work || true; \
 	fi
-	cd future_work && $(LATEX) -output-directory=../build_future main.tex
-	cd future_work && $(LATEX) -output-directory=../build_future main.tex
-	@echo "[Build] Future Work PDF generated at build_future/main.pdf"
+	cd future_work && $(LATEX) -jobname=future_work -output-directory=../build_future/aux main.tex
+	cd future_work && $(LATEX) -jobname=future_work -output-directory=../build_future/aux main.tex
+	mv build_future/aux/future_work.pdf build_future/ 2>/dev/null || true
+	@echo "[Build] Future Work PDF generated at build_future/future_work.pdf"
 
 # -----------------------------------------------------------------------------
 # 5. Experimental Protocols Compilation

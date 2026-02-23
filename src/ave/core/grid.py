@@ -1,15 +1,16 @@
 import numpy as np
 from typing import Tuple
+from .constants import Z_0
 
 class VacuumGrid:
     """
     AVE Unified Python Engine: 'VacuumGrid' Core Object.
     Represents the continuous, mathematically structured LC dielectric vacuum matrix.
     Handles transverse wave propagation (c), characteristic impedance (Z0),
-    and fluidic acoustic transmission using FDTD integration.
+    and LC inductive transmission using FDTD integration.
     """
     
-    def __init__(self, nx: int, ny: int, z0: float = 377.0, c2: float = 0.25):
+    def __init__(self, nx: int, ny: int, z0: float = Z_0, c2: float = 0.25):
         self.nx = nx
         self.ny = ny
         self.z0 = z0     # Vacuum characteristic macroscopic impedance

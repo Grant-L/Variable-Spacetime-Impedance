@@ -40,7 +40,7 @@ def generate_spice_netlist(element_name, z, a, nodes, output_dir):
     netlist = []
     
     # Header
-    netlist.append(f"* Variable Spacetime Impedance (AVE) - SPICE Netlist")
+    netlist.append(f"* Applied Vacuum Engineering (AVE) - SPICE Netlist")
     netlist.append(f"* Element: {element_name} (Z={z}, A={a})")
     netlist.append(f"* Auto-generated topological mutual impedance array")
     netlist.append(f"* Nodes: {len(nodes)}")
@@ -118,7 +118,7 @@ def generate_fusion_netlist(fusion_name, nodes_a, name_a, nodes_b, name_b, outpu
     netlist = []
     
     # Header
-    netlist.append(f"* Variable Spacetime Impedance (AVE) - DUAL NETWORK FUSION")
+    netlist.append(f"* Applied Vacuum Engineering (AVE) - DUAL NETWORK FUSION")
     netlist.append(f"* Collision: {name_a} + {name_b} -> {fusion_name}")
     netlist.append(f"* Auto-generated topological mutual impedance transient array")
     netlist.append("\n")

@@ -26,10 +26,10 @@ def main():
     # The AVE conception of Mass
     # The "Field" is simply the structured, continuous LC network of Space itself.
     # The minimum resistance through this free-space network is precisely
-    # the Characteristic Impedance of Vacuum: Z_0 ≈ 376.73 Ohms.
-    Z_0 = 376.730313668  # Ohms (Exact standard metric)
+    # the Characteristic
     u_0 = 4 * np.pi * 1e-7  # Vacuum Permeability (H/m)
     e_0 = 8.8541878128e-12  # Vacuum Permittivity (F/m)
+    Z_0 = np.sqrt(u_0 / e_0) # Ohms (Exact standard metric)
 
     print("[2] Evaluating the AVE Characteristic Impedance:")
     print(f"    Z_0 = sqrt(u_0 / e_0) ≈ {Z_0:.2f} Ohms")

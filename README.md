@@ -1,4 +1,4 @@
-# Variable Spacetime Impedance / Applied Vacuum Engineering (AVE)
+# Applied Vacuum Engineering / Applied Vacuum Engineering (AVE)
 
 ![Build Status](https://img.shields.io/badge/run-protocols-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)

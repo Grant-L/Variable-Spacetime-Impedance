@@ -1,7 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import animation
+import sys
 import os
+
+# Add the src directory to path to import the ave engine
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+from ave.core.grid import VacuumGrid
 
 def main():
     print("==========================================================")
@@ -18,8 +23,8 @@ def main():
     FRAMES = 120
     
     # Grid initialization (representing the 2D cross-section of the continuous vacuum)
-    # E_z represents the transverse displacement current (pressure)
-    Ez = np.zeros((NX, NY))
+    grid = VacuumGrid(nx=NX, ny=NY, c2=0.20)
+    grid.set_temperature(0.5) # Sets ambient grid noise amplitude
     
     # We will simulate a highly ordered, high-energy wave-packet (like a particle or laser pulse)
     # entering the center of the grid, and watch how its ordered energy geometrically scatters.
@@ -30,48 +35,22 @@ def main():
         for j in range(NY):
             dist = np.sqrt((i - center_x)**2 + (j - center_y)**2)
             if dist < 5:
-                Ez[i, j] = np.cos(dist) * 10.0 # High internal cohesive energy
+                # Inject high internal cohesive energy
+                grid.strain_z[i, j] = np.cos(dist) * 10.0 
 
     fig, ax = plt.subplots(figsize=(8, 8), facecolor='#111111')
     ax.set_facecolor('#111111')
     
     # Colormap showing signal amplitude
-    img = ax.imshow(Ez, cmap='magma', vmin=-2, vmax=2, origin='lower')
+    img = ax.imshow(grid.strain_z, cmap='magma', vmin=-2, vmax=2, origin='lower')
     ax.axis('off')
     ax.set_title(r"Entropy $\Delta S$: Geometric Scattering of Ordered Potential", color='white', pad=20, fontsize=14)
 
-    print("[1] Simulating 2D LC grid wave dissipation...")
+    print("[1] Simulating 2D LC grid wave dissipation using ave_engine...")
     
     def update(frame):
-        nonlocal Ez
-        
-        # Simple wave equation (Discrete Laplacian)
-        # Represents acoustic propagation through the resistive LC mesh
-        new_Ez = np.copy(Ez)
-        
-        # Speed of wave propagation
-        c2 = 0.2 
-        
-        # Damping factor (Radiation resistance / Geometric spreading)
-        # As the perimeter of the sphere increases, the amplitude per node must drop.
-        damping = 0.98 
-        
-        for i in range(1, NX-1):
-            for j in range(1, NY-1):
-                laplacian = (Ez[i+1, j] + Ez[i-1, j] + Ez[i, j+1] + Ez[i, j-1] - 4*Ez[i, j])
-                new_Ez[i, j] = (Ez[i, j] + c2 * laplacian) * damping
-                
-                # Introduce slight ambient grid noise (Background temperature)
-                new_Ez[i, j] += np.random.normal(0, 0.05)
-                
-        # Enforce absorbing boundary conditions (Energy leaves the local system)
-        new_Ez[0, :] = 0
-        new_Ez[-1, :] = 0
-        new_Ez[:, 0] = 0
-        new_Ez[:, -1] = 0
-        
-        Ez = new_Ez
-        img.set_array(Ez)
+        grid.step_kinematic_wave_equation(damping=0.98)
+        img.set_array(grid.strain_z)
         return [img]
 
     print("[2] Rendering Thermodynamic Arrow of Time...")
@@ -83,7 +62,7 @@ def main():
     
     # Extract the final frame (Maximum Entropy state) for the manuscript
     print("[3] Slicing maximum-entropy state for manuscript PDF...")
-    final_frame_data = Ez # Use the last calculated state
+    final_frame_data = np.copy(grid.strain_z)
     
     fig_static, ax_static = plt.subplots(figsize=(8, 8), facecolor='#111111')
     ax_static.set_facecolor('#111111')

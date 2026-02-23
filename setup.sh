@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# Setup script for Variable Spacetime Impedance project
+# Setup script for Applied Vacuum Engineering project
 # This script sets up the Python environment and installs dependencies
 
 set -e
 
-echo "🚀 Setting up Variable Spacetime Impedance project..."
+echo "🚀 Setting up Applied Vacuum Engineering project..."
 
 # Check if Python 3 is installed
 if ! command -v python3 &> /dev/null; then
@@ -41,7 +41,7 @@ jupyter lab build
 
 # Create Jupyter kernel for this project
 echo "🎯 Creating Jupyter kernel..."
-python -m ipykernel install --user --name=variable-spacetime-impedance --display-name="Variable Spacetime Impedance"
+python -m ipykernel install --user --name=applied-vacuum-engineering --display-name="Applied Vacuum Engineering"
 
 echo "✅ Setup complete!"
 echo ""

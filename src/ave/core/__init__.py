@@ -1,6 +1,6 @@
 """
-Variable Spacetime Impedance (AVE) - Unified Physics Engine.
-This core library maps discrete mass geometry and continuum fluid mechanics
+Applied Vacuum Engineering (AVE) - Unified Physics Engine.
+This core library maps discrete mass geometry and continuum LC network dynamics
 onto a rigorous LC matrix. 
 """
 

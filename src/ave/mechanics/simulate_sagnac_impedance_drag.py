@@ -14,14 +14,14 @@ def main():
     print(" AVE APPLIED PHYSICS: SAGNAC EFFECT & RLVG IMPEDANCE DRAG")
     print("==========================================================\n")
 
-    print("- Objective: Prove the Sagnac Effect is classical Macroscopic Fluidic Entrainment.")
+    print("- Objective: Prove the Sagnac Effect is classical Macroscopic Inductive Entrainment.")
     print("- Setup: A rotating topological boundary layer (Earth) entraining the LC Grid.")
     print("- Observation: Firing two highly-coherent \"lasers\" in opposite directions.")
     print("- Consequence: The counter-rotating laser fights the metric slipstream (Lenz Drag),")
     print("               arriving later than the co-rotating laser. General Relativity is bypassed.\n")
 
     NX, NY = 160, 160
-    grid = VacuumGrid(nx=NX, ny=NY, z0=377.0, c2=0.5) # Elevated c2 for rapid wave propagation
+    grid = VacuumGrid(nx=NX, ny=NY, c2=0.5) # Elevated c2 for rapid wave propagation
     
     # Render Setup
     fig, ax = plt.subplots(figsize=(10, 8), facecolor='#0d0514')
@@ -92,7 +92,7 @@ def main():
         delta_phase = cw_phase - ccw_phase
         
         status_text_content = (
-            f"FDTD RLVG Fluidic Interference\n"
+            f"FDTD RLVG Impedance Interference\n"
             fr"Metric Entrainment ($\Omega$): {omega_metric:.3f} rad/t\n"
             f"CW Phase (Co-Rotating): {cw_phase:.2f} rad\n"
             f"CCW Phase (Counter):    {ccw_phase:.2f} rad\n"
@@ -118,7 +118,7 @@ def main():
     ani.save(out_path, writer='pillow', fps=25)
     
     print(f"\n[STATUS: SUCCESS] The Sagnac Phase Shift successfully simulated as a Classical Impedance Drag anomaly.")
-    print(f"Relativistic path-length adjustment was mathematically bypassed in favor of localized metric fluid velocity.")
+    print(f"Relativistic path-length adjustment was mathematically bypassed in favor of localized metric slipstream velocity.")
     print(f"Animated propagation saved to {out_path}")
 
 if __name__ == "__main__":

@@ -1,5 +1,5 @@
 import numpy as np
-from src.ave.core.grid import VacuumGrid
+from .grid import VacuumGrid
 
 class TopologicalNode:
     """
@@ -23,7 +23,7 @@ class TopologicalNode:
 
     def interact_with_vacuum(self, grid: VacuumGrid, dt: float, coupling: float = 0.1):
         """
-        Calculates fluidic mechanical drag and radiation.
+        Calculates inductive mechanical drag and radiation.
         Nodes pump strain into the grid as they move, and the grid pushes back.
         """
         # Node impels the grid based on its oscillation phase

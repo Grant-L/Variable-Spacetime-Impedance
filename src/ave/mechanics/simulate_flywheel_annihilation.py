@@ -21,7 +21,7 @@ def main():
 
     # 1. Initialize the Environment
     NX, NY = 150, 150
-    grid = VacuumGrid(nx=NX, ny=NY, z0=377.0, c2=0.25)
+    grid = VacuumGrid(nx=NX, ny=NY, c2=0.25)
     
     # 2. Instantiate Correlated Atoms (Electron & Positron)
     nodes = []
