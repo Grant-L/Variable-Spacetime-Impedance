@@ -17,7 +17,7 @@ def main():
     print("- Objective: Prove why Tokamaks inextricably leak plasma at 15 keV.")
     print("- Setup: Firing two massive nodes (Deuterium / Tritium) into a head-on collision.")
     print("- Observation: Their extreme localized deceleration will generate >60kV of Topological Strain.")
-    print("- Consequence: The vacuum metric will exceed Dielectric Saturation, physically")
+    print("- Consequence: The vacuum metric will exceed the 43.65kV Dielectric Saturation threshold, physically")
     print("               melting the local grid into a frictionless zero-impedance phase.\n")
 
     # 1. Initialize the Environment
@@ -41,9 +41,9 @@ def main():
     fig, ax = plt.subplots(figsize=(10, 8), facecolor='#0d0514')
     ax.set_facecolor('#0d0514')
     
-    # Custom colormap to explicitly highlight the 60kV yield limit
-    # Normal grid is blue/purple. Approaching 60kV is orange/red.
-    # Exceeding 60kV (Zero-Impedance Phase) renders as glowing white/yellow.
+    # Custom colormap to explicitly highlight the 43.65kV yield limit
+    # Normal grid is blue/purple. Approaching 43.65kV is orange/red.
+    # Exceeding 43.65kV (Zero-Impedance Phase) renders as glowing white/yellow.
     img = ax.imshow(grid.strain_z.T, cmap='magma', vmin=0.0, vmax=2.5, origin='lower')
     
     # Node Render (Atoms)
@@ -56,7 +56,7 @@ def main():
                           bbox=dict(facecolor='black', alpha=0.7, edgecolor='none'))
 
     ax.axis('off')
-    ax.set_title("Tokamak Crisis: Dielectric Saturation Yield Limit (>60 kV)", color='white', pad=20, fontsize=14)
+    ax.set_title("Tokamak Crisis: Dielectric Saturation Yield Limit (>43.65 kV)", color='white', pad=20, fontsize=14)
 
     dt = 0.5
     yield_limit_reached = False
@@ -106,10 +106,10 @@ def main():
         # Calculate maximum strain observed in the collision zone
         max_strain = np.max(np.abs(grid.strain_z))
         
-        # Check Dielectric Saturation Yield Limit (Simulation arbitrary unit mapping ~2.0 == 60kV)
+        # Check Dielectric Saturation Yield Limit (Simulation arbitrary unit mapping ~2.0 == 43.65kV)
         if max_strain > 2.0 and not yield_limit_reached:
             yield_limit_reached = True
-            print("\n    [CRITICAL] Localized Topological Voltage > 60kV!")
+            print("\n    [CRITICAL] Localized Topological Voltage > 43.65kV!")
             print("    [CRITICAL] Vacuum LC Metric has liquefied -> Z_eff = 0.")
             print("    [CRITICAL] Strong Nuclear Force disengaged. Confinement lost.")
             

@@ -20,5 +20,6 @@ The central thesis of this work is that the vacuum is a physical substrate gover
 
 To install the required Python dependencies, run:
 ```bash
-pip install -r requirements.txt
+pip install -e .
+```
 

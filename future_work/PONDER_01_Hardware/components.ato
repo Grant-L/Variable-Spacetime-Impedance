@@ -3,44 +3,44 @@
 # the Solid-State Micro-Drive in atopile's Hardware-as-Code.
 # [UPGRADED TO 5kV AVALANCHE SWEET SPOT]
 
-module MLCC_X7R_10nF_5kV:
+module MLCC_X7R_10nF_30kV:
     """
     TDK High-Voltage Barium Titanate Capacitor
     Core element for Ponderomotive gradient generation (er ~ 3000)
-    Upgraded to 5000V array.
+    Updated for 30kV RMS Acoustic Rectification in the VHF Band.
     """
     signal p1
     signal p2
     
     # Parametric constraints
     capacitance = 10nF +/- 10%
-    voltage = 5000V
+    voltage = 30000V
     dielectric = "X7R"
 
-module Avalanche_Transistor_5kV:
+module Avalanche_Transistor_30kV:
     """
     Zetex/Diodes Inc FMMT417 or custom Gas Discharge/Avalanche switch.
-    Replaces the standard SiC for ultra-fast <1ns Dirac pulse rectification.
+    Replaces the standard SiC to allow 100MHz VHF structural rectification.
     """
     signal collector
     signal base
     signal emitter
     
     # Parametric spec constraints
-    v_ce_max = 5000V
-    rise_time_max = 1ns
+    v_ce_max = 30000V
+    rise_time_max = 0.5ns
 
-module DCDC_Converter_5kV:
+module DCDC_Converter_30kV:
     """
-    XP Power 5000V Miniature PCB-Mount High Voltage Supply.
-    Steps isolated battery voltage up to 5000V DC.
+    XP Power Miniature PCB-Mount High Voltage Supply.
+    Steps isolated battery voltage up to 30kV RMS.
     """
     signal v_in_pos
     signal v_in_neg
     signal hv_out
     signal hv_rtn
     
-    v_out = 5000V
+    v_out = 30000V
     power_max = 20W
 
 module Gate_Driver_UCC27531:

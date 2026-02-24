@@ -1,0 +1,27 @@
+\chapter{Hardware Netlists: PONDER-01 and the EE Bench}
+\label{ch:hardware_netlists}
+
+While the previous chapters utilized abstract mathematical SPICE topologies to prove theoretical dynamics (decay, autoresonance, Sagnac), this chapter documents the explicit, physical LTspice netlists generated to construct actual tabletop AVE hardware.
+
+\section{The EE Bench: Simulating Dielectric Plateaus}
+The EE Bench (detailed in Book 4) utilizes a $100\ \mu$m sub-millimeter gap driven to $43.65\text{ kV}$. The fundamental objective is to measure the asymptotic plateau of the effective capacitance ($C_{eff}$) as the localized metric approaches its absolute structural strain limit.
+
+The Python generation script (`simulate\_ee\_bench\_yield\_shift.py`) constructs an analog model consisting of a programmable high-voltage DC sweep source pushing a non-linear capacitor. The component parameters explicitly evaluate the Axiom 4 saturation operator:
+\begin{equation}
+C_{eff}(V) = C_0 \sqrt{1 - \left(\frac{V}{43650}\right)^2}
+\end{equation}
+
+By running this transient simulation, the EE can predict the exact geometric deviation in charge accumulation ($\Delta Q$) vs a classical, linear vacuum assumptions, allowing them to perfectly calibrate their laboratory oscilloscopes and electrometer pickup thresholds before throwing the high-voltage breaker.
+
+\section{PONDER-01: Simulating Acoustic Rectification}
+The PONDER-01 experimental thruster utilizes an asymmetric FR4/Air dielectric stack to intentionally unbalance the vacuum's thermodynamic acoustic modes. By driving the stack with an extreme $100\text{ MHz}$, $35\text{ kV}$ RF sine wave, it actively pumps acoustic "phonons" from the background vacuum matrix into the heavier FR4 substrate.
+
+Because the system is geometrically asymmetric, the acoustic energy cannot rebound cleanly; it is trapped by the impedance mismatch at the boundary layer, generating continuous unidirectional Ponderomotive thrust.
+
+The SPICE topology generation script (`generate\_ponder\_01\_spice\_netlist.py`) dynamically maps this physical stack into an equivalent cascaded transmission line. 
+\begin{itemize}
+    \item Each sub-millimeter slice of Air and FR4 is converted into its equivalent localized inductance ($L_{layer}$) and capacitance ($C_{layer}$).
+    \item The non-linear Ponderomotive force gradient ($\nabla E^2$) is modeled using arbitrary behavioral voltage sources (`B`-sources in SPICE) injected exactly at the dielectric boundaries.
+\end{itemize}
+
+The simulation explicitly tracks the asymmetric accumulation of voltage phase across the stack. This validates the specific required thickness of the layers against the $100\text{ MHz}$ drive frequency prior to PCB fabrication, ensuring the resonance is perfectly tuned to maximize thrust.

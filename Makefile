@@ -1,11 +1,11 @@
 # Applied Vacuum Engineering - Master Build System
 
 PYTHON = python3
-LATEX = pdflatex
+LATEX = pdflatex -interaction=nonstopmode -halt-on-error
 BIBTEX = bibtex
 
 # Directory Configuration
-OUT_DIR = ../build
+OUT_DIR = build
 SRC_DIR = manuscript
 SCRIPT_DIR = scripts
 SOURCE_DIR = src
@@ -13,7 +13,7 @@ SOURCE_DIR = src
 # Export PYTHONPATH so scripts can import 'ave' modules from src/
 export PYTHONPATH := $(shell pwd)/$(SOURCE_DIR)
 
-.PHONY: all clean verify sims test pdf experiments knots help
+.PHONY: all clean verify sims test pdf pdf_manuscript pdf_future_work pdf_spice knots help
 
 help:
 	@echo "Applied Vacuum Engineering (AVE) Build System"
@@ -22,8 +22,7 @@ help:
 	@echo "  make sims       : Run dynamic simulations (Transmission Lines, etc.)"
 	@echo "  make test       : Run unit tests (pytest)"
 	@echo "  make pdf        : Compile BOTH the rigorous textbook and future work"
-	@echo "  make experiments: Compile the Experimental Protocols LaTeX document"
-	@echo "  make knots      : Compile the Periodic Table of Knots LaTeX document"
+	@echo "  make knots      : Compile the Periodic Table LaTeX document"
 	@echo "  make clean      : Remove build artifacts"
 	@echo "  make all        : Run verify, sims, and pdf"
 
@@ -34,17 +33,17 @@ all: verify sims pdf
 # -----------------------------------------------------------------------------
 verify:
 	@echo "[Verify] Running DAG Anti-Cheat Scan..."
-	$(PYTHON) $(SCRIPT_DIR)/verify_universe.py
+	$(PYTHON) $(SCRIPT_DIR)/book_1_foundations/verify_universe.py
 	@echo "\n[Verify] Running FDTD LC Network solvers..."
-	$(PYTHON) $(SCRIPT_DIR)/visualize_impedance_rupture.py
+	$(PYTHON) $(SCRIPT_DIR)/book_4_applied_engineering/visualize_impedance_rupture.py
 	@echo "\n[Verify] Running Macroscopic Mutual Inductance bounds..."
-	$(PYTHON) $(SCRIPT_DIR)/simulate_mutual_inductance.py
+	$(PYTHON) $(SCRIPT_DIR)/book_4_applied_engineering/simulate_mutual_inductance.py
 	@echo "\n[Verify] Running Topological Borromean geometric limits..."
-	$(PYTHON) $(SCRIPT_DIR)/visualize_topological_bounds.py
+	$(PYTHON) $(SCRIPT_DIR)/book_1_foundations/visualize_topological_bounds.py
 	@echo "\n=================================================="
 	@echo "[Verify] ALL PHYSICS PROTOCOLS PASSED."
 	@echo "=================================================="
-	
+
 # -----------------------------------------------------------------------------
 # 2. Dynamic Simulations (Visual Assets & Time-Domain Solvers)
 # -----------------------------------------------------------------------------
@@ -57,70 +56,76 @@ sims:
 # -----------------------------------------------------------------------------
 test:
 	@echo "[Test] Running Unit Tests..."
-	# Requires pytest to be installed
 	pytest tests/
 
 # -----------------------------------------------------------------------------
 # 4. Manuscript Compilation
 # -----------------------------------------------------------------------------
-pdf: pdf_manuscript pdf_future_work
+pdf: pdf_manuscript pdf_future_work pdf_spice knots
 
 pdf_manuscript:
 	@echo "[Build] Setting up build directories for manuscript..."
-	@mkdir -p build/aux
-	
-	@echo "[Build] Compiling Books 1 to 4..."
+	@mkdir -p $(OUT_DIR)/aux/chapters $(OUT_DIR)/aux/frontmatter $(OUT_DIR)/aux/backmatter
+	@echo "[Build] Compiling Books 1 to 5..."
 	@for dir in book_1_foundations book_2_topological_matter book_3_macroscopic_continuity book_4_applied_engineering book_5_topological_biology; do \
 		echo "[Build] Compiling $$dir..."; \
-		rm -f build/aux/$$dir.out build/aux/$$dir.aux build/aux/$$dir.toc; \
-		cd $(SRC_DIR)/$$dir && $(LATEX) -jobname=$$dir -output-directory=../../build/aux -interaction=nonstopmode main.tex; \
-		if [ -f ../bibliography.bib ]; then \
-			cp ../bibliography.bib ../../build/aux/; \
-			cd ../../build/aux && $(BIBTEX) $$dir || true; \
-			cd ../$(SRC_DIR)/$$dir && $(LATEX) -jobname=$$dir -output-directory=../../build/aux -interaction=nonstopmode main.tex; \
+		rm -f $(OUT_DIR)/aux/$$dir.out $(OUT_DIR)/aux/$$dir.aux $(OUT_DIR)/aux/$$dir.toc; \
+		(cd $(SRC_DIR)/$$dir && $(LATEX) -jobname=$$dir -output-directory=../../$(OUT_DIR)/aux main.tex); \
+		if [ -f $(SRC_DIR)/bibliography.bib ]; then \
+			cp $(SRC_DIR)/bibliography.bib $(OUT_DIR)/aux/; \
+			(cd $(OUT_DIR)/aux && $(BIBTEX) $$dir || true); \
+			(cd $(SRC_DIR)/$$dir && $(LATEX) -jobname=$$dir -output-directory=../../$(OUT_DIR)/aux main.tex); \
 		fi; \
-		cd ../../$(SRC_DIR)/$$dir && $(LATEX) -jobname=$$dir -output-directory=../../build/aux -interaction=nonstopmode main.tex; \
-		cd ../.. ; \
-		mv build/aux/$$dir.pdf build/ 2>/dev/null || true; \
+		(cd $(SRC_DIR)/$$dir && $(LATEX) -jobname=$$dir -output-directory=../../$(OUT_DIR)/aux main.tex); \
+		mv $(OUT_DIR)/aux/$$dir.pdf $(OUT_DIR)/ 2>/dev/null || true; \
 	done
-	@echo "[Build] Manuscript PDFs generated in build/ directory."
+	@echo "[Build] Manuscript PDFs generated in $(OUT_DIR)/ directory."
 
 pdf_future_work:
 	@echo "[Build] Setting up build directories for future work..."
-	@mkdir -p build_future/aux
-	
+	@mkdir -p $(OUT_DIR)/aux/chapters $(OUT_DIR)/aux/frontmatter $(OUT_DIR)/aux/backmatter
 	@echo "[Build] Compiling Future Work LaTeX Manuscript..."
-	rm -f build_future/aux/future_work.out build_future/aux/future_work.aux build_future/aux/future_work.toc
-	cd future_work && $(LATEX) -jobname=future_work -output-directory=../build_future/aux main.tex
+	@rm -f $(OUT_DIR)/aux/future_work.out $(OUT_DIR)/aux/future_work.aux $(OUT_DIR)/aux/future_work.toc
+	@if [ -f future_work/bibliography.bib ]; then \
+		cp future_work/bibliography.bib $(OUT_DIR)/aux/; \
+	fi
+	@(cd future_work && $(LATEX) -jobname=future_work -output-directory=../$(OUT_DIR)/aux main.tex)
 	@if [ -f future_work/bibliography.bib ]; then \
 		echo "[Build] Processing Bibliography..."; \
-		cp future_work/bibliography.bib build_future/aux/; \
-		cd build_future/aux && $(BIBTEX) future_work || true; \
+		(cd $(OUT_DIR)/aux && $(BIBTEX) future_work || true); \
+		(cd future_work && $(LATEX) -jobname=future_work -output-directory=../$(OUT_DIR)/aux main.tex); \
 	fi
-	cd future_work && $(LATEX) -jobname=future_work -output-directory=../build_future/aux main.tex
-	cd future_work && $(LATEX) -jobname=future_work -output-directory=../build_future/aux main.tex
-	mv build_future/aux/future_work.pdf build_future/ 2>/dev/null || true
-	@echo "[Build] Future Work PDF generated at build_future/future_work.pdf"
+	@(cd future_work && $(LATEX) -jobname=future_work -output-directory=../$(OUT_DIR)/aux main.tex)
+	@mv $(OUT_DIR)/aux/future_work.pdf $(OUT_DIR)/ 2>/dev/null || true
+	@echo "[Build] Future Work PDF generated at $(OUT_DIR)/future_work.pdf"
+
+pdf_spice:
+	@echo "[Build] Setting up build directories for SPICE Manual..."
+	@mkdir -p $(OUT_DIR)/aux/chapters $(OUT_DIR)/aux/frontmatter $(OUT_DIR)/aux/backmatter
+	@echo "[Build] Compiling SPICE Manual LaTeX Document..."
+	@rm -f $(OUT_DIR)/aux/spice_manual.out $(OUT_DIR)/aux/spice_manual.aux $(OUT_DIR)/aux/spice_manual.toc
+	@(cd spice_manual && $(LATEX) -jobname=spice_manual -output-directory=../$(OUT_DIR)/aux main.tex)
+	@(cd spice_manual && $(LATEX) -jobname=spice_manual -output-directory=../$(OUT_DIR)/aux main.tex)
+	@mv $(OUT_DIR)/aux/spice_manual.pdf $(OUT_DIR)/ 2>/dev/null || true
+	@echo "[Build] SPICE Manual PDF generated at $(OUT_DIR)/spice_manual.pdf"
 
 # -----------------------------------------------------------------------------
-# 5. Experimental Protocols Compilation
-# -----------------------------------------------------------------------------
-experiments:
-	@echo "[Build] Compiling Experimental Protocols..."
-	@cd experiments && $(MAKE) pdf
-	@echo "[Build] Experimental Protocols PDF generated at experiments/main/main.pdf"
-
-# -----------------------------------------------------------------------------
-# 6. Periodic Table of Knots Compilation
+# 5. Periodic Table Compilation
 # -----------------------------------------------------------------------------
 knots:
-	@echo "[Build] Compiling Periodic Table of Knots..."
-	@cd periodic_table_of_knots && $(MAKE) pdf
-	@echo "[Build] Periodic Table of Knots PDF generated at periodic_table_of_knots/build/main.pdf"
+	@echo "[Build] Compiling Periodic Table..."
+	@mkdir -p $(OUT_DIR)/aux/chapters $(OUT_DIR)/aux/frontmatter $(OUT_DIR)/aux/backmatter
+	@rm -f $(OUT_DIR)/aux/periodic_table.out $(OUT_DIR)/aux/periodic_table.aux $(OUT_DIR)/aux/periodic_table.toc
+	@(cd periodic_table && $(LATEX) -jobname=periodic_table -output-directory=../$(OUT_DIR)/aux main.tex)
+	@(cd periodic_table && $(LATEX) -jobname=periodic_table -output-directory=../$(OUT_DIR)/aux main.tex)
+	@mv $(OUT_DIR)/aux/periodic_table.pdf $(OUT_DIR)/ 2>/dev/null || true
+	@echo "[Build] Periodic Table PDF generated at $(OUT_DIR)/periodic_table.pdf"
 
 clean:
 	@echo "[Clean] Removing build artifacts..."
-	rm -rf build/*
+	rm -rf $(OUT_DIR)/*
 	rm -rf build_future/*
+	rm -rf spice_manual/build/*
+	rm -rf periodic_table/main.pdf
 	rm -rf __pycache__
 	find . -type d -name "__pycache__" -exec rm -rf {} +

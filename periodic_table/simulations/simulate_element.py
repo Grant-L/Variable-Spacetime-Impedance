@@ -14,7 +14,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Custom Modules
-from periodic_table.simulations.spice_exporter import generate_spice_netlist
+# Custom Modules
+# Ensure local module resolution
+import sys
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from spice_exporter import generate_spice_netlist
 
 # Fundamental Constants
 ME_MEV = 0.51099895  # Electron Mass (MeV/c^2)
@@ -388,7 +392,44 @@ def get_nucleon_coordinates(Z, A, d=0.85):
         return [tuple(n) for n in nodes]
         
     else:    
-        return []
+        # Unsupervised High-Z Geometric Packing (Z >= 15)
+        # Places localized Alpha Cores along a spherical Fibonacci lattice
+        # to maximize inter-nodal distance and minimize Coulombic strain.
+        num_alpha = Z // 2
+        remainder_protons = Z % 2
+        remainder_neutrons = A - (num_alpha * 4) - remainder_protons
+        
+        nodes = []
+        alpha_base = np.array([(d, d, d), (-d, -d, d), (-d, d, -d), (d, -d, -d)])
+        
+        # Scaling radius heuristically by mass factor to maintain nuclear density.
+        r_core = d * (15.0 + A * 0.95) 
+        
+        golden_ratio = (1 + 5**0.5) / 2
+        for i in range(num_alpha):
+            theta = 2 * np.pi * i / golden_ratio
+            phi = np.arccos(1 - 2*(i+0.5)/num_alpha)
+            x = r_core * np.cos(theta) * np.sin(phi)
+            y = r_core * np.sin(theta) * np.sin(phi)
+            z = r_core * np.cos(phi)
+            
+            center = np.array([x, y, z])
+            for node in alpha_base:
+                nodes.append(tuple(node + center))
+                
+        # Outer stable isotope halo (neutrons + odd proton)
+        r_halo = r_core + (18.0 * d)
+        total_remaining = remainder_protons + remainder_neutrons
+        if total_remaining > 0:
+            for i in range(total_remaining):
+                theta = 2 * np.pi * i / golden_ratio
+                phi = np.arccos(1 - 2*(i+0.5)/total_remaining)
+                x = r_halo * np.cos(theta) * np.sin(phi)
+                y = r_halo * np.sin(theta) * np.sin(phi)
+                z = r_halo * np.cos(phi)
+                nodes.append((x, y, z))
+                
+        return nodes
 
 def calculate_topological_mass(Z, A):
     """
@@ -426,10 +467,45 @@ def create_element_report(element_name, Z, A, empirical_mass_mev, save_dir):
     
     print(f"Mapping Error:    {mass_error:.4f}%\n")
     
+    nodes = get_nucleon_coordinates(Z, A)
+    
+    # Generate 3D Topological Visualization
+    if nodes:
+        fig = plt.figure(figsize=(8, 8))
+        ax = fig.add_subplot(111, projection='3d')
+        
+        # We know Alphas are tightly packed 4-node groups (in multiples of 4)
+        # Any remainder are halo neutrons/protons
+        xs = [n[0] for n in nodes]
+        ys = [n[1] for n in nodes]
+        zs = [n[2] for n in nodes]
+        
+        num_alpha_nodes = (Z // 2) * 4
+        if num_alpha_nodes > len(nodes):
+            num_alpha_nodes = len(nodes)
+            
+        # Plot Alpha Cores
+        ax.scatter(xs[:num_alpha_nodes], ys[:num_alpha_nodes], zs[:num_alpha_nodes], 
+                   c='r', s=60, alpha=0.8, edgecolors='white', label='Alpha Core Nodes')
+                   
+        # Plot Halo Nodes
+        if len(nodes) > num_alpha_nodes:
+            ax.scatter(xs[num_alpha_nodes:], ys[num_alpha_nodes:], zs[num_alpha_nodes:], 
+                       c='gray', s=30, alpha=0.6, label='Halo Neutrons/Odd Protons')
+                       
+        ax.set_title(f"{element_name} (Z={Z}, A={A})\nSpherical Fibonacci Lattice Topology", fontsize=14, pad=20)
+        ax.axis('off')
+        
+        img_name = f"nuclear_{Z:03d}.png"
+        img_path = os.path.join(save_dir, img_name)
+        plt.tight_layout()
+        plt.savefig(img_path, format='png', dpi=150, bbox_inches='tight')
+        plt.close(fig)
+        print(f"[*] Visual Topology Rendered: {img_path}")
+        
     # Generate identical SPICE physical netlist
     spice_dir = os.path.join(os.path.dirname(save_dir), "spice_netlists")
     os.makedirs(spice_dir, exist_ok=True)
-    nodes = get_nucleon_coordinates(Z, A)
     if nodes:
         generate_spice_netlist(element_name, Z, A, nodes, spice_dir)
     
@@ -487,6 +563,9 @@ if __name__ == "__main__":
     results.append(create_element_report("Lithium-7",  3, 7, 6533.832, OUT_DIR))
     
     # 1 amu = 931.494102 MeV/c^2
+    c12_mass = (12.0 - (6 * 0.00054858)) * 931.494102
+    results.append(create_element_report("Carbon-12",  6, 12, c12_mass, OUT_DIR))
+    
     b11_mass = (11.009305 - (5 * 0.00054858)) * 931.494102
     results.append(create_element_report("Boron-11",   5, 11, b11_mass, OUT_DIR))
     
