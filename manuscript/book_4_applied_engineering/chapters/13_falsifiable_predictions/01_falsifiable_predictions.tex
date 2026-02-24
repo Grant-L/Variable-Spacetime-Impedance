@@ -32,8 +32,40 @@ When the counter-propagating laser waves are injected into the rotating metric, 
 
 The counter-rotating wave experiences higher Ponderomotive Drag (Lenz's Law resistance) from the entrained metric headwind and arrives definitively later than the co-rotating wave.
 
+\subsection{The Kinematic \& Electromagnetic Entrainment Law (Sagnac Anomalies)}
+Because the physical "grip" the rotor has on the LC vacuum network is a structural impedance match, the magnitude of the Lense-Thirring metric drag ($\Omega_{metric}$) is strictly governed by the local \textbf{Mass Density} ($\rho_m$) and the \textbf{Electromagnetic Dielectric Loading} ($\mu_r, \epsilon_r$) of the rotor. 
+
+Standard relativity assumes the vacuum is an empty geometric void, claiming the Sagnac phase shift depends purely on Area and Rotational Velocity ($\Delta \Phi = \frac{4 A \Omega}{\lambda c}$), meaning rotor mass and material composition are irrelevant. 
+
+AVE decisively rejects this. We formally state the \textbf{Kinematic \& Electromagnetic Entrainment Law}: The macroscopic structural entrainment of the continuous vacuum metric scales directly with the local kinematic impedance ($Z_k = \rho_m c$) and the magnetic permeability ($\mu_r$) of the boundary layer mass. High permeability materials drag massive "Vacuum Eddy Currents," acting as a geometric core. Furthermore, because the vacuum is an LC grid, local background magnetic fields physically saturate the spatial inductors, shifting the local baseline optical impedance.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1.0\textwidth]{sagnac_kinematic_entrainment.png}
+    \caption{\textbf{Sagnac Electrical Engineering Sensitivities (On-Earth Calibration).} A 5-panel sweep proving the Sagnac effect is physically entangled with real-world material and environmental limits. \textbf{1. Density ($\rho_m$):} Denser rotors grip the vacuum tighter. \textbf{2. Magnetic Permeability ($\mu_r$):} High $\mu$ materials (Iron) act as a solid moving core, generating massive LC vacuum eddy currents and amplifying the Sagnac drag exponentially. \textbf{3. Background EMI ($B$):} External DC magnetic fields pre-saturate vacuum inductance. \textbf{4. Altitude:} Operating higher in gravity lowers ambient metric strain, reducing coupling efficiency. \textbf{5. Latitude Drift:} Earth's background Lense-Thirring drag actively cross-talks based on RLG alignment.}
+    \label{fig:sagnac_entrainment_sweeps}
+\end{figure}
+
 \textbf{Falsification Test:} 
-High-precision Ring Laser Vacuum Gyroscopes (RLVGs) currently measure Earth's rotation to fractions of a degree per hour. AVE explicitly predicts that at higher resolutions, RLVGs will detect altitude-dependent variations in the measured Sagnac shift, mapping exactly to the inductive shear gradient of Earth's Topological Metric Boundary Layer slipstream. If the Sagnac shift remains universally identical independent of local geodetic mass density, AVE's macroscopic inductive entrainment effect is falsified.
+High-precision Ring Laser Vacuum Gyroscopes (RLVGs) currently measure Earth's rotation to fractions of a degree per hour. AVE explicitly predicts that spinning identical RLGs at the exact same RPM will yield vastly different Sagnac shifts if constructed from porous Aerogel versus solid Lead, and an even harsher deviation if constructed from Paramagnetic Aluminum versus Ferromagnetic Mu-Metal. Furthermore, researchers will observe altitude-dependent (ambient strain), latitude-dependent (Earth Lense-Thirring), and EMI-dependent (B-field saturation) anomalies absent from ideal relativistic formulas. If the Sagnac shift remains universally identical independent of local $\rho_m$ mass density, magnetic permeability $\mu_r$, and ambient $Z(r)$, AVE's macroscopic inductive entrainment effect is completely falsified.
+
+\subsection{RLVG System Tolerances (The SNR Limit)}
+The mathematically predicted phase deviations caused by kinematic and electromagnetic entrainment are exceedingly small (on the order of $1.5 \times 10^{-10}$ rad for a standard 1-meter tabletop RLG). Isolating this topological metric drag requires an unprecedented Signal-to-Noise Ratio (SNR). Standard laboratory hardware noise floors will actively drown out the AVE signature if not strictly managed.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1.0\textwidth]{sagnac_rlvg_tolerances.png}
+    \caption{\textbf{RLVG System Tolerance Simulation.} To isolate the AVE Kinematic Shift (Target Phase $\sim 10^{-10}$ rad) from standard geometric hardware noise. \textbf{Left:} Thermal Expansion. A Zerodur/ULE ring cavity provides the only viable thermal platform; Aluminum expands too rapidly to maintain cavity resonance. \textbf{Middle:} Laser Frequency Stability ($\Delta f$). The continuous-wave source must be actively locked to prevent wavelength jitter from muddying the fringes. \textbf{Right:} Seismic/Mechanical Vibration. Acoustic and seismic isolation constraints on the cavity mirrors.}
+    \label{fig:sagnac_rlvg_tolerances}
+\end{figure}
+
+To definitively execute the density-sweep falsification test, the experimental hardware must meet the following analytical constraints:
+\begin{enumerate}
+    \item \textbf{Thermal Expansion:} The RLG cavity must be constructed from Zero-Expansion Glass (Zerodur or ULE) and environmentally active-stabilized to better than \textbf{1.0 mK} ($0.001$ K) to prevent bulk geometric area distortion.
+    \item \textbf{Laser Source Stability:} The probe laser must be frequency-locked (e.g., Iodine-stabilized HeNe) with a continuous linewidth drift of less than \textbf{46 kHz}.
+    \item \textbf{Seismic Isolation:} Mirror dither and mechanical vibration must be actively suppressed to the sub-picometer (attometer) regime to prevent dynamic path-length jitter.
+\end{enumerate}
+If an experiment is designed verifying these tolerance bounds, and the theoretical density-dependent Sagnac anomaly $\Delta \Phi$ is still not observed, AVE is definitively and irreversibly falsified.
 
 \section{Electromagnetic Coupling to the Chiral LC Condensate (Helicity Injection)}
 
