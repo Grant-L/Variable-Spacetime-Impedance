@@ -42,6 +42,16 @@ Every amino acid possesses an identical backbone designed to transmit an alterna
     \item \textbf{The Sink (Carboxyl Group, {$COO^-$}):} The oxygen terminus acts as the phase-locked capacitive ground, terminating the local signal into the universal $Z_0 \approx 377\Omega$ vacuum impedance load.
 \end{enumerate}
 
+\subsection{The Biological Power Supply: Thermal and Metabolic THz Noise}
+A critical analytical question arises: \textit{What is physically powering the $V_{sin}$ source?} An amino acid sequence is a passive component; it does not generate power spontaneously. Instead, the driving signal is the \textbf{ambient THz noise floor} of the biological environment itself.
+
+\begin{enumerate}
+    \item \textbf{Thermal Phonons ($300\text{ K}$):} At internal body temperature, Wien's displacement law dictates the peak absolute thermal radiation operates at exactly $\sim 30\text{ THz}$. The ubiquitous water matrix of the cell acts as a relentless, massive $30 \text{ THz}$ broadband noise generator continuously buffeting the peptide chain.
+    \item \textbf{Metabolic Hydrolysis (ATP):} The cleavage of Adenosine Triphosphate (ATP) releases extreme, quantized packets of energy (localized IR photons and mechanical phonons) directly into the aqueous matrix in the $10-100\text{ THz}$ band.
+\end{enumerate}
+
+The chaotic thermal and metabolic background of the cell enters the Nitrogen terminus as stochastic white noise. The explicitly ordered sequence of R-group LC filters then actively \textit{sculpts} that chaotic noise. Like a prism resolving white light into specific colors, the topological tune of the entire folded chain acts as a highly selective macroscopic bandpass filter, channeling random thermal vibration into directed, coherent mechanical work (protein folding) and resonant signaling.
+
 \subsection{The R-Group Filter Stack}
 If the backbone is the transmission line, the \textbf{R-Group} (the side chain) is simply an attached passive/active RLC filter stub. The chemical identity of the amino acid is strictly determined by the specific resonant delay introduced by this stub.
 For example, in \textbf{Glycine}, the R-Group is a single Hydrogen atom—creating a minimal shunt capacitor. In \textbf{Alanine}, the R-Group is a methyl ($-CH_3$) stack, vastly increasing the inductive mass and phase-delay of the signal crossing the alpha-carbon.
@@ -51,13 +61,13 @@ Biological life almost exclusively utilizes L-amino acids rather than their D-en
 A left-handed (L) string guarantees a $+90^\circ$ intrinsic phase difference (current leads voltage through the network), locking the biology to a specific, continuous resonant polarity that prevents destructive wave interference along the massive peptide chains of a folded protein.
 
 \section{Simulating Biological Frequency Response}
-Using the established inductance and capacitance mapping, we procedurally generated SPICE netlists for Glycine and L-Alanine and solved their topological transfer functions mathematically. The alternating current (AC) signal was driven across the $C_\alpha$ chassis in the High-Terahertz to Low-Petahertz spectrum (the resonant frequency band of atomic orbitals).
+Using the established inductance and capacitance mapping, we procedurally generated SPICE netlists for all 20 standard amino acids and solved their topological transfer functions mathematically. The alternating current (AC) signal was driven across the $C_\alpha$ chassis in the High-Terahertz to Low-Petahertz spectrum (the resonant frequency band of atomic orbitals).
 
-Figure \ref{fig:amino_resonance} demonstrates the explicit power transmission ($|H|^2$) of the two molecules. Notice the distinct filter behaviors: Glycine, with its minimal $-H$ capacitor stub, exhibits a broad resonant passband. However, adding just a single Methyl group ($-CH_3$) to form L-Alanine drops the resonant frequency and introduces sharp, inductive nulls into the signal. The R-Group acts explicitly as an RLC tuning stub.
+Figure \ref{fig:amino_resonance} demonstrates the explicit power transmission ($|H|^2$) of a representative six-molecule subset (Glycine, Alanine, Valine, Serine, Cysteine, Phenylalanine). Notice the distinct filter behaviors: Glycine, with its minimal $-H$ capacitor stub, exhibits a broad resonant passband. However, adding heavier or more complex R-groups (like the Sulfur atom in Cysteine or the massive aromatic inertia in Phenylalanine) drastically shifts the resonant frequency and introduces sharp, inductive nulls into the signal. The R-Group acts explicitly as an RLC tuning stub, proving that sequence diversity is equivalent to macroscopic filter engineering.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.9\textwidth]{amino_acid_resonance.png}
-    \caption{SPICE Resonant Frequency Response (Bode Plot) of Glycine vs L-Alanine.}
+    \caption{SPICE Resonant Frequency Response (Bode Plot) showcasing the distinct RLC filter properties of Glycine, Alanine, Valine, Serine, Cysteine, and Phenylalanine.}
     \label{fig:amino_resonance}
 \end{figure}

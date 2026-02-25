@@ -10,3 +10,17 @@ Calculations prove that standard 1-2 MHz flyback topologies are incapable of cro
     \caption{\textbf{100 MHz VHF Avalanche Drive Transient:} When driving the asymmetric geometry at $30 \text{ kV}$ RMS, the sharp $1 \mu\text{m}$ tip undergoes field emission (avalanche breakdown) at the waveform peaks. The electrical driving circuitry must source extreme transient current bursts through the $50 \Omega$ match to prevent the LC voltage from sagging mid-oscillation and crashing the topological drag thrust.}
     \label{fig:ponder_01_vhf_drive_transient}
 \end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1.0\textwidth]{ponder_01_s11_match.png}
+    \caption{\textbf{Resonant Load Matching:} The purely reactive $100 \text{ pF}$ PCBA test article requires an ultra-high-$Q$ series inductor of roughly $25 \text{ nH}$ to achieve a pure $50 \Omega$ transmission line match, preventing the $30 \text{ kV}$ VHF source from catastrophically reflecting power back into the amplifier.}
+    \label{fig:ponder_01_s11_match}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1.0\textwidth]{ponder_01_thermal_dissipation.png}
+    \caption{\textbf{Thermal Runaway Catastrophe Limits:} Operating in a convective-dead hard vacuum at extreme VHF frequencies forces skin-effect and massive $\tan \delta$ dielectric heating. Standard FR-4 substrate delaminates in milliseconds. Even military-spec Rogers PTFE guarantees only a sub-second firing window before the geometry physically evaporates.}
+    \label{fig:ponder_01_thermal_dissipation}
+\end{figure}

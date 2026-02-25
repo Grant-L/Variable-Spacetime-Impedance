@@ -1,0 +1,32 @@
+* AVE SPICE Model: L-Proline
+* Backbone topology mapped to L/C tensors
+
+* --- The Amino Source (NH3+) ---
+V_amino in 0 SIN(0 1V 100GHz)
+L_nh3 in n_amino 140.07pH
+C_nc n_amino n_alpha 170.64846416382252fF
+
+* --- The Alpha Carbon (C-alpha) ---
+L_alpha n_alpha n_alpha_out 120.10999999999999pH
+
+* --- R-Group Filter Stub (L-Proline) ---
+C_r_beta n_alpha n_beta 144.0922190201729fF
+L_beta n_beta n_beta_split 140.26999999999998pH
+C_beta_gamma n_beta_split n_gamma 144.0922190201729fF
+L_gamma n_gamma n_gamma_split 140.26999999999998pH
+C_gamma_delta n_gamma_split n_delta 144.0922190201729fF
+L_delta n_delta 0 140.26999999999998pH
+
+C_cc n_alpha_out n_carboxyl_c 144.0922190201729fF
+
+* --- The Carboxyl Sink (COO-) ---
+L_carboxyl_c n_carboxyl_c n_carboxyl_split 120.10999999999999pH
+C_co_double n_carboxyl_split n_o_double 62.57822277847309fF
+L_o_double n_o_double 0 159.99pH
+C_co_single n_carboxyl_split out 139.66480446927375fF
+L_o_single out n_term 159.99pH
+R_load n_term 0 376.73Ohm
+
+* --- AC Simulation Directives ---
+.ac dec 100 1G 1000G
+.end

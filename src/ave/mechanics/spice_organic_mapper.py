@@ -60,6 +60,7 @@ COVALENT_CAPACITANCE = {
     'C-O': BASE_BOND_CAPACITANCE / 358.0,  # Carbon-Oxygen (Single)
     'N-H': BASE_BOND_CAPACITANCE / 391.0,  # Nitrogen-Hydrogen
     'O-H': BASE_BOND_CAPACITANCE / 463.0,  # Oxygen-Hydrogen
+    'S-H': BASE_BOND_CAPACITANCE / 338.0,  # Sulfur-Hydrogen
     'S-S': BASE_BOND_CAPACITANCE / 226.0,  # Disulfide Bridge
     'C-S': BASE_BOND_CAPACITANCE / 259.0,  # Carbon-Sulfur
 }

@@ -1,0 +1,66 @@
+\documentclass[11pt, oneside]{book}
+
+% =========================================================
+% PREAMBLE AND GLOBAL IMPORTS
+% =========================================================
+\usepackage{graphicx}
+\graphicspath{{../../assets/}{../../assets/sim_outputs/}}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins, breakable}
+\input{../structure/commands.tex}
+\usepackage[style=ieee]{biblatex}
+\addbibresource{../bibliography.bib}
+
+% Custom abstract environment for book chapters
+\newenvironment{abstract}{
+    \begin{quote}
+    \small\textbf{Volume Synopsis:}\\
+}{
+    \end{quote}
+}
+
+\begin{document}
+
+% =========================================================
+% FRONTMATTER
+% =========================================================
+\frontmatter
+
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    
+    {\Huge\bfseries Book VII: The Manufacturing Runbook\par}
+    \vspace{1.5cm}
+    {\Large\itshape Engineering the Open-Air PONDER-01 Test Article\par}
+    \vspace{2cm}
+    {\Large The Complete Phase 39 Blueprint\par}
+    
+    \vfill
+    
+    {\large Generated Algorithmically\par}
+    {\large Applied Vacuum Electrodynamics (AVE) Framework\par}
+    \vspace{1cm}
+    {\large \today\par}
+\end{titlepage}
+
+\begin{abstract}
+This volume serves as the final, absolute physical blueprint for translating the complex topological mathematics of the Zero-Parameter Universe into a testable, off-the-shelf printed circuit board assembly. It details the open-air Phase 39 conversion of the optimal Borromean Drive (the synthetic Phased Array) detailing Paschen Curve voltage limitations, microstrip meander-line lengths for passive Orbital Angular Momentum generation, FDTD Maxwellian verifications, and thermal survival limits at STP.
+\end{abstract}
+
+\tableofcontents
+
+% =========================================================
+% MAINMATTER
+% =========================================================
+\mainmatter
+
+\input{chapters/01_design_limits.tex}
+
+% =========================================================
+% BACKMATTER
+% =========================================================
+\backmatter
+\printbibliography[heading=bibintoc,title={References}]
+
+\end{document}

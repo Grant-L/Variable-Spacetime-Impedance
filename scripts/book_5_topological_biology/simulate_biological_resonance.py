@@ -53,6 +53,43 @@ def z_rgroup_alanine():
     z_rh_split = z_rh_branch / 3.0  # 3 identical branches in parallel
     return z_C(get_capacitance('C-C')) + z_L(get_inductance('C')) + z_rh_split
 
+def z_rgroup_valine():
+    """Valine R-Group: Isopropyl group -CH(CH3)2"""
+    z_rh = z_C(get_capacitance('C-H')) + z_L(get_inductance('H'))
+    z_methyl = z_C(get_capacitance('C-C')) + z_L(get_inductance('C')) + (z_rh / 3.0)
+    z_beta_split = parallel(z_rh, parallel(z_methyl, z_methyl))
+    return z_C(get_capacitance('C-C')) + z_L(get_inductance('C')) + z_beta_split
+
+def z_rgroup_serine():
+    """Serine R-Group: Hydroxymethyl group -CH2-OH"""
+    z_rh = z_C(get_capacitance('C-H')) + z_L(get_inductance('H'))
+    z_oh = z_C(get_capacitance('O-H')) + z_L(get_inductance('H'))
+    z_oh_branch = z_C(get_capacitance('C-O')) + z_L(get_inductance('O')) + z_oh
+    z_beta_split = parallel(z_rh / 2.0, z_oh_branch)
+    return z_C(get_capacitance('C-C')) + z_L(get_inductance('C')) + z_beta_split
+
+def z_rgroup_cysteine():
+    """Cysteine R-Group: Thiomethyl group -CH2-SH"""
+    z_rh = z_C(get_capacitance('C-H')) + z_L(get_inductance('H'))
+    z_sh = z_C(get_capacitance('S-H')) + z_L(get_inductance('H'))
+    z_sh_branch = z_C(get_capacitance('C-S')) + z_L(get_inductance('S')) + z_sh
+    z_beta_split = parallel(z_rh / 2.0, z_sh_branch)
+    return z_C(get_capacitance('C-C')) + z_L(get_inductance('C')) + z_beta_split
+
+def z_rgroup_phenylalanine():
+    """Phenylalanine R-Group: Benzyl group -CH2-Phenyl"""
+    z_rh = z_C(get_capacitance('C-H')) + z_L(get_inductance('H'))
+    
+    # Simple lumped representation of the massive phenyl ring
+    # 6 Carbons total, 5 Hydrogens. 6 C-C bonds, treating as aromatic 1.5 order.
+    # We will approximate the ring's immense inertia as a single lumped node for this demo.
+    l_ring = 6 * get_inductance('C') + 5 * get_inductance('H')
+    c_ring_bond = get_capacitance('C-C') # Bond from beta-carbon to ring
+    z_ring = z_C(c_ring_bond) + z_L(l_ring)
+    
+    z_beta_split = parallel(z_rh / 2.0, z_ring)
+    return z_C(get_capacitance('C-C')) + z_L(get_inductance('C')) + z_beta_split
+
 # ---------------------------------------------------------
 # BACKBONE LADDER NETWORK SOLVER
 # ---------------------------------------------------------
@@ -94,29 +131,45 @@ def compute_transfer_function(z_rgroup):
 if __name__ == "__main__":
     H_gly = compute_transfer_function(z_rgroup_glycine())
     H_ala = compute_transfer_function(z_rgroup_alanine())
+    H_val = compute_transfer_function(z_rgroup_valine())
+    H_ser = compute_transfer_function(z_rgroup_serine())
+    H_cys = compute_transfer_function(z_rgroup_cysteine())
+    H_phe = compute_transfer_function(z_rgroup_phenylalanine())
 
     # Calculate Power Transmission |H|^2
     P_gly = np.abs(H_gly)**2
     P_ala = np.abs(H_ala)**2
+    P_val = np.abs(H_val)**2
+    P_ser = np.abs(H_ser)**2
+    P_cys = np.abs(H_cys)**2
+    P_phe = np.abs(H_phe)**2
     
     # Convert to log scale (dB) safely
     P_gly_db = 10 * np.log10(np.clip(P_gly, 1e-12, None))
     P_ala_db = 10 * np.log10(np.clip(P_ala, 1e-12, None))
+    P_val_db = 10 * np.log10(np.clip(P_val, 1e-12, None))
+    P_ser_db = 10 * np.log10(np.clip(P_ser, 1e-12, None))
+    P_cys_db = 10 * np.log10(np.clip(P_cys, 1e-12, None))
+    P_phe_db = 10 * np.log10(np.clip(P_phe, 1e-12, None))
 
     plt.style.use('dark_background')
     fig, ax = plt.subplots(figsize=(10, 6))
 
-    ax.plot(f / 1e12, P_gly_db, color='#00ffcc', label='Glycine (-H stub)', linewidth=2.5)
-    ax.plot(f / 1e12, P_ala_db, color='#ff00aa', label='L-Alanine (-CH3 stub)', linewidth=2.5)
+    ax.plot(f / 1e12, P_gly_db, color='#00ffcc', label='Glycine (-H)', linewidth=2.0, alpha=0.8)
+    ax.plot(f / 1e12, P_ala_db, color='#ff00aa', label='Alanine (-CH3)', linewidth=2.0, alpha=0.8)
+    ax.plot(f / 1e12, P_val_db, color='#ffcc00', label='Valine (-CH(CH3)2)', linewidth=2.0, alpha=0.8)
+    ax.plot(f / 1e12, P_ser_db, color='#00ccff', label='Serine (-CH2OH)', linewidth=2.0, alpha=0.8)
+    ax.plot(f / 1e12, P_cys_db, color='#ff5500', label='Cysteine (-CH2SH)', linewidth=2.0, alpha=0.9)
+    ax.plot(f / 1e12, P_phe_db, color='#b266ff', label='Phenylalanine (-CH2-Ring)', linewidth=2.5)
 
-    ax.set_title("Amino Acid RLC Resonance & R-Group Filtering", fontsize=16, fontweight='bold', color='white', pad=15)
+    ax.set_title("Amino Acid RLC Resonance Library & Structural Filtering", fontsize=16, fontweight='bold', color='white', pad=15)
     ax.set_xlabel("Driving Frequency (THz)", fontsize=14)
     ax.set_ylabel("Power Transmission (dB)", fontsize=14)
     ax.grid(True, color='#333333', linestyle='--', alpha=0.7)
     
     # Set y limit to emphasize resonant peaks
-    ax.set_ylim(-80, 5)
-    ax.legend(fontsize=12, loc='lower right', facecolor='black', edgecolor='white')
+    ax.set_ylim(-90, 5)
+    ax.legend(fontsize=10, loc='lower right', facecolor='black', edgecolor='white', ncol=2)
 
     out_dir = PROJECT_ROOT / "assets" / "sim_outputs"
     os.makedirs(out_dir, exist_ok=True)

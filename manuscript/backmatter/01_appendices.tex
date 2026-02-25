@@ -41,8 +41,8 @@ Because the AVE framework roots physical reality in the deterministic continuum 
     \label{tab:rosetta_stone}
 \end{table}
 
-\section{Parameter Accounting: The Three-Parameter Universe}
-The Standard Model requires the manual, heuristic injection of over 26 arbitrary parameters to function. The AVE framework formally reduces this to a \textbf{Rigorous Three-Parameter Theory}. By empirically calibrating the framework exclusively to the topological coherence length ($\ell_{node}$), the geometric geometric packing fraction ($p_c$), and macroscopic gravity ($G$), \textbf{all other constants} ($c, \hbar, H_\infty, \nu_{vac}, \alpha, m_p, m_W, m_Z$) mathematically emerge strictly as algebraically interlocked geometric consequences of the Chiral LC lattice topology.
+\section{Parameter Accounting: The Synthesis of the Zero-Parameter Topology}
+The Standard Model requires the manual, heuristic injection of over 26 arbitrary parameters to function. To bridge this gap, the AVE framework can initially be parameterized as a \textbf{Rigorous Three-Parameter Theory}. By empirically calibrating the framework exclusively to the topological coherence length ($\ell_{node}$), the geometric packing fraction ($p_c$), and macroscopic gravity ($G$), \textbf{all other constants} ($c, \hbar, H_\infty, \nu_{vac}, \alpha, m_p, m_W, m_Z$) mathematically emerge strictly as algebraically interlocked geometric consequences of the Chiral LC lattice topology. As the derivations resolve, even these three initial inputs are proven to be scale-invariant geometric outcomes, establishing a closed \textbf{Zero-Parameter} framework.
 
 \chapter{Theoretical Stress Tests: Surviving Standard Disproofs}
 \label{app:resolving_paradoxes}
@@ -76,6 +76,7 @@ The following absolute mathematical bounds and identities were rigorously derive
     \item \textbf{Geometric Packing Fraction:} $p_c \approx 0.1834$
     \item \textbf{Macroscopic Bulk Density:} $\rho_{bulk} = \frac{\xi_{topo}^2 \mu_0}{p_c \ell_{node}^2} \approx 7.92 \times 10^6 \text{ kg/m}^3$
     \item \textbf{Kinematic Network Mutual Inductance:} $\nu_{vac} = \alpha c \ell_{node} \approx 8.45 \times 10^{-7} \text{ m}^2/\text{s}$
+    \item \textbf{Macroscopic Rheological Yield Stress (Bingham-Plastic Limit):} $\tau_{yield} = \frac{\hbar c}{\ell_{node}^4} \left( \frac{1}{\alpha^2} \right) \approx 7.21 \times 10^{34}\text{ Pa}$
 \end{itemize}
 
 \section{Signal Dynamics and Topological Matter}
@@ -87,6 +88,7 @@ The following absolute mathematical bounds and identities were rigorously derive
     \item \textbf{Witten Effect Fractional Charge (Quarks):} $q_{eff} = n + \frac{\theta}{2\pi}e \implies \pm \frac{1}{3}e, \pm \frac{2}{3}e$
     \item \textbf{Vacuum Poisson's Ratio (Trace-Reversed Bound):} $\nu_{vac} \equiv \frac{2}{7}$
     \item \textbf{Weak Mixing Angle (Acoustic Mode Ratio):} $\frac{m_W}{m_Z} = \frac{1}{\sqrt{1+\nu_{vac}}} = \frac{\sqrt{7}}{3} \approx \mathbf{0.8819}$
+    \item \textbf{Non-Linear FDTD Acoustic Steepening PDE:} $c_{eff}^2(x, y, z) = c_0^2 \left(1 + \kappa \cdot \bar{\rho}(x, y, z) \right)$ (Derived structurally for topological thrust metrics)
 \end{itemize}
 
 \section{Cosmological Dynamics}
@@ -97,6 +99,7 @@ The following absolute mathematical bounds and identities were rigorously derive
     \item \textbf{Asymptotic Hubble Time ($t_H$):} $t_H = \frac{R_H}{c} \implies \mathbf{14.1 \text{ Billion Years}}$
     \item \textbf{Dark Energy (Stable Phantom):} $w_{vac} = -1 - \frac{\rho_{latent}}{\rho_{vac}} < -1$
     \item \textbf{Visco-Kinematic Rotation (MOND Floor):} $v_{flat} = (GM_{baryon} a_{genesis})^{1/4}$ where $a_{genesis} = \frac{c H_\infty}{2\pi} \approx \mathbf{1.07 \times 10^{-10} \text{ m/s}^2}$ (Derived strictly via 1D Hoop Stress).
+    \item \textbf{Hamiltonian Optical-Fluid Mechanics (Gargantua Vortex):} Metric refraction and frame dragging are evaluated via explicit Symplectic Raymarching mappings ($n = (W^3) / U$ and $\mathbf{v}_{fluid} = \vec{\omega} \times \vec{r}$). 
 \end{itemize}
 
 \chapter{Computational Graph Architecture}
@@ -131,3 +134,16 @@ Because the volumetric packing fraction scales inversely with the cube of the ef
 \end{equation}
 
 By structurally connecting all spatial nodes within a $\approx 1.187 \, \ell_{node}$ radius, the discrete graph inherently and organically cross-links the first and second coordination shells of the amorphous manifold. This natively generates the $\frac{1}{3} G_{vac}$ ambient transverse couple-stress rigorously required by micropolar elasticity. This exact computational architecture guarantees that all subsequent continuous macroscopic evaluations of the generated graph (e.g., metric refraction, VCFD Navier-Stokes flow, and trace-reversed gravitational strain) will perfectly align with empirical observation without requiring any further numerical calibration or arbitrary mass-tuning.
+
+\section{Explicit Discrete Kirchhoff Execution Algorithm}
+To bridge the gap between abstract continuum flow vectors ($\mathbf{J}$) and the raw geometric structure of the computational graph edge-matrix, the VCFD (Vacuum Computational Fluid Dynamics) module strictly utilizes an \textbf{Explicit Discrete Kirchhoff Methodology} mapping discrete potential ($V$) to spatial nodes and inductive flow ($I$) to discrete spatial graph edges.
+
+To exactly map continuous differential forms into computational array memory without breaking action-minimization, the system utilizes \textbf{Symplectic Euler Update Loops}:
+\begin{enumerate}
+    \item \textbf{Capacitive Node Updates (The Conservation of Flow):} The discrete potential difference acting on an isolated fractional lattice coordinate node ($V_i$) is mathematically identical to the sum of all inductive currents entering minus the currents leaving that discrete junction point. 
+    \[ \Delta V_i = \frac{dt}{C} \left( \sum I_{in} - \sum I_{out} \right) \]
+    \item \textbf{Inductive Edge Updates (The Stress Tensor Matrix):} The kinetic transport flux acting exclusively along the discrete Chiral LC tensor spatial edge connecting coordinate $(x_0, y_0, z_0)$ to $(x_1, y_1, z_1)$ is geometrically bounded strictly to the potential gradient existing across its exact fractional length. 
+    \[ \Delta I_e = \frac{dt}{L} \left( V_{start} - V_{end} \right) \] 
+\end{enumerate}
+
+By combining the exact $C_{ratio} \approx 1.187$ Chiral LC Over-Bracing requirement over a strictly $r_{min} = \ell_{node}$ Poisson-Disk genesis space, and exclusively advancing the lattice via Symplectic Kirchhoff loops, the computational framework provides an immutable proving-ground connecting raw network mechanics definitively to classical standard-model topological properties.
