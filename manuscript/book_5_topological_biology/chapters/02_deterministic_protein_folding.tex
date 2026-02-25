@@ -15,6 +15,25 @@ The primary mathematical trap that stops algorithmic gradient descent from foldi
 
 To mathematically circumvent this, the AVE optimization engine models the protein sequence strictly in the two fundamental topological basis states of space: the tightly curled 3D Alpha-Helix and the flattened 2D Beta-Sheet. The gradient descent engine evaluates the total topological strain ($U_{total}$) of the sequence initialized in both states and deterministically collapses the model into whichever geometry represents the absolute, unentangled global minimum.
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{protein_folding_3d_collapse.png}
+    \caption{\textbf{Multiplexed Basis Engine Collapse:} Rather than stepping through an NP-Hard search of random 3D rotations, the AVE solver initializes the backbone geometry identically in the two extreme mathematical basis states: the isotropic 3D Helix and the anisotropic 2D Sheet. By applying the deterministic SPICE impedance parameters to the coordinates, the engine collapses instantly into the absolute lowest-strain macro-geometry. (Left) \textit{Polalanine} survives the internal steric pressure, locking into a Helix. (Right) \textit{Polyvaline} exceeds the yield limit, violently flattening into a Sheet.}
+    \label{fig:protein_folding_3d}
+\end{figure}
+
+\section{SPICE Transmission Line Mismatch ($S_{11}$ Strain)}
+To formally prove that organic geometry is driven by electrical resonance, we can model the exact amino acid sequence as a cascaded SPICE AC transmission line. By running a broad frequency sweep across the discrete R-group topologies, we calculate the macroscopic impedance mismatch (effectively the $S_{11}$ Reflection Coefficient) of the entire molecular chain.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{protein_spice_folding_strain.png}
+    \caption{\textbf{Topological AC Impedance Means Test:} A cascaded SPICE simulation of 10-residue polypeptide chains. The Alpha-Helix forming \textit{Polyalanine} drops into a deep resonant notch (an impedance match), meaning the structure can physically "lock" into a tight helical wrapper without breaking. Conversely, \textit{Polyglycine} and \textit{Polyproline} exhibit massive geometric mismatch (high reactive strain), physically tearing the network apart unless the backbone unwinds and flattens into a Beta-Sheet or extended coil.}
+    \label{fig:protein_spice_folding}
+\end{figure}
+
+As shown in Figure \ref{fig:protein_spice_folding}, the macroscopic AC strain mathematically dictates the physical stability of the structure. Sequences with perfectly matched resonances (low $S_{11}$) remain tightly folded, while mismatched sequences (high $S_{11}$) violently reject the geometry.
+
 \section{Empirical Validation Matrix}
 To mathematically prove this mechanical derivation, we isolated ten distinct low-complexity polypeptide sequences with well-known empirical physical properties. By coupling the sequences to their AVE Topological Impedance values, the geometric simulation identically mirrors biological reality without relying on any statistical data-fitting. 
 
