@@ -15,6 +15,7 @@ EPSILON_0 = 8.85418782e-12              # Vacuum permittivity (1/(mu_0*c^2)) [F/
 Z_0 = np.sqrt(MU_0 / EPSILON_0)         # Characteristic impedance [Ohms] (approx 376.73)
 HBAR = 1.054571817e-34                  # Planck constant over 2 pi [J s]
 M_E = 9.1093837e-31                     # Electron invariant mass [kg]
+e_charge = 1.602176634e-19              # Elementary charge [C]
 
 # ---------------------------------------------------------
 # AVE Specific Topological Constants
