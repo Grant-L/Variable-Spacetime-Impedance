@@ -83,21 +83,21 @@ pdf_manuscript:
 
 pdf_future_work:
 	@echo "[Build] Setting up build directories for future work..."
-	@mkdir -p $(OUT_DIR)/aux/chapters $(OUT_DIR)/aux/frontmatter $(OUT_DIR)/aux/backmatter
+	@mkdir -p future_work/build/aux
 	@echo "[Build] Compiling Future Work LaTeX Manuscript..."
-	@rm -f $(OUT_DIR)/aux/future_work.out $(OUT_DIR)/aux/future_work.aux $(OUT_DIR)/aux/future_work.toc
+	@rm -f future_work/build/aux/future_work.out future_work/build/aux/future_work.aux future_work/build/aux/future_work.toc
 	@if [ -f future_work/bibliography.bib ]; then \
-		cp future_work/bibliography.bib $(OUT_DIR)/aux/; \
+		cp future_work/bibliography.bib future_work/build/aux/; \
 	fi
-	@(cd future_work && $(LATEX) -jobname=future_work -output-directory=../$(OUT_DIR)/aux main.tex)
+	@(cd future_work && $(LATEX) -jobname=future_work -output-directory=build/aux main.tex)
 	@if [ -f future_work/bibliography.bib ]; then \
 		echo "[Build] Processing Bibliography..."; \
-		(cd $(OUT_DIR)/aux && $(BIBTEX) future_work || true); \
-		(cd future_work && $(LATEX) -jobname=future_work -output-directory=../$(OUT_DIR)/aux main.tex); \
+		(cd future_work/build/aux && $(BIBTEX) future_work || true); \
+		(cd future_work && $(LATEX) -jobname=future_work -output-directory=build/aux main.tex); \
 	fi
-	@(cd future_work && $(LATEX) -jobname=future_work -output-directory=../$(OUT_DIR)/aux main.tex)
-	@mv $(OUT_DIR)/aux/future_work.pdf $(OUT_DIR)/ 2>/dev/null || true
-	@echo "[Build] Future Work PDF generated at $(OUT_DIR)/future_work.pdf"
+	@(cd future_work && $(LATEX) -jobname=future_work -output-directory=build/aux main.tex)
+	@mv future_work/build/aux/future_work.pdf future_work/build/ 2>/dev/null || true
+	@echo "[Build] Future Work PDF generated at future_work/build/future_work.pdf"
 
 pdf_spice:
 	@echo "[Build] Setting up build directories for SPICE Manual..."

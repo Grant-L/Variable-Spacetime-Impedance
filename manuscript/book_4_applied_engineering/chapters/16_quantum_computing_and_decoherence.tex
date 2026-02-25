@@ -16,7 +16,7 @@ Because standard transmon data is encoded purely in the \textit{amplitude} and \
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.85\textwidth]{../../src/ave/mechanics/assets/sim_outputs/transmon_decoherence_plot.png}
+    \includegraphics[width=0.85\textwidth]{../../assets/sim_outputs/transmon_decoherence_plot.png}
     \caption{\textbf{Geometric Phase Scattering (Decoherence).} The simulation (via the AVE `VacuumGrid` engine) physically subjects an unconstrained LC standing-wave (Transmon Qubit) to standard ambient vacuum thermal noise. The unconstrained geometric phase rapidly unspools into the background lattice, flawlessly reproducing the catastrophic error-rate timeline of modern cryo-cooled qubits.}
     \label{fig:transmon_decoherence}
 \end{figure}
@@ -41,7 +41,7 @@ However, because the $\mathcal{M}_A$ vacuum enforces a strict dielectric exclusi
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.85\textwidth]{../../src/ave/mechanics/assets/sim_outputs/topological_qubit_plot.png}
+    \includegraphics[width=0.85\textwidth]{../../assets/sim_outputs/topological_qubit_plot.png}
     \caption{\textbf{Topological Error Immunity.} While structural thermal jitter causes the physical distance between the linked nodes to fluctuate violently (orange), the explicit macroscopic integer \textit{Gauss Linking State} ($\mathcal{L} = 1$) remains perfectly stable (cyan). Data encoded geometrically is strictly immune to linear amplitude scattering.}
     \label{fig:topological_qubit}
 \end{figure}
@@ -63,4 +63,32 @@ If Topological Qubits are physically constructed \textit{inside} an engineered n
     \item \textbf{Ultra-High Frequency Clock Rates:} Since only extreme high-frequency wavelengths ($\lambda < 2d$) can propagate locally inside the gap, Topological Qubits can be designed to switch and resonate exclusively at those ultra-high clock ranges, enabling unprecedented computational speeds completely isolated from normal thermal background resonance.
 \end{itemize}
 
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1.0\textwidth]{../../assets/sim_outputs/casimir_acoustic_filtering.png}
+    \caption{\textbf{The Casimir Effect as Macroscopic Acoustic Filtering.} A continuous 1D FDTD solver flooding a spatial array with broadband 300K thermal (ZPF) white noise. Top: The reflective boundaries of the cavity physically block all transverse modes where $\lambda > 2d$, creating a severe localized drop in energy density ($\Delta\rho$) compared to the chaotic exterior metric. The resulting fluidic pressure gradient ($\Delta P$) crashes the plates inward. Bottom: The internal fluidic spectrum undergoes an absolute geometric low-frequency cutoff notch.}
+    \label{fig:casimir_filtering}
+\end{figure}
+
 By transitioning away from linear anharmonic Josephson Junctions, leveraging explicit topological confinement geometries (Gauss Linking), and housing these states within nanoscale Casimir High-Pass Cavities, engineers can bypass the thermodynamic limits of amplitude scattering, establishing the foundational architecture for true, room-temperature, fault-tolerant quantum computation.
+
+\section{Artificial Kuramoto Phase-Lock (Room-Temperature Superconductivity)}
+
+Given that the thermodynamic constraints governing Qubit Decoherence are identical to the constraints governing electrical resistance, utilizing Casimir cavities allows us to engineer macroscopic Superconductivity at absolute room temperature via geometric acoustic shielding. 
+
+Classical "zero electrical resistance" through a macroscopic conductor is formally defined as the lossless transmission of angular momentum across a perfectly rigid, noiseless mechanical gear train. We model the macroscopic conductive lattice as an $N$-body array of literal, physical topological gears utilizing the Kuramoto Phase-Lock framework.
+
+At standard 300K, the intense thermal momentum of the background vacuum metric constantly fractures the delicate elastic coupling between adjacent electron geometries ($R \to 0$). Cryogenic superconductors physically lower this noise floor. However, we can achieve identical "silence" purely via geometry.
+
+By placing the conductive electron lattice inside a nanoscale Casimir Cavity, the physical boundaries act as an \textbf{Acoustic High-Pass Filter} for the vacuum metric. The cavity geometrically prohibits all long-wavelength ambient thermal noise ($\lambda > 2d$) from interpenetrating the wire. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{../../assets/sim_outputs/casimir_superconductor.png}
+    \caption{\textbf{Artificial Kuramoto Phase-Lock (Room-Temperature Superconductivity).} A macroscopic simulation mapping the topological Order Parameter ($R$). An unshielded wire subject to 300K thermal lattice geometry (gray) experiences chaotic inductive scattering, causing electrical resistance. The same wire enclosed inside an engineered Casimir High-Pass Cavity (green) is geometrically protected from ambient low-frequency phonons. The resulting artificial mechanical silence induces a spontaneous classical phase transition, locking the ensemble into zero-resistance macroscopic structural rigidity ($R=1$).}
+    \label{fig:casimir_superconductor}
+\end{figure}
+
+In Figure \ref{fig:casimir_superconductor}, two identical $N=500$ topological arrays are simulated via the Kuramoto Mean-Field model at 300K. The open-field array fails to synchronize ($R \approx 0$). However, the array physically shielded by a Casimir notch experiences a drastic reduction in RMS transverse noise, allowing the topological geometries to spontaneously inter-mesh and achieve absolute macroscopic phase-lock ($R = 1$) without thermodynamics intervening. 
+
+The structural crystallization of the topological grid forces extreme boundaries. Applying a local torque (external magnetic field) against the boundary electrons forces the entire, infinite moment of inertia ($I_{total}$) of the phase-locked bulk to resist. This perfect mechanical reflection of applied rotational force manifests electromagnetically as the total expulsion of the magnetic field—deriving the \textbf{Meissner Effect} exclusively from bulk rotational mechanics.
