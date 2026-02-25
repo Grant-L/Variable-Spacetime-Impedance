@@ -90,8 +90,8 @@ def generate_orbitals():
     # Rigorous Proof Annotation
     ax.text(-11, -10, r"$\mathbf{Quantum\ Mechanics\ as\ Fluid\ Acoustics}$" + "\n" +
             "The Schrodinger Equation is strictly the continuous spatial\n" +
-            "wave-equation for the discrete LC continuum ($c=\sqrt{1/\mu\epsilon}$).\n" +
-            "Wavefunctions ($\Psi$) are literal macroscopic mechanical acoustic phonons.\n" +
+            r"wave-equation for the discrete LC continuum ($c=\sqrt{1/\mu\epsilon})$.\n" +
+            r"Wavefunctions ($\Psi$) are literal macroscopic mechanical acoustic phonons.\n" +
             "Probability amplitudes map exactly to structural continuous energy-densities.",
             color='white', fontsize=11,
             bbox=dict(boxstyle='round', facecolor='#111122', alpha=0.8, edgecolor='#ff00aa'))

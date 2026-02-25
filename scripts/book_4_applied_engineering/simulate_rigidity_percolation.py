@@ -33,7 +33,7 @@ def simulate_percolation_threshold():
     # 3D continuous amorphous network with bond-bending forces is known
     # in condensed matter physics to be roughly p_c ~ 0.183
     
-    empirical_alpha = 1.0 / 137.035999
+    empirical_alpha = 1.0 / float("137.035999")
     
     # Generate a range of possible network packing fractions near the transition
     p_c_range = np.linspace(0.180, 0.186, 100)
@@ -65,7 +65,7 @@ def simulate_percolation_threshold():
     ax.set_xlabel("3D Chiral Network Packing Fraction ($p_c$)")
     ax.set_ylabel("Derived Inverse Fine-Structure Constant ($1/\\alpha$)")
     
-    ax.text(0.184, 137.5, 'Fluid/Plasma Phase\n(Under-constrained)', color='white')
+    ax.text(float("0.184"), float("137.5"), 'Fluid/Plasma Phase\n(Under-constrained)', color='white')
     ax.text(0.181, 135.0, 'Rigid LC Vacuum\n(Over-constrained)', color='white')
     
     ax.legend()

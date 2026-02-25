@@ -59,7 +59,7 @@ def generate_electroweak_bode():
     # Format the Physics Simulation Output
     ax.set_title("Electroweak Unification: Discrete LC Acoustic Resonance", color='white', fontsize=16, pad=20, weight='bold')
     ax.set_xlabel("Frequency (Hz)", color='#aaaaaa', fontsize=12)
-    ax.set_ylabel("Metric Restoring Impedance ($\Omega$)", color='#aaaaaa', fontsize=12)
+    ax.set_ylabel(r"Metric Restoring Impedance ($\Omega$)", color='#aaaaaa', fontsize=12)
     ax.grid(color='#222233', linestyle=':', linewidth=1)
     
     # Annotate the Physical Regions

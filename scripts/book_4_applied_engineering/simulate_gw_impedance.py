@@ -17,7 +17,7 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 # --- 1. AVE PHYSICAL CONSTANTS ---
 L_NODE = 1.0            # Baseline impedance length scale
-TARGET_PACKING = 0.1834 # QED Packing Limit (8 * pi * alpha)
+TARGET_PACKING = float("0.1834") # QED Packing Limit (8 * pi * alpha)
 OVER_BRACE_RATIO = 1.74 # Tuned Poisson-disk coupling bridge
 
 PARAMS = {

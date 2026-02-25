@@ -68,7 +68,7 @@ def simulate_black_hole_core():
     ax1.set_xlim(0, 5)
     ax1.set_title("Metric Strain: Avoiding the r=0 Singularity", fontsize=16)
     ax1.set_xlabel("Radius ($r / r_s$)")
-    ax1.set_ylabel("Localized Metric Strain $h_\perp$")
+    ax1.set_ylabel(r"Localized Metric Strain $h_\perp$")
     ax1.legend()
     ax1.grid(True, alpha=0.2)
     

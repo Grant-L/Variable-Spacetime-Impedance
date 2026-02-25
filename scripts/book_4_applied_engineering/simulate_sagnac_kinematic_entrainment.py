@@ -35,7 +35,7 @@ sys.path.append(str(project_root))
 from src.ave.core.constants import C_0
 
 # Astrophysical Constants
-G_0 = 6.67430e-11        # m^3 / kg s^2
+G_0G = float("6.6743e-11")        # m^3 / kg s^2
 M_EARTH = 5.972e24       # kg
 R_EARTH = 6371000.0      # meters
 

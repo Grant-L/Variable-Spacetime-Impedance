@@ -37,7 +37,7 @@ def simulate_frame_dragging_as_inductance():
     
     plt.figure(figsize=(10, 6))
     
-    plt.plot(radii / 1000, omega_lt, label='General Relativity (Lense-Thirring $\Omega_{LT}$)', 
+    plt.plot(radii / 1000, omega_lt, label=r'General Relativity (Lense-Thirring $\Omega_{LT}$)', 
              linewidth=4, alpha=0.5, color='blue')
     plt.plot(radii / 1000, magnetic_bias_decay, label='AVE LC Network (Mutual Inductance Bias)', 
              linewidth=2, linestyle='--', color='red')

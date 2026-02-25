@@ -1,0 +1,159 @@
+==================================================
+AVE DIRECTED ACYCLIC GRAPH (DAG) VERIFIER
+Hunting for smuggled Standard Model parameters...
+==================================================
+
+[PASS] src/ave/core/grid.py
+[PASS] src/ave/core/constants.py
+[PASS] src/ave/core/__init__.py
+[PASS] src/ave/core/node.py
+[PASS] src/ave/solvers/fdtd_yee_lattice.py
+[PASS] src/ave/solvers/fdtd_lc_network.py
+[PASS] src/ave/mechanics/simulate_gravitational_waves_lc.py
+[PASS] src/ave/mechanics/simulate_orbital_standing_waves.py
+[PASS] src/ave/mechanics/simulate_topological_qubit.py
+[PASS] src/ave/mechanics/demo_engine.py
+[PASS] src/ave/mechanics/simulate_phase_locked_superconductivity.py
+[PASS] src/ave/mechanics/simulate_entropy_noise_scattering.py
+[PASS] src/ave/mechanics/simulate_flywheel_annihilation.py
+[PASS] src/ave/mechanics/simulate_neutrino_oscillation.py
+[PASS] src/ave/mechanics/spice_organic_mapper.py
+[PASS] src/ave/mechanics/string_tension_mapping.py
+[PASS] src/ave/mechanics/demo_black_hole_capture.py
+[PASS] src/ave/mechanics/simulate_tokamak_dielectric_leakage.py
+[PASS] src/ave/mechanics/simulate_transmon_decoherence.py
+[PASS] src/ave/mechanics/impedance.py
+[PASS] src/ave/mechanics/higgs_impedance_mapping.py
+[PASS] src/ave/mechanics/simulate_ideal_gas_law_lc.py
+[PASS] src/ave/mechanics/simulate_longitudinal_entanglement.py
+[PASS] src/ave/mechanics/simulate_sagnac_impedance_drag.py
+[PASS] src/ave/simulations/topological_optimizer.py
+[PASS] src/ave/topological/tensors.py
+[PASS] src/ave/topological/borromean.py
+[PASS] src/ave/topological/simulate_phase_locked_superconductivity.py
+[PASS] src/ave/topological/combiner.py
+[PASS] src/ave/topological/faddeev_skyrme.py
+[PASS] scripts/book_3_macroscopic_continuity/simulate_saturn_rings.py
+[PASS] scripts/book_3_macroscopic_continuity/simulate_dark_matter_detectors.py
+[PASS] scripts/book_3_macroscopic_continuity/simulate_black_hole_core.py
+[PASS] scripts/book_3_macroscopic_continuity/simulate_bullet_cluster_fdtd.py
+[PASS] scripts/book_3_macroscopic_continuity/simulate_oort_cloud_trap.py
+[PASS] scripts/book_3_macroscopic_continuity/fetch_and_plot_noaa_goes_flares.py
+[PASS] scripts/book_3_macroscopic_continuity/simulate_solar_flare.py
+[PASS] scripts/book_3_macroscopic_continuity/simulate_solar_weather_calculator.py
+[PASS] scripts/book_3_macroscopic_continuity/analyze_ring_density.py
+[FAIL] scripts/book_3_macroscopic_continuity/simulate_jwst_accretion.py
+       -> Line 42 - MAGIC NUMBER DETECTED: 137 -> Inverse Fine Structure Constant (Must be derived from Golden Torus!). Must be dynamically passed from constants.py.
+[FAIL] scripts/book_3_macroscopic_continuity/simulate_cosmology_bao.py
+       -> Line 17 - MAGIC NUMBER DETECTED: 299792458.0 -> Speed of light (c) (Must be imported from constants.py). Must be dynamically passed from constants.py.
+       -> Line 18 - MAGIC NUMBER DETECTED: 1.0545718e-34 -> Planck constant (hbar) (Must be imported from constants.py). Must be dynamically passed from constants.py.
+       -> Line 19 - MAGIC NUMBER DETECTED: 6.674e-11 -> Gravitational constant (G) (Must be imported from constants.py). Must be dynamically passed from constants.py.
+       -> Line 20 - MAGIC NUMBER DETECTED: 137.036 -> Inverse Fine Structure Constant (Must be derived from Golden Torus!). Must be dynamically passed from constants.py.
+       -> Line 41 - MAGIC NUMBER DETECTED: 1.2e-10 -> MOND a_0 limit (Must be derived from Unruh-Hawking Hoop Stress!). Must be dynamically passed from constants.py.
+[PASS] scripts/book_2_topological_matter/assemble_uranium.py
+[PASS] scripts/book_2_topological_matter/merge_orbitals.py
+[PASS] scripts/book_2_topological_matter/analyze_c12_emitter.py
+[PASS] scripts/book_2_topological_matter/simulate_uranium_fission.py
+[PASS] scripts/book_2_topological_matter/simulate_atomic_spectra.py
+[PASS] scripts/book_2_topological_matter/visualize_isotope_stability.py
+[PASS] scripts/book_4_applied_engineering/simulate_smes_battery.py
+[PASS] scripts/book_4_applied_engineering/visualize_magnetism.py
+[FAIL] scripts/book_4_applied_engineering/simulate_electrode_optimization.py
+       -> Line 38 - MAGIC NUMBER DETECTED: 299792458 -> Speed of light (c) (Must be imported from constants.py). Must be dynamically passed from constants.py.
+[PASS] scripts/book_4_applied_engineering/visualize_impedance_rupture.py
+[PASS] scripts/book_4_applied_engineering/simulate_precession.py
+[PASS] scripts/book_4_applied_engineering/simulate_advanced_snr.py
+[PASS] scripts/book_4_applied_engineering/derive_material_properties.py
+[PASS] scripts/book_4_applied_engineering/generate_ponder_01_spice_netlist.py
+[PASS] scripts/book_4_applied_engineering/simulate_achromatic_lens.py
+[PASS] scripts/book_4_applied_engineering/simulate_ponder_acoustic_tank.py
+[PASS] scripts/book_4_applied_engineering/simulate_ee_bench_yield_shift.py
+[FAIL] scripts/book_4_applied_engineering/simulate_vacuum_mirror.py
+       -> Line 7 - MAGIC NUMBER DETECTED: 137.036 -> Inverse Fine Structure Constant (Must be derived from Golden Torus!). Must be dynamically passed from constants.py.
+       -> Line 9 - MAGIC NUMBER DETECTED: 376.73 -> Impedance of Free Space (Must be derived from Topology: sqrt(u/e)!). Must be dynamically passed from constants.py.
+[FAIL] scripts/book_4_applied_engineering/simulate_sagnac_kinematic_entrainment.py
+       -> Line 38 - MAGIC NUMBER DETECTED: 6.6743e-11 -> Gravitational constant (G) (Must be imported from constants.py). Must be dynamically passed from constants.py.
+[FAIL] scripts/book_4_applied_engineering/simulate_ponder_01_rectification.py
+       -> Line 111 - MAGIC NUMBER DETECTED: 299792458 -> Speed of light (c) (Must be imported from constants.py). Must be dynamically passed from constants.py.
+[PASS] scripts/book_4_applied_engineering/calculate_conductivity.py
+[PASS] scripts/book_4_applied_engineering/simulate_sagnac_rlvg_tolerances.py
+[PASS] scripts/book_4_applied_engineering/simulate_ponder_phased_array.py
+[PASS] scripts/book_4_applied_engineering/simulate_solar_led.py
+[PASS] scripts/book_4_applied_engineering/simulate_mutual_inductance.py
+[FAIL] scripts/book_4_applied_engineering/simulate_rigidity_percolation.py
+       -> Line 36 - MAGIC NUMBER DETECTED: 137.035999 -> Inverse Fine Structure Constant (Must be derived from Golden Torus!). Must be dynamically passed from constants.py.
+       -> Line 68 - MAGIC NUMBER DETECTED: 0.184 -> QED Packing Fraction (8*pi*alpha). Must be dynamically passed from constants.py.
+       -> Line 68 - MAGIC NUMBER DETECTED: 137.5 -> Inverse Fine Structure Constant (Must be derived from Golden Torus!). Must be dynamically passed from constants.py.
+[FAIL] scripts/book_4_applied_engineering/simulate_gw_impedance.py
+       -> Line 20 - MAGIC NUMBER DETECTED: 0.1834 -> QED Packing Fraction (8*pi*alpha). Must be dynamically passed from constants.py.
+[PASS] scripts/book_1_foundations/simulate_lepton_asymmetry.py
+[PASS] scripts/book_1_foundations/generate_alpha_workunits.py
+[FAIL] scripts/book_1_foundations/simulate_vacuum_energy.py
+       -> Line 15: ILLEGAL IMPORT: 'scipy.constants'. Standard Model smuggling.
+       -> Line 29 - MAGIC NUMBER DETECTED: 1.0545718e-34 -> Planck constant (hbar) (Must be imported from constants.py). Must be dynamically passed from constants.py.
+       -> Line 80 - MAGIC NUMBER DETECTED: 137.036 -> Inverse Fine Structure Constant (Must be derived from Golden Torus!). Must be dynamically passed from constants.py.
+       -> Line 82 - MAGIC NUMBER DETECTED: 299792458.0 -> Speed of light (c) (Must be imported from constants.py). Must be dynamically passed from constants.py.
+       -> Line 83 - MAGIC NUMBER DETECTED: 1.0545718e-34 -> Planck constant (hbar) (Must be imported from constants.py). Must be dynamically passed from constants.py.
+[FAIL] scripts/book_1_foundations/simulate_cosmological_equilibrium.py
+       -> Line 44 - MAGIC NUMBER DETECTED: 69.32 -> Hubble Constant (Must be derived from Lattice Genesis!). Must be dynamically passed from constants.py.
+[PASS] scripts/book_1_foundations/verify_universe.py
+[PASS] scripts/book_1_foundations/simulate_weak_boson_modes.py
+[FAIL] scripts/book_1_foundations/visualize_topological_bounds.py
+       -> Line 83 - MAGIC NUMBER DETECTED: 1836.152 -> Proton Mass Ratio (Must be derived via Faddeev-Skyrme eigenvalue!). Must be dynamically passed from constants.py.
+[PASS] scripts/book_1_foundations/derive_alpha_m4_pro.py
+[PASS] scripts/book_5_topological_biology/fold_protein.py
+[PASS] scripts/book_5_topological_biology/simulate_biological_resonance.py
+[PASS] scripts/book_5_topological_biology/simulate_nested_sleep_pods.py
+[PASS] scripts/book_5_topological_biology/batch_fold_proteins.py
+[PASS] scripts/book_5_topological_biology/generate_amino_spice.py
+[PASS] scripts/infrastructure/fix_boinc_db.py
+[PASS] manuscript/scripts/simulate_electron_topology.py
+[PASS] manuscript/scripts/simulate_double_slit_wake.py
+[PASS] manuscript/scripts/simulate_higgs_rupture.py
+[PASS] manuscript/scripts/simulate_macroscopic_avalanche.py
+[PASS] manuscript/scripts/simulate_borromean_baryon.py
+[PASS] manuscript/scripts/simulate_electroweak_unification.py
+[PASS] manuscript/scripts/simulate_yee_cell_update.py
+[PASS] manuscript/scripts/simulate_helical_confinement.py
+[PASS] manuscript/scripts/simulate_chiral_network.py
+[PASS] manuscript/scripts/simulate_string_theory_mapping.py
+[PASS] manuscript/scripts/simulate_3d_lattice.py
+[PASS] manuscript/scripts/simulate_hoop_stress.py
+[PASS] manuscript/scripts/simulate_atomic_orbitals.py
+[PASS] manuscript/scripts/simulate_gup_resolution.py
+[PASS] periodic_table/animations/generate_dynamic_flux.py
+[PASS] periodic_table/animations/animate_fluorine.py
+[PASS] periodic_table/animations/generate_na23_static.py
+[PASS] periodic_table/animations/generate_o16_static.py
+[PASS] periodic_table/animations/animate_sodium.py
+[PASS] periodic_table/animations/animate_carbon.py
+[PASS] periodic_table/animations/build_animators.py
+[PASS] periodic_table/animations/animate_helium.py
+[PASS] periodic_table/animations/animate_lithium.py
+[PASS] periodic_table/animations/animate_dt_fusion.py
+[PASS] periodic_table/animations/generate_ne20_static.py
+[PASS] periodic_table/animations/animate_aluminum.py
+[PASS] periodic_table/animations/generate_si28_static.py
+[PASS] periodic_table/animations/animate_silicon.py
+[PASS] periodic_table/animations/animate_neon.py
+[PASS] periodic_table/animations/animate_magnesium.py
+[PASS] periodic_table/animations/animate_hydrogen.py
+[PASS] periodic_table/animations/animate_oxygen.py
+[PASS] periodic_table/animations/generate_f19_static.py
+[PASS] periodic_table/animations/animate_nitrogen.py
+[PASS] periodic_table/animations/generate_al27_static.py
+[PASS] periodic_table/animations/animate_boron.py
+[PASS] periodic_table/animations/animate_beryllium.py
+[PASS] periodic_table/animations/generate_mg24_static.py
+[PASS] spice_manual/scripts/simulate_sagnac_drag.py
+[PASS] spice_manual/scripts/visualize_impedance_rupture.py
+[PASS] spice_manual/scripts/generate_ponder_01_spice_netlist.py
+[PASS] spice_manual/scripts/simulate_ee_bench_yield_shift.py
+[FAIL] spice_manual/scripts/simulate_ponder_01_rectification.py
+       -> Line 111 - MAGIC NUMBER DETECTED: 299792458 -> Speed of light (c) (Must be imported from constants.py). Must be dynamically passed from constants.py.
+[PASS] spice_manual/scripts/simulate_leaky_cavity_decay.py
+[PASS] spice_manual/scripts/simulate_autoresonant_pll.py
+
+==================================================
+VERDICT: COMPROMISED.
+Found 23 violation(s). The framework is no longer an EFT.

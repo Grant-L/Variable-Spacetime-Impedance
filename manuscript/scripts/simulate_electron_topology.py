@@ -50,7 +50,7 @@ def generate_electron_knot():
               bbox=dict(boxstyle='round', facecolor='#111122', alpha=0.8, edgecolor='#00ffff'))
 
     # Formatting
-    ax.set_title("Electron Defect: Topologically Locked $\mathcal{M}_A$ Phase Dislocation", 
+    ax.set_title(r"Electron Defect: Topologically Locked $\mathcal{M}_A$ Phase Dislocation", 
                  color='white', fontsize=16, pad=20)
     
     ax.set_xlim(-3, 3)

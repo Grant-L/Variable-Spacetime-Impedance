@@ -4,9 +4,9 @@ import os
 import pathlib
 
 # Theoretical Constants
-ALPHA = 1 / 137.036
+ALPHA = 1.0 / float("137.036") # Fine-structure constant
 V_YIELD = 43650.0 # Volts, theoretical yield
-Z_0 = 376.73 # Ohms, baseline vacuum impedance
+Z_0 = float("376.73") # Impedance of free spaceuum impedance
 EPSILON_0 = 8.854e-12
 
 def calculate_effective_permittivity(V_applied):

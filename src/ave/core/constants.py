@@ -13,6 +13,8 @@ C_0 = 299792458.0                       # Speed of light in vacuum [m/s]
 MU_0 = 1.25663706e-06                   # Vacuum permeability (4*pi*10^-7) [H/m]
 EPSILON_0 = 8.85418782e-12              # Vacuum permittivity (1/(mu_0*c^2)) [F/m]
 Z_0 = np.sqrt(MU_0 / EPSILON_0)         # Characteristic impedance [Ohms] (approx 376.73)
+HBAR = 1.054571817e-34                  # Planck constant over 2 pi [J s]
+M_E = 9.1093837e-31                     # Electron invariant mass [kg]
 
 # ---------------------------------------------------------
 # AVE Specific Topological Constants

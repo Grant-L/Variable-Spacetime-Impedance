@@ -54,7 +54,7 @@ def simulate_c0g_phased_array():
         total_thrust += spatial_strain
     
     ax1.set_title("1. Spatial Metric Strain ($\nabla n$) - Sequential Active Firing", color='white', pad=10, weight='bold')
-    ax1.set_ylabel("Localized Energy Density ($\mu$J/$m^3$)", color='gray')
+    ax1.set_ylabel(r"Localized Energy Density ($\mu$J/$m^3$)", color='gray')
     ax1.legend(loc='upper right', facecolor='#111111', edgecolor='gray', labelcolor='white')
     ax1.set_xticks([]) # Hide x-axis for top plot
     

@@ -11,8 +11,7 @@ import matplotlib.pyplot as plt
 # Ensure local ave package is in path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 
-from ave.core.constants import C_0, MU_0, EPSILON_0, G
-import scipy.constants as const
+from ave.core.constants import C_0, MU_0, EPSILON_0, G, HBAR, M_E, ALPHA
 
 def derive_vacuum_energy():
     """
@@ -25,8 +24,7 @@ def derive_vacuum_energy():
     
     # Fundamental Node parameters
     L_NODE = 3.86159e-13 # Electron compton wavelength (fundamental pitch)
-    M_E = 9.10938356e-31
-    HBAR = 1.0545718e-34
+    # M_E and HBAR imported from ave.core.constants
     
     # In a discrete LC Network, the zero-point energy is simply the ground state
     # oscillation of each structural node: E_0 = 1/2 hbar * omega_max
@@ -77,13 +75,10 @@ def simulate_cosmic_inflation():
     
     # Standard inflation expects a scale factor a(t) exp(H_inf * t)
     # H_inf is derived from the structural breakdown limit of the lattice
-    ALPHA = 1.0 / 137.036
-    M_E = 9.10938356e-31
-    C = 299792458.0
-    HBAR = 1.0545718e-34
+    # ALPHA, M_E, C_0, HBAR imported from ave.core.constants
     
     # Eq 4.7: H_inf bound
-    H_inf = (28 * np.pi * (M_E**3) * C * G) / (HBAR**2 * ALPHA**2)
+    H_inf = (28 * np.pi * (M_E**3) * C_0 * G) / (HBAR**2 * ALPHA**2)
     # Scaled up to the early-universe impedance state
     # (Simplified for plotting representation)
     H_early = H_inf * 1e50 
@@ -97,7 +92,7 @@ def simulate_cosmic_inflation():
     
     plt.title("Cosmic Inflation as LC Network Grid Crystallization")
     plt.xlabel("Time since Big Bang (seconds)")
-    plt.ylabel("Log Scale Factor $\log_{10}(a(t))$")
+    plt.ylabel(r"Log Scale Factor $\log_{10}(a(t))$")
     plt.xscale('log')
     plt.legend()
     plt.grid(True, alpha=0.3)

@@ -68,7 +68,7 @@ def simulate_accumulation_boundaries():
     ax1.set_facecolor('#0B0F19')
     
     # Plot the background strain
-    ax1.loglog(r, strain_total, color='cyan', lw=3, label="Solar Dielectric Strain Field ($h_\perp$)")
+    ax1.loglog(r, strain_total, color='cyan', lw=3, label=r"Solar Dielectric Strain Field ($h_\perp$)")
     ax1.axhline(strain_background, color='gray', ls='--', label="Galactic Background Impedance Floor")
     
     ax1.set_xlabel("Orbital Radius from Sun (AU)", color='gray', fontsize=12)

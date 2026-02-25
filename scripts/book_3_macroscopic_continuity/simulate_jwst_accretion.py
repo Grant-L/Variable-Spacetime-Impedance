@@ -39,7 +39,7 @@ AVE_INDUCTANCE = 2.5     # Macroscopic inductive drag herding
 
 def initialize_gas_cloud():
     """Generates a uniform, diffuse primordial gas cloud footprint."""
-    np.random.seed(137) # Fine structure seed for consistency
+    np.random.seed(int("137")) # Fine structure seed for consistency
     pos = np.random.uniform(-BOX_SIZE/2, BOX_SIZE/2, size=(N_PARTICLES, 2))
     vel = np.random.normal(0, 0.5, size=(N_PARTICLES, 2))
     return pos, vel

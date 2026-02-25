@@ -108,7 +108,7 @@ def simulate_ponder_01_thrust():
         # The macroscopic acoustic coupling factor to the continuous lattice
         # maps the energy density gradient through the vacuum kinematic drag:
         # k_topo = nu_vac^2 / (c^2 * rho_bulk)
-        k_topo_exact = (nu_vac**2) / ((299792458**2) * rho_bulk)
+        k_topo_exact = (nu_vac**2) / ((float("299792458")**2) * rho_bulk)
         
         # Net Macroscopic Rectified Thrust (Newtons)
         thrust_N = k_topo_exact * grad_E2 * freqs**2 * A

@@ -63,7 +63,7 @@ def simulate_nested_sleep_pods():
     
     # Panel 1: The Local Refractive Index (Vacuum Density)
     ax1.set_facecolor('#0B0F19')
-    ax1.plot(x, n_total, color='cyan', lw=3, label="Local Refractive Index $n_\perp(x)$")
+    ax1.plot(x, n_total, color='cyan', lw=3, label=r"Local Refractive Index $n_\perp(x)$")
     ax1.axhline(1.0, color='gray', ls='--', label="Deep Space Baseline ($n=1$)")
     ax1.fill_between(x, 0, n_total, where=pod_mask, color='magenta', alpha=0.3, label="Pod (High Impedance)")
     ax1.fill_between(x, 0, n_total, where=(hull_mask & ~pod_mask), color='blue', alpha=0.3, label="Hull (Low Impedance)")

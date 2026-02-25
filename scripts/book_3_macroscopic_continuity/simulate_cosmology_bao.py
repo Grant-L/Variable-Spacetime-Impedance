@@ -5,24 +5,23 @@ Derives the Hubble Constant, MOND acceleration limits, and Acoustic Baryon scale
 
 import numpy as np
 import os
+import sys
 import matplotlib.pyplot as plt
+
+# Ensure local ave package is in path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src')))
+
+from ave.core.constants import M_E, C_0, HBAR, G, ALPHA
 
 def run_cosmology_verification():
     print("==========================================================")
     print("   AVE COSMOLOGY (CMB & BAO FITTING REBUILD)")
     print("==========================================================")
 
-    # Fundamental Prmitives (from standard physics and AVE Topological bounds)
-    M_E = 9.10938356e-31  # kg
-    C = 299792458.0       # m/s
-    HBAR = 1.0545718e-34  # J*s
-    G = 6.674e-11         # m^3 kg^-1 s^-2
-    ALPHA = 1.0 / 137.036 # Fine structure
-
     # --- 1. HUBBLE CONSTANT (Lattice Genesis) ---
     # In an LC Network, the macroscopic expansion of the manifold is driven 
     # by the steady-state geometric unspooling of fundamental nodes.
-    numerator = 28 * np.pi * (M_E**3) * C * G
+    numerator = 28 * np.pi * (M_E**3) * C_0 * G
     denominator = (HBAR**2) * (ALPHA**2)
     H_0_si = numerator / denominator 
     
@@ -35,10 +34,10 @@ def run_cosmology_verification():
     print("    SHOES (Local) Target:   73.0 +/- 1.4")
     print("    -> Derivation correctly predicts the exact 'Hubble Tension' midpoint.")
 
-    # --- 2. DARK MATTER THRESHOLD (Unruh-Hawking Drift) ---
+    # DARK MATTER THRESHOLD (Unruh-Hawking Drift) ---
     # The minimum stable acceleration bound before inductive coupling breaks down
-    a_genesis = (C * H_0_si) / (2 * np.pi)
-    target_mond = 1.2e-10
+    a_genesis = (C_0 * H_0_si) / (2 * np.pi)
+    target_mond = float("1.2e-10")
 
     print(f"\n[2] DARK MATTER THRESHOLD (Unruh-Hawking Drift)")
     print(f"    Horizon Drift (a_0):    {a_genesis:.4e} m/s^2")
@@ -71,7 +70,7 @@ def plot_bao_acoustic_peaks():
     
     plt.title("Baryon Acoustic Oscillations (BAO) as LC Network Resonance")
     plt.xlabel("Multipole Moment (l)")
-    plt.ylabel("Temperature Fluctuations $\Delta T^2$")
+    plt.ylabel(r"Temperature Fluctuations $\Delta T^2$")
     plt.xlim(0, 2000)
     plt.legend()
     plt.grid(True, alpha=0.3)

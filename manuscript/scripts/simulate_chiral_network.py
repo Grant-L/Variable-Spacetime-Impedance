@@ -73,16 +73,16 @@ def generate_parity_violation():
     ax2.plot(z, y_L, color='#ff00aa', linewidth=3, linestyle='--', label="Transverse H-Field")
     ax2.fill_between(z, env_L, -env_L, color='red', alpha=0.2)
     
-    ax2.set_title("Left-Handed Topology Input (Antimatter)\nMechanically Blocked ($Z \to \infty$)", color='#ff5555', fontsize=14, pad=15)
+    ax2.set_title(r"Left-Handed Topology Input (Antimatter)\nMechanically Blocked ($Z \to \infty$)", color='#ff5555', fontsize=14, pad=15)
     ax2.set_xlabel("Spatial Distance (z)", color='#aaaaaa')
     ax2.set_ylim(-1.2, 1.2)
     ax2.grid(color='#222233', linestyle=':', linewidth=1)
     
     # Text Annotation proving Parity Violation
     fig.text(0.5, 0.05, r"$\mathbf{Structural\ Origin\ of\ Weak\ Force\ Parity\ Violation}$" + "\n" +
-             "Because the discrete $\mathcal{M}_A$ LC network is physically constructed of right-handed helical Inductors,\n" +
+             r"Because the discrete $\mathcal{M}_A$ LC network is physically constructed of right-handed helical Inductors,\n" +
              "it constitutes a naturally birefringent mechanical substrate. Left-handed input signals ($W^-$ equivalent) encounter massive\n" +
-             "geometric linkage frustration ($Z_{chiral} \to \infty$) and are deterministically scattered (attenuated) over sub-fermi bounds.",
+             r"geometric linkage frustration ($Z_{chiral} \to \infty$) and are deterministically scattered (attenuated) over sub-fermi bounds.",
              ha='center', va='center', color='white', fontsize=12,
              bbox=dict(boxstyle='round', facecolor='#111122', alpha=0.8, edgecolor='#00ffff'))
 

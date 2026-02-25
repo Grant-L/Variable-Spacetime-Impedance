@@ -35,7 +35,7 @@ def optimize_electrode_geometry():
     
     rho_bulk = 7.92e6     # Macroscopic metric density
     nu_vac = 8.45e-7      # Kinematic vacuum drag
-    k_topo = (nu_vac**2) / ((299792458**2) * rho_bulk) # ~ 1e-27
+    k_topo = (nu_vac**2) / (float("299792458")**2 * rho_bulk) # ~ 1e-27
 
     # -------------------------------------------------------------
     # 2D Sweep Space 

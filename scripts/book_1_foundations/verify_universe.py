@@ -9,8 +9,14 @@ import ast
 import sys
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).parent.parent
+PROJECT_ROOT = Path(__file__).parent.parent.parent
 SRC_DIR = PROJECT_ROOT / "src" / "ave"
+SCRIPTS_DIRS = [
+    PROJECT_ROOT / "scripts",
+    PROJECT_ROOT / "manuscript" / "scripts",
+    PROJECT_ROOT / "periodic_table" / "animations",
+    PROJECT_ROOT / "spice_manual" / "scripts",
+]
 
 BANNED_IMPORTS = ["scipy.constants"]
 
@@ -92,9 +98,14 @@ def run_verification():
 
     # The absolute root constants file is exempt from the Magic Float checks
     # since it actually maps k.C, k.G, etc.
-    EXEMPT_FILES = ["constants.py"]
+    EXEMPT_FILES = ["constants.py", "verify_universe.py"]
 
-    for py_file in SRC_DIR.rglob("*.py"):
+    py_files_to_scan = list(SRC_DIR.rglob("*.py"))
+    for script_dir in SCRIPTS_DIRS:
+        if script_dir.exists():
+            py_files_to_scan.extend(script_dir.rglob("*.py"))
+
+    for py_file in py_files_to_scan:
         total_files += 1
 
         with open(py_file, "r", encoding="utf-8") as f:
@@ -112,13 +123,21 @@ def run_verification():
         validator.visit(tree)
 
         if validator.violations:
-            print(f"[FAIL] {py_file.relative_to(PROJECT_ROOT)}")
+            try:
+                rel_path = py_file.relative_to(PROJECT_ROOT)
+            except ValueError:
+                rel_path = py_file
+            print(f"[FAIL] {rel_path}")
             for v in validator.violations:
                 print(f"       -> {v}")
                 global_violations += 1
         else:
             clean_files += 1
-            print(f"[PASS] {py_file.relative_to(PROJECT_ROOT)}")
+            try:
+                rel_path = py_file.relative_to(PROJECT_ROOT)
+            except ValueError:
+                rel_path = py_file
+            print(f"[PASS] {rel_path}")
 
     print("\n==================================================")
     if global_violations == 0:

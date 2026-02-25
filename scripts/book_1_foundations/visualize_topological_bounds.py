@@ -80,7 +80,7 @@ def visualize_baryon_bounds():
     
     ax3.plot(iterations, converging_mass, marker='o', label="Computational Eigenvalue", color='black')
     ax3.axhline(val, color='green', linestyle='--', label=f"Absolute Topological Limit ({val:.2f} $m_e$)")
-    ax3.axhline(1836.152, color='blue', linestyle=':', label="CODATA Physical Proton Mass")
+    ax3.axhline(float("1836.152"), color='blue', linestyle=':', label="CODATA Physical Proton Mass")
     
     ax3.set_xlabel("Linear Eigenvalue Integration Step")
     ax3.set_ylabel("Mass Eigenvalue ($m_p$ / $m_e$)")

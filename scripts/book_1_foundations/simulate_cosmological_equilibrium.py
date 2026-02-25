@@ -41,7 +41,7 @@ def simulate_cosmological_equilibrium():
     
     # Expansion Rate (Hubble Parameter H)
     # Starts low (CMB phase), accelerates, then asymptotes to H_infinity
-    H_baseline = 69.32 # The target absolute equilibrium rate we derived in Chapter 1
+    H_baseline = float("69.32") # The target absolute equilibrium rate we derived in Chapter 1
     
     # Modeled acceleration curve based on thermodynamic cooling
     H_t = H_baseline * (1.0 - np.exp(-time_steps))

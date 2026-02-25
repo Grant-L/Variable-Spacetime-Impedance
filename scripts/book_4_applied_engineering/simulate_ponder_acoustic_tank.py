@@ -78,8 +78,8 @@ def simulate_acoustic_rlc_tank():
     ax2.axhline(Average_DC_Thrust, color='#00FFCC', lw=4, ls='--', label=f"Continuous DC Thrust ({Average_DC_Thrust:.1f} mg)")
     ax2.axhline(Base_Thrust, color='gray', lw=2, ls=':', label=f"Static Baseline ({Base_Thrust:.1f} mg)")
     
-    ax2.set_title(f"2. Macroscopic Metric Thrust Rectification ($F_{{out}} \propto V^2 \cdot Q_{{acoustic}}$)", color='white', pad=10, weight='bold')
-    ax2.set_xlabel("Time ($\mu$s)", color='gray')
+    ax2.set_title(rf"2. Macroscopic Metric Thrust Rectification ($F_{{out}} \propto V^2 \cdot Q_{{acoustic}}$)", color='white', pad=10, weight='bold')
+    ax2.set_xlabel(r"Time ($\mu$s)", color='gray')
     ax2.set_ylabel("Thrust Magnitude (mg)", color='gray')
     ax2.legend(loc='upper right', facecolor='#111111', edgecolor='gray', labelcolor='white')
     

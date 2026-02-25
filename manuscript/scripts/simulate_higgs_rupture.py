@@ -55,7 +55,7 @@ def generate_higgs_rupture():
     ax1 = axes[0]
     ax1.set_facecolor('#050510')
     ax1.plot(t, E_input, color='#00ffff', linewidth=3, label="Transient Collision Energy ($E_{kin}$)")
-    ax1.axhline(E_crit, color='#ff00aa', linestyle='--', linewidth=2, label="Unitary Rupture Threshold ($\epsilon_{sat}$)")
+    ax1.axhline(E_crit, color='#ff00aa', linestyle='--', linewidth=2, label=r"Unitary Rupture Threshold ($\epsilon_{sat}$)")
     
     # Highlight the topological violation singularity
     ax1.fill_between(t, E_crit, E_input, where=(E_input > E_crit), color='#ff00aa', alpha=0.4, label="Coordinate Snapping Event (Symmetry Break)")
@@ -68,8 +68,8 @@ def generate_higgs_rupture():
     # Bottom Plot - The Topological Mass Defect Generation (W/Z Boson)
     ax2 = axes[1]
     ax2.set_facecolor('#050510')
-    ax2.plot(t, C_val, color='#00ff00', linewidth=3, label="Lattice Compliance ($C / \epsilon_0$)")
-    ax2.plot(t, L_val, color='#ffcc00', linewidth=3, label="Topological Rest Mass ($L / \mu_0$)")
+    ax2.plot(t, C_val, color='#00ff00', linewidth=3, label=r"Lattice Compliance ($C / \epsilon_0$)")
+    ax2.plot(t, L_val, color='#ffcc00', linewidth=3, label=r"Topological Rest Mass ($L / \mu_0$)")
     
     # Format the simulation proof
     ax2.text(1.7, 0.45, r"$\mathbf{The\ Higgs\ Phase\ Transition}$" + "\n" +

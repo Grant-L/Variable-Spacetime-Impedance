@@ -64,7 +64,7 @@ def simulate_achromatic_lens():
     ax2.fill_between(x, 0, reflection_standard, color='#FF3366', alpha=0.3)
     ax2.plot(x, reflection_standard, color='#FF3366', lw=3, label="Standard Lens: Fresnel Reflection Loss")
     
-    ax2.plot(x, reflection_ave, color='#00FFCC', lw=4, label="AVE Lens: Zero Boundary Reflection ($Z \equiv Z_0$)")
+    ax2.plot(x, reflection_ave, color='#00FFCC', lw=4, label=r"AVE Lens: Zero Boundary Reflection ($Z \equiv Z_0$)")
     
     ax2.set_title("2. Fresnel Boundary Reflection (Signal Loss)", color='white', pad=15, weight='bold')
     ax2.set_xlabel("Lens Radial Axis (Normalized)", color='gray')
