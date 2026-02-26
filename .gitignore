@@ -23,3 +23,4 @@ venv/
 *.fdb_latexmk
 *.fls
 *.synctex.gz
+LIVING_REFERENCE.md
