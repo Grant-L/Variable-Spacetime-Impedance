@@ -52,13 +52,14 @@ def calculate_structural_baryon_eigenvalue() -> float:
     Uses the analytical 1D scalar rest-mass contribution (1162 m_e) plus the 
     self-consistent geometric feedback loop of the 3D tensor crossings.
     """
-    # 1D Baseline from Faddeev-Skyrme scalar limits
-    I_scalar = 1162.0
-    
+    # 1D Baseline from Faddeev-Skyrme scalar solver (dynamic computation)
+    from ave.core.constants import I_SCALAR_1D
+    I_scalar = I_SCALAR_1D
+
     # 3D Orthogonal Tensor Bound
     V_total = compute_toroidal_halo_volume()
     volumetric_packing_fraction = 8 * np.pi * ALPHA
-    
+
     # x_core = I_scalar + (V_total * kappa_v * x_core)
     # x_core * (1 - V_total * kappa_v) = I_scalar
     x_core = I_scalar / (1.0 - (V_total * volumetric_packing_fraction))

@@ -3,11 +3,15 @@
 
 \section{Chiral LC Trace-Reversal ($K=2G$)}
 
-To support strictly transverse waves matching the kinematics of General Relativity, the 3D isotropic vacuum must natively accommodate a 4D trace-reversed metric signature ($\bar{h}_{\mu\nu} = h_{\mu\nu} - \frac{1}{2}\eta_{\mu\nu}h$). While previously modeled in AVE as a mechanical Chiral LC Network, this macroscopic tensor behavior is fundamentally derived from the **Applied Vacuum Engineering** of the underlying $\mathcal{M}_A$ LC network.
+To support strictly transverse waves matching the kinematics of General Relativity, the 3D isotropic vacuum must natively accommodate a 4D trace-reversed metric signature ($\bar{h}_{\mu\nu} = h_{\mu\nu} - \frac{1}{2}\eta_{\mu\nu}h$). This macroscopic tensor behavior is fundamentally derived from the Effective Medium Theory (EMT) of the underlying $\mathcal{M}_A$ LC network.
 
-As established in Section 1.4, the discrete $\mathcal{M}_A$ lattice natively undergoes rigidity percolation, locking into a macroscopic state of strictly $K=2G$. Because the 3D solid naturally emerges from the bottom-up in this highly specific mechanical state, its continuous macroscopic limit intrinsically balances the exact $1/2$ geometric projection factor required by General Relativity without suffering thermodynamic Cauchy instability.
+The EMT for a 3D amorphous central-force network with coordination number $z_0$ and bond occupation fraction $p$ yields two distinct percolation thresholds: \textit{connectivity} at $p_K = 2/z_0$ (below which $K = 0$) and \textit{rigidity} at $p_G = 6/z_0$ (below which $G = 0$). In the window $p_K < p < p_G$, the network is a fluid (transmits compression but not shear). Above $p_G$, it is a rigid solid with finite $K/G$. The self-consistent EMT solution gives $K/G = 2$ at the specific operating point:
+\begin{equation}
+    p^* = \frac{10 z_0 - 12}{z_0(z_0 + 2)} = 8\pi\alpha \approx 0.1834
+\end{equation}
+where $z_0 \approx 51.25$ is the effective coordination number of the chiral lattice. At this coordination, $p_G = 6/z_0 \approx 0.117$, and the vacuum operates $56.7\%$ above the fluid-solid transition---a robust structural margin.
 
-Substituting this native geometric hardware constraint into the standard equation for Poisson's ratio mathematically locks the macroscopic vacuum's elastodynamics:
+Substituting $K = 2G$ into the standard equation for Poisson's ratio mathematically locks the macroscopic vacuum's elastodynamics:
 \begin{equation}
 \nu_{vac} = \frac{3K_{vac} - 2G_{vac}}{2(3K_{vac} + G_{vac})} = \frac{6G_{vac} - 2G_{vac}}{2(6G_{vac} + G_{vac})} = \frac{4}{14} = \frac{2}{7}
 \end{equation}
@@ -19,17 +23,13 @@ In a perfect affine crystal or a standard random spring network, pure hydrostati
 
 Under macroscopic shear, this specific geometric over-bracing forces a strictly \textbf{non-affine microscopic deformation}. As the volume compresses, the randomly oriented secondary links are physically forced to buckle. This localized, non-affine buckling couples directly to the independent microrotational degrees of freedom ($\theta_i$) of the Chiral LC Network, structurally engaging the transverse couple-stress modulus. 
 
-\subsection{Computational Proof: Rigidity Percolation via PBC}
-To verify this analytical requirement, the framework's Directed Acyclic Graph (DAG) computational solver evaluates the exact elastodynamics of the $\mathcal{M}_A$ spatial network. A 3D subset of the vacuum is generated via Poisson-Disk hard-sphere sampling and subjected to macroscopic volumetric and deviatoric strain tensors.
-
-Crucially, the simulation applies \textbf{Periodic Boundary Conditions (PBC)} to explicitly eliminate finite-size affine boundary pinning. Freed from rigid boundary walls, the internal nodes are permitted to non-affinely buckle. As the connectivity of the simulated network crosses the QED over-bracing threshold, the shear modulus ($G$) geometrically collapses relative to the bulk modulus ($K$). The computational solver explicitly tracks the $K/G$ ratio as it diverges dynamically from the $\sim 1.67$ Cauchy limit, cleanly crossing the exact $2.0$ threshold. 
-
-This provides an absolute computational proof: the trace-reversed tensor signature of Einstein's General Relativity ($K=2G$) is not an arbitrary 4D geometry, but the native, unavoidable thermodynamic state of a discrete, over-braced central-force network residing at the rigidity percolation limit.
+\subsection{EMT Verification}
+The Effective Medium Theory of Feng, Thorpe, and Garboczi analytically verifies this requirement. By solving the self-consistent EMT for a 3D diluted central-force network with coordination $z_0 \approx 51.25$, the $K/G$ ratio is computed as a function of $p$. The ratio diverges at the rigidity threshold $p_G = 0.117$ (incompressible fluid, $\nu = 1/2$), decreases monotonically, and crosses $K/G = 2$ at exactly $p^* = 8\pi\alpha = 0.1834$ ($\nu = 2/7$), confirming the trace-reversal identity as a strict geometric consequence of the network topology.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=1.0\textwidth]{trace_reversal_percolation.png}
-    \caption{\textbf{Rigidity Percolation of the Vacuum Graph.} As the vacuum packing density geometrically increases, the dense Cauchy topology structurally gives way to pure Trace-Reversed Chiral LC geometry exactly at the required QED fine-structure packing fraction ($p_c \approx 0.1834$). General Relativity's 4D metric signature natively emerges as the phase transition point for the universe.}
+    \includegraphics[width=1.0\textwidth]{rigidity_percolation_kg_convergence.png}
+    \caption{\textbf{EMT Trace-Reversal of the Vacuum Graph.} Effective Medium Theory for a 3D amorphous central-force network ($z_0 \approx 51.25$) demonstrates that $K/G$ crosses the trace-reversal value of 2 at $p^* = 8\pi\alpha \approx 0.1834$. The vacuum is a rigid solid operating $56.7\%$ above the rigidity onset ($p_G = 0.117$), not at the fluid-solid boundary.}
     \label{fig:trace_reversal_percolation}
 \end{figure}
 

@@ -4,9 +4,20 @@ Applied Vacuum Electrodynamics (AVE) Framework.
 
 === THREE CALIBRATION INPUTS ===
 The entire framework is parameterized by exactly three empirical measurements:
-  1. The electron rest mass (m_e)        → Spatial cutoff
-  2. The fine-structure constant (α)      → Dielectric saturation bound
-  3. The gravitational constant (G)       → Machian boundary impedance
+  1. The spatial cutoff (ℓ_node)             → Lattice pitch
+  2. The fine-structure constant (α)          → Dielectric saturation bound
+  3. The gravitational constant (G)           → Machian boundary impedance
+
+The electron rest mass is NOT an independent input. It is the ground-state
+energy of the simplest topological object on the lattice: the unknot
+(a single closed flux tube loop at minimum ropelength = 2π).
+
+  m_e = T_EM × ℓ_node / c² = ℏ / (ℓ_node · c)
+
+This is the Compton relation, but now it has a topological MEANING:
+the electron is the minimal-energy stable loop, with circumference ℓ_node
+and tube radius ℓ_node/(2π). Its mass is set entirely by the lattice
+tension and the unknot ropelength.
 
 All other constants are DERIVED from these three plus the SI definitions
 of ε₀, μ₀, c, ℏ, and e.
@@ -28,8 +39,13 @@ e_charge: float = 1.602176634e-19              # Elementary charge [C]
 # =============================================================================
 # THREE CALIBRATION INPUTS
 # =============================================================================
+# Input 1: The spatial cutoff (from which m_e is derived via the unknot)
 M_E: float = 9.1093837015e-31                  # Electron rest mass [kg]
+# NOTE: m_e is operationally used as the input because ℓ_node ≡ ℏ/(m_e·c).
+# Topologically, m_e = T_EM × ℓ_node / c² is the unknot ground-state energy.
+# Input 2: The dielectric bound
 ALPHA: float = 7.2973525693e-3                  # Fine-structure constant (dimensionless)
+# Input 3: The Machian boundary
 G: float = 6.67430e-11                          # Gravitational constant [m³/(kg·s²)]
 
 # =============================================================================
@@ -103,6 +119,25 @@ DIELECTRIC_RUPTURE_STRAIN: float = 1.0
 # This is a pure geometric constant: the solid-angle normalisation of
 # the Borromean trefoil's quartic stabilization term.
 KAPPA_FS_COLD: float = 8.0 * pi              # = 25.1327...
+
+# ---- Torus Knot Confinement Ladder ----
+#
+# The (2,q) torus knots form a progression using only odd q:
+#   (2,3) trefoil:    c = 3 crossings → electron phase winding
+#   (2,5) cinquefoil: c = 5 crossings → proton phase winding
+#   (2,7):            c = 7 crossings → (predicted next stable baryon)
+#
+# The crossing number c sets the soliton's confinement radius:
+#   r_opt = κ_FS / c
+#
+# Physical basis: each crossing constrains the phase gradient by
+# absorbing a fraction of the total coupling. The 1D functional is
+# scale-free (no natural minimum at finite radius), so the crossing
+# number is the only topological invariant that bounds the soliton.
+#
+# The proton's cinquefoil crossing number c = 5 gives:
+#   r_opt = κ_eff / 5 ≈ 4.97 ℓ_node
+CROSSING_NUMBER_PROTON: int = 5  # (2,5) cinquefoil
 
 # ---- Thermal softening of κ_FS ----
 #

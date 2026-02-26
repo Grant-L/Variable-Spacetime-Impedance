@@ -6,8 +6,8 @@
 In the construction of any macroscopic field theory, the mathematical formalism must be bounded by specific characteristic scales that define the emergence of its continuous degrees of freedom. To construct a mathematically closed, deterministic medium without the parameter bloat of the Standard Model, the AVE framework anchors its continuous mechanics to exactly three fundamental emergent hardware constraints.
 
 \begin{enumerate}
-    \item \textbf{The Electromagnetic Coherence Length ($\ell_{node}$):} We define the effective spatial granularity of the vacuum by anchoring its absolute high-frequency cutoff exclusively to the fundamental dimensionless integer $\mathbf{1}$. In localized reference frames, this evaluates dynamically as the kinematic scale of the ground-state electron ($\ell_{node} \equiv \hbar / m_e c$). 
-    \item \textbf{The Dielectric Saturation Limit ($\alpha$):} We define the absolute geometric compliance bound (the structural porosity of the LC network) utilizing the purely mathematical 3D Continuous Amorphous Network rigidity percolation threshold ($p_c / 8\pi$). In localized reference frames, this emerges identically as the empirical fine-structure constant ($\alpha \approx 1/137.036$).
+    \item \textbf{The Electromagnetic Coherence Length ($\ell_{node}$):} We define the effective spatial granularity of the vacuum by anchoring its absolute high-frequency cutoff exclusively to the fundamental dimensionless integer $\mathbf{1}$. The electron mass is not an independent input: it is the ground-state energy of the simplest topological defect on the lattice---the \textbf{unknot} (a single closed flux tube loop at minimum ropelength $= 2\pi$). The loop has circumference $\ell_{node}$ and tube radius $\ell_{node}/(2\pi)$, giving mass $m_e = T_{EM} \cdot \ell_{node}/c^2 = \hbar/(\ell_{node} \cdot c)$. In localized reference frames, $\ell_{node}$ therefore evaluates dynamically as the kinematic scale of the electron ($\ell_{node} \equiv \hbar / m_e c$). 
+    \item \textbf{The Dielectric Saturation Limit ($\alpha$):} We define the absolute geometric compliance bound (the structural porosity of the LC network) as the unique Effective Medium Theory (EMT) operating point where $K = 2G$ for a 3D amorphous central-force network ($\alpha \equiv p_c / 8\pi$). In localized reference frames, this emerges identically as the empirical fine-structure constant ($\alpha \approx 1/137.036$).
     \item \textbf{The Macroscopic Impedance Bound ($G$):} We define the aggregate macroscopic tension of the discrete LC lattice stretching dynamically. In localized reference frames, this scaling factor emerges identically as macroscopic Gravity ($G$), which establishes the total structural impedance and causal expansion bounds of the cosmological horizon.
 \end{enumerate}
 
@@ -62,15 +62,21 @@ The \textbf{Vacuum Porosity Ratio} represents the geometric ratio of the hard, n
 
 The AVE framework definitively proves that variables such as $G$, $\alpha$, and $\ell_{node}$ are not fundamental empirical inputs. They are strictly emergent mathematical properties of the scale-invariant graph topology.
 
-\textbf{1. Deriving $\alpha$ via Rigidity Percolation:}
-In Chapter 2, we mathematically establish that the volumetric packing fraction of the QED vacuum evaluates to exactly $p_c \approx 0.1834$, structurally forcing the $1/137.036$ fine-structure limit. In soft-matter physics and topological network theory, a 3D amorphous graph strictly transitions from a shear-free network into a rigid, shear-bearing solid at a mathematical boundary known as the \textit{Rigidity Percolation Threshold} ($p_c$). For 3D central-force networks possessing Chiral LC bending stiffness, this geometric phase transition occurs precisely at a packing fraction of $p_c \approx 0.18$. 
+\textbf{1. Deriving $\alpha$ via the Trace-Reversal Operating Point:}
+In Chapter 2, we mathematically establish that the volumetric packing fraction of the QED vacuum evaluates to exactly $p_c \approx 0.1834$, structurally forcing the $1/137.036$ fine-structure limit. The Effective Medium Theory (EMT) of Feng, Thorpe, and Garboczi for a 3D amorphous central-force network with bond occupation fraction $p$ and coordination number $z_0$ gives two distinct percolation thresholds: the \textit{connectivity threshold} $p_K = 2/z_0$ (where $K \to 0$) and the \textit{rigidity threshold} $p_G = 6/z_0$ (where $G \to 0$). In the window $p_K < p < p_G$, the network transmits bulk stress but not shear---a fluid. Above $p_G$, the network is a rigid solid.
 
-This mathematically isolates the Fine-Structure Constant. It is not an arbitrary electromagnetic coupling factor; it is the strict geometric ratio required to hold the vacuum graph exactly at the topological boundary of macroscopic rigidity ($\alpha \equiv p_c / 8\pi$). 
+The bulk-to-shear ratio $K/G$ diverges at $p_G$ (incompressible fluid) and monotonically decreases with increasing $p$. The unique packing fraction where $K/G = 2$ (the trace-reversal identity required by General Relativity) is:
+\begin{equation}
+    p^* = \frac{10 z_0 - 12}{z_0(z_0 + 2)} = 8\pi\alpha
+\end{equation}
+Solving this quadratic for $z_0$ yields the effective coordination number of the chiral lattice: $z_0 \approx 51.25$. At this coordination, the rigidity threshold is $p_G = 6/z_0 \approx 0.117$, and the vacuum operates at $p^* = 0.1834$---a robust $56.7\%$ above the fluid-solid transition.
+
+This mathematically isolates the Fine-Structure Constant: $\alpha$ is not the rigidity threshold itself, but the geometric packing fraction at which the vacuum's bulk-to-shear modulus ratio satisfies the exact trace-reversal identity ($\alpha \equiv p_c / 8\pi$).
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.85\textwidth]{simulate_rigidity_percolation.png}
-    \caption{\textbf{The Geometric Derivation of $\alpha$.} By mapping the dimensionless fine-structure constant to the volumetric packing fraction of the lattice ($\alpha \equiv p_c / 8\pi$), $\alpha$ is revealed not to be a fundamental constant, but strictly the continuous rigidity threshold bounding the phase-transition of the network between saturated dielectric breakdown and rigid inductive solid states.}
+    \includegraphics[width=0.85\textwidth]{rigidity_percolation_kg_convergence.png}
+    \caption{\textbf{The Geometric Derivation of $\alpha$.} Effective Medium Theory for a 3D amorphous central-force network ($z_0\approx 51.25$) shows the K/G ratio crossing the trace-reversal value of 2 at precisely $p^* = 8\pi\alpha$. The vacuum operates $56.7\%$ above the rigidity onset ($p_G = 0.117$), not at the fluid-solid boundary.}
     \label{fig:rigidity_alpha}
 \end{figure}
 

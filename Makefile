@@ -122,10 +122,15 @@ knots:
 	@echo "[Build] Periodic Table PDF generated at $(OUT_DIR)/periodic_table.pdf"
 
 clean:
-	@echo "[Clean] Removing build artifacts..."
-	rm -rf $(OUT_DIR)/*
-	rm -rf build_future/*
+	@echo "[Clean] Removing auxiliary build artifacts (preserving PDFs)..."
+	rm -rf $(OUT_DIR)/aux/*
+	rm -rf future_work/build/aux/*
 	rm -rf spice_manual/build/*
 	rm -rf periodic_table/main.pdf
 	rm -rf __pycache__
 	find . -type d -name "__pycache__" -exec rm -rf {} +
+
+distclean: clean
+	@echo "[DistClean] Removing ALL build artifacts including PDFs..."
+	rm -rf $(OUT_DIR)/*
+	rm -rf future_work/build/*
