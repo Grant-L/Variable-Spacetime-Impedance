@@ -1,0 +1,107 @@
+# HOPF-01: Component Definitions for Chiral Torus Knot Antenna Panel
+# ===================================================================
+#
+# This is a PASSIVE test board — no active components.
+# Each antenna is a microstrip torus knot resonator measured via
+# single-port S₁₁ reflection with a NanoVNA.
+#
+# Signal Analysis Setup:
+#   - Single-port measurement (S₁₁ only)
+#   - NanoVNA-H4 (50 kHz – 1.5 GHz) → SMA → PCB
+#   - No bias voltage, no power supply, no active drive
+#   - Maximum frequency: ~400 MHz (trefoil resonance)
+#   - Maximum signal level: NanoVNA output (~-13 dBm = 50 μW)
+#
+# DRC-Critical Parameters:
+#   - 50Ω controlled impedance on feed lines
+#   - Solid ground plane (Layer 2), no breaks
+#   - Trace width: 1.8mm feed (50Ω), 1.0mm knot body
+#   - Min clearance: 0.3mm (benign at 400 MHz, no HV)
+#   - No vias in signal path
+
+module SMA_Edge_Launch:
+    """
+    Standard 50Ω SMA edge-launch connector.
+    Amphenol 132255 or equivalent.
+
+    Pin assignments:
+      signal: Center conductor (50Ω matched)
+      gnd:    Ground tabs (soldered to ground plane)
+    """
+    signal signal
+    signal gnd
+
+    impedance = 50 ohm
+    freq_max = 6GHz
+    footprint = "SMA_Edge_Launch"
+
+module Microstrip_50ohm_Feed:
+    """
+    50Ω microstrip feed line from SMA to torus knot.
+
+    On 1.6mm FR-4 (εᵣ = 4.3):
+      Width = 1.8mm for Z₀ = 50Ω
+      (Wheeler 1977 / IPC-2141A controlled impedance)
+
+    DRC rules for this trace:
+      - Width: 1.8mm ± 0.1mm (critical for impedance)
+      - Clearance to ground pour: ≥ 3× substrate height = 4.8mm
+      - Length: as short as practical (< 10mm)
+      - No bends sharper than 2× trace width
+      - Solid ground plane directly beneath (no copper voids)
+    """
+    signal input
+    signal output
+
+    width = 1.8mm
+    impedance = 50 ohm
+    max_length = 10mm
+
+module Torus_Knot_Resonator:
+    """
+    Open-ended microstrip torus knot antenna trace.
+
+    This is the device under test (DUT). The trace is wound into
+    a (p,q) torus knot pattern and terminates in an open circuit.
+    The resonant frequency depends on the total trace length and
+    effective permittivity:
+
+      f_res = c / (2π × L_trace × n_eff)
+
+    Standard Maxwell: n_eff = √εᵣ = √4.3 ≈ 2.074
+    AVE prediction:   n_eff = √εᵣ × (1 + α × pq/(p+q))
+
+    DRC rules for the knot trace:
+      - Width: 1.0mm (impedance matching not required in resonator body)
+      - Min bend radius: ≥ 3× trace width = 3.0mm
+      - Self-clearance at crossings: traces must NOT cross on same layer;
+        use the projection of the 3D knot onto 2D (alternating over/under)
+      - Clearance to other knots: ≥ 10mm (prevent coupling)
+      - Clearance to board edge: ≥ 5mm
+      - Ground plane must extend ≥ 5mm beyond the knot footprint
+    """
+    signal input  # Connected to 50Ω feed
+    # No output — open-ended resonator
+
+    p = 2           # Torus knot parameter p
+    q = 3           # Torus knot parameter q
+    trace_width = 1.0mm
+    trace_length = 60mm  # Total knot trace length
+
+module Epsilon_R_Test_Coupon:
+    """
+    Calibration coupon for measuring the actual substrate εᵣ.
+
+    A simple straight 50Ω microstrip of known length (50mm).
+    By measuring its resonant frequency, the actual εᵣ of this
+    specific PCB panel can be extracted and used to correct
+    the HFSS comparison.
+
+    This is ESSENTIAL for separating manufacturing tolerance
+    from the chiral coupling signal.
+    """
+    signal input
+    signal gnd
+
+    trace_length = 50mm
+    trace_width = 1.8mm  # 50Ω

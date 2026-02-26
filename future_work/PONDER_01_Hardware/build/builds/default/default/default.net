@@ -1,7 +1,0 @@
-(export
-    (version "E")
-    (components)
-    (nets)
-    (libparts)
-    (libraries)
-)
