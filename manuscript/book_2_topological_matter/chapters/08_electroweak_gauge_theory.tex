@@ -56,6 +56,46 @@ By substituting the geometric Chiral LC trace-reversed limit mathematically prov
 
 This derivation matches the experimental ratio to within 0.05\% error, offering a direct mechanical origin for the mass splitting without invoking symmetry-breaking scalar fields.
 
+\subsection{The Absolute $W$ Boson Mass}
+
+The mixing angle ratio establishes the \emph{relative} weak boson masses. The \emph{absolute} $W$ mass is determined by the evanescent cutoff of the torsional sector. The characteristic Cosserat length $l_c$ is suppressed relative to $\ell_{node}$ by two dielectric screening factors: $\alpha^2$ (the squared compliance of the LC matrix) and $p_c = 8\pi\alpha$ (the packing fraction that governs volumetric energy storage). The torsion--shear coupling projects through $\sin\theta_W$. Combining these:
+\begin{equation}
+    M_W = \frac{m_e}{\alpha^2 \, p_c \, \sin\theta_W} = \frac{m_e}{8\pi\alpha^3 \sin\theta_W} \approx 79{,}923 \text{ MeV}
+\end{equation}
+This matches the CODATA value ($80{,}379 \pm 12$ MeV) to within $0.57\%$. Combined with the mixing angle:
+\begin{equation}
+    M_Z = \frac{3}{\sqrt{7}} M_W \approx 90{,}624 \text{ MeV} \qquad (0.62\% \text{ from CODATA } 91{,}188 \text{ MeV})
+\end{equation}
+
+No adjustable parameters appear: $\alpha$, $p_c$, and $\sin^2\theta_W = 3/7$ are all independently derived geometric constants of the Chiral LC lattice.
+
+\subsection{The Neutrino: Torsional Screw Defect}
+
+While the electron is an unknot (a closed flux tube loop---an edge dislocation), the neutrino is a pure \textbf{screw dislocation}: a helical twist of the lattice that carries spin-$1/2$ but no topological charge. Its mass is suppressed relative to the electron by two factors:
+\begin{itemize}
+    \item $\alpha$: the dielectric coupling between the torsional and translational sectors;
+    \item $m_e/M_W$: the ratio of the translational to torsional energy scale.
+\end{itemize}
+This yields:
+\begin{equation}
+    m_\nu = m_e \cdot \alpha \cdot \frac{m_e}{M_W} \approx 24 \text{ meV}
+    \label{eq:neutrino_mass}
+\end{equation}
+
+The three neutrino flavors arise from the torus knot ladder: each flavor pairs with a baryon resonance via the crossing number $c$, with mass splitting proportional to $1/c$:
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+Flavor & Paired Baryon & $c$ & $m_\nu$ (meV) \\ \hline
+$\nu_1$ & Proton (938 MeV) & 5 & 23.8 \\
+$\nu_2$ & $\Delta(1232)$ & 7 & 17.0 \\
+$\nu_3$ & $\Delta(1620)$ & 9 & 13.2 \\ \hline
+\multicolumn{3}{|c|}{$\sum m_\nu$} & \textbf{54.1 meV} \\ \hline
+\end{tabular}
+\end{center}
+
+The predicted sum $\sum m_\nu \approx 0.054$ eV lies comfortably within the Planck 2018 cosmological bound ($\sum m_\nu < 0.12$ eV) and near the normal-ordering hint ($\sum m_\nu \sim 0.06$ eV). This prediction is falsifiable: upcoming measurements from DESI and CMB-S4 will constrain $\sum m_\nu$ to $\pm 0.02$ eV.
+
 \begin{figure}[h]
     \centering
     \includegraphics[width=1.0\textwidth]{../../assets/sim_outputs/electroweak_acoustic_modes.png}
