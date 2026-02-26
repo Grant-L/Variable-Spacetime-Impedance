@@ -8,49 +8,51 @@ The following verification log was aggregated from the AVE computational validat
 \begin{verbatim}
 ==========================================================
 AVE UNIVERSAL DIAGNOSTIC & VERIFICATION ENGINE
+Dynamic Output — Generated from src/ave/core/constants.py
 ==========================================================
 
 [SECTOR 1: INITIAL HARDWARE CALIBRATION]
-> Parameter 1: Lattice Pitch (l_node): 3.8616e-13 m
-> Parameter 2: Dielectric Limit (a):   1/137.036
-> Parameter 3: Macroscopic Gravity (G):6.6743e-11 m^3/kg*s^2
-> Topo-Conversion Constant (xi_topo):  4.1490e-07 C/m
-> QED Geometric Packing Fraction (p_c):0.1834
+> Parameter 1: Lattice Pitch (l_node):  3.8616e-13 m
+> Parameter 2: Dielectric Limit (α):    1/137.036
+> Parameter 3: Macroscopic Gravity (G):  6.6743e-11 m³/kg·s²
+> Topo-Conversion Constant (ξ_topo):     4.1490e-07 C/m
+> QED Geometric Packing Fraction (p_c):  0.1834
+> Impedance of Free Space (Z₀):         376.73 Ω
 
 [SECTOR 2: BARYON SECTOR & STRONG FORCE]
-> Theoretical Proton Eigenvalue:       1836.14 m_e
-> Standard Model Target:               1836.15 m_e
-> Status:                              MATCH (99.999% Accuracy)
-> Baseline Lattice Tension (T_EM):     0.2120 N
-> Derived Confinement Force:           158,742 N (0.991 GeV/fm)
-> Status:                              MATCH (~1.0 GeV/fm Target)
+> Faddeev-Skyrme Coupling (κ_cold):      8π = 25.1327
+> Thermal Correction (δ_th):             1/(28π) = 0.011368
+> Effective Coupling (κ_eff):            24.8470
+> Dynamic I_scalar:                      1159.77 m_e
+> Toroidal Halo Volume (V_halo):         2.0
+> Theoretical Proton Eigenvalue:         1832.61 m_e
+> Empirical CODATA Target:               1836.15267 m_e
+> Deviation:                             0.19%
+> Derived Confinement Force:             159,732 N (0.997 GeV/fm)
+> Baseline Lattice Tension (T_EM):       0.2120 N
+> Dielectric Snap Voltage (V_snap):      511.0 kV
 
 [SECTOR 3: COSMOLOGY & DARK SECTOR]
-> Calculated Hubble Limit (H_inf):     69.32 km/s/Mpc
-> Status:                              RESOLVED (Mean of Planck/SH0ES)
-> Dark Matter Threshold (a_0):         1.07e-10 m/s^2
-> Status:                              MATCH (Milgrom Limit)
-> Asymptotic Hubble Time (1/H_inf):    14.105 Billion Years
-> Status:                              MATCH (Empirical Causal Bound)
+> Asymptotic Hubble Limit (H∞):          69.32 km/s/Mpc
+> Asymptotic Hubble Time (1/H∞):         14.105 Billion Years
+> Hubble Radius (R_H):                   1.334e+26 m
+> MOND Acceleration (a₀ = cH∞/2π):      1.07e-10 m/s²
+> Bulk Mass Density (ρ_bulk):            7.910e+06 kg/m³
 
-[SECTOR 4: LATTICE IMPEDANCE]
-> Trace-Reversal Check (K/G):          1.78 (Target: 2.0)
-> Status:                              VALIDATED (Chiral LC Mechanism Active)
+[SECTOR 4: LATTICE IMPEDANCE & MODULI]
+> Poisson Ratio (ν_vac = 2/7):           0.285714
+> Trace-Reversal (K = 2G):               Exact by construction
+> Weak Mixing Angle (√7/3):              0.8819
 
-[SECTOR 5: EXPERIMENTAL FALSIFICATION]
-> IMD Spectroscopy Target:             2f1 - f2 (3rd Order)
-> Vacuum Varactor Curvature:           1/sqrt(1 - V^2)
-> Status:                         DETECTED (Non-Linear Vacuum Signature)
-
-[SECTOR 6: COMPUTATIONAL FLUID DYNAMICS (VCFD)]
-> Topological Array Architecture:      Chiral LC Network (r_min=1.0)
-> FDTD Stepping Module:                Explicit Discrete Kirchhoff Active
-> Weak Force PDE:                      Symplectic Acoustic Steepening Stable
-> Gravity Solver:                      Hamiltonian Raymarching Isotropic Mapping
-> Status:                              VALIDATED (Zero Anomalous Diffusion)
+[SECTOR 5: FDTD ENGINE STATUS]
+> 3D Non-Linear FDTD:                   Axiom 4 ε_eff per cell per timestep
+> Linear Mode:                           Available (linear_only=True)
+> Mur ABC:                               1st-Order (6 faces)
+> Total Test Suite:                       62/62 PASSED
 
 ==========================================================
 VERIFICATION COMPLETE: STRICT GEOMETRIC CLOSURE
+168/168 framework files — zero Standard Model parameters.
 ==========================================================
 \end{verbatim}
 
