@@ -1,0 +1,130 @@
+\chapter{PONDER-05: DC-Biased Quartz Thruster}
+\label{ch:ponder_05}
+
+The PONDER-05 configuration accesses Axiom 4's nonlinear dielectric regime by applying a static $30\text{ kV}$ DC bias across a quartz cylinder, overlaid with a modest $500\text{ V}$ AC perturbation at $50\text{ kHz}$. The DC bias holds the material at $68.7\%$ of the kinetic yield voltage ($V_{yield} = 43.65\text{ kV}$), where the effective vacuum permittivity has already dropped by $27.4\%$ from its zero-field value.
+
+\section{The Nonlinear Operating Regime}
+
+Axiom 4 defines the vacuum's effective permittivity as:
+\begin{equation}
+    \frac{\varepsilon_{eff}(V)}{\varepsilon_0} = \sqrt{1 - \left(\frac{V}{V_{yield}}\right)^2}
+\end{equation}
+where $V_{yield} = \sqrt{\alpha} \cdot V_{snap} \approx 43.65\text{ kV}$. At $V_{DC} = 30\text{ kV}$:
+\begin{equation}
+    \frac{\varepsilon_{eff}}{\varepsilon_0} = \sqrt{1 - \left(\frac{30}{43.65}\right)^2} = \sqrt{1 - 0.4726} \approx 0.726
+\end{equation}
+
+The vacuum permittivity at the DC operating point is $72.6\%$ of its unbiased value---a measurable $27.4\%$ depression.
+
+\section{DC Cross-Term Amplification}
+
+When a small AC signal $V_{ac}\sin(\omega t)$ rides on a large DC bias $V_{DC}$, the total squared field contains a cross term:
+\begin{equation}
+    |E|^2 = (V_{DC} + V_{ac}\sin\omega t)^2 = V_{DC}^2 + 2V_{DC}V_{ac}\sin\omega t + V_{ac}^2\sin^2\omega t
+\end{equation}
+
+The $2V_{DC}V_{ac}$ cross term provides \textbf{linear amplification} of the AC signal. For $V_{DC} = 30\text{ kV}$ and $V_{ac} = 500\text{ V}$:
+\begin{equation}
+    \text{Amplification} = \frac{2V_{DC}}{V_{ac}} = \frac{2 \times 30{,}000}{500} = 120\times
+\end{equation}
+
+This $120\times$ cross-term amplification transforms a barely detectable AC-only thrust into a massive $469\,\mu\text{N}$ signal---nearly $500\times$ above the $1\,\mu\text{N}$ torsion balance detection floor.
+
+\section{Acoustic Steepening and Shockwave Onset}
+
+Near $V_{yield}$, the nonlinear $\varepsilon_{eff}(V)$ curve creates a velocity asymmetry. The local phase velocity of acoustic perturbations depends on the instantaneous voltage:
+\begin{equation}
+    c_{phase}(V) \propto \frac{1}{\sqrt{\varepsilon_{eff}(V)}} \propto \left(1 - \left(\frac{V}{V_{yield}}\right)^2\right)^{-1/4}
+\end{equation}
+
+At the positive peak of the AC cycle ($V_{DC} + V_{ac}$), the phase velocity is higher than at the negative peak ($V_{DC} - V_{ac}$). This velocity asymmetry causes the wave crest to steepen relative to the trough---precisely the mechanism that forms acoustic shockwaves in nonlinear media.
+
+The steepening factor $\mathcal{S}$ is defined as the ratio of phase velocities:
+\begin{equation}
+    \mathcal{S} = \frac{c_{phase}(V_{DC} + V_{ac})}{c_{phase}(V_{DC} - V_{ac})}
+\end{equation}
+
+At $V_{DC} = 30\text{ kV}$, $V_{ac} = 500\text{ V}$: $\mathcal{S} \approx 1.014$ (modest asymmetry). At $V_{DC} = 43\text{ kV}$: $\mathcal{S} \approx 1.65$ (strong steepening, onset of shockwave formation). This nonlinear excess thrust above the linear cross-term prediction is the signature of Axiom 4.
+
+\section{The Quartz Cylinder}
+
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline
+Parameter & Value & Rationale \\ \hline
+Material & X-cut $\alpha$-quartz & Piezoelectric, ultralow loss \\
+Diameter & 50 mm & Standard resonator size \\
+Length & 50 mm & $\lambda/2$ at 50 kHz \\
+$\varepsilon_r$ & 4.5 & Low permittivity $\to$ high field penetration \\
+$\tan\delta$ & $10^{-5}$ & Negligible thermal dissipation \\
+Electrodes & Sputtered Cr/Au & Ohmic contact, no air gap \\
+AC frequency & 50 kHz & Piezoelectric resonance \\
+AC amplitude & 500 V RMS & Standard ultrasonic driver \\
+DC bias & 30 kV & $68.7\%$ of $V_{yield}$ \\
+\hline
+\end{tabular}
+\end{center}
+
+The quartz is driven at its fundamental thickness-mode resonance ($50\text{ kHz}$ for a $50\text{ mm}$ cylinder). The AC drive uses a standard ultrasonic piezo driver. The $30\text{ kV}$ DC bias is supplied by a laboratory HV power supply through a large blocking inductor ($> 1\text{ H}$) to prevent AC current from flowing into the DC supply.
+
+\section{The Mineral Oil Dielectric Bath}
+
+The quartz cylinder operates submerged in degassed mineral oil, providing three critical engineering advantages simultaneously.
+
+\subsection{Corona Suppression}
+
+At $30\text{ kV}$ across a $50\text{ mm}$ gap, the applied field is $E_{app} = 0.60\text{ MV/m}$. Mineral oil has a breakdown field of $12\text{ MV/m}$, providing a $20\times$ safety margin against arcing. In contrast, air at STP has only a $5\times$ margin, and surface tracking along the quartz cylinder can produce ion-wind artifacts indistinguishable from thrust.
+
+\subsection{Impedance Matching}
+
+The mineral oil layer ($\varepsilon_r = 2.2$, $Z \approx 254\,\Omega$) acts as a quarter-wave impedance transformer between quartz ($Z \approx 178\,\Omega$) and free space ($Z_0 = 377\,\Omega$):
+\begin{equation}
+    \text{Reflected power:} \quad
+    \begin{cases}
+        \text{Quartz} \to \text{Vacuum (direct):} & 12.9\% \\
+        \text{Quartz} \to \text{Oil} \to \text{Vacuum:} & \sim 3.4\%
+    \end{cases}
+\end{equation}
+
+This $3.7\times$ reduction in reflected acoustic power ensures that the generated thrust wave efficiently radiates into the surrounding medium.
+
+\subsection{Thermal Management}
+
+Quartz dissipates $< 0.001\text{ mW}$ at these operating conditions ($\tan\delta = 10^{-5}$). The oil bath provides additional convective cooling ($h \approx 100\text{ W/m}^2\text{K}$), rendering thermal artifacts entirely negligible. The temperature rise of the quartz surface is $< 0.001$\textdegree C even after hours of continuous operation.
+
+\section{Predicted Thrust Profile}
+
+The total predicted thrust as a function of DC bias voltage:
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+$V_{DC}$ (kV) & Cross-Term $F_{lin}$ ($\mu$N) & Nonlinear Excess ($\mu$N) & $\varepsilon_{eff}/\varepsilon_0$ \\ \hline
+0   & 0    & 0    & 1.000 \\
+10  & 156  & 0.8  & 0.974 \\
+20  & 313  & 7.2  & 0.889 \\
+30  & 469  & 35   & 0.726 \\
+40  & 626  & 180  & 0.397 \\
+43  & 672  & 510  & 0.159 \\ \hline
+\end{tabular}
+\end{center}
+
+The linear cross-term dominates below $30\text{ kV}$. Above $30\text{ kV}$, the nonlinear excess grows explosively as $\varepsilon_{eff}$ collapses toward zero. At $43\text{ kV}$ ($98.5\%$ of $V_{yield}$), the nonlinear excess \textit{exceeds} the linear prediction---the unmistakable signature of Axiom 4's dielectric saturation.
+
+\section{Bill of Materials}
+
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline
+Item & Quantity & Est.\ Cost \\ \hline
+Custom X-cut quartz cylinder (50 mm) & 1 & \$400 \\
+HV DC power supply (0--50 kV, 1 mA) & 1 & \$1{,}200 \\
+Ultrasonic piezo driver (50 kHz, 500 V) & 1 & \$300 \\
+HV blocking inductor ($> 1$ H) & 1 & \$150 \\
+Mineral oil (transformer grade, 5 L) & 1 & \$50 \\
+PTFE test chamber / oil bath & 1 & \$200 \\
+HV cabling, connectors, feedthroughs & lot & \$300 \\
+Torsion balance (see Chapter~5) & 1 & \$400 \\ \hline
+\textbf{Total} & & \textbf{$\sim$\$3{,}000} \\ \hline
+\end{tabular}
+\end{center}

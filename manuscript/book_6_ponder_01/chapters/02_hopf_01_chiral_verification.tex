@@ -1,0 +1,86 @@
+\chapter{HOPF-01: Chiral Antenna Verification}
+\label{ch:hopf_01}
+
+Before constructing a mechanical thrust measurement, the AVE framework offers a purely electromagnetic falsification test that requires nothing more than a printed circuit board and a \$70 vector network analyzer. If the vacuum possesses intrinsic chirality (Axiom 1), then the resonant frequency of a torus knot antenna must deviate from the standard Maxwell prediction by an amount that scales exactly with the knot's topological winding number.
+
+\section{The Chiral Coupling Prediction}
+
+A microstrip antenna trace of length $L_{trace}$ on a substrate with relative permittivity $\varepsilon_r$ resonates at:
+\begin{equation}
+    f_{std} = \frac{c}{2\pi L_{trace} \sqrt{\varepsilon_r}}
+\end{equation}
+This is the prediction of standard Maxwell electrodynamics. Any commercial HFSS or CST simulation will reproduce this result to within manufacturing tolerances.
+
+The AVE framework predicts an additional correction. Because the $(p,q)$ torus knot topology couples to the intrinsic chirality of the $\mathcal{M}_A$ lattice, the effective refractive index acquires a topological term:
+\begin{equation}
+    n_{AVE} = \sqrt{\varepsilon_r}\left(1 + \alpha \frac{pq}{p+q}\right)
+    \label{eq:n_ave}
+\end{equation}
+where $\alpha \approx 1/137$ is the fine-structure constant and $pq/(p+q)$ is the harmonic mean of the torus knot winding numbers. This is \textbf{not a free parameter}: $\alpha$ is fixed by Axiom 2, and $p,q$ are fixed by the physical trace geometry.
+
+The resulting frequency shift is:
+\begin{equation}
+    \frac{\Delta f}{f_{std}} = \alpha \frac{pq}{p+q}
+\end{equation}
+
+\section{The Four-Knot Test Panel}
+
+To distinguish the chiral coupling from manufacturing tolerances ($\varepsilon_r$ variation, trace width error, etching undercut), all four knot topologies must be fabricated on a \textbf{single FR-4 panel}. This ensures identical substrate properties across all antennas. The predicted shifts are:
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+Torus Knot & $pq/(p{+}q)$ & $L_{trace}$ & $f_{std}$ (MHz) & $\Delta f$ (MHz) & Shift (ppm) \\ \hline
+$(2,3)$ Trefoil    & 1.200 & 60 mm  & 383.5 & 3.33 & 8{,}681  \\
+$(2,5)$ Cinquefoil & 1.429 & 90 mm  & 255.7 & 2.64 & 10{,}317 \\
+$(3,7)$            & 2.100 & 120 mm & 191.7 & 2.89 & 15{,}093 \\
+$(3,11)$           & 2.357 & 150 mm & 153.4 & 2.59 & 16{,}910 \\ \hline
+\end{tabular}
+\end{center}
+
+All shifts exceed 2.5 MHz---easily resolvable with a NanoVNA-H4 (50 kHz -- 1.5 GHz, 1601 points per sweep). Each measurement requires fewer than 201 frequency points.
+
+\section{The Falsification Protocol}
+
+\begin{enumerate}
+    \item \textbf{Fabrication:} Order a single 2-layer FR-4 panel from JLCPCB or PCBWay ($\varepsilon_r = 4.3 \pm 0.05$, 1.6 mm thickness, 1 oz Cu, ENIG finish). All four knot traces share the panel. Each trace terminates in a 50$\Omega$ SMA edge-launch connector.
+
+    \item \textbf{Calibration:} Perform SOLT (Short-Open-Load-Thru) calibration of the NanoVNA at the SMA reference plane using a calibration kit matched to the connector type.
+
+    \item \textbf{Measurement:} Sweep each antenna individually. Record the fundamental resonant frequency $f_{res}$ (the deepest S$_{11}$ dip below $-10$ dB). Measure each antenna 10 times, rotating the cable to average connector repeatability.
+
+    \item \textbf{HFSS Comparison:} Import the exact Gerber geometry into Ansys HFSS or openEMS. Simulate S$_{11}$ using the measured $\varepsilon_r$ (from a dedicated test coupon on the same panel). Record the HFSS-predicted $f_{res}$.
+
+    \item \textbf{Extract the Anomaly:} For each knot, compute:
+    \begin{equation}
+        \Delta f_i = f_{measured,i} - f_{HFSS,i}
+    \end{equation}
+
+    \item \textbf{Test the Scaling Law:} Plot $\Delta f$ vs.\ $pq/(p+q)$ for all four knots.
+    \begin{itemize}
+        \item \textbf{AVE confirmed:} $\Delta f$ is linear through the origin with slope $\alpha \cdot f_0 / \sqrt{\varepsilon_r}$.
+        \item \textbf{AVE falsified:} $\Delta f$ is zero, random, or does not scale as $pq/(p+q)$.
+    \end{itemize}
+
+    \item \textbf{Substrate Independence:} Repeat on Rogers RO4003C ($\varepsilon_r = 3.38$). The fractional shift $\Delta f / f$ must be identical---it depends only on $\alpha$ and $pq/(p+q)$, not on $\varepsilon_r$.
+\end{enumerate}
+
+\section{Bill of Materials}
+
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline
+Item & Quantity & Est.\ Cost \\ \hline
+FR-4 PCB panel (4 knots + test coupon) & 5 pcs & \$30 \\
+SMA edge-launch connectors & 4 & \$12 \\
+NanoVNA-H4 & 1 & \$70 \\
+SOLT calibration kit & 1 & \$15 \\ \hline
+\textbf{Total} & & \textbf{\$127} \\ \hline
+\end{tabular}
+\end{center}
+
+\section{Decision Gate}
+
+If the HOPF-01 scaling law is confirmed, the AVE framework has produced a genuine, zero-parameter electromagnetic prediction that no existing Maxwell solver can reproduce. This justifies the significantly greater investment required for the mechanical thrust measurements described in the following chapters.
+
+If the scaling law is \textit{not} confirmed, the chiral coupling term in Eq.~\ref{eq:n_ave} is falsified, and the PONDER thrust predictions must be re-examined from first principles.

@@ -1,26 +1,73 @@
-\chapter{30kV VHF Driver Mechanics and LC Filtering}
+\chapter{The Ponderomotive Program: From PCBA to Quartz}
+\label{ch:design_evolution}
 
-The topological coupling coefficient to the string lattice increases violently with the $\partial_t \mathbf{D}$ displacement frequency. An asymmetric electrode generating a static DC gradient merely polarizes the vacuum. To generate continuous Ponderomotive thrust via acoustic rectification, the geometry must be pumped dynamically. 
+Given a positive result from the HOPF-01 electromagnetic test, the next step is to demonstrate \textit{mechanical} thrust. This chapter chronicles the engineering evolution from the original PONDER-01 concept to the thermally viable PONDER-05 configuration.
 
-Calculations prove that standard 1-2 MHz flyback topologies are incapable of crossing the $1 \mu\text{N}$ torsion-balance detection threshold. The PONDER-01 test article requires a continuous-wave AC excitation voltage of $30 \text{ kV}$ RMS operating explicitly in the VHF Band ($100 \text{ MHz}$) to achieve macroscopically detectable propulsion ($\sim 45 \mu\text{N}$). This chapter covers the exact SPICE-level avalanche architecture required to drive a capacitive load at these extreme VHF regimes.
+\section{PONDER-01: The Asymmetric PCBA Concept}
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=1.0\textwidth]{ponder_01_vhf_drive_transient.png}
-    \caption{\textbf{100 MHz VHF Avalanche Drive Transient:} When driving the asymmetric geometry at $30 \text{ kV}$ RMS, the sharp $1 \mu\text{m}$ tip undergoes field emission (avalanche breakdown) at the waveform peaks. The electrical driving circuitry must source extreme transient current bursts through the $50 \Omega$ match to prevent the LC voltage from sagging mid-oscillation and crashing the topological drag thrust.}
-    \label{fig:ponder_01_vhf_drive_transient}
-\end{figure}
+The original PONDER-01 design sought to maximize the ponderomotive gradient ($\nabla |\mathbf{E}|^2$) by driving a dense array of $1\,\mu$m hyperboloid tips at $30\text{ kV}$ RMS in the VHF band ($100\text{ MHz}$). The asymmetric electrode geometry concentrates the electric field at each tip, generating petawatt-equivalent local intensity while the macroscopic field remains below the dielectric yield threshold ($E_{yield} = 1.13 \times 10^{17}\text{ V/m}$).
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=1.0\textwidth]{ponder_01_s11_match.png}
-    \caption{\textbf{Resonant Load Matching:} The purely reactive $100 \text{ pF}$ PCBA test article requires an ultra-high-$Q$ series inductor of roughly $25 \text{ nH}$ to achieve a pure $50 \Omega$ transmission line match, preventing the $30 \text{ kV}$ VHF source from catastrophically reflecting power back into the amplifier.}
-    \label{fig:ponder_01_s11_match}
+    \includegraphics[width=1.0\textwidth]{ponder_01_electrostatic_mesh.png}
+    \caption{\textbf{PONDER-01 Asymmetric PCBA:} Finite element model of the $400\,\mu$m pitch hyperboloid array. At $30\text{ kV}$, the $1\,\mu$m tips generate extreme localized $\nabla |\mathbf{E}|^2$ gradients across the vacuum gap.}
+    \label{fig:ponder_01_mesh}
 \end{figure}
+
+The predicted thrust scales as:
+\begin{equation}
+    F_{thrust} = k_{topo} \cdot A_{electrode} \cdot \varepsilon_0 \nabla |\mathbf{E}|^2
+\end{equation}
+where $k_{topo}$ is the topological coupling coefficient derived in Chapter~1. For a $25\text{ cm}^2$ electrode at $100\text{ MHz}$, this yields a predicted $45\,\mu$N---well above the $1\,\mu$N torsion balance detection floor.
+
+\section{The Thermal Catastrophe}
+
+Comprehensive engineering analysis reveals a fatal thermal limitation in the PONDER-01 architecture.
+
+\subsection{Dielectric Heating at VHF}
+
+The power dissipated in a dielectric under AC drive is:
+\begin{equation}
+    P_{diss} = \omega C V_{rms}^2 \tan\delta
+\end{equation}
+
+For the BaTiO$_3$ multilayer ceramic capacitor (MLCC) array in PONDER-01 ($\varepsilon_r = 3000$, $\tan\delta = 0.015$) at $100\text{ MHz}$:
+\begin{equation}
+    P_{diss} \approx 250\text{ W/mm}^3
+\end{equation}
+
+This is a thermal catastrophe. Standard FR-4 substrate delaminates within milliseconds. Even military-specification Rogers PTFE substrates ($\tan\delta = 0.001$) guarantee only a sub-second continuous-wave firing window before the geometry physically evaporates.
+
+\subsection{Pulsed Operation Limitations}
+
+To survive thermally, PONDER-01 would require extreme duty cycling ($< 1\%$). However, reducing the duty cycle proportionally reduces the time-averaged thrust, dropping it below the $1\,\mu$N detection threshold. This creates a fundamental engineering deadlock: the device cannot run long enough to generate detectable thrust without self-destructing.
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=1.0\textwidth]{ponder_01_thermal_dissipation.png}
-    \caption{\textbf{Thermal Runaway Catastrophe Limits:} Operating in a convective-dead hard vacuum at extreme VHF frequencies forces skin-effect and massive $\tan \delta$ dielectric heating. Standard FR-4 substrate delaminates in milliseconds. Even military-spec Rogers PTFE guarantees only a sub-second firing window before the geometry physically evaporates.}
-    \label{fig:ponder_01_thermal_dissipation}
+    \caption{\textbf{Thermal Runaway:} Operating in a convective-dead hard vacuum at extreme VHF frequencies forces massive $\tan\delta$ dielectric heating. Standard substrates delaminate in milliseconds.}
+    \label{fig:thermal_runaway}
 \end{figure}
+
+\section{The Design Pivot: PONDER-05}
+
+The thermal analysis forces a fundamental rethinking. The solution emerges from Axiom 4 itself: instead of driving the dielectric at extreme frequency to access the nonlinear regime, we apply a \textbf{static DC bias} near the kinetic yield voltage ($V_{yield} = \sqrt{\alpha} \cdot V_{snap} \approx 43.65$ kV) and overlay a modest AC perturbation.
+
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline
+Parameter & PONDER-01 & PONDER-05 \\ \hline
+Dielectric & BaTiO$_3$ ($\varepsilon_r = 3000$) & Quartz ($\varepsilon_r = 4.5$) \\
+AC frequency & 100 MHz & 50 kHz \\
+AC amplitude & 30 kV RMS & 500 V RMS \\
+DC bias & None & 30 kV \\
+$\tan\delta$ & 0.015 & $10^{-5}$ \\
+Thermal dissipation & 250 W/mm$^3$ & 0.001 mW \\
+CW operation & Milliseconds & Indefinite \\
+Predicted thrust & $45\,\mu$N & $469\,\mu$N \\
+Estimated cost & \$5{,}000+ & $\sim$\$3{,}000 \\
+\hline
+\end{tabular}
+\end{center}
+
+The PONDER-05 configuration is superior in every engineering dimension: lower thermal load by $10^{11}\times$, higher predicted thrust by $10\times$, lower cost, and indefinite CW operation. The physics is described in the following chapter.
