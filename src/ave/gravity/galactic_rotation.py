@@ -38,13 +38,14 @@ import numpy as np
 from dataclasses import dataclass
 from typing import Optional
 
-from ave.core.constants import G, C_0
+from ave.core.constants import G, C_0, H_INFINITY
 
 
 # ======================================================
-# Milgrom's critical acceleration (observed, not fitted)
+# Milgrom's critical acceleration — derived from cosmology
+# a₀ = c × H∞ / (2π)  ≈ 1.04×10⁻¹⁰ m/s²
 # ======================================================
-A0_MOND = 1.2e-10  # m/s² — the universal MOND acceleration scale
+A0_MOND = float(C_0) * float(H_INFINITY) / (2 * np.pi)
 
 
 @dataclass

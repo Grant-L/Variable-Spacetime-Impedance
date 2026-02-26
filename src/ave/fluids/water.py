@@ -34,10 +34,12 @@ Physical constants for H₂O:
 import numpy as np
 from dataclasses import dataclass
 
+from ave.core.constants import HBAR, C_0
+
 # Physical constants
 K_B = 1.380649e-23       # Boltzmann [J/K]
 N_A = 6.02214076e23      # Avogadro
-H_BAR = 1.054571817e-34  # ℏ [J·s]
+H_BAR = float(HBAR)      # ℏ [J·s] — from constants.py
 EV_TO_J = 1.602176634e-19
 
 
@@ -73,7 +75,7 @@ class WaterMolecule:
         k = μ(2πcν̃)²
         """
         nu_tilde = 3657e2  # cm⁻¹ → m⁻¹
-        c = 2.998e8
+        c = float(C_0)
         omega = 2 * np.pi * c * nu_tilde
         return self.reduced_mass_oh * omega**2
 

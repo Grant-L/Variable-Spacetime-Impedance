@@ -40,8 +40,8 @@ def main():
 
     # ━━━ 2. Vacuum impedance (input axiom) ━━━
     predictions.append(('Vacuum impedance Z₀ (Ω)',
-                        float(Z_0), 376.730313668,
-                        'SI definition', 'Axiom 1 (input)'))
+                        float(Z_0), float(np.sqrt(float(MU_0) / float(EPSILON_0))),
+                        'SI definition', 'Axiom 1: √(μ₀/ε₀)'))
 
     # ━━━ 3. Electron anomalous magnetic moment ━━━
     # a_e = α/(2π) from unknot form factor 1/π² × coupling πα/2

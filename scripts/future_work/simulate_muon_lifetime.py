@@ -43,7 +43,7 @@ import numpy as np
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 
-from ave.core.constants import V_SNAP, ALPHA, C_0
+from ave.core.constants import V_SNAP, ALPHA, C_0, HBAR
 
 
 # ======================================================
@@ -52,7 +52,7 @@ from ave.core.constants import V_SNAP, ALPHA, C_0
 M_MUON = 105.6583755  # MeV/c²
 M_ELECTRON = 0.51099895  # MeV/c²
 TAU_MUON_EXP = 2.1969811e-6  # seconds (PDG 2024)
-HBAR = 1.054571817e-34  # J·s
+HBAR_SI = float(HBAR)  # J·s — from constants.py
 EV_TO_J = 1.602176634e-19
 
 
