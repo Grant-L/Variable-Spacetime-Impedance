@@ -23,6 +23,13 @@ The AVE model:
 The critical insight: the 4°C anomaly occurs at the impedance
 crossing point where the H-bond network's Q factor peaks.
 
+Pressure assumption:
+  All models in this module assume standard atmospheric pressure
+  (P = 1 atm = 101.325 kPa). At elevated pressures the H-bond
+  network stiffens, shifting the density maximum and dielectric
+  constant. Extending to P > 1 atm requires adding a pressure-
+  dependent compressibility correction to the impedance model.
+
 Physical constants for H₂O:
   O-H bond length:    0.9584 Å
   H-O-H angle:        104.45°
