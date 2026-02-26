@@ -144,7 +144,35 @@ The anomalous magnetic moment is:
 \end{equation}
 This reproduces Schwinger's 1948 result from the lattice without renormalization. The lattice spacing $\ell_{\text{node}}$ \emph{is} the physical UV regulator---there are no sub-lattice degrees of freedom to generate a divergence. The ``point-like'' behaviour observed in deep inelastic scattering corresponds to the zero-crossing of the AC standing wave at the node centre, where the field intensity momentarily vanishes.
 
+\subsection{From Photon to Electron: The Self-Trapping Transition}
+
+A circularly polarized photon on the Chiral LC lattice is a torsional helix---the $\vec{E}$ and $\vec{H}$ vectors rotate around the propagation axis with pitch equal to the wavelength. The transverse radius of this helix is set by the angular momentum coherence length:
+\begin{equation}
+    R_{\text{helix}} = \frac{\lambda}{2\pi} = \frac{c}{2\pi f}
+\end{equation}
+This is a \emph{scaling law}: higher frequency $\to$ tighter helix $\to$ smaller polarization footprint on the lattice. The photon's spin angular momentum is concentrated in a cylinder of radius $R_{\text{helix}}$ around the propagation axis.
+
+\paragraph{The critical frequency.} As $f$ increases, $R$ shrinks. When the frequency reaches the Compton frequency,
+\begin{equation}
+    f_C = \frac{m_e c^2}{\hbar} \approx 1.24 \times 10^{20} \text{ Hz},
+\end{equation}
+the helix radius collapses to
+\begin{equation}
+    R_{\text{helix}} \to \frac{\ell_{\text{node}}}{2\pi}
+\end{equation}
+---a fraction of a single lattice cell. The photon's field now wraps entirely within one node. Its leading wavefront interferes with its own trailing edge. \textbf{The photon catches its own tail.}
+
+\paragraph{Topological trapping.} At this point the helix self-closes into an unknot---a topologically stable loop confined to a single lattice site. The circulating EM energy can no longer propagate; it is trapped. The photon has become an electron:
+\begin{itemize}
+    \item \textbf{Mass} $= \hbar\omega/c^2$: the trapped photon's energy, now localized.
+    \item \textbf{Charge} $= e$: the topological winding number of the unknot.
+    \item \textbf{Spin-1/2}: half the photon's spin-1, because the loop closes after a $2\pi$ rotation, not $4\pi$.
+    \item \textbf{$g{-}2$ anomaly}: the residual interaction of the trapped helix with the node it occupies (Section above).
+\end{itemize}
+The fine structure constant $\alpha = (V_{\text{peak}}/V_{\text{snap}})^2 / (4\pi)$ measures exactly \emph{how much} the trapped photon strains the lattice node it sits on. The entire spectrum of matter---from free photons to confined electrons---is a single excitation at different frequencies, separated by the self-trapping threshold at $f = f_C$.
+
 \subsection{The Neutrino: Torsional Screw Defect}
+
 
 While the electron is an unknot (a closed flux tube loop---an edge dislocation), the neutrino is a pure \textbf{screw dislocation}: a helical twist of the lattice that carries spin-$1/2$ but no topological charge. Its mass is suppressed relative to the electron by two factors:
 \begin{itemize}
