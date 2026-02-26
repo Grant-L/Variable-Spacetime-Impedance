@@ -153,18 +153,18 @@ CROSSING_NUMBER_PROTON: int = 5  # (2,5) cinquefoil
 # The effective coupling is:
 #   κ_eff = κ_cold · (1 − δ_th)
 #
-# where δ_th is the Grüneisen-anharmonic thermal correction factor:
-#   δ_th = ν_vac / (8π) = 1 / (28π) ≈ 0.01137
+# DERIVATION:
+#   δ_th = ν_vac / κ_cold = (2/7) / (8π) = 1/(28π) ≈ 0.01137
 #
-# Physical derivation of the 28π factor:
-#   • 7  — isotropic projection denominator (from K = 2G trace reversal)
-#   • 2  — Poisson ratio numerator (ν_vac = 2/7)
-#   • 4π — solid-angle normalisation of the spherical energy integral
-#   • 2  — the quartic Skyrme term has TWO independent tensor indices
-#          (∂μ and ∂ν); thermal noise averages ONE index at a time,
-#          halving the naive δ
+#   This is the ratio of two independently derived geometric constants:
+#   • ν_vac = 2/7  — the lattice compliance (Poisson ratio, Ch. 4)
+#   • κ_cold = 8π  — the Skyrme stiffness (Faddeev-Skyrme coupling)
 #
-#   δ = (2/7) / (4π × 2) = 1/(28π)
+#   Physical meaning: the thermal softening fraction equals how much
+#   the lattice yields (ν) relative to how much the Skyrme barrier
+#   resists (κ). Both are pure geometry — no free parameters.
+#
+#   Note: δ × κ_cold = ν_vac = 2/7 exactly.
 
 # Thermal softening fraction
 DELTA_THERMAL: float = 1.0 / (28.0 * pi)     # = 1/(28π) ≈ 0.01137

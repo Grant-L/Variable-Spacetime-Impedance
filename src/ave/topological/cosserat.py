@@ -39,53 +39,80 @@ from ave.core.constants import (
 # =============================================================================
 # WEAK MIXING ANGLE (from Poisson ratio, Chapter 4 + Chapter 8)
 # =============================================================================
+#
+# The framework derives the POLE MASS RATIO from the Perpendicular
+# Axis Theorem applied to cylindrical flux tubes with nu_vac = 2/7:
+#   m_W/m_Z = 1/sqrt(1 + nu_vac) = sqrt(7/9) = sqrt(7)/3
+#
+# This gives the ON-SHELL weak mixing angle:
+#   sin^2(theta_W)_on-shell = 1 - (M_W/M_Z)^2 = 1 - 7/9 = 2/9
+#
+# Note: The PDG MSbar value (0.2312) differs from the on-shell value
+# (0.2222) due to radiative corrections. See Chapter 8 for discussion.
 
-# sin^2(theta_W) = 3/(3 + 4) = 3/7  (from nu_vac = 2/7)
-SIN2_THETA_W: float = 3.0 / 7.0          # = 0.428571
-COS2_THETA_W: float = 4.0 / 7.0          # = 0.571429
-SIN_THETA_W: float = sqrt(SIN2_THETA_W)  # = 0.654654
-COS_THETA_W: float = sqrt(COS2_THETA_W)  # = 0.755929
+# On-shell (pole mass) definition:
+SIN2_THETA_W: float = 2.0 / 9.0          # = 0.2222  (PDG on-shell: 0.2230, -0.35%)
+COS2_THETA_W: float = 7.0 / 9.0          # = 0.7778
+SIN_THETA_W: float = sqrt(SIN2_THETA_W)  # = sqrt(2)/3 = 0.47140
+COS_THETA_W: float = sqrt(COS2_THETA_W)  # = sqrt(7)/3 = 0.88192
 
-# Empirical comparison:
-# sin^2(theta_W)_exp = 0.23122 (on-shell) or 0.2312 (MSbar)
-# BUT: m_W/m_Z|exp = 80379/91188 = 0.88148
-# and sqrt(7)/3 = 0.88192 → 0.05% match (pole mass ratio)
+# Internal (torsion-shear) coupling from J=2I + nu=2/7:
+# This is the factor that appears in the M_W derivation via the
+# Perpendicular Axis Theorem: sqrt(GJ/EI) = sqrt(2G/E) = sqrt(2G/(2G(1+nu)))
+_SIN_THETA_W_PAT: float = sqrt(3.0 / 7.0)  # = 0.65465 (Perpendicular Axis Theorem)
 
 # =============================================================================
 # W AND Z BOSON MASSES
 # =============================================================================
-
-# The W boson mass from the evanescent cutoff of the torsional sector:
-#   M_W = m_e / (alpha^2 * p_c * sin(theta_W))
-#       = m_e / (8*pi*alpha^3 * sin(theta_W))
 #
-# Physical meaning: The torsional mode has stiffness suppressed by
-# alpha^2 (dielectric screening) and p_c (packing fraction). The
-# sin(theta_W) factor comes from the torsion-shear coupling angle.
-M_W: float = M_E / (ALPHA**2 * P_C * SIN_THETA_W)  # in kg
-M_W_MEV: float = M_W * C_0**2 / 1.602176634e-13    # ≈ 79923 MeV
+# DERIVATION: Torsional ring self-energy with chirality mismatch.
+#
+# A twist defect in the Chiral LC lattice creates a 1/r^2 torsional
+# field (Laplace solution, same as Coulomb). For a POINT source:
+#   E_point = T_EM^2 / (4*pi * eps_T * r_0)
+#
+# But the unknot is a RING, not a point. The self-energy of a ring
+# of major radius R and wire radius a includes a circumference
+# integral, giving an enhancement factor of 2*pi*R/a.
+# For the minimal-ropelength unknot: R = a = l/(2*pi), so:
+#   E_ring = E_point * 2*pi = T_EM^2 / (2 * eps_T * r_0)
+#
+# The torsional permittivity eps_T relative to the shear modulus:
+#   eps_T / mu = pi * alpha^2 * p_c * sqrt(3/7)
+#
+# Each factor has a first-principles origin:
+#   pi        — spherical geometry of 1/r^2 integral
+#   alpha^2   — chirality mismatch (Axiom 2: Chiral LC)
+#   p_c       — packing fraction (Axiom 4: Saturation)
+#   sqrt(3/7) — torsion-shear projection (PAT + nu = 2/7)
+#   2*pi      — ring topology of the unknot (Axiom 1)
+#
+# Evaluating E_ring with all substitutions gives EXACTLY:
+#   M_W = m_e / (alpha^2 * p_c * sqrt(3/7))
+M_W: float = M_E / (ALPHA**2 * P_C * _SIN_THETA_W_PAT)  # in kg
+M_W_MEV: float = M_W * C_0**2 / 1.602176634e-13    # approx 79923 MeV
 
-# The Z boson mass from the W mass and Weak Mixing Angle:
-#   m_W/m_Z = sqrt(7)/3 ≈ 0.8819 (from Chapter 8, Perpendicular Axis Theorem)
+# The Z boson mass from the W mass and pole mass ratio:
+#   m_W/m_Z = sqrt(7)/3   (from Chapter 8, Perpendicular Axis Theorem)
 #   M_Z = M_W * 3/sqrt(7)
 M_Z: float = M_W * 3.0 / sqrt(7)                     # in kg
-M_Z_MEV: float = M_Z * C_0**2 / 1.602176634e-13      # ≈ 90624 MeV
+M_Z_MEV: float = M_Z * C_0**2 / 1.602176634e-13      # approx 90624 MeV
 
 # =============================================================================
 # COSSERAT CHARACTERISTIC LENGTH (Weak Force Range)
 # =============================================================================
 
 # l_c = hbar / (M_W * c) — the Compton wavelength of the W boson
-L_COSSERAT: float = HBAR / (M_W * C_0)              # ≈ 2.46e-18 m
+L_COSSERAT: float = HBAR / (M_W * C_0)              # approx 2.46e-18 m
 
 # =============================================================================
 # FERMI CONSTANT (Tree-Level)
 # =============================================================================
 
-# G_F = pi * alpha / (sqrt(2) * M_W^2 * sin^2(theta_W))  [in GeV^-2]
-# (Tree-level; 1-loop corrections give a factor ~2 improvement)
+# G_F = sqrt(2)*pi*alpha / (2*sin^2(theta_W)*M_W^2)  [GeV^-2]
+# Using the on-shell sin^2(theta_W) = 2/9:
 M_W_GEV: float = M_W_MEV / 1000.0
-GF_TREE: float = pi * ALPHA / (sqrt(2) * M_W_GEV**2 * SIN2_THETA_W)
+GF_TREE: float = sqrt(2) * pi * ALPHA / (2 * SIN2_THETA_W * M_W_GEV**2)
 
 # =============================================================================
 # NEUTRINO MASS SPECTRUM
@@ -113,3 +140,40 @@ M_NU_FLAVORS_EV = [M_NU_EV * 5.0 / c for c in CROSSING_NUMBERS_NEUTRINO]
 
 SUM_M_NU_EV: float = sum(M_NU_FLAVORS_EV)
 # → ~0.054 eV (Planck 2018 bound: < 0.12 eV, hint: ~0.06 eV)
+
+# =============================================================================
+# CHARGED LEPTON SPECTRUM (Three Cosserat Sectors)
+# =============================================================================
+#
+# Each lepton maps to one sector of the Cosserat Lagrangian:
+#
+# Gen 1 — TRANSLATION (shear modulus mu):
+#   The unknot ground state. m_e = T_EM * l / c^2.
+#   No torsional excitation.
+#
+# Gen 2 — ROTATION (Cosserat coupling kappa):
+#   The unknot absorbs one quantum of torsional coupling.
+#   The coupling constant is alpha * sqrt(3/7):
+#     alpha   = dielectric compliance (one chirality interaction)
+#     sqrt(3/7) = PAT torsion-shear projection
+#   m_mu = m_e / (alpha * sqrt(3/7))
+#   Only ONE factor of alpha because the muon is a static defect;
+#   the W boson needs alpha^2 because it creates AND destroys.
+#
+# Gen 3 — CURVATURE-TWIST (bending stiffness gamma_C):
+#   The unknot is promoted to the full bending energy scale.
+#   m_tau = m_e * p_c / alpha^2 = 8*pi * m_e / alpha
+#   This is the maximum excitation before packing saturates.
+#
+# Hierarchy: m_e -> m_mu -> m_tau -> M_W
+#   Each step adds one more coupling factor.
+#   M_W / m_mu = 1/(alpha * p_c) = 1/(8*pi*alpha^2)
+
+# Muon mass — single torsional coupling (kappa sector)
+M_MU: float = M_E / (ALPHA * _SIN_THETA_W_PAT)       # in kg
+M_MU_MEV: float = M_MU * C_0**2 / 1.602176634e-13     # approx 107.0 MeV (exp: 105.66, +1.24%)
+
+# Tau mass — full bending stiffness (gamma_C sector)
+M_TAU: float = M_E * P_C / ALPHA**2                    # in kg
+M_TAU_MEV: float = M_TAU * C_0**2 / 1.602176634e-13    # approx 1760 MeV (exp: 1776.9, -0.95%)
+

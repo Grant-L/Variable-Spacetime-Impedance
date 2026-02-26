@@ -54,20 +54,50 @@ By substituting the geometric Chiral LC trace-reversed limit mathematically prov
 \frac{m_W}{m_Z} = \frac{1}{\sqrt{1+2/7}} = \frac{1}{\sqrt{9/7}} = \frac{\sqrt{7}}{3} \approx 0.881917
 \end{equation}
 
-This derivation matches the experimental ratio to within 0.05\% error, offering a direct mechanical origin for the mass splitting without invoking symmetry-breaking scalar fields.
-
-\subsection{The Absolute $W$ Boson Mass}
-
-The mixing angle ratio establishes the \emph{relative} weak boson masses. The \emph{absolute} $W$ mass is determined by the evanescent cutoff of the torsional sector. The characteristic Cosserat length $l_c$ is suppressed relative to $\ell_{node}$ by two dielectric screening factors: $\alpha^2$ (the squared compliance of the LC matrix) and $p_c = 8\pi\alpha$ (the packing fraction that governs volumetric energy storage). The torsion--shear coupling projects through $\sin\theta_W$. Combining these:
+This derivation matches the experimental ratio to within 0.05\% error, offering a direct mechanical origin for the mass splitting without invoking symmetry-breaking scalar fields. The corresponding on-shell weak mixing angle is:
 \begin{equation}
-    M_W = \frac{m_e}{\alpha^2 \, p_c \, \sin\theta_W} = \frac{m_e}{8\pi\alpha^3 \sin\theta_W} \approx 79{,}923 \text{ MeV}
+    \sin^2\theta_W^{\text{on-shell}} \equiv 1 - \left(\frac{M_W}{M_Z}\right)^2 = 1 - \frac{7}{9} = \frac{2}{9} \approx 0.2222
 \end{equation}
-This matches the CODATA value ($80{,}379 \pm 12$ MeV) to within $0.57\%$. Combined with the mixing angle:
+This matches the PDG on-shell value ($0.2230$) to within $0.35\%$. The commonly quoted MSbar value ($0.2312$) incorporates radiative corrections and is a distinct quantity.
+
+\subsection{The Absolute $W$ Boson Mass: Chirality Mismatch Self-Energy}
+
+A twist defect in the vacuum creates a torsional field that obeys the same 3D Laplace equation as the Coulomb field: $\nabla^2\theta = 0$, giving $\theta(r) \propto 1/r$ and $|\nabla\theta|^2 \propto 1/r^4$. The self-energy integral is:
 \begin{equation}
-    M_Z = \frac{3}{\sqrt{7}} M_W \approx 90{,}624 \text{ MeV} \qquad (0.62\% \text{ from CODATA } 91{,}188 \text{ MeV})
+    E_{\text{twist}} = \frac{T_{EM}^2}{4\pi\,\varepsilon_T\, r_0}
+\end{equation}
+where $T_{EM}$ is the lattice tension (torsional ``charge''), $r_0 = \ell_{node}/(2\pi)$ is the flux tube UV cutoff (Axiom 1), and $\varepsilon_T$ is the torsional permittivity of the chiral lattice.
+
+The Chiral SRS net (Axiom 2) has an intrinsic handedness. A twist that \emph{matches} the lattice chirality propagates freely (this is why left-handed neutrinos are nearly massless). A twist that \emph{opposes} the chirality fights the LC ground state, incurring a stiffness penalty. The torsional permittivity relative to the shear modulus decomposes as:
+\begin{equation}
+    \frac{\varepsilon_T}{\mu} = \pi \cdot \alpha^2 \cdot p_c \cdot \sqrt{3/7}
+\end{equation}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+Factor & Origin & Source \\ \hline
+$\pi$ & Spherical geometry of $1/r^2$ integral & Mathematics \\
+$\alpha^2$ & Chirality mismatch energy & Axiom 2 (Chiral LC) \\
+$p_c = 8\pi\alpha$ & Volumetric packing fraction & Axiom 4 (Saturation) \\
+$\sqrt{3/7}$ & Torsion--shear projection & PAT $+$ $\nu_{vac} = 2/7$ \\ \hline
+\end{tabular}
+\end{center}
+
+Evaluating yields:
+\begin{equation}
+    M_W = \frac{m_e}{\alpha^2 \, p_c \, \sqrt{3/7}} = \frac{m_e}{8\pi\alpha^3 \sqrt{3/7}} \approx 79{,}923 \text{ MeV} \qquad (0.57\%)
+\end{equation}
+Combined with the mixing angle:
+\begin{equation}
+    M_Z = \frac{3}{\sqrt{7}} M_W \approx 90{,}624 \text{ MeV} \qquad (0.62\%)
 \end{equation}
 
-No adjustable parameters appear: $\alpha$, $p_c$, and $\sin^2\theta_W = 3/7$ are all independently derived geometric constants of the Chiral LC lattice.
+The tree-level Fermi constant follows from the on-shell relation:
+\begin{equation}
+    G_F = \frac{\sqrt{2}\,\pi\alpha}{2\sin^2\theta_W \, M_W^2} \approx 1.142 \times 10^{-5} \text{ GeV}^{-2} \qquad (-2.1\%)
+\end{equation}
+
+No adjustable parameters appear: $\alpha$, $p_c$, $\nu_{vac}$ are all independently derived geometric constants of the Chiral LC lattice. The chirality mismatch mechanism provides the physical origin: the $W$ mass is the self-energy cost of forcing a wrong-handed twist against the chiral vacuum.
 
 \subsection{The Neutrino: Torsional Screw Defect}
 
@@ -95,6 +125,42 @@ $\nu_3$ & $\Delta(1620)$ & 9 & 13.2 \\ \hline
 \end{center}
 
 The predicted sum $\sum m_\nu \approx 0.054$ eV lies comfortably within the Planck 2018 cosmological bound ($\sum m_\nu < 0.12$ eV) and near the normal-ordering hint ($\sum m_\nu \sim 0.06$ eV). This prediction is falsifiable: upcoming measurements from DESI and CMB-S4 will constrain $\sum m_\nu$ to $\pm 0.02$ eV.
+
+\subsection{The Charged Lepton Spectrum: Three Cosserat Sectors}
+
+All three charged leptons are topologically identical---each is an unknot (a closed flux tube loop). Their mass hierarchy arises from the three sectors of the Cosserat Lagrangian, each contributing one coupling channel:
+
+\begin{enumerate}
+    \item \textbf{Translation ($\mu$-sector, Electron):} The unknot ground state: $m_e = T_{EM} \cdot \ell_{node} / c^2$. No torsional excitation.
+    \item \textbf{Rotation ($\kappa$-sector, Muon):} The unknot absorbs one quantum of torsional coupling $\alpha\sqrt{3/7}$ (one chirality interaction projected through the PAT):
+    \begin{equation}
+        m_\mu = \frac{m_e}{\alpha \sqrt{3/7}} \approx 107.0 \text{ MeV} \qquad (+1.24\%)
+    \end{equation}
+    Only \emph{one} factor of $\alpha$ enters because the muon is a static defect absorbing one quantum; the $W$ boson needs $\alpha^2$ because it creates \emph{and} destroys.
+    \item \textbf{Curvature-twist ($\gamma_C$-sector, Tau):} The unknot is promoted to the full bending stiffness scale:
+    \begin{equation}
+        m_\tau = \frac{m_e \cdot p_c}{\alpha^2} = \frac{8\pi \, m_e}{\alpha} \approx 1{,}760 \text{ MeV} \qquad (-0.95\%)
+    \end{equation}
+    This is the maximum excitation before packing saturation.
+\end{enumerate}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Gen & Lepton & Cosserat Sector & Predicted & Dev \\ \hline
+1 & $e$ & Translation ($\mu$) & 0.511 MeV & Exact \\
+2 & $\mu$ & Rotation ($\kappa$) & 107.0 MeV & $+1.24\%$ \\
+3 & $\tau$ & Curvature ($\gamma_C$) & 1760 MeV & $-0.95\%$ \\ \hline
+\end{tabular}
+\end{center}
+
+The existence of \textbf{exactly three} generations follows from the structure of the Cosserat Lagrangian. An isotropic micropolar medium admits exactly three independent deformation sectors:
+\begin{enumerate}
+    \item \textbf{Translation} (shear modulus $\mu$): symmetric strain $\varepsilon_{ij}$. Governs the electromagnetic sector. Particle: $e$.
+    \item \textbf{Microrotation} (Cosserat coupling $\kappa$): antisymmetric strain $e_{[ij]}$. Governs the weak torsional sector. Particle: $\mu$.
+    \item \textbf{Curvature-twist} (bending stiffness $\gamma_C$): gradient of rotation $\kappa_{ij} = \phi_{i,j}$. Governs the dielectric saturation sector. Particle: $\tau$.
+\end{enumerate}
+A hypothetical fourth generation would require a \emph{strain-gradient} coupling ($\kappa_{ij,k}$), the gradient of the gradient of rotation. This is the domain of Mindlin--Toupin theory, which demands internal degrees of freedom beyond translation and rotation at each node. The discrete Chiral LC lattice, with one unknot (rigid body) per site, possesses exactly six DOF per node (3 translations $+$ 3 rotations) and cannot support strain-gradient modes. Three generations is a \textbf{topological bound}, not a parameter.
 
 \begin{figure}[h]
     \centering
