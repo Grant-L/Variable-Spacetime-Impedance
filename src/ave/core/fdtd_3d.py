@@ -232,7 +232,13 @@ class FDTD3DEngine:
         In non-linear mode: ce = dt / (ε_eff(E) · dx) — per-cell array.
         """
         if self.linear_only:
-            return self.ce_linear
+            # In linear mode, still respect spatial material properties
+            # Handle sub-grid slices: if E_component is a sub-grid view,
+            # eps_r won't match shape, so fall back to scalar vacuum
+            if E_component.shape == self.eps_r.shape:
+                return self.dt / (self.epsilon_0 * self.eps_r * self.dx)
+            else:
+                return self.ce_linear
 
         eps_eff = self._compute_local_epsilon(E_component)
         return self.dt / (eps_eff * self.dx)
@@ -245,7 +251,11 @@ class FDTD3DEngine:
         In non-linear mode: ch = dt / (μ_eff(H) · dx) — per-cell array.
         """
         if self.linear_only:
-            return self.ch_linear
+            # In linear mode, still respect spatial material properties
+            if H_component.shape == self.mu_r.shape:
+                return self.dt / (self.mu_0 * self.mu_r * self.dx)
+            else:
+                return self.ch_linear
 
         mu_eff = self._compute_local_mu(H_component)
         return self.dt / (mu_eff * self.dx)
@@ -369,7 +379,7 @@ class FDTD3DEngine:
         H_sq = self.Hx**2 + self.Hy**2 + self.Hz**2
 
         if self.linear_only:
-            u_e = 0.5 * self.epsilon_0 * E_sq
+            u_e = 0.5 * self.epsilon_0 * self.eps_r * E_sq
         else:
             # Non-linear permittivity per cell
             E_mag = np.sqrt(E_sq)
@@ -379,7 +389,7 @@ class FDTD3DEngine:
             u_e = 0.5 * eps_local * E_sq
 
         if self.linear_only:
-            u_m = 0.5 * self.mu_0 * H_sq
+            u_m = 0.5 * self.mu_0 * self.mu_r * H_sq
         else:
             H_mag = np.sqrt(H_sq)
             B_local = self.mu_0 * H_mag
