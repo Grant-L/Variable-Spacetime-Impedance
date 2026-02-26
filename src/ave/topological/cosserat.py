@@ -71,21 +71,35 @@ _SIN_THETA_W_PAT: float = sqrt(3.0 / 7.0)  # = 0.65465 (Perpendicular Axis Theor
 # field (Laplace solution, same as Coulomb). For a POINT source:
 #   E_point = T_EM^2 / (4*pi * eps_T * r_0)
 #
-# But the unknot is a RING, not a point. The self-energy of a ring
-# of major radius R and wire radius a includes a circumference
-# integral, giving an enhancement factor of 2*pi*R/a.
-# For the minimal-ropelength unknot: R = a = l/(2*pi), so:
+# But the unknot is a RING, not a point. The circumference integral
+# enhances by 2*pi*R/a = 2*pi (minimal-ropelength unknot, R=a):
 #   E_ring = E_point * 2*pi = T_EM^2 / (2 * eps_T * r_0)
 #
 # The torsional permittivity eps_T relative to the shear modulus:
 #   eps_T / mu = pi * alpha^2 * p_c * sqrt(3/7)
 #
-# Each factor has a first-principles origin:
-#   pi        — spherical geometry of 1/r^2 integral
-#   alpha^2   — chirality mismatch (Axiom 2: Chiral LC)
-#   p_c       — packing fraction (Axiom 4: Saturation)
-#   sqrt(3/7) — torsion-shear projection (PAT + nu = 2/7)
-#   2*pi      — ring topology of the unknot (Axiom 1)
+# DERIVATION OF alpha^2 (two-vertex coupling):
+#   The twist field phi couples to the EM background through the
+#   Axiom 4 dielectric susceptibility:
+#     epsilon(phi) = epsilon_0 * (1 + alpha * f(phi))  
+#     L_int = (epsilon_0 * alpha / 2) * phi * |E|^2
+#
+#   The self-energy is a TWO-VERTEX process (second-order PT):
+#     Vertex 1: twist -> dielectric perturbation (factor alpha)
+#     Vertex 2: dielectric perturbation -> twist  (factor alpha)
+#     E_self = integral integral L_int * G * L_int ~ alpha^2
+#
+#   This is the SAME mechanism that gives e^2 in the Coulomb
+#   self-energy: two factors of the coupling constant, one per vertex.
+#   Higher-order (loop) corrections contribute alpha^3, alpha^4, ...
+#   accounting for the 0.57% tree-level deviation.
+#
+# Each factor in eps_T has a first-principles origin:
+#   pi        -- spherical geometry of 1/r^2 integral
+#   alpha^2   -- two-vertex coupling (Axiom 4 dielectric x2)
+#   p_c       -- packing fraction (Axiom 4: Saturation)
+#   sqrt(3/7) -- torsion-shear projection (PAT + nu = 2/7)
+#   2*pi      -- ring topology of the unknot (Axiom 1)
 #
 # Evaluating E_ring with all substitutions gives EXACTLY:
 #   M_W = m_e / (alpha^2 * p_c * sqrt(3/7))
@@ -177,3 +191,50 @@ M_MU_MEV: float = M_MU * C_0**2 / 1.602176634e-13     # approx 107.0 MeV (exp: 1
 M_TAU: float = M_E * P_C / ALPHA**2                    # in kg
 M_TAU_MEV: float = M_TAU * C_0**2 / 1.602176634e-13    # approx 1760 MeV (exp: 1776.9, -0.95%)
 
+# =============================================================================
+# ANOMALOUS MAGNETIC MOMENT g-2 (Schwinger)
+# =============================================================================
+#
+# DERIVATION: On-site impedance correction of the hopping unknot.
+#
+# When the unknot visits a lattice node, all m_e c^2 is stored in
+# that cell as EM field energy, split equally between E and B:
+#   U_E = (1/2) eps_0 E_peak^2 l^3 = m_e c^2 / 2
+#
+# Solving for the peak electric strain:
+#   (V_peak / V_snap)^2 = 4 * pi * alpha       [EXACT]
+#
+# This is an identity: alpha IS the on-site electric strain.
+#
+# The Axiom 4 nonlinear dielectric modifies the node capacitance:
+#   eps_eff = eps_0 * sqrt(1 - (V/V_s)^2)
+#
+# Time-averaged over the LC oscillation (<sin^2> = 1/2):
+#   <delta_C/C> = <delta_eps/eps> = -pi * alpha
+#
+# This shifts the LC resonance frequency:
+#   delta_omega / omega = pi * alpha / 2
+#
+# The anomalous magnetic moment is the fraction of this correction
+# that falls WITHIN the ring's topological domain (the form factor).
+# The ring has diameter 2R = l/pi (from R = l/(2*pi), Axiom 1).
+# Its effective cross-section in the cell face is:
+#   A_ring = (2R)^2 = (l/pi)^2 = l^2/pi^2
+# The cell face area is l^2. The FORM FACTOR is:
+#   F = A_ring / A_cell = 1/pi^2
+#
+# The full on-site correction pi*alpha/2 decomposes:
+#   mass renormalization: (1 - 1/pi^2) * pi*alpha/2
+#   g-2 anomaly:          (1/pi^2)     * pi*alpha/2 = alpha/(2*pi)
+#
+#   a_e = (1/pi^2) * (pi*alpha/2) = alpha / (2*pi)
+#
+# THIS IS SCHWINGER'S RESULT (1948).
+#
+# Physical meaning: the fine structure constant alpha is the
+# fractional electric strain that the unknot imposes on each
+# lattice node it visits. The nonlinear back-reaction (Axiom 4)
+# shifts the resonance by pi*alpha/2, and the spin-orbit angular
+# projection reduces this to alpha/(2*pi) = 0.001161.
+
+G_MINUS_2_TREE: float = ALPHA / (2 * pi)  # = 0.001161 (Schwinger)

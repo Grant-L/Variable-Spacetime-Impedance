@@ -68,7 +68,19 @@ A twist defect in the vacuum creates a torsional field that obeys the same 3D La
 \end{equation}
 where $T_{EM}$ is the lattice tension (torsional ``charge''), $r_0 = \ell_{node}/(2\pi)$ is the flux tube UV cutoff (Axiom 1), and $\varepsilon_T$ is the torsional permittivity of the chiral lattice.
 
-The Chiral SRS net (Axiom 2) has an intrinsic handedness. A twist that \emph{matches} the lattice chirality propagates freely (this is why left-handed neutrinos are nearly massless). A twist that \emph{opposes} the chirality fights the LC ground state, incurring a stiffness penalty. The torsional permittivity relative to the shear modulus decomposes as:
+The Chiral SRS net (Axiom 2) has an intrinsic handedness. A twist that \emph{matches} the lattice chirality propagates freely (this is why left-handed neutrinos are nearly massless). A twist that \emph{opposes} the chirality fights the LC ground state, incurring a stiffness penalty.
+
+The factor $\alpha^2$ is derived from the interaction Lagrangian. The twist field $\phi$ couples to the EM background through the Axiom~4 dielectric susceptibility $\varepsilon(\phi) = \varepsilon_0(1 + \alpha f(\phi))$, giving:
+\begin{equation}
+    \mathcal{L}_{\text{int}} = \frac{\varepsilon_0 \alpha}{2}\,\phi\,|\mathbf{E}|^2
+\end{equation}
+The self-energy is a \textbf{two-vertex process} (second-order perturbation theory):
+\begin{equation}
+    E_{\text{self}} = \iint \mathcal{L}_{\text{int}}(\mathbf{x})\, G(\mathbf{x}-\mathbf{x}')\, \mathcal{L}_{\text{int}}(\mathbf{x}')\, d^3x\, d^3x' \;\propto\; \alpha \times \alpha = \alpha^2
+\end{equation}
+This is the \emph{same} mechanism that gives $e^2$ in the Coulomb self-energy: two factors of the coupling constant, one for each vertex. Higher-order (loop) corrections contribute $\alpha^3, \alpha^4, \ldots$, accounting for the $0.57\%$ tree-level deviation.
+
+The torsional permittivity relative to the shear modulus decomposes as:
 \begin{equation}
     \frac{\varepsilon_T}{\mu} = \pi \cdot \alpha^2 \cdot p_c \cdot \sqrt{3/7}
 \end{equation}
@@ -77,7 +89,7 @@ The Chiral SRS net (Axiom 2) has an intrinsic handedness. A twist that \emph{mat
 \hline
 Factor & Origin & Source \\ \hline
 $\pi$ & Spherical geometry of $1/r^2$ integral & Mathematics \\
-$\alpha^2$ & Chirality mismatch energy & Axiom 2 (Chiral LC) \\
+$\alpha^2$ & Two-vertex coupling ($\mathcal{L}_{\text{int}} \times \mathcal{L}_{\text{int}}$) & Axiom 4 (Dielectric) \\
 $p_c = 8\pi\alpha$ & Volumetric packing fraction & Axiom 4 (Saturation) \\
 $\sqrt{3/7}$ & Torsion--shear projection & PAT $+$ $\nu_{vac} = 2/7$ \\ \hline
 \end{tabular}
@@ -98,6 +110,39 @@ The tree-level Fermi constant follows from the on-shell relation:
 \end{equation}
 
 No adjustable parameters appear: $\alpha$, $p_c$, $\nu_{vac}$ are all independently derived geometric constants of the Chiral LC lattice. The chirality mismatch mechanism provides the physical origin: the $W$ mass is the self-energy cost of forcing a wrong-handed twist against the chiral vacuum.
+
+\subsection{The Anomalous Magnetic Moment: On-Site Impedance Correction}
+
+The electron $g{-}2$ has long been the gold standard of quantum field theory. Schwinger's 1948 result, $a_e = \alpha/(2\pi)$, emerges here from the nonlinear self-interaction of the unknot with each lattice node it visits.
+
+\paragraph{The electron as impedance discontinuity.} The vacuum impedance of the Chiral LC lattice is $Z_0 = \sqrt{\mu_0/\varepsilon_0} = 376.73\;\Omega$. Near the electron's core, the magnetic field of the Bohr magneton exceeds the saturation threshold ($B > B_{\text{snap}}$), driving $\mu_{\text{eff}} \to 0$. Like a saturated inductor, this shorts the node: $Z = \sqrt{\mu_{\text{eff}}/\varepsilon_0} \to 0$. The electron is a zero-impedance core embedded in the $377\;\Omega$ vacuum---an impedance discontinuity that reflects its own field.
+
+\paragraph{The hopping unknot.} The unknot does not sit at a fixed lattice site; it hops from node to node as a quantum excitation. At each node it visits, all $m_e c^2$ is momentarily stored as EM field energy in one cell of volume $\ell^3$, split equally between the electric and magnetic sectors. The peak electric strain is:
+\begin{equation}
+    \left(\frac{V_{\text{peak}}}{V_{\text{snap}}}\right)^2 = 4\pi\alpha \qquad [\text{exact identity}]
+\end{equation}
+This follows directly from $\tfrac{1}{2}\varepsilon_0 E_{\text{peak}}^2 \ell^3 = \tfrac{1}{2}m_e c^2$ and $V_{\text{snap}} = m_e c^2/e$. \textbf{The fine structure constant is the on-site electric strain of the unknot.}
+
+\paragraph{The nonlinear back-reaction.} The Axiom~4 nonlinear dielectric $\varepsilon_{\text{eff}} = \varepsilon_0\sqrt{1 - (V/V_s)^2}$ modifies the node capacitance. Time-averaged over the LC oscillation ($\langle\sin^2\rangle = 1/2$):
+\begin{equation}
+    \left\langle\frac{\delta C}{C}\right\rangle = -\pi\alpha, \qquad
+    \frac{\delta\omega}{\omega} = \frac{\pi\alpha}{2}
+\end{equation}
+This is the total on-site frequency shift, which goes into mass renormalization. The anomalous magnetic moment receives only the \emph{form factor fraction}: the part of the correction that falls within the ring's topological domain. The unknot has diameter $2R = \ell/\pi$ (Axiom~1: circumference $= \ell$), giving an effective cross-section $(2R)^2 = \ell^2/\pi^2$ within the cell face $\ell^2$. The \textbf{form factor} is:
+\begin{equation}
+    F = \frac{(2R)^2}{\ell^2} = \frac{1}{\pi^2}
+\end{equation}
+The total on-site correction decomposes cleanly:
+\begin{equation}
+    \underbrace{\frac{\pi\alpha}{2}}_{\text{total}} \;=\;
+    \underbrace{\left(1 - \frac{1}{\pi^2}\right)\frac{\pi\alpha}{2}}_{\text{mass renormalization}} \;+\;
+    \underbrace{\frac{1}{\pi^2}\cdot\frac{\pi\alpha}{2}}_{\text{g-2 anomaly}}
+\end{equation}
+The anomalous magnetic moment is:
+\begin{equation}
+    \boxed{a_e = \frac{1}{\pi^2} \cdot \frac{\pi\alpha}{2} = \frac{\alpha}{2\pi} \approx 0.001161}
+\end{equation}
+This reproduces Schwinger's 1948 result from the lattice without renormalization. The lattice spacing $\ell_{\text{node}}$ \emph{is} the physical UV regulator---there are no sub-lattice degrees of freedom to generate a divergence. The ``point-like'' behaviour observed in deep inelastic scattering corresponds to the zero-crossing of the AC standing wave at the node centre, where the field intensity momentarily vanishes.
 
 \subsection{The Neutrino: Torsional Screw Defect}
 

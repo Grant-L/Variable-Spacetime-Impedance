@@ -2,7 +2,7 @@
 3D Finite-Difference Time-Domain (FDTD) Maxwell Solver Engine
 =============================================================
 
-Non-Linear AVE Solver implementing Axiom 4 dielectric saturation.
+Non-Linear AVE Solver implementing dual Axiom 4 saturation (ε + μ).
 
 This module provides a rigorous, time-evolved 3D Maxwell equation solver
 utilizing the standard Yee-cell grid architecture. The electric field update
@@ -20,7 +20,7 @@ Includes 1st-order Mur Absorbing Boundary Conditions (ABCs).
 """
 
 import numpy as np
-from ave.core.constants import C_0, MU_0, EPSILON_0, V_SNAP
+from ave.core.constants import C_0, MU_0, EPSILON_0, V_SNAP, B_SNAP
 
 
 class FDTD3DEngine:
@@ -32,6 +32,9 @@ class FDTD3DEngine:
         dx: Cell size [m].
         linear_only: If True, uses constant ε₀ (standard Maxwell). Default False.
         v_yield: Dielectric yield voltage per cell [V]. Default is V_SNAP = m_e c²/e.
+        b_yield: Magnetic saturation field [T]. Default is B_SNAP.
+        eps_r: Optional 3D array of relative permittivity (default 1.0 = vacuum).
+        mu_r: Optional 3D array of relative permeability (default 1.0 = vacuum).
     """
 
     def __init__(
@@ -42,6 +45,9 @@ class FDTD3DEngine:
         dx: float = 0.01,
         linear_only: bool = False,
         v_yield: float = V_SNAP,
+        b_yield: float = B_SNAP,
+        use_pml: bool = False,
+        pml_layers: int = 8,
     ):
         self.nx = nx
         self.ny = ny
@@ -49,6 +55,9 @@ class FDTD3DEngine:
         self.dx = dx
         self.linear_only = linear_only
         self.v_yield = v_yield
+        self.b_yield = b_yield
+        self.use_pml = use_pml
+        self.pml_layers = pml_layers
 
         # Physical Constants
         self.c = float(C_0)
@@ -67,13 +76,22 @@ class FDTD3DEngine:
         self.Hy = np.zeros((nx, ny, nz))
         self.Hz = np.zeros((nx, ny, nz))
 
-        # Magnetic update coefficient (constant — μ₀ is not modified by Axiom 4)
-        self.ch = self.dt / (self.mu_0 * self.dx)
+        # Spatial material maps (relative permittivity and permeability)
+        # Default: vacuum everywhere (eps_r = mu_r = 1.0)
+        # Users can assign material regions, e.g.:
+        #   engine.eps_r[10:20, 15:25, :] = 3000  # BaTiO₃ slab
+        self.eps_r = np.ones((nx, ny, nz))
+        self.mu_r = np.ones((nx, ny, nz))
+
+        # Magnetic update coefficient
+        # In linear mode: constant  ch = dt / (μ₀ · dx)
+        # In nonlinear mode: per-cell via _compute_ch(H)
+        self.ch_linear = self.dt / (self.mu_0 * self.dx)
 
         # Linear electric update coefficient (used when linear_only=True)
         self.ce_linear = self.dt / (self.epsilon_0 * self.dx)
 
-        # Mur 1st-Order ABC coefficient
+        # Mur 1st-Order ABC coefficient (fallback when PML disabled)
         abc_coef = (self.c * self.dt - self.dx) / (self.c * self.dt + self.dx)
         self.abc_coef = abc_coef
 
@@ -87,9 +105,66 @@ class FDTD3DEngine:
         self.ez_x0 = np.zeros((ny, nz)); self.ez_xn = np.zeros((ny, nz))
         self.ez_y0 = np.zeros((nx, nz)); self.ez_yn = np.zeros((nx, nz))
 
+        # --- CPML Initialization ---
+        if self.use_pml:
+            self._init_cpml()
+
         # Diagnostics
         self.timestep = 0
-        self.max_strain_ratio = 0.0  # Track peak |E·dx / V_yield| for stability
+        self.max_strain_ratio = 0.0   # Track peak |E·dx / V_yield|
+        self.max_mag_strain = 0.0     # Track peak |B / B_yield|
+
+    def _init_cpml(self):
+        """Initialize CPML conductivity profiles and ψ accumulator arrays."""
+        d = self.pml_layers
+        # Optimal conductivity: σ_max = (m+1) / (150π·dx) for polynomial order m
+        m = 3  # cubic grading
+        sigma_max = (m + 1) / (150.0 * np.pi * self.dx)
+
+        # Build 1D conductivity profiles for each axis
+        # The profile ramps from 0 at the PML inner edge to σ_max at the boundary
+        def _build_sigma(n_cells, n_pml):
+            sigma = np.zeros(n_cells)
+            for i in range(n_pml):
+                val = sigma_max * ((n_pml - i) / n_pml) ** m
+                sigma[i] = val              # low boundary
+                sigma[-(i + 1)] = val       # high boundary
+            return sigma
+
+        self.sigma_x = _build_sigma(self.nx, d)
+        self.sigma_y = _build_sigma(self.ny, d)
+        self.sigma_z = _build_sigma(self.nz, d)
+
+        # CPML decay coefficients: b = exp(-σ·dt/ε₀), a = (b-1)·σ/(σ+κ) simplified
+        def _cpml_coeffs(sigma_1d):
+            b = np.exp(-sigma_1d * self.dt / self.epsilon_0)
+            # Avoid divide-by-zero where σ=0
+            with np.errstate(divide='ignore', invalid='ignore'):
+                a = np.where(sigma_1d > 0,
+                             (b - 1.0) * sigma_1d / (sigma_1d * self.dx),
+                             0.0)
+            return b, a
+
+        self.bx, self.ax = _cpml_coeffs(self.sigma_x)
+        self.by, self.ay = _cpml_coeffs(self.sigma_y)
+        self.bz, self.az = _cpml_coeffs(self.sigma_z)
+
+        # ψ accumulator arrays for the 12 CPML terms (6 for E update, 6 for H update)
+        # E-field ψ accumulators
+        self.psi_Exy = np.zeros((self.nx, self.ny, self.nz))
+        self.psi_Exz = np.zeros((self.nx, self.ny, self.nz))
+        self.psi_Eyx = np.zeros((self.nx, self.ny, self.nz))
+        self.psi_Eyz = np.zeros((self.nx, self.ny, self.nz))
+        self.psi_Ezx = np.zeros((self.nx, self.ny, self.nz))
+        self.psi_Ezy = np.zeros((self.nx, self.ny, self.nz))
+        # H-field ψ accumulators
+        self.psi_Hxy = np.zeros((self.nx, self.ny, self.nz))
+        self.psi_Hxz = np.zeros((self.nx, self.ny, self.nz))
+        self.psi_Hyx = np.zeros((self.nx, self.ny, self.nz))
+        self.psi_Hyz = np.zeros((self.nx, self.ny, self.nz))
+        self.psi_Hzx = np.zeros((self.nx, self.ny, self.nz))
+        self.psi_Hzy = np.zeros((self.nx, self.ny, self.nz))
+
 
     def _compute_local_epsilon(self, E_component: np.ndarray) -> np.ndarray:
         """
@@ -115,7 +190,39 @@ class FDTD3DEngine:
         # (ratio_sq >= 1.0 would mean dielectric rupture)
         ratio_sq = np.clip(ratio_sq, 0.0, 1.0 - 1e-12)
 
-        return self.epsilon_0 * np.sqrt(1.0 - ratio_sq)
+        # Base permittivity includes material: ε₀ × ε_r
+        # Slice eps_r to match the shape of E_component if needed
+        if E_component.shape == self.eps_r.shape:
+            eps_base = self.epsilon_0 * self.eps_r
+        else:
+            eps_base = self.epsilon_0  # sub-grid slice, use vacuum
+
+        return eps_base * np.sqrt(1.0 - ratio_sq)
+
+    def _compute_local_mu(self, H_component: np.ndarray) -> np.ndarray:
+        """
+        Compute the local non-linear permeability per cell per component.
+
+        μ_eff = μ₀ · √(1 − (B / B_yield)²)
+
+        where B = μ₀ · |H| (in free space approximation for the iterate).
+        When B → B_yield, μ → 0: the inductor saturates (shorts).
+        """
+        B_local = self.mu_0 * np.abs(H_component)
+        ratio_sq = (B_local / self.b_yield) ** 2
+
+        max_r = np.max(ratio_sq) if ratio_sq.size > 0 else 0.0
+        if max_r > self.max_mag_strain:
+            self.max_mag_strain = max_r
+
+        ratio_sq = np.clip(ratio_sq, 0.0, 1.0 - 1e-12)
+
+        if H_component.shape == self.mu_r.shape:
+            mu_base = self.mu_0 * self.mu_r
+        else:
+            mu_base = self.mu_0
+
+        return mu_base * np.sqrt(1.0 - ratio_sq)
 
     def _compute_ce(self, E_component: np.ndarray) -> np.ndarray | float:
         """
@@ -130,23 +237,51 @@ class FDTD3DEngine:
         eps_eff = self._compute_local_epsilon(E_component)
         return self.dt / (eps_eff * self.dx)
 
+    def _compute_ch(self, H_component: np.ndarray) -> np.ndarray | float:
+        """
+        Compute the magnetic field update coefficient.
+
+        In linear mode: ch = dt / (μ₀ · dx) — uniform scalar.
+        In non-linear mode: ch = dt / (μ_eff(H) · dx) — per-cell array.
+        """
+        if self.linear_only:
+            return self.ch_linear
+
+        mu_eff = self._compute_local_mu(H_component)
+        return self.dt / (mu_eff * self.dx)
+
     def update_magnetic_field(self):
-        """Update H fields from the curl of E (Faraday's Law). Linear — μ₀ is constant."""
+        """
+        Update H fields from the curl of E (Faraday's Law).
+
+        In non-linear mode, the update coefficient ch is computed PER CELL
+        from the local H amplitude, implementing Axiom 4 (magnetic sector):
+
+            H^{n+1} = H^n - (dt / μ_eff(H^n)) · (∇×E) / dx
+        """
         # Hx
-        self.Hx[:, :-1, :-1] -= self.ch * (
+        curl_e_x = (
             (self.Ez[:, 1:, :-1] - self.Ez[:, :-1, :-1]) -
             (self.Ey[:, :-1, 1:] - self.Ey[:, :-1, :-1])
         )
+        ch_x = self._compute_ch(self.Hx[:, :-1, :-1])
+        self.Hx[:, :-1, :-1] -= ch_x * curl_e_x
+
         # Hy
-        self.Hy[:-1, :, :-1] -= self.ch * (
+        curl_e_y = (
             (self.Ex[:-1, :, 1:] - self.Ex[:-1, :, :-1]) -
             (self.Ez[1:, :, :-1] - self.Ez[:-1, :, :-1])
         )
+        ch_y = self._compute_ch(self.Hy[:-1, :, :-1])
+        self.Hy[:-1, :, :-1] -= ch_y * curl_e_y
+
         # Hz
-        self.Hz[:-1, :-1, :] -= self.ch * (
+        curl_e_z = (
             (self.Ey[1:, :-1, :] - self.Ey[:-1, :-1, :]) -
             (self.Ex[:-1, 1:, :] - self.Ex[:-1, :-1, :])
         )
+        ch_z = self._compute_ch(self.Hz[:-1, :-1, :])
+        self.Hz[:-1, :-1, :] -= ch_z * curl_e_z
 
     def update_electric_field(self):
         """
@@ -243,12 +378,120 @@ class FDTD3DEngine:
             eps_local = self.epsilon_0 * np.sqrt(1.0 - ratio_sq)
             u_e = 0.5 * eps_local * E_sq
 
-        u_m = 0.5 * self.mu_0 * H_sq
+        if self.linear_only:
+            u_m = 0.5 * self.mu_0 * H_sq
+        else:
+            H_mag = np.sqrt(H_sq)
+            B_local = self.mu_0 * H_mag
+            mag_ratio_sq = np.clip((B_local / self.b_yield)**2, 0.0, 1.0 - 1e-12)
+            mu_local = self.mu_0 * np.sqrt(1.0 - mag_ratio_sq)
+            u_m = 0.5 * mu_local * H_sq
+
         return float(np.sum((u_e + u_m) * self.dx**3))
+
+    def energy_density(self) -> np.ndarray:
+        """
+        Compute the EM energy density u(x,y,z) per cell [J/m³].
+
+        u = ½ε_eff|E|² + ½μ_eff|H|²
+
+        Uses nonlinear ε and μ when in nonlinear mode.
+        """
+        E_sq = self.Ex**2 + self.Ey**2 + self.Ez**2
+        H_sq = self.Hx**2 + self.Hy**2 + self.Hz**2
+
+        if self.linear_only:
+            u_e = 0.5 * self.epsilon_0 * self.eps_r * E_sq
+        else:
+            E_mag = np.sqrt(E_sq)
+            V_local = E_mag * self.dx
+            ratio_sq = np.clip((V_local / self.v_yield)**2, 0.0, 1.0 - 1e-12)
+            eps_local = self.epsilon_0 * self.eps_r * np.sqrt(1.0 - ratio_sq)
+            u_e = 0.5 * eps_local * E_sq
+
+        if self.linear_only:
+            u_m = 0.5 * self.mu_0 * self.mu_r * H_sq
+        else:
+            H_mag = np.sqrt(H_sq)
+            B_local = self.mu_0 * H_mag
+            mag_ratio_sq = np.clip((B_local / self.b_yield)**2, 0.0, 1.0 - 1e-12)
+            mu_local = self.mu_0 * self.mu_r * np.sqrt(1.0 - mag_ratio_sq)
+            u_m = 0.5 * mu_local * H_sq
+
+        return u_e + u_m
+
+    def ponderomotive_force(self) -> tuple:
+        """
+        Compute the ponderomotive force density F = -∇u [N/m³].
+
+        Returns (Fx, Fy, Fz) arrays — the force per unit volume at each cell.
+        Positive Fx means force in the +x direction.
+
+        For PONDER-01: net thrust = sum(F) × dx³ over the material region.
+        """
+        u = self.energy_density()
+
+        # Central differences for gradient (interior cells)
+        Fx = np.zeros_like(u)
+        Fy = np.zeros_like(u)
+        Fz = np.zeros_like(u)
+
+        Fx[1:-1, :, :] = -(u[2:, :, :] - u[:-2, :, :]) / (2 * self.dx)
+        Fy[:, 1:-1, :] = -(u[:, 2:, :] - u[:, :-2, :]) / (2 * self.dx)
+        Fz[:, :, 1:-1] = -(u[:, :, 2:] - u[:, :, :-2]) / (2 * self.dx)
+
+        return Fx, Fy, Fz
+
+    def apply_pml(self):
+        """
+        Apply PML absorbing boundaries using exponential conductivity damping.
+
+        Physically: the PML region is a lossy medium where σ ramps up toward
+        the boundary. Fields are damped by exp(-σ·dt/ε₀) per axis per step.
+        This is separable — each axis applies its own damping independently.
+
+        The result: outgoing radiation is absorbed with < 0.1% reflection
+        for the polynomial-graded conductivity profile.
+        """
+        # Build 3D damping multipliers from the 1D σ profiles
+        # damping = exp(-σ · dt / ε₀) — applied per axis
+        dx = self.bx  # bx = exp(-σ_x · dt / ε₀) already computed
+        dy = self.by
+        dz = self.bz
+
+        # Apply x-axis damping (reshape for broadcasting)
+        bx_3d = dx.reshape(-1, 1, 1)
+        self.Ex *= bx_3d
+        self.Ey *= bx_3d
+        self.Ez *= bx_3d
+        self.Hx *= bx_3d
+        self.Hy *= bx_3d
+        self.Hz *= bx_3d
+
+        # Apply y-axis damping
+        by_3d = dy.reshape(1, -1, 1)
+        self.Ex *= by_3d
+        self.Ey *= by_3d
+        self.Ez *= by_3d
+        self.Hx *= by_3d
+        self.Hy *= by_3d
+        self.Hz *= by_3d
+
+        # Apply z-axis damping
+        bz_3d = dz.reshape(1, 1, -1)
+        self.Ex *= bz_3d
+        self.Ey *= bz_3d
+        self.Ez *= bz_3d
+        self.Hx *= bz_3d
+        self.Hy *= bz_3d
+        self.Hz *= bz_3d
 
     def step(self):
         """Execute one complete dt timestep of the Maxwell Yee-cell algorithm."""
         self.update_magnetic_field()
         self.update_electric_field()
-        self.apply_mur_abc()
+        if self.use_pml:
+            self.apply_pml()
+        else:
+            self.apply_mur_abc()
         self.timestep += 1

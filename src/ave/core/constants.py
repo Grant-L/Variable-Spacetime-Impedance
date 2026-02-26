@@ -80,6 +80,13 @@ E_YIELD_KINETIC: float = np.sqrt(ALPHA) * M_E * C_0**2   # ≈ 43.65 keV (in Jou
 # E_crit = m_e² c³ / (eℏ)
 E_CRIT: float = (M_E**2 * C_0**3) / (e_charge * HBAR)
 
+# Magnetic saturation threshold (Axiom 4 — magnetic sector)
+# When B² / (2μ₀) = m_e c² / ℓ³ (energy density = rest energy per cell),
+# the local permeability saturates: μ_eff → 0 (inductor shorts)
+# B_snap = √(2 μ₀ m_e c² / ℓ³)
+B_SNAP: float = np.sqrt(2.0 * MU_0 * M_E * C_0**2 / L_NODE**3)  # ≈ 1.89e9 T
+
+
 # =============================================================================
 # DERIVED MACROSCOPIC CONSTANTS (Gravity, Cosmology)
 # =============================================================================
