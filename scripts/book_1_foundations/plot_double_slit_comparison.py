@@ -4,16 +4,16 @@ from matplotlib.colors import LightSource
 import os
 
 def create_comparison():
-    fig = plt.figure(figsize=(18, 8), facecolor='#050510')
+    fig = plt.figure(figsize=(22, 10), facecolor='#050510')
     
     # ---------------------------------------------------------
     # Panel 1: Standard Model (Probability Amplitude)
     # ---------------------------------------------------------
     ax1 = fig.add_subplot(121)
     ax1.set_facecolor('#050510')
-    ax1.set_title("Standard Model Interpretation\n(Point Particle as Probability Cloud)", color='white', pad=20, fontsize=16, fontweight='bold')
+    ax1.set_title("Standard Model Interpretation\n(Point Particle as Probability Cloud)", color='white', pad=25, fontsize=20, fontweight='bold')
     
-    y, x = np.mgrid[-10:10:200j, 0:20:200j]
+    y, x = np.mgrid[-10:10:400j, 0:20:400j]
     
     # Slit positions
     slit1_y, slit2_y = 3, -3
@@ -56,7 +56,7 @@ def create_comparison():
     # ---------------------------------------------------------
     ax2 = fig.add_subplot(122)
     ax2.set_facecolor('#050510')
-    ax2.set_title("Applied Vacuum Engineering\n(Localized Defect + Physical Wake)", color='white', pad=20, fontsize=16, fontweight='bold')
+    ax2.set_title("Applied Vacuum Engineering\n(Localized Defect + Physical Wake)", color='white', pad=25, fontsize=20, fontweight='bold')
     
     # AVE: Particle is localized, goes through ONE slit. It generates a wake that goes through both.
     source_x, source_y = -4, 0
@@ -72,37 +72,34 @@ def create_comparison():
     # Combine (just a visual representation of classical interference)
     total_wake = wake_slit1 + wake_slit2
     
-    # Apply a LightSource to make it look like physical ripples (human-readable 3D effect)
-    ls = LightSource(azdeg=315, altdeg=45)
-    rgb = ls.shade(total_wake, cmap=plt.cm.ocean, vert_exag=0.5, blend_mode='overlay')
+    # Use a high-contrast diverging colormap to make the interference fringes pop
+    ax2.imshow(total_wake, extent=[0, 20, -10, 10], origin='lower', cmap='twilight_shifted', alpha=0.9, vmin=-1.5, vmax=1.5)
     
-    ax2.imshow(rgb, extent=[0, 20, -10, 10], origin='lower', alpha=0.9)
-    
-    # Draw wall and slits
-    ax2.plot([wall_x, wall_x], [-10, slit2_y - 1], 'w-', lw=4)
-    ax2.plot([wall_x, wall_x], [slit2_y + 1, slit1_y - 1], 'w-', lw=4)
-    ax2.plot([wall_x, wall_x], [slit1_y + 1, 10], 'w-', lw=4)
+    # Draw wall and slits (Thicker for clarity)
+    ax2.plot([wall_x, wall_x], [-10, slit2_y - 1], 'w-', lw=5)
+    ax2.plot([wall_x, wall_x], [slit2_y + 1, slit1_y - 1], 'w-', lw=5)
+    ax2.plot([wall_x, wall_x], [slit1_y + 1, 10], 'w-', lw=5)
     
     # Draw the particle objectively going through Slit 1
-    ax2.plot([-5, -1], [0, slit1_y], color='#00ff00', ls='-', lw=2)
-    ax2.plot(-1, slit1_y, 'o', color='#00ff00', markersize=8, markeredgecolor='w')
-    ax2.text(-1, slit1_y + 1.5, "Topological\nDefect", color='#00ff00', fontsize=10, ha='center', fontweight='bold')
+    ax2.plot([-5, -1], [0, slit1_y], color='#00ff00', ls='-', lw=3)
+    ax2.plot(-1, slit1_y, 'o', color='#00ff00', markersize=12, markeredgecolor='w', markeredgewidth=2)
+    ax2.text(-1, slit1_y + 1.8, "Topological\nDefect", color='#00ff00', fontsize=12, ha='center', fontweight='bold')
     
     # Draw the wake going through Slit 2
-    ax2.plot([-5, -1], [0, slit2_y], color='#00ffff', ls=':', lw=2)
-    ax2.text(-1, slit2_y - 2, "Dark Wake\n(Vacuum Strain)", color='#00ffff', fontsize=10, ha='center')
+    ax2.plot([-5, -1], [0, slit2_y], color='#00ffff', ls=':', lw=3)
+    ax2.text(-1, slit2_y - 2.5, "Dark Wake\n(Vacuum Strain)", color='#00ffff', fontsize=12, ha='center', fontweight='bold')
     
-    ax2.text(5, 8, "Particle passes through ONE slit.\nIts physical wake passes through BOTH.", color='white', fontsize=12, ha='left',
-            bbox=dict(facecolor='#111122', alpha=0.8, edgecolor='#00aaff'))
+    ax2.text(5, 8, "Particle passes through ONE slit.\nIts physical wake passes through BOTH.", color='white', fontsize=14, ha='left',
+            bbox=dict(facecolor='#111122', alpha=0.9, edgecolor='#00aaff', lw=2))
     
     ax2.set_axis_off()
     
     plt.tight_layout()
     
-    out_dir = os.path.join(os.path.dirname(__file__), '..', '..', 'assets', 'figures')
+    out_dir = os.path.join(os.path.dirname(__file__), '..', '..', 'assets', 'sim_outputs')
     os.makedirs(out_dir, exist_ok=True)
     out_path = os.path.join(out_dir, 'double_slit_sm_vs_ave.png')
-    plt.savefig(out_path, dpi=300, bbox_inches='tight', facecolor=fig.get_facecolor())
+    plt.savefig(out_path, dpi=400, bbox_inches='tight', facecolor=fig.get_facecolor())
     print(f"Saved: {out_path}")
 
 if __name__ == "__main__":
