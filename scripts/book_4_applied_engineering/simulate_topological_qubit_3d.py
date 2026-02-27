@@ -42,7 +42,7 @@ def generate_linked_rings():
     return ring1, ring2
 
 def compute_gauss_linking_number(r1, r2):
-    """
+    r"""
     Computes the Gauss Linking Integer via the double contour integral.
     L = (1/4pi) * \oint\oint [ (dr1 x dr2) \cdot (r1 - r2) ] / |r1 - r2|^3
     """

@@ -12,8 +12,9 @@ minimum at finite radius. Without a confinement bound, the soliton
 spreads indefinitely (r_opt → ∞, I → 580). The physical confinement
 is set by the topological crossing number of the soliton's winding.
 
-THE TORUS KNOT LADDER:
-  The electron is a (2,3) trefoil torus knot with c₃ = 3 crossings.
+THE TORUS KNOT LADDER (Phase Winding Classification):
+  The electron's topology is an unknot (0₁), but its phase winding
+  number follows the (2,3) pattern with c₃ = 3 crossings.
   The proton's phase winding is a (2,5) cinquefoil torus knot with
   c₅ = 5 crossings.  The (2,q) torus knots require odd q; there is
   no stable (2,4) configuration (the figure-eight is not a torus knot).
@@ -33,7 +34,7 @@ from scipy.integrate import quad
 from scipy.optimize import minimize
 
 # Crossing number of the (2,5) cinquefoil torus knot.
-# This is the next stable torus knot after the (2,3) trefoil (electron).
+# This is the next entry in the phase winding ladder after the electron's c=3.
 # The (2,q) torus knot progression uses only odd q: 3, 5, 7, ...
 CROSSING_NUMBER_CINQUEFOIL: int = 5
 
@@ -100,8 +101,8 @@ class TopologicalHamiltonian1D:
         coupling equally among the five topological crossings through which
         the proton's phase profile must wind.
 
-        The (2,5) cinquefoil is the next stable (2,q) torus knot after the
-        (2,3) trefoil (electron). See module docstring for the full derivation.
+        The (2,5) cinquefoil is the next entry in the torus knot phase
+        winding ladder after the electron's c=3. See module docstring.
 
         Returns:
             float: The integrated energy eigenvalue in dimensionless mass units.

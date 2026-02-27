@@ -1,105 +1,178 @@
-"""
-SPICE Organic Mapper (Applied Vacuum Engineering)
-=================================================
-Maps organic chemical topologies (Atomic Nuclei and Covalent Bonds)
-into absolute Macroscopic Inductance (L) and Capacitance (C) values 
-for SPICE (.cir) circuit simulation.
+r"""
+SPICE Organic Mapper — Zero-Parameter AVE Derivation
+=====================================================
+Maps organic chemical topologies (atomic nuclei and covalent bonds)
+into absolute Inductance (L) and Capacitance (C) values for SPICE
+circuit simulation.
 
-In AVE:
-- Mass = Geometric Inertia = Inductance (Henry, H)
-- Covalent Bond = Dielectric Stress = Capacitance (Farad, F)
-- Chirality = Geometric Winding (Phase Angle)
+DERIVATION (from AVE Axioms 1–4)
+---------------------------------
+The vacuum lattice is an LC transmission line with per-unit-length
+parameters μ₀ [H/m] and ε₀ [F/m].  The topological conversion
+constant ξ_topo ≡ e / ℓ_node [C/m] maps charge dislocation to
+spatial dislocation, providing the universal electromechanical
+coupling of the lattice.
+
+  1. Mass → Inductance
+     An atomic nucleus of mass m is a localized inertial defect.
+     Inertia ≡ Inductance.  Dimensional transduction via ξ²:
+
+         L_atom = m / ξ_topo²          [H]
+
+  2. Bond Stiffness → Capacitance
+     A covalent bond of stretching force constant k [N/m] is a
+     region of dielectric compliance between two massive nodes.
+     Compliance ≡ Capacitance:
+
+         C_bond = ξ_topo² / k           [F]
+
+  Self-consistency checks:
+    • f_res = 1/(2π√LC) = (1/2π)√(k/m)   — recovers mechanical resonance  ✓
+    • Z = √(L/C) = m·√(k/m) / ξ² = √(mk)/ξ²  — mechanical impedance     ✓
+    • v = 1/√(LC) = √(k/m)               — bond sound speed              ✓
+
+  NO FREE PARAMETERS.  All values trace to:
+    • CODATA atomic masses  (measured)
+    • IR-spectroscopic bond force constants  (measured)
+    • ξ_topo = e / ℓ_node  (derived from e, ℏ, m_e, c)
 """
 
 import numpy as np
+import sys
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 
-# Core AVE Vacuum Constants 
-from ave.core.constants import Z_0, C_0  
+from ave.core.constants import (
+    e_charge, HBAR, M_E, C_0, Z_0, MU_0, EPSILON_0, L_NODE, XI_TOPO
+)
 
-# ---------------------------------------------------------
-# 1. ATOMIC MASS TO INDUCTANCE (L) MAPPING
-# ---------------------------------------------------------
-# Let's define a scaling factor to bring atomic mass units (Da) 
-# into the picoHenry (pH) range for high-frequency RF simulation.
-# 1 Dalton (Da) = 1.66053906660e-27 kg
-# In AVE, L is proportional to the knot's rotational inertia.
-# We'll use a heuristic scaling for macroscopic SPICE translation.
+# =============================================================================
+# TRANSDUCTION CONSTANT  ξ_topo² = (e / ℓ_node)²  [C²/m²]
+# =============================================================================
+# This is the universal electromechanical coupling of the vacuum lattice.
+# It converts mechanical impedance (kg, N/m) into electrical impedance (H, F).
+XI_TOPO_SQ: float = XI_TOPO**2   # ≈ 1.721e-13  [C²/m²]
 
-MASS_TO_INDUCTANCE_SCALE = 10.0 # picoHenries (pH) per Dalton
+# =============================================================================
+# 1.  ATOMIC INDUCTANCE:  L = m / ξ²   [H]
+# =============================================================================
+# Atomic masses from CODATA 2018 (in kg).
+# 1 Da = 1.66053906660e-27 kg
+_DA = 1.66053906660e-27  # kg per Dalton
+
+ATOMIC_MASS_DA = {
+    'H':   1.00794,
+    'C':  12.0107,
+    'N':  14.0067,
+    'O':  15.9994,
+    'S':  32.065,
+}
 
 ATOMIC_INDUCTANCE = {
-    # Element: Inductance in picoHenries (pH)  [Mass * Scale]
-    'H':  1.008 * MASS_TO_INDUCTANCE_SCALE,   # Hydrogen
-    'C': 12.011 * MASS_TO_INDUCTANCE_SCALE,   # Carbon
-    'N': 14.007 * MASS_TO_INDUCTANCE_SCALE,   # Nitrogen
-    'O': 15.999 * MASS_TO_INDUCTANCE_SCALE,   # Oxygen
-    'S': 32.065 * MASS_TO_INDUCTANCE_SCALE,   # Sulfur
+    elem: (mass_da * _DA) / XI_TOPO_SQ
+    for elem, mass_da in ATOMIC_MASS_DA.items()
 }
+# Units: Henries.  Typical scale: H ≈ 9.7 fH, C ≈ 116 fH, O ≈ 154 fH
 
-
-# ---------------------------------------------------------
-# 2. COVALENT BOND TO CAPACITANCE (C) MAPPING
-# ---------------------------------------------------------
-# A covalent bond is not a rigid stick; it is a region of dielectric 
-# compliance (epsilon_eff) between two massive nodes.
-# A "stronger" tighter bond has LESS compliance (lower Capacitance)
-# A "weaker" longer bond has MORE compliance (higher Capacitance)
-# We map standard bond dissociation energies (kJ/mol) to femtoFarads (fF).
-
-# Heuristic: The tighter the bond (higher Energy), the LESS C it acts like.
-# C = (Base_Constant) / Bond_Energy
-BASE_BOND_CAPACITANCE = 50000.0 # femtoFarads (fF) baseline scalar
+# =============================================================================
+# 2.  BOND CAPACITANCE:  C = ξ² / k   [F]
+# =============================================================================
+# Stretching force constants k [N/m] from NIST IR spectroscopy.
+# Derived from: k = μ_red × (2π c ν̃)²  where ν̃ is the measured
+# absorption wavenumber [cm⁻¹] and μ_red is the reduced mass.
+#
+# Sources: Herzberg (1945), Shimanouchi (1972), NIST Chemistry WebBook.
+BOND_FORCE_CONSTANTS = {
+    # Bond    k [N/m]   Source wavenumber
+    'C-H':    494,    # ~3000 cm⁻¹
+    'C-C':    354,    # ~1000 cm⁻¹
+    'C=C':    965,    # ~1650 cm⁻¹
+    'C-N':    461,    # ~1100 cm⁻¹
+    'C=O':   1170,    # ~1700 cm⁻¹
+    'C-O':    489,    # ~1100 cm⁻¹
+    'N-H':    641,    # ~3400 cm⁻¹
+    'O-H':    745,    # ~3650 cm⁻¹
+    'S-H':    390,    # ~2600 cm⁻¹
+    'S-S':    236,    # ~500  cm⁻¹
+    'C-S':    253,    # ~700  cm⁻¹
+}
 
 COVALENT_CAPACITANCE = {
-    # Bond: Capacitance in femtoFarads (fF) [Base / Bond Energy(kJ/mol)]
-    'C-C': BASE_BOND_CAPACITANCE / 347.0,  # Single Carbon-Carbon
-    'C=C': BASE_BOND_CAPACITANCE / 614.0,  # Double Carbon-Carbon
-    'C-H': BASE_BOND_CAPACITANCE / 413.0,  # Carbon-Hydrogen
-    'C-N': BASE_BOND_CAPACITANCE / 293.0,  # Carbon-Nitrogen
-    'C=O': BASE_BOND_CAPACITANCE / 799.0,  # Carbon-Oxygen (Carbonyl)
-    'C-O': BASE_BOND_CAPACITANCE / 358.0,  # Carbon-Oxygen (Single)
-    'N-H': BASE_BOND_CAPACITANCE / 391.0,  # Nitrogen-Hydrogen
-    'O-H': BASE_BOND_CAPACITANCE / 463.0,  # Oxygen-Hydrogen
-    'S-H': BASE_BOND_CAPACITANCE / 338.0,  # Sulfur-Hydrogen
-    'S-S': BASE_BOND_CAPACITANCE / 226.0,  # Disulfide Bridge
-    'C-S': BASE_BOND_CAPACITANCE / 259.0,  # Carbon-Sulfur
+    bond: XI_TOPO_SQ / k
+    for bond, k in BOND_FORCE_CONSTANTS.items()
 }
+# Units: Farads.  Typical scale: C-H ≈ 348 aF, C-C ≈ 486 aF
 
-# ---------------------------------------------------------
-# 3. FUNCTIONAL GROUP DEFINITIONS
-# ---------------------------------------------------------
-# Amino acids have standardized input driving ports and output sink ports.
+# =============================================================================
+# 3.  FUNCTIONAL GROUP CONSTANTS
+# =============================================================================
 
-# Amino Group (NH3+) -> High Frequency Source
-AMINO_SOURCE_FREQ = "100GHz" # Base bio-resonant drive frequency
-AMINO_SOURCE_VOLT = "1V"     # Normalized driving amplitude
+# Amino Group (NH₃⁺) → High-frequency source
+# The biological power supply is the ambient THz thermal noise floor.
+# Wien's law at 310 K: f_peak ≈ 30 THz
+AMINO_SOURCE_FREQ = "30THz"
+AMINO_SOURCE_VOLT = "1V"       # Normalized driving amplitude
 
-# Carboxyl Group (COO-) -> Geometric Sink
-CARBOXYL_LOAD_R = f"{np.sqrt(1.256637e-6/8.85418e-12):.2f}Ohm" # Terminate the molecule into vacuum impedance (Derived)
+# Carboxyl Group (COO⁻) → Vacuum impedance termination
+CARBOXYL_LOAD_R = f"{Z_0:.4f}Ohm"  # ≈ 376.73 Ω (derived, not heuristic)
+
+# =============================================================================
+# API
+# =============================================================================
 
 def get_inductance(element: str) -> float:
-    """Returns the inductance (pH) of an atomic node."""
+    """Return geometric inductance [H] of an atomic node."""
     if element not in ATOMIC_INDUCTANCE:
-        raise ValueError(f"Unknown organic element for SPICE modeling: {element}")
+        raise ValueError(f"Unknown element: {element}")
     return ATOMIC_INDUCTANCE[element]
 
 def get_capacitance(bond: str) -> float:
-    """Returns the capacitance (fF) of a covalent stress bond."""
-    # Allow reverse lookups (e.g., 'H-C' instead of 'C-H')
+    """Return dielectric capacitance [F] of a covalent bond."""
     if bond in COVALENT_CAPACITANCE:
         return COVALENT_CAPACITANCE[bond]
-    
-    rev_bond = f"{bond[-1]}{bond[1:-1]}{bond[0]}"
-    if rev_bond in COVALENT_CAPACITANCE:
-        return COVALENT_CAPACITANCE[rev_bond]
+    # Allow reverse lookup  (e.g. 'H-C' → 'C-H')
+    rev = f"{bond[-1]}{bond[1:-1]}{bond[0]}"
+    if rev in COVALENT_CAPACITANCE:
+        return COVALENT_CAPACITANCE[rev]
+    raise ValueError(f"Unknown bond: {bond}")
 
-    raise ValueError(f"Unknown covalent bond for SPICE modeling: {bond}")
+def get_force_constant(bond: str) -> float:
+    """Return stretching force constant [N/m] of a covalent bond."""
+    if bond in BOND_FORCE_CONSTANTS:
+        return BOND_FORCE_CONSTANTS[bond]
+    rev = f"{bond[-1]}{bond[1:-1]}{bond[0]}"
+    if rev in BOND_FORCE_CONSTANTS:
+        return BOND_FORCE_CONSTANTS[rev]
+    raise ValueError(f"Unknown bond: {bond}")
 
+# =============================================================================
+# DIAGNOSTIC
+# =============================================================================
 if __name__ == "__main__":
-    import math
-    print(f"--- AVE Organic SPICE Mapper ---")
-    print(f"Carbon (C) Inductance: {get_inductance('C'):.2f} pH")
-    print(f"Oxygen (O) Inductance: {get_inductance('O'):.2f} pH")
-    print(f"C-C Single Bond Capacitance: {get_capacitance('C-C'):.2f} fF")
-    print(f"C=O Double Bond Capacitance: {get_capacitance('C=O'):.2f} fF")
-    print(f"Molecule driven by terminal {CARBOXYL_LOAD_R} Vacuum Impedance load.")
+    print("=" * 65)
+    print("  AVE Organic SPICE Mapper — Zero-Parameter Derivation")
+    print("=" * 65)
+    print(f"\n  Transduction constant  ξ_topo = {XI_TOPO:.6e} C/m")
+    print(f"  Transduction squared   ξ²     = {XI_TOPO_SQ:.6e} C²/m²")
+
+    print(f"\n  --- Atomic Inductances  L = m / ξ²  [fH] ---")
+    for elem in ['H', 'C', 'N', 'O', 'S']:
+        L = ATOMIC_INDUCTANCE[elem]
+        print(f"    {elem:2s}:  {L*1e15:10.3f} fH   (m = {ATOMIC_MASS_DA[elem]:.3f} Da)")
+
+    print(f"\n  --- Bond Capacitances   C = ξ² / k  [aF] ---")
+    for bond in ['C-H', 'C-C', 'C=C', 'C-N', 'C=O', 'C-O', 'N-H', 'O-H', 'S-H', 'C-S']:
+        C = COVALENT_CAPACITANCE[bond]
+        k = BOND_FORCE_CONSTANTS[bond]
+        print(f"    {bond:4s}: {C*1e18:10.3f} aF   (k = {k:6.0f} N/m)")
+
+    print(f"\n  --- Self-consistency: C-H stretch ---")
+    L_C = ATOMIC_INDUCTANCE['C']
+    L_H = ATOMIC_INDUCTANCE['H']
+    C_CH = COVALENT_CAPACITANCE['C-H']
+    # Reduced mass approach: L_red = L_C*L_H/(L_C+L_H)
+    L_red = (L_C * L_H) / (L_C + L_H)
+    f_res = 1.0 / (2 * np.pi * np.sqrt(L_red * C_CH))
+    nu_cm = f_res / (C_0 * 100)
+    print(f"    f_res = {f_res:.3e} Hz  ≈ {nu_cm:.0f} cm⁻¹  (expect ~3000 cm⁻¹)")
+    print(f"\n  Carboxyl load: {CARBOXYL_LOAD_R}")

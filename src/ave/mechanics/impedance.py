@@ -24,12 +24,9 @@ def calculate_refractive_strain(mass_kg: float, radius_m: float) -> float:
     if radius_m <= 0:
         raise ValueError("Radius must be greater than 0.")
         
-    # Standard 1D Principal Radial Strain derived via Laplace Eq
-    rad_strain = (7 * G * mass_kg) / ((C_0**2) * radius_m)
-    
-    # Contract via trace-reversed Poisson ratio (2/7), which yields 2GM/rc^2
-    # n(r) = 1 + (2/7) * epsilon_11
-    # n(r) = 1 + (2GM)/(rc^2)
+    # 1D Principal Radial Strain: ε₁₁ = 7GM/(rc²)
+    # Contract via trace-reversed Poisson ratio (2/7):
+    #   n(r) = 1 + (2/7)·ε₁₁ = 1 + 2GM/(rc²)
     n_r = 1.0 + (2 * G * mass_kg) / ((C_0**2) * radius_m)
     
     return n_r

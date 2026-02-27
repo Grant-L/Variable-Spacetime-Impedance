@@ -70,8 +70,8 @@ def generate_element(Z, A):
 
 def generate_fermion(name):
     if name == 'electron':
-        # The electron is a 3_1 trefoil knot.
-        raw_mesh = FundamentalTopologies.generate_trefoil_3_1(radius=1.0)
+        # The electron is a 0_1 unknot (closed loop).
+        raw_mesh = FundamentalTopologies.generate_unknot_0_1(radius=1.0)
         cluster = [{'mesh': [raw_mesh], 'color': '#66ccff'}]
         return extract_mesh_points(cluster, subsample=20, scale=0.8)
     return []
@@ -169,7 +169,7 @@ if __name__ == "__main__":
     # Bound 15.0 provides proper framing for the full orbital perimeter!
     elements = [
         # Fermion
-        { 'cluster': generate_fermion('electron'), 'name': 'electron', 'title': "Fermion: Electron ($3_1$ Trefoil)", 'bound': 2.5 },
+        { 'cluster': generate_fermion('electron'), 'name': 'electron', 'title': "Fermion: Electron ($0_1$ Unknot)", 'bound': 2.5 },
         # Nucleons
         { 'cluster': generate_element(1, 1), 'name': 'hydrogen_1', 'title': "Hydrogen-1: Protium ($6^3_2$ Borromean Core)", 'bound': 3.0 },
         { 'cluster': generate_element(2, 4), 'name': 'helium_4', 'title': "Helium-4: Alpha Core", 'bound': 3.5 },

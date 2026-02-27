@@ -3,7 +3,7 @@ r"""
 Muon Lifetime from AVE Topological Cavity RC Discharge
 ========================================================
 
-The muon is a trefoil knot (3₁) pumped with 206× the electron's energy.
+The muon is a unknot (0₁) pumped with 206× the electron's energy.
 Its internal voltage (150 kV equivalent) exceeds the vacuum's 60 kV
 yield threshold, causing continuous impedance breakdown. The energy
 bleeds out via an RC discharge until the resonant voltage drops below
@@ -15,8 +15,8 @@ time constant of the topological cavity, and compares to the
 experimental value τ_μ = 2.1969811 μs.
 
 SPICE model parameters (from spice_manual/01_particle_decay.tex):
-  L = 1 mH   (inductive element of the trefoil topology)
-  C = 1 nF   (capacitive element of the trefoil topology)
+  L = 1 mH   (inductive element of the unknot topology)
+  C = 1 nF   (capacitive element of the unknot topology)
   V_initial = 150 kV   (muon's initial internal voltage)
   V_yield = 60 kV      (vacuum breakdown threshold = V_snap)
   R_on = 50 Ω          (radiation resistance during breakdown)
@@ -60,7 +60,7 @@ def muon_lifetime_rc_model():
     """
     Compute muon lifetime from the RC discharge of the topological cavity.
 
-    The trefoil knot (3₁) is an LC resonator. When the internal voltage
+    The unknot (0₁) is an LC resonator. When the internal voltage
     exceeds V_yield, the vacuum breaks down (R drops from 1GΩ to 50Ω),
     and energy leaks out. The muon decays when the voltage envelope
     drops below V_yield.
@@ -69,8 +69,8 @@ def muon_lifetime_rc_model():
         Dict with all computed parameters and the predicted lifetime.
     """
     # SPICE model parameters
-    L = 1e-3      # H (inductance of trefoil topology)
-    C = 1e-9      # F (capacitance of trefoil topology)
+    L = 1e-3      # H (inductance of unknot topology)
+    C = 1e-9      # F (capacitance of unknot topology)
     V_0 = 150e3   # V (initial muon voltage ∝ mass-energy)
     V_yield = 60e3  # V (vacuum breakdown threshold)
     R_on = 50     # Ω (radiation resistance during breakdown)
@@ -197,7 +197,7 @@ def main():
     print(f"  The muon is NOT probabilistically decaying.")
     print(f"  It is a DETERMINISTIC RC discharge of a leaky cavity:")
     print(f"")
-    print(f"    1. Muon = trefoil knot pumped to {result['V_0']/1e3:.0f} kV")
+    print(f"    1. Muon = unknot knot pumped to {result['V_0']/1e3:.0f} kV")
     print(f"    2. Vacuum yields at {result['V_yield']/1e3:.0f} kV (Axiom 4)")
     print(f"    3. Each cycle bleeds energy via R_on = {result['R_on']}Ω")
     print(f"    4. Envelope decays exponentially: V(t) = V₀ × e^(-t/τ)")

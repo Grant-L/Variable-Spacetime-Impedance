@@ -1,4 +1,4 @@
-"""
+r"""
 AVE 3D Volumetric Pair Production Simulator (Gamma -> e- + e+)
 ==============================================================
 Simulates the literal fluid dynamic shear of a pure 3D 

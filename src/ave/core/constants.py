@@ -124,15 +124,16 @@ DIELECTRIC_RUPTURE_STRAIN: float = 1.0
 # Faddeev-Skyrme coupling constant (derived from packing fraction):
 #   κ_FS = p_c / α = (8πα) / α = 8π
 # This is a pure geometric constant: the solid-angle normalisation of
-# the Borromean trefoil's quartic stabilization term.
+# the Borromean linkage's quartic stabilization term.
 KAPPA_FS_COLD: float = 8.0 * pi              # = 25.1327...
 
-# ---- Torus Knot Confinement Ladder ----
+# ---- Torus Knot Phase Winding Ladder ----
 #
-# The (2,q) torus knots form a progression using only odd q:
-#   (2,3) trefoil:    c = 3 crossings → electron phase winding
-#   (2,5) cinquefoil: c = 5 crossings → proton phase winding
-#   (2,7):            c = 7 crossings → (predicted next stable baryon)
+# The (2,q) torus knots classify the phase winding number, not the
+# ground-state topology (the electron is an unknot, 0_1).
+#   c = 3 crossings → electron phase winding ((2,3) pattern)
+#   c = 5 crossings → proton phase winding  ((2,5) cinquefoil)
+#   c = 7 crossings → (predicted next stable baryon)
 #
 # The crossing number c sets the soliton's confinement radius:
 #   r_opt = κ_FS / c
@@ -209,5 +210,7 @@ PROTON_ELECTRON_RATIO: float = _X_CORE + 1.0
 # Mass-stiffened nuclear tension  T_nuc = T_EM · (m_p/m_e)
 T_NUC: float = T_EM * PROTON_ELECTRON_RATIO
 
-# Ideal ropelength of a 3_1 trefoil knot (mathematical constant)
+# Ideal ropelength of a 3_1 trefoil knot (mathematical constant).
+# Used in baryon sector / HOPF-01 antenna geometry, not the electron
+# ground-state (which is an unknot with ropelength 2π).
 ROPELENGTH_3_1: float = 16.37

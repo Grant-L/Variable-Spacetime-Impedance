@@ -29,7 +29,7 @@ def main():
     print("       yields exactly the same dimensional metric (Joules / Meter):")
     print("       T_{AVE} = U_{inductive} / L_{knot}\n")
 
-    # Let's perform a quantitative map for the 3_1 Electron
+    # Let's perform a quantitative map for the unknot Electron
     U_e = 0.51099895000  # MeV (Rest mass energy of Electron)
     Joules_per_MeV = 1.602176634e-13
     U_e_joules = U_e * Joules_per_MeV
@@ -37,13 +37,13 @@ def main():
     # Let's assume the baseline electron radius R_e is roughly the Compton wavelength scale
     # (Just an order of magnitude check for string tension ranges)
     # R_e = 3.86e-13 m
-    # Circumference of a 3_1 trefoil is roughly L = 3 * pi * R_e
+    # Circumference of a unknot is roughly L = 3 * pi * R_e
     R_e = 3.86e-13
     L_31 = 3 * np.pi * R_e
     
     T_ave = U_e_joules / L_31
     
-    print(f"    Calculated AVE Tension for the 3_1 Electron:")
+    print(f"    Calculated AVE Tension for the unknot Electron:")
     print(f"    T_AVE = {T_ave:.4e} N (or J/m)")
     
     print("\n[3] The String Duality Resolution:")

@@ -173,7 +173,7 @@ ax1.set_zlim(-5, 55)
 
 # -- Panel 2: Sequence A Energy Bar --
 ax2 = fig.add_subplot(1, 4, 2)
-bars = ax2.bar(['Basis $\mathcal{H}$\n(Helix)', 'Basis $\mathcal{S}$\n(Sheet)'], 
+bars = ax2.bar([r'Basis $\mathcal{H}$' + '\n(Helix)', r'Basis $\mathcal{S}$' + '\n(Sheet)'], 
                [engine_alpha.U_total_helix, engine_alpha.U_total_sheet], 
                color=['#00ffff', '#444444'])
 ax2.set_ylabel('Total Thermodynamic Strain ($U_{total}$)')
@@ -187,7 +187,7 @@ for bar in bars:
 
 # -- Panel 3: Sequence B (Beta) Energy Bar --
 ax3 = fig.add_subplot(1, 4, 3)
-bars2 = ax3.bar(['Basis $\mathcal{H}$\n(Helix)', 'Basis $\mathcal{S}$\n(Sheet)'], 
+bars2 = ax3.bar([r'Basis $\mathcal{H}$' + '\n(Helix)', r'Basis $\mathcal{S}$' + '\n(Sheet)'], 
                [engine_beta.U_total_helix, engine_beta.U_total_sheet], 
                color=['#444444', '#ff00ff'])
 ax3.set_title(f'Strain Resolution')
@@ -218,7 +218,18 @@ ax2.set_ylim(0, max(engine_alpha.U_total_sheet, engine_beta.U_total_helix) * 1.1
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 
 # Save artifact
-output_dir = "scripts/book_5_topological_biology/"
+# --- Standard AVE output directory ---
+def _find_repo_root():
+    d = os.path.dirname(os.path.abspath(__file__))
+    while d != os.path.dirname(d):
+        if os.path.exists(os.path.join(d, "pyproject.toml")):
+            return d
+        d = os.path.dirname(d)
+    return os.path.dirname(os.path.abspath(__file__))
+
+output_dir = os.path.join(_find_repo_root(), "assets", "sim_outputs")
+os.makedirs(output_dir, exist_ok=True)
+# --- End standard output directory ---
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 

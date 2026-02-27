@@ -26,12 +26,12 @@ G = 1.0
 M_SATURN = 10000.0
 
 # Ring Particles
-N_PARTICLES = 400
+N_PARTICLES = 1000
 M_PARTICLE = 0.01
 
 # Simulation Parameters
 DT = 0.05
-FRAMES = 150
+FRAMES = 500
 
 def initialize_rings():
     """

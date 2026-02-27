@@ -71,8 +71,8 @@ def test_fdtd_dipole():
     ax.scatter([center_y], [center_x], color='yellow', marker='x', s=100, label='1 GHz Dipole Source')
     
     ax.set_title("FDTD 3D Engine Empirical Validation\nSpherical Wave Radiation (Z-Plane Cross Section)", fontsize=14, fontweight='bold', pad=15)
-    ax.set_xlabel("Grid X ($1\ cm$/cell)", fontsize=12)
-    ax.set_ylabel("Grid Y ($1\ cm$/cell)", fontsize=12)
+    ax.set_xlabel(r"Grid X ($1\ cm$/cell)", fontsize=12)
+    ax.set_ylabel(r"Grid Y ($1\ cm$/cell)", fontsize=12)
     plt.colorbar(im, ax=ax, fraction=0.046, pad=0.04, label="Electric Field ($E_z$) Amplitude")
     ax.legend(loc='upper right')
     

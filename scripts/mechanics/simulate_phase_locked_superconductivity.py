@@ -20,7 +20,7 @@ def main():
     dt = 0.1
     
     # We track the "Phase Angle" of each electron (its internal geometric rotation state)
-    # Electrons are classical inductors (3_1 knots).
+    # Electrons are classical inductors (unknots).
     # Resistance = L * dI/dt (where dI/dt is driven by relative phase mismatches)
     
     # Random initial phases at high temperature (ambient jitter)

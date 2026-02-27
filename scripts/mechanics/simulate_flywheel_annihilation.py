@@ -15,7 +15,7 @@ def main():
     print("==========================================================\n")
 
     print("- Objective: Prove Antimatter Annihilation is strictly Classical Mechanics.")
-    print("- Setup: Firing an Electron (Left-handed 3_1 knot) and a Positron (Right-handed 3_1 knot).")
+    print("- Setup: Firing an Electron (Left-handed unknot) and a Positron (Right-handed unknot).")
     print("- Observation: When their topologies intersect, their inverted angular momenta algebraically cancel.")
     print("- Consequence: The boundary condition shatters, and rotational inertia unspools into linear radiation.\n")
 

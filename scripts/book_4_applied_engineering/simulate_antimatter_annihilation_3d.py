@@ -2,7 +2,7 @@
 AVE Antimatter Annihilation Simulator (3D Geometry)
 ===================================================
 Simulates the exact 3D macroscopic geometric intersection of an Electron 
-(Left-Handed Trefoil Knot / Beltrami Vortex) and a Positron (Right-Handed Trefoil).
+(Left-Handed Unknot / Beltrami Vortex) and a Positron (Right-Handed Unknot).
 
 Plots the progressive overlap of the two macroscopic forms. Because they possess 
 strict inverse parity, their geometries perfectly map onto one another oppositely, 
@@ -20,9 +20,9 @@ from pathlib import Path
 # Geometry Parameters
 N_POINTS = 500
 
-def generate_trefoil_knot(handedness=1):
+def generate_unknot(handedness=1):
     """
-    Parametric equations for a macroscopic Trefoil knot.
+    Parametric equations for a macroscopic Unknot.
     handedness = 1 (Left-Hand / Matter / e-)
     handedness = -1 (Right-Hand / Antimatter / e+)
     """
@@ -41,8 +41,8 @@ def run_3d_annihilation(out_path):
     print("Generating 3D Topological Parity Cancellation (Annihilation)...")
     
     # Generate the pristine structures
-    matter = generate_trefoil_knot(handedness=1)
-    antimatter = generate_trefoil_knot(handedness=-1)
+    matter = generate_unknot(handedness=1)
+    antimatter = generate_unknot(handedness=-1)
     
     # We will animate them sliding together along the X axis until they overlap perfectly
     FRAMES = 60
@@ -90,7 +90,7 @@ def run_3d_annihilation(out_path):
             # Drop transparency rapidly as the structure cancels out
             alpha_val = 0.8 * (1.0 - ((progress - 0.85) / 0.15))
             alpha_val = max(0.0, alpha_val)
-            title.set_text("Topological Yield ($\omega - \omega = 0$): SHATTERING ($E=mc^2$)")
+            title.set_text(r"Topological Yield ($\omega - \omega = 0$): SHATTERING ($E=mc^2$)")
             title.set_color('#ffcc00')
         else:
             title.set_text("Topological Parity Inversion: $e^-$ (Matter) vs $e^+$ (Antimatter)")

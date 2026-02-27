@@ -13,20 +13,24 @@ SOURCE_DIR = src
 # Export PYTHONPATH so scripts can import 'ave' modules from src/
 export PYTHONPATH := $(shell pwd)/$(SOURCE_DIR)
 
-.PHONY: all clean verify sims test pdf pdf_manuscript pdf_future_work pdf_spice knots help
+.PHONY: all clean distclean verify test pdf pdf_manuscript pdf_future_work pdf_spice periodic_table figures help
 
 help:
 	@echo "Applied Vacuum Engineering (AVE) Build System"
 	@echo "---------------------------------------------"
-	@echo "  make verify     : Run physics verification protocols (The Kernel Check)"
-	@echo "  make sims       : Run dynamic simulations (Transmission Lines, etc.)"
-	@echo "  make test       : Run unit tests (pytest)"
-	@echo "  make pdf        : Compile BOTH the rigorous textbook and future work"
-	@echo "  make knots      : Compile the Periodic Table LaTeX document"
-	@echo "  make clean      : Remove build artifacts"
-	@echo "  make all        : Run verify, sims, and pdf"
+	@echo "  make all             : Run verify, then compile all PDFs"
+	@echo "  make verify          : Run physics verification protocols (The Kernel Check)"
+	@echo "  make test            : Run unit tests (pytest)"
+	@echo "  make pdf             : Compile all documents (manuscript, future work, SPICE, periodic table)"
+	@echo "  make pdf_manuscript  : Compile manuscript Books 1-7 only"
+	@echo "  make pdf_future_work : Compile future work document only"
+	@echo "  make pdf_spice       : Compile SPICE manual only"
+	@echo "  make periodic_table  : Compile the Periodic Table document"
+	@echo "  make figures         : Generate particle topology figure suite"
+	@echo "  make clean           : Remove auxiliary build artifacts (preserves PDFs)"
+	@echo "  make distclean       : Remove ALL build artifacts including PDFs"
 
-all: verify sims pdf
+all: verify pdf
 
 # -----------------------------------------------------------------------------
 # 1. Physics Verification (The "Simulate to Verify" Protocol)
@@ -45,28 +49,21 @@ verify:
 	@echo "=================================================="
 
 # -----------------------------------------------------------------------------
-# 2. Dynamic Simulations (Visual Assets & Time-Domain Solvers)
-# -----------------------------------------------------------------------------
-sims:
-	@echo "[Sims] Spacetime Circuit Analysis is now unified under verify routines."
-	@echo "[Sims] Simulation suite complete."
-
-# -----------------------------------------------------------------------------
-# 3. Unit Testing
+# 2. Unit Testing
 # -----------------------------------------------------------------------------
 test:
 	@echo "[Test] Running Unit Tests..."
-	pytest tests/
+	$(PYTHON) -m pytest tests/
 
 # -----------------------------------------------------------------------------
-# 4. Manuscript Compilation
+# 3. Manuscript Compilation
 # -----------------------------------------------------------------------------
-pdf: pdf_manuscript pdf_future_work pdf_spice knots
+pdf: pdf_manuscript pdf_future_work pdf_spice periodic_table
 
 pdf_manuscript:
 	@echo "[Build] Setting up build directories for manuscript..."
 	@mkdir -p $(OUT_DIR)/aux/chapters $(OUT_DIR)/aux/frontmatter $(OUT_DIR)/aux/backmatter
-	@echo "[Build] Compiling Books 1 to 5..."
+	@echo "[Build] Compiling Books 1 to 7..."
 	@for dir in book_1_foundations book_2_topological_matter book_3_macroscopic_continuity book_4_applied_engineering book_5_topological_biology book_6_ponder_01 book_7_test_article; do \
 		echo "[Build] Compiling $$dir..."; \
 		rm -f $(OUT_DIR)/aux/$$dir.out $(OUT_DIR)/aux/$$dir.aux $(OUT_DIR)/aux/$$dir.toc; \
@@ -110,9 +107,9 @@ pdf_spice:
 	@echo "[Build] SPICE Manual PDF generated at $(OUT_DIR)/spice_manual.pdf"
 
 # -----------------------------------------------------------------------------
-# 5. Periodic Table Compilation
+# 4. Periodic Table Compilation
 # -----------------------------------------------------------------------------
-knots:
+periodic_table:
 	@echo "[Build] Compiling Periodic Table..."
 	@mkdir -p $(OUT_DIR)/aux/chapters $(OUT_DIR)/aux/frontmatter $(OUT_DIR)/aux/backmatter
 	@rm -f $(OUT_DIR)/aux/periodic_table.out $(OUT_DIR)/aux/periodic_table.aux $(OUT_DIR)/aux/periodic_table.toc
@@ -120,6 +117,16 @@ knots:
 	@(cd periodic_table && $(LATEX) -jobname=periodic_table -output-directory=../$(OUT_DIR)/aux main.tex)
 	@mv $(OUT_DIR)/aux/periodic_table.pdf $(OUT_DIR)/ 2>/dev/null || true
 	@echo "[Build] Periodic Table PDF generated at $(OUT_DIR)/periodic_table.pdf"
+
+# -----------------------------------------------------------------------------
+# 5. Figure Generation
+# -----------------------------------------------------------------------------
+figures:
+	@echo "[Figures] Generating particle topology suite..."
+	$(PYTHON) $(SRC_DIR)/scripts/generate_particle_topology_suite.py
+	@echo "[Figures] Regenerating electron topology figure..."
+	$(PYTHON) $(SRC_DIR)/scripts/simulate_electron_topology.py
+	@echo "[Figures] All figures generated."
 
 clean:
 	@echo "[Clean] Removing auxiliary build artifacts (preserving PDFs)..."

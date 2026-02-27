@@ -38,7 +38,7 @@ def main():
     print("    wave through it.\n")
 
     print("[3] Mapping the Generative Mass Limit:")
-    print("    - A stable geometric knot (like the 3_1 Electron) stores energy in")
+    print("    - A stable geometric knot (like the unknot Electron) stores energy in")
     print("      its circular self-inductance (L_self).")
     print("    - When this knot attempts to accelerate, it encounters the Lenz-Law")
     print("      back-EMF from the background Z_0 grid.")

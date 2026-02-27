@@ -1,4 +1,4 @@
-"""
+r"""
 AVE Casimir Cavity Simulator (1D FDTD)
 ======================================
 Simulates the Casimir Effect as pure macroscopic acoustic filtering.

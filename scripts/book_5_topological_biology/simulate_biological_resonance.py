@@ -1,10 +1,11 @@
-"""
-Simulate Biological Resonance 
-=============================
-Solves the exact SPICE LTI Transfer Function mathematically for 
-Glycine vs Alanine using the AVE topological `spice_organic_mapper`.
-Outputs a transmission frequency response (Bode Plot) emphasizing 
-how the R-Group stub filters the backbone AC signal.
+r"""
+Simulate Biological Resonance — Zero-Parameter AVE Derivation
+=============================================================
+Solves the exact SPICE LTI Transfer Function for amino acids using
+the axiom-derived L = m/ξ² and C = ξ²/k mapping.
+
+Outputs a Bode plot (power transmission vs frequency) comparing
+6 representative amino acids across the biological IR band.
 """
 
 import numpy as np
@@ -14,30 +15,33 @@ import sys
 from pathlib import Path
 
 # Fix path to import ave modules
-PROJECT_ROOT = Path(__file__).parent.parent
+PROJECT_ROOT = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
+sys.path.insert(0, str(PROJECT_ROOT / "scripts" / "mechanics"))
 
-from ave.mechanics.spice_organic_mapper import (
+from spice_organic_mapper import (
     get_inductance,
-    get_capacitance
+    get_capacitance,
+    XI_TOPO_SQ,
 )
-from ave.core.constants import Z_0
+from ave.core.constants import Z_0, C_0
+
+# All values are now in SI (Henries, Farads) — no unit prefixes needed.
 
 def parallel(z1, z2):
     return (z1 * z2) / (z1 + z2)
 
-# Frequencies from 100 GHz to 10 THz (biological IR resonance range)
-# The topological impedance values used earlier put resonance in the sub-THz and THz bands.
-f = np.logspace(11, 13.5, 5000)
+# Frequency sweep: 100 GHz → 300 THz (covers IR molecular modes)
+f = np.logspace(11, 14.5, 8000)
 w = 2 * np.pi * f
 
-def z_L(L_pH):
-    """Convert pH to jwL impedance."""
-    return 1j * w * (L_pH * 1e-12)
+def z_L(L_H):
+    """Impedance of inductor. L in Henries."""
+    return 1j * w * L_H
 
-def z_C(C_fF):
-    """Convert fF to 1/jwC impedance."""
-    return 1.0 / (1j * w * (C_fF * 1e-15))
+def z_C(C_F):
+    """Impedance of capacitor. C in Farads."""
+    return 1.0 / (1j * w * C_F)
 
 # ---------------------------------------------------------
 # R-GROUP SHUNT FILTER DEFINITIONS
@@ -48,9 +52,8 @@ def z_rgroup_glycine():
 
 def z_rgroup_alanine():
     """Alanine R-Group: Methyl group (-CH3)"""
-    # 3 Parallel H's on the terminal C
     z_rh_branch = z_C(get_capacitance('C-H')) + z_L(get_inductance('H'))
-    z_rh_split = z_rh_branch / 3.0  # 3 identical branches in parallel
+    z_rh_split = z_rh_branch / 3.0
     return z_C(get_capacitance('C-C')) + z_L(get_inductance('C')) + z_rh_split
 
 def z_rgroup_valine():
@@ -79,14 +82,9 @@ def z_rgroup_cysteine():
 def z_rgroup_phenylalanine():
     """Phenylalanine R-Group: Benzyl group -CH2-Phenyl"""
     z_rh = z_C(get_capacitance('C-H')) + z_L(get_inductance('H'))
-    
-    # Simple lumped representation of the massive phenyl ring
-    # 6 Carbons total, 5 Hydrogens. 6 C-C bonds, treating as aromatic 1.5 order.
-    # We will approximate the ring's immense inertia as a single lumped node for this demo.
     l_ring = 6 * get_inductance('C') + 5 * get_inductance('H')
-    c_ring_bond = get_capacitance('C-C') # Bond from beta-carbon to ring
+    c_ring_bond = get_capacitance('C-C')
     z_ring = z_C(c_ring_bond) + z_L(l_ring)
-    
     z_beta_split = parallel(z_rh / 2.0, z_ring)
     return z_C(get_capacitance('C-C')) + z_L(get_inductance('C')) + z_beta_split
 
@@ -95,33 +93,29 @@ def z_rgroup_phenylalanine():
 # ---------------------------------------------------------
 def compute_transfer_function(z_rgroup):
     """
-    Computes V_out / V_in for the standard amino acid backbone, 
+    Computes V_out / V_in for the standard amino acid backbone,
     treating the R-group as a shunt from the Alpha-Carbon.
     """
     # 1. The Sink (Carboxyl COO-)
-    Z_load = Z_0  # Vacuum Impedance termination
+    Z_load = Z_0
     Z_out_branch = z_L(get_inductance('O')) + Z_load
     Z_co_single_branch = z_C(get_capacitance('C-O')) + Z_out_branch
-    
+
     Z_o_double_shunt = z_C(get_capacitance('C=O')) + z_L(get_inductance('O'))
     Z_split = parallel(Z_o_double_shunt, Z_co_single_branch)
-    
+
     Z_carboxyl_c = z_L(get_inductance('C')) + Z_split
     Z_alpha_out = z_C(get_capacitance('C-C')) + Z_carboxyl_c
-    
+
     # 2. The Chassis (Alpha-Carbon)
     Z_alpha_main = z_L(get_inductance('C')) + Z_alpha_out
     Z_alpha = parallel(z_rgroup, Z_alpha_main)
-    
+
     # 3. The Source (Amino NH3+)
     Z_amino = z_C(get_capacitance('C-N')) + Z_alpha
     Z_in = z_L(get_inductance('N')) + Z_amino
-    
-    # Voltage Dividers (V_load / V_in)
-    # H = (V_alpha / V_in) * (V_split / V_alpha) * (V_load / V_split)
-    # V_alpha = V_in * (Z_alpha / Z_in) 
-    # V_split = V_alpha * (Z_split / Z_alpha_main)
-    # V_load  = V_split * (Z_load / Z_co_single_branch)
+
+    # Transfer function H(f) = V_load / V_in
     H = (Z_alpha / Z_in) * (Z_split / Z_alpha_main) * (Z_load / Z_co_single_branch)
     return H
 
@@ -129,52 +123,69 @@ def compute_transfer_function(z_rgroup):
 # EXECUTE & PLOT
 # ---------------------------------------------------------
 if __name__ == "__main__":
-    H_gly = compute_transfer_function(z_rgroup_glycine())
-    H_ala = compute_transfer_function(z_rgroup_alanine())
-    H_val = compute_transfer_function(z_rgroup_valine())
-    H_ser = compute_transfer_function(z_rgroup_serine())
-    H_cys = compute_transfer_function(z_rgroup_cysteine())
-    H_phe = compute_transfer_function(z_rgroup_phenylalanine())
+    amino_acids = {
+        'Glycine (-H)':             z_rgroup_glycine(),
+        'Alanine (-CH₃)':           z_rgroup_alanine(),
+        'Valine (-CH(CH₃)₂)':      z_rgroup_valine(),
+        'Serine (-CH₂OH)':         z_rgroup_serine(),
+        'Cysteine (-CH₂SH)':       z_rgroup_cysteine(),
+        'Phenylalanine (-CH₂-Ring)': z_rgroup_phenylalanine(),
+    }
 
-    # Calculate Power Transmission |H|^2
-    P_gly = np.abs(H_gly)**2
-    P_ala = np.abs(H_ala)**2
-    P_val = np.abs(H_val)**2
-    P_ser = np.abs(H_ser)**2
-    P_cys = np.abs(H_cys)**2
-    P_phe = np.abs(H_phe)**2
-    
-    # Convert to log scale (dB) safely
-    P_gly_db = 10 * np.log10(np.clip(P_gly, 1e-12, None))
-    P_ala_db = 10 * np.log10(np.clip(P_ala, 1e-12, None))
-    P_val_db = 10 * np.log10(np.clip(P_val, 1e-12, None))
-    P_ser_db = 10 * np.log10(np.clip(P_ser, 1e-12, None))
-    P_cys_db = 10 * np.log10(np.clip(P_cys, 1e-12, None))
-    P_phe_db = 10 * np.log10(np.clip(P_phe, 1e-12, None))
+    colors = ['#00ffcc', '#ff00aa', '#ffcc00', '#00ccff', '#ff5500', '#b266ff']
 
     plt.style.use('dark_background')
-    fig, ax = plt.subplots(figsize=(10, 6))
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(14, 11), sharex=True)
+    fig.subplots_adjust(top=0.92, bottom=0.08, left=0.10, right=0.96, hspace=0.15)
 
-    ax.plot(f / 1e12, P_gly_db, color='#00ffcc', label='Glycine (-H)', linewidth=2.0, alpha=0.8)
-    ax.plot(f / 1e12, P_ala_db, color='#ff00aa', label='Alanine (-CH3)', linewidth=2.0, alpha=0.8)
-    ax.plot(f / 1e12, P_val_db, color='#ffcc00', label='Valine (-CH(CH3)2)', linewidth=2.0, alpha=0.8)
-    ax.plot(f / 1e12, P_ser_db, color='#00ccff', label='Serine (-CH2OH)', linewidth=2.0, alpha=0.8)
-    ax.plot(f / 1e12, P_cys_db, color='#ff5500', label='Cysteine (-CH2SH)', linewidth=2.0, alpha=0.9)
-    ax.plot(f / 1e12, P_phe_db, color='#b266ff', label='Phenylalanine (-CH2-Ring)', linewidth=2.5)
+    for (name, z_rg), color in zip(amino_acids.items(), colors):
+        H = compute_transfer_function(z_rg)
+        P_db = 10 * np.log10(np.clip(np.abs(H)**2, 1e-30, None))
+        phase = np.angle(H, deg=True)
 
-    ax.set_title("Amino Acid RLC Resonance Library & Structural Filtering", fontsize=16, fontweight='bold', color='white', pad=15)
-    ax.set_xlabel("Driving Frequency (THz)", fontsize=14)
-    ax.set_ylabel("Power Transmission (dB)", fontsize=14)
-    ax.grid(True, color='#333333', linestyle='--', alpha=0.7)
-    
-    # Set y limit to emphasize resonant peaks
-    ax.set_ylim(-90, 5)
-    ax.legend(fontsize=10, loc='lower right', facecolor='black', edgecolor='white', ncol=2)
+        ax1.plot(f / 1e12, P_db, color=color, label=name, linewidth=1.8, alpha=0.85)
+        ax2.plot(f / 1e12, phase, color=color, linewidth=1.0, alpha=0.7)
 
+    ax1.set_title(
+        r"Amino Acid RLC Transfer Functions — Zero-Parameter AVE Derivation"
+        "\n" + r"$L = m/\xi^2_{topo}$,  $C = \xi^2_{topo}/k$,  $\xi_{topo} = e/\ell_{node}$",
+        fontsize=14, fontweight='bold', color='white', pad=15
+    )
+    ax1.set_ylabel("Power Transmission |H|² (dB)", fontsize=12, labelpad=10)
+    ax1.grid(True, color='#333333', linestyle='--', alpha=0.7)
+    ax1.set_ylim(-120, 10)
+    ax1.legend(fontsize=9, loc='upper right', facecolor='#111111', edgecolor='#444',
+               ncol=2, framealpha=0.9)
+
+    # Mark known IR absorption bands — labels placed inside plot with offset
+    ir_bands = [(1000, 'C-C'), (1650, 'C=C'), (1700, 'C=O'), (3000, 'C-H'), (3400, 'N-H')]
+    for i, (nu_cm, label) in enumerate(ir_bands):
+        f_hz = nu_cm * C_0 * 100
+        ax1.axvline(f_hz / 1e12, color='white', alpha=0.2, linestyle=':', linewidth=0.8)
+        y_pos = -108 + (i % 3) * 8  # stagger vertically to avoid overlap
+        ax1.text(f_hz / 1e12, y_pos, f'{label}\n{nu_cm} cm⁻¹', fontsize=7,
+                 color='#aaaaaa', alpha=0.7, ha='center', va='bottom')
+
+    ax2.set_xlabel("Frequency (THz)", fontsize=12, labelpad=8)
+    ax2.set_ylabel("Phase (degrees)", fontsize=12, labelpad=10)
+    ax2.grid(True, color='#333333', linestyle='--', alpha=0.7)
+    ax2.set_xscale('log')
+
+    # Output
     out_dir = PROJECT_ROOT / "assets" / "sim_outputs"
     os.makedirs(out_dir, exist_ok=True)
     out_path = out_dir / "amino_acid_resonance.png"
-    
-    plt.tight_layout()
-    plt.savefig(out_path, dpi=300, facecolor='black', edgecolor='none')
-    print(f"Saved visualization to {out_path}")
+
+    plt.savefig(out_path, dpi=300, facecolor='black', edgecolor='none',
+                bbox_inches='tight', pad_inches=0.3)
+    print(f"Saved → {out_path}")
+
+    # Print diagnostic summary
+    print("\n  Frequency band summary:")
+    for name, z_rg in amino_acids.items():
+        H = compute_transfer_function(z_rg)
+        P = np.abs(H)**2
+        f_peak = f[np.argmax(P)]
+        nu_peak = f_peak / (C_0 * 100)
+        print(f"    {name:30s}  peak: {f_peak/1e12:.1f} THz  ({nu_peak:.0f} cm⁻¹)")
+

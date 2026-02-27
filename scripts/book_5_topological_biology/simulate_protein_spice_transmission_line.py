@@ -158,7 +158,7 @@ ax1.set_ylim(-150, 10)
 
 # Format Strain
 ax2.set_xlabel('Frequency (Hz)', fontsize=14)
-ax2.set_ylabel('Reactive Structural Strain ($\sim S_{11}$)', fontsize=14)
+ax2.set_ylabel(r'Reactive Structural Strain ($\sim S_{11}$)', fontsize=14)
 ax2.set_title('Geometric Unwinding Tension (High Strain forces Beta-Sheet flattening)', fontsize=14)
 ax2.set_ylim(0, 1.1)
 
@@ -170,7 +170,18 @@ ax2.legend(loc='lower right', fontsize=12)
 plt.tight_layout(rect=[0, 0.03, 1, 0.92])
 
 # Save artifact
-output_dir = "scripts/book_5_topological_biology/"
+# --- Standard AVE output directory ---
+def _find_repo_root():
+    d = os.path.dirname(os.path.abspath(__file__))
+    while d != os.path.dirname(d):
+        if os.path.exists(os.path.join(d, "pyproject.toml")):
+            return d
+        d = os.path.dirname(d)
+    return os.path.dirname(os.path.abspath(__file__))
+
+output_dir = os.path.join(_find_repo_root(), "assets", "sim_outputs")
+os.makedirs(output_dir, exist_ok=True)
+# --- End standard output directory ---
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 

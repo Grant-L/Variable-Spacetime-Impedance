@@ -1,4 +1,4 @@
-"""
+r"""
 AVE Casimir Superconductivity Simulator (Kuramoto Phase-Lock)
 =============================================================
 Simulates two dense topological electron ensembles (N nodes) using the 

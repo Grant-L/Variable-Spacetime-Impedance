@@ -1,7 +1,7 @@
 """
 Test Script: Visualizing Fundamental Topological Generators.
 Uses the `src/ave/topological/borromean.py` engine to extract 
-and plot the 3D coordinate meshes of the Trefoil and Borromean knots.
+and plot the 3D coordinate meshes of the Unknot and Borromean knots.
 """
 import sys
 import os
@@ -12,8 +12,8 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../s
 
 from ave.topological.borromean import FundamentalTopologies
 
-def plot_trefoil():
-    coords = FundamentalTopologies.generate_trefoil_3_1(radius=1.0)
+def plot_unknot():
+    coords = FundamentalTopologies.generate_unknot_0_1(radius=1.0)
     
     fig = plt.figure(figsize=(8, 8))
     fig.patch.set_facecolor('#0f0f0f')
@@ -22,7 +22,7 @@ def plot_trefoil():
     
     # Plot the continuous knot curve
     ax.plot(coords[:, 0], coords[:, 1], coords[:, 2], 
-            color='#00ffcc', linewidth=4, alpha=0.9, label=r"$3_1$ Trefoil (Electron)")
+            color='#00ffcc', linewidth=4, alpha=0.9, label=r"$0_1$ Unknot (Electron)")
             
     ax.set_title("Fundamental Lepton Topology", color='white', fontsize=14)
     ax.legend(facecolor='#111111', edgecolor='#333333', labelcolor='white')
@@ -31,9 +31,9 @@ def plot_trefoil():
     _clean_axes(ax)
     
     os.makedirs('tests/outputs', exist_ok=True)
-    plt.savefig('tests/outputs/trefoil_3_1_validation.png', dpi=300, facecolor=fig.get_facecolor())
+    plt.savefig('tests/outputs/unknot_0_1_validation.png', dpi=300, facecolor=fig.get_facecolor())
     plt.close()
-    print("[*] Saved Trefoil Validation Plot.")
+    print("[*] Saved Unknot Validation Plot.")
 
 def plot_borromean():
     rings = FundamentalTopologies.generate_borromean_6_3_2(radius=1.0)
@@ -74,5 +74,5 @@ def _clean_axes(ax):
     ax.set_zlim([-1.5, 1.5])
 
 if __name__ == "__main__":
-    plot_trefoil()
+    plot_unknot()
     plot_borromean()

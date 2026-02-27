@@ -86,11 +86,18 @@ def simulate_c0g_phased_array():
         
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
     
-    OUTPUT_DIR = "assets/sim_outputs"
-    os.makedirs(OUTPUT_DIR, exist_ok=True)
-    out_path = os.path.join(OUTPUT_DIR, "ponder_c0g_phased_array.png")
-    plt.savefig(out_path, dpi=200, facecolor=fig.get_facecolor(), bbox_inches='tight')
-    print(f"\n[+] Saved C0G Phased Array telemetry to {out_path}")
+    # --- Standard AVE output directory ---
+def _find_repo_root():
+    d = os.path.dirname(os.path.abspath(__file__))
+    while d != os.path.dirname(d):
+        if os.path.exists(os.path.join(d, "pyproject.toml")):
+            return d
+        d = os.path.dirname(d)
+    return os.path.dirname(os.path.abspath(__file__))
+
+OUTPUT_DIR = os.path.join(_find_repo_root(), "assets", "sim_outputs")
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+# --- End standard output directory ---
 
 if __name__ == "__main__":
     simulate_c0g_phased_array()

@@ -85,7 +85,7 @@ def main():
         )
 
         # 3. Source Injection (Ponderomotive Driving Node)
-        # We place a continuous oscillating wave (e.g. an unstable Trefoil unwinding) slightly off center
+        # We place a continuous oscillating wave (e.g. an unstable unknot unwinding) slightly off center
         source_x, source_y = SIZE // 2 - 40, SIZE // 2
         Ez[source_y, source_x] += np.sin(2 * np.pi * 0.05 * frame)
 
