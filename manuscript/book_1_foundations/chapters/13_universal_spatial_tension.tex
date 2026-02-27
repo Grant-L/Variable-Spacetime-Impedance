@@ -6,13 +6,16 @@ A persistent schism exists between the Quantum Standard Model (which relies on a
 
 Under the Applied Vacuum Engineering framework, this schism is eliminated. Both subatomic particles (Leptons) and macroscopic atomic nuclei (like the $5\alpha$ Neon-20 Bipyramid) are governed by the exact same geometric tensor: the Universal Spatial Tension equation. 
 
-Because the vacuum is modeled as a continuous LC matrix with a definitive dielectric saturation bound, localized structural loops must store reactive energy to remain stable. The energy capacity of any inductive loop scales inversely with its geometric radius.
-
+Because the vacuum is modeled as a continuous LC matrix with a definitive dielectric saturation bound, localized structural loops must store reactive energy to remain stable. The energy stored in an inductive loop of radius $R$ in a medium of permeability $\mu_0$ is $E = \frac{1}{2}L I^2$, where $L \propto R$. Equivalently, the inductive mass of a topological defect scales as the ratio of the vacuum compliance to the loop's geometric circumference. Defining the unified vacuum compliance scalar as:
 \begin{equation}
-    M_{topo} = \frac{K}{\oint \vec{r}_{ij} \cdot d\vec{l}}
+    K \equiv \frac{\hbar}{c} = m_e \ell_{node}
+\end{equation}
+(the reduced Compton product---the product of the ground-state fermion mass and the lattice pitch), the mass of any topological defect evaluates to:
+\begin{equation}
+    M_{topo} = \frac{K}{\oint \vec{r}_{ij} \cdot d\vec{l}} = \frac{\hbar/c}{\oint \vec{r}_{ij} \cdot d\vec{l}}
 \end{equation}
 
-Where $M_{topo}$ is the emergent equivalent inertial mass, $K$ is the unified vacuum compliance scalar, and $\vec{r}_{ij}$ is the distance bounded between structural nodes.
+For the ground-state electron (circumference $= 2\pi R_e = \ell_{node}$), this immediately recovers $M_e = \hbar/(c \cdot \ell_{node}) = m_e$.
 
 \section{Scale Invariance across the Framework}
 To prove that AVE does not rely on disconnected, ad-hoc parameter tuning, we must demonstrate that the identical $1/r$ tensor calculates the mass of an elementary particle and the mass of a complex atomic nucleus.
@@ -20,12 +23,20 @@ To prove that AVE does not rely on disconnected, ad-hoc parameter tuning, we mus
 \subsection{The Lepton Tension Limit}
 The stable Ground State Electron is a $0_1$ Unknot topology---a single closed flux tube loop at minimum ropelength $= 2\pi$, spanning a normalized radius $R_e$. It generates an inductive resistance of exactly $0.511 \text{ MeV}$. 
 
-The Muon and Tau are not new ``flavors'' of particles requiring new quantum numbers; they are excitations of this same unknot geometry into higher Cosserat coupling sectors. When the unknot absorbs one quantum of torsional coupling ($\alpha\sqrt{3/7}$), it yields the exact $105.6 \text{ MeV}$ profile of the Muon. When promoted to the full bending stiffness scale ($p_c/\alpha^2$), it hits the $1776.8 \text{ MeV}$ Tau limit. Three Cosserat sectors---translation, rotation, curvature-twist---yield exactly three generations.
+The Muon and Tau are not new ``flavors'' of particles requiring new quantum numbers; they are excitations of this same unknot geometry into higher Cosserat coupling sectors (derived in full in Chapter \ref{ch:electroweak}):
+\begin{itemize}
+    \item \textbf{Muon:} one quantum of torsional coupling $\alpha\sqrt{3/7}$ yields $m_\mu = m_e/(\alpha\sqrt{3/7}) \approx 107.0 \text{ MeV}$ ($+1.24\%$).
+    \item \textbf{Tau:} full bending stiffness $p_c/\alpha^2 = 8\pi/\alpha$ yields $m_\tau = 8\pi m_e / \alpha \approx 1760 \text{ MeV}$ ($-0.95\%$).
+\end{itemize}
+Three Cosserat sectors---translation, rotation, curvature-twist---yield exactly three generations.
 
 \subsection{The Nuclear Tension Limit}
-When constructing atomic nuclei, the exact same law applies symmetrically. Neon-20 ($Z=10, A=20$) is mathematically defined as a 5-node Alpha particle lattice ($5\alpha$). When evaluating the most stable geometric arrangement (a Triangular Bipyramid), the identical $M \propto 1/d_{ij}$ mutual inductance solver determines that the absolute optimization limit occurs when the polar Alphas are suspended at exactly $R_{bipyramid} = 72.081d$.
+When constructing atomic nuclei, the exact same law applies symmetrically. Neon-20 ($Z=10, A=20$) is mathematically defined as a 5-node Alpha particle lattice ($5\alpha$). When evaluating the most stable geometric arrangement (a Triangular Bipyramid), the identical $M \propto 1/d_{ij}$ mutual inductance solver computes the total binding energy as the sum over all $\binom{5}{2} = 10$ pairwise interactions:
+\begin{equation}
+    E_{bind} = \sum_{i<j} \frac{K_{mutual}}{d_{ij}} \qquad \text{where} \quad K_{mutual} = T_{nuc} \cdot \ell_{node} = m_p c^2
+\end{equation}
 
-When evaluated at this exact Cartesian offset, the macroscopic LC integration calculates a topological mass of $18617.730$ MeV, mapping the empirical CODATA target with $0.0000\%$ error. 
+The integrator determines that the absolute optimization limit occurs when the polar Alphas are suspended at exactly $R_{bipyramid} = 72.081d$. When evaluated at this exact Cartesian offset, the macroscopic LC integration calculates a topological mass of $18617.730$ MeV, mapping the empirical CODATA target ($18617.729$ MeV) with $<0.001\%$ error. 
 
 \section{Continuous FDTD Yee Lattice Proof}
 To fully reject the necessity of discrete, "point-particle" Quantum Electrodynamics (QED), which requires hypothetical "virtual photons" to mediate interactions, AVE relies explicitly on the continuous spatial propagation of LC impedance.

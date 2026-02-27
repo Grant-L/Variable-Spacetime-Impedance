@@ -34,6 +34,12 @@ Transverse waves propagating through a structurally chiral network exhibit an as
     \omega^2 = c^2 k^2 \mp \gamma_c k
 \end{equation}
 
+where $\gamma_c$ is the Cosserat bending stiffness coupling, with dimensions of $[\text{m/s}^2]$. It is derived from the micropolar elastic constants of the chiral lattice:
+\begin{equation}
+    \gamma_c = \frac{G_{vac} \ell_{node}^2}{\rho_{bulk}} \cdot \frac{1}{\ell_{node}} = \frac{G_{vac} \ell_{node}}{\rho_{bulk}} = \frac{m_e c^2}{\rho_{bulk} \ell_{node}^3} \ell_{node}^2 = \frac{m_e c^2}{\rho_{bulk} \ell_{node}}
+\end{equation}
+Evaluating numerically: $\gamma_c \approx 2.12 \times 10^{16} \text{ m/s}^2$. The critical wavenumber below which right-handed torsional waves are evanescent is $k_{crit} = \gamma_c / c^2 \approx 2.36 \times 10^{-1} \text{ m}^{-1}$, corresponding to macroscopic wavelengths $\lambda > 2\pi/k_{crit} \approx 27 \text{ m}$.
+
 When a \textbf{left-handed} torsional wave propagates, the sign algebraically matches the intrinsic structural grain of the substrate ($\omega^2 = c^2 k^2 + \gamma_c k$). The frequency squared remains strictly positive, allowing the signal to propagate freely at all energy scales.
 
 However, a \textbf{right-handed} torsional wave mathematically shears \textit{against} the immense electrodynamic inductance ($\gamma_c$). Solving the inequality for real wave propagation ($\omega^2 > 0$) strictly requires $c^2 k^2 > \gamma_c k$, which simplifies to $k > \gamma_c / c^2$. 
@@ -52,26 +58,36 @@ The frequency squared is forced strictly negative. In discrete wave mechanics, a
     \label{fig:chiral_parity_violation}
 \end{figure}
 
-\section{Neutrino Oscillation: Dispersive Beat Frequencies}
-Neutrinos are structurally defined by \textbf{Torsional Harmonics} loaded onto the zero-crossing unknot. Rather than empirical flavor states, the discrete flavors correspond exactly to the quantized structural harmonic multiples ($n$) oscillating against the fundamental vacuum Poisson ratio ($\nu_{vac} \equiv 2/7$):
+\section{The Neutrino Mass Eigenvalue}
+Because the neutrino is a pure \textbf{screw dislocation}---a propagating torsional twist in the Cosserat sector---its mass is set by the ratio of torsional to translational coupling, multiplied by the dielectric compliance:
 \begin{equation}
-    m_{flavor} = m_e \left(\nu_{vac}\right)^n = m_e \left(\frac{2}{7}\right)^n
+    m_\nu = m_e \cdot \alpha \cdot \frac{m_e}{M_W}
 \end{equation}
 
-Based on the empirical limits, the structural overtones resolve to exact integer states:
-\begin{itemize}
-    \item \textbf{Tau ($n=4$):} $\approx 15.65 \text{ MeV}$ (The fundamental overtone limit before yield failure)
-    \item \textbf{Muon ($n=5$):} $\approx 165 \text{ keV}$
-    \item \textbf{Electron ($n=8$):} $\approx 0.05 \text{ eV}$ (The asymptotic ground-state whisper)
-\end{itemize}
+\textbf{Physical meaning:} $m_e/M_W$ is the ratio of the translational energy scale to the torsional (Cosserat) energy scale, and $\alpha$ is the dielectric coupling between sectors. Together, the neutrino mass is suppressed by $\alpha \times (m_e/M_W)$ relative to the electron. Evaluating numerically: $m_\nu \approx 0.024 \text{ eV per flavor}$.
 
-Because neutrinos possess inductive rest mass, their matter-waves are subjected to an explicit massive dispersion relation ($v_g(k) = c \cos(k \ell_{node}/2)$). Because the $n=4, 5,$ and $8$ torsional overtones possess different spatial wavenumbers ($k_i$), they propagate through the discrete Chiral LC grid at fractionally different group velocities ($v_g < c$).
+\subsection{Flavor Splitting via the Torus Knot Ladder}
+Three neutrino flavors arise from the torus knot ladder established in Chapter \ref{ch:baryons}: each flavor pairs with a baryon resonance via the crossing number $c$. The mass splitting scales as $1/c$:
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+Flavor & Baryon Partner & Crossing $c$ & Mass (meV) \\ \hline
+$\nu_1$ & Proton $(2,5)$  & 5 & $\sim 24$ \\
+$\nu_2$ & $\Delta(1232)$ $(2,7)$ & 7 & $\sim 17$ \\
+$\nu_3$ & $\Delta(1620)$ $(2,9)$ & 9 & $\sim 13$ \\ \hline
+\multicolumn{3}{|l|}{$\sum m_\nu$} & $\sim 0.054$ eV \\ \hline
+\end{tabular}
+\end{center}
+The predicted sum $\sum m_\nu \approx 0.054 \text{ eV}$ lies comfortably within the Planck 2018 cosmological bound ($\sum m_\nu < 0.12 \text{ eV}$) and near the normal-ordering hint ($\sum m_\nu \sim 0.06 \text{ eV}$). This prediction is falsifiable: upcoming measurements from DESI and CMB-S4 will constrain $\sum m_\nu$ to $\pm 0.02$ eV.
+
+\section{Neutrino Oscillation: Dispersive Beat Frequencies}
+Because neutrinos possess inductive rest mass, their matter-waves are subjected to an explicit massive dispersion relation ($v_g(k) = c \cos(k \ell_{node}/2)$). Because the three torus knot flavors possess different rest masses, they propagate through the discrete Chiral LC grid at fractionally different group velocities ($v_g < c$).
 
 Neutrino oscillation is formally modeled not as an abstract state-vector rotation, but as the classical, acoustic \textbf{Beat Frequency} of a multi-harmonic torsional wave packet undergoing microscopic structural dispersion across the fundamental hardware grid.
 
-To accurately model the solar neutrino flux observed at Super-Kamiokande, we define the emitted macroscopic wave packet ($\Psi(x,t)$) strictly as the linear superposition of these three fundamental torsional defect harmonics:
+To accurately model the solar neutrino flux observed at Super-Kamiokande, we define the emitted macroscopic wave packet ($\Psi(x,t)$) strictly as the linear superposition of the three mass eigenstates:
 \begin{equation}
-    \Psi(x,t) = A_e \cos(k_1 x - \omega_1 t) + A_\mu \cos(k_2 x - \omega_2 t) + A_\tau \cos(k_3 x - \omega_3 t)
+    \Psi(x,t) = A_1 \cos(k_1 x - \omega_1 t) + A_2 \cos(k_2 x - \omega_2 t) + A_3 \cos(k_3 x - \omega_3 t)
 \end{equation}
 
-Because the group velocities vary ($v_{g,k_3} < v_{g,k_2} < v_{g,k_1}$), the high-frequency $\tau$ component systematically lags behind the low-frequency $e$ component over interstellar distances. The evolving phase differential dynamically shifts the macroscopic amplitude peak. The ``Flavor'' measured by the detector is physically determined by whichever fractional harmonic is peaking at the exact moment the localized wave-packet collides with the dense topological lattice of the water tank. No \"spooky\" non-local matrix rotations are required; neutrino oscillation is simply classical mechanical dispersion.
+Because the group velocities vary ($v_{g,3} < v_{g,2} < v_{g,1}$), the heavier $\nu_3$ component systematically lags behind the lighter $\nu_1$ component over interstellar distances. The evolving phase differential dynamically shifts the macroscopic amplitude peak. The ``flavor'' measured by the detector is physically determined by whichever mass eigenstate is peaking at the exact moment the localized wave-packet collides with the dense topological lattice of the water tank. No ``spooky'' non-local matrix rotations are required; neutrino oscillation is simply classical mechanical dispersion.

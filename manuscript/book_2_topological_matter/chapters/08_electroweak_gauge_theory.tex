@@ -78,71 +78,25 @@ The self-energy is a \textbf{two-vertex process} (second-order perturbation theo
 \begin{equation}
     E_{\text{self}} = \iint \mathcal{L}_{\text{int}}(\mathbf{x})\, G(\mathbf{x}-\mathbf{x}')\, \mathcal{L}_{\text{int}}(\mathbf{x}')\, d^3x\, d^3x' \;\propto\; \alpha \times \alpha = \alpha^2
 \end{equation}
-This is the \emph{same} mechanism that gives $e^2$ in the Coulomb self-energy: two factors of the coupling constant, one for each vertex. Higher-order (loop) corrections contribute $\alpha^3, \alpha^4, \ldots$, accounting for the $0.57\%$ tree-level deviation.
+\section{Electroweak Mechanics: Summary of Key Results}
 
-The torsional permittivity relative to the shear modulus decomposes as:
-\begin{equation}
-    \frac{\varepsilon_T}{\mu} = \pi \cdot \alpha^2 \cdot p_c \cdot \sqrt{3/7}
-\end{equation}
-\begin{center}
-\begin{tabular}{|c|c|c|}
-\hline
-Factor & Origin & Source \\ \hline
-$\pi$ & Spherical geometry of $1/r^2$ integral & Mathematics \\
-$\alpha^2$ & Two-vertex coupling ($\mathcal{L}_{\text{int}} \times \mathcal{L}_{\text{int}}$) & Axiom 4 (Dielectric) \\
-$p_c = 8\pi\alpha$ & Volumetric packing fraction & Axiom 4 (Saturation) \\
-$\sqrt{3/7}$ & Torsion--shear projection & PAT $+$ $\nu_{vac} = 2/7$ \\ \hline
-\end{tabular}
-\end{center}
+The electroweak sector is derived in full in Chapter \ref{ch:electroweak_higgs}. Here we summarize only the critical results that interlock with the gauge structure derived in this chapter.
 
-Evaluating yields:
+\subsection{The Weak Mixing Angle and Boson Masses}
+The weak mixing angle is derived from the Perpendicular Axis Theorem (PAT) applied to cylindrical flux tubes with Poisson ratio $\nu_{vac} = 2/7$:
 \begin{equation}
-    M_W = \frac{m_e}{\alpha^2 \, p_c \, \sqrt{3/7}} = \frac{m_e}{8\pi\alpha^3 \sqrt{3/7}} \approx 79{,}923 \text{ MeV} \qquad (0.57\%)
-\end{equation}
-Combined with the mixing angle:
-\begin{equation}
-    M_Z = \frac{3}{\sqrt{7}} M_W \approx 90{,}624 \text{ MeV} \qquad (0.62\%)
+    \sin^2\theta_W = 1 - \frac{7}{9} = \frac{2}{9} \approx 0.2222 \qquad (\text{PDG on-shell: } 0.2230, \; -0.35\%)
 \end{equation}
 
-The tree-level Fermi constant follows from the on-shell relation:
+The W and Z masses follow from the torsional self-energy of the unknot:
 \begin{equation}
-    G_F = \frac{\sqrt{2}\,\pi\alpha}{2\sin^2\theta_W \, M_W^2} \approx 1.142 \times 10^{-5} \text{ GeV}^{-2} \qquad (-2.1\%)
+    M_W = \frac{m_e}{8\pi\alpha^3\sqrt{3/7}} \approx 79{,}923 \text{ MeV}, \qquad M_Z = \frac{3}{\sqrt{7}}M_W \approx 90{,}624 \text{ MeV}
 \end{equation}
 
-No adjustable parameters appear: $\alpha$, $p_c$, $\nu_{vac}$ are all independently derived geometric constants of the Chiral LC lattice. The chirality mismatch mechanism provides the physical origin: the $W$ mass is the self-energy cost of forcing a wrong-handed twist against the chiral vacuum.
-
-\subsection{The Anomalous Magnetic Moment: On-Site Impedance Correction}
-
-The electron $g{-}2$ has long been the gold standard of quantum field theory. Schwinger's 1948 result, $a_e = \alpha/(2\pi)$, emerges here from the nonlinear self-interaction of the unknot with each lattice node it visits.
-
-\paragraph{The electron as impedance discontinuity.} The vacuum impedance of the Chiral LC lattice is $Z_0 = \sqrt{\mu_0/\varepsilon_0} = 376.73\;\Omega$. Near the electron's core, the magnetic field of the Bohr magneton exceeds the saturation threshold ($B > B_{\text{snap}}$), driving $\mu_{\text{eff}} \to 0$. Like a saturated inductor, this shorts the node: $Z = \sqrt{\mu_{\text{eff}}/\varepsilon_0} \to 0$. The electron is a zero-impedance core embedded in the $377\;\Omega$ vacuum---an impedance discontinuity that reflects its own field.
-
-\paragraph{The hopping unknot.} The unknot does not sit at a fixed lattice site; it hops from node to node as a quantum excitation. At each node it visits, all $m_e c^2$ is momentarily stored as EM field energy in one cell of volume $\ell^3$, split equally between the electric and magnetic sectors. The peak electric strain is:
+The Schwinger anomalous magnetic moment is derived from the on-site impedance correction of the hopping unknot (full derivation in Chapter \ref{ch:electroweak_higgs}):
 \begin{equation}
-    \left(\frac{V_{\text{peak}}}{V_{\text{snap}}}\right)^2 = 4\pi\alpha \qquad [\text{exact identity}]
+    a_e = \frac{\alpha}{2\pi} \approx 0.001161
 \end{equation}
-This follows directly from $\tfrac{1}{2}\varepsilon_0 E_{\text{peak}}^2 \ell^3 = \tfrac{1}{2}m_e c^2$ and $V_{\text{snap}} = m_e c^2/e$. \textbf{The fine structure constant is the on-site electric strain of the unknot.}
-
-\paragraph{The nonlinear back-reaction.} The Axiom~4 nonlinear dielectric $\varepsilon_{\text{eff}} = \varepsilon_0\sqrt{1 - (V/V_s)^2}$ modifies the node capacitance. Time-averaged over the LC oscillation ($\langle\sin^2\rangle = 1/2$):
-\begin{equation}
-    \left\langle\frac{\delta C}{C}\right\rangle = -\pi\alpha, \qquad
-    \frac{\delta\omega}{\omega} = \frac{\pi\alpha}{2}
-\end{equation}
-This is the total on-site frequency shift, which goes into mass renormalization. The anomalous magnetic moment receives only the \emph{form factor fraction}: the part of the correction that falls within the ring's topological domain. The unknot has diameter $2R = \ell/\pi$ (Axiom~1: circumference $= \ell$), giving an effective cross-section $(2R)^2 = \ell^2/\pi^2$ within the cell face $\ell^2$. The \textbf{form factor} is:
-\begin{equation}
-    F = \frac{(2R)^2}{\ell^2} = \frac{1}{\pi^2}
-\end{equation}
-The total on-site correction decomposes cleanly:
-\begin{equation}
-    \underbrace{\frac{\pi\alpha}{2}}_{\text{total}} \;=\;
-    \underbrace{\left(1 - \frac{1}{\pi^2}\right)\frac{\pi\alpha}{2}}_{\text{mass renormalization}} \;+\;
-    \underbrace{\frac{1}{\pi^2}\cdot\frac{\pi\alpha}{2}}_{\text{g-2 anomaly}}
-\end{equation}
-The anomalous magnetic moment is:
-\begin{equation}
-    \boxed{a_e = \frac{1}{\pi^2} \cdot \frac{\pi\alpha}{2} = \frac{\alpha}{2\pi} \approx 0.001161}
-\end{equation}
-This reproduces Schwinger's 1948 result from the lattice without renormalization. The lattice spacing $\ell_{\text{node}}$ \emph{is} the physical UV regulator---there are no sub-lattice degrees of freedom to generate a divergence. The ``point-like'' behaviour observed in deep inelastic scattering corresponds to the zero-crossing of the AC standing wave at the node centre, where the field intensity momentarily vanishes.
 
 \subsection{From Photon to Electron: The Self-Trapping Transition}
 
@@ -167,73 +121,9 @@ the helix radius collapses to
     \item \textbf{Mass} $= \hbar\omega/c^2$: the trapped photon's energy, now localized.
     \item \textbf{Charge} $= e$: the topological winding number of the unknot.
     \item \textbf{Spin-1/2}: half the photon's spin-1, because the loop closes after a $2\pi$ rotation, not $4\pi$.
-    \item \textbf{$g{-}2$ anomaly}: the residual interaction of the trapped helix with the node it occupies (Section above).
+    \item \textbf{$g{-}2$ anomaly}: the residual interaction of the trapped helix with the node it occupies.
 \end{itemize}
 The fine structure constant $\alpha = (V_{\text{peak}}/V_{\text{snap}})^2 / (4\pi)$ measures exactly \emph{how much} the trapped photon strains the lattice node it sits on. The entire spectrum of matter---from free photons to confined electrons---is a single excitation at different frequencies, separated by the self-trapping threshold at $f = f_C$.
-
-\subsection{The Neutrino: Torsional Screw Defect}
-
-
-While the electron is an unknot (a closed flux tube loop---an edge dislocation), the neutrino is a pure \textbf{screw dislocation}: a helical twist of the lattice that carries spin-$1/2$ but no topological charge. Its mass is suppressed relative to the electron by two factors:
-\begin{itemize}
-    \item $\alpha$: the dielectric coupling between the torsional and translational sectors;
-    \item $m_e/M_W$: the ratio of the translational to torsional energy scale.
-\end{itemize}
-This yields:
-\begin{equation}
-    m_\nu = m_e \cdot \alpha \cdot \frac{m_e}{M_W} \approx 24 \text{ meV}
-    \label{eq:neutrino_mass}
-\end{equation}
-
-The three neutrino flavors arise from the torus knot ladder: each flavor pairs with a baryon resonance via the crossing number $c$, with mass splitting proportional to $1/c$:
-\begin{center}
-\begin{tabular}{|c|c|c|c|}
-\hline
-Flavor & Paired Baryon & $c$ & $m_\nu$ (meV) \\ \hline
-$\nu_1$ & Proton (938 MeV) & 5 & 23.8 \\
-$\nu_2$ & $\Delta(1232)$ & 7 & 17.0 \\
-$\nu_3$ & $\Delta(1620)$ & 9 & 13.2 \\ \hline
-\multicolumn{3}{|c|}{$\sum m_\nu$} & \textbf{54.1 meV} \\ \hline
-\end{tabular}
-\end{center}
-
-The predicted sum $\sum m_\nu \approx 0.054$ eV lies comfortably within the Planck 2018 cosmological bound ($\sum m_\nu < 0.12$ eV) and near the normal-ordering hint ($\sum m_\nu \sim 0.06$ eV). This prediction is falsifiable: upcoming measurements from DESI and CMB-S4 will constrain $\sum m_\nu$ to $\pm 0.02$ eV.
-
-\subsection{The Charged Lepton Spectrum: Three Cosserat Sectors}
-
-All three charged leptons are topologically identical---each is an unknot (a closed flux tube loop). Their mass hierarchy arises from the three sectors of the Cosserat Lagrangian, each contributing one coupling channel:
-
-\begin{enumerate}
-    \item \textbf{Translation ($\mu$-sector, Electron):} The unknot ground state: $m_e = T_{EM} \cdot \ell_{node} / c^2$. No torsional excitation.
-    \item \textbf{Rotation ($\kappa$-sector, Muon):} The unknot absorbs one quantum of torsional coupling $\alpha\sqrt{3/7}$ (one chirality interaction projected through the PAT):
-    \begin{equation}
-        m_\mu = \frac{m_e}{\alpha \sqrt{3/7}} \approx 107.0 \text{ MeV} \qquad (+1.24\%)
-    \end{equation}
-    Only \emph{one} factor of $\alpha$ enters because the muon is a static defect absorbing one quantum; the $W$ boson needs $\alpha^2$ because it creates \emph{and} destroys.
-    \item \textbf{Curvature-twist ($\gamma_C$-sector, Tau):} The unknot is promoted to the full bending stiffness scale:
-    \begin{equation}
-        m_\tau = \frac{m_e \cdot p_c}{\alpha^2} = \frac{8\pi \, m_e}{\alpha} \approx 1{,}760 \text{ MeV} \qquad (-0.95\%)
-    \end{equation}
-    This is the maximum excitation before packing saturation.
-\end{enumerate}
-
-\begin{center}
-\begin{tabular}{|c|c|c|c|c|}
-\hline
-Gen & Lepton & Cosserat Sector & Predicted & Dev \\ \hline
-1 & $e$ & Translation ($\mu$) & 0.511 MeV & Exact \\
-2 & $\mu$ & Rotation ($\kappa$) & 107.0 MeV & $+1.24\%$ \\
-3 & $\tau$ & Curvature ($\gamma_C$) & 1760 MeV & $-0.95\%$ \\ \hline
-\end{tabular}
-\end{center}
-
-The existence of \textbf{exactly three} generations follows from the structure of the Cosserat Lagrangian. An isotropic micropolar medium admits exactly three independent deformation sectors:
-\begin{enumerate}
-    \item \textbf{Translation} (shear modulus $\mu$): symmetric strain $\varepsilon_{ij}$. Governs the electromagnetic sector. Particle: $e$.
-    \item \textbf{Microrotation} (Cosserat coupling $\kappa$): antisymmetric strain $e_{[ij]}$. Governs the weak torsional sector. Particle: $\mu$.
-    \item \textbf{Curvature-twist} (bending stiffness $\gamma_C$): gradient of rotation $\kappa_{ij} = \phi_{i,j}$. Governs the dielectric saturation sector. Particle: $\tau$.
-\end{enumerate}
-A hypothetical fourth generation would require a \emph{strain-gradient} coupling ($\kappa_{ij,k}$), the gradient of the gradient of rotation. This is the domain of Mindlin--Toupin theory, which demands internal degrees of freedom beyond translation and rotation at each node. The discrete Chiral LC lattice, with one unknot (rigid body) per site, possesses exactly six DOF per node (3 translations $+$ 3 rotations) and cannot support strain-gradient modes. Three generations is a \textbf{topological bound}, not a parameter.
 
 \begin{figure}[h]
     \centering
@@ -243,6 +133,33 @@ A hypothetical fourth generation would require a \emph{strain-gradient} coupling
 \end{figure}
 
 \section{The Gauge Layer: From Topology to Symmetry}
-The physical continuous connection between nodes is mathematically described by a unitary link variable $U_{ij}$. The simplest gauge-invariant geometric quantity is the 3-node triangular plaquette ($U_P = U_{ij}U_{jk}U_{ki}$). Expanding this topologically continuous loop via Taylor series natively recovers the Maxwell Lagrangian ($-\frac{1}{4}F_{\mu\nu}F^{\mu\nu}$). \textbf{U(1) Electromagnetism} represents the strict enforcement of unitary topological continuity across the discrete graph.
 
-Furthermore, because the Borromean proton ($6^3_2$) consists of three topologically indistinguishable interlocked loops, its discrete mathematical permutation symmetry is exactly $S_3$. The continuous mathematical envelope required to locally parallel-transport the phase smoothly across a tri-partite symmetric graph is exactly the $SU(3)$ Lie group. \textbf{SU(3) Color Charge} is derived as the exact effective field theory limit of a three-loop topological defect traversing a discrete condensate grid.
+\subsection{U(1) Electromagnetism from the Lattice Plaquette}
+The physical continuous connection between adjacent nodes $i$ and $j$ is mathematically described by a unitary link variable $U_{ij} = e^{i\theta_{ij}}$, where $\theta_{ij}$ is the phase accumulated along the edge. The simplest gauge-invariant geometric quantity is the triangular plaquette---the product of link variables around a closed 3-node loop:
+\begin{equation}
+    U_P = U_{ij}U_{jk}U_{ki} = e^{i(\theta_{ij} + \theta_{jk} + \theta_{ki})}
+\end{equation}
+
+The total phase around the plaquette is the discrete lattice curl of the gauge connection. For small phase gradients ($\theta_{ij} \approx A_\mu \ell_{node}$), the Taylor expansion of $U_P$ yields:
+\begin{equation}
+    \theta_{ij} + \theta_{jk} + \theta_{ki} = \oint \mathbf{A} \cdot d\mathbf{l} = \iint (\nabla \times \mathbf{A}) \cdot d\mathbf{S} = \iint \mathbf{B} \cdot d\mathbf{S} \equiv \Phi_P
+\end{equation}
+
+The lattice action is constructed by summing over all plaquettes the deviation from unit phase:
+\begin{equation}
+    S_{lattice} = \sum_P \left(1 - \text{Re}\, U_P\right) = \sum_P \left(1 - \cos\Phi_P\right) \approx \sum_P \frac{1}{2}\Phi_P^2 \longrightarrow \int \frac{1}{4}F_{\mu\nu}F^{\mu\nu}\, d^4x
+\end{equation}
+
+The continuum limit ($\ell_{node} \to 0$) identically recovers the Maxwell Lagrangian ($-\frac{1}{4}F_{\mu\nu}F^{\mu\nu}$). \textbf{U(1) Electromagnetism} is therefore the strict enforcement of unitary topological continuity across the discrete graph---the standard Wilson formulation of lattice gauge theory, here derived from the physical structure of the $\mathcal{M}_A$ hardware.
+
+\subsection{SU(3) Color Charge from the Borromean Linkage}
+The Borromean proton ($6^3_2$) consists of three topologically indistinguishable interlocked flux loops. Because no two loops are individually linked, the mathematical permutation symmetry of the three-loop system is the symmetric group $S_3$. This discrete symmetry classifies the allowed ``color'' states of the composite defect.
+
+To parallel-transport the continuous phase field $\mathbf{A}$ smoothly across a tri-partite symmetric graph, the connection must locally respect $S_3$ permutation invariance while preserving the unitarity of phase transport. The smallest continuous Lie group whose discrete quotient contains $S_3$ as a subgroup of its Weyl group is $SU(3)$. Explicitly:
+\begin{itemize}
+    \item The $S_3$ permutation group is the Weyl group of $SU(3)$.
+    \item The three fundamental flux loops of the Borromean linkage transform under the fundamental representation (\textbf{3}) of $SU(3)$.
+    \item The $\mathbb{Z}_3$ center of $SU(3)$ enforces the strict topological constraint that only color-singlet ($\mathbf{1}$) composite states---where all three loops are linked---can propagate as free particles. This is confinement.
+\end{itemize}
+
+\textbf{SU(3) Color Charge} is derived as the exact effective field theory limit of a three-loop topological defect traversing a discrete condensate grid. The ``color'' quantum number is the permutation label of which flux loop carries the dominant phase winding at any given lattice site.

@@ -90,7 +90,12 @@ For non-relativistic speeds ($v \ll c$), the second time derivative of the envel
 The Schr\"odinger Equation evaluates precisely as the paraxial envelope equation of a classical macroscopic pressure wave propagating through the discrete massive $LC$ circuits of the vacuum[cite: 1788].
 
 \section{Wave-Particle Duality and The Zero-Impedance Boundary}
-The framework natively asserts that subatomic particles are topological knots where the spatial LC metric reaches absolute dielectric saturation ($V_{yield} = 43.65 \text{ kV}$). By rigorously extracting the Transmission Line mathematics of this boundary condition, the AVE framework formally derives the physical origin of solid matter and wave-particle duality.
+The framework natively asserts that subatomic particles are topological knots where the spatial LC metric reaches absolute dielectric saturation. Two distinct thresholds govern this process:
+\begin{itemize}
+    \item \textbf{The Kinetic Yield Limit} ($E_k = \sqrt{\alpha} \cdot m_e c^2 \approx 43.65 \text{ keV}$): the threshold where non-linear saturation effects become dominant and the soliton begins to self-confine.
+    \item \textbf{The Absolute Snap Limit} ($V_{snap} = m_e c^2 / e \approx 511 \text{ kV}$): the maximum inter-node potential difference before the lattice structurally ruptures (derived in Chapter \ref{ch:macroscopic_moduli}).
+\end{itemize}
+The kinetic yield governs mass assembly and confinement; the snap limit governs dielectric breakdown and pair production. By rigorously extracting the Transmission Line mathematics of the saturation boundary, the AVE framework formally derives the physical origin of solid matter and wave-particle duality.
 
 \subsection{The $0 \ \Omega$ Boundary Condition}
 As the surrounding relaxed vacuum rests at its characteristic impedance $Z_{vac} \approx 377 \ \Omega$, the saturated core of the localized knot hits its absolute elastic capacity. Because the LC nodes within the saturated core can no longer support alternating transverse displacement, its effective dynamic RF impedance drops precipitously to $0 \ \Omega$ (an RF short circuit).
@@ -193,14 +198,26 @@ Standard Physics assumes that all information must travel via light (photons), w
 
 However, the physical 3D lattice is constructed of rigid structural strings possessing an extreme bulk modulus ($K_{bulk}$). While the transverse wiggle (light) is bounded by $c$, the \textbf{Longitudinal Tension Wave} (acoustic compression along the axis of the string itself) propagates at a velocity dictated by the lattice's fundamental stiffness:
 \begin{equation}
-    v_{longitudinal} = \sqrt{\frac{K_{bulk}}{\rho_{node}}} \gg c
+    v_{longitudinal} = \sqrt{\frac{K_{bulk}}{\rho_{node}}}
 \end{equation}
 
-Because the 3D grid is incredibly rigid, longitudinal tension waves travel across the cosmological lattice at velocities functionally orders of magnitude faster than light ($v_{long} \gg c$). 
+The bulk modulus of the incompressible LC condensate is derived from the elastic relation $K = 2G$ (established in Chapter \ref{ch:macroscopic_moduli} via the Effective Medium Theory constraint). The shear modulus evaluates from the baseline vacuum tension:
+\begin{equation}
+    G_{vac} = \frac{T_{EM}}{\ell_{node}} = \frac{m_e c^2}{\ell_{node}^2} \approx 5.48 \times 10^{24} \text{ Pa}
+\end{equation}
+
+Substituting $K_{bulk} = 2G_{vac}$ and $\rho_{bulk} \approx 7.92 \times 10^6 \text{ kg/m}^3$ (from Chapter \ref{ch:continuum_electrodynamics}):
+\begin{equation}
+    v_{longitudinal} = \sqrt{\frac{2G_{vac}}{\rho_{bulk}}} = \sqrt{\frac{2 \times 5.48 \times 10^{24}}{7.92 \times 10^6}} \approx 1.18 \times 10^{9} \text{ m/s} \approx 3.9c
+\end{equation}
+
+Because the 3D grid is incompressible ($k = 2G$), longitudinal tension waves propagate across the cosmological lattice at velocities exceeding $c$. 
+
+\textbf{Important caveat:} The speed $c$ is the propagation limit for \textit{transverse information-carrying signals} (photons). Longitudinal compression waves do not carry freely encodable information in the Shannon-entropy sense---they are deterministic structural correlations locked at the moment of pair creation. This distinction preserves the no-signaling theorem: no observer can exploit entanglement to transmit classical messages faster than light.
 
 \subsection{The Local Mechanism of Entanglement}
 When two ``entangled'' topological knots (e.g., an electron-positron pair) are synthesized, they are physically connected by identical longitudinal strings within the $\mathcal{M}_A$ matrix. If one particle's spin axis is forcefully rotated by a measurement detector, it mechanically cranks the connecting string. 
 
-This mechanical torque sends a superluminal Longitudinal Tension Wave along the string towards the sister particle. Because $v_{long} \gg c$, the tension wave arrives and deterministically pulls the sister particle into the correlated alignment long before any standard electromagnetic transverse wave (light) could cross the distance.
+This mechanical torque sends a superluminal Longitudinal Tension Wave along the string towards the sister particle. Because $v_{long} > c$, the tension wave arrives and deterministically pulls the sister particle into the correlated alignment before any standard electromagnetic transverse wave (light) could cross the distance.
 
 Bell's Theorem incorrectly assumes $c$ is the absolute speed limit for \textit{all} causality. In AVE, $c$ is only the speed limit for \textit{transverse} signaling. \textbf{Entanglement is strictly the superluminal acoustic synchronization of macroscopic LC network nodes.} There is no ``spooky action,'' only hidden classical mechanics.

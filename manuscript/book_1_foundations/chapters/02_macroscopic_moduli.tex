@@ -50,7 +50,19 @@ Rearranging this rigorously defines the inverse fine-structure constant geometri
 This mathematically demonstrates that bridging the continuous macroscopic QED breakdown limit with the discrete fundamental mass-gap rigorously forces the manifold's spatial geometry to an exact volumetric packing density of $p_c \approx 0.1834$, predicting $1/137.036$ from pure topology.
 
 \subsection{Computational Proof of Effective Over-Bracing}
-In standard computational geometry, a basic nearest-neighbor Delaunay mesh natively yields a packing fraction of $\approx 0.3068$ (a standard Cauchy solid). To achieve the mathematically required sparse QED density of $0.1834$, computational solvers indicate that the spatial graph must structurally span secondary spatial links out to $\approx 1.67 \times \ell_{node}$. This mathematically necessitates that the $\mathcal{M}_A$ lattice acts \textit{macroscopically} as a \textbf{Structurally Over-Braced Chiral LC Network}. This effective topological over-bracing dynamically provides the intrinsic chiral impedance ($Z_c$) required to satisfy Axiom 1, while actually originating from complex non-linear multipole electromagnetic interference at the sub-node level.
+In standard computational geometry, a basic nearest-neighbor Delaunay mesh of an amorphous point cloud natively yields a packing fraction of $\kappa_{cauchy} \approx 0.3068$ (a standard Cauchy solid). However, the AVE framework requires the mathematically exact sparse QED density $p_c = 8\pi\alpha \approx 0.1834$.
+
+The ratio of required Voronoi cell volumes to standard Delaunay cell volumes defines the \textbf{Over-Bracing Factor}:
+\begin{equation}
+    \mathcal{R}_{OB} = \frac{p_{Delaunay}}{p_c} = \frac{0.3068}{0.1834} \approx \mathbf{1.673}
+\end{equation}
+
+This factor has a precise geometric interpretation: the effective Voronoi cell of the $\mathcal{M}_A$ lattice must be $67.3\%$ larger in volume than a standard nearest-neighbor Cauchy cell. Because the cell volume scales with the cube of the connectivity radius, the spatial graph must structurally span secondary links out to an effective reach of:
+\begin{equation}
+    r_{secondary} = \sqrt[3]{\mathcal{R}_{OB}} \cdot \ell_{node} \approx 1.187 \, \ell_{node}
+\end{equation}
+
+This mathematically necessitates that the $\mathcal{M}_A$ lattice acts \textit{macroscopically} as a \textbf{Structurally Over-Braced Chiral LC Network}---not a simple nearest-neighbor graph. The physical chiral SRS net (Axiom 2, coordination $z=3$) achieves this sparse packing natively: its low coordination creates larger effective Voronoi volumes than a dense Delaunay triangulation ($z \approx 15$), while the extended secondary electromagnetic correlations ($r_{secondary} \approx 1.19\, \ell_{node}$) provide the non-affine stiffness required to satisfy the $K = 2G$ stability constraint (Axiom 3).
 
 \subsection{The Dielectric Snap Limit ($V_{snap} = 511.0$ kV)}
 Because the physical node size is identical to the pitch ($\ell_{node}$), the absolute maximum discrete electrical potential difference that can exist between two adjacent nodes before the string permanently snaps is the Nodal Breakdown Voltage ($V_{snap}$):

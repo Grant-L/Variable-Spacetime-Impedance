@@ -2,24 +2,61 @@
 \label{ch:quantum_orbitals}
 
 \section{Deterministic Reinterpretation of the Wavefunction}
-The Schrödinger Wave Equation maps atomic orbitals ($s, p, d, f$) as absolute statistical probability distributions ($|\Psi|^2$). Traditional Quantum Mechanics strictly forbids defining a physical, deterministic location or velocity for the electron, demanding that nature behaves fundamentally as a rolling set of mathematical dice until an observation collapses the "wavefunction."
+The Schrödinger Wave Equation maps atomic orbitals ($s, p, d, f$) as absolute statistical probability distributions ($|\Psi|^2$). Traditional Quantum Mechanics strictly forbids defining a physical, deterministic location or velocity for the electron, demanding that nature behaves fundamentally as a rolling set of mathematical dice until an observation collapses the ``wavefunction.''
 
 The AVE framework offers a deterministic alternative: the spatial structures mapped by the Schr\"odinger equation correspond to explicit 3D standing-wave resonances of the LC vacuum, rather than abstract statistical probability densities.
+
+\subsection{The Helmholtz--Schrödinger Isomorphism}
+The time-independent Schrödinger equation for a particle of mass $m$ in a potential $V(r)$ is:
+\begin{equation}
+    -\frac{\hbar^2}{2m}\nabla^2 \Psi + V(r)\Psi = E\Psi
+\end{equation}
+
+Rearranging into the standard Helmholtz eigenvalue form:
+\begin{equation}
+    \nabla^2 \Psi + k^2(r)\Psi = 0 \qquad \text{where} \quad k^2(r) = \frac{2m}{\hbar^2}(E - V(r))
+\end{equation}
+
+This is \textit{identically} the Helmholtz equation for acoustic pressure modes in a resonant cavity with spatially varying sound speed $c_{eff}(r) = \omega / k(r)$. In the AVE framework, the potential $V(r) = -e^2/(4\pi\epsilon_0 r)$ is physically the localized impedance gradient cast by the proton's topological phase twist. The ``wavefunction'' $\Psi$ maps to the spatial amplitude of the LC pressure field:
+\begin{equation}
+    c_{eff}^2(r) = \frac{\omega^2}{k^2(r)} = \frac{\hbar^2 \omega^2}{2m(E - V(r))}
+\end{equation}
+
+Regions where $E > V(r)$ support propagating acoustic modes ($k^2 > 0$). Regions where $E < V(r)$ are classically forbidden---the acoustic impedance is imaginary, and the pressure field decays evanescently. The orbital boundaries are physical impedance discontinuities, not abstract probability surfaces.
 
 \section{Orbitals as Acoustic Resonant Cavities}
 When a stable $0_1$ topological LC unknot (an electron) becomes bound to a complex Borromean knot geometry (a proton), it is forced to phase-lock its rotation to the much larger magnetic flux field of the nucleus. 
 
 The spinning central nucleus acts as a relentless electromagnetic wave-generator, driving constant AC displacement current ($d\vec{D}/dt$) oscillations radially outward into the structured, $377 \ \Omega$ surrounding LC vacuum mesh. Because the vacuum has a finite impedance bound (Yield Limit), these driven waves reflect back toward the nucleus. 
 
-The superposition of the outward driven wave and the inward reflected wave creates a permanent, geometric standing wave—an acoustic resonant cavity in the impedance of space itself.
+The superposition of the outward driven wave and the inward reflected wave creates a permanent, geometric standing wave---an acoustic resonant cavity in the impedance of space itself.
+
+\subsection{Hydrogen Ground State from LC Impedance Matching}
+For the hydrogen atom, the electron orbits within the $1/r$ impedance gradient cast by the proton. The ground state energy eigenvalue emerges from the balance between the inductive kinetic energy of the orbiting unknot and the capacitive potential energy of the Coulomb impedance well:
+\begin{equation}
+    E_n = -\frac{m_e c^2 \alpha^2}{2n^2} = -\frac{m_e e^4}{2\hbar^2(4\pi\epsilon_0)^2} \cdot \frac{1}{n^2}
+\end{equation}
+
+For $n=1$: $E_1 = -13.606 \text{ eV}$. This is the standard Bohr result, here derived from the resonant impedance matching condition: the electron's de Broglie wavelength ($\lambda = h/(m_e v)$) must fit exactly $n$ full wavelengths around the orbital circumference ($2\pi r = n\lambda$), which is the LC phase-locking condition for constructive interference in the acoustic cavity. The Bohr radius evaluates as:
+\begin{equation}
+    a_0 = \frac{\ell_{node}}{\alpha} = \frac{\hbar}{m_e c \alpha} = \frac{4\pi\epsilon_0 \hbar^2}{m_e e^2} \approx 5.29 \times 10^{-11} \text{ m}
+\end{equation}
+
+\subsection{Angular Momentum Quantization}
+In standard QM, orbital angular momentum is quantized in integer multiples of $\hbar$. In the AVE framework, this emerges from the discrete rotational symmetry of the $\mathcal{M}_A$ lattice. A standing wave circulating the spherical cavity must complete an integer number of full phase cycles ($2\pi l$) per orbit to constructively interfere with itself. The angular momentum of the $l$-th harmonic is:
+\begin{equation}
+    L = \hbar\sqrt{l(l+1)} \qquad l = 0, 1, 2, \ldots, n-1
+\end{equation}
+
+The magnetic quantum number $m_l$ ($-l \leq m_l \leq l$) counts the number of nodal planes passing through the polar axis---physically, these are the acoustic pressure nulls of the spherical harmonic mode $Y_l^{m_l}(\theta, \phi)$.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1.0\textwidth]{atomic_orbital_standing_waves.pdf}
-    \caption{\textbf{Deterministic Orbital Acoustics.} (Simulation Output). A purely classical 3D continuous fluid-dynamic solver mapping the explicit $3d_{z^2}$ acoustic energy-density field ($\rho_{val} \propto |\Psi_{mech}|^2$). The Schrödinger Equation is mathematically strictly isomorphic to the macroscopic structural wave-equation for a highly saturated acoustic cavity. The localized electron topologically locked to the nucleus is not fundamentally "smeared out" into a probabilistic cloud; rather, it is mechanically forced to ride exclusively inside the classical minimum-impedance 3D Chladni nodes created by continuous standing waves reflecting off the discrete vacuum limits.}
+    \caption{\textbf{Deterministic Orbital Acoustics.} (Simulation Output). A purely classical 3D continuous fluid-dynamic solver mapping the explicit $3d_{z^2}$ acoustic energy-density field ($\rho_{val} \propto |\Psi_{mech}|^2$). The Schrödinger Equation is mathematically strictly isomorphic to the macroscopic structural wave-equation for a highly saturated acoustic cavity. The localized electron topologically locked to the nucleus is not fundamentally ``smeared out'' into a probabilistic cloud; rather, it is mechanically forced to ride exclusively inside the classical minimum-impedance 3D Chladni nodes created by continuous standing waves reflecting off the discrete vacuum limits.}
     \label{fig:orbital_standing_waves}
 \end{figure}
 
-The electron does not "cloud" around the nucleus; it remains a unified, discrete geometric knot that is physically trapped inside the lowest-pressure nodes of this standing wave. It orbits in a deterministic loop within the geometric valley carved out by the nuclear frequency. 
+The electron does not ``cloud'' around the nucleus; it remains a unified, discrete geometric knot that is physically trapped inside the lowest-pressure nodes of this standing wave. It orbits in a deterministic loop within the geometric valley carved out by the nuclear frequency. 
 
 In this interpretation, the mathematics of quantum mechanics remain fully valid, but the ontology changes: the wavefunction describes the physical acoustic mode structure of the vacuum LC mesh rather than an irreducible probability distribution. Quantum mechanics, under this lens, is the high-frequency limit of structural fluid dynamics in the vacuum condensate.

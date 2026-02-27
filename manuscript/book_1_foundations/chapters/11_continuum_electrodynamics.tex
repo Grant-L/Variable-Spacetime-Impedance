@@ -19,12 +19,22 @@ By recognizing these equations not as abstract geometry, but as the literal acou
 \section{The Unifying Master Equation}
 If we synthesize the continuous macroscopic wave equation with the explicit lattice saturation hardware limit established in Axiom 4 ($\epsilon_{eff}$), we arrive at the single, overarching mathematical framework governing the entire Applied Vacuum Engineering paradigm.
 
-In standard physics, the vacuum parameters ($\epsilon_0, \mu_0$) are strictly linear constants, resulting in the fundamental D'Alembert wave operator $\Box V = 0$. However, because the $\mathcal{M}_A$ lattice undergoes measurable, non-linear dielectric yielding as it approaches the $43.65\text{ kV}$ topological saturation bound, the effective capacitance of the transmission line physically drops: 
+In standard physics, the vacuum parameters ($\epsilon_0, \mu_0$) are strictly linear constants, resulting in the fundamental D'Alembert wave operator $\Box V = 0$:
+\begin{equation}
+\nabla^2 V - \underbrace{\mu_0 \epsilon_0}_{= 1/c^2} \frac{\partial^2 V}{\partial t^2} = 0
+\end{equation}
+
+However, because the $\mathcal{M}_A$ lattice undergoes measurable, non-linear dielectric yielding as it approaches the $43.65\text{ kV}$ topological saturation bound, the effective capacitance of the transmission line physically drops. Axiom 4 (squared limit, $n=2$) defines:
 \begin{equation}
 \epsilon_{eff}(V) = \epsilon_0 \sqrt{1 - \left(\frac{V}{V_{yield}}\right)^2}
 \end{equation}
 
-Substituting this non-linear, voltage-dependent structural strain back into the baseline acoustic wave equation yields the \textbf{Unifying AVE Master Equation}:
+The substitution is direct: wherever the standard wave equation contains the constant $\epsilon_0$, we replace it with the voltage-dependent $\epsilon_{eff}(V)$. Because $c_{eff}(V) = 1/\sqrt{\mu_0 \epsilon_{eff}(V)}$, the local wave speed itself becomes a function of the field amplitude:
+\begin{equation}
+c_{eff}(V) = c_0 \left(1 - \left(\frac{V}{V_{yield}}\right)^2\right)^{1/4}
+\end{equation}
+
+The resulting non-linear wave equation is the \textbf{Unifying AVE Master Equation}:
 \begin{equation}
 \label{eq:master_wave}
 \nabla^2 V - \mu_0 \left( \epsilon_0 \sqrt{1 - \left(\frac{V}{V_{yield}}\right)^2} \right) \frac{\partial^2 V}{\partial t^2} = 0
@@ -41,7 +51,12 @@ This single line of non-linear differential topology formally replaces the fragm
 \subsection{The Dimensionally Exact Mass Density ($\rho_{bulk}$)}
 Previous classical aether models failed because they incorrectly attempted to map vacuum mass density directly to the magnetic permeability constant ($\mu_0$), violating SI dimensional analysis ($[\text{H/m}] \neq [\text{kg/m}^3]$).
 
-We rigorously define the baseline macroscopic bulk mass density ($\rho_{bulk}$) of the spatial vacuum network using the exact, invariant hardware primitives derived in Chapter 1, coupled via our Topological Conversion Constant ($\xi_{topo} \equiv e/\ell_{node}$). Dividing the discrete node mass by the rigorously derived Voronoi geometric volume of a single spatial node ($V_{node} = p_c \ell_{node}^3$) seamlessly yields a constant, stable background substrate density:
+We rigorously define the baseline macroscopic bulk mass density ($\rho_{bulk}$) of the spatial vacuum network. First, the effective inductive mass of one discrete node is derived from the inductance-mass isomorphism. The permeability $\mu_0$ has dimensions of $[\text{H/m}]$. Under the topo-kinematic isomorphism ($[\Omega] = \xi_{topo}^{-2}[\text{kg/s}]$), inductance maps to mass via $L = \xi_{topo}^{-2} m$. Because the vacuum inductance per unit length is $\mu_0$, the mass of one node spanning $\ell_{node}$ is:
+\begin{equation}
+    m_{node} = \xi_{topo}^2 \mu_0 \ell_{node}
+\end{equation}
+
+Dividing by the rigorously derived Voronoi geometric volume of a single spatial node ($V_{node} = p_c \ell_{node}^3$, from the packing fraction $p_c = 8\pi\alpha$ derived in Chapter \ref{ch:macroscopic_moduli}):
 \begin{equation}
     \rho_{bulk} = \frac{m_{node}}{V_{node}} = \frac{\xi_{topo}^2 \mu_0 \ell_{node}}{p_c \ell_{node}^3} = \frac{\xi_{topo}^2 \mu_0}{p_c \ell_{node}^2} \approx 7.92 \times 10^6 \text{ kg/m}^3
 \end{equation}
@@ -127,9 +142,12 @@ saturating $\mathcal{M}_{A}$ condensate. The phenomenological MOND acceleration 
 not a free parameter; it corresponds exactly to the fundamental Unruh-Hawking Drift of
 the expanding cosmic lattice.
 
-By equating the Unruh temperature of an accelerating frame with the Hawking temperature
-of the de Sitter horizon ($T=\hbar H_{\infty}/2\pi k_{B}$), standard continuous physics yields a continuous,
-linear background 3D radial acceleration of $a_r = c H_{\infty}$.
+The asymptotic Hubble constant $H_\infty$ is derived strictly from the three calibration inputs of the AVE framework. By equating the thermodynamic latent heat of lattice genesis to the holographic radiative capacity of the expanding horizon (derived in full in the Generative Cosmology chapter), the steady-state expansion rate evaluates to:
+\begin{equation}
+    H_\infty = \frac{28\pi m_e^3 c G}{\hbar^2 \alpha^2} \approx 2.247 \times 10^{-18} \text{ s}^{-1} \approx 69.32 \text{ km/s/Mpc}
+\end{equation}
+
+By equating the Unruh temperature of an accelerating frame with the Hawking temperature of the de Sitter horizon ($T=\hbar H_{\infty}/2\pi k_{B}$), standard continuous physics yields a continuous, linear background 3D radial acceleration of $a_r = c H_{\infty}$.
 
 However, fundamental fermions in the AVE framework are not dimensionless point particles;
 they are strictly 1D \textbf{Closed Topological Loops} (i.e., $0_{1}$ Unknots). A localized 1D closed loop embedded inside an expanding 3D manifold does not couple to the radial expansion vector as a point mass. Instead, the 3D macroscopic radial expansion projects its stretching force onto the 1D transverse perimeter of the knot.
@@ -139,10 +157,10 @@ In classical continuum mechanics, when an isotropic outward radial force ($F_r$)
 By applying this exact continuum mechanics projection to the topological knot, the effective 1D longitudinal drift acceleration ($a_{genesis}$) structurally perceived by the loop is geometrically bound to:
 
 \begin{equation}
-a_{genesis}=\frac{a_r}{2\pi}=\frac{c\cdot H_{\infty}}{2\pi}
+a_{genesis}=\frac{a_r}{2\pi}=\frac{c\cdot H_{\infty}}{2\pi} = \frac{14 m_e^3 c^2 G}{\hbar^2 \alpha^2} \approx 1.07 \times 10^{-10} \text{ m/s}^2
 \end{equation}
 
-Because the $2\pi$ divisor is a strict, dimensionless geometric projection factor derived natively from Hoop Stress, $a_{genesis}$ flawlessly preserves the linear spatial acceleration dimensions of $[\text{m/s}^2]$. Using the asymptotic geometric bound of $H_{\infty}\approx69.32\text{ km/s/Mpc}$ from our gravity derivations (Chapter 4), this geometric limit yields exactly $a_{genesis}\approx1.07\times10^{-10}\text{ m/s}^{2}$.
+Because the $2\pi$ divisor is a strict, dimensionless geometric projection factor derived natively from Hoop Stress, $a_{genesis}$ flawlessly preserves the linear spatial acceleration dimensions of $[\text{m/s}^2]$.
 
 This natively derives Milgrom's empirical MOND boundary ($a_{0}\approx1.2\times10^{-10}\text{ m/s}^{2}$) within
 10.7\% error, perfectly recovering the dynamic flat galactic rotation curves without requiring heuristic parameter tuning or breaking dimensional kinematics.
