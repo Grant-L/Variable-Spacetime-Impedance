@@ -17,9 +17,17 @@ To mathematically circumvent this, the AVE optimization engine models the protei
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1.0\textwidth]{protein_folding_3d_collapse.png}
-    \caption{\textbf{Multiplexed Basis Engine Collapse:} Rather than stepping through an NP-Hard search of random 3D rotations, the AVE solver initializes the backbone geometry identically in the two extreme mathematical basis states: the isotropic 3D Helix and the anisotropic 2D Sheet. By applying the deterministic SPICE impedance parameters to the coordinates, the engine collapses instantly into the absolute lowest-strain macro-geometry. (Left) \textit{Polalanine} survives the internal steric pressure, locking into a Helix. (Right) \textit{Polyvaline} exceeds the yield limit, violently flattening into a Sheet.}
-    \label{fig:protein_folding_3d}
+    \includegraphics[width=1.0\textwidth]{ave_helix_progression.png}
+    \vspace{0.3cm}
+    \caption{\textbf{Topological Gradient Descent (Alpha-Helix):} Rather than stepping through an NP-Hard search of random 3D rotations, the AVE solver initializes the backbone geometry as a random continuous coil and applies 1D SPICE impedance parameters as local spatial driving potentials. \textit{Polyalanine} ($Z_{topo} \approx 0.8$) exerts local torque toward continuous curvature, smoothly collapsing the random coil into a perfect helical wrapper without getting stuck in local minima.}
+    \label{fig:protein_folding_helix}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{ave_sheet_progression.png}
+    \caption{\textbf{Topological Gradient Descent (Beta-Sheet):} For \textit{Polyvaline} ($Z_{topo} \approx 3.8$), the high topological mismatch actively penalizes curvature, exerting explosive steric pressure. The sequence violently uncoils, flattening out into an extended Beta-Sheet geometry to minimize local spatial strain.}
+    \label{fig:protein_folding_sheet}
 \end{figure}
 
 \section{SPICE Transmission Line Mismatch ($S_{11}$ Strain)}
