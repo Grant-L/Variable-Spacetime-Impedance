@@ -154,7 +154,7 @@ for name, seq in sequences.items():
 ax1.set_ylabel('Magnitude (dB)', fontsize=14)
 ax1.set_title('Topological Frequency Response (Cascaded R-Group RC Filter)', fontsize=14)
 ax1.legend(loc='lower left', fontsize=12)
-ax1.set_ylim(-150, 10)
+ax1.set_ylim(-150, 40)
 
 # Format Strain
 ax2.set_xlabel('Frequency (Hz)', fontsize=14)

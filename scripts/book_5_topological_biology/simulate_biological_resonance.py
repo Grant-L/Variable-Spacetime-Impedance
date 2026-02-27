@@ -153,17 +153,17 @@ if __name__ == "__main__":
     )
     ax1.set_ylabel("Power Transmission |H|² (dB)", fontsize=12, labelpad=10)
     ax1.grid(True, color='#333333', linestyle='--', alpha=0.7)
-    ax1.set_ylim(-120, 10)
+    ax1.set_ylim(-120, 40)
     ax1.legend(fontsize=9, loc='upper right', facecolor='#111111', edgecolor='#444',
                ncol=2, framealpha=0.9)
 
     # Mark known IR absorption bands — labels placed inside plot with offset
     ir_bands = [(1000, 'C-C'), (1650, 'C=C'), (1700, 'C=O'), (3000, 'C-H'), (3400, 'N-H')]
+    y_offsets = [-105, -95, -105, -95, -105]  # alternating heights to avoid overlap
     for i, (nu_cm, label) in enumerate(ir_bands):
         f_hz = nu_cm * C_0 * 100
         ax1.axvline(f_hz / 1e12, color='white', alpha=0.2, linestyle=':', linewidth=0.8)
-        y_pos = -108 + (i % 3) * 8  # stagger vertically to avoid overlap
-        ax1.text(f_hz / 1e12, y_pos, f'{label}\n{nu_cm} cm⁻¹', fontsize=7,
+        ax1.text(f_hz / 1e12, y_offsets[i], f'{label}\n{nu_cm} cm⁻¹', fontsize=7,
                  color='#aaaaaa', alpha=0.7, ha='center', va='bottom')
 
     ax2.set_xlabel("Frequency (THz)", fontsize=12, labelpad=8)

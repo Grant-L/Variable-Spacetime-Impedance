@@ -89,7 +89,7 @@ BOND_FORCE_CONSTANTS = {}
 for _bond, (_za, _zb, _ne) in BOND_DEFS.items():
     # Evaluate 200 points for stable numerical second derivative
     _d_range, _E_array = compute_bond_curve(_za, _zb, _ne, n_points=200)
-    _, _k_pred, _ = extract_force_constant(_d_range, _E_array, _za, _zb)
+    _, _k_pred, _ = extract_force_constant(_d_range, _E_array, _za, _zb, _ne)
     BOND_FORCE_CONSTANTS[_bond] = _k_pred
 
 COVALENT_CAPACITANCE = {

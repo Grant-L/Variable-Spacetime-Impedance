@@ -155,14 +155,14 @@ if __name__ == "__main__":
     plt.title("20 Amino Acids: Fully Predictive Topological Resonance Spectra", fontsize=16)
     plt.xlabel("Wavenumber (cm$^{-1}$)", fontsize=14)
     plt.ylabel("|H|² (dB)", fontsize=14)
-    plt.ylim(-100, 20)
+    plt.ylim(-100, 40)
     plt.xlim(300, 4000)
     
     # Highlight regions
     plt.axvspan(600, 1600, alpha=0.05, color='white')
-    plt.text(1100, 10, 'Fingerprint Region', fontsize=12, color='#888', ha='center')
+    plt.text(1100, 35, 'Fingerprint Region', fontsize=12, color='#888', ha='center')
     plt.axvspan(2500, 3800, alpha=0.05, color='cyan')
-    plt.text(3150, 10, 'Stretch Region', fontsize=12, color='#668899', ha='center')
+    plt.text(3150, 35, 'Stretch Region', fontsize=12, color='#668899', ha='center')
     
     plt.legend(bbox_to_anchor=(1.04, 1), loc="upper left", ncol=2)
     plt.grid(True, linestyle=':', alpha=0.3)

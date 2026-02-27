@@ -114,7 +114,7 @@ for n, color in zip(chain_lengths, colors_chain):
 ax1.set_title("Chain Length Effect: Polyglycine", fontsize=12, fontweight='bold', pad=10)
 ax1.set_ylabel("|H|² (dB)", fontsize=10, labelpad=8)
 ax1.set_xlim(300, 4000)
-ax1.set_ylim(-80, 10)
+ax1.set_ylim(-80, 40)
 ax1.grid(True, color='#222', linestyle=':', alpha=0.5)
 ax1.legend(fontsize=8, loc='upper right', facecolor='#111', edgecolor='#444')
 
@@ -128,7 +128,7 @@ for n, color in zip(chain_lengths, colors_chain):
 
 ax2.set_title("Chain Length Effect: Polyalanine", fontsize=12, fontweight='bold', pad=10)
 ax2.set_xlim(300, 4000)
-ax2.set_ylim(-80, 10)
+ax2.set_ylim(-80, 40)
 ax2.grid(True, color='#222', linestyle=':', alpha=0.5)
 ax2.legend(fontsize=8, loc='upper right', facecolor='#111', edgecolor='#444')
 
@@ -153,7 +153,7 @@ ax3.set_title("R-Group Differentiation at Chain Length 5", fontsize=12, fontweig
 ax3.set_xlabel(r"Wavenumber (cm$^{-1}$)", fontsize=10, labelpad=8)
 ax3.set_ylabel("|H|² (dB)", fontsize=10, labelpad=8)
 ax3.set_xlim(300, 4000)
-ax3.set_ylim(-80, 10)
+ax3.set_ylim(-80, 40)
 ax3.grid(True, color='#222', linestyle=':', alpha=0.5)
 ax3.legend(fontsize=8, loc='upper right', facecolor='#111', edgecolor='#444')
 
@@ -201,7 +201,7 @@ ax4.set_title(r"Sensitivity: Mass Scaling (Glycine, $f \propto 1/\sqrt{m}$)",
               fontsize=12, fontweight='bold', pad=10)
 ax4.set_xlabel(r"Wavenumber (cm$^{-1}$)", fontsize=10, labelpad=8)
 ax4.set_xlim(300, 4000)
-ax4.set_ylim(-80, 10)
+ax4.set_ylim(-80, 40)
 ax4.grid(True, color='#222', linestyle=':', alpha=0.5)
 ax4.legend(fontsize=7, loc='upper right', facecolor='#111', edgecolor='#444')
 
