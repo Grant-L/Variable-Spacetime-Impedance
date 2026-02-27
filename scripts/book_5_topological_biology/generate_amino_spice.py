@@ -16,18 +16,18 @@ import sys
 import os
 from pathlib import Path
 
-# Fix path to import ave modules
-PROJECT_ROOT = Path(__file__).parent.parent
+# Fix path to import scripts folder
+PROJECT_ROOT = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
-from ave.mechanics.spice_organic_mapper import (
+from scripts.mechanics.spice_organic_mapper import (
     get_inductance,
     get_capacitance,
     AMINO_SOURCE_FREQ,
     AMINO_SOURCE_VOLT,
     CARBOXYL_LOAD_R
 )
-
 
 def generate_amino_netlist(name, filename, r_group_lines):
     """

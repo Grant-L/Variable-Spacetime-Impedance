@@ -124,7 +124,8 @@ def _plot_amino(ax, nu_arr, p_db, ftir_peaks, curve_color, peak_color, title):
     ax.set_title(title, fontsize=13, fontweight='bold', color='white', pad=12)
     ax.set_ylabel("|H|² (dB)", fontsize=11, labelpad=8)
     ax.set_xlim(300, 4000)
-    ax.set_ylim(-100, 10)
+    top_y = max(10, np.max(p_db) + 5)
+    ax.set_ylim(-100, top_y)
     ax.grid(True, color='#222', linestyle=':', alpha=0.5)
     ax.legend(fontsize=9, loc='upper right', facecolor='#111111', edgecolor='#444')
 

@@ -77,25 +77,20 @@ ATOMIC_INDUCTANCE = {
 # =============================================================================
 # 2.  BOND CAPACITANCE:  C = ξ² / k   [F]
 # =============================================================================
-# Stretching force constants k [N/m] from NIST IR spectroscopy.
-# Derived from: k = μ_red × (2π c ν̃)²  where ν̃ is the measured
-# absorption wavenumber [cm⁻¹] and μ_red is the reduced mass.
-#
-# Sources: Herzberg (1945), Shimanouchi (1972), NIST Chemistry WebBook.
-BOND_FORCE_CONSTANTS = {
-    # Bond    k [N/m]   Source wavenumber
-    'C-H':    494,    # ~3000 cm⁻¹
-    'C-C':    354,    # ~1000 cm⁻¹
-    'C=C':    965,    # ~1650 cm⁻¹
-    'C-N':    461,    # ~1100 cm⁻¹
-    'C=O':   1170,    # ~1700 cm⁻¹
-    'C-O':    489,    # ~1100 cm⁻¹
-    'N-H':    641,    # ~3400 cm⁻¹
-    'O-H':    745,    # ~3650 cm⁻¹
-    'S-H':    390,    # ~2600 cm⁻¹
-    'S-S':    236,    # ~500  cm⁻¹
-    'C-S':    253,    # ~700  cm⁻¹
-}
+from ave.topological.soliton_bond_solver import (
+    compute_bond_curve, extract_force_constant, BOND_DEFS
+)
+
+# Stretching force constants k [N/m] are now derived purely from AVE axioms
+# (ε₀, m_e, ℏ, e) and lattice topology (isotropy, three-phase balance, 
+# and transformer core expansion) using the Soliton Bond Solver.
+# No empirical or spectroscopic parameters are used.
+BOND_FORCE_CONSTANTS = {}
+for _bond, (_za, _zb, _ne) in BOND_DEFS.items():
+    # Evaluate 200 points for stable numerical second derivative
+    _d_range, _E_array = compute_bond_curve(_za, _zb, _ne, n_points=200)
+    _, _k_pred, _ = extract_force_constant(_d_range, _E_array, _za, _zb)
+    BOND_FORCE_CONSTANTS[_bond] = _k_pred
 
 COVALENT_CAPACITANCE = {
     bond: XI_TOPO_SQ / k

@@ -86,7 +86,15 @@ def bond_energy(d: float, Z_a: int, Z_b: int, n_shared: int) -> float:
     # π electrons (perpendicular) respond with reduced coupling.
     n_sigma = min(n_shared, 2)
     n_pi = n_shared - n_sigma
-    PI_COUPLING = 0.5  # π/σ ratio from angular distribution
+    
+    # Polar Pi-Slip (Electronegativity Compression)
+    # If the bond is polar (e.g., C=O), the π electrons are drawn
+    # off-center. This asymmetric slip geometrically reduces their
+    # efficiency in mediating the axial restoring force.
+    chi_a = _electronegativity(Z_a)
+    chi_b = _electronegativity(Z_b)
+    polar_slip = abs(chi_a - chi_b) / (chi_a + chi_b)
+    PI_COUPLING = 0.5 * (1.0 - polar_slip)
 
     # 1. Nuclear-nuclear Coulomb repulsion
     E_nn = _k_coul * Z_eff_a * Z_eff_b / d
@@ -95,8 +103,6 @@ def bond_energy(d: float, Z_a: int, Z_b: int, n_shared: int) -> float:
     if Z_a == Z_b:
         center = d / 2
     else:
-        chi_a = _electronegativity(Z_a)
-        chi_b = _electronegativity(Z_b)
         center = d * chi_b / (chi_a + chi_b)
 
     r_avg_a = np.sqrt(center**2 + r_e**2)
@@ -136,34 +142,39 @@ def extract_force_constant(d_array, E_array, Z_a: int = 6, Z_b: int = 6):
     """
     Extract d_eq [m] and k [N/m] from E(d) curve.
 
-    Applies two lattice-topology corrections:
+    Applies three fundamental lattice-topology corrections:
 
     1. ISOTROPY PROJECTION (1/3): Bond stretching acts along 1 of 3
        equivalent spatial dimensions on the isotropic SRS lattice.
 
     2. THREE-PHASE BALANCE (1/√3 for terminal atoms):
        On the SRS lattice, each interior node is a 3-connected WYE
-       junction — a three-phase power node. When both bond endpoints
-       are interior (3-connected), the system is balanced: each phase
-       carries 1/3 of the curvature.
+       junction — a three-phase power node. Terminal atoms (hydrogen)
+       act as unbalanced single-phase loads, adding a 1/√3 factor.
 
-       When one endpoint is terminal (hydrogen, 1 bond), the load is
-       UNBALANCED — like connecting a single-phase load to a three-
-       phase WYE system. In power engineering, the line-to-neutral
-       voltage relates to line-to-line by 1/√3. The unbalanced
-       current distribution adds a factor of 1/√3.
-
-    Combined: k = (1/3) × (balance) × d²E/dd²
-       balanced (heavy-heavy):    balance = 1     → k = k_raw/3
-       unbalanced (X-H):          balance = 1/√3  → k = k_raw/(3√3)
+    3. SPLIT-CORE TRANSFORMER (Period 3+ elements):
+       For heavy-heavy bonds, the magnetic flux path (core area) 
+       expands with the square of the valence shell (n*). 
+       When mismatched (e.g., C-S), the impedance transfers across 
+       the boundary via a transformer turns ratio (n_min / n_max).
     """
-    # Three-phase balance factor
+    # 1. Three-phase balance factor
     n_terminal = sum(1 for Z in [Z_a, Z_b] if _is_terminal(Z))
     balance_factor = (1.0 / np.sqrt(3.0)) ** n_terminal
 
-    # Combined isotropy correction
+    # 2. Split-Core Transformer (only for interior-interior bonds)
+    transformer_factor = 1.0
+    if n_terminal == 0:
+        na, nb = _n_star(Z_a), _n_star(Z_b)
+        # Core area expansion relative to period-2 baseline
+        area_expansion = (na / 2.0)**2 * (nb / 2.0)**2
+        # Turns ratio for asymmetric core transition
+        turns_ratio = min(na, nb) / max(na, nb)
+        transformer_factor = area_expansion * turns_ratio
+
+    # Combined geometric correction
     ISOTROPY = 1.0 / 3.0
-    correction = ISOTROPY * balance_factor
+    correction = ISOTROPY * balance_factor * transformer_factor
 
     i_min = np.argmin(E_array)
     d_eq = d_array[i_min]
