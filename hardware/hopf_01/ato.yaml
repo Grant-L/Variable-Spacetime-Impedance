@@ -1,0 +1,7 @@
+ato-version: ^0.12.0
+paths:
+  src: .
+  build: build
+builds:
+  default:
+    entry: hopf_01.ato:HOPF01Panel

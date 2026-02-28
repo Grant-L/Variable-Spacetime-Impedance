@@ -1,4 +1,0 @@
-requires-atopile: ">=0.2.0"
-builds:
-  default:
-    entry: elec.ato:HOPF_01_Antenna_Panel
