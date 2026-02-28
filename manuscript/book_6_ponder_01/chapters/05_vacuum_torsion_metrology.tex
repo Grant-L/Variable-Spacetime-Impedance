@@ -98,34 +98,9 @@ The history of anomalous thrust claims is littered with artifacts. Each known ar
     \item \textbf{Statistical Significance:} Each measurement consists of $\geq 100$ on/off cycles (HV drive enabled/disabled, 30 s per state). The mean thrust is extracted via lock-in analysis at the switching frequency. The null hypothesis (zero thrust) is rejected only if $\chi^2$ exceeds $p < 0.001$ (99.9\% confidence). The entire dataset is published in raw form for independent reanalysis.
 \end{enumerate}
 
-\section{HOPF-01 S$_{11}$ Prediction (Chiral Antenna Verification)}
+\section{Complementary Electromagnetic Verification}
 
-The HOPF-01 experiment provides a complementary, purely electromagnetic falsification test. A $(p,q)$ torus knot antenna trace on standard FR-4 PCB ($\varepsilon_r \approx 4.3$) is measured with a Vector Network Analyzer (VNA).
-
-Standard Maxwell electrodynamics predicts the resonant frequency based solely on the trace geometry and substrate permittivity:
-\begin{equation}
-    f_{std} = \frac{c}{2\pi L_{trace} \sqrt{\varepsilon_r}}
-\end{equation}
-
-The AVE framework predicts an additional chiral coupling correction:
-\begin{equation}
-    n_{AVE} = \sqrt{\varepsilon_r}\left(1 + \alpha \frac{pq}{p+q}\right)
-\end{equation}
-where the dimensionless correction $\alpha pq/(p+q)$ arises from the topological winding coupling the trace geometry to the intrinsic chirality of the vacuum lattice.
-
-For the $(3,11)$ torus knot on a 150 mm trace:
-\begin{center}
-\begin{tabular}{|l|c|c|}
-\hline
-Quantity & Standard Maxwell & AVE Prediction \\ \hline
-Effective index & 2.0736 & 2.1093 \\
-Resonant frequency & 153.40 MHz & 150.80 MHz \\
-Frequency shift & --- & $-2.6$ MHz ($17{,}000$ ppm) \\
-S$_{11}$ anomalous dip & None predicted & $-0.003$ dB \\ \hline
-\end{tabular}
-\end{center}
-
-The 2.6 MHz shift is easily resolvable with a \$70 NanoVNA. However, separating the chiral contribution from manufacturing tolerances (trace width, substrate $\varepsilon_r$ variation) requires comparing multiple knot topologies. If the frequency shift scales exactly as $pq/(p+q)$ across $(2,3)$, $(2,5)$, $(3,7)$, and $(3,11)$ knots fabricated on the same PCB panel, the systematic scaling law confirms the topological coupling.
+In parallel with the mechanical thrust measurement, the HOPF-01 chiral antenna experiment (Chapter~\ref{ch:hopf_01}) provides an independent, purely electromagnetic falsification channel. If the S$_{11}$ frequency shift scales as $\alpha \cdot pq/(p+q)$ across all four torus knot topologies on a single PCB panel, the chiral vacuum coupling is confirmed without requiring any mechanical measurement. Gate G6 in the decision table below reflects this complementary test.
 
 \section{Measurement Timeline and Decision Gates}
 

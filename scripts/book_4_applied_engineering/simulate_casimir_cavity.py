@@ -128,7 +128,7 @@ def plot_casimir_proof(rmss, t_inside, t_outside, out_path):
 
 if __name__ == "__main__":
     PROJECT_ROOT = Path(__file__).parent.parent.parent
-    out_dir = PROJECT_ROOT / "scripts" / "assets" / "sim_outputs"
+    out_dir = PROJECT_ROOT / "assets" / "sim_outputs"
     os.makedirs(out_dir, exist_ok=True)
     
     rmss, t_in, t_out = simulate_casimir_cavity()

@@ -112,7 +112,8 @@ def parse_and_solve_cir(filepath, freqs):
 from scipy.signal import find_peaks
 
 if __name__ == "__main__":
-    cir_dir = Path("../../assets/sim_outputs/spice_models")
+    PROJECT_ROOT = Path(__file__).parent.parent.parent
+    cir_dir = PROJECT_ROOT / "assets" / "sim_outputs" / "spice_models"
     cir_files = glob.glob(str(cir_dir / "*_ave.cir"))
     
     # 300 cm-1 to 4000 cm-1 (convert to Hz: c * cm-1 * 100)

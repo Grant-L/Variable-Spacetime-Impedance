@@ -14,8 +14,7 @@ def _find_repo_root():
 
 OUTPUT_DIR = os.path.join(_find_repo_root(), "assets", "sim_outputs")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
-# --- End standard output directory ---, "outputs")
-os.makedirs(OUTPUT_DIR, exist_ok=True)
+# --- End standard output directory ---
 
 def simulate_transmission_line():
     N_nodes = 100

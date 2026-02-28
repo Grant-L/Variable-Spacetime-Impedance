@@ -11,10 +11,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pathlib
 
-project_root = pathlib.Path(__file__).parent.parent.absolute()
-sys.path.append(str(project_root))
+project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
+sys.path.append(str(project_root / "scripts"))
 
-from scripts.simulate_saturn_rings import simulate_rings
+from book_3_macroscopic_continuity.simulate_saturn_rings import simulate_rings
 
 def analyze_ring_impedance():
     print("[*] Evolving topological test-nodes...")

@@ -189,10 +189,7 @@ output_path = os.path.join(output_dir, "protein_spice_folding_strain.png")
 plt.savefig(output_path, dpi=300, bbox_inches='tight')
 print(f"Rendered diagnostic graph to: {output_path}")
 
-# Additionally, copy it to the assets folder so the manuscript can see it easily
-asset_path = "assets/sim_outputs/protein_spice_folding_strain.png"
-plt.savefig(asset_path, dpi=300, bbox_inches='tight')
+
 
 plt.close()
 print("Simulation complete.")
-

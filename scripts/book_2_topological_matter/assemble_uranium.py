@@ -16,10 +16,10 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import pathlib
 
-project_root = pathlib.Path(__file__).parent.parent.absolute()
-sys.path.append(str(project_root))
+project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
+sys.path.append(str(project_root / "src"))
 
-from src.ave.simulations.topological_optimizer import TopologicalOptimizer
+from ave.simulations.topological_optimizer import TopologicalOptimizer
 
 # Uranium-235 parameters
 Z = 92 # Protons

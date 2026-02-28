@@ -29,8 +29,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pathlib
 
-project_root = pathlib.Path(__file__).parent.parent.absolute()
-sys.path.append(str(project_root))
+project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
+sys.path.append(str(project_root / "src"))
 
 def simulate_ponder_01_thrust():
     print("[*] Generating Ponder-01 Acoustic Rectification predictions...")

@@ -13,10 +13,10 @@ import sys
 import numpy as np
 import pathlib
 
-project_root = pathlib.Path(__file__).parent.parent.absolute()
-sys.path.append(str(project_root))
+project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
+sys.path.append(str(project_root / "src"))
 
-from src.ave.simulations.topological_optimizer import TopologicalOptimizer
+from ave.simulations.topological_optimizer import TopologicalOptimizer
 
 # AVE Topological Impedance (Macro-Scale structural coupling constant)
 # Low Impedance (< 1.0) maps to compact Alpha-Helix topologies

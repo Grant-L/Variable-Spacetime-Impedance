@@ -25,10 +25,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pathlib
 
-project_root = pathlib.Path(__file__).parent.parent.absolute()
-sys.path.append(str(project_root))
+project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
+sys.path.append(str(project_root / "src"))
 
-from src.ave.core.constants import C_0
+from ave.core.constants import C_0
 
 # Target AVE Signal Amplitude (Estimate from Lead vs. Aluminum 1-meter RLG at 1000 RPM)
 # The density difference generates a microscopic but steady phase offset.

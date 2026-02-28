@@ -114,7 +114,7 @@ def run_3d_annihilation(out_path):
 
 if __name__ == "__main__":
     PROJECT_ROOT = Path(__file__).parent.parent.parent
-    out_dir = PROJECT_ROOT / "scripts" / "assets" / "sim_outputs"
+    out_dir = PROJECT_ROOT / "assets" / "sim_outputs"
     os.makedirs(out_dir, exist_ok=True)
     
     run_3d_annihilation(out_dir / "annihilation_3d_parity.gif")

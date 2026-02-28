@@ -15,8 +15,8 @@ import sys
 import numpy as np
 import pathlib
 
-project_root = pathlib.Path(__file__).parent.parent.absolute()
-sys.path.append(str(project_root))
+project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
+sys.path.append(str(project_root / "src"))
 
 from periodic_table.simulations.simulate_element import get_nucleon_coordinates, K_MUTUAL
 

@@ -17,10 +17,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pathlib
 
-project_root = pathlib.Path(__file__).parent.parent.absolute()
-sys.path.append(str(project_root))
+project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
+sys.path.append(str(project_root / "src"))
 
-from src.ave.simulations.topological_optimizer import TopologicalOptimizer
+from ave.simulations.topological_optimizer import TopologicalOptimizer
 
 M_P = 1.00727
 M_N = 1.00866

@@ -237,8 +237,7 @@ output_path = os.path.join(output_dir, "protein_folding_3d_collapse.png")
 plt.savefig(output_path, dpi=300, facecolor='black', bbox_inches='tight')
 print(f"Rendered diagnostic graph to: {output_path}")
 
-asset_path = "assets/sim_outputs/protein_folding_3d_collapse.png"
-plt.savefig(asset_path, dpi=300, facecolor='black', bbox_inches='tight')
+
 
 plt.close()
 print("Simulation complete.")

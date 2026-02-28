@@ -72,7 +72,7 @@ def simulate_percolation_threshold():
     ax.grid(True, alpha=0.2)
     
     # Save the output
-    output_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../assets/sim_outputs/simulate_rigidity_percolation.png'))
+    output_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../assets/sim_outputs/rigidity_percolation_kg_convergence.png'))
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     plt.savefig(output_path, dpi=300, facecolor=fig.get_facecolor())
     
