@@ -210,7 +210,3 @@ PROTON_ELECTRON_RATIO: float = _X_CORE + 1.0
 # Mass-stiffened nuclear tension  T_nuc = T_EM · (m_p/m_e)
 T_NUC: float = T_EM * PROTON_ELECTRON_RATIO
 
-# Ideal ropelength of a 3_1 trefoil knot (mathematical constant).
-# Used in baryon sector / HOPF-01 antenna geometry, not the electron
-# ground-state (which is an unknot with ropelength 2π).
-ROPELENGTH_3_1: float = 16.37
