@@ -140,10 +140,46 @@ def _s11_loss(coords_flat, z_topo, N, kappa=0.1):
     d_phys_arr = jnp.array([dists[i, i+1] for i in range(N-1)])  # (N-1,)
     Y_shunt_arr = Y_shunt[1:]                     # (N-1,) shunts at nodes 1..N-1
 
+    # --- Chirality: Non-Reciprocal Phase ---
+    # The AVE vacuum lattice (SRS/K4 net) is intrinsically chiral.
+    # L-amino acids fold into RIGHT-handed α-helices. In TL terms,
+    # this is a non-reciprocal phase: the backbone acts like a
+    # ferrite-loaded waveguide with preferred propagation direction.
+    #
+    # Detection: triple product of 3 consecutive bond vectors
+    #   χ_i = (b_{i-1} × b_i) · b_{i+1}
+    #   χ > 0 → right-handed twist (favoured)
+    #   χ < 0 → left-handed twist (penalised)
+    #
+    # Phase correction: β_eff = β₀ - δ_chiral × tanh(χ / χ_scale)
+    # Right-handed → lower effective β → lower S₁₁
+    delta_chiral = 0.05  # radians — small perturbation
+    chi_scale = 5.0      # Å³ — normalisation for triple product
+
+    # Bond vectors (N-1 vectors)
+    bonds = coords[1:] - coords[:-1]  # (N-1, 3)
+
+    # Triple product at each interior segment: (b_{i} × b_{i+1}) · b_{i+2}
+    # for segments i = 0..N-4, giving N-3 values
+    # Pad to N-1 with zeros for terminal segments
+    cross = jnp.cross(bonds[:-2], bonds[1:-1])       # (N-3, 3)
+    triple = jnp.sum(cross * bonds[2:], axis=1)       # (N-3,)
+    # Smooth chirality signal
+    chi_signal = jnp.tanh(triple / chi_scale)          # [-1, 1]
+
+    # Helix propensity: chirality matters most for low-Z (helix-forming) residues
+    # For high-Z (sheet), chirality correction is suppressed
+    z_avg_seg = 0.5 * (z_mag[:-1] + z_mag[1:])        # (N-1,)
+    helix_weight = jnp.clip(1.0 - z_avg_seg / 2.0, 0.0, 1.0)  # 1 for Z<1, 0 for Z>2
+
+    # Pad chi_signal to N-1 (terminal segments get zero chirality)
+    chi_padded = jnp.concatenate([jnp.array([0.0]), chi_signal, jnp.array([0.0])])
+    chiral_correction = delta_chiral * chi_padded * helix_weight[:]  # (N-1,)
+
     # --- Multi-frequency S₁₁ via lax.fori_loop ---
     def s11_at_freq(freq):
         w = 2.0 * jnp.pi * freq
-        beta_l_arr = w * d_phys_arr / d0
+        beta_l_arr = w * d_phys_arr / d0 - chiral_correction  # Non-reciprocal phase
         cos_arr = jnp.cos(beta_l_arr)
         sin_arr = jnp.sin(beta_l_arr)
 

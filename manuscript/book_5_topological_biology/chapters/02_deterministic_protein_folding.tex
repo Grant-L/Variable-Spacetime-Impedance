@@ -376,6 +376,14 @@ where $Z_i = R_i + jX_i$ is now a \emph{complex} topological impedance. The real
 \end{equation}
 This ensures that resistive (hydrophobic) coupling dominates ($\sim 85\%$) with reactive (electrostatic) coupling as a perturbation ($\sim 15\%$). The conjugate product $\operatorname{Re}(Z_i Z_j^*) = R_i R_j + X_i X_j$ is positive for hydrophobic pairing ($R \times R$) and salt bridges ($+jX \times -jX$), and negative for like-charge repulsion---which is clamped to zero since shunt admittance is physically non-negative. The force on each residue is $\mathbf{F}_i = -\partial E / \partial \mathbf{r}_i$, computed via JAX automatic differentiation.
 
+\paragraph{Chirality: Non-Reciprocal Phase.}
+The AVE vacuum lattice (SRS/K4 net) is intrinsically chiral, and L-amino acids fold exclusively into right-handed $\alpha$-helices. In transmission line terms, the backbone is a \emph{non-reciprocal waveguide}: the lattice chirality creates a preferred propagation direction, analogous to a ferrite-loaded waveguide in microwave engineering. The chirality enters the ABCD cascade as a phase correction to the electrical length:
+\begin{equation}
+    \beta_{\text{eff}} = \beta_0 - \delta_{\chi} \cdot w_{\text{helix}} \cdot \tanh\!\left(\frac{\chi_i}{\chi_0}\right), \quad \chi_i = (\mathbf{b}_{i} \times \mathbf{b}_{i+1}) \cdot \mathbf{b}_{i+2}
+    \label{eq:chirality}
+\end{equation}
+where $\mathbf{b}_i = \mathbf{r}_{i+1} - \mathbf{r}_i$ are bond vectors, $\chi_i$ is the scalar triple product (positive for right-handed twist, negative for left-handed), $\delta_\chi = 0.05$~rad is the chiral phase depth, $\chi_0 = 5$~\AA$^3$ is the normalisation scale, and $w_{\text{helix}} = \max(0, 1 - \bar{Z}/2)$ suppresses the chirality correction for non-helical (sheet-forming) segments where handedness is irrelevant. The $\tanh$ saturates the chirality signal to $[-1, 1]$, preventing large distortions from dominating the gradient.
+
 \begin{table}[H]
 \centering
 \caption{RMSD comparison: eight-force engine vs $S_{11}$ minimiser with conjugate impedance matching and solvent boundary.  The $S_{11}$ engine uses zero force constants---every structural feature emerges from impedance matching.}
@@ -460,6 +468,7 @@ Helix segment & Amplifier stage (matched TL section) & Uniform $Z_{topo}$ segmen
 Turn residue (Gly, Pro) & Inter-stage matching network & Impedance discontinuity ($Z$ ratio $> 4\times$) \\
 Multi-helix bundle & Multistage amplifier cascade & $N$-pole coupled resonator \\
 Solvent-accessible surface & Parasitic capacitance to ground & $\sum_i Y_{\text{solv},i}$ \\
+L-amino acid chirality & Non-reciprocal waveguide (ferrite phase) & $\beta_{\text{eff}} = \beta_0 - \delta_\chi \tanh(\chi/\chi_0)$ \\
 $\alpha$-helix & Helical slow-wave structure & Right-handed coiled delay line \\
 $\beta$-sheet & Coupled stripline array & Antiparallel microstrip pair \\
 \bottomrule
