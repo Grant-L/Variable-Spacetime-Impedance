@@ -364,28 +364,33 @@ We replace all eight forces with a single objective function:
     E(\mathbf{r}) = |S_{11}(\mathbf{r})|^2 \quad \text{where } S_{11} = \frac{A + B/Z_0 - CZ_0 - D}{A + B/Z_0 + CZ_0 + D}
     \label{eq:s11_energy}
 \end{equation}
-and the ABCD matrix is the cascaded product of backbone sections with \emph{geometry-dependent shunt coupling}:
+and the ABCD matrix is the cascaded product of backbone sections with \emph{conjugate impedance matching}:
 \begin{equation}
-    Y_{ij}^{\text{shunt}} = \frac{\kappa}{d_{ij}^2} \cdot \frac{1}{1 + |Z_i - Z_j|} \qquad \text{for } |i - j| > 2, \; d_{ij} < 15\,\text{\AA}
+    Y_{ij}^{\text{shunt}} = \frac{\kappa}{d_{ij}^2} \cdot \max\!\left(0,\; \frac{\operatorname{Re}(Z_i \, Z_j^*)}{|Z_i|\,|Z_j|}\right) \qquad \text{for } |i - j| > 2, \; d_{ij} < 15\,\text{\AA}
     \label{eq:shunt_coupling}
 \end{equation}
-The impedance matching factor $1/(1 + |Z_i - Z_j|)$ rewards spatial proximity between residues of similar $Z_{topo}$ (``like attracts like'' in impedance space). The force on each residue is $\mathbf{F}_i = -\partial E / \partial \mathbf{r}_i$, computed via central finite differences.
+where $Z_i = R_i + jX_i$ is now a \emph{complex} topological impedance. The real part $R_i$ encodes hydrophobic character (sidechain volume), while the imaginary part $X_i$ encodes charge reactance (positive/inductive for K, R; negative/capacitive for D, E). The reactive component is scaled by $1/Q$ where $Q \approx 7$ is the backbone amide-V resonator quality factor ($f_0 = 23$ THz, $\Delta f \approx 3.3$ THz):
+\begin{equation}
+    X_i = \frac{R_i}{Q}, \quad Q = \frac{f_0}{\Delta f} \approx 7
+    \label{eq:q_factor}
+\end{equation}
+This ensures that resistive (hydrophobic) coupling dominates ($\sim 85\%$) with reactive (electrostatic) coupling as a perturbation ($\sim 15\%$). The conjugate product $\operatorname{Re}(Z_i Z_j^*) = R_i R_j + X_i X_j$ is positive for hydrophobic pairing ($R \times R$) and salt bridges ($+jX \times -jX$), and negative for like-charge repulsion---which is clamped to zero since shunt admittance is physically non-negative. The force on each residue is $\mathbf{F}_i = -\partial E / \partial \mathbf{r}_i$, computed via JAX automatic differentiation.
 
 \begin{table}[H]
 \centering
-\caption{RMSD comparison: eight-force engine vs $S_{11}$ minimiser.  The $S_{11}$ engine uses zero force constants---every structural feature emerges from impedance matching.}
+\caption{RMSD comparison: eight-force engine vs $S_{11}$ minimiser with conjugate impedance matching and solvent boundary.  The $S_{11}$ engine uses zero force constants---every structural feature emerges from impedance matching.}
 \label{tab:s11_comparison}
 \small
 \begin{tabular}{@{}l c r r r r@{}}
 \toprule
-\textbf{Peptide} & \textbf{PDB} & \textbf{8-Force ({\AA})} & \textbf{$S_{11}$ ({\AA})} & \textbf{$\Delta$} & $R_g^{S_{11}} / R_g^{\text{PDB}}$ \\
+\textbf{Peptide} & \textbf{PDB} & \textbf{8-Force ({\AA})} & \textbf{$S_{11}$+Solvent ({\AA})} & \textbf{$\Delta$} & $R_g^{S_{11}} / R_g^{\text{PDB}}$ \\
 \midrule
-Chignolin  & 5AWL & 4.34 & \textbf{2.27} & $-47\%$ & 5.6 / 4.8 \\
-Trpzip2    & 1LE1 & 5.58 & \textbf{5.43} & $-3\%$  & 6.2 / 5.8 \\
-Trp-cage   & 1L2Y & 6.56 & \textbf{5.74} & $-12\%$ & 6.8 / 7.0 \\
-Villin     & 1YRF & 7.31 & 9.26           & $+27\%$ & 12.2 / 8.9 \\
+Chignolin  & 5AWL & 4.34 & \textbf{3.41} & $-21\%$ & 5.5 / 4.8 \\
+Trpzip2    & 1LE1 & 5.58 & \textbf{5.21} & $-7\%$  & 6.4 / 5.8 \\
+Trp-cage   & 1L2Y & 6.56 & \textbf{5.48} & $-16\%$ & 6.8 / 7.0 \\
+Villin     & 1YRF & \textbf{7.31} & 8.43      & $+15\%$ & 10.4 / 8.9 \\
 \midrule
-\textbf{Mean} & & 5.95 & \textbf{5.67} & $-5\%$ & \\
+\textbf{Mean} & & 5.95 & \textbf{5.63} & $-5\%$ & \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -412,9 +417,9 @@ Villin     & 35 & 452.7 & \textbf{6.1}  & $74\times$ \\
 \end{tabular}
 \end{table}
 
-The final engine combines three improvements: (1)~Adam adaptive learning rates (optax), which handle the mixed-scale landscape where some residues need large moves and others need precision; (2)~multi-frequency $S_{11}$ integration over 5 frequencies spanning $0.5$--$2.0 \times \omega_0$, which smooths the loss landscape; and (3)~simulated annealing with quadratic temperature cooldown over the first 50\% of steps, which escapes local minima. Using \texttt{jax.lax.fori\_loop} for the ABCD cascade eliminates Python loop unrolling, reducing JIT compilation to $< 1$~s for all chain lengths.
+The final engine combines five physics layers: (1)~Adam adaptive learning rates (optax), which handle the mixed-scale landscape where some residues need large moves and others need precision; (2)~multi-frequency $S_{11}$ integration over 5 frequencies spanning $0.5$--$2.0 \times \omega_0$, which smooths the loss landscape; (3)~simulated annealing with quadratic temperature cooldown over the first 50\% of steps, which escapes local minima; (4)~conjugate impedance matching with $Q$-factor scaling, which captures salt bridges and hydrophobic pairing through a single coupling formula; and (5)~a solvent impedance boundary, where every exposed residue couples to the aqueous environment ($Z_{\text{H}_2\text{O}} \approx \sqrt{\varepsilon_r} \approx 9$) through a smooth sigmoid parasitic shunt admittance. Using \texttt{jax.lax.fori\_loop} for the ABCD cascade eliminates Python loop unrolling, reducing JIT compilation to $< 1$~s for all chain lengths.
 
-For peptides $N \leq 20$, the $S_{11}$ minimiser achieves consistently lower RMSD than the eight-force engine with zero free parameters. Trp-cage achieves $R_g = 6.9 / 7.0$~\AA\ (99\% match to PDB). For Villin HP35 ($N = 35$), the RMSD of 9.47~\AA\ reflects the absence of explicit tertiary contact constraints; the $S_{11}$ loss itself converges well ($0.27 \to 0.015$), but the mapping from impedance match to 3D geometry requires additional non-local contact forces for proteins with complex tertiary folds.
+For peptides $N \leq 20$, the $S_{11}$ minimiser achieves consistently lower RMSD than the eight-force engine with zero free parameters. Trp-cage achieves $R_g = 6.8 / 7.0$~\AA\ (97\% match to PDB). For Villin HP35 ($N = 35$), the solvent impedance boundary reduces the RMSD from 9.5~\AA\ to 8.4~\AA\ and compresses $R_g$ from 12.2 to 10.4~\AA\ (PDB = 8.9~\AA). The remaining gap reflects the difficulty of tertiary topology: the $S_{11}$ loss converges well, but the 3-helix bundle packing requires longer-range correlations that the current pairwise shunt coupling does not yet capture.
 
 \section{Translation of Terminology: Biology $\leftrightarrow$ Electrical Engineering}
 \label{sec:terminology}
@@ -448,8 +453,13 @@ Protein folding & Transmission line resonator collapse & Minimise total $S_{11}$
 Native state & Matched load (zero reflection) & Global $U_{\text{total}}$ minimum \\
 Levinthal's paradox & Why doesn't the line ring forever? & Deterministic $Z$-driven gradient \\
 Disulfide bond & Topological short-circuit & Non-local $Z$-match creates loop \\
-Salt bridge (Glu--Lys) & DC bias decoupling capacitor & Charge neutralisation at junction \\
-Solvent (water) & Lossy termination impedance & $Z_{\text{H}_2\text{O}} = R + j\omega L$ \\
+Salt bridge (Glu--Lys) & Conjugate impedance match ($Z_i Z_j^* > 0$) & $\operatorname{Re}(Z_i \cdot Z_j^*) > 0$ \\
+Solvent (water) & Chassis ground (parasitic shunt) & $Y_{\text{solv}} = \text{exposure}_i / Z_{\text{H}_2\text{O}}$ \\
+Hydrophobic burial & Stage shielding from ground & Low exposure $\to$ low $Y_{\text{solv}}$ \\
+Helix segment & Amplifier stage (matched TL section) & Uniform $Z_{topo}$ segment \\
+Turn residue (Gly, Pro) & Inter-stage matching network & Impedance discontinuity ($Z$ ratio $> 4\times$) \\
+Multi-helix bundle & Multistage amplifier cascade & $N$-pole coupled resonator \\
+Solvent-accessible surface & Parasitic capacitance to ground & $\sum_i Y_{\text{solv},i}$ \\
 $\alpha$-helix & Helical slow-wave structure & Right-handed coiled delay line \\
 $\beta$-sheet & Coupled stripline array & Antiparallel microstrip pair \\
 \bottomrule
@@ -460,9 +470,9 @@ $\beta$-sheet & Coupled stripline array & Antiparallel microstrip pair \\
 
 \begin{enumerate}
     \item \textbf{Boundary-Zone Residues.} Five amino acids (W, H, R, Y, G) lie in the $Z_{topo} \approx 1.0$--$1.7$ boundary zone. These require corrections for $\pi$-stacking (W, H, Y), multi-conformer sampling (R), and conformational entropy (G).
-    \item \textbf{RMSD $\sim 6$~\AA.} While the model correctly predicts secondary structure type and produces physically realistic $R_g$ values, the per-residue coordinate accuracy (RMSD $\approx 6$~\AA) lags behind empirical methods. The remaining error is dominated by missing forces: disulfide bonds, salt bridges, and explicit backbone hydrogen bond networks beyond $i \to i{+}4$.
-    \item \textbf{No Explicit Solvent.} The hydrophobic coupling force (Eq.~\ref{eq:hydrophobic}) captures the qualitative effect of water, but explicit solvent-mediated hydrogen bonding and dielectric screening would improve accuracy for charged and polar surfaces.
-    \item \textbf{$O(N^2)$ Scaling.} The pairwise force scans scale quadratically ($\sim 1.2$ s/residue at $N = 100$). Spatial hashing or cell lists would be needed for proteins $> 200$ residues.
+    \item \textbf{RMSD $\sim 5.6$~\AA.} The model correctly predicts secondary structure type and produces physically realistic $R_g$ values (Trp-cage $R_g$ within 3\% of PDB), but per-residue coordinate accuracy (mean RMSD $\approx 5.6$~\AA) lags behind empirical methods. The remaining error is dominated by tertiary topology: multi-helix bundles require longer-range correlations beyond pairwise coupling.
+    \item \textbf{Solvent Model Is Implicit.} The sigmoid burial function provides a differentiable approximation to solvent-accessible surface area, but explicit solvent-mediated hydrogen bonding and dielectric screening at the protein--water interface would improve accuracy for charged and polar surfaces.
+    \item \textbf{$O(N^2)$ Scaling.} The pairwise coupling scans scale quadratically. Spatial hashing or cell lists would be needed for proteins $> 200$ residues.
     \item \textbf{Cooperative Effects.} Per-residue $Z_{topo}$ does not account for sequence context. A nearest-neighbour correction $Z_i \to Z_i \cdot g(Z_{i-1}, Z_{i+1})$ could capture cooperativity.
 \end{enumerate}
 
@@ -472,7 +482,7 @@ The eight-force gradient descent framework suggests several concrete next steps:
 
 \begin{itemize}
     \item \textbf{Disulfide Bridge Formation.} Cysteine ($Z_{topo} \approx 1.74$) pairs separated by a loop should form a spontaneous topological short-circuit when both sites impedance-match---creating a non-local constraint that could drive tertiary folding.
-    \item \textbf{Solvent Coupling.} The aqueous environment could be modeled as a lossy transmission line termination $Z_{\text{solvent}}(\omega) = R_{\text{H}_2\text{O}} + j\omega L_{\text{H}_2\text{O}}$, where water's O--H stretching modes ($\sim$3400 cm$^{-1}$) define the loss tangent.
-    \item \textbf{Salt Bridge Formation.} Charged residue pairs (D/E with K/R) at separation $> 5$ residues could form electrostatic contacts, modeled as DC-decoupling capacitors that neutralise junction charge.
+    \item \textbf{Frequency-Dependent Solvent.} The current solvent boundary uses a static $Z_{\text{H}_2\text{O}} = \sqrt{\varepsilon_r}$; extending to a frequency-dependent $Z_{\text{solvent}}(\omega) = R(\omega) + j\omega L(\omega)$, where water's O--H stretching modes ($\sim$3400 cm$^{-1}$) define the loss tangent, would capture dielectric dispersion.
+    \item \textbf{Multi-Scale Coupling.} Tertiary bundle packing (e.g., Villin 3-helix) requires correlations beyond pairwise shunt admittance. A multi-port $S$-parameter model, where impedance discontinuities define port boundaries and inter-port scattering drives segment packing, could resolve this.
     \item \textbf{Sequence-Context $Z_{topo}$.} A nearest-neighbour modulation $Z_i \cdot g(Z_{i\pm1})$ could capture helix-capping, $\beta$-sheet nucleation, and turn propensities that emerge from cooperative sequence effects.
 \end{itemize}
