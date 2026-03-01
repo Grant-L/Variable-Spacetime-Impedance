@@ -31,12 +31,16 @@ def get_group_name(group):
 
 
 def generate_table():
-    json_path = os.path.join(os.path.dirname(__file__), "..", "elements.json")
+    # Resolve paths relative to repo root (this script lives at scripts/periodic_table/)
+    REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+    PT_ROOT = os.path.join(REPO_ROOT, "periodic_table")
+    
+    json_path = os.path.join(PT_ROOT, "elements.json")
     with open(json_path, "r") as f:
         elements = json.load(f)
         
-    out_dir_tex = os.path.join(os.path.dirname(__file__), "..", "chapters")
-    out_dir_sim = os.path.join(os.path.dirname(__file__), "..", "simulations", "outputs")
+    out_dir_tex = os.path.join(PT_ROOT, "chapters")
+    out_dir_sim = os.path.join(PT_ROOT, "simulations", "outputs")
     
     os.makedirs(out_dir_tex, exist_ok=True)
     os.makedirs(out_dir_sim, exist_ok=True)
@@ -107,7 +111,7 @@ The theoretical split between Nuclear Topology and Orbital Knot Topology represe
     print(f"\n[*] Catalog generated at: {catalog_file_path}")
 
     # Clean up main.tex (Remove the 100+ includes, insert the single catalog)
-    main_tex_path = os.path.join(os.path.dirname(__file__), "..", "main.tex")
+    main_tex_path = os.path.join(PT_ROOT, "main.tex")
     with open(main_tex_path, "r") as f:
         main_content = f.read()
         

@@ -3,8 +3,8 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from periodic_table.simulations.simulate_element import calculate_topological_mass, get_nucleon_coordinates, M_P_RAW, M_N_RAW, K_MUTUAL
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'scripts', 'periodic_table')))
+from simulations.simulate_element import calculate_topological_mass, get_nucleon_coordinates, M_P_RAW, M_N_RAW, K_MUTUAL
 
 def compute_topology(Z, A):
     N = A - Z

@@ -3,11 +3,11 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Add the project root to sys.path so we can import periodic_table.simulations
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+# Add the scripts/periodic_table path so we can import simulations
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'scripts', 'periodic_table')))
 
 # Import exactly what simulate_element uses to ensure mathematical fidelity
-from periodic_table.simulations.simulate_element import get_nucleon_coordinates, K_MUTUAL
+from simulations.simulate_element import get_nucleon_coordinates, K_MUTUAL
 
 def calculate_network_parameters(Z, A):
     """
