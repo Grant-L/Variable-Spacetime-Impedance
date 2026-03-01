@@ -27,6 +27,16 @@ from scipy.spatial.distance import cdist
 project_root = pathlib.Path(__file__).parent.parent.absolute()
 sys.path.append(str(project_root))
 
+# JAX GPU acceleration (graceful fallback to numpy)
+try:
+    import jax
+    import jax.numpy as jnp
+    from jax import jit
+    jax.config.update("jax_enable_x64", True)
+    _HAS_JAX = True
+except ImportError:
+    _HAS_JAX = False
+
 # Simulation Parameters
 N_PARTICLES = 250
 BOX_SIZE = 100.0
@@ -45,25 +55,17 @@ def initialize_gas_cloud():
     return pos, vel
 
 def compute_newtonian_accelerations(pos):
-    """Standard Lambda-CDM 1/r^2 collisionless gravity."""
-    acc = np.zeros_like(pos)
-    epsilon = 2.0 # Softening
-    
-    for i in range(N_PARTICLES):
-        vec = pos - pos[i]
-        dist_sq = np.sum(vec**2, axis=1) + epsilon**2
-        dist = np.sqrt(dist_sq)
-        
-        # F = G / r^2 calculation
-        force_mag = G_NEWTON / (dist**2)
-        # Avoid self-interaction
-        force_mag[i] = 0.0 
-        
-        # force_vec = mag * (dir_vec / dist)
-        # acc[i] = sum(force_vec)
-        f_vec = force_mag[:, np.newaxis] * (vec / dist[:, np.newaxis])
-        acc[i] = np.sum(f_vec, axis=0)
-        
+    """Standard Lambda-CDM 1/r^2 collisionless gravity — fully vectorized."""
+    epsilon = 2.0
+    # r_vec[i,j] = pos[j] - pos[i]  shape: (N, N, 2)
+    r_vec = pos[np.newaxis, :, :] - pos[:, np.newaxis, :]
+    dist_sq = np.sum(r_vec**2, axis=2) + epsilon**2
+    dist = np.sqrt(dist_sq)
+    # F = G / r^2
+    f_mag = G_NEWTON / (dist**2)
+    np.fill_diagonal(f_mag, 0.0)
+    # acc[i] = sum_j( f_mag[i,j] * (r_vec[i,j] / dist[i,j]) )
+    acc = np.sum(f_mag[:, :, np.newaxis] * (r_vec / dist[:, :, np.newaxis]), axis=1)
     return acc
 
 def compute_ave_accelerations(pos, vel):
@@ -74,37 +76,29 @@ def compute_ave_accelerations(pos, vel):
     Dense clumps of matter locally lower the impedance, creating an attractive
     'slipstream' that exponentially herds nearby particles inward.
     """
-    # 1. Base Newtonian Gravity
+    # 1. Base Newtonian Gravity (vectorized)
     acc = compute_newtonian_accelerations(pos)
     
     # 2. AVE Macroscopic Inductive 'Sweep'
-    # We locate the center of mass of local density clusters.
-    # The LC network actively drags peripheral matter towards dense topological nodes.
-    
-    # Calculate local density around each particle
     distances = cdist(pos, pos)
     density_radius = 15.0
     densities = np.sum(distances < density_radius, axis=1)
     
-    # Identify the highest density core to act as the primary inductive attractor
     core_idx = np.argmax(densities)
     core_pos = pos[core_idx]
     
-    for i in range(N_PARTICLES):
-        vec_to_core = core_pos - pos[i]
-        dist_to_core = np.linalg.norm(vec_to_core)
-        
-        if dist_to_core > 1.0:
-            # The inductive pull behaves like a rubber band (Hooke's law approximation 
-            # for unbroken transverse metric strain), pulling structure exponentially faster
-            # than standard 1/r^2 gravity.
-            inductive_pull = AVE_INDUCTANCE * (vec_to_core / dist_to_core) * np.log1p(dist_to_core)
-            acc[i] += inductive_pull
-            
-            # Dielectric friction: the LC network saps chaotic transverse kinetic energy,
-            # forcing orbital collapse and rapid accretion.
-            acc[i] -= 0.1 * vel[i] 
-            
+    # Vectorized inductive pull
+    vec_to_core = core_pos[np.newaxis, :] - pos
+    dist_to_core = np.linalg.norm(vec_to_core, axis=1, keepdims=True)
+    dist_to_core_safe = np.maximum(dist_to_core, 1.0)
+    
+    inductive_pull = AVE_INDUCTANCE * (vec_to_core / dist_to_core_safe) * np.log1p(dist_to_core_safe)
+    # Mask particles too close to core
+    mask = (dist_to_core > 1.0).astype(float)
+    acc += inductive_pull * mask
+    # Dielectric friction
+    acc -= 0.1 * vel * mask
+    
     return acc
 
 def run_comparative_accretion():

@@ -24,6 +24,7 @@ import os
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.colors import LinearSegmentedColormap
 
 # Bind to AVE parameters to ensure 100% rigid framework compliance
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
@@ -100,49 +101,54 @@ def generate_warp_metric():
     # Visualization: Empirical Means Test
     # -------------------------------------------------------------
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
-    fig.patch.set_facecolor('black')
+    fig.patch.set_facecolor('#0a0a2e')
     for ax in [ax1, ax2]:
-        ax.set_facecolor('black')
+        ax.set_facecolor('#0a0a2e')
         ax.tick_params(colors='white')
         for spine in ax.spines.values():
-            spine.set_color('white')
+            spine.set_color('#334')
             
-    # Normalize for comparison
+    # Use absolute magnitude for high-contrast heatmaps
     vmax1 = np.max(np.abs(york_time)) * 0.8
     vmax2 = np.max(np.abs(ave_topological_strain)) * 0.8
 
     # Plot 1: Standard Model / GR (Alcubierre)
-    im1 = ax1.imshow(york_time, extent=[-L, L, -L, L], origin='lower', cmap='RdBu_r', vmin=-vmax1, vmax=vmax1)
-    ax1.contour(X, Y, york_time, levels=15, colors='white', alpha=0.3, linewidths=0.5)
+    # Ocean Fire diverging colormap: teal depths → white → crimson → gold
+    AVE_CMAP = LinearSegmentedColormap.from_list('ocean_fire', [
+        '#001520', '#003040', '#207080', '#80b8c8', '#ffffff',
+        '#d09080', '#c04030', '#cc1500', '#e05000', '#f0a020'])
+
+    im1 = ax1.imshow(np.abs(york_time), extent=[-L, L, -L, L], origin='lower', cmap='hot', vmin=0, vmax=vmax1)
+    ax1.contour(X, Y, np.abs(york_time), levels=10, colors='white', alpha=0.25, linewidths=0.5)
     
     # Draw Ship
-    ship = plt.Circle((0, 0), R*0.3, color='gold', fill=False, lw=2, linestyle='--')
+    ship = plt.Circle((0, 0), R*0.3, color='cyan', fill=False, lw=2, linestyle='--')
     ax1.add_patch(ship)
     
-    ax1.set_title(r"Classical General Relativity (Alcubierre Metric)" + "\n" + r"Expansion Scalar (York Time $\theta$)", color='white', pad=15, fontsize=12, fontweight='bold')
+    ax1.set_title(r"Classical General Relativity (Alcubierre Metric)" + "\n" + r"Expansion Scalar $|\theta|$", color='white', pad=15, fontsize=12, fontweight='bold')
     ax1.set_xlabel("Propagating Axis ($x$)", color='white')
     ax1.set_ylabel("Transverse Axis ($y$)", color='white')
     c1 = plt.colorbar(im1, ax=ax1, fraction=0.046, pad=0.04)
     c1.ax.yaxis.set_tick_params(color='white')
     c1.ax.yaxis.set_ticklabels(c1.ax.yaxis.get_ticklabels(), color='white')
-    c1.set_label("Spacetime Expansion (Red) / Compression (Blue)", color='white')
+    c1.set_label("Metric Expansion Magnitude", color='white')
 
     # Plot 2: AVE FDTD Engine (Topological LC Strain)
     # The plot should show exact structural parity (empirical isomorphism)
-    im2 = ax2.imshow(ave_topological_strain, extent=[-L, L, -L, L], origin='lower', cmap='PuOr_r', vmin=-vmax2, vmax=vmax2)
-    ax2.contour(X, Y, ave_topological_strain, levels=15, colors='white', alpha=0.3, linewidths=0.5)
+    im2 = ax2.imshow(np.abs(ave_topological_strain), extent=[-L, L, -L, L], origin='lower', cmap='hot', vmin=0, vmax=vmax2)
+    ax2.contour(X, Y, np.abs(ave_topological_strain), levels=10, colors='white', alpha=0.25, linewidths=0.5)
     
     # Draw Ship
-    ship2 = plt.Polygon([(-R*0.3, -R*0.2), (R*0.4, 0), (-R*0.3, R*0.2)], color='gold', fill=False, lw=2)
+    ship2 = plt.Polygon([(-R*0.3, -R*0.2), (R*0.4, 0), (-R*0.3, R*0.2)], color='cyan', fill=False, lw=2)
     ax2.add_patch(ship2)
     
-    ax2.set_title(r"Applied Vacuum Engineering (PONDER-01 Array)" + "\n" + r"Topological Sheer Strain ($\tau_{zx}$) / Dark Wake", color='white', pad=15, fontsize=12, fontweight='bold')
+    ax2.set_title(r"Applied Vacuum Engineering (PONDER-01 Array)" + "\n" + r"Topological Strain $|\tau_{zx}|$", color='white', pad=15, fontsize=12, fontweight='bold')
     ax2.set_xlabel("Propagating Axis ($x$)", color='white')
     ax2.set_ylabel("Transverse Axis ($y$)", color='white')
     c2 = plt.colorbar(im2, ax=ax2, fraction=0.046, pad=0.04)
     c2.ax.yaxis.set_tick_params(color='white')
     c2.ax.yaxis.set_ticklabels(c2.ax.yaxis.get_ticklabels(), color='white')
-    c2.set_label("Rarefaction Void (Orange) / Bow Shock (Purple)", color='white')
+    c2.set_label("Strain Energy Magnitude", color='white')
 
     # Add bridging textbox
     props = dict(boxstyle='round,pad=0.5', facecolor='black', alpha=0.9, edgecolor='white')

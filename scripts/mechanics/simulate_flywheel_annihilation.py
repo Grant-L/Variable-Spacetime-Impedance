@@ -43,7 +43,7 @@ def main():
     ax.set_facecolor('#050510')
     
     # Render background grid
-    img = ax.imshow(grid.strain_z.T, cmap='inferno', vmin=-1.0, vmax=1.0, origin='lower')
+    img = ax.imshow(np.abs(grid.strain_z.T)**2, cmap='hot', vmin=0, vmax=1.0, origin='lower')
     
     # Node Render (Electron=Blue, Positron=Red)
     scatter = ax.scatter([n.position[0] for n in nodes], [n.position[1] for n in nodes], 

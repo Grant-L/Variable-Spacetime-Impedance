@@ -32,11 +32,11 @@ def main():
     orbit_radius = 12
     orbit_speed = 0.15
     
-    fig, ax = plt.subplots(figsize=(8, 8), facecolor='#050510')
-    ax.set_facecolor('#050510')
+    fig, ax = plt.subplots(figsize=(8, 8), facecolor='#0a0a2e')
+    ax.set_facecolor('#0a0a2e')
     
-    # Colormap showing gravitational strain amplitude (seismic wave in the LC grid)
-    img = ax.imshow(grid.strain_z, cmap='twilight_shifted', vmin=-1.5, vmax=1.5, origin='lower')
+    # Energy density heatmap (strain²) for high contrast
+    img = ax.imshow(grid.strain_z**2, cmap='hot', vmin=0, vmax=2.0, origin='lower')
     ax.axis('off')
     ax.set_title("Gravitational Waves: Inductive Shear in the LC Vacuum", color='white', pad=20, fontsize=14)
 
@@ -63,7 +63,7 @@ def main():
         if 1 < x2 < NX-1 and 1 < y2 < NY-1:
             grid.strain_z[x2, y2] = -2.0 * np.cos(frame * 0.2) # Quadrupole symmetry
             
-        img.set_array(grid.strain_z)
+        img.set_array(grid.strain_z**2)
         return [img]
 
     print("[2] Rendering Quadrupole Inductive Strain Waves...")
@@ -77,15 +77,15 @@ def main():
     print("[3] Slicing final frame for manuscript PDF...")
     final_frame_data = np.copy(grid.strain_z)
     
-    fig_static, ax_static = plt.subplots(figsize=(8, 8), facecolor='#050510')
-    ax_static.set_facecolor('#050510')
-    ax_static.imshow(final_frame_data, cmap='twilight_shifted', vmin=-1.5, vmax=1.5, origin='lower')
+    fig_static, ax_static = plt.subplots(figsize=(8, 8), facecolor='#0a0a2e')
+    ax_static.set_facecolor('#0a0a2e')
+    ax_static.imshow(final_frame_data**2, cmap='hot', vmin=0, vmax=2.0, origin='lower')
     ax_static.axis('off')
     ax_static.set_title("Binary Orbit: Quadrupole LC Strain Radiation", color='white', pad=20, fontsize=14)
     
     os.makedirs('assets/figures', exist_ok=True)
     static_out = 'assets/figures/gravitational_waves_lc_static.pdf'
-    fig_static.savefig(static_out, facecolor='#050510', bbox_inches='tight', dpi=150)
+    fig_static.savefig(static_out, facecolor='#0a0a2e', bbox_inches='tight', dpi=150)
 
     print(f"\n[STATUS: SUCCESS] General Relativity mapped as Applied Vacuum Engineering.")
     print(f"Animated propagation saved to {out_path}")

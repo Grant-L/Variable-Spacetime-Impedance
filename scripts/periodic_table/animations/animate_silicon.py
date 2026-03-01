@@ -39,7 +39,7 @@ fig.patch.set_facecolor('#0f0f0f')
 ax.set_facecolor('#0f0f0f')
 
 density = calculate_vacuum_density(nodes, X, Y, 0.0)
-im = ax.imshow(density, extent=[-bound, bound, -bound, bound], origin='lower', cmap='inferno', alpha=0.9, vmin=0.0)
+im = ax.imshow(density, extent=[-bound, bound, -bound, bound], origin='lower', cmap='hot', alpha=0.9, vmin=0.0)
 
 stream_lines = ax.streamplot(x, y, np.gradient(density)[1], np.gradient(density)[0], color='#aaaaaa', linewidth=1.2, density=1.5, arrowstyle='->', arrowsize=1.5)
 scat = ax.scatter([n[0] for n in nodes], [n[1] for n in nodes], color='#00ffcc', s=80)

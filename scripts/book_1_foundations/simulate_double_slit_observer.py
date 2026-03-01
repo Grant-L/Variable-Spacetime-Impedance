@@ -35,6 +35,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
+from matplotlib.colors import LinearSegmentedColormap
 
 OUT_DIR = os.path.join(os.path.dirname(__file__), '..', '..', 'assets', 'sim_outputs')
 os.makedirs(OUT_DIR, exist_ok=True)
@@ -81,21 +82,28 @@ class DoubleSlit2D:
 
         self.wall_mask = self._build_wall()
 
-        # Observer
+        # Observer = localized impedance change at slit 2
+        # In AVE, a detector IS a physical impedance discontinuity.
+        # Z_local = sqrt(L/C). Changing C at the slit changes c_local = 1/sqrt(LC).
+        # The wave equation naturally handles reflection/transmission/phase shift.
         self.observe_slit = observe_slit
+        self.c2_field = np.ones((nx, ny)) * self.c**2  # uniform vacuum
         if observe_slit:
-            # "Observer" = localized damping at slit 2
-            # This physically models a detector's impedance perturbation
-            self.observer_mask = np.zeros((nx, ny), dtype=float)
             ox = self.wall_x
             oy = self.slit_2
+            # The sensor creates a region of HIGHER stiffness (higher Z)
+            # at slit 2.  Impedance ratio ~4:1 → strong reflection.
+            Z_ratio = 4.0  # observer impedance / vacuum impedance
             for dx in range(-3, 4):
-                for dy in range(-self.slit_w, self.slit_w):
+                for dy in range(-self.slit_w//2, self.slit_w//2):
                     xi = ox + dx
                     yi = oy + dy
                     if 0 <= xi < nx and 0 <= yi < ny:
-                        r = np.sqrt(dx**2 + (dy / self.slit_w * 3)**2) / 3
-                        self.observer_mask[xi, yi] = 0.15 * max(0, 1 - r)
+                        r = np.sqrt(dx**2 + dy**2) / (self.slit_w//2)
+                        if r < 1.0:
+                            # Smooth impedance transition (tapered, not step)
+                            local_Z = 1.0 + (Z_ratio - 1.0) * (1.0 - r)**2
+                            self.c2_field[xi, yi] = self.c**2 * local_Z
 
         # Source parameters
         self.freq = 0.06
@@ -129,8 +137,6 @@ class DoubleSlit2D:
         Vx = self.Vx
         Vy = self.Vy
         d = self.damping
-        mask = self.wall_mask
-        c2 = self.c ** 2
         dt = self.dt
         dx = self.dx
 
@@ -142,11 +148,12 @@ class DoubleSlit2D:
             Vy[:, :-1] -= dt * (P[:, 1:] - P[:, :-1]) / dx
 
             # Hard wall
-            Vx[mask] = 0
-            Vy[mask] = 0
+            Vx[self.wall_mask] = 0
+            Vy[self.wall_mask] = 0
 
-            # Update pressure
-            P[1:-1, 1:-1] -= dt * c2 * (
+            # Update pressure with SPATIALLY VARYING c²
+            # This is the core AVE mechanism: local impedance determines local wave speed
+            P[1:-1, 1:-1] -= dt * self.c2_field[1:-1, 1:-1] * (
                 (Vx[1:-1, 1:-1] - Vx[:-2, 1:-1]) / dx +
                 (Vy[1:-1, 1:-1] - Vy[1:-1, :-2]) / dx
             )
@@ -156,10 +163,6 @@ class DoubleSlit2D:
             Vx *= d
             Vy *= d
 
-            # Observer decoherence (damping at slit 2)
-            if self.observe_slit:
-                P *= (1.0 - self.observer_mask)
-
             # Source: continuous sinusoidal wave
             P[self.source_x, self.source_y] += np.sin(
                 2 * np.pi * self.freq * t) * 2.0
@@ -167,6 +170,9 @@ class DoubleSlit2D:
             # Integrate intensity after transient
             if t > integrate_start:
                 self.intensity += P ** 2
+
+        # Store final signed pressure snapshot for diverging colormap
+        self.final_P = P.copy()
 
         # Normalize
         self.intensity /= np.max(self.intensity) + 1e-30
@@ -199,6 +205,11 @@ def main():
     fig.patch.set_facecolor('#050510')
     gs = GridSpec(1, 3, figure=fig, width_ratios=[1, 1, 0.08], wspace=0.12)
 
+    # Custom AVE colormap: Ocean Fire (teal depths → white → crimson → gold)
+    AVE_CMAP = LinearSegmentedColormap.from_list('ocean_fire', [
+        '#001520', '#003040', '#207080', '#80b8c8', '#ffffff',
+        '#d09080', '#c04030', '#cc1500', '#e05000', '#f0a020'])
+
     for idx, (intensity, sim, title, label) in enumerate([
         (intensity_no_obs, sim_no_obs,
          'No Observer: Coherent Interference',
@@ -208,12 +219,16 @@ def main():
          'Impedance perturbation at slit 2\ndestroys phase coherence → single-slit envelope'),
     ]):
         ax = fig.add_subplot(gs[0, idx])
-        ax.set_facecolor('#050510')
+        ax.set_facecolor('#0a0a1e')
 
-        # Heatmap
-        im = ax.imshow(intensity.T, cmap='inferno', origin='lower',
-                       extent=[0, sim.NX, 0, sim.NY],
-                       vmin=0, vmax=0.25, aspect='auto')
+        # Show time-averaged intensity P² (what a physical detector measures)
+        # PowerNorm(gamma<1) boosts faint fringes for visibility
+        from matplotlib.colors import PowerNorm
+        imax = np.percentile(intensity, 99)
+        imax = max(imax, 1e-6)
+        im = ax.imshow(intensity.T, cmap='hot', origin='lower',
+                       norm=PowerNorm(gamma=0.3, vmin=0, vmax=imax),
+                       extent=[0, sim.NX, 0, sim.NY], aspect='auto')
 
         # Wall overlay
         wall_display = np.ma.masked_where(~sim.wall_mask, np.ones_like(sim.wall_mask, dtype=float))

@@ -1,13 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+import sys
 import pathlib
 
-# Theoretical Constants
-ALPHA = 1.0 / float("137.036") # Fine-structure constant
-V_YIELD = 43650.0 # Volts, theoretical yield
-Z_0 = float("376.73") # Impedance of free spaceuum impedance
-EPSILON_0 = 8.854e-12
+project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
+sys.path.insert(0, str(project_root / "src"))
+
+from ave.core.constants import ALPHA, V_YIELD, Z_0, EPSILON_0
 
 def calculate_effective_permittivity(V_applied):
     """Calculate the non-linear plateau of effective permittivity based on AVE Axiom 4."""

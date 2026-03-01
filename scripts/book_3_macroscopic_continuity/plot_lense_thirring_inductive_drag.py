@@ -47,7 +47,7 @@ def generate_lense_thirring_figure():
     ax1.set_facecolor('#1a1a1f')
 
     # Heatmap of induced angular velocity
-    im = ax1.pcolormesh(X, Y, Omega_ind, cmap='inferno', shading='auto',
+    im = ax1.pcolormesh(X, Y, Omega_ind, cmap='hot', shading='auto',
                         vmin=0, vmax=np.percentile(Omega_ind, 95))
 
     # Streamlines showing the dragging direction

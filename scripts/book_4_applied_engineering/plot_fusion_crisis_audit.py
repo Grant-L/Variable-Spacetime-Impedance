@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
 sys.path.append(str(project_root / "src"))
 
-from ave.core.constants import C_0
+from ave.core.constants import C_0, V_YIELD, V_SNAP
 
 def generate():
     print("[*] Generating Fusion Crisis Audit Figure...")
@@ -26,8 +26,8 @@ def generate():
     fig, axes = plt.subplots(2, 2, figsize=(18, 14))
     fig.patch.set_facecolor('#0f0f12')
 
-    V_sat = 43.65  # kV, Dielectric Saturation limit
-    V_snap = 511.0  # kV, Dielectric Snap (pair production)
+    V_sat = V_YIELD / 1e3  # kV, Dielectric Saturation limit (from engine)
+    V_snap = V_SNAP / 1e3  # kV, Dielectric Snap (pair production)
 
     # --- Panel 1: Tokamak Crisis ---
     ax = axes[0, 0]

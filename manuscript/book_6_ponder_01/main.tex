@@ -73,4 +73,16 @@
 % --- CORE PONDER-01 chapters ---
 \input{chapters/_manifest.tex}
 
+% --- APPENDICES ---
+\appendix
+\renewcommand{\thechapter}{\Alph{chapter}}
+\input{../backmatter/01_appendices.tex}
+\input{../backmatter/02_full_derivation_chain.tex}
+\input{../backmatter/12_mathematical_closure.tex}
+
+% --- BIBLIOGRAPHY ---
+\backmatter
+\bibliographystyle{unsrt}
+\bibliography{../references}
+
 \end{document}

@@ -6,10 +6,9 @@ Double Slit: Dark Wake Visualization
 Shows the INSTANTANEOUS pressure field, not time-averaged intensity.
 This reveals the actual wave mechanics:
 
-  - The soliton (particle) as a bright moving source
+  - The soliton (particle) as a bright moving source aimed at SLIT 1
   - The radial WAKE expanding outward through the lattice
-  - Compression (bright) vs rarefaction (dark) rings
-  - The wake diffracting through both slits
+  - The particle passes through Slit 1; the wake reaches BOTH slits
   - Coherent interference fringes forming on the far side
 
 Three panels:
@@ -31,7 +30,6 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
-from matplotlib.colors import TwoSlopeNorm
 
 OUT_DIR = os.path.join(os.path.dirname(__file__), '..', '..', 'assets', 'sim_outputs')
 os.makedirs(OUT_DIR, exist_ok=True)
@@ -64,9 +62,10 @@ class DarkWakeSim:
         self.slit_2 = ny // 2 + self.slit_sep // 2
         self.wall = self._wall()
 
-        # Observer
-        self.obs_damp = observer_damping
-        self.obs_mask = np.zeros((nx, ny))
+        # Observer = Ohmic load at slit 2 (AVE first principles)
+        # Detector thermalizes wave energy via Joule friction:
+        # W ∝ |∂_t A|² / Z_det.  Direct energy extraction.
+        self.obs_damping = np.zeros((nx, ny))
         if observer_damping > 0:
             ox, oy = self.wall_x, self.slit_2
             for dxi in range(-4, 5):
@@ -74,11 +73,12 @@ class DarkWakeSim:
                     xi, yi = ox + dxi, oy + dyi
                     if 0 <= xi < nx and 0 <= yi < ny:
                         r = np.sqrt(dxi**2 + (dyi / self.slit_w * 3)**2) / 3
-                        self.obs_mask[xi, yi] = observer_damping * max(0, 1 - r)
+                        if r < 1.0:
+                            self.obs_damping[xi, yi] = observer_damping * (1.0 - r)**2
 
-        # Source: particle moving toward slit 1
+        # Source: particle aimed at Slit 1 (AVE: particle through ONE slit)
         self.freq = 0.055
-        self.source_y = ny // 2  # Centered between both slits
+        self.source_y = self.slit_1  # Aimed at Slit 1
         self.particle_speed = 0.22  # Nodes per timestep
         self.source_x_start = 55
 
@@ -123,18 +123,25 @@ class DarkWakeSim:
                 (Vx[1:-1, 1:-1] - Vx[:-2, 1:-1]) / dx +
                 (Vy[1:-1, 1:-1] - Vy[1:-1, :-2]) / dx
             )
+            # Ohmic observer: thermalize ALL field components at detector
+            P *= (1.0 - self.obs_damping)
+            Vx *= (1.0 - self.obs_damping)
+            Vy *= (1.0 - self.obs_damping)
             P *= d
             Vx *= d
             Vy *= d
 
-            if self.obs_damp > 0:
-                P *= (1.0 - self.obs_mask)
-
-            # Moving particle source — continuous sinusoidal emission
+            # Moving particle source — travels through Slit 1 and continues
+            # Wake is generated as particle approaches and traverses the wall.
+            # Source tapers off past the wall (wake already launched).
             px = int(self.source_x_start + t * self.particle_speed)
-            if px < self.NX - self.sponge and px < self.wall_x - 10:
-                # Radial emission pattern (not just point source)
-                amp = np.sin(2 * np.pi * self.freq * t) * 3.0
+            if 0 < px < self.wall_x + 40:
+                # Taper amplitude after passing through wall
+                if px > self.wall_x:
+                    taper = max(0, 1.0 - (px - self.wall_x) / 40.0)
+                else:
+                    taper = 1.0
+                amp = np.sin(2 * np.pi * self.freq * t) * 3.0 * taper
                 P[px, self.source_y] += amp
                 # Small lateral spread to make wake visible
                 for dy in [-2, -1, 1, 2]:
@@ -144,9 +151,9 @@ class DarkWakeSim:
             if t > integrate_start:
                 self.intensity += P**2
 
-            # Save snapshots
+            # Save snapshots — store ENERGY DENSITY |P|² for visible heatmap
             if t % snapshot_interval == 0 and t > 200:
-                self.snapshots.append(P.copy())
+                self.snapshots.append((P**2).copy())
                 self.snapshot_times.append(t)
 
         self.intensity /= np.max(self.intensity) + 1e-30
@@ -169,7 +176,7 @@ def main():
 
     # Run with observer
     print("  Simulating (observer at slit 2)...", flush=True)
-    sim_obs = DarkWakeSim(nx=800, ny=500, observer_damping=0.20)
+    sim_obs = DarkWakeSim(nx=800, ny=500, observer_damping=0.85)
     snaps_obs, intensity_obs = sim_obs.run(steps=steps, snapshot_interval=180)
     print(f"  Done. {len(snaps_obs)} snapshots captured.")
 
@@ -193,18 +200,17 @@ def main():
         snap = snaps_no[pi]
         t_val = sim_no.snapshot_times[pi]
 
-        # Determine symmetric color range
-        vmax = np.percentile(np.abs(snap), 99.5)
+        # Determine color range for heatmap
+        vmax = np.percentile(snap, 99.5)
         if vmax < 1e-10:
             vmax = 1e-3
-        norm = TwoSlopeNorm(vmin=-vmax, vcenter=0, vmax=vmax)
 
-        # Top row: no observer
+        # Top row: no observer — energy density heatmap
         ax = fig.add_subplot(gs[0, col])
         ax.set_facecolor('#050510')
-        im = ax.imshow(snap.T, cmap='RdBu_r', origin='lower',
+        im = ax.imshow(snap.T, cmap='hot', origin='lower',
                        extent=[0, sim_no.NX, 0, sim_no.NY],
-                       norm=norm, aspect='auto')
+                       vmin=0, vmax=vmax, aspect='auto')
 
         # Wall overlay
         wall_vis = np.ma.masked_where(~sim_no.wall, np.ones_like(snap))
@@ -239,16 +245,15 @@ def main():
             snap_o = snaps_obs[-1]
             t_val_o = sim_obs.snapshot_times[-1]
 
-        vmax_o = np.percentile(np.abs(snap_o), 99.5)
+        vmax_o = np.percentile(snap_o, 99.5)
         if vmax_o < 1e-10:
             vmax_o = 1e-3
-        norm_o = TwoSlopeNorm(vmin=-vmax_o, vcenter=0, vmax=vmax_o)
 
         ax2 = fig.add_subplot(gs[1, col])
         ax2.set_facecolor('#050510')
-        ax2.imshow(snap_o.T, cmap='RdBu_r', origin='lower',
+        ax2.imshow(snap_o.T, cmap='hot', origin='lower',
                    extent=[0, sim_obs.NX, 0, sim_obs.NY],
-                   norm=norm_o, aspect='auto')
+                   vmin=0, vmax=vmax_o, aspect='auto')
 
         wall_vis2 = np.ma.masked_where(~sim_obs.wall, np.ones_like(snap_o))
         ax2.imshow(wall_vis2.T, cmap='Greys', alpha=0.95, origin='lower',
@@ -288,7 +293,7 @@ def main():
     # Colorbar
     cbar = fig.colorbar(im, ax=fig.axes, orientation='horizontal',
                         fraction=0.02, pad=0.06, aspect=50)
-    cbar.set_label('Instantaneous Pressure: Compression (Red) ↔ Rarefaction (Blue)',
+    cbar.set_label('Wave Energy Density |P|² — Bright = High Wake Energy',
                    color='white', fontsize=11)
     cbar.ax.tick_params(colors='white')
 
@@ -306,14 +311,13 @@ def main():
     ax_big = fig2.add_subplot(111)
     ax_big.set_facecolor('#050510')
 
-    # Use the last snapshot (maximum interference)
+    # Use the last snapshot (maximum interference) — already energy density
     snap_final = snaps_no[-1]
-    vmax_f = np.percentile(np.abs(snap_final), 99.8)
-    norm_f = TwoSlopeNorm(vmin=-vmax_f, vcenter=0, vmax=vmax_f)
+    vmax_f = np.percentile(snap_final, 99.8)
 
-    ax_big.imshow(snap_final.T, cmap='seismic', origin='lower',
+    ax_big.imshow(snap_final.T, cmap='hot', origin='lower',
                   extent=[0, sim_no.NX, 0, sim_no.NY],
-                  norm=norm_f, aspect='auto', interpolation='bilinear')
+                  vmin=0, vmax=vmax_f, aspect='auto', interpolation='bilinear')
 
     # Wall
     wall_big = np.ma.masked_where(~sim_no.wall,
@@ -331,16 +335,16 @@ def main():
     props = dict(boxstyle='round', facecolor='#111122', alpha=0.9,
                  edgecolor='#ff6666')
     ax_big.text(0.02, 0.95,
-                'RED = compression (positive pressure)\n'
-                'BLUE = rarefaction (negative pressure)\n'
-                'The concentric rings are the DARK WAKE\n'
-                'of the soliton propagating through the\n'
-                'vacuum LC lattice at velocity v < c',
+                'BRIGHT = high wave energy density\n'
+                'The PARTICLE passes through SLIT 1\n'
+                'The radial WAKE reaches BOTH slits\n'
+                'and creates interference fringes\n'
+                'on the far side of the barrier',
                 transform=ax_big.transAxes, fontsize=11, color='white',
                 verticalalignment='top', bbox=props)
 
     ax_big.set_title(
-        'The Dark Wake: Instantaneous Pressure Field of a Soliton',
+        'Particle Through Slit 1: Wake Energy Density Heatmap',
         color='white', fontsize=16, fontweight='bold', pad=12)
     ax_big.set_xlabel('Propagation Axis (nodes)', color='white', fontsize=13)
     ax_big.set_ylabel('Transverse Axis (nodes)', color='white', fontsize=13)

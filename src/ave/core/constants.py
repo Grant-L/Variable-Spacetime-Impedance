@@ -76,6 +76,12 @@ V_SNAP: float = (M_E * C_0**2) / e_charge      # ≈ 511.0 kV
 # Kinetic yield limit  E_k = √α · m_e c²
 E_YIELD_KINETIC: float = np.sqrt(ALPHA) * M_E * C_0**2   # ≈ 43.65 keV (in Joules)
 
+# Kinetic yield limit in the voltage domain  V_yield = √α · V_snap
+# This is the 3D macroscopic dielectric saturation threshold.
+# When a localized topological voltage exceeds V_yield, the vacuum LC
+# network enters the non-linear saturation plateau (ε_eff → 0).
+V_YIELD: float = np.sqrt(ALPHA) * V_SNAP                 # ≈ 43,652 V (43.65 kV)
+
 # Critical electric field (Schwinger limit via AVE)
 # E_crit = m_e² c³ / (eℏ)
 E_CRIT: float = (M_E**2 * C_0**3) / (e_charge * HBAR)

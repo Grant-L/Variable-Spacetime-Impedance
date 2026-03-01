@@ -18,7 +18,10 @@ from matplotlib.colors import LightSource
 
 # Bind into the AVE framework
 sys.path.append(os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')), 'src'))
-from ave.core.fdtd_3d import FDTD3DEngine
+try:
+    from ave.core.fdtd_3d_jax import FDTD3DEngineJAX as FDTD3DEngine
+except ImportError:
+    from ave.core.fdtd_3d import FDTD3DEngine
 
 def generate_slow_motion_density_animation():
     print("[*] Initializing Slow-Motion Topological Animator...")
@@ -68,7 +71,7 @@ def generate_slow_motion_density_animation():
             engine.step()
             
         # Extract the 2D plane and smooth it slightly for rendering aesthetics
-        raw_slice = engine.Ez[:, :, z_slice_idx].copy()
+        raw_slice = np.array(engine.Ez[:, :, z_slice_idx])
         frames_data.append(raw_slice.T) # Transpose for proper X/Y alignment
         sys.stdout.write(f"\r  -> Computed frame {frame+1}/{TOTAL_FRAMES}")
         sys.stdout.flush()
@@ -91,11 +94,12 @@ def generate_slow_motion_density_animation():
     X, Y = np.meshgrid(np.arange(GRID_SIZE), np.arange(GRID_SIZE))
     
     # Calculate global max for stable Z-axis limits
-    v_max = max(np.max(np.abs(frames_data[-1])) / 1.5, 1e-6)
+    v_max = np.nanmax(np.abs(frames_data[-1]))
+    v_max = max(float(v_max) / 1.5, 1e-6) if np.isfinite(v_max) else 1e-6
     
     # Initial Plot Setup
     # Using 'magma' colormap as it creates bright, distinct ripples over a dark floor
-    surf = [ax.plot_surface(X, Y, frames_data[0], cmap='magma', vmin=-v_max, vmax=v_max, rstride=1, cstride=1, antialiased=True, alpha=0.9)]
+    surf = [ax.plot_surface(X, Y, frames_data[0], cmap='hot', vmin=0, vmax=v_max, rstride=1, cstride=1, antialiased=True, alpha=0.9)]
     
     # Draw strictly rigid physical antenna pillars
     for src in antennas:

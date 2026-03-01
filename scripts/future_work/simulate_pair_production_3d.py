@@ -24,6 +24,16 @@ from mpl_toolkits.mplot3d import Axes3D
 import os
 from pathlib import Path
 
+# JAX GPU acceleration (graceful fallback to numpy)
+try:
+    import jax
+    import jax.numpy as jnp
+    from jax import jit
+    jax.config.update("jax_enable_x64", True)
+    _HAS_JAX = True
+except ImportError:
+    _HAS_JAX = False
+
 # 3D Grid Configuration (kept small to prevent memory/CPU overload)
 N = 45 
 C_0 = 0.5
@@ -82,63 +92,105 @@ def simulate_wave_tear():
     frames_neg_y = []
     frames_neg_z = []
 
-    for t in range(T_MAX):
-        # 1. Update 3D Linear Vector Wave Equation
-        Ux_next = 2*Ux - Ux_prev + (C_0**2) * laplacian(Ux)
-        Uy_next = 2*Uy - Uy_prev + (C_0**2) * laplacian(Uy)
-        Uz_next = 2*Uz - Uz_prev + (C_0**2) * laplacian(Uz)
-        
-        # 2. Inject planar transverse wave at the left boundary
-        if t < 20:
-             Uy_next += inject_gamma_ray(t) * 0.1
-        
-        # 3. Apply extreme rigid nucleus impedance (total linear scatter)
-        Ux_next[nucleus_mask] = 0
-        Uy_next[nucleus_mask] = 0
-        Uz_next[nucleus_mask] = 0
-        
-        # Calculate localized spatial velocity (V)
-        Vx = Ux_next - Ux
-        Vy = Uy_next - Uy
-        Vz = Uz_next - Uz
-        
-        # 4. Calculate explicitly the 3D Curl (\nabla \times V)
-        curl_x = grad_central(Vz, 1) - grad_central(Vy, 2)
-        curl_y = grad_central(Vx, 2) - grad_central(Vz, 0)
-        curl_z = grad_central(Vy, 0) - grad_central(Vx, 1)
-        
-        # 5. Extract strictly the Kinetic Helicity (H = V \cdot Curl(V))
-        # This mathematically deletes the standard planar wave (H=0) and leaves ONLY the torn topological knots (H \neq 0).
-        H = Vx*curl_x + Vy*curl_y + Vz*curl_z
-        
-        # Due to numerical scatter, we enforce a strict H threshold to isolate the primary dipoles
-        threshold = 1.0e-5
-        
-        pos_mask = H > threshold
-        neg_mask = H < -threshold
-        
-        pos_coords = np.where(pos_mask)
-        neg_coords = np.where(neg_mask)
-        
-        frames_pos_x.append(pos_coords[0])
-        frames_pos_y.append(pos_coords[1])
-        frames_pos_z.append(pos_coords[2])
-        
-        frames_neg_x.append(neg_coords[0])
-        frames_neg_y.append(neg_coords[1])
-        frames_neg_z.append(neg_coords[2])
-        
-        # Step forward
-        Ux_prev = np.copy(Ux)
-        Uy_prev = np.copy(Uy)
-        Uz_prev = np.copy(Uz)
-        
-        Ux = np.copy(Ux_next)
-        Uy = np.copy(Uy_next)
-        Uz = np.copy(Uz_next)
-        
-        if t % 10 == 0:
-            print(f" Simulating Frame {t}/{T_MAX}...")
+    if _HAS_JAX:
+        Ux_j = jnp.array(Ux)
+        Uy_j = jnp.array(Uy)
+        Uz_j = jnp.array(Uz)
+        Ux_p = jnp.array(Ux_prev)
+        Uy_p = jnp.array(Uy_prev)
+        Uz_p = jnp.array(Uz_prev)
+        nuc_j = jnp.array(nucleus_mask)
+
+        def _lap(A):
+            return (jnp.roll(A, 1, axis=0) + jnp.roll(A, -1, axis=0) +
+                    jnp.roll(A, 1, axis=1) + jnp.roll(A, -1, axis=1) +
+                    jnp.roll(A, 1, axis=2) + jnp.roll(A, -1, axis=2) - 6*A)
+
+        @jit
+        def _step(Ux, Uy, Uz, Ux_prev, Uy_prev, Uz_prev):
+            Ux_next = 2*Ux - Ux_prev + (C_0**2) * _lap(Ux)
+            Uy_next = 2*Uy - Uy_prev + (C_0**2) * _lap(Uy)
+            Uz_next = 2*Uz - Uz_prev + (C_0**2) * _lap(Uz)
+            Ux_next = jnp.where(nuc_j, 0.0, Ux_next)
+            Uy_next = jnp.where(nuc_j, 0.0, Uy_next)
+            Uz_next = jnp.where(nuc_j, 0.0, Uz_next)
+            return Ux_next, Uy_next, Uz_next
+
+        for t in range(T_MAX):
+            Ux_n, Uy_n, Uz_n = _step(Ux_j, Uy_j, Uz_j, Ux_p, Uy_p, Uz_p)
+            if t < 20:
+                Uy_n = Uy_n + jnp.array(inject_gamma_ray(t)) * 0.1
+
+            # Extract helicity on host
+            Vx = np.array(Ux_n - Ux_j)
+            Vy = np.array(Uy_n - Uy_j)
+            Vz = np.array(Uz_n - Uz_j)
+
+            curl_x = grad_central(Vz, 1) - grad_central(Vy, 2)
+            curl_y = grad_central(Vx, 2) - grad_central(Vz, 0)
+            curl_z = grad_central(Vy, 0) - grad_central(Vx, 1)
+            H = Vx*curl_x + Vy*curl_y + Vz*curl_z
+
+            threshold = 1.0e-5
+            pos_coords = np.where(H > threshold)
+            neg_coords = np.where(H < -threshold)
+
+            frames_pos_x.append(pos_coords[0])
+            frames_pos_y.append(pos_coords[1])
+            frames_pos_z.append(pos_coords[2])
+            frames_neg_x.append(neg_coords[0])
+            frames_neg_y.append(neg_coords[1])
+            frames_neg_z.append(neg_coords[2])
+
+            Ux_p = Ux_j
+            Uy_p = Uy_j
+            Uz_p = Uz_j
+            Ux_j = Ux_n
+            Uy_j = Uy_n
+            Uz_j = Uz_n
+
+            if t % 10 == 0:
+                print(f" Simulating Frame {t}/{T_MAX}...")
+    else:
+        for t in range(T_MAX):
+            Ux_next = 2*Ux - Ux_prev + (C_0**2) * laplacian(Ux)
+            Uy_next = 2*Uy - Uy_prev + (C_0**2) * laplacian(Uy)
+            Uz_next = 2*Uz - Uz_prev + (C_0**2) * laplacian(Uz)
+            if t < 20:
+                 Uy_next += inject_gamma_ray(t) * 0.1
+            Ux_next[nucleus_mask] = 0
+            Uy_next[nucleus_mask] = 0
+            Uz_next[nucleus_mask] = 0
+
+            Vx = Ux_next - Ux
+            Vy = Uy_next - Uy
+            Vz = Uz_next - Uz
+
+            curl_x = grad_central(Vz, 1) - grad_central(Vy, 2)
+            curl_y = grad_central(Vx, 2) - grad_central(Vz, 0)
+            curl_z = grad_central(Vy, 0) - grad_central(Vx, 1)
+            H = Vx*curl_x + Vy*curl_y + Vz*curl_z
+
+            threshold = 1.0e-5
+            pos_coords = np.where(H > threshold)
+            neg_coords = np.where(H < -threshold)
+
+            frames_pos_x.append(pos_coords[0])
+            frames_pos_y.append(pos_coords[1])
+            frames_pos_z.append(pos_coords[2])
+            frames_neg_x.append(neg_coords[0])
+            frames_neg_y.append(neg_coords[1])
+            frames_neg_z.append(neg_coords[2])
+
+            Ux_prev = np.copy(Ux)
+            Uy_prev = np.copy(Uy)
+            Uz_prev = np.copy(Uz)
+            Ux = np.copy(Ux_next)
+            Uy = np.copy(Uy_next)
+            Uz = np.copy(Uz_next)
+
+            if t % 10 == 0:
+                print(f" Simulating Frame {t}/{T_MAX}...")
 
     return frames_pos_x, frames_pos_y, frames_pos_z, frames_neg_x, frames_neg_y, frames_neg_z
 

@@ -28,7 +28,10 @@ import numpy as np
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'src')))
 
-from ave.core.fdtd_3d import FDTD3DEngine
+try:
+    from ave.core.fdtd_3d_jax import FDTD3DEngineJAX as FDTD3DEngine
+except ImportError:
+    from ave.core.fdtd_3d import FDTD3DEngine
 from ave.core.constants import C_0, EPSILON_0
 
 # ====================================================================
@@ -119,7 +122,7 @@ def run_simulation(linear_only, label):
         # Inject sawtooth drive: E_x = V / dx across the slab entrance
         v_t = build_sawtooth(t, FREQ, V_DRIVE, SAWTOOTH_RISE)
         e_drive = v_t / DX  # V/m
-        eng.Ex[drive_x, drive_y, drive_z] = e_drive
+        eng.Ex = eng.Ex.at[drive_x, drive_y, drive_z].set(e_drive)
 
         eng.step()
 

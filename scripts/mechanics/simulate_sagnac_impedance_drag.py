@@ -28,7 +28,7 @@ def main():
     ax.set_facecolor('#0d0514')
     
     # Colormap showing signal amplitude
-    img = ax.imshow(grid.strain_z.T, cmap='magma', vmin=-1.0, vmax=1.0, origin='lower')
+    img = ax.imshow(np.abs(grid.strain_z.T)**2, cmap='hot', vmin=0, vmax=1.0, origin='lower')
     
     # Draw the Macroscopic Entrainment Ring (The RLVG / Earth boundary layer)
     R = 50

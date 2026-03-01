@@ -134,7 +134,7 @@ def generate_comparative_visuals():
     ax_dist_A = axes[0, 1]
     
     # We clip the vmax stringently to make the subtle fringes violently bright
-    im_A = ax_wave_A.imshow(int_A, cmap='magma', origin='lower', extent=[0, NX, 0, NY], vmax=np.max(int_A)*0.5, alpha=1.0)
+    im_A = ax_wave_A.imshow(int_A, cmap='hot', origin='lower', extent=[0, NX, 0, NY], vmax=np.max(int_A)*0.5, alpha=1.0)
     ax_wave_A.imshow(wall_mask, cmap='binary_r', alpha=0.9, origin='lower', extent=[0, NX, 0, NY])
     ax_wave_A.set_title("Case A: Unmeasured (Continuous Multi-Photon Beam)\n" + r"Macroscopic Acoustic Interference Fringes ($\nabla |\Psi_{mech}|^2$)", color='white', fontsize=16, weight='bold', pad=15)
     ax_wave_A.axis('off')
@@ -150,7 +150,7 @@ def generate_comparative_visuals():
     ax_wave_B = axes[1, 0]
     ax_dist_B = axes[1, 1]
     
-    im_B = ax_wave_B.imshow(int_B, cmap='magma', origin='lower', extent=[0, NX, 0, NY], vmax=np.max(int_B)*0.5, alpha=1.0)
+    im_B = ax_wave_B.imshow(int_B, cmap='hot', origin='lower', extent=[0, NX, 0, NY], vmax=np.max(int_B)*0.5, alpha=1.0)
     ax_wave_B.imshow(wall_mask, cmap='binary_r', alpha=0.9, origin='lower', extent=[0, NX, 0, NY])
     ax_wave_B.imshow(det_mask_B, cmap='Reds', alpha=0.8, origin='lower', extent=[0, NX, 0, NY])
     

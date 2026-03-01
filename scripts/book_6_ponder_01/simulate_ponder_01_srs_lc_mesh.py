@@ -24,6 +24,16 @@ from mpl_toolkits.mplot3d.art3d import Line3DCollection
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from src.ave.core.constants import C_0, EPSILON_0
 
+# JAX GPU acceleration (graceful fallback to numpy)
+try:
+    import jax
+    import jax.numpy as jnp
+    from jax import jit
+    jax.config.update("jax_enable_x64", True)
+    _HAS_JAX = True
+except ImportError:
+    _HAS_JAX = False
+
 def generate_srs_unit_cell():
     """
     Generates the exact fractional Wyckoff (10,3)-a structural nodes for a 
@@ -222,35 +232,55 @@ def simulate_srs_lc_mesh():
             
     frames_V = []
     
-    for frame in range(TOTAL_FRAMES):
-        for _ in range(STEPS_PER_FRAME):
-            t = (frame * STEPS_PER_FRAME + _) * dt
-            
-            # 1. Update Strut Currents (L dI/dt = dV)
-            # vectorized lookup:
-            n1_idx = [e[0] for e in edges]
-            n2_idx = [e[1] for e in edges]
-            dV = V[n1_idx] - V[n2_idx] # Voltage difference across strut
-            I += (dV / L_strut) * dt
-            
-            # 2. Update Node Voltages (C dV/dt = Net I)
-            I_net = np.zeros(num_nodes)
-            # Add/subtract currents based on directionality
-            np.add.at(I_net, n1_idx, -I)
-            np.add.at(I_net, n2_idx, I)
-            
-            V += (I_net / C_node) * dt
-            
-            # 3. Inject PONDER-01 Drive Overrides
-            for src in drive_nodes:
-                signal = np.sin(2.0 * np.pi * FREQUENCY * t - src['phase'])
-                V[src['indices']] = signal * 1000.0 # Force physical voltage
-                
-        # Store for rendering
-        frames_V.append(V.copy())
-        
-        sys.stdout.write(f"\r  -> Computed Explicit SRS frame {frame+1}/{TOTAL_FRAMES}")
-        sys.stdout.flush()
+    # Pre-compute edge index arrays for vectorized Kirchhoff updates
+    n1_idx = np.array([e[0] for e in edges])
+    n2_idx = np.array([e[1] for e in edges])
+
+    if _HAS_JAX:
+        V_j = jnp.array(V)
+        I_j = jnp.array(I)
+        n1_j = jnp.array(n1_idx)
+        n2_j = jnp.array(n2_idx)
+
+        @jit
+        def _srs_step(V, I_curr):
+            dV = V[n1_j] - V[n2_j]
+            I_curr = I_curr + (dV / L_strut) * dt
+            I_net = jnp.zeros(num_nodes)
+            I_net = I_net.at[n1_j].add(-I_curr)
+            I_net = I_net.at[n2_j].add(I_curr)
+            V = V + (I_net / C_node) * dt
+            return V, I_curr
+
+        for frame in range(TOTAL_FRAMES):
+            for _ in range(STEPS_PER_FRAME):
+                t = (frame * STEPS_PER_FRAME + _) * dt
+                V_j, I_j = _srs_step(V_j, I_j)
+                for src in drive_nodes:
+                    signal = np.sin(2.0 * np.pi * FREQUENCY * t - src['phase'])
+                    for idx in src['indices']:
+                        V_j = V_j.at[idx].set(signal * 1000.0)
+
+            frames_V.append(np.array(V_j))
+            sys.stdout.write(f"\r  -> Computed Explicit SRS frame {frame+1}/{TOTAL_FRAMES}")
+            sys.stdout.flush()
+    else:
+        for frame in range(TOTAL_FRAMES):
+            for _ in range(STEPS_PER_FRAME):
+                t = (frame * STEPS_PER_FRAME + _) * dt
+                dV = V[n1_idx] - V[n2_idx]
+                I += (dV / L_strut) * dt
+                I_net = np.zeros(num_nodes)
+                np.add.at(I_net, n1_idx, -I)
+                np.add.at(I_net, n2_idx, I)
+                V += (I_net / C_node) * dt
+                for src in drive_nodes:
+                    signal = np.sin(2.0 * np.pi * FREQUENCY * t - src['phase'])
+                    V[src['indices']] = signal * 1000.0
+
+            frames_V.append(V.copy())
+            sys.stdout.write(f"\r  -> Computed Explicit SRS frame {frame+1}/{TOTAL_FRAMES}")
+            sys.stdout.flush()
 
     print("\n[*] Integration complete. Compiling Chiral Structural Node Graph...")
 
@@ -260,7 +290,8 @@ def simulate_srs_lc_mesh():
     ax.set_facecolor('black')
     fig.patch.set_facecolor('black')
     
-    v_max = np.max(np.abs(frames_V[-1])) * 0.4
+    v_max = np.nanmax(np.abs(frames_V[-1]))
+    v_max = max(float(v_max) * 0.4, 1e-6) if np.isfinite(v_max) else 1e-6
     
     # We will draw the actual 3-connected lines
     lines_coords = []
@@ -268,7 +299,7 @@ def simulate_srs_lc_mesh():
     if len(lines_coords) == 0:
         lines_coords = [[(0,0,0), (1,1,1)]]
         
-    lc = Line3DCollection(lines_coords, cmap='magma', norm=plt.Normalize(vmin=0, vmax=v_max), linewidths=1.5, alpha=0.8, zorder=1)
+    lc = Line3DCollection(lines_coords, cmap='hot', norm=plt.Normalize(vmin=0, vmax=v_max), linewidths=1.5, alpha=0.8, zorder=1)
     
     # Disable auto-scaling to prevent the crash
     ax.auto_scale_xyz([center_x - 3, center_x + 3], [center_y - 3, center_y + 3], [3, cells_dim * 1.2])

@@ -24,7 +24,7 @@ import numpy as np
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'src')))
 
 from ave.core.constants import (
-    C_0, EPSILON_0, MU_0, ALPHA, V_SNAP, E_YIELD_KINETIC, e_charge, M_E,
+    C_0, EPSILON_0, MU_0, ALPHA, V_SNAP, V_YIELD, E_YIELD_KINETIC, e_charge, M_E,
     L_NODE
 )
 
@@ -32,7 +32,7 @@ from ave.core.constants import (
 # CONSTANTS
 # ====================================================================
 
-V_YIELD = np.sqrt(ALPHA) * V_SNAP   # √α × 511 kV ≈ 43.65 kV
+# V_YIELD imported from engine: √α × 511 kV ≈ 43.65 kV
 
 # Quartz parameters
 EPS_R_QUARTZ = 4.5

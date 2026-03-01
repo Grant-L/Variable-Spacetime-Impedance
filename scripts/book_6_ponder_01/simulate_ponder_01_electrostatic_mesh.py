@@ -112,7 +112,7 @@ def simulate_electrostatic_mesh():
     
     # Bottom Panel: E-Field Gradient Intensity (Log Scale)
     # Taking log to highlight the extreme pinch at the tip vs the uniform field
-    cp2 = ax2.contourf(X, Y, np.log10(E_mag + 1), levels=50, cmap='magma')
+    cp2 = ax2.contourf(X, Y, np.log10(E_mag + 1), levels=50, cmap='hot')
     plt.colorbar(cp2, ax=ax2, label='Log$_{10}$ $|E|$ Gradient Intensity')
     
     ax2.set_xlabel("X-Axis Lateral Array Width ($\\mu$m)", fontsize=12)

@@ -37,7 +37,10 @@ from matplotlib.colors import Normalize
 import matplotlib.cm as cm
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'src')))
-from ave.core.fdtd_3d import FDTD3DEngine
+try:
+    from ave.core.fdtd_3d_jax import FDTD3DEngineJAX as FDTD3DEngine
+except ImportError:
+    from ave.core.fdtd_3d import FDTD3DEngine
 
 # ====================================================================
 # Parameters
@@ -102,8 +105,8 @@ def main():
             for dz in range(-R, R + 1):
                 if dy**2 + dz**2 <= R**2:
                     # Hard source (overwrite, not additive)
-                    eng.Ey[src_x, cy + dy, cz + dz] = Ey_src
-                    eng.Ez[src_x, cy + dy, cz + dz] = Ez_src
+                    eng.Ey = eng.Ey.at[src_x, cy + dy, cz + dz].set(Ey_src)
+                    eng.Ez = eng.Ez.at[src_x, cy + dy, cz + dz].set(Ez_src)
 
         eng.step()
 
@@ -111,10 +114,10 @@ def main():
         if step % STEPS_PER_FRAME == 0:
             # Extract fields along the propagation axis
             frame_data = {
-                'Ey': eng.Ey.copy(),
-                'Ez': eng.Ez.copy(),
-                'Hy': eng.Hy.copy(),
-                'Hz': eng.Hz.copy(),
+                'Ey': np.array(eng.Ey),
+                'Ez': np.array(eng.Ez),
+                'Hy': np.array(eng.Hy),
+                'Hz': np.array(eng.Hz),
                 'step': step,
                 't': t,
             }

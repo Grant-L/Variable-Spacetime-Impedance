@@ -24,6 +24,16 @@ import matplotlib.pyplot as plt
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from src.ave.core.constants import C_0
 
+# JAX GPU acceleration (graceful fallback to numpy)
+try:
+    import jax
+    import jax.numpy as jnp
+    from jax import jit
+    jax.config.update("jax_enable_x64", True)
+    _HAS_JAX = True
+except ImportError:
+    _HAS_JAX = False
+
 def run_hull_cfd(case_name, use_active_drill):
     NX, NY = 400, 200
     c = 1.0 # Normalized
@@ -41,13 +51,14 @@ def run_hull_cfd(case_name, use_active_drill):
     DAMP_WIDTH = 25
     
     damping = np.ones((NY, NX))
-    for i in range(NY):
-        for j in range(NX):
-            dist_x = min(j, NX - 1 - j)
-            dist_y = min(i, NY - 1 - i)
-            min_dist = min(dist_x, dist_y)
-            if min_dist < DAMP_WIDTH:
-                damping[i, j] = (min_dist / DAMP_WIDTH)**2
+    # Vectorized damping computation (replaces nested Python loop)
+    j_idx = np.arange(NX)
+    i_idx = np.arange(NY)
+    dist_x = np.minimum(j_idx, NX - 1 - j_idx)
+    dist_y = np.minimum(i_idx, NY - 1 - i_idx)
+    min_dist = np.minimum(dist_y[:, np.newaxis], dist_x[np.newaxis, :])
+    mask = min_dist < DAMP_WIDTH
+    damping[mask] = (min_dist[mask] / DAMP_WIDTH)**2
 
     total_drag_history = []
     final_schlieren = None
@@ -118,13 +129,13 @@ def generate_streamlining_proof():
     
     # Render Schlieren 1
     ax1 = axes[0]
-    ax1.imshow(sch_passive, cmap='magma', origin='lower', vmax=np.max(sch_passive)*0.4, extent=[0, 400, 0, 200])
+    ax1.imshow(sch_passive, cmap='hot', origin='lower', vmax=np.max(sch_passive)*0.4, extent=[0, 400, 0, 200])
     ax1.set_title("Static Hull (Supersonic Macroscopic Transit)\n" + r"Massive Cherenkov Bow Shock Accumulation", color='white', fontsize=14, weight='bold')
     ax1.axis('off')
     
     # Render Schlieren 2
     ax2 = axes[1]
-    ax2.imshow(sch_active, cmap='magma', origin='lower', vmax=np.max(sch_passive)*0.4, extent=[0, 400, 0, 200])
+    ax2.imshow(sch_active, cmap='hot', origin='lower', vmax=np.max(sch_passive)*0.4, extent=[0, 400, 0, 200])
     ax2.set_title("Active Acoustic Drill (Phased Array Pre-Rarefaction)\n" + r"OAM Wake Structurally Fractures and Disburses the Bow Shock", color='white', fontsize=14, weight='bold')
     ax2.axis('off')
     

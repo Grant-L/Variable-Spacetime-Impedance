@@ -24,7 +24,10 @@ from mpl_toolkits.mplot3d import Axes3D
 
 # Bind into the AVE framework
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
-from src.ave.core.fdtd_3d import FDTD3DEngine
+try:
+    from src.ave.core.fdtd_3d_jax import FDTD3DEngineJAX as FDTD3DEngine
+except ImportError:
+    from src.ave.core.fdtd_3d import FDTD3DEngine
 
 def simulate_fdtd_3d_array():
     print("[*] Initializing PONDER-01 3D Phased Array FDTD Simulator...")
@@ -99,10 +102,10 @@ def simulate_fdtd_3d_array():
     
     for z_idx in z_slices:
         Z_plane = np.ones_like(X) * z_idx
-        E_slice = engine.Ez[:, :, z_idx]
+        E_slice = np.array(engine.Ez[:, :, z_idx])
         
-        # Plot filled contours on the specified 3D Z plane
-        ax.contourf(X, Y, E_slice, zdir='z', offset=z_idx, levels=20, cmap='RdBu', alpha=0.5, vmin=-10, vmax=10)
+        # Plot filled contours on the specified 3D Z plane — energy density heatmap
+        ax.contourf(X, Y, E_slice**2, zdir='z', offset=z_idx, levels=20, cmap='hot', alpha=0.5, vmin=0, vmax=100)
     
     # Draw the physical antenna hardware
     for src in antennas:

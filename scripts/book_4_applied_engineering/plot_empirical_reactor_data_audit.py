@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
 sys.path.append(str(project_root / "src"))
 
-from ave.core.constants import C_0
+from ave.core.constants import C_0, V_YIELD
 
 def generate():
     print("[*] Generating Empirical Reactor Data Audit Figure...")
@@ -22,7 +22,7 @@ def generate():
     fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(20, 7))
     fig.patch.set_facecolor('#0f0f12')
 
-    V_sat = 43.65  # kV
+    V_sat = V_YIELD / 1e3  # kV (from engine)
 
     # --- LEFT: Anomalous Transport ---
     ax1.set_facecolor('#1a1a1f')

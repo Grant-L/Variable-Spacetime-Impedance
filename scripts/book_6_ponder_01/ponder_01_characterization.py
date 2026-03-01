@@ -31,7 +31,10 @@ import numpy as np
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'src')))
 
-from ave.core.fdtd_3d import FDTD3DEngine
+try:
+    from ave.core.fdtd_3d_jax import FDTD3DEngineJAX as FDTD3DEngine
+except ImportError:
+    from ave.core.fdtd_3d import FDTD3DEngine
 from ave.core.constants import C_0, EPSILON_0, MU_0
 
 # ====================================================================
@@ -111,7 +114,7 @@ def run_ponder(linear_only, label):
         # Inject sawtooth E_x across the slab face
         v_t = sawtooth(t, FREQ, V_DRIVE)
         e_drive = v_t / DX
-        eng.Ex[DRIVE_X, 8:22, 8:22] = e_drive
+        eng.Ex = eng.Ex.at[DRIVE_X, 8:22, 8:22].set(e_drive)
 
         eng.step()
 

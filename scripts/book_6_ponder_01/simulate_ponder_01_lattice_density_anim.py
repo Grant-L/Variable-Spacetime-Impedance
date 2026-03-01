@@ -17,7 +17,10 @@ from mpl_toolkits.mplot3d import Axes3D
 
 # Bind into the AVE framework
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
-from src.ave.core.fdtd_3d import FDTD3DEngine
+try:
+    from src.ave.core.fdtd_3d_jax import FDTD3DEngineJAX as FDTD3DEngine
+except ImportError:
+    from src.ave.core.fdtd_3d import FDTD3DEngine
 
 def generate_density_animation():
     print("[*] Initializing PONDER-01 Lattice Density Animator...")
@@ -61,7 +64,7 @@ def generate_density_animation():
                 for z in range(dipole_z_start, dipole_z_end):
                     engine.inject_soft_source('Ez', src['x'], src['y'], z, signal * 200.0)
             engine.step()
-        frames_data.append(engine.Ez[:, :, z_slice_idx].copy())
+        frames_data.append(np.array(engine.Ez[:, :, z_slice_idx]))
         sys.stdout.write(f"\r  -> Computed frame {frame+1}/{TOTAL_FRAMES}")
         sys.stdout.flush()
         
@@ -70,7 +73,8 @@ def generate_density_animation():
     out_dir = os.path.join(os.path.dirname(__file__), '..', '..', 'assets', 'sim_outputs')
     os.makedirs(out_dir, exist_ok=True)
     
-    v_max = np.max(np.abs(frames_data[-1])) / 1.5
+    v_max = np.nanmax(np.abs(frames_data[-1]))
+    v_max = max(float(v_max) / 1.5, 1e-6) if np.isfinite(v_max) else 1e-6
     
     # ---------------------------------------------------------------------
     # 1. Export 4 Static Snapshots for Manuscript

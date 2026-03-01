@@ -64,7 +64,7 @@ def run_avalanche_simulation():
     
     # 4. Plot the resulting Inductive Drag Map
     # Brighter colors = Higher mutual inductance drag
-    im = ax.imshow(eta_field_smooth, cmap='magma', extent=[-6, 6, -6, 6], origin='lower')
+    im = ax.imshow(eta_field_smooth, cmap='hot', extent=[-6, 6, -6, 6], origin='lower')
     
     # Add a colorbar
     cbar = fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)

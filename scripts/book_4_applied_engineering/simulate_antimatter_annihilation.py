@@ -121,7 +121,7 @@ def render_sequence_and_gif(frames, out_png, out_gif):
               
     for i in range(4):
         ax = fig.add_subplot(1, 4, i+1)
-        ax.imshow(frames[idx[i]], cmap='magma', origin='lower', vmax=np.max(frames[0])*1.5)
+        ax.imshow(frames[idx[i]], cmap='hot', origin='lower', vmax=np.max(frames[0])*1.5)
         ax.set_title(titles[i], color='white', pad=10)
         ax.axis('off')
         
@@ -132,7 +132,7 @@ def render_sequence_and_gif(frames, out_png, out_gif):
     # 2. Generate the Animation Loop
     fig_anim, ax_anim = plt.subplots(figsize=(6, 6))
     ax_anim.axis('off')
-    im = ax_anim.imshow(frames[0], cmap='magma', origin='lower', vmax=np.max(frames[0])*1.5)
+    im = ax_anim.imshow(frames[0], cmap='hot', origin='lower', vmax=np.max(frames[0])*1.5)
     ax_anim.set_title("Continuum Eradication (Matter-Antimatter Collision)", color='white', pad=15)
     
     def update(frame_idx):

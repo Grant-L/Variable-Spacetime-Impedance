@@ -2,18 +2,23 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import odeint
 import os
+import sys
 import pathlib
+
+project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
+sys.path.insert(0, str(project_root / "src"))
+
+from ave.core.constants import V_YIELD
 
 # Simulation Parameters for the Spacetime Vacuum Tank
 L_0 = 1e-3       # Baseline Inductance (1 mH)
-C_0 = 1e-9       # Baseline Capacitance (1 nF)
-V_YIELD = 60000.  # Topological limit
+C_0_SIM = 1e-9   # Baseline Capacitance (1 nF)
 
 # Resonant Frequency Formula
-def w_res(C):
-    return 1.0 / np.sqrt(L_0 * C)
+def w_res(C_val):
+    return 1.0 / np.sqrt(L_0 * C_val)
 
-w_0 = w_res(C_0)   # Baseline resonant frequency (rad/s)
+w_0 = w_res(C_0_SIM)   # Baseline resonant frequency (rad/s)
 
 # Non-linear Capacitance (Dielectric Yielding) 
 # C(V) increases as V approaches V_yield because e_eff drops (C = e*A/d goes down, causing frequency characteristic to detune).
@@ -22,7 +27,7 @@ w_0 = w_res(C_0)   # Baseline resonant frequency (rad/s)
 def C_eff(V):
     # Cap stops dropping right before divide by zero to prevent solver crash
     v_norm = min(abs(V)/V_YIELD, 0.999) 
-    return C_0 * np.sqrt(1.0 - v_norm**2)
+    return C_0_SIM * np.sqrt(1.0 - v_norm**2)
 
 # Source Drive (The laser)
 DRIVE_AMPLITUDE = 8e-5 # Drive current amplitude
@@ -106,8 +111,8 @@ def run_autoresonance_sim():
             
     # Plot 1: Fixed Frequency (Schwinger Limit reflection)
     axes[0].plot(t * 1e6, V_fixed / 1000, color='#ffcc00', linewidth=1.5, label='Fixed Freq Laser ($w = w_0$)')
-    axes[0].axhline(60, color='#ff3333', linestyle='--', linewidth=2, label='Schwinger / Yield Limit (60 kV)')
-    axes[0].axhline(-60, color='#ff3333', linestyle='--', linewidth=2)
+    axes[0].axhline(V_YIELD/1e3, color='#ff3333', linestyle='--', linewidth=2, label=f'Dielectric Yield Limit ({V_YIELD/1e3:.1f} kV)')
+    axes[0].axhline(-V_YIELD/1e3, color='#ff3333', linestyle='--', linewidth=2)
     axes[0].set_ylim(-80, 80)
     axes[0].set_title("Standard Approach: The Vacuum Detunes and Reflects Power")
     axes[0].set_xlabel("Time ($\\mu$s)")
@@ -121,8 +126,8 @@ def run_autoresonance_sim():
     
     # Plot 2: PLL Autoresonance
     axes[1].plot(t * 1e6, V_pll / 1000, color='#00ffcc', linewidth=1.5, label='PLL Autoresonant Laser ($w = w_{eff}$)')
-    axes[1].axhline(60, color='#ff3333', linestyle='--', linewidth=2, label='Schwinger / Yield Limit (60 kV)')
-    axes[1].axhline(-60, color='#ff3333', linestyle='--', linewidth=2)
+    axes[1].axhline(V_YIELD/1e3, color='#ff3333', linestyle='--', linewidth=2, label=f'Dielectric Yield Limit ({V_YIELD/1e3:.1f} kV)')
+    axes[1].axhline(-V_YIELD/1e3, color='#ff3333', linestyle='--', linewidth=2)
     axes[1].set_ylim(-80, 80)
     axes[1].set_title("AVE Approach: PLL Tracks Detuning to Breach Limit")
     axes[1].set_xlabel("Time ($\\mu$s)")

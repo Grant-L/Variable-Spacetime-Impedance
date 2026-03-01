@@ -25,6 +25,16 @@ from mpl_toolkits.mplot3d.art3d import Line3DCollection
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from src.ave.core.constants import C_0, EPSILON_0
 
+# JAX GPU acceleration (graceful fallback to numpy)
+try:
+    import jax
+    import jax.numpy as jnp
+    from jax import jit
+    jax.config.update("jax_enable_x64", True)
+    _HAS_JAX = True
+except ImportError:
+    _HAS_JAX = False
+
 # We don't use the FDTD Engine here. We build a literal discrete mesh.
 def generate_discrete_lc_animation():
     print("[*] Initializing PONDER-01 Discrete 3D LC Mesh Integrator...")
@@ -89,56 +99,70 @@ def generate_discrete_lc_animation():
     
     print(f"[*] Integrating explicit Kirchhoff LC equations over {GRID_SIZE**3} nodes...")
     
-    # Explicit Leapfrog Integrator (Yee-style but strictly conceptual LC components)
-    for frame in range(TOTAL_FRAMES):
-        for _ in range(STEPS_PER_FRAME):
-            t = (frame * STEPS_PER_FRAME + _) * dt
-            
-            # 1. Update Strut Currents (Inductors resist change in voltage gradient)
-            # V = L * dI/dt --> dI = (V_diff / L) * dt
-            
-            # X struts
-            V_diff_x = V[1:, :, :] - V[:-1, :, :]
-            I_x[:-1, :, :] += (V_diff_x / L_strut) * dt
-            
-            # Y struts
-            V_diff_y = V[:, 1:, :] - V[:, :-1, :]
-            I_y[:, :-1, :] += (V_diff_y / L_strut) * dt
-            
-            # Z struts
-            V_diff_z = V[:, :, 1:] - V[:, :, :-1]
-            I_z[:, :, :-1] += (V_diff_z / L_strut) * dt
-            
-            # 2. Update Node Voltages (Capacitors integrate net current)
-            # I = C * dV/dt --> dV = (I_net / C) * dt
-            
+    if _HAS_JAX:
+        V_j = jnp.array(V)
+        Ix_j = jnp.array(I_x)
+        Iy_j = jnp.array(I_y)
+        Iz_j = jnp.array(I_z)
+
+        @jit
+        def _lc_step(V, Ix, Iy, Iz):
+            # Update strut currents
+            Ix = Ix.at[:-1, :, :].add((V[1:, :, :] - V[:-1, :, :]) / L_strut * dt)
+            Iy = Iy.at[:, :-1, :].add((V[:, 1:, :] - V[:, :-1, :]) / L_strut * dt)
+            Iz = Iz.at[:, :, :-1].add((V[:, :, 1:] - V[:, :, :-1]) / L_strut * dt)
             # Net current into each node
-            I_net = np.zeros_like(V)
-            
-            # Current arriving from the "left"
-            I_net[1:, :, :] -= I_x[:-1, :, :]
-            I_net[:, 1:, :] -= I_y[:, :-1, :]
-            I_net[:, :, 1:] -= I_z[:, :, :-1]
-            
-            # Current flowing to the "right"
-            I_net[:-1, :, :] += I_x[:-1, :, :]
-            I_net[:, :-1, :] += I_y[:, :-1, :]
-            I_net[:, :, :-1] += I_z[:, :, :-1]
-            
-            V += (I_net / C_node) * dt
-            
-            # 3. Inject explicit drive voltages (Overriding node capacitor voltages)
-            for src in antennas:
-                signal = np.sin(2.0 * np.pi * FREQUENCY * t - src['phase'])
-                for z in range(dipole_z_start, dipole_z_end):
-                    V[src['x'], src['y'], z] = signal * 1000.0 # High V drive
-                    
-        # Extract the rendering window
-        window_V = V[view_xy_min:view_xy_max, view_xy_min:view_xy_max, view_z_min:view_z_max].copy()
-        frames_V_window.append(window_V)
-        
-        sys.stdout.write(f"\r  -> Computed LC frame {frame+1}/{TOTAL_FRAMES}")
-        sys.stdout.flush()
+            I_net = jnp.zeros_like(V)
+            I_net = I_net.at[1:, :, :].add(-Ix[:-1, :, :])
+            I_net = I_net.at[:, 1:, :].add(-Iy[:, :-1, :])
+            I_net = I_net.at[:, :, 1:].add(-Iz[:, :, :-1])
+            I_net = I_net.at[:-1, :, :].add(Ix[:-1, :, :])
+            I_net = I_net.at[:, :-1, :].add(Iy[:, :-1, :])
+            I_net = I_net.at[:, :, :-1].add(Iz[:, :, :-1])
+            V = V + (I_net / C_node) * dt
+            return V, Ix, Iy, Iz
+
+        for frame in range(TOTAL_FRAMES):
+            for _ in range(STEPS_PER_FRAME):
+                t = (frame * STEPS_PER_FRAME + _) * dt
+                V_j, Ix_j, Iy_j, Iz_j = _lc_step(V_j, Ix_j, Iy_j, Iz_j)
+                # Inject sources (few cells — stays on host)
+                for src in antennas:
+                    signal = np.sin(2.0 * np.pi * FREQUENCY * t - src['phase'])
+                    for z in range(dipole_z_start, dipole_z_end):
+                        V_j = V_j.at[src['x'], src['y'], z].set(signal * 1000.0)
+
+            window_V = np.array(V_j[view_xy_min:view_xy_max, view_xy_min:view_xy_max, view_z_min:view_z_max])
+            frames_V_window.append(window_V)
+            sys.stdout.write(f"\r  -> Computed LC frame {frame+1}/{TOTAL_FRAMES}")
+            sys.stdout.flush()
+    else:
+        for frame in range(TOTAL_FRAMES):
+            for _ in range(STEPS_PER_FRAME):
+                t = (frame * STEPS_PER_FRAME + _) * dt
+                V_diff_x = V[1:, :, :] - V[:-1, :, :]
+                I_x[:-1, :, :] += (V_diff_x / L_strut) * dt
+                V_diff_y = V[:, 1:, :] - V[:, :-1, :]
+                I_y[:, :-1, :] += (V_diff_y / L_strut) * dt
+                V_diff_z = V[:, :, 1:] - V[:, :, :-1]
+                I_z[:, :, :-1] += (V_diff_z / L_strut) * dt
+                I_net = np.zeros_like(V)
+                I_net[1:, :, :] -= I_x[:-1, :, :]
+                I_net[:, 1:, :] -= I_y[:, :-1, :]
+                I_net[:, :, 1:] -= I_z[:, :, :-1]
+                I_net[:-1, :, :] += I_x[:-1, :, :]
+                I_net[:, :-1, :] += I_y[:, :-1, :]
+                I_net[:, :, :-1] += I_z[:, :, :-1]
+                V += (I_net / C_node) * dt
+                for src in antennas:
+                    signal = np.sin(2.0 * np.pi * FREQUENCY * t - src['phase'])
+                    for z in range(dipole_z_start, dipole_z_end):
+                        V[src['x'], src['y'], z] = signal * 1000.0
+
+            window_V = V[view_xy_min:view_xy_max, view_xy_min:view_xy_max, view_z_min:view_z_max].copy()
+            frames_V_window.append(window_V)
+            sys.stdout.write(f"\r  -> Computed LC frame {frame+1}/{TOTAL_FRAMES}")
+            sys.stdout.flush()
 
     print("\n[*] Integration complete. Compiling explicit 3D Structural Node Graph...")
 
@@ -158,7 +182,8 @@ def generate_discrete_lc_animation():
     # Baseline visual coordinates
     X, Y, Z = np.meshgrid(np.arange(win_size_x), np.arange(win_size_y), np.arange(win_size_z), indexing='ij')
     
-    v_max = np.max(np.abs(frames_V_window[-1])) * 0.5
+    v_max = np.nanmax(np.abs(frames_V_window[-1]))
+    v_max = max(float(v_max) * 0.5, 1e-6) if np.isfinite(v_max) else 1e-6
     
     # Create the strut lines logic
     def build_struts(V_matrix):

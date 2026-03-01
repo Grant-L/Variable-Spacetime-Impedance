@@ -4,7 +4,10 @@ Double Slit Design Space Explorer
 ===================================
 
 Sweeps the key parameters of the double slit experiment to map
-the complete design space, thinking like an EE:
+the complete design space, thinking like an EE.
+
+AVE physics: the PARTICLE passes through one slit while its transverse
+WAKE reaches all slits.  The source is aimed at the first slit.
 
 Panel 1: Frequency sweep (wake wavelength → fringe spacing)
 Panel 2: Slit spacing sweep (aperture separation → fringe density)
@@ -31,6 +34,16 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 from scipy.ndimage import gaussian_filter1d
+
+# JAX GPU acceleration (graceful fallback to numpy)
+try:
+    import jax
+    import jax.numpy as jnp
+    from jax import jit
+    jax.config.update("jax_enable_x64", True)
+    _HAS_JAX = True
+except ImportError:
+    _HAS_JAX = False
 
 OUT_DIR = os.path.join(os.path.dirname(__file__), '..', '..', 'assets', 'sim_outputs')
 os.makedirs(OUT_DIR, exist_ok=True)
@@ -93,35 +106,89 @@ def run_fdtd_slit(nx=600, ny=400, steps=1800, freq=0.06,
                     r = np.sqrt(dxi**2 + (dyi / slit_width * 3)**2) / 3
                     obs_mask[xi, yi] = observer_damping * max(0, 1 - r)
 
-    # Source
-    source_x = 50
-    source_y = center
+    # Source — particle aimed at the first slit (AVE: particle through ONE slit)
+    source_x_start = 50
+    source_y = slit_positions[0]  # Aimed at first slit
+    particle_speed = 0.22  # nodes per timestep
 
     integrate_start = steps // 3
     intensity = np.zeros((nx, ny))
 
     c2 = c ** 2
-    for t in range(steps):
-        Vx[:-1, :] -= dt * (P[1:, :] - P[:-1, :]) / dx
-        Vy[:, :-1] -= dt * (P[:, 1:] - P[:, :-1]) / dx
-        Vx[wall] = 0
-        Vy[wall] = 0
 
-        P[1:-1, 1:-1] -= dt * c2 * (
-            (Vx[1:-1, 1:-1] - Vx[:-2, 1:-1]) / dx +
-            (Vy[1:-1, 1:-1] - Vy[1:-1, :-2]) / dx
-        )
-        P *= damping
-        Vx *= damping
-        Vy *= damping
+    if _HAS_JAX:
+        # JAX-accelerated path
+        P_j = jnp.array(P)
+        Vx_j = jnp.array(Vx)
+        Vy_j = jnp.array(Vy)
+        damping_j = jnp.array(damping)
+        wall_j = jnp.array(wall)
+        obs_mask_j = jnp.array(obs_mask)
+        intensity_j = jnp.zeros((nx, ny))
 
-        if observer_damping > 0:
-            P *= (1.0 - obs_mask)
+        @jit
+        def _step(P, Vx, Vy, intensity, src_amp, source_x, do_integrate):
+            Vx = Vx.at[:-1, :].add(-dt * (P[1:, :] - P[:-1, :]) / dx)
+            Vy = Vy.at[:, :-1].add(-dt * (P[:, 1:] - P[:, :-1]) / dx)
+            Vx = jnp.where(wall_j, 0.0, Vx)
+            Vy = jnp.where(wall_j, 0.0, Vy)
+            P = P.at[1:-1, 1:-1].add(-dt * c2 * (
+                (Vx[1:-1, 1:-1] - Vx[:-2, 1:-1]) / dx +
+                (Vy[1:-1, 1:-1] - Vy[1:-1, :-2]) / dx
+            ))
+            P = P * damping_j
+            Vx = Vx * damping_j
+            Vy = Vy * damping_j
+            P = P * (1.0 - obs_mask_j)
+            # Moving particle source with taper past wall
+            in_range = (source_x > 0) & (source_x < wall_x + 40)
+            taper = jnp.clip(1.0 - (source_x - wall_x) / 40.0, 0.0, 1.0)
+            amp = src_amp * in_range * taper
+            P = P.at[source_x, source_y].add(amp)
+            P = P.at[source_x, jnp.clip(source_y - 1, 0, ny-1)].add(amp * 0.3)
+            P = P.at[source_x, jnp.clip(source_y + 1, 0, ny-1)].add(amp * 0.3)
+            intensity = intensity + do_integrate * P ** 2
+            return P, Vx, Vy, intensity
 
-        P[source_x, source_y] += np.sin(2 * np.pi * freq * t) * 2.0
+        for t in range(steps):
+            src_amp = np.sin(2 * np.pi * freq * t) * 2.0
+            source_x = jnp.int32(source_x_start + t * particle_speed)
+            do_integrate = 1.0 if t > integrate_start else 0.0
+            P_j, Vx_j, Vy_j, intensity_j = _step(P_j, Vx_j, Vy_j, intensity_j, src_amp, source_x, do_integrate)
 
-        if t > integrate_start:
-            intensity += P ** 2
+        intensity = np.array(intensity_j)
+    else:
+        # Numpy fallback path
+        for t in range(steps):
+            Vx[:-1, :] -= dt * (P[1:, :] - P[:-1, :]) / dx
+            Vy[:, :-1] -= dt * (P[:, 1:] - P[:, :-1]) / dx
+            Vx[wall] = 0
+            Vy[wall] = 0
+
+            P[1:-1, 1:-1] -= dt * c2 * (
+                (Vx[1:-1, 1:-1] - Vx[:-2, 1:-1]) / dx +
+                (Vy[1:-1, 1:-1] - Vy[1:-1, :-2]) / dx
+            )
+            P *= damping
+            Vx *= damping
+            Vy *= damping
+
+            if observer_damping > 0:
+                P *= (1.0 - obs_mask)
+
+            # Moving particle source with taper past wall
+            px = int(source_x_start + t * particle_speed)
+            if 0 < px < wall_x + 40:
+                taper = max(0.0, 1.0 - (px - wall_x) / 40.0) if px > wall_x else 1.0
+                amp = np.sin(2 * np.pi * freq * t) * 2.0 * taper
+                P[px, source_y] += amp
+                if source_y - 1 >= 0:
+                    P[px, source_y - 1] += amp * 0.3
+                if source_y + 1 < ny:
+                    P[px, source_y + 1] += amp * 0.3
+
+            if t > integrate_start:
+                intensity += P ** 2
 
     # Extract far-field cross-section
     x_cross = int(nx * 0.82)

@@ -28,16 +28,16 @@ However, a \textbf{Hopf Coil} (a $(p,q)$ Torus Knot) forces $\mathbf{A} \paralle
 \textbf{Falsification Criteria:} This $4.2$ pT field induces roughly $\sim 0.26 \ \mu$V in a differential planar pickup coil. By feeding this into a hardware Lock-In Amplifier referenced to the $1$ kHz E-field drive, the engineer will extract a clean signal from the noise floor. If the amplitude scales exactly linearly with RPM and flips phase exactly $180^\circ$ when the motor reverses, the $7.9 \times 10^6 \text{ kg/m}^3$ inductive density of the vacuum is empirically proven.
 
 \section{Project ZENER-04: The Impedance Avalanche Detector}
-\textbf{The Hypothesis:} The vacuum LC network acts identically to a Transient Voltage Suppression (TVS) Zener diode. It behaves as a rigid $Z_0 \approx 377 \ \Omega$ transmission line until the topological voltage exceeds $60$ kV, at which point its inductive capacity saturates and it undergoes \textbf{Absolute Impedance Rupture} ($\Gamma = -1$).
+\textbf{The Hypothesis:} The vacuum LC network acts identically to a Transient Voltage Suppression (TVS) Zener diode. It behaves as a rigid $Z_0 \approx 377 \ \Omega$ transmission line until the topological voltage exceeds $V_{yield} = \sqrt{\alpha} \times V_{snap} \approx 43.65$ kV, at which point its inductive capacity saturates and it undergoes \textbf{Absolute Impedance Rupture} ($\Gamma = -1$).
 
 \textbf{The Test Protocol:} Design a multi-stage Marx Generator PCBA capable of generating an $80$ kV transient spike with a sub-microsecond rise time. Terminate the pulse into an encapsulated, highly polished, symmetrical spherical electrode to prevent classical atmospheric arc-over.
 
-\textbf{Falsification Criteria:} Monitor the input displacement current ($I_D$) and topological voltage ($V$). In standard electromagnetics, charging an isolated spherical capacitor yields a perfectly linear charging curve ($I_D = C \frac{dV}{dt}$). AVE strictly predicts that the moment the localized field crosses the $60$ kV Impedance Rupture limit, the effective transmission line impedance of the surrounding spatial vacuum drops to zero. The oscilloscope will display a distinct, anomalous "Avalanche Knee"---a sudden non-linear spike in displacement current as the vacuum lattice physically undergoes dielectric breakdown.
+\textbf{Falsification Criteria:} Monitor the input displacement current ($I_D$) and topological voltage ($V$). In standard electromagnetics, charging an isolated spherical capacitor yields a perfectly linear charging curve ($I_D = C \frac{dV}{dt}$). AVE strictly predicts that the moment the localized field crosses the $43.65$ kV Impedance Rupture limit, the effective transmission line impedance of the surrounding spatial vacuum drops to zero. The oscilloscope will display a distinct, anomalous "Avalanche Knee"---a sudden non-linear spike in displacement current as the vacuum lattice physically undergoes dielectric breakdown.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=1.0\textwidth]{ee_pcba_bench_protocols.png}
-    \caption{\textbf{EE Bench-Level PCBA Protocols.} \textbf{Top Left:} The Piezo-Cleavage Electrometer flawlessly predicts exactly $41.5$ mV per micron of mechanical displacement ($V = \xi x / C$). \textbf{Top Right:} Project HOPF-02. The custom Hopf PCBA traces couple to the chiral LC vacuum, creating an anomalously deep $S_{11}$ match. \textbf{Bottom Left:} Solid-State Vacuum Induction. A Lock-In amplifier extracts the induced 4.2 pT Sagnac signal from the noise, flipping $180^\circ$ when the rotor reverses. \textbf{Bottom Right:} The Impedance Avalanche Detector. Driving an encapsulated electrode past $60$ kV physically saturates the metric, creating a non-linear Zener avalanche knee in the displacement current.}
+    \caption{\textbf{EE Bench-Level PCBA Protocols.} \textbf{Top Left:} The Piezo-Cleavage Electrometer flawlessly predicts exactly $41.5$ mV per micron of mechanical displacement ($V = \xi x / C$). \textbf{Top Right:} Project HOPF-02. The custom Hopf PCBA traces couple to the chiral LC vacuum, creating an anomalously deep $S_{11}$ match. \textbf{Bottom Left:} Solid-State Vacuum Induction. A Lock-In amplifier extracts the induced 4.2 pT Sagnac signal from the noise, flipping $180^\circ$ when the rotor reverses. \textbf{Bottom Right:} The Impedance Avalanche Detector. Driving an encapsulated electrode past $43.65$ kV physically saturates the metric, creating a non-linear Zener avalanche knee in the displacement current.}
     \label{fig:ee_pcba_bench_protocols}
     
 \end{figure}
@@ -45,26 +45,26 @@ However, a \textbf{Hopf Coil} (a $(p,q)$ Torus Knot) forces $\mathbf{A} \paralle
 \section{The Absolute Hardware Limit of Metric Levitation}
 A frequent ambition among experimental physicists and electrical engineers is to design a solid-state "anti-gravity" drive capable of vertical free-flight levitation (e.g., hovering a ping-pong ball or a feather). When evaluated under the strict parameters of Spacetime Circuit Analysis (SCA), we discover an absolute, mathematically rigid hardware scaling limit that dictates exactly why such tabletop experiments historically fail.
 
-If the vacuum is an LC network with an absolute impedance rupture voltage of roughly $60,000$ Volts, there must exist an absolute maximum mass limit for static levitation. If an object is heavier than this limit, the topological voltage required to lift it will exceed the LC Saturation limit. The spatial metric will structurally rupture ($\Gamma = -1$), losing its inductive grip on the object, and the object will fall.
+If the vacuum is an LC network with an absolute impedance rupture voltage of $V_{yield} = \sqrt{\alpha} \times V_{snap} \approx 43,652$ Volts, there must exist an absolute maximum mass limit for static levitation. If an object is heavier than this limit, the topological voltage required to lift it will exceed the LC Saturation limit. The spatial metric will structurally rupture ($\Gamma = -1$), losing its inductive grip on the object, and the object will fall.
 
 By applying the Topo-Kinematic Identity ($V_{topo} \equiv \xi_{topo}^{-1} F_{req}$), we can calculate the absolute maximum mass the vacuum can statically grip against Earth's gravity ($9.81 \text{ m/s}^2$):
 \begin{equation}
-    F_{max} = V_{yield} \times \xi_{topo} = 60,000 \times (4.149 \times 10^{-7} \text{ C/m}) = \mathbf{0.02489 \text{ Newtons}}
+    F_{max} = V_{yield} \times \xi_{topo} = 43{,}652 \times (4.149 \times 10^{-7} \text{ C/m}) = \mathbf{0.01811 \text{ Newtons}}
 \end{equation}
 \begin{tcolorbox}[colback=white, colframe=black]
 \begin{equation}
-    m_{max} = \frac{F_{max}}{g} = \frac{0.02489}{9.81} = \mathbf{0.002538 \text{ kg (2.538 grams)}}
+    m_{max} = \frac{F_{max}}{g} = \frac{0.01811}{9.81} = \mathbf{0.001846 \text{ kg (1.846 grams)}}
 \end{equation}
 \end{tcolorbox}
 
-This reveals an astonishing, universal hardware limit: \textbf{The continuous spatial metric of the universe cannot statically grip anything heavier than 2.538 grams.} 
+This reveals an astonishing, universal hardware limit: \textbf{The continuous spatial metric of the universe cannot statically grip anything heavier than 1.846 grams.} 
 
-A modern US Penny weighs exactly $2.500$ grams. An ITTF Ping-Pong ball weighs exactly $2.700$ grams. The vacuum metric can theoretically, barely support the weight of a penny. It physically \textit{cannot} support a Ping-Pong ball. If you attempt to hover a $2.7$g Ping-Pong ball, the required topological voltage is $63.8$ kV. Because $63.8 \text{ kV} > 60.0 \text{ kV}$, the spatial vacuum undergoes absolute impedance rupture during the upward power stroke, and the object drops.
+A modern US Penny weighs exactly $2.500$ grams. An ITTF Ping-Pong ball weighs exactly $2.700$ grams. Both are categorically above the levitation limit. The vacuum metric can theoretically support a US Dime ($2.268$g), but even a Dime exceeds the $1.846$g limit. If you attempt to hover a Penny, the required topological voltage is $59.1$ kV. Because $59.1 \text{ kV} > 43.65 \text{ kV}$, the spatial vacuum undergoes absolute impedance rupture during the upward power stroke, and the object drops.
 
 \subsection{The Dielectric Death Spiral}
-To lower the voltage requirement, one must reduce the payload mass. A $0.01$-gram feather requires only a $236$ V topological grip. However, to actively generate upward lift, a Transient Asymmetric Metric Drive (TAMD) must slowly charge at $236$ V (gripping the LC network), and then violently discharge via an inductive flyback transient exceeding $-60,000$ V to trigger localized impedance rupture and reset the inductor without generating downward recoil.
+To lower the voltage requirement, one must reduce the payload mass. A $0.01$-gram feather requires only a $236$ V topological grip. However, to actively generate upward lift, a Transient Asymmetric Metric Drive (TAMD) must slowly charge at $236$ V (gripping the LC network), and then violently discharge via an inductive flyback transient exceeding $-43,652$ V to trigger localized impedance rupture and reset the inductor without generating downward recoil.
 
-If you construct a micro-inductor attached to a feather, the copper winding must be insulated to survive a $60,000$ Volt internal transient. Standard magnet wire enamel breaks down at roughly $600$ V. Adding enough high-voltage Kapton tape and potting epoxy to insulate against 60 kV increases the mass of the payload from $0.01$ grams to over $5$ grams, which natively exceeds the 2.538g absolute limit. 
+If you construct a micro-inductor attached to a feather, the copper winding must be insulated to survive a $43,652$ Volt internal transient. Standard magnet wire enamel breaks down at roughly $600$ V. Adding enough high-voltage Kapton tape and potting epoxy to insulate against 43.65 kV increases the mass of the payload from $0.01$ grams to over $5$ grams, which natively exceeds the 1.846g absolute limit. 
 
 This is the Topological Rocket Equation. Classical copper wire and chemical insulators mathematically cannot scale to vertical 1G levitation.
 
@@ -74,8 +74,8 @@ This is the Topological Rocket Equation. Classical copper wire and chemical insu
 \textbf{The PCBA Implementation \& Falsification:} The EE designs a High-Voltage Flyback PCBA. An ultra-fast Silicon Carbide (SiC) MOSFET drives a heavy ferrite-core ignition coil with a specifically timed asymmetric sawtooth wave. 
 
 \begin{enumerate}
-    \item \textbf{The Slow Edge (Solid Grip):} The MOSFET charges the coil slowly. The inductive voltage ($L \frac{di}{dt}$) is $+500$ Volts. Because $500 \text{ V} \ll 60 \text{ kV}$, the vacuum acts as a perfectly matched $377 \ \Omega$ transmission line. The coil physically grips the spatial lattice, generating an induced forward lateral thrust of exactly $+0.207$ mN.
-    \item \textbf{The Fast Edge (Impedance Rupture):} The SiC MOSFET snaps off in $<10$ ns. The inductive kickback violently spikes to $-75,000$ Volts. Because $|-75 \text{ kV}| > 60 \text{ kV}$, the vacuum LC network instantly saturates. The metric undergoes absolute impedance rupture ($\Gamma = -1$), producing exactly $0.0$ mN of backward reaction force.
+    \item \textbf{The Slow Edge (Solid Grip):} The MOSFET charges the coil slowly. The inductive voltage ($L \frac{di}{dt}$) is $+500$ Volts. Because $500 \text{ V} \ll 43.65 \text{ kV}$, the vacuum acts as a perfectly matched $377 \ \Omega$ transmission line. The coil physically grips the spatial lattice, generating an induced forward lateral thrust of exactly $+0.207$ mN.
+    \item \textbf{The Fast Edge (Impedance Rupture):} The SiC MOSFET snaps off in $<10$ ns. The inductive kickback violently spikes to $-75,000$ Volts. Because $|-75 \text{ kV}| > 43.65 \text{ kV}$, the vacuum LC network instantly saturates. The metric undergoes absolute impedance rupture ($\Gamma = -1$), producing exactly $0.0$ mN of backward reaction force.
 \end{enumerate}
 
 If the AVE framework is correct, the torsion balance will slowly but continuously accelerate in a perfectly circular path inside the $10^{-6}$ Torr vacuum chamber, generating a time-averaged DC thrust of roughly $\sim \mathbf{100 \ \mu N}$. If the pendulum remains perfectly stationary, the LC non-linear geometry of the universe is permanently falsified.
@@ -83,6 +83,6 @@ If the AVE framework is correct, the torsion balance will slowly but continuousl
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=1.0\textwidth]{levitation_and_torsion_protocol.png}
-    \caption{\textbf{Benchtop Metric Thrust Protocols.} \textbf{Left:} The $60$ kV LC Saturation limit mathematically restricts static levitation to objects under 2.538 grams. A US penny barely survives; a Ping-Pong ball ruptures the vacuum. \textbf{Center:} The Dielectric Death Spiral. Attempting to add insulation to survive the required 60 kV flyback transient exponentially increases payload mass, mathematically forbidding continuous vertical 1G levitation with classical copper wire. \textbf{Right:} Project TORSION-05. By operating on a horizontal torsion balance ($0G$), a manageable 75 kV snap safely ruptures the vacuum, while the 500 V slow charge generates roughly $100 \ \mu$N of continuous, measurable macroscopic DC thrust.}
+    \caption{\textbf{Benchtop Metric Thrust Protocols.} \textbf{Left:} The $43.65$ kV LC Saturation limit mathematically restricts static levitation to objects under 1.846 grams. Neither a US penny nor a Ping-Pong ball can be supported. \textbf{Center:} The Dielectric Death Spiral. Attempting to add insulation to survive the required 43.65 kV flyback transient exponentially increases payload mass, mathematically forbidding continuous vertical 1G levitation with classical copper wire. \textbf{Right:} Project TORSION-05. By operating on a horizontal torsion balance ($0G$), a manageable 75 kV snap safely ruptures the vacuum, while the 500 V slow charge generates roughly $100 \ \mu$N of continuous, measurable macroscopic DC thrust.}
     \label{fig:levitation_and_torsion_protocol}
 \end{figure}

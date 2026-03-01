@@ -4,8 +4,8 @@ Muon Lifetime from AVE Topological Cavity RC Discharge
 ========================================================
 
 The muon is a unknot (0₁) pumped with 206× the electron's energy.
-Its internal voltage (150 kV equivalent) exceeds the vacuum's 60 kV
-yield threshold, causing continuous impedance breakdown. The energy
+Its internal voltage (150 kV equivalent) exceeds the vacuum's 43.65 kV
+yield threshold (V_YIELD = √α × V_SNAP), causing continuous impedance breakdown. The energy
 bleeds out via an RC discharge until the resonant voltage drops below
 the yield threshold — at which point the muon has "decayed" into a
 stable electron.
@@ -18,7 +18,7 @@ SPICE model parameters (from spice_manual/01_particle_decay.tex):
   L = 1 mH   (inductive element of the unknot topology)
   C = 1 nF   (capacitive element of the unknot topology)
   V_initial = 150 kV   (muon's initial internal voltage)
-  V_yield = 60 kV      (vacuum breakdown threshold = V_snap)
+  V_yield = 43.65 kV   (vacuum breakdown threshold = √α × V_snap)
   R_on = 50 Ω          (radiation resistance during breakdown)
   R_off = 1 GΩ         (isolation when below yield)
 
@@ -43,7 +43,7 @@ import numpy as np
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 
-from ave.core.constants import V_SNAP, ALPHA, C_0, HBAR
+from ave.core.constants import V_SNAP, V_YIELD, ALPHA, C_0, HBAR
 
 
 # ======================================================
@@ -72,7 +72,7 @@ def muon_lifetime_rc_model():
     L = 1e-3      # H (inductance of unknot topology)
     C = 1e-9      # F (capacitance of unknot topology)
     V_0 = 150e3   # V (initial muon voltage ∝ mass-energy)
-    V_yield = 60e3  # V (vacuum breakdown threshold)
+    V_yield = V_YIELD  # V (vacuum breakdown threshold = √α × V_SNAP ≈ 43.65 kV)
     R_on = 50     # Ω (radiation resistance during breakdown)
     R_off = 1e9   # Ω (isolation below yield)
 

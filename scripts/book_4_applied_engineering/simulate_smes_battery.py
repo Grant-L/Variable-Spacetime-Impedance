@@ -115,14 +115,14 @@ def simulate_smes_battery():
     # A. The Solenoid
     ax1 = axs[0]
     ax1.set_facecolor('#0B0F19')
-    img1 = ax1.imshow(B_sol_mag, cmap='magma', extent=[-15, 15, -15, 15], origin='lower', vmax=vmax)
+    img1 = ax1.imshow(B_sol_mag, cmap='hot', extent=[-15, 15, -15, 15], origin='lower', vmax=vmax)
     ax1.scatter(solenoid_wire[abs(solenoid_wire[:,1]) < 0.2, 0], solenoid_wire[abs(solenoid_wire[:,1]) < 0.2, 2], c='white', s=10)
     ax1.set_title("1. Standard Superconducting Solenoid\n(Massive External Dipole Leakage)", color='white', weight='bold', pad=15)
     
     # B. The Topological SMES
     ax2 = axs[1]
     ax2.set_facecolor('#0B0F19')
-    img2 = ax2.imshow(B_tor_mag, cmap='magma', extent=[-15, 15, -15, 15], origin='lower', vmax=vmax)
+    img2 = ax2.imshow(B_tor_mag, cmap='hot', extent=[-15, 15, -15, 15], origin='lower', vmax=vmax)
     ax2.scatter(torus_knot_wire[abs(torus_knot_wire[:,1]) < 0.2, 0], torus_knot_wire[abs(torus_knot_wire[:,1]) < 0.2, 2], c='white', s=5)
     ax2.set_title(f"2. Force-Free Beltrami Torus Knot ({p},{q})\n(Absolute Topological Confinement)", color='white', weight='bold', pad=15)
     

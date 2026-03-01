@@ -19,6 +19,16 @@ import pathlib
 project_root = pathlib.Path(__file__).parent.parent.absolute()
 sys.path.append(str(project_root))
 
+# JAX GPU acceleration (graceful fallback to numpy)
+try:
+    import jax
+    import jax.numpy as jnp
+    from jax import jit
+    jax.config.update("jax_enable_x64", True)
+    _HAS_JAX = True
+except ImportError:
+    _HAS_JAX = False
+
 # Gravitational Constant proxy for the simulation scale
 G = 1.0 
 
@@ -75,26 +85,20 @@ def compute_accelerations(pos, masses):
     """
     Calculates the N-body gravitational/topological acceleration matrix.
     a_i = SUM( G * m_j * r_ij / |r_ij|^3 )
+    Fully vectorized — no Python loops.
     """
-    N = len(masses)
-    acc = np.zeros((N, 3))
-    epsilon = 0.5 # Softening parameter to prevent singularity ejections
-    
-    # We can optimize this by only calculating Saturn's pull on the particles
-    # AND the mutual pull between particles (self-gravity of the rings).
-    
-    for i in range(N):
-        for j in range(i + 1, N):
-            r_vec = pos[j] - pos[i]
-            dist_sq = np.sum(r_vec**2) + epsilon**2
-            dist = np.sqrt(dist_sq)
-            
-            # Force magnitude divided by mass_i gives accel_i
-            f_mag = G / (dist_sq * dist)
-            
-            acc[i] += f_mag * masses[j] * r_vec
-            acc[j] -= f_mag * masses[i] * r_vec
-            
+    epsilon = 0.5
+    # r_vec[i, j] = pos[j] - pos[i]  shape: (N, N, 3)
+    r_vec = pos[np.newaxis, :, :] - pos[:, np.newaxis, :]
+    # dist_sq[i, j] = |r_ij|^2 + eps^2  shape: (N, N)
+    dist_sq = np.sum(r_vec**2, axis=2) + epsilon**2
+    dist = np.sqrt(dist_sq)
+    # f_mag[i, j] = G / (dist_sq * dist)  shape: (N, N)
+    f_mag = G / (dist_sq * dist)
+    # Zero self-interaction
+    np.fill_diagonal(f_mag, 0.0)
+    # acc[i] = sum_j( f_mag[i,j] * m[j] * r_vec[i,j] )
+    acc = np.sum(f_mag[:, :, np.newaxis] * masses[np.newaxis, :, np.newaxis] * r_vec, axis=1)
     return acc
 
 def simulate_rings():

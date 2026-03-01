@@ -42,7 +42,7 @@ def main():
     ax.set_facecolor('#111111')
     
     # Colormap showing signal amplitude
-    img = ax.imshow(grid.strain_z, cmap='magma', vmin=-2, vmax=2, origin='lower')
+    img = ax.imshow(grid.strain_z**2, cmap='hot', vmin=0, vmax=4.0, origin='lower')
     ax.axis('off')
     ax.set_title(r"Entropy $\Delta S$: Geometric Scattering of Ordered Potential", color='white', pad=20, fontsize=14)
 
@@ -66,7 +66,7 @@ def main():
     
     fig_static, ax_static = plt.subplots(figsize=(8, 8), facecolor='#111111')
     ax_static.set_facecolor('#111111')
-    ax_static.imshow(final_frame_data, cmap='magma', vmin=-2, vmax=2, origin='lower')
+    ax_static.imshow(np.abs(final_frame_data)**2, cmap='hot', vmin=0, vmax=4.0, origin='lower')
     ax_static.axis('off')
     ax_static.set_title("Final State: Maximum Entropy (Transverse Thermal Noise)", color='white', pad=20, fontsize=14)
     

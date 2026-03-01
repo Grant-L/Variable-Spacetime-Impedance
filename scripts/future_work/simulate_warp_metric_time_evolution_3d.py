@@ -27,7 +27,10 @@ from mpl_toolkits.mplot3d import Axes3D
 
 # Bind to AVE parameters
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
-from src.ave.core.fdtd_3d import FDTD3DEngine
+try:
+    from src.ave.core.fdtd_3d_jax import FDTD3DEngineJAX as FDTD3DEngine
+except ImportError:
+    from src.ave.core.fdtd_3d import FDTD3DEngine
 from src.ave.core.constants import C_0
 
 def generate_3d_warp_evolution():
@@ -97,11 +100,12 @@ def generate_3d_warp_evolution():
             current_z_float += dz_per_step
             
         # Extract visual frame
-        vol = engine.Ez.copy()
+        vol = np.array(engine.Ez)
         
         # We want to clearly see the pulses and standing waves
         # Threshold out the near-zero vacuum to make the Mach cone transparent
-        intensity_max = np.max(np.abs(vol))
+        intensity_max = np.nanmax(np.abs(vol))
+        intensity_max = float(intensity_max) if np.isfinite(intensity_max) else 1e-6
         # Drop threshold dynamically to keep the cone visible as it spreads
         threshold = intensity_max * 0.15 
         
@@ -128,9 +132,10 @@ def generate_3d_warp_evolution():
     ax.set_box_aspect([NX, NY, NZ])  # True spatial proportions
     
     # Global color normalization based on a middle frame
-    v_max = np.max(np.abs(frames_colors[TOTAL_FRAMES//2])) * 0.8
+    v_max = np.nanmax(np.abs(frames_colors[TOTAL_FRAMES//2])) if len(frames_colors[TOTAL_FRAMES//2]) > 0 else 1.0
+    v_max = max(float(v_max) * 0.8, 1e-6) if np.isfinite(v_max) else 1e-6
     
-    scat = [ax.scatter([], [], [], c=[], cmap='coolwarm', vmin=-v_max, vmax=v_max)]
+    scat = [ax.scatter([], [], [], c=[], cmap='hot', vmin=0, vmax=v_max)]
     
     ax.set_xlim(0, NX)
     ax.set_ylim(0, NY)
@@ -159,9 +164,9 @@ def generate_3d_warp_evolution():
         # Render the thresholded scalar field (Pulse wavefronts)
         # Blue = Positive Strain (Compression), Red = Negative Strain (Rarefaction)
         if len(cx_pts) > 0:
-            scat[0] = ax.scatter(cx_pts, cy_pts, cz_pts, c=cval, cmap='bwr', vmin=-v_max, vmax=v_max, s=12, alpha=0.5, edgecolors='none')
+            scat[0] = ax.scatter(cx_pts, cy_pts, cz_pts, c=cval, cmap='hot', vmin=0, vmax=v_max, s=12, alpha=0.5, edgecolors='none')
         else:
-            scat[0] = ax.scatter([], [], [], c=[], cmap='bwr')
+            scat[0] = ax.scatter([], [], [], c=[], cmap='hot')
             
         # Update vessel marker
         vz = vessel_positions[frame]

@@ -46,7 +46,7 @@ def main():
     ax.set_facecolor('#000000')
     
     # Background Grid Render (Strain)
-    img = ax.imshow(grid.strain_z.T, cmap='twilight_shifted', vmin=-1.0, vmax=1.0, origin='lower')
+    img = ax.imshow(np.abs(grid.strain_z.T)**2, cmap='hot', vmin=0, vmax=1.0, origin='lower')
     
     # Node Render (Atoms)
     scatter = ax.scatter([n.position[0] for n in nodes], [n.position[1] for n in nodes], 
@@ -126,7 +126,7 @@ def main():
     fig_static, ax_static = plt.subplots(figsize=(8, 8), facecolor='#000000')
     ax_static.set_facecolor('#000000')
     
-    ax_static.imshow(grid.strain_z.T, cmap='twilight_shifted', vmin=-1.0, vmax=1.0, origin='lower')
+    ax_static.imshow(np.abs(grid.strain_z.T)**2, cmap='hot', vmin=0, vmax=1.0, origin='lower')
     ax_static.scatter([n.position[0] for n in nodes], [n.position[1] for n in nodes], 
                       s=[200, 30], color=['magenta', 'cyan'], edgecolors='white', zorder=5)
     ax_static.plot(trail_x, trail_y, color='cyan', alpha=0.8, lw=3, linestyle='--')

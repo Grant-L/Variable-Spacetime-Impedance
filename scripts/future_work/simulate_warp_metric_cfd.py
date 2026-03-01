@@ -28,6 +28,16 @@ from matplotlib.animation import FuncAnimation
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from src.ave.core.constants import C_0, EPSILON_0
 
+# JAX GPU acceleration (graceful fallback to numpy)
+try:
+    import jax
+    import jax.numpy as jnp
+    from jax import jit
+    jax.config.update("jax_enable_x64", True)
+    _HAS_JAX = True
+except ImportError:
+    _HAS_JAX = False
+
 def generate_cfd_heatmap():
     print("[*] Initializing Metric Streamlining 2D CFD Solver...")
     
@@ -66,14 +76,14 @@ def generate_cfd_heatmap():
     # This prevents the shockwave from violently bouncing off the rectangular grid walls
     damping = np.ones((NY, NX))
     DAMP_WIDTH = 20
-    for i in range(NY):
-        for j in range(NX):
-            dist_x = min(j, NX - 1 - j)
-            dist_y = min(i, NY - 1 - i)
-            min_dist = min(dist_x, dist_y)
-            if min_dist < DAMP_WIDTH:
-                # Quadratic damping ramp
-                damping[i, j] = (min_dist / DAMP_WIDTH)**2
+    # Vectorized damping computation (replaces nested Python loop)
+    j_idx = np.arange(NX)
+    i_idx = np.arange(NY)
+    dist_x = np.minimum(j_idx, NX - 1 - j_idx)  # shape: (NX,)
+    dist_y = np.minimum(i_idx, NY - 1 - i_idx)  # shape: (NY,)
+    min_dist = np.minimum(dist_y[:, np.newaxis], dist_x[np.newaxis, :])  # shape: (NY, NX)
+    mask = min_dist < DAMP_WIDTH
+    damping[mask] = (min_dist[mask] / DAMP_WIDTH)**2
 
     print(f"[*] Solving non-linear 2D LC density PDE up to {TOTAL_STEPS} dt. (Mach {MACH_NUMBER})")
     
@@ -136,15 +146,15 @@ def generate_cfd_heatmap():
 
     fig, ax = plt.subplots(figsize=(12, 12 / TARGET_ASPECT))
     plt.style.use('dark_background')
-    fig.patch.set_facecolor('black')
-    ax.set_facecolor('black')
+    fig.patch.set_facecolor('#0a0a2e')
+    ax.set_facecolor('#0a0a2e')
     
     # Calculate a global max for normalization but clip extreme peaks to make the wake brighter
-    global_max = np.max(heatmap_frames[-1])
-    vmax = global_max * 0.4 
+    global_max = np.nanmax(heatmap_frames[-1])
+    vmax = max(float(global_max) * 0.4, 1e-6) if np.isfinite(global_max) else 1e-6
     
-    # Magma is excellent for thermal/CFD shockwave visualizations
-    im = ax.imshow(heatmap_frames[0], cmap='magma', origin='lower', vmin=0, vmax=vmax, extent=[0, NX, 0, NY])
+    # YlOrRd: white at 0, hot red at max — wake clearly visible on dark backgrounds
+    im = ax.imshow(heatmap_frames[0], cmap='hot', origin='lower', vmin=0, vmax=vmax, extent=[0, NX, 0, NY])
     ax.set_title(rf"AVE Metric Streamlining CFD (Mach {MACH_NUMBER})" + "\n" + r"Schlieren Topology LC Density Gradient ($\nabla \rho_{LC}$)", color='white', pad=15, fontsize=14, fontweight='bold')
     ax.axis('off')
     

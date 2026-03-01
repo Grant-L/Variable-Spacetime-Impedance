@@ -70,7 +70,7 @@ def plot_magnetism(element_name, Z, A, is_paramagnetic=False):
     
     # Background density map
     im = ax.imshow(density, extent=[-bound, bound, -bound, bound], 
-                   origin='lower', cmap='magma', alpha=0.6, vmax=np.percentile(density, 95))
+                   origin='lower', cmap='hot', alpha=0.6, vmax=np.percentile(density, 95))
     
     # Streamplot of the interacting flow (External Magnetic Flux)
     color = '#00ffcc' if is_paramagnetic else '#ff3366'

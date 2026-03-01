@@ -20,7 +20,10 @@ from mpl_toolkits.mplot3d import Axes3D
 
 # Bind into the AVE framework
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
-from src.ave.core.fdtd_3d import FDTD3DEngine
+try:
+    from src.ave.core.fdtd_3d_jax import FDTD3DEngineJAX as FDTD3DEngine
+except ImportError:
+    from src.ave.core.fdtd_3d import FDTD3DEngine
 
 def generate_volumetric_animation():
     print("[*] Initializing PONDER-01 True Volumetric Omnidirectional Animator...")
@@ -77,7 +80,7 @@ def generate_volumetric_animation():
             engine.step()
             
         # Extract the entire 3D volume
-        full_vol = engine.Ez.copy()
+        full_vol = np.array(engine.Ez)
         
         # Suppress the extremely loud center elements so we can see the propagating wave
         full_vol[core_mask] = 0.0
@@ -88,7 +91,7 @@ def generate_volumetric_animation():
         mask = np.abs(full_vol) > threshold
         
         frames_coords.append((X[mask], Y[mask], Z[mask]))
-        frames_colors.append(full_vol[mask])
+        frames_colors.append(np.abs(full_vol[mask])**2)
         
         sys.stdout.write(f"\r  -> Computed frame {frame+1}/{TOTAL_FRAMES}")
         sys.stdout.flush()
@@ -104,10 +107,10 @@ def generate_volumetric_animation():
     fig.patch.set_facecolor('black')
     ax.set_box_aspect([1, 1, 1])
     
-    v_max = np.max(np.abs(frames_colors[-1])) if len(frames_colors[-1]) > 0 else 1.0
+    v_max = np.max(frames_colors[-1]) if len(frames_colors[-1]) > 0 else 1.0
     
-    # Start blank 
-    scat = [ax.scatter([], [], [], c=[], cmap='bwr', vmin=-v_max, vmax=v_max, s=40, alpha=0.4, edgecolors='none')]
+    # Start blank — YlOrRd gives white at 0, hot red at max
+    scat = [ax.scatter([], [], [], c=[], cmap='hot', vmin=0, vmax=v_max, s=40, alpha=0.4, edgecolors='none')]
     
     # Draw physical antennas
     for src in antennas:
@@ -135,9 +138,9 @@ def generate_volumetric_animation():
         cval = frames_colors[frame]
         
         if len(cx) > 0:
-            scat[0] = ax.scatter(cx, cy, cz, c=cval, cmap='bwr', vmin=-v_max, vmax=v_max, s=20, alpha=0.4, edgecolors='none')
+            scat[0] = ax.scatter(cx, cy, cz, c=cval, cmap='hot', vmin=0, vmax=v_max, s=20, alpha=0.4, edgecolors='none')
         else:
-            scat[0] = ax.scatter([], [], [], c=[], cmap='bwr')
+            scat[0] = ax.scatter([], [], [], c=[], cmap='hot')
             
         # Rotate camera slowly to fully grasp the 3D volumetric depth
         ax.view_init(elev=30, azim=45 + (frame * 0.8))

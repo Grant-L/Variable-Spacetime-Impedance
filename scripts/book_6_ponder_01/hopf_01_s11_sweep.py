@@ -240,13 +240,14 @@ def main():
     print(f"  CHIRAL SCALING LAW VERIFICATION")
     print(f"  ═══════════════════════════════════════════════════════════════════")
     print(f"\n  If AVE is correct, the fractional shift must scale EXACTLY as:")
-    print(f"    Δf/f = α × pq/(p+q)")
-    print(f"\n  {'Knot':<16} {'pq/(p+q)':>10} {'α×pq/(p+q)':>14} {'Δf/f (sim)':>14} {'Match':>8}")
+    print(f"    Δf/f = χ/(1+χ)  where χ = α × pq/(p+q)")
+    print(f"\n  {'Knot':<16} {'pq/(p+q)':>10} {'χ/(1+χ) exact':>14} {'Δf/f (sim)':>14} {'Match':>8}")
     print(f"  {'─'*16} {'─'*10} {'─'*14} {'─'*14} {'─'*8}")
 
     alpha = float(ALPHA)
     for r in results:
-        predicted_ratio = alpha * r['pq_over_ppq']
+        chi = alpha * r['pq_over_ppq']
+        predicted_ratio = chi / (1 + chi)  # exact: Δf/f = 1 - 1/(1+χ)
         measured_ratio = r['delta_f'] / r['f_std']
         match_pct = abs(predicted_ratio - measured_ratio) / predicted_ratio * 100
         status = "✅" if match_pct < 0.1 else "⚠️"

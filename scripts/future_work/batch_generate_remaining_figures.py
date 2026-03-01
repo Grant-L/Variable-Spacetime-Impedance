@@ -13,7 +13,10 @@ import matplotlib.patches as patches
 project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
 sys.path.append(str(project_root / "src"))
 
-from ave.core.constants import C_0, Z_0
+from ave.core.constants import C_0, Z_0, V_YIELD, V_SNAP, XI_TOPO
+
+V_YIELD_KV = V_YIELD / 1e3  # ≈ 43.65 kV
+M_LEV_G = (V_YIELD * XI_TOPO / 9.81) * 1e3  # ≈ 1.846 grams
 
 OUT_DIR = project_root / "assets" / "sim_outputs"
 os.makedirs(OUT_DIR, exist_ok=True)
@@ -78,7 +81,7 @@ def gen_ee_bench():
         ("Piezo-Cleavage Electrometer\n($V = \\xi x / C$)", '#33ffcc'),
         ("HOPF-02: Chiral PCBA Match\n(Anomalous $S_{11}$ Dip)", '#3399ff'),
         ("Solid-State Vacuum Induction\n(Lock-In $\\rightarrow$ 4.2 pT Sagnac)", '#ffcc00'),
-        ("Impedance Avalanche Detector\n(60 kV Metric Saturation Knee)", '#ff3366'),
+        (f"Impedance Avalanche Detector\n({V_YIELD_KV:.2f} kV Metric Saturation Knee)", '#ff3366'),
     ]
     for ax, (title, col) in zip(axes.flat, titles):
         ax.set_facecolor('#1a1a1f')
@@ -102,9 +105,9 @@ def gen_ee_bench():
             ax.set_ylabel("Signal (pT)", color='#cccccc')
         else:
             V = np.linspace(0, 80, 500)
-            I = np.where(V < 60, 0.01 * V, 0.01 * 60 + 0.5 * (V - 60) ** 2)
+            I = np.where(V < V_YIELD_KV, 0.01 * V, 0.01 * V_YIELD_KV + 0.5 * (V - V_YIELD_KV) ** 2)
             ax.plot(V, I, color=col, lw=3)
-            ax.axvline(60, color='#ffcc00', linestyle='--', lw=2)
+            ax.axvline(V_YIELD_KV, color='#ffcc00', linestyle='--', lw=2)
             ax.set_xlabel("Gap Voltage (kV)", color='#cccccc')
             ax.set_ylabel("Displacement Current (a.u.)", color='#cccccc')
         ax.set_title(title, color=col, fontsize=12, pad=10)
@@ -220,8 +223,8 @@ def gen_grand_audit():
     fig.patch.set_facecolor('#0f0f12')
 
     titles_data = [
-        ("Tokamak Saturation\n($V_{sat}/7 = 73.0$ kV → 16.5 keV)", '#33ffcc'),
-        ("Levitation Limit\n(73.0 kV → 3.08 grams)", '#ffcc00'),
+        (f"Tokamak Saturation\n($V_{{yield}}$ = {V_YIELD_KV:.2f} kV → 10.85 keV)", '#33ffcc'),
+        (f"Levitation Limit\n({V_YIELD_KV:.2f} kV → {M_LEV_G:.2f} grams)", '#ffcc00'),
         ("LHC: Linear Regime\n(13.6 TeV → $\\tau_{relax}$ mismatch $10^7$)", '#3399ff'),
         ("LIGO: Sub-Rupture\n($h \\sim 10^{-21}$ → Zero Dissipation)", '#cc33ff'),
     ]
@@ -267,7 +270,7 @@ def gen_vacuum_mirror():
     # CENTER: Impedance divergence
     ax2.set_facecolor('#1a1a1f')
     V = np.linspace(0, 50, 500)
-    V_sat = 43.65
+    V_sat = V_YIELD_KV
     Z_local = Z_0 / (1 - (V / V_sat) ** 4 + 1e-6)
     ax2.semilogy(V, Z_local, color='#33ffcc', lw=3)
     ax2.axvline(V_sat, color='#ff3366', lw=2, linestyle='--', label=f'$V_{{sat}}$ = {V_sat} kV')
@@ -418,12 +421,12 @@ def gen_levitation():
     # LEFT: Force vs mass (3.08g limit)
     ax1.set_facecolor('#1a1a1f')
     m = np.linspace(0, 10, 500)
-    F_ave = np.where(m < 3.08, 9.81 * m, 9.81 * 3.08 * np.exp(-(m - 3.08) / 0.5))
+    F_ave = np.where(m < M_LEV_G, 9.81 * m, 9.81 * M_LEV_G * np.exp(-(m - M_LEV_G) / 0.5))
     F_grav = 9.81 * m
     ax1.plot(m, F_grav, 'w--', lw=2, label='Gravity')
     ax1.plot(m, F_ave, color='#33ffcc', lw=3, label='AVE Metric Lift')
-    ax1.axvline(3.08, color='#ffcc00', lw=2, linestyle=':', label='$m_{max}$ = 3.08 g')
-    ax1.set_title("Levitation Protocol\n(73 kV → 3.08 gram limit)", color='white', fontsize=13, pad=10)
+    ax1.axvline(M_LEV_G, color='#ffcc00', lw=2, linestyle=':', label=f'$m_{{max}}$ = {M_LEV_G:.2f} g')
+    ax1.set_title(f"Levitation Protocol\n({V_YIELD_KV:.2f} kV → {M_LEV_G:.2f} gram limit)", color='white', fontsize=13, pad=10)
     ax1.set_xlabel("Sample Mass (grams)", color='#cccccc')
     ax1.set_ylabel("Force (mN)", color='#cccccc')
     ax1.legend(frameon=False, fontsize=10)

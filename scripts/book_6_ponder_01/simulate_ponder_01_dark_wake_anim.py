@@ -24,7 +24,10 @@ from mpl_toolkits.mplot3d import Axes3D
 
 # Bind into the AVE framework
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
-from src.ave.core.fdtd_3d import FDTD3DEngine
+try:
+    from src.ave.core.fdtd_3d_jax import FDTD3DEngineJAX as FDTD3DEngine
+except ImportError:
+    from src.ave.core.fdtd_3d import FDTD3DEngine
 
 def generate_dark_wake_animation():
     print("[*] Initializing PONDER-01 Momentum Dark Wake Animator...")
@@ -82,8 +85,8 @@ def generate_dark_wake_animation():
                     engine.inject_soft_source('Ez', src['x'], src['y'], z, signal * 300.0)
             engine.step()
             
-        # 1. Forward Wave Analysis: Map the standard E-field (Transverse/Rotational)
-        E_slice = engine.Ez[:, y_slice_idx, :].copy()
+        # 1. Forward Wave Analysis: Map E-field ENERGY density (|Ez|²)
+        E_slice = np.array(engine.Ez[:, y_slice_idx, :])
         
         # 2. Dark Wake Analysis: The topological shear reaction.
         # Momentum must be dumped backwards. We calculate the longitudinal strain gradient 
@@ -92,10 +95,11 @@ def generate_dark_wake_animation():
         
         # Calculate central difference along Z
         dEz_dz = np.zeros_like(E_slice)
-        dEz_dz[:, 1:-1] = (engine.Ez[:, y_slice_idx, 2:] - engine.Ez[:, y_slice_idx, :-2]) / (2.0 * engine.dx)
+        dEz_dz[:, 1:-1] = np.array(engine.Ez[:, y_slice_idx, 2:] - engine.Ez[:, y_slice_idx, :-2]) / (2.0 * engine.dx)
         
-        frames_data_E.append(E_slice)
-        frames_data_Wake.append(dEz_dz)
+        # Store ENERGY DENSITY (squared magnitude) — makes wake visible as bright glow
+        frames_data_E.append(E_slice**2)
+        frames_data_Wake.append(dEz_dz**2)
         
         sys.stdout.write(f"\r  -> Computed frame {frame+1}/{TOTAL_FRAMES}")
         sys.stdout.flush()
@@ -107,37 +111,38 @@ def generate_dark_wake_animation():
     # -------------------------------------------------------------
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 8))
     
-    # Panel 1: The Luminous Wave (Forward OAM / Standard EM)
-    v_max_e = np.max(np.abs(frames_data_E[-1])) / 1.5
-    im1 = ax1.imshow(frames_data_E[0].T, cmap='RdBu', vmin=-v_max_e, vmax=v_max_e, 
+    # Panel 1: The Luminous Wave (Forward OAM / Standard EM) — Energy density heatmap
+    v_max_e = np.nanmax(frames_data_E[-1])
+    v_max_e = max(float(v_max_e) / 2.0, 1e-6) if np.isfinite(v_max_e) else 1e-6
+    im1 = ax1.imshow(frames_data_E[0].T, cmap='hot', vmin=0, vmax=v_max_e, 
                      interpolation='bilinear', origin='lower')
     
     # Draw array bounds
-    ax1.axhline(dipole_z_start, color='black', linestyle='--', alpha=0.5)
-    ax1.axhline(dipole_z_end, color='black', linestyle='--', alpha=0.5)
-    ax1.scatter([center_x], [(dipole_z_start+dipole_z_end)/2], color='gold', edgecolor='black', s=200, marker='s', zorder=5, label='Phased Array Hardware')
+    ax1.axhline(dipole_z_start, color='white', linestyle='--', alpha=0.5)
+    ax1.axhline(dipole_z_end, color='white', linestyle='--', alpha=0.5)
+    ax1.scatter([center_x], [(dipole_z_start+dipole_z_end)/2], color='cyan', edgecolor='white', s=200, marker='s', zorder=5, label='Phased Array Hardware')
     
-    ax1.set_title(r"Forward Radiation ($E_z$)" + "\n" + r"Transverse Luminous Wavefront", fontsize=14, fontweight='bold', pad=15)
+    ax1.set_title(r"Forward Radiation ($|E_z|^2$)" + "\n" + r"Transverse Luminous Wavefront", fontsize=14, fontweight='bold', pad=15)
     ax1.set_xlabel("Grid X (meters)")
     ax1.set_ylabel("Grid Z (meters) - Forward Propagation $\\rightarrow$")
-    plt.colorbar(im1, ax=ax1, fraction=0.046, pad=0.04, label="Volumetric Strain ($V/m$)")
+    plt.colorbar(im1, ax=ax1, fraction=0.046, pad=0.04, label="Energy Density ($V^2/m^2$)")
     ax1.legend(loc='lower left')
     
-    # Panel 2: The Dark Wake (Longitudinal Strain / Momentum Sink)
-    v_max_w = np.max(np.abs(frames_data_Wake[-1])) / 1.5
+    # Panel 2: The Dark Wake (Longitudinal Strain Energy Density) — Heatmap
+    v_max_w = np.nanmax(frames_data_Wake[-1])
+    v_max_w = max(float(v_max_w) / 2.0, 1e-6) if np.isfinite(v_max_w) else 1e-6
     
-    # We use a completely different colormap (e.g., Greens/Purples) to represent the invisible 
-    # structural shear force acting as the opposite reaction mass.
-    im2 = ax2.imshow(frames_data_Wake[0].T, cmap='PRGn', vmin=-v_max_w, vmax=v_max_w, 
+    # Use inferno heatmap on energy density — wake glows brightly against dark background
+    im2 = ax2.imshow(frames_data_Wake[0].T, cmap='hot', vmin=0, vmax=v_max_w, 
                      interpolation='bilinear', origin='lower')
                      
-    ax2.axhline(dipole_z_start, color='black', linestyle='--', alpha=0.5)
-    ax2.axhline(dipole_z_end, color='black', linestyle='--', alpha=0.5)
-    ax2.scatter([center_x], [(dipole_z_start+dipole_z_end)/2], color='gold', edgecolor='black', s=200, marker='s', zorder=5)
+    ax2.axhline(dipole_z_start, color='white', linestyle='--', alpha=0.5)
+    ax2.axhline(dipole_z_end, color='white', linestyle='--', alpha=0.5)
+    ax2.scatter([center_x], [(dipole_z_start+dipole_z_end)/2], color='cyan', edgecolor='white', s=200, marker='s', zorder=5)
     
-    ax2.set_title(r"Rearward Dark Wake ($\tau_{zx} \propto \frac{\partial E_z}{\partial z}$)" + "\n" + r"Reaction Mass (Momentum Sink)", fontsize=14, fontweight='bold', pad=15)
+    ax2.set_title(r"Rearward Dark Wake ($|\frac{\partial E_z}{\partial z}|^2$)" + "\n" + r"Reaction Mass Energy Density", fontsize=14, fontweight='bold', pad=15)
     ax2.set_xlabel("Grid X (meters)")
-    plt.colorbar(im2, ax=ax2, fraction=0.046, pad=0.04, label="Longitudinal Shear Gradient")
+    plt.colorbar(im2, ax=ax2, fraction=0.046, pad=0.04, label="Wake Energy Density")
     
     # Overall Title and Mechanics Box
     fig.suptitle("PONDER-01: Proving Conservation of Momentum\nSymmetric Topological Reaction via Macroscopic Fluid Mechanics", fontsize=18, fontweight='black', y=0.98)

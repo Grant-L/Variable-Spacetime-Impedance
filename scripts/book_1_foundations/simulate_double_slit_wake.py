@@ -117,7 +117,7 @@ def generate_scientific_visuals():
     
     # Render the wave energy density explicitly. 
     # Use vmax=0.3 to boost contrast on the subtle interference fringes.
-    im = ax.imshow(intensity_field.T, cmap='magma', origin='lower', extent=[0, NX, 0, NY], alpha=0.9, vmax=0.3)
+    im = ax.imshow(intensity_field.T, cmap='hot', origin='lower', extent=[0, NX, 0, NY], alpha=0.9, vmax=0.3)
     
     # Overlay the impenetrable boundaries
     ax.imshow(wall_mask.T, cmap='binary_r', alpha=0.5, origin='lower', extent=[0, NX, 0, NY])

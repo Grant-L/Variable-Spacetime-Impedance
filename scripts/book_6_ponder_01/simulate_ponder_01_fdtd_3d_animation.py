@@ -21,7 +21,10 @@ from matplotlib.animation import FuncAnimation
 
 # Bind into the AVE framework
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
-from src.ave.core.fdtd_3d import FDTD3DEngine
+try:
+    from src.ave.core.fdtd_3d_jax import FDTD3DEngineJAX as FDTD3DEngine
+except ImportError:
+    from src.ave.core.fdtd_3d import FDTD3DEngine
 
 def generate_fdtd_3d_animation():
     print("[*] Initializing PONDER-01 Time-Evolved OAM Animator...")
@@ -74,7 +77,7 @@ def generate_fdtd_3d_animation():
                     
             engine.step()
             
-        frames_data.append(engine.Ez[:, :, z_slice_idx].copy())
+        frames_data.append(np.array(engine.Ez[:, :, z_slice_idx])**2)
         sys.stdout.write(f"\r  -> Computed frame {frame+1}/{TOTAL_FRAMES}")
         sys.stdout.flush()
         
@@ -83,21 +86,24 @@ def generate_fdtd_3d_animation():
     # -------------------------------------------------------------
     # Matplotlib Animation
     # -------------------------------------------------------------
-    fig, ax = plt.subplots(figsize=(8, 8))
+    fig, ax = plt.subplots(figsize=(8, 8), facecolor='#0a0a2e')
+    ax.set_facecolor('#0a0a2e')
     
     # Static geometry overlay
     for src in antennas:
-        ax.plot(src['y'], src['x'], marker='o', color='yellow', markersize=8, markeredgecolor='black', zorder=5)
+        ax.plot(src['y'], src['x'], marker='o', color='cyan', markersize=8, markeredgecolor='white', zorder=5)
         
-    # Initial frame
-    v_max = np.max(np.abs(frames_data[-1])) / 1.5
-    im = ax.imshow(frames_data[0], cmap='RdBu', vmin=-v_max, vmax=v_max, 
+    # Initial frame — energy density heatmap (white=0, red=max)
+    v_max = np.nanmax(frames_data[-1])
+    v_max = max(float(v_max) / 2.0, 1e-6) if np.isfinite(v_max) else 1e-6
+    im = ax.imshow(frames_data[0], cmap='hot', vmin=0, vmax=v_max, 
                    interpolation='bilinear', origin='lower', zorder=1)
                    
-    ax.set_title("PONDER-01: Time-Evolved 3D Phased Array\nHorizontal Slicing of the Macroscopic OAM Topology", fontsize=14, fontweight='bold', pad=15)
-    ax.set_xlabel("Grid X (5 cm/cell)", fontsize=12)
-    ax.set_ylabel("Grid Y (5 cm/cell)", fontsize=12)
-    plt.colorbar(im, ax=ax, fraction=0.046, pad=0.04, label="Electric Field ($E_z$) Amplitude")
+    ax.set_title("PONDER-01: Time-Evolved 3D Phased Array\nHorizontal Slicing of the Macroscopic OAM Topology", fontsize=14, fontweight='bold', pad=15, color='white')
+    ax.set_xlabel("Grid X (5 cm/cell)", fontsize=12, color='white')
+    ax.set_ylabel("Grid Y (5 cm/cell)", fontsize=12, color='white')
+    ax.tick_params(colors='white')
+    plt.colorbar(im, ax=ax, fraction=0.046, pad=0.04, label="Energy Density ($|E_z|^2$)")
     
     def update(frame):
         im.set_data(frames_data[frame])

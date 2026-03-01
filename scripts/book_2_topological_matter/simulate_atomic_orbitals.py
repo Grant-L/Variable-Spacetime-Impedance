@@ -81,7 +81,7 @@ def generate_orbitals():
     ax.set_facecolor('#050510')
     
     im = ax.imshow(Energy_Density.T, extent=[-r_max, r_max, -r_max, r_max], 
-                   origin='lower', cmap='magma', interpolation='bilinear',
+                   origin='lower', cmap='hot', interpolation='bilinear',
                    vmax=0.5) # Vmax clipped to reveal faint structural halos
                    
     # Draw strict boundary contours mapping structural Chladni nodal lines (Zero-displacement)

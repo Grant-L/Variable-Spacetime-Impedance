@@ -16,7 +16,7 @@ def main():
 
     print("- Objective: Prove why Tokamaks inextricably leak plasma at 15 keV.")
     print("- Setup: Firing two massive nodes (Deuterium / Tritium) into a head-on collision.")
-    print("- Observation: Their extreme localized deceleration will generate >60kV of Topological Strain.")
+    print("- Observation: Their extreme localized deceleration will generate >43.65kV of Topological Strain.")
     print("- Consequence: The vacuum metric will exceed the 43.65kV Dielectric Saturation threshold, physically")
     print("               melting the local grid into a frictionless zero-impedance phase.\n")
 
@@ -44,7 +44,7 @@ def main():
     # Custom colormap to explicitly highlight the 43.65kV yield limit
     # Normal grid is blue/purple. Approaching 43.65kV is orange/red.
     # Exceeding 43.65kV (Zero-Impedance Phase) renders as glowing white/yellow.
-    img = ax.imshow(grid.strain_z.T, cmap='magma', vmin=0.0, vmax=2.5, origin='lower')
+    img = ax.imshow(grid.strain_z.T, cmap='hot', vmin=0.0, vmax=2.5, origin='lower')
     
     # Node Render (Atoms)
     scatter = ax.scatter([n.position[0] for n in nodes], [n.position[1] for n in nodes], 

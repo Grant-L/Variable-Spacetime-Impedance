@@ -35,7 +35,7 @@ def plot_density_slice(X, Y, density, nodes, z_slice, title, filename):
     # Use inferno colormap for high-energy density visualizations
     vmax_val = 14 if len(nodes) > 10 else 12  # Scale heat for larger nuclei
     im = ax.imshow(density, extent=[X.min(), X.max(), Y.min(), Y.max()],
-                   origin='lower', cmap='inferno', alpha=0.9, vmin=0, vmax=vmax_val)
+                   origin='lower', cmap='hot', alpha=0.9, vmin=0, vmax=vmax_val)
                    
     # Calculate gradient for streamline topological flux
     DY, DX = np.gradient(density)

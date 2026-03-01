@@ -2,12 +2,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import odeint
 import os
+import sys
 import pathlib
+
+project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
+sys.path.insert(0, str(project_root / "src"))
+
+from ave.core.constants import V_YIELD
 
 # Simulation Parameters
 L = 1e-3       # Inductance (1 mH)
 C = 1e-9       # Capacitance (1 nF)
-V_YIELD = 60000.0  # Vacuum Impedance Rupture Limit (60 kV)
 
 # We use a non-linear parallel resistance to model the vacuum breaking.
 # In a perfect vacuum (V < V_YIELD), R is near infinite (perfect LC resonance).
@@ -78,8 +83,8 @@ def run_leaky_cavity_sim():
             
     # Plot 1: The Stable Electron
     axes[0].plot(t * 1e6, V_e / 1000, color='#00ffcc', linewidth=1.5, label='Electron LC Knot ($V < V_{yield}$)')
-    axes[0].axhline(60, color='#ff3333', linestyle='--', linewidth=2, label='Vacuum Rupture Limit (60 kV)')
-    axes[0].axhline(-60, color='#ff3333', linestyle='--', linewidth=2)
+    axes[0].axhline(V_YIELD/1e3, color='#ff3333', linestyle='--', linewidth=2, label=f'Dielectric Yield Limit ({V_YIELD/1e3:.1f} kV)')
+    axes[0].axhline(-V_YIELD/1e3, color='#ff3333', linestyle='--', linewidth=2)
     axes[0].set_ylim(-160, 160)
     axes[0].set_title("The Ground State (Stable Topological Knot)")
     axes[0].set_xlabel("Time ($\\mu$s)")
@@ -89,8 +94,8 @@ def run_leaky_cavity_sim():
     
     # Plot 2: The Leaky Cavity (Muon Decay)
     axes[1].plot(t * 1e6, V_u / 1000, color='#ff00ff', linewidth=1.5, label='Heavy Fermion LC Knot ($V > V_{yield}$)')
-    axes[1].axhline(60, color='#ff3333', linestyle='--', linewidth=2, label='Vacuum Rupture Limit (60 kV)')
-    axes[1].axhline(-60, color='#ff3333', linestyle='--', linewidth=2)
+    axes[1].axhline(V_YIELD/1e3, color='#ff3333', linestyle='--', linewidth=2, label=f'Dielectric Yield Limit ({V_YIELD/1e3:.1f} kV)')
+    axes[1].axhline(-V_YIELD/1e3, color='#ff3333', linestyle='--', linewidth=2)
     axes[1].set_ylim(-160, 160)
     axes[1].set_title("The Leaky Cavity (Particle Decay to Ground State)")
     axes[1].set_xlabel("Time ($\\mu$s)")

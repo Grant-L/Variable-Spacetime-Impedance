@@ -87,7 +87,7 @@ def optimize_electrode_geometry():
     
     # Create the filled contour map
     cs = ax.contourf(R*1e6, D*1000, np.clip(Thrust_uN, 1e-2, None), 
-                     levels=levels, cmap='magma', locator=plt.matplotlib.ticker.LogLocator())
+                     levels=levels, cmap='hot', locator=plt.matplotlib.ticker.LogLocator())
                      
     # Annotate the optimum point
     ax.plot(opt_r_tip*1e6, opt_d_gap*1000, marker='*', color='#00ffcc', markersize=15, 

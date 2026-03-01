@@ -72,8 +72,9 @@ def create_comparison():
     # Combine (just a visual representation of classical interference)
     total_wake = wake_slit1 + wake_slit2
     
-    # Use a high-contrast diverging colormap to make the interference fringes pop
-    ax2.imshow(total_wake, extent=[0, 20, -10, 10], origin='lower', cmap='twilight_shifted', alpha=0.9, vmin=-1.5, vmax=1.5)
+    # Use inferno heatmap on energy density |wake|² — makes fringes glow against dark bg
+    wake_energy = total_wake**2
+    ax2.imshow(wake_energy, extent=[0, 20, -10, 10], origin='lower', cmap='hot', alpha=0.95, vmin=0, vmax=np.percentile(wake_energy, 97))
     
     # Draw wall and slits (Thicker for clarity)
     ax2.plot([wall_x, wall_x], [-10, slit2_y - 1], 'w-', lw=5)

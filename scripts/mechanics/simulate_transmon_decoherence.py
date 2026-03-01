@@ -39,7 +39,7 @@ def main():
     fig, ax = plt.subplots(figsize=(8, 8), facecolor='#050510')
     ax.set_facecolor('#050510')
     
-    img = ax.imshow(grid.strain_z, cmap='inferno', vmin=-1.5, vmax=1.5, origin='lower')
+    img = ax.imshow(grid.strain_z**2, cmap='hot', vmin=0, vmax=2.25, origin='lower')
     ax.axis('off')
     ax.set_title("Standard Transmon Qubit: Thermodynamic Phase Decoherence", color='white', pad=20, fontsize=14)
 

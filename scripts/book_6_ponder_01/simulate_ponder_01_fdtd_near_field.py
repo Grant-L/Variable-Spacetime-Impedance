@@ -21,7 +21,17 @@ import matplotlib.pyplot as plt
 # Bind into the AVE constants
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
-from src.ave.core.constants import C_0
+from src.ave.core.constants import C_0, MU_0, EPSILON_0
+
+# JAX GPU acceleration (graceful fallback to numpy)
+try:
+    import jax
+    import jax.numpy as jnp
+    from jax import jit
+    jax.config.update("jax_enable_x64", True)
+    _HAS_JAX = True
+except ImportError:
+    _HAS_JAX = False
 
 def simulate_fdtd_near_field():
     print("[*] Initializing 2D FDTD Maxwell Solver for Phased Array...")
@@ -59,40 +69,65 @@ def simulate_fdtd_near_field():
         
     print(f"[*] Placed {num_elements} discrete sources in a $C_0$ ring.")
     
-    # Main FDTD Loop (Simplified 2D TMz Mode)
-    for n in range(steps):
-        # Update H (Magnetic Field)
-        Hx[:, :-1] -= (dt / (1.256e-6 * dx)) * (Ez[:, 1:] - Ez[:, :-1])
-        Hy[:-1, :] += (dt / (1.256e-6 * dx)) * (Ez[1:, :] - Ez[:-1, :])
-        
-        # Update E (Electric Field)
-        Ez[1:, 1:] += (dt / (8.854e-12 * dx)) * ((Hy[1:, 1:] - Hy[:-1, 1:]) - (Hx[1:, 1:] - Hx[1:, :-1]))
-        
-        # Inject Sources
-        t = n * dt
-        for src in sources:
-            # Continuous wave injection with progressive phase delay
-            signal = np.sin(2 * np.pi * frequency * t - src['phase'])
-            Ez[src['x'], src['y']] += signal * 50.0 # Amplitude boost for soft grid
+    # Main FDTD Loop (2D TMz Mode — H update uses μ₀, E update uses ε₀)
+    mu_0 = float(MU_0)
+    eps_0 = float(EPSILON_0)
+
+    if _HAS_JAX:
+        Ez_j = jnp.array(Ez)
+        Hx_j = jnp.array(Hx)
+        Hy_j = jnp.array(Hy)
+
+        @jit
+        def _step(Ez, Hx, Hy, src_amp):
+            Hx = Hx.at[:, :-1].add(-(dt / (mu_0 * dx)) * (Ez[:, 1:] - Ez[:, :-1]))
+            Hy = Hy.at[:-1, :].add((dt / (mu_0 * dx)) * (Ez[1:, :] - Ez[:-1, :]))
+            Ez = Ez.at[1:, 1:].add((dt / (eps_0 * dx)) * (
+                (Hy[1:, 1:] - Hy[:-1, 1:]) - (Hx[1:, 1:] - Hx[1:, :-1])))
+            return Ez, Hx, Hy
+
+        for n in range(steps):
+            Ez_j, Hx_j, Hy_j = _step(Ez_j, Hx_j, Hy_j, 0.0)
+            t = n * dt
+            for src in sources:
+                signal = np.sin(2 * np.pi * frequency * t - src['phase'])
+                Ez_j = Ez_j.at[src['x'], src['y']].add(signal * 50.0)
+
+        Ez = np.array(Ez_j)
+    else:
+        for n in range(steps):
+            Hx[:, :-1] -= (dt / (mu_0 * dx)) * (Ez[:, 1:] - Ez[:, :-1])
+            Hy[:-1, :] += (dt / (mu_0 * dx)) * (Ez[1:, :] - Ez[:-1, :])
+            Ez[1:, 1:] += (dt / (eps_0 * dx)) * (
+                (Hy[1:, 1:] - Hy[:-1, 1:]) - (Hx[1:, 1:] - Hx[1:, :-1]))
+            t = n * dt
+            for src in sources:
+                signal = np.sin(2 * np.pi * frequency * t - src['phase'])
+                Ez[src['x'], src['y']] += signal * 50.0
             
     print("[*] FDTD Time-Stepping Complete. Outputting Near-Field Frame.")
     
     # -------------------------------------------------------------
     # Visualization: Near Field Radiation Pattern
     # -------------------------------------------------------------
-    fig, ax = plt.subplots(figsize=(10, 8))
+    fig, ax = plt.subplots(figsize=(10, 8), facecolor='#0a0a2e')
+    ax.set_facecolor('#0a0a2e')
     
-    # Plot the E-field magnitude
-    im = ax.imshow(Ez, cmap='bwr', vmin=-1.0, vmax=1.0, interpolation='bilinear', origin='lower')
+    # Plot energy density |Ez|² for high contrast (white=0, red=max)
+    Ez_energy = Ez**2
+    vmax_e = np.nanmax(Ez_energy)
+    vmax_e = max(float(vmax_e) * 0.5, 1e-6) if np.isfinite(vmax_e) else 1e-6
+    im = ax.imshow(Ez_energy, cmap='hot', vmin=0, vmax=vmax_e, interpolation='bilinear', origin='lower')
     
     # Overlay the physical array hardware
     for src in sources:
-        ax.plot(src['y'], src['x'], marker='o', color='yellow', markersize=6, markeredgecolor='black')
+        ax.plot(src['y'], src['x'], marker='o', color='cyan', markersize=6, markeredgecolor='white')
         
-    ax.set_title(r"PONDER-01: FDTD Near-Field OAM Synthesis" + "\n" + r"100 MHz 8-Element Array with Sequential $45^{\circ}$ Delays", fontsize=14, fontweight='bold', pad=15)
-    ax.set_xlabel("Grid X (5 cm/cell)", fontsize=12)
-    ax.set_ylabel("Grid Y (5 cm/cell)", fontsize=12)
-    plt.colorbar(im, ax=ax, label="Electric Field ($E_z$) Amplitude", orientation='vertical')
+    ax.set_title(r"PONDER-01: FDTD Near-Field OAM Synthesis" + "\n" + r"100 MHz 8-Element Array with Sequential $45^{\circ}$ Delays", fontsize=14, fontweight='bold', pad=15, color='white')
+    ax.set_xlabel("Grid X (5 cm/cell)", fontsize=12, color='white')
+    ax.set_ylabel("Grid Y (5 cm/cell)", fontsize=12, color='white')
+    ax.tick_params(colors='white')
+    plt.colorbar(im, ax=ax, label="Energy Density ($|E_z|^2$)", orientation='vertical')
     
     # Statistics Box
     props = {'boxstyle': 'round', 'facecolor': 'black', 'alpha': 0.8, 'edgecolor': 'white'}
