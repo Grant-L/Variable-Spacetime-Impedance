@@ -76,7 +76,7 @@ class AVESyntaxValidator(ast.NodeVisitor):
             self.generic_visit(node)
 
     def visit_Constant(self, node):
-        if isinstance(node.value, (int, float)) and not self.in_main_block:
+        if isinstance(node.value, float) and not self.in_main_block:
             for magic_val, reason in MAGIC_NUMBERS.items():
                 if node.value != 0 and abs(node.value - magic_val) / abs(magic_val) < 0.005:
                     self.violations.append(

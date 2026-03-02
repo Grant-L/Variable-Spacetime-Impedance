@@ -302,3 +302,58 @@ The following figures show the vacuum strain density and flux streamlines for th
     \caption{\textbf{Iron-56}: FCC-14 packing at peak nuclear binding energy per nucleon ($0.0001\%$ error). 14 alpha clusters visible in the flux plot.}
     \label{fig:iron_strain}
 \end{figure}
+
+\section{Equivalent Circuit Models of Selected Heavy Elements}
+
+The following circuit diagrams depict the alpha-cluster subcircuit architecture for each of the six heavy elements above. Each alpha macro-block ($\alpha$) encapsulates a synchronized 4-nucleon LC mesh. Bus lines represent the 16 cross-coupled inductive pairs ($4 \times 4$ mutual links) between adjacent alpha blocks.
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/circuit_s32.pdf}
+        \caption{\textbf{Sulfur-32}: $8\alpha$ Cube. First Large Signal element ($M = 32.8$, $V_R/V_{BR} = 0.994$). 496 discrete nucleon-nucleon connections.}
+        \label{fig:circuit_s32}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/circuit_ar40.pdf}
+        \caption{\textbf{Argon-40}: $10\alpha$ Bicapped Square Antiprism. Noble gas with complete $n=3$ closure. 780 connections.}
+        \label{fig:circuit_ar40}
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/circuit_ca40.pdf}
+        \caption{\textbf{Calcium-40}: $10\alpha$ Large Signal ($M = 32.9$). Same topology as Ar-40 but avalanche multiplication required.}
+        \label{fig:circuit_ca40}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/circuit_ti48.pdf}
+        \caption{\textbf{Titanium-48}: $12\alpha$ Cuboctahedron. First transition metal. 1128 connections across 66 inter-alpha pairs.}
+        \label{fig:circuit_ti48}
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/circuit_cr52.pdf}
+        \caption{\textbf{Chromium-52}: $13\alpha$ Centered Icosahedron. Central alpha coupled to 12-vertex shell. 1326 connections.}
+        \label{fig:circuit_cr52}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/circuit_fe56.pdf}
+        \caption{\textbf{Iron-56}: $14\alpha$ FCC-14 architecture. Peak binding energy per nucleon. 1540 connections across 91 inter-alpha pairs.}
+        \label{fig:circuit_fe56}
+    \end{minipage}
+\end{figure}

@@ -90,7 +90,7 @@ tex_li7 = r"""\documentclass[tikz,border=15pt]{standalone}
     \tank{8.5,-1}{7}{n}
     
     % Loose Mutual Coupling
-    \draw[<->, dashed, blue, thick, out=0, in=180] (3.5, 0.5) to (6, 0.5) node[midway, above] {$M_{shell} \propto \frac{1}{9.72d}$};
+    \draw[<->, dashed, blue, thick, out=0, in=180] (3.5, 0.5) to (6, 0.5) node[midway, above] {$M_{\text{core-halo}}$};
     
     \node at (4.75, 5) {\Large \textbf{Lithium-7 Equivalent Circuit}};
 \end{tikzpicture}
@@ -112,7 +112,7 @@ tex_be9 = r"""\documentclass[tikz,border=15pt]{standalone}
     
     % Alpha Core 1 (Left)
     \draw[rounded corners=10pt, fill=blue!5, thick, dashed] (-5,-1.5) rectangle (-0.5,2.5);
-    \node at (-2.75, 3) {\textbf{Stretched Alpha Core ($\gamma \approx 3.82$)}};
+    \node at (-2.75, 3) {\textbf{Alpha Core}};
     
     \tank{-4,1}{1}{p}
     \tank{-2.5,1}{2}{p}
@@ -121,7 +121,7 @@ tex_be9 = r"""\documentclass[tikz,border=15pt]{standalone}
     
     % Alpha Core 2 (Right)
     \draw[rounded corners=10pt, fill=blue!5, thick, dashed] (5,-1.5) rectangle (9.5,2.5);
-    \node at (7.25, 3) {\textbf{Stretched Alpha Core ($\gamma \approx 3.82$)}};
+    \node at (7.25, 3) {\textbf{Alpha Core}};
     
     \tank{6,1}{5}{p}
     \tank{7.5,1}{6}{p}
