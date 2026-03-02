@@ -2,11 +2,11 @@ import numpy as np
 from scipy.optimize import basinhopping
 import sys
 
-# Fundamental Constants
-M_P_RAW = 938.272    # Empirical isolated Proton Mass 
-M_N_RAW = 939.565    # Empirical isolated Neutron Mass
-K_MUTUAL = 11.33719  
-D_MIN = 0.85         # Minimum topological boundary length (prevent singularity)
+import sys, pathlib
+sys.path.insert(0, str(pathlib.Path(__file__).parent.parent.parent.parent / 'src'))
+
+# All constants imported from the physics engine — zero hardcoded values
+from ave.core.constants import K_MUTUAL, M_P_MEV as M_P_RAW, M_N_MEV as M_N_RAW, D_PROTON as D_MIN
 
 def evaluate_binding_energy(positions):
     """

@@ -266,9 +266,30 @@ T_NUC: float = T_EM * PROTON_ELECTRON_RATIO
 #   enhanced coupling factor for close-packed transformer geometry.
 
 # Coulomb coupling constant  αℏc = e²/(4πε₀)  [MeV·fm]
-_ALPHA_HBAR_C: float = ALPHA * HBAR * C_0 / e_charge * 1e15 * 1e-6
-# Simpler: use ℏc in MeV·fm directly
-_HBAR_C_MEV_FM: float = HBAR * C_0 / e_charge * 1e15 * 1e-6  # ≈ 197.327 MeV·fm
+ALPHA_HBAR_C: float = ALPHA * HBAR * C_0 / e_charge * 1e15 * 1e-6
+# ℏc in MeV·fm
+HBAR_C_MEV_FM: float = HBAR * C_0 / e_charge * 1e15 * 1e-6  # ≈ 197.327 MeV·fm
 
 # Nuclear mutual coupling constant [MeV·fm]
-K_MUTUAL: float = (CROSSING_NUMBER_PROTON * pi / 2.0) * ALPHA * _HBAR_C_MEV_FM / (1.0 - ALPHA / 3.0)
+K_MUTUAL: float = (CROSSING_NUMBER_PROTON * pi / 2.0) * ALPHA * HBAR_C_MEV_FM / (1.0 - ALPHA / 3.0)
+
+# =============================================================================
+# NUCLEON MASS CONSTANTS (CODATA 2018 empirical — used as binding energy targets)
+# =============================================================================
+# These are the experimentally measured isolated nucleon rest masses.
+# They serve as the target boundary conditions for the topological binding engine.
+M_P_MEV: float = 938.272088   # Proton mass [MeV/c²]  (CODATA 2018)
+M_N_MEV: float = 939.565420   # Neutron mass [MeV/c²] (CODATA 2018)
+
+# =============================================================================
+# PROTON CHARGE RADIUS (Derived — Axiom 1 + standing wave confinement)
+# =============================================================================
+# The proton charge radius is the gyroscopic spin radius of the cinquefoil knot:
+#   d = 4 × λ_p = 4 × ℏ/(m_p c)
+# This is the RMS vibration amplitude of the center-of-mass standing wave
+# confined within the 0Ω saturated cavity boundary of one lattice cell.
+D_PROTON: float = 4.0 * HBAR / (M_P_MEV * 1e6 * e_charge / C_0**2 * C_0) * 1e15   # ≈ 0.8412 fm
+
+# Intra-alpha distance: nucleons at vertices of regular tetrahedron
+# D_intra = d × √8  (tetrahedral edge from vertex ±(d,d,d))
+D_INTRA_ALPHA: float = D_PROTON * np.sqrt(8.0)   # ≈ 2.379 fm

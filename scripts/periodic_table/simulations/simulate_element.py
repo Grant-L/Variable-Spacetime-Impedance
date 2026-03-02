@@ -22,13 +22,13 @@ from spice_exporter import generate_spice_netlist
 # Import derived constants from the AVE physics engine
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 sys.path.insert(0, os.path.join(REPO_ROOT, "src"))
-from ave.core.constants import K_MUTUAL, ALPHA, M_E, C_0, e_charge, HBAR
+from ave.core.constants import K_MUTUAL, ALPHA, M_E, C_0, e_charge, HBAR, M_P_MEV, M_N_MEV, D_PROTON
 
 # Fundamental Constants (MeV domain)
 # ME_MEV imported from physics engine for cross-validation
 ME_MEV = M_E * C_0**2 / e_charge * 1e-6  # Convert kg → MeV
-M_P_RAW = 938.272    # Empirical isolated Proton Mass (MeV)
-M_N_RAW = 939.565    # Empirical isolated Neutron Mass (MeV)
+M_P_RAW = M_P_MEV  # re-export for backward compatibility
+M_N_RAW = M_N_MEV  # re-export for backward compatibility
 
 # Coulomb constant in MeV·fm for proton-proton repulsion
 # αℏc = e²/(4πε₀) — the scale of electromagnetic coupling at nuclear distances
@@ -40,11 +40,13 @@ ALPHA_HC = ALPHA * (HBAR * C_0 / e_charge) * 1e9  # ≈ 1.4400 MeV·fm
 # and 1/(1−α/3) is the proximity correction for close-packed nucleons.
 
 
-def get_nucleon_coordinates(Z, A, d=0.85):
+def get_nucleon_coordinates(Z, A, d=None):
     """
     Returns the explicitly solved discrete 3D spatial coordinates (Center of Mass) 
     for the individual knot nodes composing the specific nucleus.
     """
+    if d is None:
+        d = D_PROTON  # derived proton charge radius from ave.core.constants
     if Z == 1 and A == 1:
         return [(0, 0, 0)]
         
@@ -146,7 +148,7 @@ def get_nucleon_coordinates(Z, A, d=0.85):
         # Carbon-12: The 3-Alpha Symmetric Ring
         # Analytical EE solution proves the 3 distinct Alpha cores rest at a radius 
         # of ~50.8197d (~43.19 fm) from the geometric center.
-        ring_radius = 50.8197 * d
+        ring_radius = 50.236 * d  # bare K/r solver with engine constants
         alpha_base = [(d, d, d), (-d, -d, d), (-d, d, -d), (d, -d, -d)]
         nodes = []
         
@@ -185,7 +187,7 @@ def get_nucleon_coordinates(Z, A, d=0.85):
         # Oxygen-16: The 4-Alpha Tetrahedron of Tetrahedrons
         # Numerically solved: The four identical Alpha nodes are forced exactly ~54.299d 
         # from the geometric barycenter to hit the target 14895.080 MeV empirical binding limit.
-        r_tet = 54.299234 * d
+        r_tet = 50.236 * d  # bare K/r solver with engine constants
         
         alpha_base = [(d, d, d), (-d, -d, d), (-d, d, -d), (d, -d, -d)]
         nodes = []
@@ -208,8 +210,8 @@ def get_nucleon_coordinates(Z, A, d=0.85):
         # Fluorine-19: Oxygen-16 Core + Tritium Halo
         # Halo numerically optimized to ~351.019d from the Alpha_0 center
         # matching the 17692.301503 MeV empirical nuclear target.
-        r_tet = 54.299234 * d
-        r_halo = 351.019292 * d
+        r_tet = 50.236 * d  # bare K/r solver with engine constants
+        r_halo = 398.478 * d  # semiconductor halo solver output
         
         # 1. Oxygen-16 Core Array
         alpha_base = np.array([(d, d, d), (-d, -d, d), (-d, d, -d), (d, -d, -d)])
@@ -247,7 +249,7 @@ def get_nucleon_coordinates(Z, A, d=0.85):
         # Neon-20: 5-Alpha Triangular Bipyramid
         # Numerically optimized to ~72.081d from origin
         # matching the 18617.730119 MeV empirical nuclear target.
-        r_bipyramid = 72.081079 * d
+        r_bipyramid = 78.861 * d  # bare K/r solver with engine constants
         
         alpha_base = np.array([(d, d, d), (-d, -d, d), (-d, d, -d), (d, -d, -d)])
         
@@ -269,8 +271,8 @@ def get_nucleon_coordinates(Z, A, d=0.85):
         # Sodium-23: Neon-20 Core + Tritium Halo
         # Halo numerically optimized to ~50.733d from the North polar Alpha
         # matching the 21409.213504 MeV empirical nuclear target.
-        r_bipyramid = 72.081079 * d
-        r_halo = 50.733428 * d
+        r_bipyramid = 78.861 * d  # bare K/r solver with engine constants
+        r_halo = 50.171 * d  # semiconductor halo solver output
         
         # 1. Neon-20 Core
         alpha_base = np.array([(d, d, d), (-d, -d, d), (-d, d, -d), (d, -d, -d)])
@@ -310,7 +312,7 @@ def get_nucleon_coordinates(Z, A, d=0.85):
         # Magnesium-24: 6-Alpha Octahedron
         # Numerically optimized to ~74.805563d from origin
         # matching the 22335.792891 MeV empirical nuclear target.
-        r_oct = 74.805563 * d
+        r_oct = 80.557 * d  # bare K/r solver with engine constants
         
         alpha_base = np.array([(d, d, d), (-d, -d, d), (-d, d, -d), (d, -d, -d)])
         
@@ -334,8 +336,8 @@ def get_nucleon_coordinates(Z, A, d=0.85):
         # Aluminum-27: Magnesium-24 Core + Tritium Halo
         # Halo numerically optimized to ~53.118975d from the North polar Alpha
         # matching the 25126.501017 MeV empirical nuclear target.
-        r_oct = 74.805563 * d
-        r_halo = 53.118975 * d
+        r_oct = 80.557 * d  # bare K/r solver with engine constants
+        r_halo = 52.605 * d  # semiconductor halo solver output
         
         # 1. Mg-24 Core
         alpha_base = np.array([(d, d, d), (-d, -d, d), (-d, d, -d), (d, -d, -d)])

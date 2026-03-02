@@ -27,7 +27,7 @@ from periodic_table.simulations.simulate_element import get_nucleon_coordinates,
 MEV_PER_FM3_TO_GPA = 1.60218e-13 / 1.0e-45 / 1.0e9
 
 def compute_properties(Z, A, name):
-    nodes = get_nucleon_coordinates(Z, A, d=0.85)
+    nodes = get_nucleon_coordinates(Z, A)  # d is derived from proton charge radius (4λ_p ≈ 0.841 fm)
     if not nodes or len(nodes) < 2:
         return None
         
@@ -45,7 +45,7 @@ def compute_properties(Z, A, name):
     melting_proxy = u_total / N
     
     # 3. Internal Hardness (U_total / Volume)
-    # Coordinates are in units of fm (since d=0.85 is passed)
+    # Coordinates are in units of fm (d ≈ 0.841 fm, derived from 4λ_p)
     barycenter = np.mean(nodes, axis=0)
     r_max = max(np.linalg.norm(nodes[i] - barycenter) for i in range(N))
     volume_fm3 = (4.0/3.0) * np.pi * (r_max**3)

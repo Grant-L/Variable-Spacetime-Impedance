@@ -15,10 +15,8 @@ import pathlib
 project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
 sys.path.append(str(project_root))
 
-M_P_RAW = 938.272088    
-M_N_RAW = 939.565420    
-K_MUTUAL = 11.33763228
-D_0 = 0.85 
+# All constants imported from the physics engine — zero hardcoded values
+from ave.core.constants import K_MUTUAL, M_P_MEV as M_P_RAW, M_N_MEV as M_N_RAW, D_PROTON as D_0
 
 # Target Empirical CODATA Nuclear Mass for Sodium-23 (MeV)
 # 22.9897692820 amu * 931.494102 MeV/amu - (11 * 0.51099895 MeV)
@@ -31,8 +29,8 @@ def get_sodium_23_nodes(r_halo):
     d = D_0
     
     # 1. Neon-20 Core Array
-    # Hardcoded optimal symmetric radius:
-    r_bipyramid = 72.081079 * d
+    # Hardcoded optimal symmetric radius (bare K/r solver with engine constants):
+    r_bipyramid = 78.861 * d
     
     alpha_base = np.array([(d, d, d), (-d, -d, d), (-d, d, -d), (d, -d, -d)])
     

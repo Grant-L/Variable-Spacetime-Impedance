@@ -19,7 +19,7 @@ def main():
     he4_nodes = [np.array(n) - he4_center for n in he4_nodes]
     
     # 2. Generate a Flat 4-Node Emitter (e.g., a 2x2 grid)
-    d = 0.85
+    d = 4 * HBAR / (938.272e6 * e_charge / C_0**2 * C_0) * 1e15  # ≈ 0.841 fm (derived proton charge radius)
     flat_nodes = []
     for x in [-0.5*d, 0.5*d]:
         for y in [-0.5*d, 0.5*d]:

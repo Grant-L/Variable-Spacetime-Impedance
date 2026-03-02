@@ -31,23 +31,24 @@ import sys, os, time
 
 # Import AVE constants
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'src')))
-from ave.core.constants import K_MUTUAL, ALPHA, HBAR, C_0, e_charge, Z_0
+from ave.core.constants import K_MUTUAL, ALPHA, HBAR, C_0, e_charge, Z_0, M_P_MEV, M_N_MEV, D_PROTON, ALPHA_HBAR_C, D_INTRA_ALPHA
 
 # ---- AXIOM-DERIVED CONSTANTS ----
 
-# Nucleon spacing parameter: d ≈ 0.85 fm (from ℓ_node × ropelength factors)
-D_NUCLEON = 0.85  # fm
+# Proton charge radius — imported from physics engine
+D_NUCLEON = D_PROTON  # ≈ 0.841 fm
 
 # Intra-alpha distance: nucleons sit at vertices of regular tetrahedron
-# with edge length d√8 ≈ 2.40 fm
-D_INTRA_ALPHA = D_NUCLEON * np.sqrt(8.0)
+# Intra-alpha distance — from physics engine
+D_INTRA_ALPHA_LOCAL = D_INTRA_ALPHA
 
 # Coulomb constant: αℏc ≈ 1.44 MeV·fm (Axiom 2)
 ALPHA_HC = ALPHA * (HBAR * C_0 / e_charge) * 1e9  # MeV·fm
 
 # Proton / Neutron masses
-M_P = 938.272   # MeV
-M_N = 939.565   # MeV
+# Proton / Neutron masses — from physics engine
+M_P = M_P_MEV   # MeV
+M_N = M_N_MEV   # MeV
 
 # Alpha cluster mass (4 nucleons − intra-alpha binding)
 # BE(He-4) = 6 pairs × K/d_intra = 6 × K / (d√8)

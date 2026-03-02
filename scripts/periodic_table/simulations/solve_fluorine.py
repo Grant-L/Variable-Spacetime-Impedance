@@ -17,10 +17,8 @@ sys.path.append(str(project_root))
 
 from periodic_table.simulations.simulate_element import get_nucleon_coordinates
 
-M_P_RAW = 938.272088    
-M_N_RAW = 939.565420    
-K_MUTUAL = 11.33763228
-D_0 = 0.85 
+# All constants imported from the physics engine — zero hardcoded values
+from ave.core.constants import K_MUTUAL, M_P_MEV as M_P_RAW, M_N_MEV as M_N_RAW, D_PROTON as D_0
 
 # Target Empirical CODATA Nuclear Mass for Fluorine-19 (MeV)
 # 18.99840316273 amu * 931.494102 MeV/amu - (9 * 0.51099895 MeV)

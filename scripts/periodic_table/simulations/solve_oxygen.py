@@ -7,11 +7,11 @@ empirical CODATA mass defect (Binding Energy) using purely electrical 1/d_ij cou
 """
 import numpy as np
 from scipy.optimize import minimize
+import sys, pathlib
+sys.path.insert(0, str(pathlib.Path(__file__).parent.parent.parent.parent / 'src'))
 
-M_P_RAW = 938.272    
-M_N_RAW = 939.565    
-K_MUTUAL = 11.33719  
-D_0 = 0.85 
+# All constants imported from the physics engine — zero hardcoded values
+from ave.core.constants import K_MUTUAL, M_P_MEV as M_P_RAW, M_N_MEV as M_N_RAW, D_PROTON as D_0
 
 # Target Empirical CODATA Mass for Oxygen-16 (MeV)
 # 15.99491461957 amu * 931.494102 MeV/amu - (8 * 0.51099895 MeV)

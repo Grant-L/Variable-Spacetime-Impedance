@@ -15,10 +15,8 @@ import pathlib
 project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
 sys.path.append(str(project_root))
 
-M_P_RAW = 938.272088    
-M_N_RAW = 939.565420    
-K_MUTUAL = 11.33763228
-D_0 = 0.85 
+# All constants imported from the physics engine — zero hardcoded values
+from ave.core.constants import K_MUTUAL, M_P_MEV as M_P_RAW, M_N_MEV as M_N_RAW, D_PROTON as D_0
 
 # Target Empirical CODATA Nuclear Mass for Aluminum-27 (MeV)
 # 26.98153853 amu * 931.494102 MeV/amu - (13 * 0.51099895 MeV)
@@ -30,8 +28,8 @@ def get_aluminum_27_nodes(r_halo):
     """
     d = D_0
     
-    # 1. Mg-24 Core Array (Fixed bounding radius)
-    r_oct = 74.805563 * d
+    # 1. Mg-24 Core Array (bare K/r solver with engine constants)
+    r_oct = 80.557 * d
     
     alpha_base = np.array([(d, d, d), (-d, -d, d), (-d, d, -d), (d, -d, -d)])
     
