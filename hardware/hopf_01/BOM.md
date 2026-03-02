@@ -1,90 +1,43 @@
-# HOPF-01 Order List
-## Specific Parts to Buy
+# HOPF-01 v3 — Bill of Materials
 
----
+Wire-stitched torus knot antenna fixture for AVE chiral verification.
 
-### 1. PCB — JLCPCB Custom Order
-- **Upload:** Generate Gerbers from `hopf_01.kicad_pcb` in KiCad (File → Fabrication Outputs → Gerbers)
-- **Specs:** 2-layer, FR-4, 1.6mm, ENIG finish, 120×120mm
-- **Important:** Select "NPTH" (non-plated) for the stitching holes
-- **Order URL:** [jlcpcb.com](https://jlcpcb.com)
-- **Est. cost:** ~$2 + $8 shipping (5 boards min order) = **$10**
+| # | Item                                        | MPN / Spec           | Qty | Est. Price |
+|---|---------------------------------------------|----------------------|-----|------------|
+| 1 | PCB, 160×120mm, 2-layer FR-4, ENIG, 1.6mm   | JLCPCB custom        | 5   | $12        |
+| 2 | SMA panel-mount connector, 50Ω               | TE CONSMA003.062     | 6   | $35        |
+| 3 | 24 AWG enameled magnet wire, 1 lb spool      | Remington 24HPN      | 1   | $14        |
+| 4 | SMA M–M cable, RG316, 30cm                   | Generic              | 1   | $8         |
+| 5 | Mineral oil 500mL (transformer grade)         | Generic              | 1   | $10        |
+| 6 | Glass dish ≥170×130mm, ≥25mm deep             | Pyrex 9×13"          | 1   | $10        |
+| 7 | M3×10mm nylon standoffs + M3 hardware         | Generic              | 1   | $8         |
+| 8 | SMA 50Ω terminators (for unused ports)        | Generic              | 5   | $5         |
+| **TOTAL** |                                       |                      |     | **$102**   |
 
----
+## Test Equipment (not included in total)
 
-### 2. SMA Connectors (×4)
-- **Part:** TE Connectivity / Linx CONSMA003.062
-- **Spec:** SMA Female, Edge Mount, 50Ω, Solder, for 0.062" (1.6mm) board
-- **DigiKey:** [CONSMA003.062-ND](https://www.digikey.com/en/products/detail/te-connectivity-linx/CONSMA003-062/340096)
-- **Mouser:** [CONSMA003.062](https://www.mouser.com/ProductDetail/TE-Connectivity-Linx/CONSMA003062)
-- **Price:** ~$5.85 ea × 4 = **$23.40**
+| Item | Est. Price |
+|------|------------|
+| LiteVNA-64 (1 MHz – 6.3 GHz, calibration kit) | $100 |
+| NanoVNA-H4 (budget option, 1.5 GHz max)        | $60  |
 
----
+## Board Specifications
 
-### 3. Enameled Magnet Wire
-- **Part:** Remington Industries 24 AWG, polyurethane enamel, 1 lb spool
-- **Spec:** 0.51mm diameter, 155°C rated, ~200 ft per spool
-- **Amazon:** Search "Remington Industries 24 AWG magnet wire 1 lb"
-- **Remington direct:** [remingtonindustries.com/24-awg-magnet-wire](https://remingtonindustries.com/magnet-wire/24-awg-magnet-wire/)
-- **Price:** **$14.00**
+- **Dimensions**: 160 × 120 mm
+- **Layers**: 2 (F.Cu + B.Cu)
+- **Stackup**: FR-4, 1.6mm, ENIG finish
+- **Antennas**: 5 torus knots + 1 meander control = 6 total
+- **SMA connectors**: 6 × panel-mount (thru-hole, GND on *.Cu layers)
+- **Ground**: B.Cu local patches under SMAs, perimeter ground ring (via-stitched)
+- **Stitching holes**: NPTH, 1.0mm drill (specify unplated in order)
 
----
+## Wire Cutting Guide
 
-### 4. SMA Cable
-- **Part:** SMA Male–Male, RG316, 30cm
-- **Amazon:** Search "SMA male male RG316 12 inch"
-- **Alt DigiKey:** [415-0029-012](https://www.digikey.com/en/products/filter/coaxial-cables-rf/436)
-- **Price:** **$8.00**
-
----
-
-### 5. Mineral Oil
-- **Part:** Food-grade or transformer-grade mineral oil, 500mL+
-- **Amazon:** Search "mineral oil USP 16 oz"
-- **Any brand works.** εᵣ ≈ 2.1 at room temperature.
-- **Price:** **$10.00**
-
----
-
-### 6. Glass Dish (Oil Bath)
-- **Part:** Pyrex 9×13" glass baking dish (deep enough for 120mm board)
-- **Amazon:** Search "Pyrex 9x13 glass baking dish"
-- **Price:** **$10.00**
-
----
-
-### 7. VNA — LiteVNA 64
-- **Part:** LiteVNA-64, 50kHz–6.3GHz, 4" touchscreen
-- **Amazon:** Search "LiteVNA 64 vector network analyzer"
-- **Price:** ~**$87–$118** (varies by seller)
-- Comes with SMA calibration kit in most listings
-
----
-
-### 8. M3 Hardware Kit (if not already owned)
-- **Amazon:** Search "M3 screw nut assortment stainless"
-- **Price:** ~**$8** for a full kit (you need 4 screws + 4 nuts)
-
----
-
-## Shopping Cart Summary
-
-| # | Item | Qty | Price |
-|---|------|-----|-------|
-| 1 | JLCPCB PCB order (5 boards + shipping) | 1 | $10 |
-| 2 | CONSMA003.062 SMA connectors | 4 | $23 |
-| 3 | 24 AWG enameled magnet wire, 1 lb | 1 | $14 |
-| 4 | SMA M-M cable, RG316, 30cm | 1 | $8 |
-| 5 | Mineral oil, 500mL | 1 | $10 |
-| 6 | Pyrex glass dish | 1 | $10 |
-| 7 | LiteVNA-64 (with cal kit) | 1 | $100 |
-| 8 | M3 hardware kit | 1 | $8 |
-|   | **TOTAL** | | **$183** |
-
----
-
-## Also Need (Assumed Owned)
-- Soldering iron + solder
-- Wire strippers or flush cutters
-- Tweezers (for threading wire)
-- NanoVNA-Saver software (free, [github.com/NanoVNA-Saver](https://github.com/NanoVNA-Saver/nanovna-saver))
+| Antenna | Wire Length | + Solder Tails | Cut Length |
+|---------|------------|----------------|------------|
+| (2,3) Trefoil | 120 mm | 20 mm | 140 mm |
+| (2,5) Cinquefoil | 160 mm | 20 mm | 180 mm |
+| (3,5) | 170 mm | 20 mm | 190 mm |
+| (3,7) | 200 mm | 20 mm | 220 mm |
+| (3,11) | 250 mm | 20 mm | 270 mm |
+| CONTROL (meander) | 120 mm | 20 mm | 140 mm |

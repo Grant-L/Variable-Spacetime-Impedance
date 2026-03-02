@@ -1,0 +1,2580 @@
+** Drc report for hopf_01.kicad_pcb **
+** Created on 2026-03-02T08:30:33-0800 **
+
+** Found 759 DRC violations **
+[clearance]: Clearance violation (rule 'Pad to Pad Clearance' clearance 0.2000 mm; actual 0.0049 mm)
+    Rule: Pad to Pad Clearance; error
+    @(46.6947 mm, 9.8000 mm): PTH pad 4 [GND] of J1
+    @(48.2946 mm, 11.0000 mm): PTH pad 1 [<no net>] of END1
+[clearance]: Clearance violation (rule 'Pad to Pad Clearance' clearance 0.2000 mm; actual 0.0051 mm)
+    Rule: Pad to Pad Clearance; error
+    @(49.8947 mm, 9.8000 mm): PTH pad 5 [GND] of J1
+    @(48.2946 mm, 11.0000 mm): PTH pad 1 [<no net>] of END1
+[clearance]: Clearance violation (rule 'Pad to Pad Clearance' clearance 0.2000 mm; actual 0.0048 mm)
+    Rule: Pad to Pad Clearance; error
+    @(92.9904 mm, 9.8000 mm): PTH pad 4 [GND] of J2
+    @(94.5902 mm, 11.0000 mm): PTH pad 1 [<no net>] of END2
+[clearance]: Clearance violation (rule 'Pad to Pad Clearance' clearance 0.2000 mm; actual 0.0052 mm)
+    Rule: Pad to Pad Clearance; error
+    @(96.1904 mm, 9.8000 mm): PTH pad 5 [GND] of J2
+    @(94.5902 mm, 11.0000 mm): PTH pad 1 [<no net>] of END2
+[clearance]: Clearance violation (rule 'Pad to Pad Clearance' clearance 0.2000 mm; actual 0.0047 mm)
+    Rule: Pad to Pad Clearance; error
+    @(133.8115 mm, 9.8000 mm): PTH pad 4 [GND] of J3
+    @(135.4112 mm, 11.0000 mm): PTH pad 1 [<no net>] of END3
+[clearance]: Clearance violation (rule 'Pad to Pad Clearance' clearance 0.2000 mm; actual 0.0053 mm)
+    Rule: Pad to Pad Clearance; error
+    @(137.0115 mm, 9.8000 mm): PTH pad 5 [GND] of J3
+    @(135.4112 mm, 11.0000 mm): PTH pad 1 [<no net>] of END3
+[clearance]: Clearance violation (rule 'Pad to Pad Clearance' clearance 0.2000 mm; actual 0.0047 mm)
+    Rule: Pad to Pad Clearance; error
+    @(46.8165 mm, 110.2000 mm): PTH pad 2 [GND] of J4
+    @(48.4162 mm, 109.0000 mm): PTH pad 1 [<no net>] of END4
+[clearance]: Clearance violation (rule 'Pad to Pad Clearance' clearance 0.2000 mm; actual 0.0053 mm)
+    Rule: Pad to Pad Clearance; error
+    @(50.0165 mm, 110.2000 mm): PTH pad 3 [GND] of J4
+    @(48.4162 mm, 109.0000 mm): PTH pad 1 [<no net>] of END4
+[clearance]: Clearance violation (rule 'Pad to Pad Clearance' clearance 0.2000 mm; actual 0.0043 mm)
+    Rule: Pad to Pad Clearance; error
+    @(135.4481 mm, 110.2000 mm): PTH pad 2 [GND] of J5
+    @(137.0474 mm, 109.0000 mm): PTH pad 1 [<no net>] of END5
+[clearance]: Clearance violation (rule 'Pad to Pad Clearance' clearance 0.2000 mm; actual 0.0057 mm)
+    Rule: Pad to Pad Clearance; error
+    @(138.6481 mm, 110.2000 mm): PTH pad 3 [GND] of J5
+    @(137.0474 mm, 109.0000 mm): PTH pad 1 [<no net>] of END5
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.3300 mm)
+    Rule: Hole to Hole; warning
+    @(39.7276 mm, 40.6139 mm): NPTH pad of 
+    @(40.5956 mm, 39.6062 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.2884 mm)
+    Rule: Hole to Hole; warning
+    @(27.6383 mm, 31.3683 mm): NPTH pad of 
+    @(27.6568 mm, 32.6566 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.3300 mm)
+    Rule: Hole to Hole; warning
+    @(39.7276 mm, 23.3861 mm): NPTH pad of 
+    @(40.5956 mm, 24.3938 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.0080 mm)
+    Rule: Hole to Hole; warning
+    @(94.4936 mm, 30.9967 mm): NPTH pad of 
+    @(94.5904 mm, 32.0000 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.0000 mm)
+    Rule: Hole to Hole; warning
+    @(88.4932 mm, 38.5880 mm): NPTH pad of 
+    @(88.8441 mm, 38.0512 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.0000 mm)
+    Rule: Hole to Hole; warning
+    @(76.5434 mm, 22.5851 mm): NPTH pad of 
+    @(77.2232 mm, 22.3288 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.0000 mm)
+    Rule: Hole to Hole; warning
+    @(132.7959 mm, 37.1833 mm): NPTH pad of 
+    @(132.0190 mm, 36.8107 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.2033 mm)
+    Rule: Hole to Hole; warning
+    @(125.9316 mm, 38.3140 mm): NPTH pad of 
+    @(127.1236 mm, 38.4787 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.0000 mm)
+    Rule: Hole to Hole; warning
+    @(118.7261 mm, 35.9728 mm): NPTH pad of 
+    @(118.5920 mm, 35.7882 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.0000 mm)
+    Rule: Hole to Hole; warning
+    @(114.6574 mm, 31.2204 mm): NPTH pad of 
+    @(114.1895 mm, 31.9384 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.0000 mm)
+    Rule: Hole to Hole; warning
+    @(121.9028 mm, 22.8869 mm): NPTH pad of 
+    @(121.7885 mm, 22.0329 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.3504 mm)
+    Rule: Hole to Hole; warning
+    @(125.1918 mm, 26.1051 mm): NPTH pad of 
+    @(126.4829 mm, 26.5010 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.1706 mm)
+    Rule: Hole to Hole; warning
+    @(131.1268 mm, 31.0313 mm): NPTH pad of 
+    @(129.9971 mm, 31.3379 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.0000 mm)
+    Rule: Hole to Hole; warning
+    @(120.9098 mm, 41.3113 mm): NPTH pad of 
+    @(121.0270 mm, 41.3494 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.1561 mm)
+    Rule: Hole to Hole; warning
+    @(118.8036 mm, 27.0273 mm): NPTH pad of 
+    @(119.5038 mm, 27.9473 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.0000 mm)
+    Rule: Hole to Hole; warning
+    @(131.0532 mm, 25.8601 mm): NPTH pad of 
+    @(131.6477 mm, 25.2363 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.0000 mm)
+    Rule: Hole to Hole; warning
+    @(45.6544 mm, 93.4067 mm): NPTH pad of 
+    @(45.2838 mm, 92.7856 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.0529 mm)
+    Rule: Hole to Hole; warning
+    @(39.4357 mm, 93.3951 mm): NPTH pad of 
+    @(40.3880 mm, 93.8443 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.0000 mm)
+    Rule: Hole to Hole; warning
+    @(34.0449 mm, 95.1465 mm): NPTH pad of 
+    @(34.9123 mm, 95.6428 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.1743 mm)
+    Rule: Hole to Hole; warning
+    @(24.7642 mm, 89.0977 mm): NPTH pad of 
+    @(25.8452 mm, 88.6389 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.4111 mm)
+    Rule: Hole to Hole; warning
+    @(29.0604 mm, 85.1255 mm): NPTH pad of 
+    @(30.0829 mm, 86.0980 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.2086 mm)
+    Rule: Hole to Hole; warning
+    @(34.8779 mm, 81.3867 mm): NPTH pad of 
+    @(33.8694 mm, 82.0527 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.0000 mm)
+    Rule: Hole to Hole; warning
+    @(37.9449 mm, 77.8044 mm): NPTH pad of 
+    @(38.4114 mm, 77.6705 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.0000 mm)
+    Rule: Hole to Hole; warning
+    @(45.5613 mm, 83.5557 mm): NPTH pad of 
+    @(46.1078 mm, 83.7199 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.0000 mm)
+    Rule: Hole to Hole; warning
+    @(43.2080 mm, 88.1132 mm): NPTH pad of 
+    @(42.4811 mm, 88.5716 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.4586 mm)
+    Rule: Hole to Hole; warning
+    @(37.0554 mm, 97.6993 mm): NPTH pad of 
+    @(37.6579 mm, 99.0277 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.0000 mm)
+    Rule: Hole to Hole; warning
+    @(29.2554 mm, 79.6889 mm): NPTH pad of 
+    @(29.2031 mm, 80.2905 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.0000 mm)
+    Rule: Hole to Hole; warning
+    @(40.4787 mm, 83.1243 mm): NPTH pad of 
+    @(40.3991 mm, 82.4557 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.0508 mm)
+    Rule: Hole to Hole; warning
+    @(137.0481 mm, 88.0000 mm): NPTH pad of 
+    @(136.8471 mm, 86.9686 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.1285 mm)
+    Rule: Hole to Hole; warning
+    @(134.8451 mm, 91.3550 mm): NPTH pad of 
+    @(135.6520 mm, 90.5661 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.0771 mm)
+    Rule: Hole to Hole; warning
+    @(130.6349 mm, 92.8685 mm): NPTH pad of 
+    @(129.9641 mm, 92.0258 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.0000 mm)
+    Rule: Hole to Hole; warning
+    @(127.6045 mm, 95.1017 mm): NPTH pad of 
+    @(126.9285 mm, 95.7870 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.0000 mm)
+    Rule: Hole to Hole; warning
+    @(125.5735 mm, 99.0558 mm): NPTH pad of 
+    @(125.8866 mm, 98.6128 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.4034 mm)
+    Rule: Hole to Hole; warning
+    @(119.9609 mm, 93.3620 mm): NPTH pad of 
+    @(119.3834 mm, 92.0829 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.0000 mm)
+    Rule: Hole to Hole; warning
+    @(117.5680 mm, 90.2929 mm): NPTH pad of 
+    @(117.2917 mm, 89.6105 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.4681 mm)
+    Rule: Hole to Hole; warning
+    @(116.0797 mm, 81.8365 mm): NPTH pad of 
+    @(114.6554 mm, 82.1926 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.0000 mm)
+    Rule: Hole to Hole; warning
+    @(118.9586 mm, 82.3177 mm): NPTH pad of 
+    @(119.0620 mm, 81.9734 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.0000 mm)
+    Rule: Hole to Hole; warning
+    @(122.2302 mm, 79.8421 mm): NPTH pad of 
+    @(123.1786 mm, 80.1058 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.1384 mm)
+    Rule: Hole to Hole; warning
+    @(125.3642 mm, 76.6274 mm): NPTH pad of 
+    @(124.8322 mm, 77.6339 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.1061 mm)
+    Rule: Hole to Hole; warning
+    @(132.3821 mm, 79.5386 mm): NPTH pad of 
+    @(131.3067 mm, 79.2799 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.2725 mm)
+    Rule: Hole to Hole; warning
+    @(128.9511 mm, 84.0078 mm): NPTH pad of 
+    @(129.7763 mm, 84.9764 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.1167 mm)
+    Rule: Hole to Hole; warning
+    @(131.2724 mm, 88.1142 mm): NPTH pad of 
+    @(130.4292 mm, 87.3821 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.1264 mm)
+    Rule: Hole to Hole; warning
+    @(131.3148 mm, 95.7163 mm): NPTH pad of 
+    @(130.3392 mm, 96.2793 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.4956 mm)
+    Rule: Hole to Hole; warning
+    @(122.8946 mm, 95.4321 mm): NPTH pad of 
+    @(123.6293 mm, 96.7348 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.4937 mm)
+    Rule: Hole to Hole; warning
+    @(122.8946 mm, 95.4321 mm): NPTH pad of 
+    @(122.3698 mm, 94.0336 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.0000 mm)
+    Rule: Hole to Hole; warning
+    @(114.0830 mm, 93.9282 mm): NPTH pad of 
+    @(114.4587 mm, 94.7731 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.2986 mm)
+    Rule: Hole to Hole; warning
+    @(115.9839 mm, 84.8262 mm): NPTH pad of 
+    @(116.5922 mm, 85.9735 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.1711 mm)
+    Rule: Hole to Hole; warning
+    @(119.8177 mm, 78.0361 mm): NPTH pad of 
+    @(119.0760 mm, 78.9424 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.0000 mm)
+    Rule: Hole to Hole; warning
+    @(127.2106 mm, 82.2031 mm): NPTH pad of 
+    @(126.7657 mm, 81.4398 mm): NPTH pad of 
+[hole_to_hole]: Drilled hole too close to other hole (rule 'Hole to Hole' min 0.4995 mm; actual 0.2089 mm)
+    Rule: Hole to Hole; warning
+    @(135.2228 mm, 83.7593 mm): NPTH pad of 
+    @(134.8401 mm, 84.9060 mm): NPTH pad of 
+[holes_co_located]: Drilled holes co-located
+    Local override; warning
+    @(68.0000 mm, 94.0000 mm): NPTH pad of 
+    @(68.0000 mm, 94.0000 mm): NPTH pad of 
+[holes_co_located]: Drilled holes co-located
+    Local override; warning
+    @(71.4286 mm, 94.0000 mm): NPTH pad of 
+    @(71.4286 mm, 94.0000 mm): NPTH pad of 
+[holes_co_located]: Drilled holes co-located
+    Local override; warning
+    @(71.4286 mm, 82.0000 mm): NPTH pad of 
+    @(71.4286 mm, 82.0000 mm): NPTH pad of 
+[holes_co_located]: Drilled holes co-located
+    Local override; warning
+    @(74.8571 mm, 82.0000 mm): NPTH pad of 
+    @(74.8571 mm, 82.0000 mm): NPTH pad of 
+[holes_co_located]: Drilled holes co-located
+    Local override; warning
+    @(74.8571 mm, 94.0000 mm): NPTH pad of 
+    @(74.8571 mm, 94.0000 mm): NPTH pad of 
+[holes_co_located]: Drilled holes co-located
+    Local override; warning
+    @(78.2857 mm, 94.0000 mm): NPTH pad of 
+    @(78.2857 mm, 94.0000 mm): NPTH pad of 
+[holes_co_located]: Drilled holes co-located
+    Local override; warning
+    @(78.2857 mm, 82.0000 mm): NPTH pad of 
+    @(78.2857 mm, 82.0000 mm): NPTH pad of 
+[holes_co_located]: Drilled holes co-located
+    Local override; warning
+    @(81.7143 mm, 82.0000 mm): NPTH pad of 
+    @(81.7143 mm, 82.0000 mm): NPTH pad of 
+[holes_co_located]: Drilled holes co-located
+    Local override; warning
+    @(81.7143 mm, 94.0000 mm): NPTH pad of 
+    @(81.7143 mm, 94.0000 mm): NPTH pad of 
+[holes_co_located]: Drilled holes co-located
+    Local override; warning
+    @(85.1429 mm, 94.0000 mm): NPTH pad of 
+    @(85.1429 mm, 94.0000 mm): NPTH pad of 
+[holes_co_located]: Drilled holes co-located
+    Local override; warning
+    @(85.1429 mm, 82.0000 mm): NPTH pad of 
+    @(85.1429 mm, 82.0000 mm): NPTH pad of 
+[holes_co_located]: Drilled holes co-located
+    Local override; warning
+    @(88.5714 mm, 82.0000 mm): NPTH pad of 
+    @(88.5714 mm, 82.0000 mm): NPTH pad of 
+[holes_co_located]: Drilled holes co-located
+    Local override; warning
+    @(88.5714 mm, 94.0000 mm): NPTH pad of 
+    @(88.5714 mm, 94.0000 mm): NPTH pad of 
+[holes_co_located]: Drilled holes co-located
+    Local override; warning
+    @(92.0000 mm, 94.0000 mm): NPTH pad of 
+    @(92.0000 mm, 94.0000 mm): NPTH pad of 
+[lib_footprint_mismatch]: Footprint 'MountingHole_3.2mm_M3_Pad' does not match copy in library 'MountingHole'.
+    Local override; warning
+    @(4.0000 mm, 4.0000 mm): Footprint MH1
+[lib_footprint_mismatch]: Footprint 'MountingHole_3.2mm_M3_Pad' does not match copy in library 'MountingHole'.
+    Local override; warning
+    @(156.0000 mm, 4.0000 mm): Footprint MH2
+[lib_footprint_mismatch]: Footprint 'MountingHole_3.2mm_M3_Pad' does not match copy in library 'MountingHole'.
+    Local override; warning
+    @(156.0000 mm, 116.0000 mm): Footprint MH3
+[lib_footprint_mismatch]: Footprint 'MountingHole_3.2mm_M3_Pad' does not match copy in library 'MountingHole'.
+    Local override; warning
+    @(4.0000 mm, 116.0000 mm): Footprint MH4
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(48.2947 mm, 32.0000 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(47.6998 mm, 34.9258 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(46.0204 mm, 37.3864 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(43.5250 mm, 39.0221 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(40.5956 mm, 39.6062 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(37.6553 mm, 39.0906 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(35.0287 mm, 37.6701 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(32.4765 mm, 36.0994 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(29.8149 mm, 34.6996 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(27.6568 mm, 32.6566 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(26.3542 mm, 29.9708 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(26.1425 mm, 26.9774 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(27.0651 mm, 24.1726 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(29.0398 mm, 21.8955 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(31.6908 mm, 20.5959 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(34.6853 mm, 20.4249 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(37.5059 mm, 21.4192 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(39.7276 mm, 23.3861 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(41.0841 mm, 26.0472 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(41.4517 mm, 29.0029 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(41.2692 mm, 31.9834 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(41.4512 mm, 34.9745 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(41.0841 mm, 37.9528 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(39.7276 mm, 40.6139 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(37.5059 mm, 42.5808 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(34.6853 mm, 43.5751 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(31.6908 mm, 43.4041 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(29.0398 mm, 42.1045 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(27.0839 mm, 39.8606 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(26.1425 mm, 37.0226 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(26.3542 mm, 34.0292 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(27.6383 mm, 31.3683 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(29.8149 mm, 29.3004 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(32.4606 mm, 27.9082 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(35.0124 mm, 26.3412 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(37.6553 mm, 24.9094 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(40.5956 mm, 24.3938 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(43.5250 mm, 24.9779 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(46.0204 mm, 26.6136 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(47.6998 mm, 29.0742 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(48.2947 mm, 8.0000 mm): Footprint J1
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(48.2946 mm, 11.0000 mm): Footprint END1
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(94.5904 mm, 32.0000 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(93.7668 mm, 34.8510 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(91.6459 mm, 36.9530 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(88.8441 mm, 38.0512 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(85.8782 mm, 38.2204 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(82.9113 mm, 37.8494 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(80.3367 mm, 39.1400 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(78.0810 mm, 41.1220 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(75.4290 mm, 42.4726 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(72.4762 mm, 42.8495 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(69.6288 mm, 41.9248 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(67.6847 mm, 39.7074 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(67.1926 mm, 36.7936 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(68.1071 mm, 33.9220 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(69.9777 mm, 31.6220 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(72.4370 mm, 29.9310 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(74.9412 mm, 28.3246 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(75.6952 mm, 25.4465 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(76.5434 mm, 22.5851 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(78.1857 mm, 20.0598 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(80.6013 mm, 18.3382 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(83.5246 mm, 17.9057 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(86.2700 mm, 19.0990 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(87.9935 mm, 21.4918 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(88.5475 mm, 24.4165 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(88.0826 mm, 27.3561 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(86.8946 mm, 30.1138 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(86.4627 mm, 32.9612 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(87.7324 mm, 35.6683 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(88.4932 mm, 38.5880 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(88.3093 mm, 41.5453 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(86.9656 mm, 44.2120 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(84.5087 mm, 45.8763 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(81.5427 mm, 45.9740 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(78.8882 mm, 44.6065 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(77.0012 mm, 42.3220 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(75.9102 mm, 39.5513 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(75.3425 mm, 36.5994 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(73.3403 mm, 34.5404 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(70.7660 mm, 33.0194 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(68.6275 mm, 30.8889 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(67.3565 mm, 28.1972 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(67.3445 mm, 25.2483 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(68.8307 mm, 22.7007 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(71.4833 mm, 21.3008 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(74.4495 mm, 21.2737 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(77.2232 mm, 22.3288 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(79.6047 mm, 24.1432 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(81.8950 mm, 26.0405 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(84.8673 mm, 25.8854 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(87.8860 mm, 25.8032 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(90.7512 mm, 26.5644 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(93.1790 mm, 28.3501 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(94.4936 mm, 30.9967 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(94.5904 mm, 8.0000 mm): Footprint J2
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(94.5902 mm, 11.0000 mm): Footprint END2
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(135.4115 mm, 32.0000 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(134.7168 mm, 34.8956 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(132.7959 mm, 37.1833 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(130.1071 mm, 38.4221 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(127.1236 mm, 38.4787 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(124.2927 mm, 37.4757 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(121.5175 mm, 36.4165 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(118.5920 mm, 35.7882 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(115.9969 mm, 34.3115 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(114.1895 mm, 31.9384 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(113.5462 mm, 28.9985 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(114.2607 mm, 26.1156 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(116.2099 mm, 23.8595 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(118.9406 mm, 22.7280 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(121.9028 mm, 22.8869 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(124.5486 mm, 24.2516 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(126.4829 mm, 26.5010 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(127.9566 mm, 29.1254 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(129.9971 mm, 31.3379 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(131.5387 mm, 33.8726 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(132.0190 mm, 36.8107 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(131.2302 mm, 39.7236 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(129.2914 mm, 41.9559 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(126.5337 mm, 43.0895 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(123.5736 mm, 42.8536 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(121.0270 mm, 41.3494 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(119.3286 mm, 38.8971 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(118.7261 mm, 35.9728 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(119.0290 mm, 33.0213 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(118.8827 mm, 30.0295 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(118.8036 mm, 27.0273 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(119.7794 mm, 24.2073 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(121.7885 mm, 22.0329 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(124.5578 mm, 20.9129 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(127.5263 mm, 21.1471 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(130.0656 mm, 22.7025 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(131.6477 mm, 25.2363 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(131.9950 mm, 28.1763 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(131.1268 mm, 31.0313 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(129.3191 mm, 33.3925 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(127.4452 mm, 35.7036 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(125.9316 mm, 38.3140 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(123.7253 mm, 40.3257 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(120.9098 mm, 41.3113 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(117.9654 mm, 41.0314 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(115.4320 mm, 39.4823 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(113.8672 mm, 36.9443 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(113.6108 mm, 33.9988 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(114.6574 mm, 31.2204 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(116.7631 mm, 29.1084 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(119.5038 mm, 27.9473 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(122.4448 mm, 27.3628 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(125.1918 mm, 26.1051 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(128.1106 mm, 25.4089 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(131.0532 mm, 25.8601 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(133.5431 mm, 27.4727 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(135.0872 mm, 29.9931 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(135.4115 mm, 8.0000 mm): Footprint J3
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(135.4112 mm, 11.0000 mm): Footprint END3
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(48.4165 mm, 88.0000 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(47.5319 mm, 90.8261 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(45.2838 mm, 92.7856 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(42.4209 mm, 93.5895 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(39.4357 mm, 93.3951 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(36.5243 mm, 93.4547 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(34.0449 mm, 95.1465 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(31.2253 mm, 96.2202 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(28.2445 mm, 96.1299 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(25.6939 mm, 94.6546 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(24.3872 mm, 92.0167 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(24.7642 mm, 89.0977 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(26.5139 mm, 86.6803 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(29.0604 mm, 85.1255 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(31.9314 mm, 84.2390 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(33.8694 mm, 82.0527 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(35.5627 mm, 79.5704 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(37.9449 mm, 77.8044 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(40.8699 mm, 77.2144 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(43.6559 mm, 78.2256 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(45.3656 mm, 80.6406 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(45.5613 mm, 83.5557 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(44.4609 mm, 86.3308 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(42.4811 mm, 88.5716 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(40.6208 mm, 90.8316 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(40.3880 mm, 93.8443 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(39.5275 mm, 96.7091 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(37.6579 mm, 99.0277 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(34.9444 mm, 100.1886 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(32.0473 mm, 99.6644 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(29.9077 mm, 97.5666 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(29.0652 mm, 94.7626 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(29.3854 mm, 91.7729 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(30.4741 mm, 88.9734 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(30.0829 mm, 86.0980 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(29.1619 mm, 83.2421 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(29.2031 mm, 80.2905 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(30.4918 mm, 77.5968 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(32.9700 mm, 75.9638 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(35.9248 mm, 76.0333 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(38.4114 mm, 77.6705 mm): Footprint <no reference designator>
+[lib_footprint_issues]: The current configuration does not include the footprint library 'HOPF01'.
+    Local override; warning
+    @(39.9167 mm, 80.1921 mm): Footprint <no reference designator>
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(40.3900 mm, 39.6000 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(27.2200 mm, 32.0000 mm): PCB text 'UNDER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(40.3900 mm, 24.4000 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.7000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(48.2900 mm, 35.5000 mm): PCB text 'START' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.7000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(48.2900 mm, 35.4600 mm): PCB text 'END' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(88.4300 mm, 38.1300 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(76.7800 mm, 41.9100 mm): PCB text 'UNDER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(69.5800 mm, 32.0000 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(88.4300 mm, 25.8700 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.7000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(94.5900 mm, 35.5000 mm): PCB text 'START' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.7000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(94.5900 mm, 35.4500 mm): PCB text 'END' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(131.9000 mm, 37.7400 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(126.0100 mm, 38.1900 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(118.7300 mm, 35.8300 mm): PCB text 'UNDER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(114.2400 mm, 32.0000 mm): PCB text 'UNDER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(120.9800 mm, 22.7200 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(126.0100 mm, 25.8100 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(130.5100 mm, 32.0000 mm): PCB text 'UNDER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(120.9800 mm, 41.2800 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(118.7300 mm, 28.1700 mm): PCB text 'UNDER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(131.9000 mm, 26.2600 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.7000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(135.4100 mm, 35.5000 mm): PCB text 'START' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.7000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(135.4100 mm, 35.4500 mm): PCB text 'END' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(45.5800 mm, 92.6000 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(40.4200 mm, 93.5400 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(34.4300 mm, 94.9100 mm): PCB text 'UNDER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(29.3900 mm, 96.3000 mm): PCB text 'UNDER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(25.3900 mm, 88.0000 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(29.6100 mm, 84.9200 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(34.4300 mm, 81.0900 mm): PCB text 'UNDER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(38.3800 mm, 77.6500 mm): PCB text 'UNDER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(45.5800 mm, 83.4000 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(43.0800 mm, 88.0000 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(38.3800 mm, 98.3500 mm): PCB text 'UNDER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(29.6100 mm, 91.0800 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(29.3900 mm, 79.7000 mm): PCB text 'UNDER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(40.4200 mm, 82.4600 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.7000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(48.4200 mm, 91.5000 mm): PCB text 'START' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.7000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(48.4200 mm, 91.4400 mm): PCB text 'END' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(134.6900 mm, 91.1600 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(130.2600 mm, 92.0300 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(127.0900 mm, 94.7700 mm): PCB text 'UNDER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(125.6000 mm, 99.0200 mm): PCB text 'UNDER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(119.3800 mm, 98.1400 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(119.1300 mm, 93.6200 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(116.8600 mm, 90.0900 mm): PCB text 'UNDER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(112.8800 mm, 88.0000 mm): PCB text 'UNDER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(114.6100 mm, 81.9900 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(119.1300 mm, 82.3800 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(122.9500 mm, 80.6300 mm): PCB text 'UNDER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(125.6000 mm, 76.9800 mm): PCB text 'UNDER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(131.2800 mm, 79.5800 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(130.2600 mm, 83.9700 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(131.4400 mm, 88.0000 mm): PCB text 'UNDER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(131.2800 mm, 96.4200 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(122.9500 mm, 95.3700 mm): PCB text 'UNDER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(114.6100 mm, 94.0100 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(116.8600 mm, 85.9100 mm): PCB text 'UNDER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(119.3800 mm, 77.8600 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(127.0900 mm, 81.2300 mm): PCB text 'UNDER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(134.6900 mm, 84.8400 mm): PCB text 'OVER' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.7000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(137.0500 mm, 91.5000 mm): PCB text 'START' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.7000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(137.0500 mm, 91.4400 mm): PCB text 'END' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.7000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(80.0000 mm, 117.0000 mm): PCB text 'Mount on 10mm standoffs - wire routes both sides' on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(48.2947 mm, 32.0000 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(48.2883 mm, 32.3089 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(48.2692 mm, 32.6172 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(47.9852 mm, 34.1306 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(47.8917 mm, 34.4237 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(47.7863 mm, 34.7124 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(47.6695 mm, 34.9962 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(47.5414 mm, 35.2746 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0118 mm)
+    Rule: Silk to Mask; warning
+    @(47.4023 mm, 35.5471 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.1136 mm)
+    Rule: Silk to Mask; warning
+    @(46.7435 mm, 36.5692 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(46.5551 mm, 36.8058 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(46.3580 mm, 37.0340 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(46.1527 mm, 37.2537 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(45.9396 mm, 37.4643 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(45.7193 mm, 37.6658 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0319 mm)
+    Rule: Silk to Mask; warning
+    @(45.4922 mm, 37.8579 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.1483 mm)
+    Rule: Silk to Mask; warning
+    @(44.5259 mm, 38.5280 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(44.2725 mm, 38.6703 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(44.0154 mm, 38.8023 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(43.7550 mm, 38.9241 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(43.4920 mm, 39.0355 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(43.2269 mm, 39.1366 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(42.9601 mm, 39.2275 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0812 mm)
+    Rule: Silk to Mask; warning
+    @(41.6184 mm, 39.5321 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.3518 mm, 39.5642 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.0868 mm, 39.5871 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(40.8238 mm, 39.6011 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(40.5632 mm, 39.6064 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(40.3053 mm, 39.6035 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(40.0506 mm, 39.5925 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.1213 mm)
+    Rule: Silk to Mask; warning
+    @(39.7993 mm, 39.5738 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0827 mm)
+    Rule: Silk to Mask; warning
+    @(38.6037 mm, 39.3771 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(38.3783 mm, 39.3197 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(38.1580 mm, 39.2572 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(37.9427 mm, 39.1900 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(37.7327 mm, 39.1185 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(37.5279 mm, 39.0430 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(37.3285 mm, 38.9641 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(37.1344 mm, 38.8820 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0882 mm)
+    Rule: Silk to Mask; warning
+    @(36.9456 mm, 38.7971 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0324 mm)
+    Rule: Silk to Mask; warning
+    @(35.7678 mm, 38.1572 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(35.6185 mm, 38.0633 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(35.4735 mm, 37.9696 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(35.3325 mm, 37.8765 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(35.1953 mm, 37.7842 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(35.0616 mm, 37.6928 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(34.9312 mm, 37.6026 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(34.8038 mm, 37.5138 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(34.6792 mm, 37.4265 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(34.5569 mm, 37.3408 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0442 mm)
+    Rule: Silk to Mask; warning
+    @(34.4368 mm, 37.2569 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.1057 mm)
+    Rule: Silk to Mask; warning
+    @(33.2888 mm, 36.5194 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(33.1729 mm, 36.4547 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(33.0559 mm, 36.3913 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(32.9373 mm, 36.3288 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(32.8171 mm, 36.2670 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(32.6951 mm, 36.2059 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(32.5710 mm, 36.1450 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(32.4447 mm, 36.0842 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(32.3161 mm, 36.0231 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(32.1850 mm, 35.9616 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(32.0514 mm, 35.8993 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(31.9152 mm, 35.8358 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0955 mm)
+    Rule: Silk to Mask; warning
+    @(31.7764 mm, 35.7710 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0281 mm)
+    Rule: Silk to Mask; warning
+    @(30.5724 mm, 35.1640 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(30.4116 mm, 35.0723 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(30.2489 mm, 34.9760 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(30.0846 mm, 34.8749 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(29.9190 mm, 34.7687 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(29.7523 mm, 34.6571 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(29.5848 mm, 34.5399 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(29.4168 mm, 34.4169 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0212 mm)
+    Rule: Silk to Mask; warning
+    @(29.2487 mm, 34.2878 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0209 mm)
+    Rule: Silk to Mask; warning
+    @(28.2558 mm, 33.3767 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(28.0966 mm, 33.2009 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(27.9404 mm, 33.0182 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(27.7875 mm, 32.8284 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(27.6383 mm, 32.6317 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(27.4934 mm, 32.4279 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(27.3532 mm, 32.2174 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0051 mm)
+    Rule: Silk to Mask; warning
+    @(27.2181 mm, 32.0000 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0002 mm)
+    Rule: Silk to Mask; warning
+    @(27.0885 mm, 31.7760 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0213 mm)
+    Rule: Silk to Mask; warning
+    @(26.9649 mm, 31.5455 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.1156 mm)
+    Rule: Silk to Mask; warning
+    @(26.8477 mm, 31.3086 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(26.6343 mm, 30.8168 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(26.5389 mm, 30.5624 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(26.4515 mm, 30.3026 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(26.3726 mm, 30.0378 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(26.3024 mm, 29.7683 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(26.2415 mm, 29.4944 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0960 mm)
+    Rule: Silk to Mask; warning
+    @(26.1900 mm, 29.2166 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.1307 mm)
+    Rule: Silk to Mask; warning
+    @(26.0847 mm, 28.0743 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(26.0849 mm, 27.7831 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(26.0960 mm, 27.4907 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(26.1184 mm, 27.1975 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(26.1520 mm, 26.9040 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(26.1971 mm, 26.6108 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(26.2537 mm, 26.3184 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.1214 mm)
+    Rule: Silk to Mask; warning
+    @(26.5961 mm, 25.1677 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(26.7106 mm, 24.8875 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(26.8365 mm, 24.6113 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(26.9737 mm, 24.3397 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(27.1220 mm, 24.0733 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(27.2813 mm, 23.8126 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0504 mm)
+    Rule: Silk to Mask; warning
+    @(27.4513 mm, 23.5580 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0936 mm)
+    Rule: Silk to Mask; warning
+    @(28.2334 mm, 22.6118 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(28.4529 mm, 22.3956 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(28.6814 mm, 22.1884 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(28.9183 mm, 21.9907 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(29.1633 mm, 21.8028 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(29.4159 mm, 21.6251 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0945 mm)
+    Rule: Silk to Mask; warning
+    @(29.6757 mm, 21.4579 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(30.7770 mm, 20.9005 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(31.0652 mm, 20.7902 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(31.3576 mm, 20.6919 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(31.6535 mm, 20.6058 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(31.9525 mm, 20.5320 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(32.2539 mm, 20.4706 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(33.7776 mm, 20.3499 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(34.0818 mm, 20.3628 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(34.3846 mm, 20.3879 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(34.6853 mm, 20.4249 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(34.9835 mm, 20.4737 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(35.2786 mm, 20.5341 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(36.6920 mm, 21.0007 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(36.9591 mm, 21.1248 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(37.2201 mm, 21.2583 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(37.4745 mm, 21.4008 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(37.7222 mm, 21.5520 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(37.9627 mm, 21.7113 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0726 mm)
+    Rule: Silk to Mask; warning
+    @(39.0492 mm, 22.6155 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(39.2419 mm, 22.8146 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(39.4261 mm, 23.0186 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(39.6016 mm, 23.2271 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(39.7685 mm, 23.4395 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(39.9266 mm, 23.6555 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(40.0760 mm, 23.8745 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(40.2168 mm, 24.0961 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(40.3488 mm, 24.3197 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(40.4724 mm, 24.5450 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(40.5874 mm, 24.7714 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(40.6941 mm, 24.9986 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(40.7926 mm, 25.2261 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(40.8832 mm, 25.4535 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(40.9659 mm, 25.6805 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.0410 mm, 25.9065 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.1087 mm, 26.1314 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.1693 mm, 26.3547 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.2232 mm, 26.5761 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0959 mm)
+    Rule: Silk to Mask; warning
+    @(41.2704 mm, 26.7954 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0784 mm)
+    Rule: Silk to Mask; warning
+    @(41.4343 mm, 28.0517 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.4448 mm, 28.2495 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.4514 mm, 28.4435 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.4546 mm, 28.6338 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.4545 mm, 28.8203 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.4517 mm, 29.0029 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.4464 mm, 29.1817 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.4390 mm, 29.3566 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.4299 mm, 29.5278 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0173 mm)
+    Rule: Silk to Mask; warning
+    @(41.4193 mm, 29.6952 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.1134 mm)
+    Rule: Silk to Mask; warning
+    @(41.3075 mm, 31.0565 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.2978 mm, 31.1950 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.2893 mm, 31.3318 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.2822 mm, 31.4672 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.2766 mm, 31.6014 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.2725 mm, 31.7348 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.2700 mm, 31.8675 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.2692 mm, 32.0000 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.2700 mm, 32.1325 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.2725 mm, 32.2652 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.2766 mm, 32.3986 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.2822 mm, 32.5328 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0098 mm)
+    Rule: Silk to Mask; warning
+    @(41.2893 mm, 32.6682 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.1466 mm)
+    Rule: Silk to Mask; warning
+    @(41.2978 mm, 32.8050 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.4076 mm, 34.1410 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.4193 mm, 34.3048 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.4299 mm, 34.4722 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.4390 mm, 34.6434 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.4464 mm, 34.8183 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.4517 mm, 34.9971 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.4545 mm, 35.1797 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.4546 mm, 35.3662 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.4514 mm, 35.5565 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.1010 mm)
+    Rule: Silk to Mask; warning
+    @(41.4448 mm, 35.7505 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0959 mm)
+    Rule: Silk to Mask; warning
+    @(41.3115 mm, 36.9878 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.2704 mm, 37.2046 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.2232 mm, 37.4239 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.1693 mm, 37.6453 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.1087 mm, 37.8686 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(41.0410 mm, 38.0935 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(40.9659 mm, 38.3195 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(40.8832 mm, 38.5465 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(40.7926 mm, 38.7739 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(40.6941 mm, 39.0014 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(40.5874 mm, 39.2286 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(40.4724 mm, 39.4550 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(40.3488 mm, 39.6803 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(40.2168 mm, 39.9039 mm): Segment on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask (rule 'Silk to Mask' clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(40.0760 mm, 40.1255 mm): Segment on F.Silkscreen
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(46.6947 mm, 9.8000 mm): PTH pad 4 [GND] of J1
+    @(48.2946 mm, 11.0000 mm): PTH pad 1 [<no net>] of END1
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(46.6947 mm, 9.8000 mm): PTH pad 4 [GND] of J1
+    @(48.2946 mm, 11.0000 mm): PTH pad 1 [<no net>] of END1
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(49.8947 mm, 9.8000 mm): PTH pad 5 [GND] of J1
+    @(48.2946 mm, 11.0000 mm): PTH pad 1 [<no net>] of END1
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(49.8947 mm, 9.8000 mm): PTH pad 5 [GND] of J1
+    @(48.2946 mm, 11.0000 mm): PTH pad 1 [<no net>] of END1
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(92.9904 mm, 9.8000 mm): PTH pad 4 [GND] of J2
+    @(94.5902 mm, 11.0000 mm): PTH pad 1 [<no net>] of END2
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(92.9904 mm, 9.8000 mm): PTH pad 4 [GND] of J2
+    @(94.5902 mm, 11.0000 mm): PTH pad 1 [<no net>] of END2
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(96.1904 mm, 9.8000 mm): PTH pad 5 [GND] of J2
+    @(94.5902 mm, 11.0000 mm): PTH pad 1 [<no net>] of END2
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(96.1904 mm, 9.8000 mm): PTH pad 5 [GND] of J2
+    @(94.5902 mm, 11.0000 mm): PTH pad 1 [<no net>] of END2
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(133.8115 mm, 9.8000 mm): PTH pad 4 [GND] of J3
+    @(135.4112 mm, 11.0000 mm): PTH pad 1 [<no net>] of END3
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(133.8115 mm, 9.8000 mm): PTH pad 4 [GND] of J3
+    @(135.4112 mm, 11.0000 mm): PTH pad 1 [<no net>] of END3
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(137.0115 mm, 9.8000 mm): PTH pad 5 [GND] of J3
+    @(135.4112 mm, 11.0000 mm): PTH pad 1 [<no net>] of END3
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(137.0115 mm, 9.8000 mm): PTH pad 5 [GND] of J3
+    @(135.4112 mm, 11.0000 mm): PTH pad 1 [<no net>] of END3
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(46.8165 mm, 110.2000 mm): PTH pad 2 [GND] of J4
+    @(48.4162 mm, 109.0000 mm): PTH pad 1 [<no net>] of END4
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(46.8165 mm, 110.2000 mm): PTH pad 2 [GND] of J4
+    @(48.4162 mm, 109.0000 mm): PTH pad 1 [<no net>] of END4
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(50.0165 mm, 110.2000 mm): PTH pad 3 [GND] of J4
+    @(48.4162 mm, 109.0000 mm): PTH pad 1 [<no net>] of END4
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(50.0165 mm, 110.2000 mm): PTH pad 3 [GND] of J4
+    @(48.4162 mm, 109.0000 mm): PTH pad 1 [<no net>] of END4
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(135.4481 mm, 110.2000 mm): PTH pad 2 [GND] of J5
+    @(137.0474 mm, 109.0000 mm): PTH pad 1 [<no net>] of END5
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(135.4481 mm, 110.2000 mm): PTH pad 2 [GND] of J5
+    @(137.0474 mm, 109.0000 mm): PTH pad 1 [<no net>] of END5
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(138.6481 mm, 110.2000 mm): PTH pad 3 [GND] of J5
+    @(137.0474 mm, 109.0000 mm): PTH pad 1 [<no net>] of END5
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(138.6481 mm, 110.2000 mm): PTH pad 3 [GND] of J5
+    @(137.0474 mm, 109.0000 mm): PTH pad 1 [<no net>] of END5
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0308 mm)
+    Rule: Silk to Mask; warning
+    @(88.4300 mm, 38.1300 mm): PCB text 'OVER' on F.Silkscreen
+    @(89.8992 mm, 37.7707 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(88.4300 mm, 38.1300 mm): PCB text 'OVER' on F.Silkscreen
+    @(89.5335 mm, 37.8834 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1421 mm)
+    Rule: Silk to Mask; warning
+    @(88.4300 mm, 38.1300 mm): PCB text 'OVER' on F.Silkscreen
+    @(88.0669 mm, 38.1765 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1425 mm)
+    Rule: Silk to Mask; warning
+    @(88.4300 mm, 38.1300 mm): PCB text 'OVER' on F.Silkscreen
+    @(88.4313 mm, 38.1257 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0914 mm)
+    Rule: Silk to Mask; warning
+    @(88.4300 mm, 38.1300 mm): PCB text 'OVER' on F.Silkscreen
+    @(88.4300 mm, 38.1300 mm): Circle on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0568 mm)
+    Rule: Silk to Mask; warning
+    @(87.7062 mm, 38.2137 mm): Segment on F.Silkscreen
+    @(88.4300 mm, 38.1300 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1191 mm)
+    Rule: Silk to Mask; warning
+    @(88.4313 mm, 38.1257 mm): Segment on F.Silkscreen
+    @(88.4300 mm, 38.1300 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1482 mm)
+    Rule: Silk to Mask; warning
+    @(88.4826 mm, 38.4948 mm): Segment on F.Silkscreen
+    @(88.4300 mm, 38.1300 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(88.4300 mm, 38.1300 mm): PCB text 'OVER' on F.Silkscreen
+    @(88.7982 mm, 38.0604 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(88.2909 mm, 37.4089 mm): Segment on F.Silkscreen
+    @(88.4300 mm, 38.1300 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(88.4300 mm, 38.1300 mm): PCB text 'OVER' on F.Silkscreen
+    @(88.3670 mm, 37.7634 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(88.4300 mm, 38.1300 mm): PCB text 'OVER' on F.Silkscreen
+    @(89.1661 mm, 37.9798 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(88.4300 mm, 38.1300 mm): PCB text 'OVER' on F.Silkscreen
+    @(87.3504 mm, 38.2380 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(93.3609 mm, 35.4305 mm): Segment on F.Silkscreen
+    @(94.5900 mm, 35.5000 mm): PCB text 'START' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(94.5900 mm, 35.5000 mm): PCB text 'START' on F.Silkscreen
+    @(93.1160 mm, 35.7214 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1349 mm)
+    Rule: Silk to Mask; warning
+    @(94.5900 mm, 35.4500 mm): PCB text 'END' on F.Silkscreen
+    @(94.5900 mm, 35.5000 mm): PCB text 'START' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1239 mm)
+    Rule: Silk to Mask; warning
+    @(94.5900 mm, 35.5000 mm): PCB text 'START' on F.Silkscreen
+    @(93.5863 mm, 35.1267 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0636 mm)
+    Rule: Silk to Mask; warning
+    @(78.0103 mm, 41.1717 mm): Segment on F.Silkscreen
+    @(76.7800 mm, 41.9100 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0620 mm)
+    Rule: Silk to Mask; warning
+    @(77.7200 mm, 41.3671 mm): Segment on F.Silkscreen
+    @(76.7800 mm, 41.9100 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1180 mm)
+    Rule: Silk to Mask; warning
+    @(88.4300 mm, 25.8700 mm): PCB text 'OVER' on F.Silkscreen
+    @(87.0007 mm, 25.7495 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0573 mm)
+    Rule: Silk to Mask; warning
+    @(88.4300 mm, 25.8700 mm): PCB text 'OVER' on F.Silkscreen
+    @(87.3504 mm, 25.7620 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0735 mm)
+    Rule: Silk to Mask; warning
+    @(87.7062 mm, 25.7863 mm): Segment on F.Silkscreen
+    @(88.4300 mm, 25.8700 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0514 mm)
+    Rule: Silk to Mask; warning
+    @(88.4300 mm, 25.8700 mm): PCB text 'OVER' on F.Silkscreen
+    @(88.3670 mm, 26.2366 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(88.4313 mm, 25.8743 mm): Segment on F.Silkscreen
+    @(88.4300 mm, 25.8700 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(88.4313 mm, 25.8743 mm): Segment on F.Silkscreen
+    @(88.4300 mm, 25.8700 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(88.7982 mm, 25.9396 mm): Segment on F.Silkscreen
+    @(88.4300 mm, 25.8700 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(88.4300 mm, 25.8700 mm): PCB text 'OVER' on F.Silkscreen
+    @(89.1661 mm, 26.0202 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(89.5335 mm, 26.1166 mm): Segment on F.Silkscreen
+    @(88.4300 mm, 25.8700 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(88.4826 mm, 25.5052 mm): Segment on F.Silkscreen
+    @(88.4300 mm, 25.8700 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(88.0669 mm, 25.8235 mm): Segment on F.Silkscreen
+    @(88.4300 mm, 25.8700 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(88.4300 mm, 25.8700 mm): PCB text 'OVER' on F.Silkscreen
+    @(88.4300 mm, 25.8700 mm): Circle on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(94.5902 mm, 9.0000 mm): Reference field of END2
+    @(94.5904 mm, 8.0000 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(88.5196 mm, 25.1304 mm): Segment on F.Silkscreen
+    @(88.4300 mm, 25.8700 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0291 mm)
+    Rule: Silk to Mask; warning
+    @(76.0994 mm, 42.2255 mm): Segment on F.Silkscreen
+    @(76.7800 mm, 41.9100 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0268 mm)
+    Rule: Silk to Mask; warning
+    @(75.7454 mm, 42.3635 mm): Segment on F.Silkscreen
+    @(76.7800 mm, 41.9100 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(76.4443 mm, 42.0744 mm): Segment on F.Silkscreen
+    @(76.7800 mm, 41.9100 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(77.4179 mm, 41.5565 mm): Segment on F.Silkscreen
+    @(76.7800 mm, 41.9100 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1316 mm)
+    Rule: Silk to Mask; warning
+    @(76.9550 mm, 42.2403 mm): Segment on F.Silkscreen
+    @(76.7800 mm, 41.9100 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(77.1042 mm, 41.7385 mm): Segment on F.Silkscreen
+    @(76.7800 mm, 41.9100 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0726 mm)
+    Rule: Silk to Mask; warning
+    @(76.7795 mm, 41.9116 mm): Segment on F.Silkscreen
+    @(76.7800 mm, 41.9100 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1165 mm)
+    Rule: Silk to Mask; warning
+    @(76.6186 mm, 41.5807 mm): Segment on F.Silkscreen
+    @(76.7800 mm, 41.9100 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(76.7800 mm, 41.9100 mm): Circle on F.Silkscreen
+    @(76.7800 mm, 41.9100 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1316 mm)
+    Rule: Silk to Mask; warning
+    @(76.7795 mm, 41.9116 mm): Segment on F.Silkscreen
+    @(76.7800 mm, 41.9100 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0296 mm)
+    Rule: Silk to Mask; warning
+    @(77.1453 mm, 42.5653 mm): Segment on F.Silkscreen
+    @(76.7800 mm, 41.9100 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1221 mm)
+    Rule: Silk to Mask; warning
+    @(94.5900 mm, 35.5000 mm): PCB text 'START' on F.Silkscreen
+    @(93.9745 mm, 34.4842 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0805 mm)
+    Rule: Silk to Mask; warning
+    @(94.5900 mm, 35.4500 mm): PCB text 'END' on F.Silkscreen
+    @(93.9745 mm, 34.4842 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(93.7912 mm, 34.8109 mm): Segment on F.Silkscreen
+    @(94.5900 mm, 35.5000 mm): PCB text 'START' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1216 mm)
+    Rule: Silk to Mask; warning
+    @(94.5900 mm, 35.4500 mm): PCB text 'END' on F.Silkscreen
+    @(93.7912 mm, 34.8109 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0884 mm)
+    Rule: Silk to Mask; warning
+    @(94.5900 mm, 35.4500 mm): PCB text 'END' on F.Silkscreen
+    @(93.5863 mm, 35.1267 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0825 mm)
+    Rule: Silk to Mask; warning
+    @(114.6849 mm, 32.8215 mm): Segment on F.Silkscreen
+    @(114.2400 mm, 32.0000 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(114.2400 mm, 32.0000 mm): PCB text 'UNDER' on F.Silkscreen
+    @(114.4728 mm, 32.4793 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(114.2790 mm, 32.1222 mm): Segment on F.Silkscreen
+    @(114.2400 mm, 32.0000 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(114.1051 mm, 31.7513 mm): Segment on F.Silkscreen
+    @(114.2400 mm, 32.0000 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1449 mm)
+    Rule: Silk to Mask; warning
+    @(113.9524 mm, 31.3679 mm): Segment on F.Silkscreen
+    @(114.2400 mm, 32.0000 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1320 mm)
+    Rule: Silk to Mask; warning
+    @(114.4728 mm, 31.5207 mm): Segment on F.Silkscreen
+    @(114.2400 mm, 32.0000 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1322 mm)
+    Rule: Silk to Mask; warning
+    @(114.2790 mm, 31.8778 mm): Segment on F.Silkscreen
+    @(114.2400 mm, 32.0000 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0478 mm)
+    Rule: Silk to Mask; warning
+    @(114.2400 mm, 32.0000 mm): PCB text 'UNDER' on F.Silkscreen
+    @(114.2400 mm, 32.0000 mm): Circle on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0304 mm)
+    Rule: Silk to Mask; warning
+    @(114.2400 mm, 32.0000 mm): PCB text 'UNDER' on F.Silkscreen
+    @(114.1051 mm, 32.2487 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0493 mm)
+    Rule: Silk to Mask; warning
+    @(113.9524 mm, 32.6321 mm): Segment on F.Silkscreen
+    @(114.2400 mm, 32.0000 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1125 mm)
+    Rule: Silk to Mask; warning
+    @(119.4614 mm, 22.6615 mm): Segment on F.Silkscreen
+    @(120.9800 mm, 22.7200 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(119.1961 mm, 35.9741 mm): Segment on F.Silkscreen
+    @(118.7300 mm, 35.8300 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(118.9153 mm, 35.8932 mm): Segment on F.Silkscreen
+    @(118.7300 mm, 35.8300 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0430 mm)
+    Rule: Silk to Mask; warning
+    @(118.7354 mm, 36.2450 mm): Segment on F.Silkscreen
+    @(118.7300 mm, 35.8300 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0453 mm)
+    Rule: Silk to Mask; warning
+    @(118.7254 mm, 35.9344 mm): Segment on F.Silkscreen
+    @(118.7300 mm, 35.8300 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0728 mm)
+    Rule: Silk to Mask; warning
+    @(118.7300 mm, 35.8300 mm): PCB text 'UNDER' on F.Silkscreen
+    @(119.4701 mm, 36.0445 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0651 mm)
+    Rule: Silk to Mask; warning
+    @(118.7300 mm, 35.8300 mm): PCB text 'UNDER' on F.Silkscreen
+    @(119.7364 mm, 36.1058 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(118.7300 mm, 35.8300 mm): PCB text 'UNDER' on F.Silkscreen
+    @(118.7300 mm, 35.8300 mm): Circle on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(118.7261 mm, 35.6328 mm): Segment on F.Silkscreen
+    @(118.7300 mm, 35.8300 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1062 mm)
+    Rule: Silk to Mask; warning
+    @(118.6282 mm, 35.8006 mm): Segment on F.Silkscreen
+    @(118.7300 mm, 35.8300 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(118.7359 mm, 35.3407 mm): Segment on F.Silkscreen
+    @(118.7300 mm, 35.8300 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0457 mm)
+    Rule: Silk to Mask; warning
+    @(118.7300 mm, 35.8300 mm): PCB text 'UNDER' on F.Silkscreen
+    @(119.9946 mm, 36.1593 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0539 mm)
+    Rule: Silk to Mask; warning
+    @(120.2445 mm, 36.2062 mm): Segment on F.Silkscreen
+    @(118.7300 mm, 35.8300 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(120.4857 mm, 36.2481 mm): Segment on F.Silkscreen
+    @(118.7300 mm, 35.8300 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0994 mm)
+    Rule: Silk to Mask; warning
+    @(118.7300 mm, 28.1700 mm): PCB text 'UNDER' on F.Silkscreen
+    @(118.7536 mm, 28.9416 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1201 mm)
+    Rule: Silk to Mask; warning
+    @(118.7300 mm, 28.1700 mm): PCB text 'UNDER' on F.Silkscreen
+    @(117.1377 mm, 28.8756 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1313 mm)
+    Rule: Silk to Mask; warning
+    @(118.7300 mm, 28.1700 mm): PCB text 'UNDER' on F.Silkscreen
+    @(117.4390 mm, 28.7088 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0534 mm)
+    Rule: Silk to Mask; warning
+    @(118.7300 mm, 28.1700 mm): PCB text 'UNDER' on F.Silkscreen
+    @(118.7359 mm, 28.6593 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0433 mm)
+    Rule: Silk to Mask; warning
+    @(118.7300 mm, 28.1700 mm): PCB text 'UNDER' on F.Silkscreen
+    @(118.7261 mm, 28.3672 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1397 mm)
+    Rule: Silk to Mask; warning
+    @(118.7300 mm, 28.1700 mm): PCB text 'UNDER' on F.Silkscreen
+    @(118.3359 mm, 28.3048 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0999 mm)
+    Rule: Silk to Mask; warning
+    @(118.7254 mm, 28.0656 mm): Segment on F.Silkscreen
+    @(118.7300 mm, 28.1700 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(118.7300 mm, 28.1700 mm): PCB text 'UNDER' on F.Silkscreen
+    @(118.6282 mm, 28.1994 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(118.7300 mm, 28.1700 mm): PCB text 'UNDER' on F.Silkscreen
+    @(118.9153 mm, 28.1068 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0993 mm)
+    Rule: Silk to Mask; warning
+    @(118.7300 mm, 28.1700 mm): PCB text 'UNDER' on F.Silkscreen
+    @(119.1961 mm, 28.0259 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(118.7300 mm, 28.1700 mm): PCB text 'UNDER' on F.Silkscreen
+    @(118.7300 mm, 28.1700 mm): Circle on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1034 mm)
+    Rule: Silk to Mask; warning
+    @(118.7300 mm, 28.1700 mm): PCB text 'UNDER' on F.Silkscreen
+    @(117.7401 mm, 28.5586 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(118.0395 mm, 28.4242 mm): Segment on F.Silkscreen
+    @(118.7300 mm, 28.1700 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(118.7354 mm, 27.7550 mm): Segment on F.Silkscreen
+    @(118.7300 mm, 28.1700 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(118.7300 mm, 28.1700 mm): PCB text 'UNDER' on F.Silkscreen
+    @(119.4701 mm, 27.9555 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(118.7300 mm, 28.1700 mm): PCB text 'UNDER' on F.Silkscreen
+    @(119.7364 mm, 27.8942 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0729 mm)
+    Rule: Silk to Mask; warning
+    @(118.7300 mm, 28.1700 mm): PCB text 'UNDER' on F.Silkscreen
+    @(120.2445 mm, 27.7938 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(118.7300 mm, 28.1700 mm): PCB text 'UNDER' on F.Silkscreen
+    @(119.9946 mm, 27.8407 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0933 mm)
+    Rule: Silk to Mask; warning
+    @(117.7401 mm, 35.4414 mm): Segment on F.Silkscreen
+    @(118.7300 mm, 35.8300 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0463 mm)
+    Rule: Silk to Mask; warning
+    @(118.7300 mm, 35.8300 mm): PCB text 'UNDER' on F.Silkscreen
+    @(117.4390 mm, 35.2912 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(118.3359 mm, 35.6952 mm): Segment on F.Silkscreen
+    @(118.7300 mm, 35.8300 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(118.0395 mm, 35.5758 mm): Segment on F.Silkscreen
+    @(118.7300 mm, 35.8300 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0023 mm)
+    Rule: Silk to Mask; warning
+    @(118.7573 mm, 36.5638 mm): Segment on F.Silkscreen
+    @(118.7300 mm, 35.8300 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(120.3402 mm, 23.3947 mm): Segment on F.Silkscreen
+    @(120.9800 mm, 22.7200 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1494 mm)
+    Rule: Silk to Mask; warning
+    @(119.8785 mm, 22.6377 mm): Segment on F.Silkscreen
+    @(120.9800 mm, 22.7200 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0864 mm)
+    Rule: Silk to Mask; warning
+    @(120.2939 mm, 22.6395 mm): Segment on F.Silkscreen
+    @(120.9800 mm, 22.7200 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0914 mm)
+    Rule: Silk to Mask; warning
+    @(120.9800 mm, 22.7200 mm): Circle on F.Silkscreen
+    @(120.9800 mm, 22.7200 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(120.6001 mm, 23.0872 mm): Segment on F.Silkscreen
+    @(120.9800 mm, 22.7200 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(120.7057 mm, 22.6662 mm): Segment on F.Silkscreen
+    @(120.9800 mm, 22.7200 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0372 mm)
+    Rule: Silk to Mask; warning
+    @(120.8799 mm, 22.7925 mm): Segment on F.Silkscreen
+    @(120.9800 mm, 22.7200 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1073 mm)
+    Rule: Silk to Mask; warning
+    @(121.1122 mm, 22.7170 mm): Segment on F.Silkscreen
+    @(120.9800 mm, 22.7200 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1059 mm)
+    Rule: Silk to Mask; warning
+    @(120.9800 mm, 22.7200 mm): PCB text 'OVER' on F.Silkscreen
+    @(121.1789 mm, 22.5125 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0451 mm)
+    Rule: Silk to Mask; warning
+    @(121.5118 mm, 22.7910 mm): Segment on F.Silkscreen
+    @(120.9800 mm, 22.7200 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(121.4963 mm, 22.2488 mm): Segment on F.Silkscreen
+    @(120.9800 mm, 22.7200 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0621 mm)
+    Rule: Silk to Mask; warning
+    @(121.9028 mm, 22.8869 mm): Segment on F.Silkscreen
+    @(120.9800 mm, 22.7200 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1006 mm)
+    Rule: Silk to Mask; warning
+    @(122.2839 mm, 23.0037 mm): Segment on F.Silkscreen
+    @(120.9800 mm, 22.7200 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(134.8976 mm, 34.5079 mm): Segment on F.Silkscreen
+    @(135.4100 mm, 35.4500 mm): PCB text 'END' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0370 mm)
+    Rule: Silk to Mask; warning
+    @(134.8976 mm, 34.5079 mm): Segment on F.Silkscreen
+    @(135.4100 mm, 35.5000 mm): PCB text 'START' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1052 mm)
+    Rule: Silk to Mask; warning
+    @(135.4100 mm, 35.5000 mm): PCB text 'START' on F.Silkscreen
+    @(134.7168 mm, 34.8956 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(134.7168 mm, 34.8956 mm): Segment on F.Silkscreen
+    @(135.4100 mm, 35.4500 mm): PCB text 'END' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1435 mm)
+    Rule: Silk to Mask; warning
+    @(135.4100 mm, 35.5000 mm): PCB text 'START' on F.Silkscreen
+    @(135.4100 mm, 35.4500 mm): PCB text 'END' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(134.2823 mm, 35.6290 mm): Segment on F.Silkscreen
+    @(135.4100 mm, 35.5000 mm): PCB text 'START' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(135.4100 mm, 35.5000 mm): PCB text 'START' on F.Silkscreen
+    @(134.5113 mm, 35.2699 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0198 mm)
+    Rule: Silk to Mask; warning
+    @(134.5113 mm, 35.2699 mm): Segment on F.Silkscreen
+    @(135.4100 mm, 35.4500 mm): PCB text 'END' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1105 mm)
+    Rule: Silk to Mask; warning
+    @(134.2823 mm, 35.6290 mm): Segment on F.Silkscreen
+    @(135.4100 mm, 35.4500 mm): PCB text 'END' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1242 mm)
+    Rule: Silk to Mask; warning
+    @(130.5100 mm, 32.0000 mm): PCB text 'UNDER' on F.Silkscreen
+    @(130.5798 mm, 31.9173 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(130.5100 mm, 32.0000 mm): PCB text 'UNDER' on F.Silkscreen
+    @(130.4020 mm, 32.1609 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(130.2223 mm, 32.3915 mm): Segment on F.Silkscreen
+    @(130.5100 mm, 32.0000 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(130.5100 mm, 32.0000 mm): PCB text 'UNDER' on F.Silkscreen
+    @(130.5100 mm, 32.0000 mm): Circle on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1027 mm)
+    Rule: Silk to Mask; warning
+    @(130.4020 mm, 31.8391 mm): Segment on F.Silkscreen
+    @(130.5100 mm, 32.0000 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1186 mm)
+    Rule: Silk to Mask; warning
+    @(130.5100 mm, 32.0000 mm): PCB text 'UNDER' on F.Silkscreen
+    @(129.8627 mm, 31.1844 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(130.0421 mm, 31.3905 mm): Segment on F.Silkscreen
+    @(130.5100 mm, 32.0000 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(130.2223 mm, 31.6085 mm): Segment on F.Silkscreen
+    @(130.5100 mm, 32.0000 mm): PCB text 'UNDER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(130.5100 mm, 32.0000 mm): PCB text 'UNDER' on F.Silkscreen
+    @(130.5798 mm, 32.0827 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(130.5100 mm, 32.0000 mm): PCB text 'UNDER' on F.Silkscreen
+    @(130.7543 mm, 31.6602 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(130.5100 mm, 32.0000 mm): PCB text 'UNDER' on F.Silkscreen
+    @(130.7543 mm, 32.3398 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0268 mm)
+    Rule: Silk to Mask; warning
+    @(130.5100 mm, 32.0000 mm): PCB text 'UNDER' on F.Silkscreen
+    @(130.9239 mm, 31.3894 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1208 mm)
+    Rule: Silk to Mask; warning
+    @(130.5100 mm, 32.0000 mm): PCB text 'UNDER' on F.Silkscreen
+    @(131.0872 mm, 31.1047 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(134.0311 mm, 35.9716 mm): Segment on F.Silkscreen
+    @(135.4100 mm, 35.5000 mm): PCB text 'START' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0867 mm)
+    Rule: Silk to Mask; warning
+    @(133.1608 mm, 36.8873 mm): Segment on F.Silkscreen
+    @(131.9000 mm, 37.7400 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(132.8373 mm, 37.1517 mm): Segment on F.Silkscreen
+    @(131.9000 mm, 37.7400 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0322 mm)
+    Rule: Silk to Mask; warning
+    @(132.0190 mm, 36.8107 mm): Segment on F.Silkscreen
+    @(131.9000 mm, 37.7400 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0025 mm)
+    Rule: Silk to Mask; warning
+    @(126.0100 mm, 25.8100 mm): PCB text 'OVER' on F.Silkscreen
+    @(124.7956 mm, 26.2808 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(126.0100 mm, 25.8100 mm): PCB text 'OVER' on F.Silkscreen
+    @(125.0360 mm, 26.1722 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1109 mm)
+    Rule: Silk to Mask; warning
+    @(126.0100 mm, 25.8100 mm): PCB text 'OVER' on F.Silkscreen
+    @(125.2875 mm, 26.0653 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1458 mm)
+    Rule: Silk to Mask; warning
+    @(126.0100 mm, 25.8100 mm): PCB text 'OVER' on F.Silkscreen
+    @(126.1314 mm, 25.9611 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0116 mm)
+    Rule: Silk to Mask; warning
+    @(126.0100 mm, 25.8100 mm): PCB text 'OVER' on F.Silkscreen
+    @(126.2951 mm, 26.2032 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0811 mm)
+    Rule: Silk to Mask; warning
+    @(126.0100 mm, 25.8100 mm): PCB text 'OVER' on F.Silkscreen
+    @(125.3386 mm, 24.9830 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0077 mm)
+    Rule: Silk to Mask; warning
+    @(126.0100 mm, 25.8100 mm): PCB text 'OVER' on F.Silkscreen
+    @(125.5589 mm, 25.2263 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(126.0100 mm, 25.8100 mm): PCB text 'OVER' on F.Silkscreen
+    @(125.7640 mm, 25.4713 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(126.0100 mm, 25.8100 mm): PCB text 'OVER' on F.Silkscreen
+    @(125.9546 mm, 25.7167 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(126.0100 mm, 25.8100 mm): PCB text 'OVER' on F.Silkscreen
+    @(125.8253 mm, 25.8616 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(126.0100 mm, 25.8100 mm): PCB text 'OVER' on F.Silkscreen
+    @(126.0100 mm, 25.8100 mm): Circle on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(126.0100 mm, 25.8100 mm): PCB text 'OVER' on F.Silkscreen
+    @(125.5505 mm, 25.9613 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0661 mm)
+    Rule: Silk to Mask; warning
+    @(126.0100 mm, 25.8100 mm): PCB text 'OVER' on F.Silkscreen
+    @(126.1119 mm, 25.7678 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0825 mm)
+    Rule: Silk to Mask; warning
+    @(126.0100 mm, 25.8100 mm): PCB text 'OVER' on F.Silkscreen
+    @(126.4104 mm, 25.6813 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(126.0100 mm, 25.8100 mm): PCB text 'OVER' on F.Silkscreen
+    @(127.0416 mm, 25.5364 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(126.7204 mm, 25.6037 mm): Segment on F.Silkscreen
+    @(126.0100 mm, 25.8100 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1350 mm)
+    Rule: Silk to Mask; warning
+    @(127.3734 mm, 38.5191 mm): Segment on F.Silkscreen
+    @(126.0100 mm, 38.1900 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1145 mm)
+    Rule: Silk to Mask; warning
+    @(127.0416 mm, 38.4636 mm): Segment on F.Silkscreen
+    @(126.0100 mm, 38.1900 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0051 mm)
+    Rule: Silk to Mask; warning
+    @(126.7204 mm, 38.3963 mm): Segment on F.Silkscreen
+    @(126.0100 mm, 38.1900 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0928 mm)
+    Rule: Silk to Mask; warning
+    @(126.0100 mm, 38.1900 mm): PCB text 'OVER' on F.Silkscreen
+    @(126.4104 mm, 38.3187 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(126.4468 mm, 37.5581 mm): Segment on F.Silkscreen
+    @(126.0100 mm, 38.1900 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(126.0100 mm, 38.1900 mm): PCB text 'OVER' on F.Silkscreen
+    @(125.5505 mm, 38.0387 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(126.0100 mm, 38.1900 mm): PCB text 'OVER' on F.Silkscreen
+    @(125.2875 mm, 37.9347 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(126.0100 mm, 38.1900 mm): PCB text 'OVER' on F.Silkscreen
+    @(125.0360 mm, 37.8278 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1463 mm)
+    Rule: Silk to Mask; warning
+    @(126.0100 mm, 38.1900 mm): PCB text 'OVER' on F.Silkscreen
+    @(124.7956 mm, 37.7192 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1294 mm)
+    Rule: Silk to Mask; warning
+    @(126.0100 mm, 38.1900 mm): PCB text 'OVER' on F.Silkscreen
+    @(126.5873 mm, 37.3237 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(126.0100 mm, 38.1900 mm): PCB text 'OVER' on F.Silkscreen
+    @(126.1119 mm, 38.2322 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1195 mm)
+    Rule: Silk to Mask; warning
+    @(125.8253 mm, 38.1384 mm): Segment on F.Silkscreen
+    @(126.0100 mm, 38.1900 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0502 mm)
+    Rule: Silk to Mask; warning
+    @(126.0100 mm, 38.1900 mm): PCB text 'OVER' on F.Silkscreen
+    @(126.2951 mm, 37.7968 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0730 mm)
+    Rule: Silk to Mask; warning
+    @(126.1314 mm, 38.0389 mm): Segment on F.Silkscreen
+    @(126.0100 mm, 38.1900 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(125.9546 mm, 38.2833 mm): Segment on F.Silkscreen
+    @(126.0100 mm, 38.1900 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(120.2939 mm, 41.3605 mm): Segment on F.Silkscreen
+    @(120.9800 mm, 41.2800 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1126 mm)
+    Rule: Silk to Mask; warning
+    @(119.8785 mm, 41.3623 mm): Segment on F.Silkscreen
+    @(120.9800 mm, 41.2800 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1496 mm)
+    Rule: Silk to Mask; warning
+    @(120.6001 mm, 40.9128 mm): Segment on F.Silkscreen
+    @(120.9800 mm, 41.2800 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0830 mm)
+    Rule: Silk to Mask; warning
+    @(121.1789 mm, 41.4875 mm): Segment on F.Silkscreen
+    @(120.9800 mm, 41.2800 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(120.8799 mm, 41.2075 mm): Segment on F.Silkscreen
+    @(120.9800 mm, 41.2800 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(121.1122 mm, 41.2830 mm): Segment on F.Silkscreen
+    @(120.9800 mm, 41.2800 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0827 mm)
+    Rule: Silk to Mask; warning
+    @(120.9800 mm, 41.2800 mm): Circle on F.Silkscreen
+    @(120.9800 mm, 41.2800 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(120.7057 mm, 41.3338 mm): Segment on F.Silkscreen
+    @(120.9800 mm, 41.2800 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1092 mm)
+    Rule: Silk to Mask; warning
+    @(121.5118 mm, 41.2090 mm): Segment on F.Silkscreen
+    @(120.9800 mm, 41.2800 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(121.4963 mm, 41.7512 mm): Segment on F.Silkscreen
+    @(120.9800 mm, 41.2800 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0162 mm)
+    Rule: Silk to Mask; warning
+    @(121.9028 mm, 41.1131 mm): Segment on F.Silkscreen
+    @(120.9800 mm, 41.2800 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0423 mm)
+    Rule: Silk to Mask; warning
+    @(121.8313 mm, 41.9968 mm): Segment on F.Silkscreen
+    @(120.9800 mm, 41.2800 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1237 mm)
+    Rule: Silk to Mask; warning
+    @(131.7571 mm, 25.5828 mm): Segment on F.Silkscreen
+    @(131.9000 mm, 26.2600 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(130.6763 mm, 25.7305 mm): Segment on F.Silkscreen
+    @(131.9000 mm, 26.2600 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(131.0532 mm, 25.8601 mm): Segment on F.Silkscreen
+    @(131.9000 mm, 26.2600 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1330 mm)
+    Rule: Silk to Mask; warning
+    @(131.4260 mm, 26.0123 mm): Segment on F.Silkscreen
+    @(131.9000 mm, 26.2600 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(135.4112 mm, 9.0000 mm): Reference field of END3
+    @(135.4115 mm, 8.0000 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0230 mm)
+    Rule: Silk to Mask; warning
+    @(131.9000 mm, 26.2600 mm): PCB text 'OVER' on F.Silkscreen
+    @(131.9363 mm, 26.3850 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(131.7926 mm, 26.1873 mm): Segment on F.Silkscreen
+    @(131.9000 mm, 26.2600 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(131.8590 mm, 25.9827 mm): Segment on F.Silkscreen
+    @(131.9000 mm, 26.2600 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(131.9000 mm, 26.2600 mm): PCB text 'OVER' on F.Silkscreen
+    @(132.1514 mm, 26.3851 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(131.9000 mm, 26.2600 mm): PCB text 'OVER' on F.Silkscreen
+    @(131.9000 mm, 26.2600 mm): Circle on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0860 mm)
+    Rule: Silk to Mask; warning
+    @(131.9894 mm, 26.7878 mm): Segment on F.Silkscreen
+    @(131.9000 mm, 26.2600 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0116 mm)
+    Rule: Silk to Mask; warning
+    @(132.5002 mm, 26.6056 mm): Segment on F.Silkscreen
+    @(131.9000 mm, 26.2600 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1092 mm)
+    Rule: Silk to Mask; warning
+    @(122.6537 mm, 40.8602 mm): Segment on F.Silkscreen
+    @(120.9800 mm, 41.2800 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0052 mm)
+    Rule: Silk to Mask; warning
+    @(122.2839 mm, 40.9963 mm): Segment on F.Silkscreen
+    @(120.9800 mm, 41.2800 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(131.9000 mm, 37.7400 mm): PCB text 'OVER' on F.Silkscreen
+    @(132.5002 mm, 37.3944 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(131.9894 mm, 37.2122 mm): Segment on F.Silkscreen
+    @(131.9000 mm, 37.7400 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.1003 mm)
+    Rule: Silk to Mask; warning
+    @(131.7926 mm, 37.8127 mm): Segment on F.Silkscreen
+    @(131.9000 mm, 37.7400 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(132.1514 mm, 37.6149 mm): Segment on F.Silkscreen
+    @(131.9000 mm, 37.7400 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(131.9363 mm, 37.6150 mm): Segment on F.Silkscreen
+    @(131.9000 mm, 37.7400 mm): PCB text 'OVER' on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0000 mm)
+    Rule: Silk to Mask; warning
+    @(131.9000 mm, 37.7400 mm): PCB text 'OVER' on F.Silkscreen
+    @(131.9000 mm, 37.7400 mm): Circle on F.Silkscreen
+[silk_overlap]: Silkscreen overlap (Silk to Mask clearance 0.1500 mm; actual 0.0089 mm)
+    Rule: Silk to Mask; warning
+    @(131.8590 mm, 38.0173 mm): Segment on F.Silkscreen
+    @(131.9000 mm, 37.7400 mm): PCB text 'OVER' on F.Silkscreen
+
+** Found 0 unconnected pads **
+
+** Found 0 Footprint errors **
+
+** End of Report **

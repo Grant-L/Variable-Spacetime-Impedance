@@ -9,7 +9,7 @@ An open-ended wire resonator of length $L_{trace}$ in a medium with effective pe
 \begin{equation}
     f_{std} = \frac{c}{2 L_{trace} \sqrt{\varepsilon_{eff}}}
 \end{equation}
-This is the prediction of standard Maxwell electrodynamics. Any commercial HFSS or CST simulation will reproduce this result to within manufacturing tolerances.
+This is the prediction for a \textit{straight, open-ended} wire resonator. For the actual 3D torus knot geometry, curvature and inter-segment coupling will cause deviations from this formula even in standard Maxwell theory. However, the AVE prediction is not about the absolute frequency, but the \textit{scaling law} across multiple knot topologies on the same board.
 
 The AVE framework predicts an additional correction. Because the $(p,q)$ torus knot topology couples to the intrinsic chirality of the $\mathcal{M}_A$ lattice, the effective refractive index acquires a topological term:
 \begin{equation}
@@ -27,16 +27,16 @@ The resulting frequency shift is:
 
 The PCB serves as a mechanical fixture, not the antenna itself. Enameled magnet wire (24~AWG, 0.51~mm diameter) is threaded through unplated drill holes spaced 3~mm apart along each knot path, creating true 3D torus knots with real over/under crossings.
 
-The standard 2-layer FR-4 board uses a ground-patch architecture: B.Cu copper is present \textbf{only} under the four SMA connectors (10$\times$10~mm patches), connected to F.Cu ground tabs via stitching vias. The remainder of B.Cu is bare, allowing the wire to route freely on both sides of the board. The board is elevated on 10~mm nylon standoffs, providing clearance for under-crossings.
+The standard 2-layer FR-4 board uses a ground-patch architecture: F.Cu copper ground patches (12$\times$12~mm) sit under each SMA connector and connect to a continuous F.Cu perimeter ground trace (0.5~mm wide, at 5~mm inset from the board edge). No ground vias are required---the SMA thru-hole pads inherently bridge both copper layers. B.Cu is bare, allowing the wire to route freely on both sides of the board. The board is elevated on 10~mm nylon standoffs, providing clearance for under-crossings.
 
 Because the wire has no continuous ground plane underneath, it resonates as a \textbf{free-space wire resonator} rather than a microstrip line. The effective permittivity is dominated by air with a small correction from the polyurethane enamel coating ($\varepsilon_{enamel} \approx 3.5$, 30~$\mu$m thick), yielding $\varepsilon_{eff} \approx 1.295$.
 
-All four knot topologies share a \textbf{single 120$\times$120~mm FR-4 panel}. Silkscreen markings provide a winding guide with crossing markers (OVER/UNDER) at each self-intersection point.
+All five knot topologies plus one zero-topology control antenna share a \textbf{single 160$\times$120~mm FR-4 panel} in a 3$\times$2 grid layout. Silkscreen markings provide a winding guide with crossing markers (OVER/UNDER) at each self-intersection point.
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=1.0\textwidth]{hopf_01_impedance_model.png}
-    \caption{\textbf{HOPF-01 Impedance and Frequency Model.} Top row: predicted S$_{11}$ response in air (left) and mineral oil (right), showing resonant dips for all four knots with SMA mismatch. Middle left: characteristic impedance $Z_0$ versus wire height for both media. Middle right: skin depth in 24~AWG copper wire. Bottom left: the chiral scaling law $\Delta f/f = \alpha \cdot pq/(p+q)$ verified as substrate-independent. Bottom right: model summary.}
+    \caption{\textbf{HOPF-01 Impedance and Frequency Model.} Top row: predicted S$_{11}$ response in air (left) and mineral oil (right), showing resonant dips for all five knots with SMA mismatch. Middle left: characteristic impedance $Z_0$ versus wire height for both media. Middle right: skin depth in 24~AWG copper wire. Bottom left: the chiral scaling law $\Delta f/f = \alpha \cdot pq/(p+q)$ verified as substrate-independent. Bottom right: model summary.}
     \label{fig:hopf_01_impedance}
 \end{figure}
 
@@ -48,23 +48,24 @@ The predicted shifts for the enamel-corrected wire-in-air model ($\varepsilon_{e
 Torus Knot & $pq/(p{+}q)$ & $L_{wire}$ & $f_{std}$ (GHz) & $\Delta f$ (MHz) & $Q$ & Shift (ppm) \\ \hline
 $(2,3)$ Trefoil    & 1.200 & 120 mm & 1.098 &  9.5 & 681 & 8{,}681  \\
 $(2,5)$ Cinquefoil & 1.429 & 160 mm & 0.823 &  8.5 & 590 & 10{,}317 \\
+$(3,5)$            & 1.875 & 170 mm & 0.776 &  10.6 & 566 & 13{,}505 \\
 $(3,7)$            & 2.100 & 200 mm & 0.659 & 10.0 & 527 & 15{,}093 \\
 $(3,11)$           & 2.357 & 250 mm & 0.527 &  8.9 & 471 & 16{,}910 \\ \hline
 \end{tabular}
 \end{center}
 
-All shifts exceed 8.5~MHz---easily resolvable with a VNA. All resonant frequencies fall below 1.1~GHz (well within NanoVNA-H4 range). When submerged in mineral oil ($\varepsilon_{eff} \approx 2.265$), frequencies drop to 0.40--0.83~GHz.
+All shifts exceed 8.5~MHz---easily resolvable with a VNA. All resonant frequencies fall below 1.1~GHz (well within NanoVNA-H4 range). The $(3,5)$ knot provides an intermediate data point (five knots plus the zero-topology control give six independent measurements). When submerged in mineral oil ($\varepsilon_{eff} \approx 2.265$), frequencies drop to 0.40--0.83~GHz.
 
 \section{The Falsification Protocol}
 
 \begin{enumerate}
-    \item \textbf{Fabrication:} Order a single 120$\times$120~mm, 2-layer FR-4 panel from JLCPCB ($\varepsilon_r = 4.3 \pm 0.05$, 1.6~mm thickness, 1~oz Cu, ENIG finish) with unplated stitching holes. Thread 24~AWG enameled magnet wire through the holes following the silkscreen guide, creating four 3D torus knots. Solder wire starts to the SMA feed pads.
+    \item \textbf{Fabrication:} Order a single 160$\times$120~mm, 2-layer FR-4 panel from JLCPCB ($\varepsilon_r = 4.3 \pm 0.05$, 1.6~mm thickness, 1~oz Cu, ENIG finish) with unplated stitching holes. Thread 24~AWG enameled magnet wire through the holes following the silkscreen guide, creating five 3D torus knots plus the meander control. Solder wire starts to the SMA feed pads.
 
     \item \textbf{Calibration:} Perform SOL (Short-Open-Load) calibration of the VNA at the SMA reference plane.
 
-    \item \textbf{Measurement~(Air):} Sweep each antenna individually in air. Record $f_{res}$ (the deepest S$_{11}$ dip below $-10$~dB). Repeat 10 times per antenna, rotating the cable to average connector noise.
+    \item \textbf{Measurement~(Air):} Sweep each of the six antennas individually in air. Record $f_{res}$ (the deepest S$_{11}$ dip below $-10$~dB). Repeat 10 times per antenna, rotating the cable to average connector noise.
 
-    \item \textbf{Measurement~(Oil):} Submerge the entire board in a glass dish of mineral oil ($\varepsilon_r \approx 2.1$, transformer grade). Re-measure all four antennas. The oil changes the wave speed but \textbf{not} the topology.
+    \item \textbf{Measurement~(Oil):} Submerge the entire board in a glass dish of mineral oil ($\varepsilon_r \approx 2.1$, transformer grade). Re-measure all six antennas. The oil changes the wave speed but \textbf{not} the topology.
 
     \item \textbf{Extract the Anomaly:} For each knot and each medium, compute:
     \begin{equation}
@@ -72,7 +73,7 @@ All shifts exceed 8.5~MHz---easily resolvable with a VNA. All resonant frequenci
     \end{equation}
     where $f_{Maxwell}$ is the standard prediction using the measured $\varepsilon_{eff}$.
 
-    \item \textbf{Test the Scaling Law:} Plot $\Delta f / f$ vs.\ $pq/(p+q)$ for all four knots.
+    \item \textbf{Test the Scaling Law:} Plot $\Delta f / f$ vs.\ $pq/(p+q)$ for all five knots (plus the $pq/(p+q)=0$ control point).
     \begin{itemize}
         \item \textbf{AVE confirmed:} $\Delta f/f$ is linear through the origin with slope $\alpha$, and \textit{identical} in air and oil.
         \item \textbf{AVE falsified:} $\Delta f/f$ is zero, random, does not scale as $pq/(p+q)$, or differs between media.
@@ -103,7 +104,7 @@ Each torus knot is generated from the 3D parametric equations $x(t) = (R + r\cos
 \begin{figure}[ht]
     \centering
     \includegraphics[width=1.0\textwidth]{hopf_01_knot_traces.png}
-    \caption{\textbf{HOPF-01 Wire-Stitched Knot Geometry:} Projected torus knot paths with stitching hole locations. The $(2,3)$ trefoil has 3 true crossings, the $(3,11)$ knot has 22.}
+    \caption{\textbf{HOPF-01 Wire-Stitched Knot Geometry:} Projected torus knot paths with stitching hole locations for all five knots. The $(2,3)$ trefoil has 3 true crossings; the $(3,5)$ knot has 10; the $(3,11)$ knot has 22.}
     \label{fig:hopf_01_knot_traces}
 \end{figure}
 
@@ -116,12 +117,12 @@ A critical concern is whether the predicted chiral shift could be mimicked by ma
     \item SMA connector repeatability: $\pm 200$~kHz feed-point noise
 \end{itemize}
 
-The key insight is that these variations affect all four antennas as \textbf{common-mode noise}. The chiral shift is a \textit{differential} measurement that cancels common-mode errors. The residual noise is $\sim$150~kHz per knot, while the chiral signal exceeds 9~MHz for all knots, yielding SNR $> 65\sigma$.
+The key insight is that these variations affect all six antennas as \textbf{common-mode noise}. The chiral shift is a \textit{differential} measurement that cancels common-mode errors. The residual noise is $\sim$130~kHz per knot, while the chiral signal exceeds 8.5~MHz for all knots, yielding SNR $> 74\sigma$.
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=1.0\textwidth]{hopf_01_wire_sensitivity.png}
-    \caption{\textbf{Wire-Stitched Sensitivity Analysis:} Comparison of chiral shift distributions in air ($\varepsilon_{eff} = 1.15$) and mineral oil ($\varepsilon_{eff} = 1.79$). The fractional shift $\Delta f / f$ is identical in both media, confirming substrate independence. All knots exceed $65\sigma$ detection threshold.}
+    \caption{\textbf{Wire-Stitched Sensitivity Analysis:} Comparison of chiral shift distributions in air ($\varepsilon_{eff} = 1.295$) and mineral oil ($\varepsilon_{eff} = 2.265$) for all five knots. The fractional shift $\Delta f / f$ is identical in both media, confirming substrate independence. All knots exceed $74\sigma$ detection threshold.}
     \label{fig:hopf_01_sensitivity}
 \end{figure}
 
@@ -132,7 +133,7 @@ The strongest falsification criterion is substrate independence. If the chiral c
     \frac{\Delta f}{f} = \alpha \frac{pq}{p+q} \quad \text{(independent of } \varepsilon_{eff} \text{)}
 \end{equation}
 
-The wire-stitched design enables a direct test: the \textit{same board} is measured first in air ($\varepsilon_{eff} = 1.295$), then submerged in mineral oil ($\varepsilon_{r} \approx 2.1$, $\varepsilon_{eff} \approx 2.265$). The absolute frequencies shift downward in oil (expected): the trefoil drops from 1.098~GHz to 0.830~GHz. But the fractional shift $\Delta f / f$ must remain constant. The simulation confirms: across all four knots, the ratio $\Delta f/f|_{air} \;/\; \Delta f/f|_{oil} = 1.00000$ to machine precision.
+The wire-stitched design enables a direct test: the \textit{same board} is measured first in air ($\varepsilon_{eff} = 1.295$), then submerged in mineral oil ($\varepsilon_{r} \approx 2.1$, $\varepsilon_{eff} \approx 2.265$). The absolute frequencies shift downward in oil (expected): the trefoil drops from 1.098~GHz to 0.830~GHz. But the fractional shift $\Delta f / f$ must remain constant. The simulation confirms: across all five knots, the ratio $\Delta f/f|_{air} \;/\; \Delta f/f|_{oil} = 1.00000$ to machine precision.
 
 This eliminates the need for multiple expensive PCB substrates (Rogers, duroid). A single \$10 FR-4 board tested in two media provides an equally powerful substrate independence check.
 
@@ -142,22 +143,55 @@ This eliminates the need for multiple expensive PCB substrates (Rogers, duroid).
 \begin{tabular}{|l|c|c|}
 \hline
 Item & Qty & Est.\ Cost \\ \hline
-PCB 120$\times$120~mm, 2L FR-4, ENIG (JLCPCB, 5 pcs)           & 1 lot & \$10  \\
-SMA edge-launch connectors (TE/Linx CONSMA003.062)              & 4     & \$23  \\
+PCB 160$\times$120~mm, 2L FR-4, ENIG (JLCPCB, 5 pcs)           & 1 lot & \$12  \\
+SMA edge-launch connectors (TE/Linx CONSMA003.062)              & 6     & \$34  \\
+50$\Omega$ SMA terminators                                      & 5     & \$15  \\
 Enameled magnet wire, 24~AWG, 1~lb spool (Remington)            & 1     & \$14  \\
 M3 hardware kit + 10~mm nylon standoffs                         & 1 kit & \$8   \\
 SMA-to-SMA cable, 30~cm, RG316                                  & 1     & \$8   \\
 Mineral oil, 500~mL, transformer grade                          & 1     & \$10  \\
 Glass dish, 9$\times$13'' (Pyrex, oil bath)                     & 1     & \$10  \\ \hline
-\textbf{Subtotal (excl.\ VNA)}                                   &       & \textbf{\$83} \\ \hline
+\textbf{Subtotal (excl.\ VNA)}                                   &       & \textbf{\$111} \\ \hline
 LiteVNA-64 (50~kHz -- 6.3~GHz, incl.\ cal kit)                  & 1     & \$100 \\ \hline
-\textbf{Grand Total}                                             &       & \textbf{\$183} \\ \hline
+\textbf{Grand Total}                                             &       & \textbf{\$211} \\ \hline
 \end{tabular}
 \end{center}
 
+\section{Classical Coupling as Confounding Variable}
+
+Before claiming an AVE anomaly, we must address an obvious classical confound: at each wire crossing, standard Maxwell electrodynamics predicts parasitic mutual inductance and capacitance between the two wire segments. These crossings shift the resonant frequency by an amount that depends on the number of crossings, which correlates with knot complexity.
+
+The crossing numbers for the five HOPF-01 knots are 3, 4, 10, 14, and 22 respectively (from the minimum crossing number formula $c(p,q) = \min\bigl(p(q{-}1),\; q(p{-}1)\bigr)$). The key question is: does this classical coupling have the \textit{same functional form} as the AVE prediction?
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Knot & $pq/(p{+}q)$ & $N_{cross}$ & AVE (norm) & Classical (norm) \\ \hline
+$(2,3)$  & 1.200 & 3  & 1.00 & 1.00 \\
+$(2,5)$  & 1.429 & 4  & 1.19 & 1.05 \\
+$(3,5)$  & 1.875 & 10 & 1.56 & 2.55 \\
+$(3,7)$  & 2.100 & 14 & 1.74 & 3.04 \\
+$(3,11)$ & 2.357 & 22 & 1.95 & 3.96 \\ \hline
+\end{tabular}
+\end{center}
+
+\noindent The scaling shapes are \textbf{fundamentally different}: AVE scales smoothly as $pq/(p{+}q)$ (sublinear, ratio 1.95$\times$ across the range), while classical coupling scales as $N_{cross}/L_{self}$ (superlinear, ratio 3.96$\times$). An experiment with five knots plus a zero-topology control can distinguish these functional forms by model selection (AIC/BIC).
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1.0\textwidth]{hopf_01_classical_coupling.png}
+    \caption{\textbf{Classical vs.\ AVE coupling:} Left: absolute shift magnitudes (note classical estimates are crude and likely overestimated by the perturbation model). Right: normalized scaling shapes---the classical coupling (red squares) scales superlinearly with crossing density, while the AVE prediction (green circles) scales sublinearly as $pq/(p{+}q)$. This difference is experimentally distinguishable.}
+    \label{fig:hopf_01_classical_coupling}
+\end{figure}
+
+Additionally, a \textbf{zero-topology control antenna} provides a direct test: a wire with the same total length as the trefoil (120~mm) but routed as a meander or figure-8 (with artificial crossings but zero topological winding number $pq/(p{+}q) = 0$). If this control shows:
+\begin{itemize}
+    \item Zero chiral shift $\rightarrow$ the effect is topological (supports AVE)
+    \item Nonzero shift $\rightarrow$ the effect is from crossings (classical artifact)
+\end{itemize}
+
 \section{Decision Gate}
 
-If the HOPF-01 scaling law is confirmed, the AVE framework has produced a genuine, zero-parameter electromagnetic prediction that no existing Maxwell solver can reproduce. This justifies the significantly greater investment required for the mechanical thrust measurements described in the following chapters.
+If the HOPF-01 scaling law is confirmed---meaning $\Delta f/f$ is linear in $pq/(p+q)$ with slope $\alpha$, identical in air and oil, and absent in the zero-topology control---the AVE framework has produced a genuine, zero-parameter electromagnetic prediction that no existing Maxwell solver can reproduce. This justifies the significantly greater investment required for the mechanical thrust measurements described in the following chapters.
 
 If the scaling law is \textit{not} confirmed, the chiral coupling term in Eq.~\ref{eq:n_ave} is falsified, and the PONDER thrust predictions must be re-examined from first principles.
-

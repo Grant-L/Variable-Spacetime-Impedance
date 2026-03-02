@@ -32,24 +32,44 @@ sys.path.append(str(project_root / "src"))
 # ══════════════════════════════════════════════════════════════
 # Board Parameters
 # ══════════════════════════════════════════════════════════════
-BOARD_W = 120.0      # mm (sized for longer wire paths)
+BOARD_W = 160.0      # mm (expanded for 6 antennas: 3×2 grid)
 BOARD_H = 120.0      # mm
 HOLE_SPACING = 3.0   # mm between stitching holes
 HOLE_DRILL = 1.0     # mm drill diameter (for ~0.5mm enameled wire)
+MIN_HOLE_SPACING = 1.5  # mm center-to-center min (JLCPCB: 0.5mm edge-to-edge + 1.0mm drill)
 CORNER_R = 2.0       # mm corner radius
 MOUNT_INSET = 4.0    # mm from board edge
 
-# Knot placement grid (2×2, centered)
+# Knot placement grid (3×2, centered)
 GRID_CX = BOARD_W / 2
 GRID_CY = BOARD_H / 2
-QUAD_SPACING = 28.0  # mm between knot centers (room for longer traces)
+COL_SPACING = 44.0   # mm between column centers
+ROW_SPACING = 28.0   # mm between row centers
+
+# Columns: left, center, right
+col_L = GRID_CX - COL_SPACING
+col_C = GRID_CX
+col_R = GRID_CX + COL_SPACING
+# Rows: top, bottom
+row_T = GRID_CY - ROW_SPACING
+row_B = GRID_CY + ROW_SPACING
 
 KNOTS = [
-    (2, 3,  0.120, '(2,3) Trefoil',    GRID_CX - QUAD_SPACING, GRID_CY - QUAD_SPACING),
-    (2, 5,  0.160, '(2,5) Cinquefoil', GRID_CX + QUAD_SPACING, GRID_CY - QUAD_SPACING),
-    (3, 7,  0.200, '(3,7)',             GRID_CX - QUAD_SPACING, GRID_CY + QUAD_SPACING),
-    (3, 11, 0.250, '(3,11)',            GRID_CX + QUAD_SPACING, GRID_CY + QUAD_SPACING),
+    # Row 1 (top): torus knots ordered by pq/(p+q)
+    (2, 3,  0.120, '(2,3) Trefoil',    col_L, row_T),
+    (2, 5,  0.160, '(2,5) Cinquefoil', col_C, row_T),
+    (3, 5,  0.170, '(3,5)',             col_R, row_T),
+    # Row 2 (bottom): higher-order knots + control
+    (3, 7,  0.200, '(3,7)',             col_L, row_B),
+    (3, 11, 0.250, '(3,11)',            col_R, row_B),
 ]
+# Control antenna: zero-topology meander with same length as trefoil
+# This is NOT a torus knot — it's added separately
+CONTROL_ANTENNA = {
+    'L_wire': 0.120,  # same length as trefoil
+    'label': 'CONTROL (meander)',
+    'cx': col_C, 'cy': row_B,
+}
 
 
 def new_uuid():
@@ -192,34 +212,47 @@ def kicad_header():
   (net 3 "ANT2_SIG")
   (net 4 "ANT3_SIG")
   (net 5 "ANT4_SIG")
+  (net 6 "ANT5_SIG")
+  (net 7 "ANT6_SIG")
 """
 
 
 def board_outline():
+    """Board outline with rounded corners on Edge.Cuts layer."""
     lines = []
     x0, y0 = 0, 0
     x1, y1 = BOARD_W, BOARD_H
     r = CORNER_R
+    c45 = r * 0.7071  # r × cos(45°) for midpoint on arc
+
+    # Straight edges (between corner tangent points)
     lines.append(f'  (gr_line (start {x0+r} {y0}) (end {x1-r} {y0}) (layer "Edge.Cuts") (width 0.1) (uuid "{new_uuid()}"))')
     lines.append(f'  (gr_line (start {x1} {y0+r}) (end {x1} {y1-r}) (layer "Edge.Cuts") (width 0.1) (uuid "{new_uuid()}"))')
     lines.append(f'  (gr_line (start {x1-r} {y1}) (end {x0+r} {y1}) (layer "Edge.Cuts") (width 0.1) (uuid "{new_uuid()}"))')
     lines.append(f'  (gr_line (start {x0} {y1-r}) (end {x0} {y0+r}) (layer "Edge.Cuts") (width 0.1) (uuid "{new_uuid()}"))')
-    lines.append(f'  (gr_arc (start {x0+r} {y0+r}) (mid {x0+r*0.293} {y0+r*0.293}) (end {x0} {y0+r}) (layer "Edge.Cuts") (width 0.1) (uuid "{new_uuid()}"))')
-    lines.append(f'  (gr_arc (start {x1-r} {y0+r}) (mid {x1-r*0.293} {y0+r*0.293}) (end {x1-r} {y0}) (layer "Edge.Cuts") (width 0.1) (uuid "{new_uuid()}"))')
-    lines.append(f'  (gr_arc (start {x1-r} {y1-r}) (mid {x1-r*0.293} {y1-r*0.293}) (end {x1} {y1-r}) (layer "Edge.Cuts") (width 0.1) (uuid "{new_uuid()}"))')
-    lines.append(f'  (gr_arc (start {x0+r} {y1-r}) (mid {x0+r*0.293} {y1-r*0.293}) (end {x0+r} {y1}) (layer "Edge.Cuts") (width 0.1) (uuid "{new_uuid()}"))')
+
+    # Corner arcs — (start, mid, end) are all points ON the arc
+    # Top-left: center (r, r), from (0, r) to (r, 0)
+    lines.append(f'  (gr_arc (start {x0} {y0+r}) (mid {r-c45:.4f} {r-c45:.4f}) (end {x0+r} {y0}) (layer "Edge.Cuts") (width 0.1) (uuid "{new_uuid()}"))')
+    # Top-right: center (W-r, r), from (W-r, 0) to (W, r)
+    lines.append(f'  (gr_arc (start {x1-r} {y0}) (mid {x1-r+c45:.4f} {r-c45:.4f}) (end {x1} {y0+r}) (layer "Edge.Cuts") (width 0.1) (uuid "{new_uuid()}"))')
+    # Bottom-right: center (W-r, H-r), from (W, H-r) to (W-r, H)
+    lines.append(f'  (gr_arc (start {x1} {y1-r}) (mid {x1-r+c45:.4f} {y1-r+c45:.4f}) (end {x1-r} {y1}) (layer "Edge.Cuts") (width 0.1) (uuid "{new_uuid()}"))')
+    # Bottom-left: center (r, H-r), from (r, H) to (0, H-r)
+    lines.append(f'  (gr_arc (start {x0+r} {y1}) (mid {r-c45:.4f} {y1-r+c45:.4f}) (end {x0} {y1-r}) (layer "Edge.Cuts") (width 0.1) (uuid "{new_uuid()}"))')
+
     return "\n".join(lines)
 
 
 def sma_pad(x, y, net_id, ref):
-    """SMA edge-launch connector footprint with ground tabs.
+    """SMA vertical-mount connector footprint with ground tabs.
 
     Center signal pad (thru-hole, 1.5mm pad, 1.2mm drill) + 4 ground
-    tab pads (SMD, 1.0×2.0mm) for shield grounding. Matches typical
-    SMA edge-mount connectors (e.g. Amphenol 132255).
+    tab pads (thru-hole, on *.Cu layers to connect F.Cu → B.Cu ground).
+    Matches typical SMA panel-mount connectors (e.g. TE CONSMA003.062).
     """
     uid = new_uuid()
-    return f"""  (footprint "HOPF01:SMA_EdgeLaunch" (layer "F.Cu")
+    return f"""  (footprint "HOPF01:SMA_PanelMount" (layer "F.Cu")
     (uuid "{uid}")
     (at {x:.4f} {y:.4f})
     (property "Reference" "{ref}" (at 0 -4) (layer "F.SilkS") (uuid "{new_uuid()}")
@@ -231,36 +264,23 @@ def sma_pad(x, y, net_id, ref):
     (pad "1" thru_hole circle (at 0 0) (size 1.5 1.5) (drill 1.2) (layers "*.Cu" "*.Mask")
       (net {net_id} "ANT{net_id-1}_SIG") (uuid "{new_uuid()}")
     )
-    (pad "2" smd rect (at -1.6 -1.8) (size 1.0 2.0) (layers "F.Cu" "F.Paste" "F.Mask")
+    (pad "2" thru_hole rect (at -1.6 -1.8) (size 1.2 2.2) (drill 0.8) (layers "*.Cu" "*.Mask")
       (net 1 "GND") (uuid "{new_uuid()}")
     )
-    (pad "3" smd rect (at 1.6 -1.8) (size 1.0 2.0) (layers "F.Cu" "F.Paste" "F.Mask")
+    (pad "3" thru_hole rect (at 1.6 -1.8) (size 1.2 2.2) (drill 0.8) (layers "*.Cu" "*.Mask")
       (net 1 "GND") (uuid "{new_uuid()}")
     )
-    (pad "4" smd rect (at -1.6 1.8) (size 1.0 2.0) (layers "F.Cu" "F.Paste" "F.Mask")
+    (pad "4" thru_hole rect (at -1.6 1.8) (size 1.2 2.2) (drill 0.8) (layers "*.Cu" "*.Mask")
       (net 1 "GND") (uuid "{new_uuid()}")
     )
-    (pad "5" smd rect (at 1.6 1.8) (size 1.0 2.0) (layers "F.Cu" "F.Paste" "F.Mask")
+    (pad "5" thru_hole rect (at 1.6 1.8) (size 1.2 2.2) (drill 0.8) (layers "*.Cu" "*.Mask")
       (net 1 "GND") (uuid "{new_uuid()}")
     )
   )
 """
 
 
-def anchor_pad(x, y, ref):
-    """Wire endpoint anchor — just a plated hole for soldering the wire end."""
-    uid = new_uuid()
-    return f"""  (footprint "HOPF01:AnchorPad" (layer "F.Cu")
-    (uuid "{uid}")
-    (at {x:.4f} {y:.4f})
-    (property "Reference" "{ref}" (at 0 -2) (layer "F.SilkS") (uuid "{new_uuid()}")
-      (effects (font (size 0.8 0.8) (thickness 0.12)))
-    )
-    (pad "1" thru_hole circle (at 0 0) (size 2.0 2.0) (drill 1.0) (layers "*.Cu" "*.Mask")
-      (net 0 "") (uuid "{new_uuid()}")
-    )
-  )
-"""
+
 
 
 def mounting_hole(x, y, ref):
@@ -324,6 +344,20 @@ def generate_knot_features(p, q, L_target, label, cx, cy, net_id):
         if idx >= N:
             idx = N - 1
         hx, hy = x_mm[idx], y_mm[idx]
+
+        # Enforce JLCPCB minimum hole-to-hole spacing (1.5mm c-c for 1.0mm drill)
+        # Check against ALL previously placed holes (not just the last one)
+        # to catch overlaps at knot crossings where different path segments meet
+        if hole_positions:
+            too_close = False
+            for phx, phy in hole_positions:
+                if (hx - phx)**2 + (hy - phy)**2 < MIN_HOLE_SPACING**2:
+                    too_close = True
+                    break
+            if too_close:
+                target_dist += HOLE_SPACING
+                continue
+
         hole_positions.append((hx, hy))
 
         # Unplated through-hole as a footprint
@@ -343,13 +377,67 @@ def generate_knot_features(p, q, L_target, label, cx, cy, net_id):
     z_mm = z3d * (np.max(x_mm) - np.min(x_mm)) / (np.max(x3d) - np.min(x3d))
 
     crossings = find_crossings(x_mm, y_mm, z_mm, N)
+
+    # Compute knot bounding box for placing labels well outside it
+    knot_x_min, knot_x_max = np.min(x_mm), np.max(x_mm)
+    knot_y_min, knot_y_max = np.min(y_mm), np.max(y_mm)
+    knot_margin = 4.0  # mm clearance beyond bounding box
+
     for cx_pt, cy_pt, is_over in crossings:
         marker = "OVER" if is_over else "UNDER"
+        text_half_w = 2.0  # approx half-width of "UNDER" at 0.6mm font
+
+        # Direction from knot center to crossing point
+        dx = cx_pt - cx
+        dy = cy_pt - cy
+        dist = max(np.sqrt(dx**2 + dy**2), 0.1)
+        ux, uy = dx / dist, dy / dist  # unit vector outward
+
+        # Push label OUTSIDE the knot bounding box + margin
+        # Find the distance from crossing to the bounding box edge in this direction
+        if abs(ux) > 0.01:
+            t_x = ((knot_x_max if ux > 0 else knot_x_min) - cx_pt) / ux
+        else:
+            t_x = 1e6
+        if abs(uy) > 0.01:
+            t_y = ((knot_y_max if uy > 0 else knot_y_min) - cy_pt) / uy
+        else:
+            t_y = 1e6
+        # Distance to push past the bbox edge
+        push = max(min(t_x, t_y), 0) + knot_margin + text_half_w
+
+        lx = cx_pt + push * ux
+        ly = cy_pt + push * uy
+
+        # Clamp to board area (leave 2mm margin from edge)
+        lx = np.clip(lx, 3.0, BOARD_W - 3.0)
+        ly = np.clip(ly, 3.0, BOARD_H - 3.0)
+
+        # Nudge if label center is too close to any hole (within 1.5mm)
+        for hx, hy in hole_positions:
+            if np.sqrt((lx - hx)**2 + (ly - hy)**2) < 1.5:
+                lx += 2.0 * ux
+                ly += 2.0 * uy
+                lx = np.clip(lx, 3.0, BOARD_W - 3.0)
+                ly = np.clip(ly, 3.0, BOARD_H - 3.0)
+                break
+
+        # Place label text
         lines.append(
-            f'  (gr_text "{marker}" (at {cx_pt:.2f} {cy_pt:.2f}) '
+            f'  (gr_text "{marker}" (at {lx:.2f} {ly:.2f}) '
             f'(layer "F.SilkS") (uuid "{new_uuid()}")'
             f'\n    (effects (font (size 0.6 0.6) (thickness 0.1)))'
             f'\n  )'
+        )
+
+        # Arrow from text EDGE (closest to crossing) to crossing circle
+        # Start arrow 2.5mm from label center toward crossing
+        arrow_start_x = lx - 2.5 * ux
+        arrow_start_y = ly - 2.5 * uy
+        lines.append(
+            f'  (gr_line (start {arrow_start_x:.2f} {arrow_start_y:.2f}) '
+            f'(end {cx_pt:.2f} {cy_pt:.2f}) '
+            f'(layer "F.SilkS") (width 0.1) (uuid "{new_uuid()}"))'
         )
         # Small circle at crossing point
         lines.append(
@@ -358,39 +446,35 @@ def generate_knot_features(p, q, L_target, label, cx, cy, net_id):
             f'(layer "F.SilkS") (width 0.15) (uuid "{new_uuid()}"))'
         )
 
-    # ── 4. Knot label (offset to avoid overlapping stitching holes) ──
-    # Place label outside the knot footprint, toward the board center
+    # ── 4. Knot label with arrow toward knot center ──
     if cy < BOARD_H / 2:
-        label_y = cy + 20  # below knot (toward center)
+        label_y = cy + 20
     else:
-        label_y = cy - 20  # above knot (toward center)
+        label_y = cy - 20
     lines.append(
         f'  (gr_text "{label}" (at {cx} {label_y}) '
         f'(layer "F.SilkS") (uuid "{new_uuid()}")'
         f'\n    (effects (font (size 1.5 1.5) (thickness 0.25)))'
         f'\n  )'
     )
+    sub_y = label_y + (2.5 if cy < BOARD_H / 2 else -2.5)
     lines.append(
-        f'  (gr_text "L={L_target*1000:.0f}mm  {hole_count} holes" (at {cx} {label_y + 2.5}) '
+        f'  (gr_text "L={L_target*1000:.0f}mm  {hole_count} holes" (at {cx} {sub_y}) '
         f'(layer "F.SilkS") (uuid "{new_uuid()}")'
         f'\n    (effects (font (size 0.8 0.8) (thickness 0.12)))'
         f'\n  )'
     )
-
-    # ── 5. Start / End markers (offset away from pads) ──
-    start_label_y = y_mm[0] - 3.5 if y_mm[0] < cy else y_mm[0] + 3.5
+    # Arrow from BELOW subtitle toward knot (clear of both text lines)
+    if cy < BOARD_H / 2:
+        arrow_start_y = sub_y + 1.5   # below subtitle
+        arrow_end_y = sub_y + 4.5     # points toward knot (higher y = toward center)
+    else:
+        arrow_start_y = sub_y - 1.5   # above subtitle
+        arrow_end_y = sub_y - 4.5     # points toward knot
     lines.append(
-        f'  (gr_text "START" (at {x_mm[0]:.2f} {start_label_y:.2f}) '
-        f'(layer "F.SilkS") (uuid "{new_uuid()}")'
-        f'\n    (effects (font (size 0.7 0.7) (thickness 0.12)))'
-        f'\n  )'
-    )
-    end_label_y = y_mm[-1] + 3.5 if y_mm[-1] < cy else y_mm[-1] - 3.5
-    lines.append(
-        f'  (gr_text "END" (at {x_mm[-1]:.2f} {end_label_y:.2f}) '
-        f'(layer "F.SilkS") (uuid "{new_uuid()}")'
-        f'\n    (effects (font (size 0.7 0.7) (thickness 0.12)))'
-        f'\n  )'
+        f'  (gr_line (start {cx:.2f} {arrow_start_y:.2f}) '
+        f'(end {cx:.2f} {arrow_end_y:.2f}) '
+        f'(layer "F.SilkS") (width 0.2) (uuid "{new_uuid()}"))'
     )
 
     print(f"  {label:<20} feed=({x_mm[0]:.1f},{y_mm[0]:.1f}), "
@@ -400,14 +484,15 @@ def generate_knot_features(p, q, L_target, label, cx, cy, net_id):
 
 
 def sma_ground_patch(x, y):
-    """Small ground copper zone on B.Cu under an SMA connector.
+    """Ground copper zone on F.Cu under an SMA connector.
 
-    Only covers the SMA footprint area (~10×10mm), NOT the full board.
-    Wire can route freely on both sides outside these patches.
+    Sized at 12×12mm to cover the full SMA footprint plus margin.
+    Connects directly to F.Cu perimeter ground trace. SMA thru-hole
+    pads bridge to B.Cu inherently.
     """
     uid = new_uuid()
-    hw = 5.0  # half-width of the patch
-    return f"""  (zone (net 1) (net_name "GND") (layer "B.Cu") (uuid "{uid}")
+    hw = 6.0  # half-width of the patch (12mm total)
+    return f"""  (zone (net 1) (net_name "GND") (layer "F.Cu") (uuid "{uid}")
     (hatch edge 0.5)
     (connect_pads (clearance 0.3))
     (min_thickness 0.25)
@@ -465,33 +550,183 @@ def main():
             f'(layer "F.SilkS") (width 0.3) (uuid "{new_uuid()}"))'
         )
 
-        # Anchor pad at wire end (offset similarly toward nearest edge)
-        if cy < GRID_CY:
-            anc_y = sma_edge_inset + 3.0
-        else:
-            anc_y = BOARD_H - sma_edge_inset - 3.0
-        parts.append(anchor_pad(ex, anc_y, f"END{i+1}"))
 
-        # Ground patch on B.Cu under each SMA connector
+        # Ground patch on F.Cu under each SMA connector
         parts.append(sma_ground_patch(sma_x, sma_y))
 
-        # Ground stitching vias near SMA (F.Cu ground tabs → B.Cu patch)
-        for vx_off, vy_off in [(-3.0, 0), (3.0, 0)]:
+    # ── Control antenna: zero-topology meander ──
+    ctrl = CONTROL_ANTENNA
+    ctrl_cx, ctrl_cy = ctrl['cx'], ctrl['cy']
+    ctrl_L_m = ctrl['L_wire']  # meters
+    ctrl_L_mm = ctrl_L_m * 1000  # mm
+    ctrl_net_id = len(KNOTS) + 2
+    ctrl_idx = len(KNOTS)
+
+    # Meander geometry: vertical zigzag legs connected by horizontal runs.
+    # Total wire = n_legs × leg_height + (n_legs - 1) × leg_spacing
+    # Solve for leg_spacing given n_legs, leg_height, and target L:
+    n_legs = 8
+    leg_height = 12.0  # mm per vertical leg
+    # ctrl_L_mm = n_legs * leg_height + (n_legs - 1) * leg_spacing
+    remaining = ctrl_L_mm - n_legs * leg_height
+    leg_spacing = remaining / max(n_legs - 1, 1)
+    total_width = leg_spacing * (n_legs - 1)
+
+    meander_x = []
+    meander_y = []
+    x_start = ctrl_cx - total_width / 2
+
+    for leg in range(n_legs):
+        x_pos = x_start + leg * leg_spacing
+        if leg % 2 == 0:
+            meander_x.extend([x_pos, x_pos])
+            meander_y.extend([ctrl_cy - leg_height / 2, ctrl_cy + leg_height / 2])
+        else:
+            meander_x.extend([x_pos, x_pos])
+            meander_y.extend([ctrl_cy + leg_height / 2, ctrl_cy - leg_height / 2])
+
+    meander_x = np.array(meander_x)
+    meander_y = np.array(meander_y)
+
+    # Verify wire length
+    actual_len = sum(np.sqrt(np.diff(meander_x)**2 + np.diff(meander_y)**2))
+
+    # Place stitching holes along meander path (with dedup + min spacing)
+    ctrl_lines = []
+    hole_count = 0
+    placed_holes = set()  # track (x, y) rounded to 0.01mm
+    ctrl_hole_positions = []  # for spacing checks
+    for seg in range(len(meander_x) - 1):
+        x1, y1 = meander_x[seg], meander_y[seg]
+        x2, y2 = meander_x[seg + 1], meander_y[seg + 1]
+        seg_len = np.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+        n_holes = max(1, int(seg_len / HOLE_SPACING))
+        for h in range(n_holes + 1):
+            frac = h / max(n_holes, 1)
+            hx = x1 + frac * (x2 - x1)
+            hy = y1 + frac * (y2 - y1)
+            key = (round(hx, 2), round(hy, 2))
+            if key in placed_holes:
+                continue
+            # JLCPCB min spacing check
+            if ctrl_hole_positions:
+                too_close = False
+                for phx, phy in ctrl_hole_positions:
+                    if np.sqrt((hx - phx)**2 + (hy - phy)**2) < MIN_HOLE_SPACING:
+                        too_close = True
+                        break
+                if too_close:
+                    continue
+            placed_holes.add(key)
+            ctrl_hole_positions.append((hx, hy))
             uid = new_uuid()
-            parts.append(
-                f'  (via (at {sma_x + vx_off:.4f} {sma_y + vy_off:.4f}) '
-                f'(size 0.8) (drill 0.4) (layers "F.Cu" "B.Cu") '
-                f'(net 1) (uuid "{uid}"))'
-            )
+            ctrl_lines.append(f"""  (footprint "HOPF01:StitchHole" (layer "F.Cu")
+    (uuid "{uid}")
+    (at {hx:.4f} {hy:.4f})
+    (pad "" np_thru_hole circle (at 0 0) (size {HOLE_DRILL} {HOLE_DRILL}) (drill {HOLE_DRILL}) (layers "*.Cu" "*.Mask")
+      (uuid "{new_uuid()}")
+    )
+  )""")
+            hole_count += 1
+
+        # Silkscreen guide line
+        ctrl_lines.append(
+            f'  (gr_line (start {x1:.4f} {y1:.4f}) '
+            f'(end {x2:.4f} {y2:.4f}) '
+            f'(layer "F.SilkS") (width 0.25) (uuid "{new_uuid()}"))'
+        )
+
+    # Meander START label (near SMA feed) with arrow
+    start_x, start_y = meander_x[0], meander_y[0]
+    start_lbl_y = start_y + 4.0  # above the first hole
+    ctrl_lines.append(
+        f'  (gr_text "FEED" (at {start_x:.2f} {start_lbl_y:.2f}) '
+        f'(layer "F.SilkS") (uuid "{new_uuid()}")'
+        f'\n    (effects (font (size 0.7 0.7) (thickness 0.12)))'
+        f'\n  )'
+    )
+    ctrl_lines.append(
+        f'  (gr_line (start {start_x:.2f} {start_lbl_y - 1.0:.2f}) '
+        f'(end {start_x:.2f} {start_y + 1.0:.2f}) '
+        f'(layer "F.SilkS") (width 0.15) (uuid "{new_uuid()}"))'
+    )
+
+    # Meander END label (open circuit end) with arrow
+    end_x, end_y = meander_x[-1], meander_y[-1]
+    end_lbl_y = end_y + 4.0
+    ctrl_lines.append(
+        f'  (gr_text "OPEN" (at {end_x:.2f} {end_lbl_y:.2f}) '
+        f'(layer "F.SilkS") (uuid "{new_uuid()}")'
+        f'\n    (effects (font (size 0.7 0.7) (thickness 0.12)))'
+        f'\n  )'
+    )
+    ctrl_lines.append(
+        f'  (gr_line (start {end_x:.2f} {end_lbl_y - 1.0:.2f}) '
+        f'(end {end_x:.2f} {end_y + 1.0:.2f}) '
+        f'(layer "F.SilkS") (width 0.15) (uuid "{new_uuid()}"))'
+    )
+
+    parts.append("\n".join(ctrl_lines))
+
+    # Control antenna labels
+    label_y = ctrl_cy - 12 if ctrl_cy > BOARD_H / 2 else ctrl_cy + 12
+    parts.append(
+        f'  (gr_text "{ctrl["label"]}" (at {ctrl_cx} {label_y}) '
+        f'(layer "F.SilkS") (uuid "{new_uuid()}")'
+        f'\n    (effects (font (size 1.2 1.2) (thickness 0.2)))'
+        f'\n  )'
+    )
+    sub_y = label_y + (2.5 if ctrl_cy < BOARD_H / 2 else -2.5)
+    parts.append(
+        f'  (gr_text "L={actual_len:.0f}mm  pq/(p+q)=0  {hole_count} holes" (at {ctrl_cx} {sub_y}) '
+        f'(layer "F.SilkS") (uuid "{new_uuid()}")'
+        f'\n    (effects (font (size 0.8 0.8) (thickness 0.12)))'
+        f'\n  )'
+    )
+
+    # SMA for control — centered on meander start
+    sma_y_ctrl = BOARD_H - 8.0
+    sma_x_ctrl = meander_x[0]
+    parts.append(sma_pad(sma_x_ctrl, sma_y_ctrl, ctrl_net_id, f"J{ctrl_idx+1}"))
+    parts.append(sma_ground_patch(sma_x_ctrl, sma_y_ctrl))
+
+
+    print(f"  {ctrl['label']:<20} feed=({meander_x[0]:.1f},{meander_y[0]:.1f}), "
+          f"{hole_count} holes, 0 crossings, L={actual_len:.1f}mm")
+
+    # ── Perimeter ground ring: F.Cu trace along board edges ──
+    # Connects directly to SMA ground patches on F.Cu (both overlap at
+    # the 5mm inset). No vias needed — SMA thru-hole pads already
+    # bridge F.Cu ↔ B.Cu at each connector location.
+    gnd_inset = 5.0  # mm from board edge
+    gx0 = gnd_inset
+    gy0 = gnd_inset
+    gx1 = BOARD_W - gnd_inset
+    gy1 = BOARD_H - gnd_inset
+    gnd_trace_w = 0.5  # mm
+
+    # Perimeter rectangle on F.Cu
+    for (sx, sy, ex, ey) in [
+        (gx0, gy0, gx1, gy0),  # top
+        (gx1, gy0, gx1, gy1),  # right
+        (gx1, gy1, gx0, gy1),  # bottom
+        (gx0, gy1, gx0, gy0),  # left
+    ]:
+        parts.append(
+            f'  (segment (start {sx:.4f} {sy:.4f}) (end {ex:.4f} {ey:.4f}) '
+            f'(width {gnd_trace_w}) (layer "F.Cu") (net 1) (uuid "{new_uuid()}"))'
+        )
+
+    print(f"  Perimeter ground: F.Cu trace at {gnd_inset}mm inset (no vias needed)")
 
     # Title block (top of board, above SMA area)
     parts.append(
-        f'  (gr_text "HOPF-01" (at {GRID_CX} 3) (layer "F.SilkS") (uuid "{new_uuid()}")'
+        f'  (gr_text "HOPF-01 v3" (at {GRID_CX} 3) (layer "F.SilkS") (uuid "{new_uuid()}")'
         f'\n    (effects (font (size 2.5 2.5) (thickness 0.4)))'
         f'\n  )'
     )
     parts.append(
-        f'  (gr_text "Wire-Stitched Torus Knot Fixture" (at {GRID_CX} {BOARD_H / 2}) (layer "F.SilkS") (uuid "{new_uuid()}")'
+        f'  (gr_text "Wire-Stitched Torus Knot Fixture + Control" (at {GRID_CX} {BOARD_H / 2}) (layer "F.SilkS") (uuid "{new_uuid()}")'
         f'\n    (effects (font (size 0.9 0.9) (thickness 0.13)))'
         f'\n  )'
     )

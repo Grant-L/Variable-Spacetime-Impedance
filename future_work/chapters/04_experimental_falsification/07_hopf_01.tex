@@ -3,17 +3,13 @@
 To permanently democratize the verification of the AVE framework, we provide the specific, actionable Printed Circuit Board Assembly (PCBA) guidelines required to test macroscopic metric engineering using commercial-off-the-shelf (COTS) electronics.
 
 \subsection{Project HOPF-01: The Chiral VNA Antenna}
-\textbf{Objective:} Prove the vacuum is a chiral LC Resonant Network by demonstrating an anomalous $S_{11}$ impedance match using a custom braided PCBA inductor.
+\textbf{Objective:} Prove the vacuum is a chiral LC Resonant Network by demonstrating an anomalous $S_{11}$ frequency shift that scales as $\alpha \cdot pq/(p+q)$ across five torus knot topologies.
 
-\textbf{Fabrication:} Order a standard 4-Layer FR4 board from a commercial fab house. Ensure the inner layers (Layer 2 and Layer 3) are completely voided of copper underneath the coil region to prevent capacitive parasitic coupling to the ground plane. Terminate the coil with a 50-ohm grounded coplanar waveguide to an SMA edge-launch connector.
+\textbf{Fabrication:} Order a single 160$\times$120~mm, 2-layer FR-4 panel (1.6~mm, ENIG finish) with unplated stitching holes (1.0~mm drill, 3~mm pitch). Thread 24~AWG (0.51~mm) enameled magnet wire through the holes following silkscreen guides, creating five 3D torus knots---$(2,3)$ trefoil, $(2,5)$ cinquefoil, $(3,5)$, $(3,7)$, $(3,11)$---plus a zero-topology meander control antenna. Solder wire starts to edge-launch SMA connectors (6 total).
 
-\textbf{Routing the Torus Knot:} Do not route the traces radially. To synthesize a macroscopic Beltrami force-free field ($\mathbf{A} \parallel \mathbf{B}$), the inductor traces must step azimuthally by a specific phase angle ($\Delta \theta \approx 90^\circ$) as they route from the inner radius to the outer radius. 
-\begin{itemize}
-    \item \textbf{Top Layer:} The traces spiral outward and clockwise.
-    \item \textbf{Bottom Layer:} The traces drop through a via, then spiral inward and clockwise. 
-\end{itemize}
+\textbf{Ground Architecture:} F.Cu copper ground patches (12$\times$12~mm) sit under each SMA connector, connected by a continuous F.Cu perimeter ground trace at 5~mm inset from the board edge. No vias are required---SMA thru-hole pads bridge both copper layers. B.Cu is entirely bare, allowing free wire routing on both board surfaces.
 
-This braided $(p,q)$ torus knot geometry forces the alternating current to flow poloidally \textit{and} azimuthally simultaneously. Because this artificial helicity aligns perfectly with the fundamental chiral inductance of the $\mathcal{M}_A$ vacuum LC network, a standard \$70 NanoVNA will display a massive, anomalous drop in reactive reflection ($S_{11}$) that classical EM solvers (HFSS, CST) mathematically cannot predict.
+\textbf{The Falsification Protocol:} Measure all six antennas with a calibrated VNA (SOL calibration) in air, then submerge in mineral oil ($\varepsilon_r \approx 2.1$). Plot $\Delta f/f$ vs.\ $pq/(p+q)$. If the data is linear through the origin with slope $\alpha$ and substrate-independent, AVE is confirmed. If zero, random, or substrate-dependent, AVE is falsified at this scale.
 
 \subsection{Project PONDER-01: The Solid-State Micro-Drive}
 \textbf{Objective:} Prove that the metric refractive index ($n_{scalar}$) can be artificially shifted using high-k dielectrics, resulting in measurable macroscopic ponderomotive acceleration ($a = c^2 \nabla n$).

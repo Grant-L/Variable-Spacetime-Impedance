@@ -29,10 +29,11 @@ from ave.core.constants import ALPHA
 # Torus knot catalog
 # ══════════════════════════════════════════════════════════════
 KNOTS = [
-    (2, 3,  0.060, r'$(2,3)$ Trefoil'),
-    (2, 5,  0.090, r'$(2,5)$ Cinquefoil'),
-    (3, 7,  0.120, r'$(3,7)$'),
-    (3, 11, 0.150, r'$(3,11)$'),
+    (2, 3,  0.120, r'$(2,3)$ Trefoil'),
+    (2, 5,  0.160, r'$(2,5)$ Cinquefoil'),
+    (3, 5,  0.170, r'$(3,5)$'),
+    (3, 7,  0.200, r'$(3,7)$'),
+    (3, 11, 0.250, r'$(3,11)$'),
 ]
 
 # SMA pad dimensions (mm)
@@ -135,7 +136,7 @@ def main():
         fig = plt.figure(figsize=(20, 20))
         fig.patch.set_facecolor('#0a0a0a')
 
-        colors = ['#00ffcc', '#ff6b6b', '#ffd93d', '#6bcaff']
+        colors = ['#00ffcc', '#ff6b6b', '#ffd93d', '#6bcaff', '#c78dff']
 
         # Panel layout: 2×2 grid of knot traces + 1 combined bottom panel
         gs = GridSpec(3, 2, figure=fig, hspace=0.35, wspace=0.25,
@@ -188,7 +189,7 @@ def main():
                        markeredgewidth=1.5, zorder=10)
             spacing += kd['extent'] + 5
 
-        ax_all.set_title('All 4 Knots — Single Panel Layout (Relative Scale)',
+        ax_all.set_title('All 5 Knots — Single Panel Layout (Relative Scale)',
                         color='white', fontsize=14, fontweight='bold', pad=10)
         ax_all.set_xlabel('X (mm)', color='#cccccc', fontsize=10)
         ax_all.set_ylabel('Y (mm)', color='#cccccc', fontsize=10)

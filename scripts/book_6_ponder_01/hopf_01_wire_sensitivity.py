@@ -27,28 +27,36 @@ import numpy as np
 project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
 sys.path.append(str(project_root / "src"))
 
-from ave.core.constants import C_0, ALPHA
+from ave.core.constants import C_0, ALPHA, Z_0
 
 # ══════════════════════════════════════════════════════════════
-# Wire-in-Air Parameters
+# Wire-in-Air Parameters (consistent with hopf_01_impedance_model.py)
 # ══════════════════════════════════════════════════════════════
 
-WIRE_DIA = 0.5e-3          # m, 24 AWG enameled magnet wire
-WIRE_HEIGHT = 1.6e-3       # m, PCB thickness (wire top to ground plane)
+WIRE_DIA = 0.51e-3         # m, 24 AWG enameled magnet wire
+WIRE_HEIGHT = 1.86e-3      # m, PCB thickness + wire radius (1.6mm + 0.255mm)
+ENAMEL_THICKNESS = 30e-6   # m (polyurethane enamel)
+ENAMEL_EPS_R = 3.5         # polyurethane relative permittivity
 
-# Effective permittivity: air medium with enamel coating
-EPS_EFF_AIR = 1.15
+# Effective permittivity via enamel correction model:
+#   ε_eff = ε_medium × (1 + f_enamel × (ε_enamel/ε_medium - 1))
+#   where f_enamel = 2 × t_enamel / wire_dia (thin shell fraction)
+def _effective_permittivity(eps_medium):
+    f_enamel = 2 * ENAMEL_THICKNESS / WIRE_DIA
+    return eps_medium * (1 + f_enamel * (ENAMEL_EPS_R / eps_medium - 1))
+
+EPS_R_AIR = 1.0006         # air at STP
+EPS_R_OIL = 2.1            # mineral oil (transformer grade)
+
+EPS_EFF_AIR = _effective_permittivity(EPS_R_AIR)   # ≈ 1.295
 EPS_EFF_AIR_SIGMA = 0.08
-
-# Mineral oil: ε_r ≈ 2.1 (transformer / USP grade)
-# Wire submerged → field lines run through oil instead of air
-EPS_R_OIL = 2.1
-EPS_EFF_OIL = EPS_R_OIL * 0.85   # ~1.79 — partial coupling, ground plane beneath
-EPS_EFF_OIL_SIGMA = 0.10         # Oil temperature coefficient + contamination
+EPS_EFF_OIL = _effective_permittivity(EPS_R_OIL)   # ≈ 2.265
+EPS_EFF_OIL_SIGMA = 0.10   # Oil temperature coefficient + contamination
 
 # Wire impedance (image charge model)
-Z_WIRE_AIR = 60 / np.sqrt(EPS_EFF_AIR) * np.arccosh(2 * WIRE_HEIGHT / WIRE_DIA)
-Z_WIRE_OIL = 60 / np.sqrt(EPS_EFF_OIL) * np.arccosh(2 * WIRE_HEIGHT / WIRE_DIA)
+_Z_WIRE_FACTOR = float(Z_0) / (2 * np.pi)  # Z₀/(2π) ≈ 59.96 Ω
+Z_WIRE_AIR = _Z_WIRE_FACTOR / np.sqrt(EPS_EFF_AIR) * np.arccosh(2 * WIRE_HEIGHT / WIRE_DIA)
+Z_WIRE_OIL = _Z_WIRE_FACTOR / np.sqrt(EPS_EFF_OIL) * np.arccosh(2 * WIRE_HEIGHT / WIRE_DIA)
 
 # Noise sources
 WIRE_LENGTH_SIGMA = 0.5e-3
@@ -60,6 +68,7 @@ N_MONTE_CARLO = 5000
 KNOTS = [
     (2, 3,  0.120, r'$(2,3)$ Trefoil'),       # was 60mm → 120mm
     (2, 5,  0.160, r'$(2,5)$ Cinquefoil'),     # was 90mm → 160mm
+    (3, 5,  0.170, r'$(3,5)$'),                # NEW: intermediate point
     (3, 7,  0.200, r'$(3,7)$'),                # was 120mm → 200mm
     (3, 11, 0.250, r'$(3,11)$'),               # was 150mm → 250mm
 ]
@@ -208,7 +217,7 @@ def main():
         fig = plt.figure(figsize=(22, 18))
         fig.patch.set_facecolor('#0a0a0a')
         gs = GridSpec(3, 2, figure=fig, hspace=0.38, wspace=0.28)
-        colors = ['#00ffcc', '#ff6b6b', '#ffd93d', '#6bcaff']
+        colors = ['#00ffcc', '#ff6b6b', '#ffd93d', '#6bcaff', '#c78dff']
 
         # ── Panel 1: Air — Δf distribution ──
         ax1 = fig.add_subplot(gs[0, 0])

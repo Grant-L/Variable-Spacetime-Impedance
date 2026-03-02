@@ -3,16 +3,16 @@ r"""
 HOPF-01: Full S₁₁ Frequency Sweep — Chiral Torus Knot Antenna Prediction
 ==========================================================================
 
-Generates the complete S₁₁(f) frequency response for torus knot antennas
-on FR-4 substrate, comparing standard Maxwell predictions against AVE
-chiral coupling corrections.
+Generates the complete S₁₁(f) frequency response for wire-stitched torus
+knot antennas on FR-4 substrate (wire-in-air model), comparing standard
+Maxwell predictions against AVE chiral coupling corrections.
 
 The AVE prediction:
   Standard Maxwell gives the resonant frequency as:
-    f_res = c / (2π × L_trace × √ε_r)
+    f_res = c / (2 × L_wire × √ε_eff)
 
   AVE adds a chiral correction to the effective index:
-    n_AVE = √ε_r × (1 + α × p×q/(p+q))
+    n_AVE = √ε_eff × (1 + α × p×q/(p+q))
 
   This shifts the resonance DOWN by Δf = f_std × α × pq/(p+q).
 
@@ -21,11 +21,16 @@ The AVE prediction:
   systematic scaling law confirms a topological vacuum coupling that
   standard HFSS/CST cannot predict.
 
+Physical model:
+  24 AWG enameled magnet wire (d=0.51mm) stitched through unplated
+  PCB holes.  The wire resonates as a FREE-SPACE wire resonator,
+  NOT a microstrip line.  ε_eff ≈ 1.295 (air + enamel correction).
+
 This script produces:
   1. Full S₁₁(f) curves for (2,3), (2,5), (3,7), (3,11) knots
   2. Overlay plot showing chiral shift scaling
   3. Scaling law verification: Δf vs pq/(p+q) — should be linear
-  4. Comparison table with NanoVNA measurement requirements
+  4. Comparison table with VNA measurement requirements
 
 Usage:
     PYTHONPATH=src python scripts/book_6_ponder_01/hopf_01_s11_sweep.py
@@ -37,29 +42,83 @@ import numpy as np
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 
-from ave.core.constants import C_0, ALPHA
+from ave.core.constants import C_0, ALPHA, MU_0, Z_0
 
 # ======================================================
-# PCB Substrate Parameters (FR-4)
+# Wire-in-Air Physical Parameters
 # ======================================================
-EPS_R = 4.3          # FR-4 relative permittivity
-TAN_D = 0.02         # FR-4 loss tangent at ~150 MHz
-TRACE_W = 1.0e-3     # 1 mm trace width
-COPPER_T = 35e-6     # 1 oz copper (35 μm)
-Z_FEED = 50.0        # SMA feed impedance [Ω]
 
-# Torus knot catalog: (p, q, trace_length_m, label)
+# Board
+PCB_THICKNESS = 1.6e-3      # m (FR-4 core)
+
+# Wire (24 AWG enameled magnet wire)
+WIRE_DIA = 0.51e-3           # m
+WIRE_RADIUS = WIRE_DIA / 2
+ENAMEL_THICKNESS = 30e-6     # m (polyurethane enamel)
+ENAMEL_EPS_R = 3.5           # polyurethane relative permittivity
+WIRE_CONDUCTIVITY = 5.8e7    # S/m (copper)
+
+# Media
+EPS_R_AIR = 1.0006           # air at STP
+Z_FEED = 50.0                # SMA feed impedance [Ω]
+
+# Wire height above ground (front side: PCB thickness + wire radius)
+WIRE_HEIGHT = PCB_THICKNESS + WIRE_RADIUS
+
+# Torus knot catalog: (p, q, wire_length_m, label)
 KNOT_CATALOG = [
-    (2, 3,  0.060, r'$(2,3)$ Trefoil'),
-    (2, 5,  0.090, r'$(2,5)$ Cinquefoil'),
-    (3, 7,  0.120, r'$(3,7)$'),
-    (3, 11, 0.150, r'$(3,11)$'),
+    (2, 3,  0.120, r'$(2,3)$ Trefoil'),
+    (2, 5,  0.160, r'$(2,5)$ Cinquefoil'),
+    (3, 5,  0.170, r'$(3,5)$'),
+    (3, 7,  0.200, r'$(3,7)$'),
+    (3, 11, 0.250, r'$(3,11)$'),
 ]
 
 
-def torus_knot_chiral_factor(p: int, q: int) -> float:
+# ======================================================
+# Wire-in-Air Impedance Model
+# ======================================================
+
+def effective_permittivity(eps_medium):
+    """Effective permittivity accounting for enamel coating.
+
+    Volume-fraction model:
+        ε_eff ≈ eps_medium × (1 + f_enamel × (ε_enamel/eps_medium - 1))
+    where f_enamel ≈ 2×t_enamel / wire_dia (thin shell fraction).
     """
-    AVE chiral coupling factor for a (p,q) torus knot.
+    f_enamel = 2 * ENAMEL_THICKNESS / WIRE_DIA
+    return eps_medium * (1 + f_enamel * (ENAMEL_EPS_R / eps_medium - 1))
+
+
+def wire_over_ground_Z0(eps_eff):
+    """Characteristic impedance of wire above ground plane (image-charge model).
+
+    Z₀ = (60 / √ε_eff) × acosh(2h/d)
+    """
+    ratio = 2 * WIRE_HEIGHT / WIRE_DIA
+    if ratio <= 1:
+        ratio = 1.01
+    return (float(Z_0) / (2 * np.pi) / np.sqrt(eps_eff)) * np.arccosh(ratio)
+
+
+def skin_depth(freq):
+    """Skin depth in copper at frequency f."""
+    return np.sqrt(1 / (np.pi * freq * float(MU_0) * WIRE_CONDUCTIVITY))
+
+
+def wire_resistance_per_m(freq):
+    """AC resistance per meter for 24 AWG wire at frequency f."""
+    delta = skin_depth(freq)
+    r = WIRE_RADIUS
+    if delta >= r:
+        area = np.pi * r**2
+    else:
+        area = np.pi * (r**2 - (r - delta)**2)
+    return 1 / (WIRE_CONDUCTIVITY * area)
+
+
+def torus_knot_chiral_factor(p: int, q: int) -> float:
+    """AVE chiral coupling factor for a (p,q) torus knot.
 
     The effective refractive index correction is:
       Δn/n = α × pq/(p+q)
@@ -71,90 +130,41 @@ def torus_knot_chiral_factor(p: int, q: int) -> float:
     return alpha * p * q / (p + q)
 
 
-def s11_frequency_response(p: int, q: int, L_trace: float,
-                           f_array: np.ndarray,
-                           include_ave: bool = True) -> np.ndarray:
+def f_resonance(L_wire, eps_eff, chiral_factor=0.0):
+    """Half-wave open-ended resonator frequency.
+
+    f_res = c / (2 × L × √ε_eff × (1 + χ))
+
+    Uses 2L (not 2πL) — correct for a half-wave transmission
+    line resonator with open ends.
     """
-    Compute S₁₁(f) for a (p,q) torus knot antenna on FR-4.
+    n_eff = np.sqrt(eps_eff) * (1 + chiral_factor)
+    return float(C_0) / (2 * L_wire * n_eff)
 
-    Models the antenna as a lossy transmission line resonator with
-    characteristic impedance Z_ant matched to the 50Ω feed.
 
-    Standard model:
-      Z_ant(f) = Z_c × (Z_L + j×Z_c×tan(βL)) / (Z_c + j×Z_L×tan(βL))
-      S₁₁ = (Z_ant - Z_feed) / (Z_ant + Z_feed)
+def quality_factor(freq, L_wire, Z0):
+    """Unloaded Q of a half-wave resonator.
 
-    where β = 2πf × n_eff / c and Z_c depends on geometry.
-
-    AVE modification:
-      n_eff includes the chiral correction, shifting the resonance.
-      Additionally, the chiral coupling introduces a small reactive
-      loading (additional capacitive susceptance) at the knot crossings.
-
-    Args:
-        p, q: Torus knot parameters.
-        L_trace: Total trace length [m].
-        f_array: Frequency array [Hz].
-        include_ave: If True, include AVE chiral correction.
-
-    Returns:
-        S₁₁ magnitude [dB] as array.
+    Q = (π × Z₀) / (R_total)
+    where R_total = R_per_m × L_wire.
     """
-    c = float(C_0)
-    alpha = float(ALPHA)
+    R_per_m = wire_resistance_per_m(freq)
+    R_total = R_per_m * L_wire
+    return np.pi * Z0 / R_total
 
-    # Effective refractive index
-    n_std = np.sqrt(EPS_R)
-    if include_ave:
-        chiral = torus_knot_chiral_factor(p, q)
-        n_eff = n_std * (1 + chiral)
-    else:
-        n_eff = n_std
-        chiral = 0.0
 
-    # Transmission line parameters
-    # Microstrip characteristic impedance (approximate, Wheeler 1977)
-    h_sub = 1.6e-3  # FR-4 substrate thickness [m]
-    w_h = TRACE_W / h_sub
-    if w_h < 1:
-        Z_c = 60 / np.sqrt(EPS_R) * np.log(8 / w_h + w_h / 4)
-    else:
-        Z_c = 120 * np.pi / (np.sqrt(EPS_R) * (w_h + 1.393 + 0.667 * np.log(w_h + 1.444)))
+def s11_frequency_response(f_res, Q, Z0, f_array):
+    """Compute S₁₁(f) for a resonant wire antenna with SMA mismatch.
 
-    # Load impedance (open-ended torus knot → high impedance at end)
-    Z_L = 1e6  # Open circuit (effectively infinite)
+    Models the antenna as a series RLC resonator seen through an
+    impedance transformer (Z_ant != Z_source).
 
-    s11_db = np.zeros_like(f_array)
-
-    for i, f in enumerate(f_array):
-        # Propagation constant
-        beta = 2 * np.pi * f * n_eff / c
-
-        # Loss: α_loss = π × f × n_eff × tan_δ / c
-        alpha_loss = np.pi * f * n_eff * TAN_D / c
-
-        # Complex propagation constant
-        gamma_L = (alpha_loss + 1j * beta) * L_trace
-
-        # Input impedance of loaded transmission line
-        tanh_gL = np.tanh(gamma_L)
-        Z_in = Z_c * (Z_L + Z_c * tanh_gL) / (Z_c + Z_L * tanh_gL)
-
-        # AVE chiral reactive loading at knot crossings
-        if include_ave and chiral > 0:
-            # Each crossing adds a small shunt susceptance
-            n_crossings = p * q  # Total crossings for (p,q) torus knot
-            # Reactive loading ∝ α² × crossings × resonant susceptance
-            B_chiral = alpha**2 * n_crossings * 2 * np.pi * f * EPS_R * 8.854e-12 * L_trace
-            Z_chiral = 1 / (1j * B_chiral) if B_chiral > 0 else 1e12
-            # Parallel combination
-            Z_in = (Z_in * Z_chiral) / (Z_in + Z_chiral)
-
-        # S₁₁ (reflection coefficient)
-        gamma = (Z_in - Z_FEED) / (Z_in + Z_FEED)
-        s11_db[i] = 20 * np.log10(max(abs(gamma), 1e-15))
-
-    return s11_db
+    Returns S₁₁ magnitude [dB] as array.
+    """
+    delta = (f_array - f_res) / f_res
+    Z_ant_f = Z0 * (1 + 1j * Q * 2 * delta)
+    gamma = (Z_ant_f - Z_FEED) / (Z_ant_f + Z_FEED)
+    return 20 * np.log10(np.abs(gamma))
 
 
 def find_resonances(f_array: np.ndarray, s11_db: np.ndarray,
@@ -171,61 +181,65 @@ def find_resonances(f_array: np.ndarray, s11_db: np.ndarray,
 
 def main():
     print("=" * 80)
-    print("  HOPF-01: Full S₁₁ Frequency Sweep — Torus Knot Antenna Array")
+    print("  HOPF-01: Full S₁₁ Frequency Sweep — Wire-Stitched Torus Knot Antenna")
     print("=" * 80)
+
+    # Compute effective permittivity and impedance
+    eps_eff = effective_permittivity(EPS_R_AIR)
+    Z0 = wire_over_ground_Z0(eps_eff)
 
     # ─────────────────────────────────────────────────────
     # 1. Compute S₁₁ for each knot topology
     # ─────────────────────────────────────────────────────
-    print(f"\n  Substrate: FR-4 (ε_r = {EPS_R}, tan_δ = {TAN_D})")
-    print(f"  Trace width: {TRACE_W*1e3:.1f} mm, Cu thickness: {COPPER_T*1e6:.0f} μm")
+    print(f"\n  Physical model: wire-in-air (free-space resonator)")
+    print(f"  Wire: 24 AWG enameled Cu ({WIRE_DIA*1e3:.2f}mm dia)")
+    print(f"  ε_eff = {eps_eff:.4f}  (air + enamel correction)")
+    print(f"  Z₀ = {Z0:.1f} Ω  (wire above B.Cu ground patch)")
     print(f"  Feed impedance: {Z_FEED:.0f} Ω (SMA)")
     print(f"  α = {float(ALPHA):.6e}")
 
     results = []
 
-    print(f"\n  {'Knot':<20} {'L_trace':>8} {'f_std':>10} {'f_AVE':>10} "
-          f"{'Δf':>8} {'Shift':>10} {'Dip':>8}")
-    print(f"  {'─'*20} {'─'*8} {'─'*10} {'─'*10} {'─'*8} {'─'*10} {'─'*8}")
+    print(f"\n  {'Knot':<20} {'L_wire':>8} {'f_std':>10} {'f_AVE':>10} "
+          f"{'Δf':>8} {'Shift':>10} {'Q':>6} {'Dip':>8}")
+    print(f"  {'─'*20} {'─'*8} {'─'*10} {'─'*10} {'─'*8} {'─'*10} {'─'*6} {'─'*8}")
 
-    for p, q, L_trace, label in KNOT_CATALOG:
+    for p, q, L_wire, label in KNOT_CATALOG:
         # Resonant frequencies (analytical)
         c = float(C_0)
-        n_std = np.sqrt(EPS_R)
         chiral = torus_knot_chiral_factor(p, q)
-        n_ave = n_std * (1 + chiral)
 
-        f_std = c / (2 * np.pi * L_trace * n_std)
-        f_ave = c / (2 * np.pi * L_trace * n_ave)
+        f_std = f_resonance(L_wire, eps_eff, 0.0)
+        f_ave = f_resonance(L_wire, eps_eff, chiral)
         delta_f = f_std - f_ave
         shift_ppm = delta_f / f_std * 1e6
+
+        # Q-factor
+        Q = quality_factor(f_std, L_wire, Z0)
 
         # Full sweep around resonance (±30% bandwidth)
         f_min = f_std * 0.70
         f_max = f_std * 1.30
         f_array = np.linspace(f_min, f_max, 4001)
 
-        s11_std = s11_frequency_response(p, q, L_trace, f_array, include_ave=False)
-        s11_ave = s11_frequency_response(p, q, L_trace, f_array, include_ave=True)
-
-        # Find deepest dips
-        res_std = find_resonances(f_array, s11_std, threshold=-5.0)
-        res_ave = find_resonances(f_array, s11_ave, threshold=-5.0)
+        s11_std = s11_frequency_response(f_std, Q, Z0, f_array)
+        s11_ave = s11_frequency_response(f_ave, Q, Z0, f_array)
 
         dip_std = min(s11_std)
         dip_ave = min(s11_ave)
 
-        print(f"  {label:<20} {L_trace*1e3:>6.0f}mm {f_std/1e6:>8.2f}MHz "
-              f"{f_ave/1e6:>8.2f}MHz {delta_f/1e6:>6.2f}MHz "
-              f"{shift_ppm:>8.0f}ppm {dip_ave:>6.1f}dB")
+        print(f"  {label:<20} {L_wire*1e3:>6.0f}mm {f_std/1e9:>8.3f}GHz "
+              f"{f_ave/1e9:>8.3f}GHz {delta_f/1e6:>6.2f}MHz "
+              f"{shift_ppm:>8.0f}ppm {Q:>5.0f} {dip_ave:>6.1f}dB")
 
         results.append({
             'p': p, 'q': q, 'label': label,
-            'L_trace': L_trace,
+            'L_wire': L_wire,
             'f_std': f_std, 'f_ave': f_ave,
             'delta_f': delta_f, 'shift_ppm': shift_ppm,
             'chiral_factor': chiral,
             'pq_over_ppq': p * q / (p + q),
+            'Q': Q,
             'f_array': f_array,
             's11_std': s11_std,
             's11_ave': s11_ave,
@@ -255,26 +269,23 @@ def main():
               f"{predicted_ratio:>14.6e} {measured_ratio:>14.6e} {status:>8}")
 
     # ─────────────────────────────────────────────────────
-    # 3. NanoVNA Measurement Requirements
+    # 3. VNA Measurement Requirements
     # ─────────────────────────────────────────────────────
     print(f"\n  ═══════════════════════════════════════════════════════════════════")
-    print(f"  NanoVNA MEASUREMENT REQUIREMENTS")
+    print(f"  VNA MEASUREMENT REQUIREMENTS")
     print(f"  ═══════════════════════════════════════════════════════════════════")
-    print(f"\n  A $70 NanoVNA-H4 (50 kHz -- 1.5 GHz) can resolve these shifts:")
-    print(f"\n  {'Knot':<16} {'Δf':>10} {'VNA RBW req':>14} {'Points':>8} {'Feasible':>10}")
-    print(f"  {'─'*16} {'─'*10} {'─'*14} {'─'*8} {'─'*10}")
+    print(f"\n  All resonances below 1.2 GHz — within NanoVNA-H4 and LiteVNA range:")
+    print(f"\n  {'Knot':<16} {'f_std':>10} {'Δf':>10} {'VNA RBW req':>14} {'Points':>8} {'Feasible':>10}")
+    print(f"  {'─'*16} {'─'*10} {'─'*10} {'─'*14} {'─'*8} {'─'*10}")
 
     for r in results:
         df = r['delta_f']
-        # NanoVNA-H4: max 1601 points per sweep
-        # Required RBW = Δf / 10 (to resolve the shift)
         rbw_req = df / 10
-        # Span needed: ±5× the shift around resonance
         span = 20 * df
         points_needed = int(span / rbw_req) + 1
         feasible = "✅ Easy" if points_needed < 1601 else "⚠️ Multi-sweep"
-        print(f"  {r['label']:<16} {df/1e3:>8.1f}kHz {rbw_req/1e3:>12.1f}kHz "
-              f"{points_needed:>8d} {feasible:>10}")
+        print(f"  {r['label']:<16} {r['f_std']/1e9:>8.3f}GHz {df/1e6:>8.2f}MHz "
+              f"{rbw_req/1e3:>12.1f}kHz {points_needed:>8d} {feasible:>10}")
 
     # ─────────────────────────────────────────────────────
     # 4. Generate Plots
@@ -289,21 +300,22 @@ def main():
         fig.patch.set_facecolor('#0a0a0a')
         gs = GridSpec(2, 2, figure=fig, hspace=0.32, wspace=0.28)
 
-        colors_std = ['#555555', '#555555', '#555555', '#555555']
-        colors_ave = ['#00ffcc', '#ff6b6b', '#ffd93d', '#6bcaff']
+        colors_std = ['#555555', '#555555', '#555555', '#555555', '#555555']
+        colors_ave = ['#00ffcc', '#ff6b6b', '#ffd93d', '#6bcaff', '#c78dff']
 
         # ── Panel 1: All S₁₁ curves overlaid ──
         ax1 = fig.add_subplot(gs[0, 0])
         ax1.set_facecolor('#111111')
         for i, r in enumerate(results):
-            f_mhz = r['f_array'] / 1e6
-            ax1.plot(f_mhz, r['s11_std'], color=colors_std[i],
+            f_ghz = r['f_array'] / 1e9
+            ax1.plot(f_ghz, r['s11_std'], color=colors_std[i],
                      alpha=0.4, linewidth=0.8, linestyle='--')
-            ax1.plot(f_mhz, r['s11_ave'], color=colors_ave[i],
+            ax1.plot(f_ghz, r['s11_ave'], color=colors_ave[i],
                      linewidth=1.5, label=r['label'])
-        ax1.set_xlabel('Frequency (MHz)', color='white', fontsize=11)
+        ax1.set_xlabel('Frequency (GHz)', color='white', fontsize=11)
         ax1.set_ylabel(r'$S_{11}$ (dB)', color='white', fontsize=11)
-        ax1.set_title('S₁₁ Response: All Torus Knot Antennas',
+        ax1.set_title('S₁₁ Response: Wire-Stitched Torus Knot Antennas\n'
+                      f'(ε_eff = {eps_eff:.4f}, Z₀ = {Z0:.0f}Ω)',
                       color='white', fontsize=13, fontweight='bold')
         ax1.legend(fontsize=9, facecolor='#1a1a1a', edgecolor='#333',
                    labelcolor='white', loc='upper right')
@@ -319,7 +331,7 @@ def main():
         r311 = results[3]
         f_center = r311['f_std']
         zoom_mask = (r311['f_array'] > f_center * 0.94) & (r311['f_array'] < f_center * 1.06)
-        f_zoom = r311['f_array'][zoom_mask] / 1e6
+        f_zoom = r311['f_array'][zoom_mask] / 1e9
         ax2.plot(f_zoom, r311['s11_std'][zoom_mask], color='#888888',
                  linewidth=2, linestyle='--', label='Standard Maxwell')
         ax2.plot(f_zoom, r311['s11_ave'][zoom_mask], color='#6bcaff',
@@ -327,13 +339,14 @@ def main():
         # Annotate the shift
         delta_mhz = r311['delta_f'] / 1e6
         ax2.annotate(f'Δf = {delta_mhz:.2f} MHz\n({r311["shift_ppm"]:.0f} ppm)',
-                     xy=(r311['f_ave']/1e6, r311['dip_ave']),
-                     xytext=(r311['f_ave']/1e6 + 3, r311['dip_ave'] + 8),
+                     xy=(r311['f_ave']/1e9, r311['dip_ave']),
+                     xytext=(r311['f_ave']/1e9 + 0.005, r311['dip_ave'] + 8),
                      fontsize=10, color='#6bcaff',
                      arrowprops=dict(arrowstyle='->', color='#6bcaff', lw=1.5))
-        ax2.set_xlabel('Frequency (MHz)', color='white', fontsize=11)
+        ax2.set_xlabel('Frequency (GHz)', color='white', fontsize=11)
         ax2.set_ylabel(r'$S_{11}$ (dB)', color='white', fontsize=11)
-        ax2.set_title(f'Zoomed: (3,11) Knot — Chiral Shift',
+        ax2.set_title(f'Zoomed: (3,11) Knot — Chiral Shift\n'
+                      f'Q = {r311["Q"]:.0f}',
                       color='white', fontsize=13, fontweight='bold')
         ax2.legend(fontsize=10, facecolor='#1a1a1a', edgecolor='#333',
                    labelcolor='white')
@@ -380,15 +393,16 @@ def main():
         for r in results:
             table_data.append([
                 r['label'],
-                f"{r['L_trace']*1e3:.0f} mm",
-                f"{r['f_std']/1e6:.2f}",
-                f"{r['f_ave']/1e6:.2f}",
+                f"{r['L_wire']*1e3:.0f} mm",
+                f"{r['f_std']/1e9:.3f}",
+                f"{r['f_ave']/1e9:.3f}",
                 f"{r['delta_f']/1e6:.2f}",
                 f"{r['shift_ppm']:.0f}",
+                f"{r['Q']:.0f}",
             ])
 
-        col_labels = ['Knot', 'L_trace', 'f_std (MHz)', 'f_AVE (MHz)',
-                      'Δf (MHz)', 'Shift (ppm)']
+        col_labels = ['Knot', 'L_wire', 'f_std (GHz)', 'f_AVE (GHz)',
+                      'Δf (MHz)', 'Shift (ppm)', 'Q']
         table = ax4.table(cellText=table_data, colLabels=col_labels,
                           loc='center', cellLoc='center')
         table.auto_set_font_size(False)
@@ -403,7 +417,7 @@ def main():
                 cell.set_facecolor('#2a2a3a')
                 cell.set_text_props(color='#00ffcc', fontweight='bold')
 
-        ax4.set_title('HOPF-01 Prediction Summary',
+        ax4.set_title('HOPF-01 Prediction Summary (Wire-in-Air)',
                       color='white', fontsize=13, fontweight='bold', pad=20)
 
         # Save
@@ -424,15 +438,15 @@ def main():
     print(f"\n  ═══════════════════════════════════════════════════════════════════")
     print(f"  EXPERIMENTAL PROTOCOL")
     print(f"  ═══════════════════════════════════════════════════════════════════")
-    print(f"  1. Fabricate ALL 4 knot antennas on a SINGLE FR-4 panel")
-    print(f"     (ensures identical ε_r, Cu thickness, etching tolerances)")
-    print(f"  2. Measure each antenna with NanoVNA-H4 (calibrated SOLT)")
+    print(f"  1. Fabricate ALL 5 knot antennas + control on a SINGLE 160×120mm FR-4 panel")
+    print(f"     Wire-stitched: 24 AWG enameled Cu through unplated holes")
+    print(f"  2. Measure each antenna with NanoVNA-H4 or LiteVNA (calibrated SOL)")
     print(f"  3. Record the resonant frequency f_res for each knot")
-    print(f"  4. Compute Δf = f_measured - f_HFSS_predicted for each")
+    print(f"  4. Compute Δf = f_measured - f_Maxwell for each")
     print(f"  5. Plot Δf vs pq/(p+q)")
     print(f"     → If EXACTLY LINEAR through origin: AVE confirmed")
     print(f"     → If zero or random: AVE falsified at this scale")
-    print(f"  6. Repeat on Rogers RO4003C (ε_r = 3.38) to verify substrate")
+    print(f"  6. Repeat in mineral oil bath (ε_r ≈ 2.1) to verify substrate")
     print(f"     independence of the chiral coupling constant")
     print(f"  ═══════════════════════════════════════════════════════════════════")
 

@@ -1,0 +1,62 @@
+(version 1)
+# HOPF-01 Design Rules — JLCPCB 2-Layer FR-4 Compliance
+# Reference: https://jlcpcb.com/capabilities/pcb-capabilities
+
+# ── Clearance Rules ──
+(rule "Pad to Pad Clearance"
+  (condition "A.Type == 'pad' && B.Type == 'pad'")
+  (constraint clearance (min 0.2mm))
+)
+
+(rule "Track to Track Clearance"
+  (condition "A.Type == 'track' && B.Type == 'track'")
+  (constraint clearance (min 0.127mm))
+)
+
+(rule "Track to Pad Clearance"
+  (condition "A.Type == 'track' && B.Type == 'pad'")
+  (constraint clearance (min 0.127mm))
+)
+
+(rule "NPTH to Track Clearance"
+  (condition "A.Pad_Type == 'NPTH' && B.Type == 'track'")
+  (constraint clearance (min 0.254mm))
+)
+
+(rule "Copper to Edge Clearance"
+  (condition "A.Type == 'track' && B.Type == 'Board_Edge'")
+  (constraint clearance (min 0.3mm))
+)
+
+# ── Hole Rules ──
+(rule "Hole to Hole"
+  (condition "A.isPlated() || B.isPlated()")
+  (constraint hole_to_hole (min 0.5mm))
+)
+
+(rule "NPTH Hole to Hole"
+  (condition "!A.isPlated() && !B.isPlated()")
+  (constraint hole_to_hole (min 0.5mm))
+)
+
+(rule "Minimum Drill Size"
+  (condition "A.Type == 'pad'")
+  (constraint hole_size (min 0.3mm))
+)
+
+# ── Width Rules ──
+(rule "Minimum Track Width"
+  (condition "A.Type == 'track'")
+  (constraint track_width (min 0.127mm))
+)
+
+(rule "Minimum Annular Ring"
+  (condition "A.Type == 'pad' && A.isPlated()")
+  (constraint annular_width (min 0.13mm))
+)
+
+# ── Silkscreen Rules ──
+(rule "Silkscreen to Pad Clearance"
+  (condition "A.Type == 'text' && B.Type == 'pad'")
+  (constraint clearance (min 0.15mm))
+)

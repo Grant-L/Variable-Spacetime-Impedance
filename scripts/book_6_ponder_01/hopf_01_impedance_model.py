@@ -37,7 +37,7 @@ import numpy as np
 project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
 sys.path.append(str(project_root / "src"))
 
-from ave.core.constants import C_0, ALPHA, MU_0, EPSILON_0
+from ave.core.constants import C_0, ALPHA, MU_0, EPSILON_0, Z_0
 
 # ══════════════════════════════════════════════════════════════
 # Physical Parameters — Standard 2-Layer FR-4
@@ -67,6 +67,7 @@ EPS_R_OIL = 2.1             # mineral oil (transformer grade)
 KNOTS = [
     (2, 3,  0.120, '(2,3) Trefoil'),
     (2, 5,  0.160, '(2,5) Cinquefoil'),
+    (3, 5,  0.170, '(3,5)'),
     (3, 7,  0.200, '(3,7)'),
     (3, 11, 0.250, '(3,11)'),
 ]
@@ -98,7 +99,7 @@ def wire_over_ground_Z0(h, d, eps_eff):
     ratio = 2 * h / d
     if ratio <= 1:
         ratio = 1.01  # avoid domain error
-    return (60.0 / np.sqrt(eps_eff)) * np.arccosh(ratio)
+    return (float(Z_0) / (2 * np.pi) / np.sqrt(eps_eff)) * np.arccosh(ratio)
 
 
 def effective_permittivity(eps_medium, wire_dia, enamel_thickness, enamel_eps_r):
@@ -319,7 +320,7 @@ def main():
         fig = plt.figure(figsize=(22, 18))
         fig.patch.set_facecolor('#0a0a0a')
         gs = GridSpec(3, 2, figure=fig, hspace=0.38, wspace=0.28)
-        colors = ['#00ffcc', '#ff6b6b', '#ffd93d', '#6bcaff']
+        colors = ['#00ffcc', '#ff6b6b', '#ffd93d', '#6bcaff', '#c78dff']
 
         # ── Panel 1: S₁₁ response (Air) ──
         ax1 = fig.add_subplot(gs[0, 0])
@@ -459,8 +460,8 @@ def main():
 
         summary = (
             "HOPF-01 ELECTRICAL MODEL SUMMARY\n"
-            "─" * 38 + "\n\n"
-            f"Board:  120×120mm, 2L FR-4, 1.6mm\n"
+            + ("─" * 38) + "\n\n"
+            f"Board:  160×120mm, 2L FR-4, 1.6mm\n"
             f"Wire:   24 AWG enameled Cu (0.51mm)\n"
             f"Mount:  10mm nylon standoffs\n"
             f"Ground: B.Cu patches under SMA only\n\n"

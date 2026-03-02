@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 r"""
-HOPF-01: Manufacturing Tolerance Sensitivity Analysis
-=======================================================
+HOPF-01: Manufacturing Tolerance Sensitivity Analysis (Wire-Stitched)
+=======================================================================
 
 Monte Carlo sweep proving the chiral scaling law is distinguishable
-from manufacturing noise. Sweeps over:
-  1. ε_r variation  (FR-4 spec: 4.3 ± 0.05)
-  2. Trace width    (etching undercut: ±50 μm)
-  3. SMA feed noise (connector repeatability: ±200 kHz)
+from manufacturing noise in the wire-stitched form factor.
+
+Noise sources (wire-specific):
+  1. Wire length tolerance:  ±0.5 mm (hand threading through holes)
+  2. Wire height variance:   ±0.3 mm (sag between stitching holes)
+  3. SMA connector noise:    ±200 kHz (feed-point repeatability)
 
 Key output: manufacturing tolerance bands CANNOT reproduce the exact
 linear slope Δf ∝ α × pq/(p+q). Only AVE predicts the scaling law.
@@ -27,28 +29,45 @@ sys.path.append(str(project_root / "src"))
 from ave.core.constants import C_0, ALPHA
 
 # ══════════════════════════════════════════════════════════════
-# Baseline parameters (identical to hopf_01_s11_sweep.py)
+# Wire-in-Air Parameters (consistent with hopf_01_impedance_model.py)
 # ══════════════════════════════════════════════════════════════
-EPS_R_NOM = 4.3        # FR-4 nominal ε_r
-EPS_R_SIGMA = 0.05     # ε_r tolerance (±1σ)
-TRACE_W_NOM = 1.0e-3   # 1 mm trace width
-TRACE_W_SIGMA = 50e-6  # ±50 μm etching undercut
-SMA_SIGMA_HZ = 200e3   # ±200 kHz SMA repeatability noise
-N_MONTE_CARLO = 5000   # Trials per knot
 
-# Torus knot catalog: (p, q, trace_length_m, label)
+# Wire (24 AWG enameled magnet wire)
+WIRE_DIA = 0.51e-3           # m
+ENAMEL_THICKNESS = 30e-6     # m
+ENAMEL_EPS_R = 3.5           # polyurethane
+EPS_R_AIR = 1.0006           # air at STP
+
+# Effective permittivity (air + enamel correction)
+def effective_permittivity(eps_medium):
+    f_enamel = 2 * ENAMEL_THICKNESS / WIRE_DIA
+    return eps_medium * (1 + f_enamel * (ENAMEL_EPS_R / eps_medium - 1))
+
+EPS_EFF_NOM = effective_permittivity(EPS_R_AIR)
+
+# Noise sources — wire-stitched form factor
+WIRE_LENGTH_SIGMA = 0.5e-3   # ±0.5 mm (hand threading)
+WIRE_HEIGHT_SIGMA = 0.3e-3   # ±0.3 mm (sag between holes)
+SMA_SIGMA_HZ = 200e3         # ±200 kHz SMA repeatability
+N_MONTE_CARLO = 5000         # Trials per knot
+
+# Wire height affects ε_eff slightly via field distribution
+WIRE_HEIGHT_NOM = 1.86e-3    # m (PCB_THICKNESS + WIRE_RADIUS)
+
+# Updated trace lengths — wire-stitched (matches chapter)
 KNOTS = [
-    (2, 3,  0.060, r'$(2,3)$ Trefoil'),
-    (2, 5,  0.090, r'$(2,5)$ Cinquefoil'),
-    (3, 7,  0.120, r'$(3,7)$'),
-    (3, 11, 0.150, r'$(3,11)$'),
+    (2, 3,  0.120, r'$(2,3)$ Trefoil'),
+    (2, 5,  0.160, r'$(2,5)$ Cinquefoil'),
+    (3, 5,  0.170, r'$(3,5)$'),
+    (3, 7,  0.200, r'$(3,7)$'),
+    (3, 11, 0.250, r'$(3,11)$'),
 ]
 
 
-def f_resonance(eps_r, L_trace, chiral_factor=0.0):
-    """Resonant frequency for a torus knot antenna."""
-    n_eff = np.sqrt(eps_r) * (1 + chiral_factor)
-    return float(C_0) / (2 * np.pi * L_trace * n_eff)
+def f_resonance(eps_eff, L_wire, chiral_factor=0.0):
+    """Half-wave open-ended resonator frequency: f = c / (2L√ε_eff(1+χ))."""
+    n_eff = np.sqrt(eps_eff) * (1 + chiral_factor)
+    return float(C_0) / (2 * L_wire * n_eff)
 
 
 def chiral_factor(p, q):
@@ -63,38 +82,36 @@ def run_monte_carlo():
 
     results = {}
 
-    for p, q, L_trace, label in KNOTS:
+    for p, q, L_wire, label in KNOTS:
         chi = chiral_factor(p, q)
         pq_ppq = p * q / (p + q)
 
         # Nominal values
-        f_std_nom = f_resonance(EPS_R_NOM, L_trace, 0.0)
-        f_ave_nom = f_resonance(EPS_R_NOM, L_trace, chi)
+        f_std_nom = f_resonance(EPS_EFF_NOM, L_wire, 0.0)
+        f_ave_nom = f_resonance(EPS_EFF_NOM, L_wire, chi)
         df_nom = f_std_nom - f_ave_nom
 
-        # Monte Carlo: perturb manufacturing parameters
-        eps_r_samples = rng.normal(EPS_R_NOM, EPS_R_SIGMA, N_MONTE_CARLO)
-        trace_w_samples = rng.normal(TRACE_W_NOM, TRACE_W_SIGMA, N_MONTE_CARLO)
-        sma_noise = rng.normal(0, SMA_SIGMA_HZ, N_MONTE_CARLO)
+        # Monte Carlo: perturb wire-specific parameters
+        # Wire length varies ±0.5mm (hand threading uncertainty)
+        L_samples = rng.normal(L_wire, WIRE_LENGTH_SIGMA, N_MONTE_CARLO)
 
-        # Trace length varies with width (wider trace = slightly shorter effective length)
-        # L_eff = L_trace × (1 + δw/w) approximately (microstrip dispersion)
-        L_eff_samples = L_trace * (1 + (trace_w_samples - TRACE_W_NOM) / TRACE_W_NOM * 0.1)
+        # Wire height varies ±0.3mm (sag between stitching holes)
+        # Height variation affects ε_eff slightly
+        height_samples = rng.normal(WIRE_HEIGHT_NOM, WIRE_HEIGHT_SIGMA, N_MONTE_CARLO)
+        # Small ε_eff correction: higher wire → slightly lower ε_eff
+        eps_samples = EPS_EFF_NOM * (WIRE_HEIGHT_NOM / height_samples)**0.15
+
+        # SMA connector feed-point noise
+        sma_noise = rng.normal(0, SMA_SIGMA_HZ, N_MONTE_CARLO)
 
         # Measured frequencies with all noise sources
         f_std_mc = np.array([f_resonance(e, L, 0.0) for e, L in
-                            zip(eps_r_samples, L_eff_samples)]) + sma_noise
+                            zip(eps_samples, L_samples)]) + sma_noise
         f_ave_mc = np.array([f_resonance(e, L, chi) for e, L in
-                            zip(eps_r_samples, L_eff_samples)]) + sma_noise
+                            zip(eps_samples, L_samples)]) + sma_noise
 
         # The SHIFT is what we measure (difference kills common-mode noise)
         df_mc = f_std_mc - f_ave_mc
-
-        # But in practice, we measure f_measured - f_HFSS.
-        # The manufacturing noise affects BOTH equally via ε_r and L,
-        # so the DIFFERENCE Δf is immune to common-mode noise.
-        # Only the SMA noise appears in the difference (√2 × σ_SMA).
-        df_noise_only = rng.normal(0, SMA_SIGMA_HZ * np.sqrt(2), N_MONTE_CARLO)
 
         results[label] = {
             'p': p, 'q': q,
@@ -103,7 +120,6 @@ def run_monte_carlo():
             'f_ave_nom': f_ave_nom,
             'df_nom': df_nom,
             'df_mc': df_mc,
-            'df_noise': df_noise_only,
             'df_frac_nom': df_nom / f_std_nom,
             'chi': chi,
         }
@@ -113,11 +129,13 @@ def run_monte_carlo():
 
 def main():
     print("=" * 80)
-    print("  HOPF-01: Manufacturing Tolerance Sensitivity Analysis")
+    print("  HOPF-01: Wire-Stitched Manufacturing Tolerance Sensitivity Analysis")
     print("=" * 80)
+    print(f"\n  Physical model: wire-in-air (free-space resonator)")
+    print(f"  ε_eff = {EPS_EFF_NOM:.4f}  (air + enamel)")
     print(f"\n  Monte Carlo trials per knot: {N_MONTE_CARLO}")
-    print(f"  ε_r = {EPS_R_NOM} ± {EPS_R_SIGMA}")
-    print(f"  Trace width = {TRACE_W_NOM*1e3:.1f} ± {TRACE_W_SIGMA*1e6:.0f} μm")
+    print(f"  Wire length tolerance: ±{WIRE_LENGTH_SIGMA*1e3:.1f} mm")
+    print(f"  Wire height tolerance: ±{WIRE_HEIGHT_SIGMA*1e3:.1f} mm")
     print(f"  SMA noise = ±{SMA_SIGMA_HZ/1e3:.0f} kHz")
 
     results = run_monte_carlo()
@@ -125,9 +143,11 @@ def main():
     # ── Print summary ──
     print(f"\n  {'Knot':<16} {'pq/(p+q)':>10} {'Δf_nom':>10} {'σ_Δf':>10} {'SNR':>8}")
     print(f"  {'─'*16} {'─'*10} {'─'*10} {'─'*10} {'─'*8}")
+    snrs = []
     for label, r in results.items():
         sigma = np.std(r['df_mc'])
         snr = abs(r['df_nom']) / sigma
+        snrs.append(snr)
         print(f"  {label:<16} {r['pq_ppq']:>10.4f} "
               f"{r['df_nom']/1e6:>8.2f}MHz {sigma/1e3:>8.1f}kHz {snr:>8.0f}σ")
 
@@ -142,16 +162,14 @@ def main():
         fig.patch.set_facecolor('#0a0a0a')
         gs = GridSpec(2, 2, figure=fig, hspace=0.32, wspace=0.28)
 
-        colors = ['#00ffcc', '#ff6b6b', '#ffd93d', '#6bcaff']
+        colors = ['#00ffcc', '#ff6b6b', '#ffd93d', '#6bcaff', '#c78dff']
         alpha_val = float(ALPHA)
 
         # ── Panel 1: Chiral shift vs manufacturing noise ──
         ax1 = fig.add_subplot(gs[0, 0])
         ax1.set_facecolor('#111111')
 
-        labels_list = list(results.keys())
         for i, (label, r) in enumerate(results.items()):
-            # Box plot of Monte Carlo Δf distribution
             bp = ax1.boxplot([r['df_mc'] / 1e6], positions=[r['pq_ppq']],
                             widths=0.08, patch_artist=True,
                             boxprops=dict(facecolor=colors[i], alpha=0.3, edgecolor=colors[i]),
@@ -162,8 +180,6 @@ def main():
 
         # Overlay the exact AVE prediction line
         pq_x = np.linspace(0, 3, 100)
-        # Δf = f_std × α × pq/(p+q), but f_std varies per knot.
-        # Use average f_std for the trend line
         avg_f_std = np.mean([r['f_std_nom'] for r in results.values()])
         ax1.plot(pq_x, avg_f_std * alpha_val * pq_x / 1e6,
                  color='white', lw=2, linestyle='--', alpha=0.5,
@@ -171,7 +187,8 @@ def main():
 
         ax1.set_xlabel(r'$pq/(p+q)$  [topological winding parameter]', color='white', fontsize=11)
         ax1.set_ylabel(r'$\Delta f$ (MHz)', color='white', fontsize=11)
-        ax1.set_title('Chiral Shift Distribution\n(5000 Monte Carlo Trials)',
+        ax1.set_title('Chiral Shift Distribution (Wire-Stitched)\n'
+                      f'({N_MONTE_CARLO} Monte Carlo Trials)',
                       color='white', fontsize=13, fontweight='bold')
         ax1.legend(fontsize=9, facecolor='#1a1a1a', edgecolor='#333', labelcolor='white')
         ax1.tick_params(colors='white')
@@ -183,13 +200,11 @@ def main():
         ax2 = fig.add_subplot(gs[0, 1])
         ax2.set_facecolor('#111111')
 
-        snrs = []
-        pq_vals = []
+        snr_vals = []
         for i, (label, r) in enumerate(results.items()):
             sigma = np.std(r['df_mc'])
             snr = abs(r['df_nom']) / sigma
-            snrs.append(snr)
-            pq_vals.append(r['pq_ppq'])
+            snr_vals.append(snr)
             ax2.bar(i, snr, color=colors[i], alpha=0.8, edgecolor='white', lw=1.5)
             ax2.text(i, snr + 5, f'{snr:.0f}σ', ha='center', va='bottom',
                      color=colors[i], fontsize=14, fontweight='bold')
@@ -197,11 +212,11 @@ def main():
         ax2.axhline(5, color='#ff3366', lw=2, linestyle='--',
                     label='5σ Discovery Threshold')
         ax2.set_xticks(range(len(results)))
-        ax2.set_xticklabels([r['p'] for r in []], rotation=0)
         ax2.set_xticklabels([f"({r['p']},{r['q']})" for r in results.values()],
                            color='white')
         ax2.set_ylabel('Signal-to-Noise Ratio (σ)', color='white', fontsize=11)
-        ax2.set_title('Detection Confidence\n(Chiral Signal vs Manufacturing Noise)',
+        ax2.set_title('Detection Confidence (Wire-Stitched)\n'
+                      '(Chiral Signal vs Manufacturing Noise)',
                       color='white', fontsize=13, fontweight='bold')
         ax2.legend(fontsize=10, facecolor='#1a1a1a', edgecolor='#333', labelcolor='white')
         ax2.tick_params(colors='white')
@@ -209,26 +224,29 @@ def main():
         for spine in ax2.spines.values():
             spine.set_color('#333')
 
-        # ── Panel 3: ε_r sensitivity — common-mode rejection ──
+        # ── Panel 3: Wire height sensitivity — common-mode rejection ──
         ax3 = fig.add_subplot(gs[1, 0])
         ax3.set_facecolor('#111111')
 
-        eps_r_sweep = np.linspace(EPS_R_NOM - 3 * EPS_R_SIGMA,
-                                  EPS_R_NOM + 3 * EPS_R_SIGMA, 200)
+        height_sweep = np.linspace(WIRE_HEIGHT_NOM - 3 * WIRE_HEIGHT_SIGMA,
+                                   WIRE_HEIGHT_NOM + 3 * WIRE_HEIGHT_SIGMA, 200)
+        eps_sweep = EPS_EFF_NOM * (WIRE_HEIGHT_NOM / height_sweep)**0.15
+
         for i, (label, r) in enumerate(results.items()):
             chi = r['chi']
             L = KNOTS[i][2]
-            f_std_sweep = np.array([f_resonance(e, L, 0.0) for e in eps_r_sweep])
-            f_ave_sweep = np.array([f_resonance(e, L, chi) for e in eps_r_sweep])
+            f_std_sweep = np.array([f_resonance(e, L, 0.0) for e in eps_sweep])
+            f_ave_sweep = np.array([f_resonance(e, L, chi) for e in eps_sweep])
             df_sweep = (f_std_sweep - f_ave_sweep) / 1e6
-            ax3.plot(eps_r_sweep, df_sweep, color=colors[i], lw=2, label=label)
+            ax3.plot(height_sweep * 1e3, df_sweep, color=colors[i], lw=2, label=label)
 
-        ax3.axvspan(EPS_R_NOM - EPS_R_SIGMA, EPS_R_NOM + EPS_R_SIGMA,
-                    alpha=0.1, color='white', label=r'$\varepsilon_r$ spec ($\pm 1\sigma$)')
-        ax3.set_xlabel(r'$\varepsilon_r$ (FR-4 permittivity)', color='white', fontsize=11)
+        ax3.axvspan((WIRE_HEIGHT_NOM - WIRE_HEIGHT_SIGMA) * 1e3,
+                    (WIRE_HEIGHT_NOM + WIRE_HEIGHT_SIGMA) * 1e3,
+                    alpha=0.1, color='white', label=r'Height ($\pm 1\sigma$)')
+        ax3.set_xlabel('Wire Height Above Ground (mm)', color='white', fontsize=11)
         ax3.set_ylabel(r'$\Delta f$ (MHz)', color='white', fontsize=11)
-        ax3.set_title(r'$\varepsilon_r$ Sensitivity: Common-Mode Rejection' + '\n'
-                      r'(Shift is CONSTANT — $\varepsilon_r$ cancels in Δf)',
+        ax3.set_title('Wire Height Sensitivity: Common-Mode Rejection\n'
+                      r'(Shift is CONSTANT — height cancels in Δf)',
                       color='white', fontsize=13, fontweight='bold')
         ax3.legend(fontsize=9, facecolor='#1a1a1a', edgecolor='#333', labelcolor='white')
         ax3.tick_params(colors='white')
@@ -244,9 +262,10 @@ def main():
         insight_text = (
             "KEY FALSIFICATION INSIGHT\n"
             "─────────────────────────────────────\n\n"
-            "Manufacturing noise (ε_r, trace width,\n"
-            "SMA repeatability) affects ALL antennas\n"
-            "IDENTICALLY (common-mode).\n\n"
+            "Wire-stitched manufacturing noise\n"
+            "(wire length, wire sag, height, SMA)\n"
+            "affects ALL antennas IDENTICALLY\n"
+            "(common-mode).\n\n"
             "The CHIRAL SHIFT (Δf) is immune to\n"
             "common-mode noise because it depends\n"
             "ONLY on α × pq/(p+q).\n\n"
@@ -254,7 +273,7 @@ def main():
             "• If Δf/f = CONSTANT across knots → artifact\n"
             "• If Δf/f ∝ pq/(p+q) → topological coupling\n"
             "• If Δf/f = 0 → AVE falsified\n\n"
-            f"Minimum SNR across all knots: {min(snrs):.0f}σ\n"
+            f"Minimum SNR across all knots: {min(snr_vals):.0f}σ\n"
             f"All knots exceed 5σ discovery threshold ✅"
         )
 
