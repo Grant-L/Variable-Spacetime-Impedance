@@ -115,6 +115,35 @@ ALPHA_S: float = ALPHA ** (3.0 / 7.0)           # ≈ 0.1214
 # (computed from G via G = ℏc / (7ξ m_e²))
 XI_MACHIAN: float = HBAR * C_0 / (7.0 * G * M_E**2)
 
+# =============================================================================
+# DERIVED ELECTROWEAK CONSTANTS (from Axiom 1 + Poisson ratio)
+# =============================================================================
+
+# On-shell weak mixing angle from Poisson ratio: sin²θ_W = 1 - 7/9 = 2/9
+SIN2_THETA_W: float = 2.0 / 9.0                 # ≈ 0.2222 (PDG: 0.2230, Δ=0.35%)
+
+# W boson mass from unknot self-energy at saturation:
+# M_W = m_e / (α² × p_c × √(3/7))
+M_W_MEV: float = (M_E * C_0**2 / (e_charge * 1e6)) / (ALPHA**2 * P_C * np.sqrt(3.0/7.0))
+
+# Z boson mass from weak mixing: M_Z = M_W × 3/√7
+M_Z_MEV: float = M_W_MEV * 3.0 / np.sqrt(7.0)
+
+# Tree-level Fermi constant: G_F = √2 πα / (2 sin²θ_W M_W²)
+G_F: float = np.sqrt(2.0) * pi * ALPHA / (2.0 * SIN2_THETA_W * (M_W_MEV * 1e-3)**2)
+
+# Higgs VEV: v = 1/√(√2 G_F)
+HIGGS_VEV_MEV: float = 1.0 / np.sqrt(np.sqrt(2.0) * G_F) * 1e3  # MeV
+
+# Higgs boson mass: m_H = v / √N_K4 = v/2
+# The Higgs is the radial breathing mode of the K4 unit cell.
+# λ = 1/(2 N_K4) = 1/8 (quartic stiffness shared across 4 nodes)
+# m_H = √(2λ) × v = v/√N_K4 = v/2
+# PDG: 125,100 MeV.  AVE: ≈124,417 MeV (0.55% error).
+N_K4: int = 4                                    # Nodes per K4 unit cell
+LAMBDA_HIGGS: float = 1.0 / (2.0 * N_K4)        # = 1/8 = 0.125
+M_HIGGS_MEV: float = HIGGS_VEV_MEV / np.sqrt(N_K4)  # = v/2
+
 # Asymptotic Hubble constant  H∞ = 28π m_e³ c G / (ℏ² α²)
 H_INFINITY: float = (28.0 * pi * M_E**3 * C_0 * G) / (HBAR**2 * ALPHA**2)
 
