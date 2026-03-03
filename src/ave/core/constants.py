@@ -104,6 +104,13 @@ ISOTROPIC_PROJECTION: float = 1.0 / 7.0
 # Poisson ratio of the vacuum  ν_vac = 2/7
 NU_VAC: float = 2.0 / 7.0
 
+# Strong coupling constant  α_s = α^(3/7)
+# EM coupling α operates on the full 7-mode compliance manifold.
+# Strong coupling is α projected onto the 3D spatial subspace:
+# 3 spatial dimensions / 7 compliance modes (from ν_vac = 2/7).
+# PDG value: 0.1179 ± 0.0010.  AVE: 0.1214 (2.97% error).
+ALPHA_S: float = ALPHA ** (3.0 / 7.0)           # ≈ 0.1214
+
 # Machian hierarchy coupling  ξ_M = 4π(R_H/ℓ_node)α⁻²
 # (computed from G via G = ℏc / (7ξ m_e²))
 XI_MACHIAN: float = HBAR * C_0 / (7.0 * G * M_E**2)
