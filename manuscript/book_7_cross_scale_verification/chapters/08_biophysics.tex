@@ -1,0 +1,38 @@
+% 08_biophysics.tex
+% Ch.8: Protein backbone impedance
+
+\chapter{Biophysics: Protein Folding}
+\label{ch:biophysics}
+
+\section{Protein Backbone: From Proton Radius to Folding}
+\label{sec:protein_bridge}
+
+The protein $S_{11}$ folding engine uses the C$\alpha$--C$\alpha$
+virtual bond distance $d_0 \approx 3.80$~\AA\ as its fundamental
+length scale.  This traces back to the AVE axioms via:
+\begin{equation}
+    d_p = \frac{4\hbar}{m_p c} \approx 0.841\;\text{fm}
+    \;\xrightarrow{\text{nuclear bond}}
+    r_{\text{cov}}
+    \;\xrightarrow{\text{backbone}}
+    d_0 \approx 3.80\;\text{\AA}
+\end{equation}
+The ratio $d_0 / a_0 \approx 7.18$ (where $a_0 = \ell_{\text{node}}
+/\alpha$ is the Bohr radius) suggests a geometric origin in the
+peptide repeat unit.  The amino acid impedance table $Z_{\text{topo}}$
+assigns complex impedances (R + jX) to each of the 20 residues,
+with $Q_{\text{backbone}} \approx 7$ suppressing reactive coupling.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{protein_backbone_impedance.pdf}
+    \caption{Protein backbone impedance from AVE axioms.
+    \textbf{Left:} Full derivation chain from $\ell_{node}$ to
+    the C$\alpha$--C$\alpha$ peptide bond length $d_0 = 3.80$~\AA.
+    \textbf{Centre:} Amino acid impedance spectrum --- hydrophobic
+    (gold), positive/inductive (blue), negative/capacitive (red).
+    \textbf{Right:} Local inter-residue reflection coefficient
+    $\Gamma$ along a sample peptide sequence; high $|\Gamma|$
+    indicates folding-driving impedance mismatch.}
+    \label{fig:protein_backbone}
+\end{figure}

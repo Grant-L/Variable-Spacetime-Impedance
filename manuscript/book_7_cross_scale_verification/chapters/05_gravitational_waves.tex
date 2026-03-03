@@ -1,0 +1,117 @@
+% 05_gravitational_waves.tex
+% Ch.5: GW propagation + GW detection as impedance antenna
+
+\chapter{Gravitational Waves}
+\label{ch:gravitational_waves}
+
+\section{GW Propagation as Impedance Modulation}
+\label{sec:gw_propagation}
+
+Gravitational waves are transverse inductive shear waves in the LC
+lattice --- the same medium governed by the same operators.  The
+Schwarzschild metric maps directly to a radial impedance profile:
+\begin{align}
+    \varepsilon_{eff}(r) &= \frac{\varepsilon_0}{1 - r_s/r}
+    \quad\longrightarrow\quad \varepsilon \to \infty \text{ at horizon}
+    \label{eq:eps_schwarzschild} \\
+    \mu_{eff}(r) &= \mu_0 \cdot (1 - r_s/r)
+    \quad\longrightarrow\quad \mu \to 0 \text{ at horizon}
+    \label{eq:mu_schwarzschild}
+\end{align}
+where $r_s = 2GM/c^2$.  The gravitational impedance is therefore:
+\begin{equation}
+    Z(r) = \sqrt{\mu_{eff}/\varepsilon_{eff}}
+         = Z_0 \cdot (1 - r_s/r)
+    \label{eq:Z_grav}
+\end{equation}
+and the reflection coefficient at the horizon is:
+\begin{equation}
+    \Gamma(r \to r_s) = \frac{Z(r) - Z_0}{Z(r) + Z_0} \to -1
+    \quad\text{(total reflection)}
+\end{equation}
+This is the SAME $\Gamma \to -1$ that governs Pauli exclusion
+(particle confinement), plasma cutoff ($\omega < \omega_p$),
+and the Meissner effect ($B < B_c$).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{gw_schwarzschild_impedance.pdf}
+    \caption{Schwarzschild impedance profile for a 30$\,M_\odot$ black hole,
+    computed from the physics engine module \texttt{gw\_propagation.py}.
+    \textbf{Top left:} Permittivity diverges ($\varepsilon \to \infty$)
+    and permeability vanishes ($\mu \to 0$) at the horizon.
+    \textbf{Top right:} Impedance $Z(r)/Z_0$ drops to zero.
+    \textbf{Bottom left:} Reflection coefficient $\Gamma \to -1$
+    (total reflection --- the event horizon IS the impedance boundary).
+    \textbf{Bottom right:} Refractive index $n > 1$ near the mass
+    (gravitational lensing = dielectric refraction).}
+    \label{fig:gw_schwarzschild}
+\end{figure}
+
+\subsection{Lossless Propagation}
+
+LIGO gravitational waves have strain
+$h \sim 10^{-21}$.  The equivalent voltage per lattice cell is
+$V_{GW} = h \cdot c \cdot \ell_{\text{node}} \cdot 2\pi f
+\sim 10^{-19}\;\text{V}$, which is $\sim 10^{-24}$ times smaller than
+$V_{\text{snap}} \approx 511\;\text{kV}$.  Far below the saturation
+threshold, the lattice acts as a perfect lossless linear transmission
+line.  Gravitational waves propagate to cosmological distances without
+dissipation --- matching LIGO observations exactly, with zero free
+parameters.
+
+\subsection{Black Hole Echoes}
+
+Because the event horizon is
+$\Gamma = -1$ (not absorption), post-merger GW energy reflected
+between the photon sphere and the horizon produces
+\textit{echoes} with delay $\Delta t \approx r_s \ln(r_{ph}/(r_{ph}
+- r_s)) / c$.  For a 30$\,M_\odot$ remnant, this predicts $\Delta t
+\sim 0.01$--$0.1\;\text{s}$, consistent with the tentative detections
+reported by Abedi et al.\ (2017).
+
+\section{GW Detection: The Impedance Antenna}
+\label{sec:gw_detection}
+
+A gravitational wave detector is an impedance antenna.  LIGO's 4~km
+Fabry--P\'erot arms form resonant cavities in the LC vacuum, where
+each light bounce amplifies the GW-induced impedance modulation.
+The passing GW strain $h$ perturbs the local vacuum impedance:
+\begin{equation}
+    \delta Z = Z_0 \cdot h
+\end{equation}
+The accumulated phase shift after $N$ bounces is:
+\begin{equation}
+    \Delta\phi = \frac{2\pi f_{GW}}{c} \cdot L \cdot N \cdot h
+\end{equation}
+For LIGO ($L=4$~km, $N=280$, $h=10^{-21}$, $f=100$~Hz),
+$\Delta\phi \approx 2.3 \times 10^{-21}$~rad --- resolved via
+homodyne readout against 750~kW circulating laser power.
+
+The strain sensitivity is bounded by two quantum noise sources:
+shot noise (phase) and radiation pressure (amplitude), whose
+geometric mean is the Standard Quantum Limit:
+\begin{equation}
+    h_{SQL}(f) = \sqrt{h_{shot}^2 + h_{RP}^2}
+\end{equation}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{gw_detector_sensitivity.pdf}
+    \caption{\textbf{Left:} Strain sensitivity curves for LIGO (4~km),
+    LISA (2.5~Gm), and Einstein Telescope (10~km), modeled as
+    impedance antennas. GW150914 ($h\sim10^{-21}$) is marked.
+    \textbf{Right:} LIGO noise budget decomposition: shot noise
+    dominates at high frequency, radiation pressure at low frequency,
+    with the SQL minimum determining peak sensitivity.}
+    \label{fig:gw_detector}
+\end{figure}
+
+\noindent
+The lattice voltage ratio for LIGO GW is:
+\begin{equation}
+    \frac{V_{GW}}{V_{\text{snap}}} \approx 1.4 \times 10^{-28}
+\end{equation}
+Twenty-eight orders of magnitude below saturation.  The vacuum is
+a \textit{perfect} lossless transmission line for gravitational waves,
+exactly as observed.

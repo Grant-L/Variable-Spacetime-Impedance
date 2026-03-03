@@ -1,0 +1,61 @@
+% 06_condensed_matter.tex
+% Ch.6: Superconductivity as dual saturation
+
+\chapter{Condensed Matter: Superconductivity}
+\label{ch:condensed_matter}
+
+\section{Superconductivity as Dual Saturation}
+\label{sec:superconductivity_duality}
+
+The most striking confirmation of scale invariance is the
+\textit{duality} between plasma physics and superconductivity.
+Both are instances of the \textit{same} saturation operator acting
+on complementary sectors of the impedance:
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{lll}
+\toprule
+\textbf{Property} & \textbf{Plasma ($\varepsilon$-sector)} & \textbf{Superconductor ($\mu$-sector)} \\
+\midrule
+What saturates      & $\varepsilon_{eff} \to 0$ (capacitor shorts)
+                    & $\mu_{eff} \to 0$ (inductor shorts) \\
+Saturation argument & $S(E \cdot \ell / V_{snap})$
+                    & $S(B / B_c)$ \\
+Field expelled      & E-field (Debye screening)
+                    & B-field (Meissner effect) \\
+Penetration depth   & Skin depth $\delta = c/\omega_p$
+                    & London depth $\lambda_L = \sqrt{m^*/\mu_0 n_s e^2}$ \\
+Boundary reflection & $\Gamma \to -1$ for $\omega < \omega_p$
+                    & $\Gamma \to -1$ for $B < B_c$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{BCS Critical Field = Saturation Factor}
+
+\textbf{Key identity:} The BCS thermodynamic critical field
+\begin{equation}
+    B_c(T) = B_{c0} \cdot \sqrt{1 - \left(\frac{T}{T_c}\right)^{\!2}}
+    \label{eq:bcs_saturation}
+\end{equation}
+is \textit{literally} \texttt{saturation\_factor(T, T\_c)}.  The
+superconducting phase transition is the thermal-sector instance of
+Axiom~4 dielectric saturation.  The physics engine implements this
+via \texttt{superconductor.critical\_field(T, T\_c, B\_c0)}, which
+calls the same universal function used for particle confinement,
+FDTD, plasma cutoff, and galactic rotation.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{superconductor_meissner.pdf}
+    \caption{\textbf{Left:} Critical field $B_c(T)$ for Pb, Nb, Al,
+    Sn --- all follow $B_c = B_{c0}\sqrt{1-(T/T_c)^2}$ (Axiom~4).
+    \textbf{Centre:} Meissner reflection coefficient
+    $\Gamma(T)$ at $B/B_c = 0.5$.
+    \textbf{Right:} The $\varepsilon$--$\mu$ duality: plasma and
+    superconductor saturation curves are\textemdash by construction%
+    \textemdash the \emph{same} function of $V/V_c$ and $B/B_c$.}
+    \label{fig:superconductor}
+\end{figure}
