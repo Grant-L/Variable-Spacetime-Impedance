@@ -144,6 +144,18 @@ N_K4: int = 4                                    # Nodes per K4 unit cell
 LAMBDA_HIGGS: float = 1.0 / (2.0 * N_K4)        # = 1/8 = 0.125
 M_HIGGS_MEV: float = HIGGS_VEV_MEV / np.sqrt(N_K4)  # = v/2
 
+# CONJECTURE: Cabibbo angle — sin(θ_C) = sin²θ_W = 2/9?
+# Numerical match: PDG 0.22535 vs 2/9 = 0.2222 (1.39% error).
+# Physical hypothesis: intergenerational mixing uses the same lattice
+# projection as the EW symmetry breaking angle.  HOWEVER, this requires
+# proving that the overlap integral between (2,3) and (2,5) torus knot
+# wavefunctions equals the EW projection factor.  Until this integral
+# is computed from the lattice Hamiltonian, this remains CONJECTURE,
+# not a derivation.
+# Status: UNVERIFIED — listed for investigation, not for prediction table.
+SIN_THETA_C: float = SIN2_THETA_W                 # = 2/9 ≈ 0.2222
+THETA_CABIBBO: float = np.arcsin(SIN_THETA_C)     # ≈ 12.84° (PDG: 13.04°)
+
 # Asymptotic Hubble constant  H∞ = 28π m_e³ c G / (ℏ² α²)
 H_INFINITY: float = (28.0 * pi * M_E**3 * C_0 * G) / (HBAR**2 * ALPHA**2)
 
