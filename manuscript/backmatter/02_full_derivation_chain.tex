@@ -1060,6 +1060,50 @@ $a_{\text{gap}} = a_J \cdot (q/p)^{2/3}$.  All five major gaps
     \label{fig:solar_system}
 \end{figure}
 
+\subsection{Planetary Magnetospheres as Impedance Cavities}
+\label{sec:planetary_magnetosphere}
+
+Each planet's magnetic dipole field creates a magnetopause:
+the boundary where magnetic pressure balances solar wind
+dynamic pressure.  In impedance terms:
+\begin{equation}
+    \frac{B^2(r_{mp})}{2\mu_0} = \frac{1}{2}\rho_{sw} v_{sw}^2
+    \quad\longrightarrow\quad
+    r_{mp} = R_p \left(\frac{B_{eq}^2}{2\mu_0 P_{sw}}\right)^{1/6}
+    \label{eq:magnetopause}
+\end{equation}
+The reflection coefficient $\Gamma$ at the magnetopause is computed
+using the same \texttt{reflection\_coefficient()} function as all
+other domains.
+
+\paragraph{The Uranus Anomaly.}
+Uranus is unique: its magnetic dipole is tilted $59^\circ$ from
+the rotation axis and offset by 0.31~$R_U$ from center.  This
+creates a highly asymmetric, time-varying impedance cavity whose
+magnetopause standoff varies from 14.9 to 20.8~$R_U$ as the
+planet rotates (asymmetry ratio 1.40$\times$).  No other planet
+in the solar system exhibits this behaviour --- all others have
+$< 12^\circ$ tilt except Neptune ($47^\circ$, 0.55~$R_N$ offset).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{planetary_magnetospheres.pdf}
+    \caption{Planetary magnetospheres as impedance cavities.
+    \textbf{Top left:} Uranus magnetopause cross-section showing
+    the 59$^\circ$ tilted dipole, 0.31~$R_U$ offset, solar wind
+    dynamic pressure $P_{sw}$ (orange arrows), and outward
+    magnetic pressure $B^2/2\mu_0$ (green arrows).
+    \textbf{Top right:} Reflection coefficient $\Gamma$ vs
+    magnetic longitude --- the asymmetric profile oscillates
+    with rotation.
+    \textbf{Bottom left:} Magnetopause standoff comparison for
+    all five planets (predicted vs observed).
+    \textbf{Bottom right:} Dipole anomaly map --- Uranus and
+    Neptune occupy the anomalous zone ($> 45^\circ$ tilt,
+    $> 0.25\,R_p$ offset).}
+    \label{fig:magnetospheres}
+\end{figure}
+
 \subsection{Superconductivity as Dual Saturation}
 \label{sec:superconductivity_duality}
 
