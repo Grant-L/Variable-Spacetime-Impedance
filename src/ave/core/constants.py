@@ -179,6 +179,32 @@ V_US: float = LAMBDA_CKM                               # = 2/9 ≈ 0.2222
 V_CB: float = A_CKM * LAMBDA_CKM**2                    # = 4√7/(9³) ≈ 0.0436
 V_UB: float = A_CKM * LAMBDA_CKM**3 * RHO_ETA_MAG     # = 8/2187 ≈ 0.00366
 
+# =============================================================================
+# PMNS MATRIX (Neutrino Mixing from Torsional Defects)
+# =============================================================================
+#
+# DERIVATION: Torsional overlap and the Poisson ratio.
+#
+# Neutrinos are torsional defects bound to crossing numbers c_1=5,
+# c_2=7, c_3=9. The PMNS matrix describes the overlap between these
+# torsional states. Unlike CKM which projects topologically through 
+# the weak angular sectors (2/9), PMNS resolves through the baseline
+# vacuum compliance manifold (ν = 2/7) and the tribimaximal base.
+#
+# Primary mixing scale: The product of the boundary crossing numbers
+# (c_1=5, c_3=9) defines the fundamental torsional phase space: 1/(5×9) = 1/45.
+#
+# PMNS angles (all within 1.0% of NuFIT 5.2 PDG values):
+#   sin²θ_13 = 1/(c₁c₃)       = 1/45    = 0.02222  (obs: 0.02200, 1.0%)
+#   sin²θ_12 = ν_vac + 1/45   = 139/450 = 0.30794  (obs: 0.307,   0.3%)
+#   sin²θ_23 = 1/2 + 2/45     = 49/90   = 0.54444  (obs: 0.546,   0.3%)
+#   δ_CP     = (1+1/3+1/45)π  = 61π/45  = 1.3556π  (obs: 1.36π,   0.3%)
+
+SIN2_THETA_13: float = 1.0 / 45.0                      # = 0.02222
+SIN2_THETA_12: float = NU_VAC + SIN2_THETA_13          # = 139/450 ≈ 0.308
+SIN2_THETA_23: float = 0.5 + 2.0 * SIN2_THETA_13       # = 49/90 ≈ 0.544
+DELTA_CP_PMNS: float = (1.0 + 1.0/3.0 + 1.0/45.0) * pi # = 61π/45 ≈ 1.356π
+
 # Asymptotic Hubble constant  H∞ = 28π m_e³ c G / (ℏ² α²)
 H_INFINITY: float = (28.0 * pi * M_E**3 * C_0 * G) / (HBAR**2 * ALPHA**2)
 
