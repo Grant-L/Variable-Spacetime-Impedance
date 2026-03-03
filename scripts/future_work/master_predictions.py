@@ -19,7 +19,7 @@ import numpy as np
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 
-from ave.core.constants import C_0, EPSILON_0, MU_0, ALPHA, Z_0, V_SNAP, G
+from ave.core.constants import C_0, EPSILON_0, MU_0, ALPHA, Z_0, V_SNAP, G, BARYON_LADDER
 
 
 def main():
@@ -76,16 +76,14 @@ def main():
                         'PDG 2024', 'M_Z = (3/√7)·M_W'))
 
     # ━━━ 7. Proton mass (torus knot (2,5), c=5) ━━━
-    # From Faddeev-Skyrme with cinquefoil confinement: 941 MeV (0.34%)
-    # This is the solved eigenvalue, not a simple formula
-    mp_ave = 941.0  # MeV (from Faddeev-Skyrme solver, Ch. 6)
+    mp_ave = BARYON_LADDER[5]['mass_mev']
     mp_exp = 938.272  # MeV
     predictions.append(('Proton mass (MeV)',
                         mp_ave, mp_exp,
                         'PDG 2024', 'Torus knot (2,5), Faddeev-Skyrme'))
 
     # ━━━ 8. Δ(1232) mass (torus knot (2,7), c=7) ━━━
-    delta_ave = 1275.0  # MeV (from same solver, Ch. 6)
+    delta_ave = BARYON_LADDER[7]['mass_mev']
     delta_exp = 1232.0  # MeV
     predictions.append(('Δ(1232) mass (MeV)',
                         delta_ave, delta_exp,
@@ -113,20 +111,27 @@ def main():
                         'Eddington + modern', '4GM/(bc²) optical metric'))
 
     # ━━━ 11. Δ(1620) mass (torus knot (2,9), c=9) ━━━
-    d1620_ave = 1617.0  # MeV (from solver)
+    d1620_ave = BARYON_LADDER[9]['mass_mev']
     d1620_exp = 1620.0
     predictions.append(('Δ(1620) mass (MeV)',
                         d1620_ave, d1620_exp,
                         'PDG 2024', 'Torus knot (2,9)'))
 
     # ━━━ 12. Δ(1950) mass (torus knot (2,11), c=11) ━━━
-    d1950_ave = 1962.0
+    d1950_ave = BARYON_LADDER[11]['mass_mev']
     d1950_exp = 1950.0
     predictions.append(('Δ(1950) mass (MeV)',
                         d1950_ave, d1950_exp,
                         'PDG 2024', 'Torus knot (2,11)'))
 
-    # ━━━ 13. Fermi constant G_F ━━━
+    # ━━━ 13. N(2250) mass (torus knot (2,13), c=13) ━━━
+    n2250_ave = BARYON_LADDER[13]['mass_mev']
+    n2250_exp = 2250.0
+    predictions.append(('N(2250) mass (MeV)',
+                        n2250_ave, n2250_exp,
+                        'PDG 2024', 'Torus knot (2,13)'))
+
+    # ━━━ 14. Fermi constant G_F ━━━
     # G_F = √2 π α / (2 sin²θ_W M_W²)
     gf_ave = np.sqrt(2) * np.pi * alpha / (2 * sw2_ave * (mw_ave * 1e-3)**2)  # GeV⁻²
     gf_exp = 1.1663788e-5  # GeV⁻² (PDG)
@@ -163,12 +168,13 @@ def main():
     within_5 = sum(1 for _, a, e, _, _ in predictions if abs(a-e)/abs(e)*100 < 5)
     within_10 = sum(1 for _, a, e, _, _ in predictions if abs(a-e)/abs(e)*100 < 10)
 
-    print(f"\n  Summary: {within_1}/13 within 1%")
-    print(f"           {within_5}/13 within 5%")
-    print(f"           {within_10}/13 within 10%")
+    n_pred = len(predictions)
+    print(f"\n  Summary: {within_1}/{n_pred} within 1%")
+    print(f"           {within_5}/{n_pred} within 5%")
+    print(f"           {within_10}/{n_pred} within 10%")
     print(f"           0 adjustable parameters used")
     print(f"\n  Input axioms:  #1-2 (consistency checks)")
-    print(f"  Output predictions: #3-13 (genuine, falsifiable)")
+    print(f"  Output predictions: #3-{n_pred} (genuine, falsifiable)")
     print(f"  Strongest: g-2 (0.15%), proton mass (0.34%), Δ(1620) (0.20%)")
 
 

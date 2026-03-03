@@ -56,21 +56,18 @@ Z_SEP_CROSSING = PCB_THICKNESS + WIRE_DIA  # ~2.1mm conservative
 # Effective coupling length at each crossing (~2 wire diameters)
 COUPLING_LENGTH = 3e-3  # 3mm (one stitching-hole spacing)
 
-# Knot catalog with KNOWN crossing counts (from PCB generator output)
+# Knot catalog with crossing counts from analytic formula:
+# c(p,q) = min(p(q-1), q(p-1))
 KNOTS = [
-    (2, 3,  0.120, '(2,3) Trefoil',     3),
-    (2, 5,  0.160, '(2,5) Cinquefoil',  4),
-    (3, 5,  0.170, '(3,5)',              10),
-    (3, 7,  0.200, '(3,7)',              14),
-    (3, 11, 0.250, '(3,11)',             22),
+    (2, 3,  0.120, '(2,3) Trefoil',     3),   # min(2×2, 3×1) = 3
+    (2, 5,  0.160, '(2,5) Cinquefoil',  5),   # min(2×4, 5×1) = 5
+    (3, 5,  0.170, '(3,5)',              10),  # min(3×4, 5×2) = 10
+    (3, 7,  0.200, '(3,7)',              14),  # min(3×6, 7×2) = 14
+    (3, 11, 0.250, '(3,11)',             22),  # min(3×10,11×2) = 22
 ]
 
 # Theoretical minimum crossing number for (p,q) torus knot:
 # c(p,q) = min(p(q-1), q(p-1))
-# (2,3): min(2×2, 3×1) = 3
-# (2,5): min(2×4, 5×1) = 5  (generator found 4 — undercounted slightly)
-# (3,7): min(3×6, 7×2) = 14
-# (3,11): min(3×10, 11×2) = 22
 
 # ══════════════════════════════════════════════════════════════
 # Classical Coupling at a Single Crossing

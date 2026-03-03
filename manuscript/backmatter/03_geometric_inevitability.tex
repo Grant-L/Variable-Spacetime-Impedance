@@ -114,6 +114,117 @@ $14$ & Fe-56 & FCC-14                 & 186.5 & 0.0001\%   \\
 
 This progression is not a fit. It is the unique sequence of minimum-impedance packing solutions for increasing numbers of mutually repulsive resonant nodes on a sphere. Each geometry is forced by the topology; the engine simply identifies which Platonic or Archimedean solid satisfies the impedance matching condition.
 
+\section{Derived Numerical Constants}
+\label{sec:derived_numerology}
+
+Beyond the classical ``magic numbers'' of nuclear physics, the AVE
+framework derives several numerical constants that govern phenomena
+across vastly different scales.  Each is a ratio, product, or
+geometric projection of two or more independently derived quantities.
+None is fitted; all emerge from the axioms.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+\small
+\begin{tabular}{l l l l}
+\toprule
+\textbf{Constant} & \textbf{Formula} & \textbf{Value} & \textbf{Physical Meaning} \\
+\midrule
+$\delta_{th}$ & $\dfrac{1}{28\pi}
+    = \dfrac{\nu_{vac}}{\kappa_{cold}}$
+    & 0.01137
+    & Thermal softening fraction \\[6pt]
+$K_{mut}$ & $\dfrac{5\pi}{2}\cdot\dfrac{\alpha\hbar c}{1-\alpha/3}$
+    & 11.34 MeV$\cdot$fm
+    & Nuclear mutual inductance \\[6pt]
+$d_p$ & $\dfrac{4\hbar}{m_p c}$
+    & 0.841 fm
+    & Proton charge radius \\[6pt]
+$a_0$ & $\dfrac{c \cdot H_\infty}{2\pi}$
+    & $1.07\times10^{-10}$ m/s$^2$
+    & MOND acceleration scale \\[6pt]
+$V_{halo}$ & Skew-line integral of Borromean link
+    & 2.0
+    & Toroidal crossing volume \\[6pt]
+\midrule
+\multicolumn{4}{c}{\textit{New: from cross-scale gap closure}} \\[4pt]
+$V_{GW}/V_{snap}$ & $\dfrac{h \cdot c \cdot \ell_{node} \cdot 2\pi f}{V_{snap}}$
+    & $1.42\times10^{-28}$
+    & GW linearity ratio ($h=10^{-21}$) \\[6pt]
+$\Gamma_{tach}$ & $\dfrac{Z_{rad} - Z_{conv}}{Z_{rad} + Z_{conv}}$
+    & 0.818 $\approx$ 9/11
+    & Tachocline reflection \\[6pt]
+$r_s(\odot)$ & $\dfrac{2GM_\odot}{c^2}$
+    & 2954 m
+    & Solar Schwarzschild radius \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Thermal Softening ($\delta_{th} = 1/(28\pi)$)}
+
+The proton's core temperature $\sim m_p c^2 / k_B \approx 10^{13}$~K
+softens the quartic Skyrme repulsion by partially averaging out the
+gradient tensor.  The softening fraction is the ratio of the
+lattice's compliance ($\nu_{vac} = 2/7$, the Poisson ratio) to its
+Skyrme stiffness ($\kappa_{cold} = 8\pi$, the Faddeev--Skyrme coupling):
+\begin{equation}
+    \delta_{th} = \frac{\nu_{vac}}{\kappa_{cold}}
+    = \frac{2/7}{8\pi} = \frac{1}{28\pi} \approx 0.01137
+\end{equation}
+Both $\nu_{vac}$ and $\kappa_{cold}$ are pure geometric constants
+derived independently.
+
+\subsection{Nuclear Mutual Inductance ($K_{mut}$)}
+
+The pairwise binding between nucleons is governed by:
+\begin{equation}
+    K_{mut} = \frac{5\pi}{2} \cdot \frac{\alpha \hbar c}{1 - \alpha/3}
+    \approx 11.337\;\text{MeV}\cdot\text{fm}
+\end{equation}
+The factor $5\pi/2$ arises from five crossings of the proton's
+$(2,5)$ cinquefoil knot, each contributing a $\pi/2$ phase advance
+to the flux-linkage integral.  The $(1 - \alpha/3)^{-1}$ correction
+is the first-order proximity enhancement at nuclear separations,
+analogous to a transformer vertex correction.
+
+\subsection{Proton Charge Radius ($d_p = 4\hbar/(m_p c)$)}
+
+The proton charge radius is four times the proton reduced Compton
+wavelength --- the RMS vibration amplitude of the centre-of-mass
+standing wave confined within the saturated ($0\,\Omega$) cavity
+boundary of one lattice cell:
+\begin{equation}
+    d_p = 4 \cdot \frac{\hbar}{m_p \, c} \approx 0.841\;\text{fm}
+\end{equation}
+
+\subsection{MOND Acceleration Scale ($a_0 = c H_\infty / (2\pi)$)}
+
+The cosmological acceleration below which galactic rotation curves
+flatten is derived from the asymptotic Hubble parameter:
+\begin{equation}
+    a_0 = \frac{c \cdot H_\infty}{2\pi}
+    \approx 1.07 \times 10^{-10}\;\text{m/s}^2
+\end{equation}
+where $H_\infty = 28\pi m_e^3 c G / (\hbar^2 \alpha^2)$ (see
+Eq.~\ref{eq:H_infinity}).  At this scale, the vacuum lattice's
+mutual inductance begins to saturate, and the Axiom~4 saturation
+term produces flat rotation curves identical to the Deep MOND
+asymptote $g_{eff} \to \sqrt{g_N \cdot a_0}$ (see
+\S\ref{sec:galactic_saturation}).
+
+\subsection{Toroidal Halo Volume ($V_{halo} = 2$)}
+
+The geometric volume of the 3D orthogonal tensor crossings of the
+Borromean link is computed analytically from the signed intersection
+integral of three great circles on $S^2$:
+\begin{equation}
+    V_{halo} = 2.0
+\end{equation}
+This is a purely topological constant; it sets the fraction of
+the Skyrme soliton's energy that resides in the inter-braid halo
+rather than the core.
+
 \section{Conclusion: The Death of Numerology}
 
 The Golden Ratio is the icosahedron. The Fibonacci sequence is an icosahedral approximation algorithm. $\pi$ is Gauss's law. The magic numbers are geometric shell closures.

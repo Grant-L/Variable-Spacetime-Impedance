@@ -108,6 +108,90 @@ Each torus knot is generated from the 3D parametric equations $x(t) = (R + r\cos
     \label{fig:hopf_01_knot_traces}
 \end{figure}
 
+\section{Standard Model Baseline Response}
+
+Before any experimental measurement, we require a quantitative classical prediction. What resonant frequencies, quality factors, and return loss does standard Maxwell electrodynamics predict for each wire-stitched knot? The answer establishes the baseline from which any AVE anomaly must be measured.
+
+\subsection{Model Hierarchy}
+
+The SM baseline is constructed in four layers, each representing a distinct classical electromagnetic effect:
+
+\begin{enumerate}
+    \item \textbf{Layer 1 --- Dipole self-impedance.} The primary resonance arises from the standing-wave mode of an end-fed thin-wire resonator. Using the King--Middleton EMF method (Balanis, \S8.4), the center-fed input impedance is
+    \begin{align}
+        R_{in} &= \frac{\eta}{2\pi}\!\left[C_E + \ln(kL) - \mathrm{Ci}(kL) + \tfrac{1}{2}\sin(kL)\bigl(\mathrm{Si}(2kL) - 2\mathrm{Si}(kL)\bigr) \right. \nonumber \\
+        &\qquad\quad \left. + \tfrac{1}{2}\cos(kL)\bigl(C_E + \ln(kL/2) + \mathrm{Ci}(2kL) - 2\mathrm{Ci}(kL)\bigr)\right] \\
+        X_{in} &= \frac{\eta}{4\pi}\!\left[2\mathrm{Si}(kL) + \cos(kL)\bigl(2\mathrm{Si}(kL) - \mathrm{Si}(2kL)\bigr) \right. \nonumber \\
+        &\qquad\quad \left. - \sin(kL)\bigl(2\mathrm{Ci}(kL) - \mathrm{Ci}(2kL) - \mathrm{Ci}(2ka^2/L)\bigr)\right]
+    \end{align}
+    where $\eta = Z_0/\sqrt{\varepsilon_{eff}}$ is the wave impedance in the dielectric, $k = 2\pi f\sqrt{\varepsilon_{eff}}/c$, $C_E \approx 0.5772$ is Euler's constant, $\mathrm{Si}$ and $\mathrm{Ci}$ are the sine and cosine integrals, and $a$ is the wire radius. For end-fed excitation (SMA at wire start), the standing-wave current node at the end transforms the impedance by a factor $1/\sin^2(kL/2)$.
+
+    \item \textbf{Layer 2 --- Skin-effect ohmic loss.} At $\sim$1~GHz, the copper skin depth is $\delta \approx 2\;\mu\text{m}$. The AC resistance per unit length is $R_{ac} = 1/(\sigma_{Cu} \cdot A_{skin})$, where $A_{skin} = \pi(a^2 - (a-\delta)^2)$. This adds a real impedance $R_{loss} = R_{ac} \cdot L_{wire}$ that broadens the resonance.
+
+    \item \textbf{Layer 3 --- Curvature effective-length correction.} The exact 3D torus knot geometry is generated from $x(t) = (R + r\cos qt)\cos pt$, scaled to the physical wire length. The RMS curvature $\kappa_{rms}$ produces an effective-length correction $L_{eff} = L(1 + a^2\kappa_{rms}^2/4)$. This effect is negligible: $<0.03\%$ for all five knots.
+
+    \item \textbf{Layer 4 --- Crossing mutual coupling.} At each crossing, standard Neumann mutual inductance couples the two wire segments:
+    \begin{equation}
+        M_{cross} = \frac{\mu_0 \ell}{2\pi}\ln\!\left(\frac{\ell}{d_{sep}}\right) \cdot \cos\theta
+        \label{eq:m_cross}
+    \end{equation}
+    where $\ell \approx 3$~mm is the coupling length (one hole spacing), $d_{sep} \approx 2.1$~mm is the z-separation (PCB thickness + wire diameter), and $\theta$ is the crossing angle. For torus knots, the average crossing angle is $\sim$70$^\circ$ ($\cos\theta \approx 0.34$), which strongly suppresses the mutual inductance. The fractional frequency perturbation is
+    \begin{equation}
+        \frac{\Delta f}{f}\bigg|_{cross} \approx -\frac{1}{2}\frac{\sum_i M_i}{L_{self}}
+    \end{equation}
+    where $L_{self} = (\mu_0 L/2\pi)[\ln(2L/a) - 1]$ is the wire self-inductance.
+\end{enumerate}
+
+\subsection{SM Baseline Predictions}
+
+Table~\ref{tab:sm_baseline} summarizes the full SM prediction for each antenna in air ($\varepsilon_{eff} = 1.295$). The resonant frequency $f_{SM}$ is the dipole resonance frequency including curvature correction; the crossing coupling perturbation is reported separately as a diagnostic.
+
+\begin{table}[ht]
+\centering
+\caption{Standard Model baseline predictions (air). $f_{SM}$ is the dipole resonance frequency; $\Delta_{cx}$ is the classical crossing coupling perturbation; $Q$ is the quality factor; S$_{11,min}$ is the minimum return loss.}
+\label{tab:sm_baseline}
+\begin{tabular}{|l|c|c|c|c|c|c|}
+\hline
+Antenna & $pq/(p{+}q)$ & $f_{SM}$ (GHz) & S$_{11}$ (dB) & $Q$ & $\Delta_{cx}$ (ppm) & $Z_{in}$ ($\Omega$) \\ \hline
+$(2,3)$ Trefoil    & 1.200 & 1.047 & $-24.0$ & 63 & $-767$  & $57 - 1j$ \\
+$(2,5)$ Cinquefoil & 1.429 & 0.787 & $-23.4$ & 64 & $-914$  & $57 - 1j$ \\
+$(3,5)$            & 1.875 & 0.740 & $-23.3$ & 63 & $-1703$ & $57 - 2j$ \\
+$(3,7)$            & 2.100 & 0.630 & $-23.0$ & 64 & $-1975$ & $57 - 2j$ \\
+$(3,11)$           & 2.357 & 0.505 & $-22.6$ & 64 & $-2397$ & $58 - 2j$ \\
+CONTROL            & 0.000 & 1.047 & $-24.0$ & 63 & $0$     & $57 - 1j$ \\ \hline
+\end{tabular}
+\end{table}
+
+
+\subsection{SM vs.\ AVE Prediction Comparison}
+
+The critical question:\ how does the SM baseline differ from the AVE prediction? Table~\ref{tab:sm_vs_ave} compares the two models directly. The AVE chiral correction shifts each resonant frequency by $f_{AVE} = f_{SM}/(1 + \alpha \cdot pq/(p+q))$.
+
+\begin{table}[ht]
+\centering
+\caption{SM baseline vs.\ AVE prediction. The crossing coupling perturbation ($\Delta_{cx}$) is the SM ``background noise''; the AVE signal is the predicted chiral shift. SNR = AVE signal / classical crossing noise.}
+\label{tab:sm_vs_ave}
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+Knot & $f_{SM}$ (GHz) & $f_{AVE}$ (GHz) & $\Delta$(SM$\to$AVE) & AVE (ppm) & SNR \\ \hline
+$(2,3)$  & 1.047 & 1.038 & $9.1$~MHz  &  8{,}681 & $11\times$ \\
+$(2,5)$  & 0.787 & 0.778 & $8.1$~MHz  & 10{,}317 & $11\times$ \\
+$(3,5)$  & 0.740 & 0.730 & $10.0$~MHz & 13{,}498 & $8\times$  \\
+$(3,7)$  & 0.630 & 0.621 & $9.5$~MHz  & 15{,}093 & $8\times$  \\
+$(3,11)$ & 0.505 & 0.496 & $8.5$~MHz  & 16{,}910 & $7\times$  \\
+CONTROL  & 1.047 & 1.047 & $0.0$~MHz  &        0 & ---        \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent The AVE chiral signal (8.1--10.0~MHz shift) exceeds the classical crossing coupling noise by $7$--$11\times$ across all knots. Crucially, the two effects have different functional dependences: the AVE shift scales as $pq/(p+q)$ (sublinear, topological invariant) while the classical coupling scales as $N_{cross}/L_{self}$ (superlinear, geometry-dependent). The zero-topology control antenna provides a direct null test.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1.0\textwidth]{hopf_01_sm_baseline.png}
+    \caption{\textbf{Standard Model Baseline:} SM electromagnetic response for all HOPF-01 antennas computed via the dipole self-impedance + crossing coupling model. Top left: S$_{11}$(f) in air. Top right: S$_{11}$(f) in mineral oil. Middle left: SM vs.\ AVE predicted resonant frequencies. Middle right: classical crossing coupling vs.\ AVE signal magnitude. Bottom left: input impedance Re($Z_{in}$). All curves are pure classical Maxwell --- no AVE corrections applied.}
+    \label{fig:hopf_01_sm_baseline}
+\end{figure}
+
 \section{Manufacturing Tolerance Rejection}
 
 A critical concern is whether the predicted chiral shift could be mimicked by manufacturing tolerances. A Monte Carlo analysis with $N = 5{,}000$ trials per knot sweeps over the noise sources specific to the wire-stitched form factor:
@@ -161,15 +245,15 @@ LiteVNA-64 (50~kHz -- 6.3~GHz, incl.\ cal kit)                  & 1     & \$100 
 
 Before claiming an AVE anomaly, we must address an obvious classical confound: at each wire crossing, standard Maxwell electrodynamics predicts parasitic mutual inductance and capacitance between the two wire segments. These crossings shift the resonant frequency by an amount that depends on the number of crossings, which correlates with knot complexity.
 
-The crossing numbers for the five HOPF-01 knots are 3, 4, 10, 14, and 22 respectively (from the minimum crossing number formula $c(p,q) = \min\bigl(p(q{-}1),\; q(p{-}1)\bigr)$). The key question is: does this classical coupling have the \textit{same functional form} as the AVE prediction?
+The crossing numbers for the five HOPF-01 knots are 3, 5, 10, 14, and 22 respectively (from the minimum crossing number formula $c(p,q) = \min\bigl(p(q{-}1),\; q(p{-}1)\bigr)$). The key question is: does this classical coupling have the \textit{same functional form} as the AVE prediction?
 
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|}
 \hline
 Knot & $pq/(p{+}q)$ & $N_{cross}$ & AVE (norm) & Classical (norm) \\ \hline
 $(2,3)$  & 1.200 & 3  & 1.00 & 1.00 \\
-$(2,5)$  & 1.429 & 4  & 1.19 & 1.05 \\
-$(3,5)$  & 1.875 & 10 & 1.56 & 2.55 \\
+$(2,5)$  & 1.429 & 5  & 1.19 & 1.31 \\
+$(3,5)$  & 1.875 & 10 & 1.56 & 2.49 \\
 $(3,7)$  & 2.100 & 14 & 1.74 & 3.04 \\
 $(3,11)$ & 2.357 & 22 & 1.95 & 3.96 \\ \hline
 \end{tabular}
@@ -189,6 +273,44 @@ Additionally, a \textbf{zero-topology control antenna} provides a direct test: a
     \item Zero chiral shift $\rightarrow$ the effect is topological (supports AVE)
     \item Nonzero shift $\rightarrow$ the effect is from crossings (classical artifact)
 \end{itemize}
+\subsection{Additional Discriminating Observables}
+
+Beyond the primary resonant frequency shift, several independent observables provide further separation between the SM and AVE predictions. Each test is falsifiable and requires no additional hardware beyond the HOPF-01 board and VNA.
+
+\begin{enumerate}
+    \item \textbf{Harmonic structure.} The SM predicts harmonics at the usual series $f_n = n \cdot c/(2L\sqrt{\varepsilon_{eff}})$. If the AVE chiral coupling is a bulk refractive index modification (Eq.~\ref{eq:n_ave}), then \textit{all} harmonics must shift by the same fractional $\Delta f/f = \alpha \cdot pq/(p+q)$. Classical crossing coupling, by contrast, produces frequency-dependent perturbations (mutual impedance scales as $\omega M$), so the fractional shift would differ at each harmonic. Measuring the first three harmonics per knot provides an independent consistency check.
+
+    \item \textbf{Quality factor vs.\ topology.} The SM predicts that $Q$ depends only on ohmic loss and radiation resistance---both geometry-dependent but topology-independent for wires of the same length. The AVE prediction does not add a dissipative term (chiral coupling modifies the \textit{real} part of $n$, not the imaginary part), so $Q$ should be unchanged. If the measured $Q$ systematically varies with $pq/(p+q)$, it would indicate an unmodeled parasitic effect, not chiral coupling.
+
+    \item \textbf{Temperature stability.} Both SM and AVE predictions are temperature-independent: $\mu_0$, $\alpha$, and $pq/(p+q)$ do not change with temperature. However, if the observed shift were due to \textit{thermoelectric} artifacts (Seebeck voltages at SMA--wire junctions, thermal expansion of wire length), then it would vary with ambient temperature. Repeating the measurement at 5$^\circ$C and 35$^\circ$C brackets the thermal noise floor.
+
+    \item \textbf{Enantiomeric handedness.} A $(p,q)$ torus knot can be threaded in two mirror-image configurations (left-handed and right-handed). Standard Maxwell coupling is parity-invariant: both enantiomers produce identical $M$ and $C$ at each crossing. The AVE chiral coupling, however, derives from the \textit{signed} winding number and could in principle produce a handedness-dependent shift. Threading two trefoils of opposite handedness on the same board tests this directly.
+
+    \item \textbf{Wire length scaling.} Building the same $(2,3)$ trefoil topology at two different physical lengths (e.g., 120~mm and 240~mm, by doubling the hole spacing) provides a powerful test. The crossing number is fixed by topology ($N_{cross} = 3$ for both), but $L_{self}$ doubles. The SM crossing perturbation scales as $M/L_{self}$, so it \textit{halves}. The AVE prediction $\Delta f/f = \alpha \cdot pq/(p+q)$ is length-independent. This separates geometric from topological effects.
+
+    \item \textbf{Radiation pattern polarization.} A torus knot antenna is intrinsically chiral: its radiation pattern has a circularly polarized component whose handedness matches the knot. The SM predicts this polarization from the wire geometry alone. The AVE framework predicts no additional polarization modification (the chiral coupling is scalar, not vectorial). Measuring the axial ratio with a reference horn provides an orthogonal test of the underlying physics.
+\end{enumerate}
+
+Table~\ref{tab:discriminators} summarizes the predicted behavior of each observable under both models.
+
+\begin{table}[ht]
+\centering
+\caption{Predicted behavior of discriminating observables under SM and AVE models. ``Same'' indicates the observable does not distinguish the models; ``Different'' indicates a falsifiable difference.}
+\label{tab:discriminators}
+\begin{tabular}{|l|c|c|c|}
+\hline
+Observable & SM prediction & AVE prediction & Discriminating? \\ \hline
+$\Delta f/f$ at harmonics     & frequency-dependent         & constant (same ppm)         & \textbf{Yes} \\
+$Q$ vs.\ topology              & topology-independent        & topology-independent        & No (null test)  \\
+Temperature dependence         & none                        & none                        & No (null test)  \\
+Enantiomeric shift             & identical                   & potentially different       & \textbf{Yes}$^*$ \\
+Wire length scaling            & $\propto 1/L$               & constant                    & \textbf{Yes} \\
+Radiation polarization         & geometry-determined         & geometry-determined          & No (null test)  \\ \hline
+\multicolumn{4}{l}{\footnotesize $^*$Depends on whether chiral coupling has a signed or unsigned winding number.}
+\end{tabular}
+\end{table}
+
+\noindent The null tests (items 2, 3, 6) are valuable because they constrain the \textit{absence} of systematic errors. If $Q$ varies with topology or the shift changes with temperature, the measurement is contaminated regardless of whether AVE is correct. The positive discriminators (items 1, 4, 5) provide independent falsification tests that can be performed with the existing HOPF-01 hardware.
 
 \section{Decision Gate}
 

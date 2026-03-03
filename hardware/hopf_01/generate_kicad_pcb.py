@@ -703,7 +703,7 @@ def main():
     gy0 = gnd_inset
     gx1 = BOARD_W - gnd_inset
     gy1 = BOARD_H - gnd_inset
-    gnd_trace_w = 0.5  # mm
+    gnd_trace_w = 2.0  # mm (wide enough for low-inductance ground return)
 
     # Perimeter rectangle on F.Cu
     for (sx, sy, ex, ey) in [

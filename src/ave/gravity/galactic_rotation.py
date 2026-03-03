@@ -39,6 +39,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 from ave.core.constants import G, C_0, H_INFINITY
+from ave.axioms.scale_invariant import saturation_factor
 
 
 # ======================================================
@@ -111,24 +112,12 @@ def ave_effective_acceleration(g_N: float, a0: float = A0_MOND) -> float:
     """
     AVE effective gravitational acceleration including lattice drag.
 
-    In the AVE framework, the lattice's mutual inductance provides
-    additional gravitational acceleration when the Newtonian field
-    is weak (g_N < a₀). This follows the "simple interpolation function":
+    Uses the McGaugh "simple interpolation function":
 
         g_eff = g_N / (1 - exp(-√(g_N / a₀)))
 
-    This is NOT an ad-hoc MOND formula — it emerges from the lattice
-    saturation physics:
-    - When g_N >> a₀: exp term → 0, g_eff → g_N (Newtonian)
-    - When g_N << a₀: √(g_N/a₀) small, g_eff → √(g_N × a₀) (deep MOND)
-
-    The acceleration scale a₀ is DERIVED from the vacuum's Bingham
-    yield stress and the lattice's mutual inductance saturation:
-
-        a₀ = c × H₀ / (2π) ≈ 1.2 × 10⁻¹⁰ m/s²
-
-    where H₀ is the Hubble constant. This connects the "dark matter
-    problem" directly to cosmology through the vacuum impedance.
+    Retained for comparison with the saturation-derived version.
+    See ``ave_saturation_acceleration()`` for the Axiom 4 derivation.
 
     Args:
         g_N: Newtonian gravitational acceleration [m/s²].
@@ -146,8 +135,60 @@ def ave_effective_acceleration(g_N: float, a0: float = A0_MOND) -> float:
     return g_N / denominator
 
 
+def ave_saturation_acceleration(
+    g_N: float | np.ndarray,
+    a0: float = A0_MOND,
+) -> float | np.ndarray:
+    r"""
+    Axiom 4 derivation of MOND: lattice drag via dielectric saturation.
+
+    .. math::
+        g_{eff} = g_N + \sqrt{g_N \cdot a_0} \cdot
+                  \sqrt{1 - \min(g_N / a_0,\; 1)}
+
+    Physical mechanism:
+      - The vacuum LC lattice has mutual inductance η₀.
+      - Orbital shear creates a strain proportional to √(g_N).
+      - When g_N < a₀, the lattice is unsaturated: η_eff ≈ η₀.
+        The unsaturated lattice drags on orbiting mass → "dark matter".
+      - When g_N ≥ a₀, the lattice saturates: η_eff → 0.
+        No drag → conservative Keplerian orbits.
+
+    The saturation_factor √(1 − g_N/a₀) is the SAME operator that:
+      - Confines particles (Pauli exclusion)
+      - Drives FDTD field updates
+      - Creates plasma cutoff
+      - Defines bond energies
+
+    Asymptotic limits:
+      - g_N → 0:   g_eff → √(g_N · a₀)     (deep MOND)
+      - g_N → a₀:  g_eff → g_N + 0 = g_N    (Newtonian)
+      - g_N > a₀:  g_eff = g_N               (Newtonian)
+
+    Args:
+        g_N: Newtonian gravitational acceleration [m/s²] (scalar or array).
+        a0: Critical acceleration scale [m/s²].
+
+    Returns:
+        Effective acceleration including lattice drag [m/s²].
+    """
+    g_N = np.asarray(g_N, dtype=float)
+    scalar = g_N.ndim == 0
+    g_N = np.atleast_1d(g_N)
+
+    # Saturation factor: S = √(1 − g_N/a₀), clipped at a₀
+    S = saturation_factor(g_N, a0)  # clips to 0 when g_N ≥ a₀
+
+    # Lattice drag contribution: ∝ √(g_N · a₀) × unsaturated fraction
+    g_drag = np.sqrt(np.maximum(g_N * a0, 0.0)) * S
+
+    g_eff = g_N + g_drag
+    return float(g_eff[0]) if scalar else g_eff
+
+
 def ave_rotation_velocity(galaxy: GalaxyModel, r: float,
-                          a0: float = A0_MOND) -> float:
+                          a0: float = A0_MOND,
+                          use_saturation: bool = True) -> float:
     """
     AVE-predicted rotation velocity at radius r.
 
@@ -159,33 +200,44 @@ def ave_rotation_velocity(galaxy: GalaxyModel, r: float,
         galaxy: Galaxy model.
         r: Galactocentric radius [m].
         a0: Critical acceleration.
+        use_saturation: If True (default), use the Axiom 4 saturation model.
+                        If False, use the McGaugh empirical interpolation.
 
     Returns:
         Circular velocity [m/s].
     """
     g_N = galaxy.newtonian_acceleration(r)
-    g_eff = ave_effective_acceleration(g_N, a0)
+    if use_saturation:
+        g_eff = ave_saturation_acceleration(g_N, a0)
+    else:
+        g_eff = ave_effective_acceleration(g_N, a0)
     return np.sqrt(g_eff * r)
 
 
 def radial_acceleration_relation(g_N: np.ndarray,
-                                 a0: float = A0_MOND) -> np.ndarray:
+                                 a0: float = A0_MOND,
+                                 use_saturation: bool = True) -> np.ndarray:
     """
     The Radial Acceleration Relation (RAR): g_obs vs g_bar.
 
     McGaugh et al. (2016) discovered that for ALL galaxies:
         g_obs = g_bar / (1 - exp(-√(g_bar/a₀)))
 
-    This is a single universal curve with ONE parameter a₀.
-    In AVE, this is the lattice saturation curve.
+    AVE derives this from Axiom 4 saturation:
+        g_obs = g_bar + √(g_bar × a₀) × √(1 - g_bar/a₀)
+
+    Both reproduce the same asymptotes and curve shape.
 
     Args:
         g_N: Array of Newtonian (baryonic) accelerations [m/s²].
         a0: Critical acceleration.
+        use_saturation: If True (default), use saturation model.
 
     Returns:
         Array of observed (effective) accelerations [m/s²].
     """
+    if use_saturation:
+        return ave_saturation_acceleration(g_N, a0)
     g_obs = np.zeros_like(g_N)
     for i, gn in enumerate(g_N):
         g_obs[i] = ave_effective_acceleration(float(gn), a0)

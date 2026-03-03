@@ -11,16 +11,32 @@ The saturation operator is strictly squared (n=2) to align with:
   - The χ⁽³⁾ displacement of the optical Kerr effect
   - Standard Born-Infeld non-linear electrodynamics
 
+All core saturation operations are implemented in
+``ave.axioms.scale_invariant`` — the SAME functions serve every scale.
+This module re-exports them with Axiom-4-specific defaults and adds
+the capacitance and energy-density formulas unique to this domain.
+
 Key functions:
   epsilon_eff(V, V_yield)  — Non-linear permittivity
   capacitance_eff(dphi, alpha) — Non-linear capacitance
   reflection_coefficient(Z_knot, Z_vac) — Transmission line Γ
   local_wave_speed(V, V_yield) — c_eff under saturation
   energy_density_nonlinear(dphi, alpha, eps0) — Full non-linear U
+  impedance_at_strain(V, V_yield) — Z_eff under saturation
 """
 
 import numpy as np
 from ave.core.constants import EPSILON_0, MU_0, C_0, ALPHA, V_SNAP, Z_0
+
+# Import the scale-invariant canonical implementations
+from ave.axioms.scale_invariant import (
+    saturation_factor as _saturation_factor,
+    epsilon_eff as _si_epsilon_eff,
+    mu_eff as _si_mu_eff,
+    reflection_coefficient as _si_reflection_coefficient,
+    local_wave_speed as _si_local_wave_speed,
+    impedance_at_strain as _si_impedance_at_strain,
+)
 
 
 def epsilon_eff(V: np.ndarray | float, V_yield: float = V_SNAP) -> np.ndarray | float:
@@ -32,6 +48,9 @@ def epsilon_eff(V: np.ndarray | float, V_yield: float = V_SNAP) -> np.ndarray | 
     As V → V_yield, ε_eff → 0 (impedance collapse).
     As V → 0, ε_eff → ε₀ (linear Maxwell recovery).
 
+    Delegates to ``ave.axioms.scale_invariant.epsilon_eff`` — the same
+    function that computes saturation at every other scale.
+
     Args:
         V: Local potential or strain amplitude (scalar or array).
         V_yield: Absolute dielectric yield limit (default: V_snap = m_e c²/e).
@@ -42,14 +61,7 @@ def epsilon_eff(V: np.ndarray | float, V_yield: float = V_SNAP) -> np.ndarray | 
     Raises:
         ValueError: If |V| > V_yield (physical rupture — the lattice has broken).
     """
-    ratio_sq = np.asarray(V, dtype=float)**2 / V_yield**2
-    if np.any(ratio_sq > 1.0):
-        raise ValueError(
-            f"Dielectric rupture: |V/V_yield| > 1.0. "
-            f"Max ratio² = {np.max(ratio_sq):.6f}. "
-            f"The lattice has structurally failed at this strain."
-        )
-    return EPSILON_0 * np.sqrt(1.0 - ratio_sq)
+    return _si_epsilon_eff(V, V_yield, EPSILON_0, clip=False)
 
 
 def capacitance_eff(
@@ -91,6 +103,10 @@ def reflection_coefficient(Z_knot: float, Z_vac: float = Z_0) -> float:
     This is the physical origin of the Pauli exclusion principle and
     particle confinement.
 
+    Delegates to ``ave.axioms.scale_invariant.reflection_coefficient`` —
+    the same operator that computes seismic Moho reflections, antenna S₁₁,
+    and every other impedance boundary in the framework.
+
     Args:
         Z_knot: Local impedance of the saturated region [Ω].
         Z_vac: Ambient vacuum impedance [Ω] (default: Z₀ ≈ 376.73 Ω).
@@ -98,7 +114,12 @@ def reflection_coefficient(Z_knot: float, Z_vac: float = Z_0) -> float:
     Returns:
         Reflection coefficient Γ ∈ [−1, +1].
     """
-    return (Z_knot - Z_vac) / (Z_knot + Z_vac)
+    # Note: scale_invariant convention is Γ = (Z2 - Z1) / (Z2 + Z1)
+    # saturation convention is Z_knot = incident, Z_vac = reference
+    # Γ = (Z_knot - Z_vac) / (Z_knot + Z_vac) = -(Z_vac - Z_knot)/(Z_vac + Z_knot)
+    # Using scale_invariant: _si_reflection_coefficient(Z_vac, Z_knot) gives
+    # (Z_knot - Z_vac)/(Z_vac + Z_knot) — same result!
+    return float(_si_reflection_coefficient(Z_vac, Z_knot))
 
 
 def local_wave_speed(
@@ -113,6 +134,8 @@ def local_wave_speed(
     Derived from c_eff = 1/√(μ₀ · ε_eff) where ε_eff = ε₀√(1-(V/V_yield)²).
     As V → V_yield, c_eff → 0 (wave packet freezes, forming mass).
 
+    Delegates to ``ave.axioms.scale_invariant.local_wave_speed``.
+
     Args:
         V: Local potential/strain amplitude.
         V_yield: Absolute yield limit.
@@ -120,9 +143,7 @@ def local_wave_speed(
     Returns:
         Local phase velocity [m/s].
     """
-    ratio_sq = np.asarray(V, dtype=float)**2 / V_yield**2
-    ratio_sq = np.clip(ratio_sq, 0.0, 1.0 - 1e-15)
-    return C_0 * (1.0 - ratio_sq)**0.25
+    return _si_local_wave_speed(V, V_yield, C_0, clip=True)
 
 
 def energy_density_nonlinear(
@@ -164,6 +185,8 @@ def impedance_at_strain(V: np.ndarray | float, V_yield: float = V_SNAP) -> np.nd
     point where the impedance formally diverges — however physically, the
     medium ruptures into a zero-impedance phase before reaching infinity.
 
+    Delegates to ``ave.axioms.scale_invariant.impedance_at_strain``.
+
     Args:
         V: Local potential/strain amplitude.
         V_yield: Absolute yield limit.
@@ -171,6 +194,4 @@ def impedance_at_strain(V: np.ndarray | float, V_yield: float = V_SNAP) -> np.nd
     Returns:
         Local impedance [Ω].
     """
-    ratio_sq = np.asarray(V, dtype=float)**2 / V_yield**2
-    ratio_sq = np.clip(ratio_sq, 0.0, 1.0 - 1e-15)
-    return Z_0 / (1.0 - ratio_sq)**0.25
+    return _si_impedance_at_strain(V, V_yield, Z_0, clip=True)

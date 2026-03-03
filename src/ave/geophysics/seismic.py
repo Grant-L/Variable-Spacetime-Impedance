@@ -36,6 +36,10 @@ import numpy as np
 from dataclasses import dataclass, field
 from typing import List
 
+from ave.axioms.scale_invariant import (
+    reflection_coefficient as _universal_gamma,
+)
+
 
 @dataclass
 class SeismicLayer:
@@ -120,7 +124,9 @@ def reflection_coefficient(layer1: SeismicLayer, layer2: SeismicLayer,
 
     Γ = (Z₂ - Z₁) / (Z₂ + Z₁)
 
-    For normal incidence. Positive Γ = reflected wave has same polarity.
+    Delegates to ``ave.axioms.scale_invariant.reflection_coefficient`` —
+    the same operator that computes Pauli exclusion, antenna S₁₁, and
+    every other impedance boundary in the framework.
 
     Args:
         layer1: Incident layer.
@@ -137,9 +143,7 @@ def reflection_coefficient(layer1: SeismicLayer, layer2: SeismicLayer,
         Z1 = layer1.acoustic_impedance_s
         Z2 = layer2.acoustic_impedance_s
 
-    if Z1 + Z2 == 0:
-        return 0.0
-    return (Z2 - Z1) / (Z2 + Z1)
+    return float(_universal_gamma(Z1, Z2))
 
 
 def transmission_coefficient(layer1: SeismicLayer, layer2: SeismicLayer,
@@ -147,7 +151,9 @@ def transmission_coefficient(layer1: SeismicLayer, layer2: SeismicLayer,
     """
     Compute the amplitude transmission coefficient at a boundary.
 
-    T = 2Z₁ / (Z₁ + Z₂)
+    T = 2Z₁ / (Z₁ + Z₂) = 1 + Γ
+
+    Delegates to the universal reflection coefficient.
 
     Args:
         layer1: Incident layer.

@@ -91,24 +91,25 @@ class TopologicalHamiltonian1D:
 
         return density
 
-    def solve_scalar_trace(self) -> float:
+    def solve_scalar_trace(self, crossing_number: int = CROSSING_NUMBER_CINQUEFOIL) -> float:
         """
         Minimizes the 1D topological Hamiltonian to find the absolute lowest
         energy stable profile of the fundamental defect.
 
-        The confinement bound r_opt ≤ κ/c₅ divides the total Faddeev-Skyrme
-        coupling by the cinquefoil crossing number (5), partitioning the
-        coupling equally among the five topological crossings through which
-        the proton's phase profile must wind.
+        The confinement bound r_opt ≤ κ/c divides the total Faddeev-Skyrme
+        coupling by the crossing number, partitioning the coupling equally
+        among the topological crossings through which the phase must wind.
 
-        The (2,5) cinquefoil is the next entry in the torus knot phase
-        winding ladder after the electron's c=3. See module docstring.
+        Args:
+            crossing_number: The number of topological crossings for the
+                (2,q) torus knot.  Default is 5 (proton cinquefoil).
+                The torus knot ladder uses odd q: 5, 7, 9, 11, 13, ...
 
         Returns:
             float: The integrated energy eigenvalue in dimensionless mass units.
         """
-        # Confinement bound from cinquefoil crossing number
-        r_opt_max = self.kappa / CROSSING_NUMBER_CINQUEFOIL
+        # Confinement bound from crossing number
+        r_opt_max = self.kappa / crossing_number
 
         def objective(params):
             r_opt, n = params
@@ -119,7 +120,7 @@ class TopologicalHamiltonian1D:
         # Initial guesses: optimal radius roughly 1.0, power profile n=2
         initial_guess = [1.0, 2.0]
 
-        # Bound the radius by the cinquefoil confinement, n > 0
+        # Bound the radius by the confinement, n > 0
         bounds = [(0.1, r_opt_max), (1.0, 4.0)]
 
         result = minimize(objective, initial_guess, bounds=bounds, method='L-BFGS-B')

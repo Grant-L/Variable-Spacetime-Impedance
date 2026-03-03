@@ -21,6 +21,7 @@ Includes 1st-order Mur Absorbing Boundary Conditions (ABCs).
 
 import numpy as np
 from ave.core.constants import C_0, MU_0, EPSILON_0, V_SNAP, B_SNAP
+from ave.axioms.scale_invariant import saturation_factor
 
 
 class FDTD3DEngine:
@@ -197,7 +198,7 @@ class FDTD3DEngine:
         else:
             eps_base = self.epsilon_0  # sub-grid slice, use vacuum
 
-        return eps_base * np.sqrt(1.0 - ratio_sq)
+        return eps_base * saturation_factor(V_local, self.v_yield)
 
     def _compute_local_mu(self, H_component: np.ndarray) -> np.ndarray:
         """
@@ -222,7 +223,7 @@ class FDTD3DEngine:
         else:
             mu_base = self.mu_0
 
-        return mu_base * np.sqrt(1.0 - ratio_sq)
+        return mu_base * saturation_factor(B_local, self.b_yield)
 
     def _compute_ce(self, E_component: np.ndarray) -> np.ndarray | float:
         """
@@ -384,8 +385,7 @@ class FDTD3DEngine:
             # Non-linear permittivity per cell
             E_mag = np.sqrt(E_sq)
             V_local = E_mag * self.dx
-            ratio_sq = np.clip((V_local / self.v_yield)**2, 0.0, 1.0 - 1e-12)
-            eps_local = self.epsilon_0 * np.sqrt(1.0 - ratio_sq)
+            eps_local = self.epsilon_0 * saturation_factor(V_local, self.v_yield)
             u_e = 0.5 * eps_local * E_sq
 
         if self.linear_only:
@@ -393,8 +393,7 @@ class FDTD3DEngine:
         else:
             H_mag = np.sqrt(H_sq)
             B_local = self.mu_0 * H_mag
-            mag_ratio_sq = np.clip((B_local / self.b_yield)**2, 0.0, 1.0 - 1e-12)
-            mu_local = self.mu_0 * np.sqrt(1.0 - mag_ratio_sq)
+            mu_local = self.mu_0 * saturation_factor(B_local, self.b_yield)
             u_m = 0.5 * mu_local * H_sq
 
         return float(np.sum((u_e + u_m) * self.dx**3))
@@ -415,8 +414,7 @@ class FDTD3DEngine:
         else:
             E_mag = np.sqrt(E_sq)
             V_local = E_mag * self.dx
-            ratio_sq = np.clip((V_local / self.v_yield)**2, 0.0, 1.0 - 1e-12)
-            eps_local = self.epsilon_0 * self.eps_r * np.sqrt(1.0 - ratio_sq)
+            eps_local = self.epsilon_0 * self.eps_r * saturation_factor(V_local, self.v_yield)
             u_e = 0.5 * eps_local * E_sq
 
         if self.linear_only:
@@ -424,8 +422,7 @@ class FDTD3DEngine:
         else:
             H_mag = np.sqrt(H_sq)
             B_local = self.mu_0 * H_mag
-            mag_ratio_sq = np.clip((B_local / self.b_yield)**2, 0.0, 1.0 - 1e-12)
-            mu_local = self.mu_0 * self.mu_r * np.sqrt(1.0 - mag_ratio_sq)
+            mu_local = self.mu_0 * self.mu_r * saturation_factor(B_local, self.b_yield)
             u_m = 0.5 * mu_local * H_sq
 
         return u_e + u_m

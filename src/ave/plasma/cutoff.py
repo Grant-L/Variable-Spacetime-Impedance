@@ -21,6 +21,7 @@ The FDTD engine already implements this: when E > V_snap/dx,
 import numpy as np
 from dataclasses import dataclass
 from ave.core.constants import C_0, EPSILON_0, MU_0, V_SNAP, ALPHA, L_NODE
+from ave.axioms.scale_invariant import saturation_factor
 
 # Electron properties
 E_CHARGE = 1.602176634e-19    # [C]
@@ -111,7 +112,7 @@ def dielectric_function_ave(omega: float, E_field: float) -> float:
     # Saturation term (Axiom 4)
     V_local = E_field * L_NODE
     ratio_sq = min((V_local / V_SNAP)**2, 1.0 - 1e-12)
-    sat_factor = np.sqrt(1.0 - ratio_sq)
+    sat_factor = saturation_factor(V_local, V_SNAP)
 
     # Drude term
     omega_p = ave_plasma_frequency()

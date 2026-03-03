@@ -38,6 +38,7 @@ from ave.core.constants import (
     C_0, MU_0, EPSILON_0, M_E, V_SNAP, B_SNAP, L_NODE,
     HBAR, e_charge, ALPHA,
 )
+from ave.axioms.scale_invariant import saturation_factor
 
 
 class BondFDTD1D:
@@ -109,14 +110,12 @@ class BondFDTD1D:
     def _epsilon_eff(self):
         """Local ε with Axiom 4 saturation."""
         V_local = np.abs(self.E) * self.dx
-        ratio_sq = np.clip((V_local / V_SNAP) ** 2, 0.0, 1.0 - 1e-12)
-        return EPSILON_0 * self.eps_r * np.sqrt(1.0 - ratio_sq)
+        return EPSILON_0 * self.eps_r * saturation_factor(V_local, V_SNAP)
 
     def _mu_eff(self):
         """Local μ with Axiom 4 saturation."""
         B_local = MU_0 * np.abs(self.H)
-        ratio_sq = np.clip((B_local / B_SNAP) ** 2, 0.0, 1.0 - 1e-12)
-        return MU_0 * self.mu_r * np.sqrt(1.0 - ratio_sq)
+        return MU_0 * self.mu_r * saturation_factor(B_local, B_SNAP)
 
     def seed_thermal_field(self, amplitude: float = 1e-12):
         """Initialize with very low-amplitude thermal noise."""

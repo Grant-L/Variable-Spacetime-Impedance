@@ -15,9 +15,9 @@ standard 2-layer FR-4 board.  Models:
 
 Board stackup:
   ┌──────────────────────────┐
-  │ F.Cu   SMA pads only     │  ← SMA ground tabs, stitching vias
+  │ F.Cu   SMA pads + ground │  ← SMA ground patches (12×12mm) + perimeter trace
   │ FR-4   1.6mm, ε_r = 4.3  │
-  │ B.Cu   ground patches    │  ← 10×10mm zones under SMA connectors only
+  │ B.Cu   bare (wire routes) │  ← no copper zones, wire threads both sides
   └──────────────────────────┘
   ↑ 10mm nylon standoffs ↑
   ═════════════════════════════  (table)
