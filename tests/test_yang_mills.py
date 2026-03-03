@@ -119,9 +119,9 @@ class TestSpectralGap:
         assert E7 > E5
 
     def test_lower_bound_is_positive(self):
-        """Bogomol'nyi lower bounds are all positive."""
+        """Bogomol'nyi lower bounds are all positive for torus knots."""
         gap = spectral_gap_theorem()
-        for c, data in gap['gaps_by_crossing'].items():
+        for c, data in gap['torus_knot_bounds'].items():
             assert data['E_lower_bound_MeV'] > 0, \
                 f"Lower bound not positive for c={c}"
 
@@ -131,10 +131,20 @@ class TestSpectralGap:
         assert gap['gap_positive']
         assert gap['gap_MeV'] > 0
 
-    def test_gap_particle_is_electron(self):
-        """The lightest excitation is the electron (trefoil)."""
+    def test_gap_is_unknot(self):
+        """The mass gap is the unknot (electron), exact m_e c²."""
         gap = spectral_gap_theorem()
-        assert gap['gap_particle'] == 'electron (trefoil)'
+        assert gap['gap_particle'] == 'electron (unknot 0₁)'
+        assert gap['gap_is_exact']
+        assert abs(gap['gap_MeV'] - 0.511) < 0.001
+
+    def test_torus_knot_bounds_satisfied(self):
+        """All torus knot energies exceed Faddeev-Skyrme bound."""
+        gap = spectral_gap_theorem()
+        for c, data in gap['torus_knot_bounds'].items():
+            if data['E_actual_MeV'] is not None:
+                assert data['bound_satisfied'], \
+                    f"Bound violated for c={c}"
 
 
 # ════════════════════════════════════════════════════════════════════
