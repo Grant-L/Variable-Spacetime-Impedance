@@ -377,9 +377,65 @@ def impedance_hubble_correction(n_e_local: float = 0.05,
     }
 
 
+def g_star_prediction() -> dict:
+    """
+    Testable prediction: g* = 7³/4 = 85.75 vs SM g* = 106.75.
+
+    The AVE lattice predicts 21 fewer effective relativistic DOF
+    at the electroweak scale than the Standard Model.
+
+    DECOMPOSITION:
+        SM: 28 bosonic + 7/8 × 90 fermionic = 106.75
+        AVE: g* = 7³/4 = 85.75
+
+        If bosonic = 28 (same): N_f_AVE = (85.75-28)/(7/8) = 66
+        Missing: 90 - 66 = 24 fermionic DOF = 12 Weyl spinors
+
+    TESTABLE CONSEQUENCES:
+        1. Primordial GW background: 7.6% stronger than SM
+           (Ω_GW ∝ g*^{-1/3} → LISA, DECIGO)
+        2. EW expansion: 10.4% slower (H ∝ √g*)
+        3. EW phase transition: 20% less latent heat
+           (L ∝ g* T⁴ → future colliders)
+
+    Returns:
+        Dictionary with prediction details.
+    """
+    g_SM = 106.75
+    g_AVE = 7**3 / 4.0  # = 85.75
+
+    # Decomposition
+    N_b = 28  # SM bosonic DOF (same in AVE)
+    N_f_SM = 90
+    N_f_AVE = (g_AVE - N_b) / (7 / 8)
+    missing_f = N_f_SM - N_f_AVE
+    missing_weyl = missing_f / 2
+
+    # Testable consequences
+    ratio = g_AVE / g_SM
+    expansion_ratio = np.sqrt(ratio)
+    gw_amplitude_ratio = (g_SM / g_AVE)**(1 / 3)
+
+    return {
+        'g_star_SM': g_SM,
+        'g_star_AVE': g_AVE,
+        'delta_g_star': g_SM - g_AVE,
+        'N_f_SM': N_f_SM,
+        'N_f_AVE': N_f_AVE,
+        'missing_fermionic_DOF': missing_f,
+        'missing_weyl_spinors': missing_weyl,
+        'EW_expansion_ratio': expansion_ratio,
+        'EW_expansion_slower_pct': (1 - expansion_ratio) * 100,
+        'primordial_GW_stronger_pct': (gw_amplitude_ratio - 1) * 100,
+        'EW_latent_heat_ratio': ratio,
+        'EW_latent_heat_less_pct': (1 - ratio) * 100,
+        'observable_at': ['LISA', 'DECIGO', 'CMB Stage-4', 'FCC-ee'],
+    }
+
+
 def full_open_problems_proof() -> dict:
     """
-    Execute all three open problem proofs.
+    Execute all open problem proofs and predictions.
 
     Returns:
         Complete verification dictionary.
@@ -387,6 +443,7 @@ def full_open_problems_proof() -> dict:
     cp = vacuum_angle_quantization()
     baryon = lattice_chirality()
     hubble = impedance_hubble_correction()
+    g_pred = g_star_prediction()
 
     return {
         'Strong_CP': {
@@ -396,9 +453,15 @@ def full_open_problems_proof() -> dict:
         },
         'Baryon_Asymmetry': {
             'chirality_breaks_CP': baryon['CP_violated'],
-            'order_of_magnitude_match': baryon['order_of_magnitude_match'],
             'eta_predicted': baryon['eta_predicted'],
             'eta_observed': baryon['eta_observed'],
+            'error_pct': baryon['error_pct'],
+        },
+        'g_star_Prediction': {
+            'g_star_AVE': g_pred['g_star_AVE'],
+            'g_star_SM': g_pred['g_star_SM'],
+            'delta_g_star': g_pred['delta_g_star'],
+            'missing_weyl_spinors': g_pred['missing_weyl_spinors'],
         },
         'Hubble_Tension': {
             'H0_corrected': hubble['H0_impedance_corrected'],

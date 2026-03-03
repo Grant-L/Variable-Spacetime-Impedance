@@ -108,14 +108,46 @@ class TestHubbleTension:
 
 class TestFullProof:
 
-    def test_all_three_addressed(self):
-        """All three open problems are addressed."""
+    def test_all_four_addressed(self):
+        """All four areas are addressed."""
         proof = full_open_problems_proof()
         assert 'Strong_CP' in proof
         assert 'Baryon_Asymmetry' in proof
+        assert 'g_star_Prediction' in proof
         assert 'Hubble_Tension' in proof
 
     def test_strong_cp_solved(self):
         """Strong CP is solved."""
         proof = full_open_problems_proof()
         assert proof['Strong_CP']['SOLVED']
+
+
+# ════════════════════════════════════════════════════════════════════
+# g* Testable Prediction
+# ════════════════════════════════════════════════════════════════════
+
+class TestGStarPrediction:
+
+    def test_g_star_ave(self):
+        """g*_AVE = 7³/4 = 85.75."""
+        from ave.axioms.open_problems import g_star_prediction
+        pred = g_star_prediction()
+        assert pred['g_star_AVE'] == 85.75
+
+    def test_delta_g_star(self):
+        """21 fewer DOF than SM."""
+        from ave.axioms.open_problems import g_star_prediction
+        pred = g_star_prediction()
+        assert pred['delta_g_star'] == 21.0
+
+    def test_missing_weyl(self):
+        """12 missing Weyl spinors."""
+        from ave.axioms.open_problems import g_star_prediction
+        pred = g_star_prediction()
+        assert pred['missing_weyl_spinors'] == 12.0
+
+    def test_gw_stronger(self):
+        """Primordial GW background is stronger."""
+        from ave.axioms.open_problems import g_star_prediction
+        pred = g_star_prediction()
+        assert pred['primordial_GW_stronger_pct'] > 0
