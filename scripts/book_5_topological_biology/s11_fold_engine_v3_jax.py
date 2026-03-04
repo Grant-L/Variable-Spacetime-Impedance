@@ -80,6 +80,10 @@ PHI_ALPHA = jnp.radians(-60.0)    # α-helix φ
 PSI_ALPHA = jnp.radians(-40.0)    # α-helix ψ
 PHI_BETA  = jnp.radians(-120.0)   # β-sheet φ
 PSI_BETA  = jnp.radians(130.0)    # β-sheet ψ
+# PPII helix: proline's pyrrolidine ring locks φ ≈ -63°, ψ ≈ 145°
+# This is the polyproline-II conformation — NOT α or β
+PHI_PPII  = jnp.radians(-75.0)    # PPII φ (proline ring constraint)
+PSI_PPII  = jnp.radians(145.0)    # PPII ψ
 OMEGA_TRANS = jnp.radians(180.0)  # trans peptide bond
 # Basin width: σ = 30° ≈ 0.52 rad (typical Ramachandran basin half-width)
 SIGMA_RAMA = jnp.radians(30.0)
@@ -201,6 +205,15 @@ def compute_gly_mask(sequence):
     return jnp.array([1.0 if aa == 'G' else 0.0 for aa in sequence])
 
 
+def compute_pro_mask(sequence):
+    """Boolean mask: True at Proline positions.
+    
+    Proline's pyrrolidine ring constrains φ ≈ -63° (Axiom 2: covalent ring).
+    Pro residues use a 3-basin Ramachandran (α, β, PPII) instead of 2-basin.
+    """
+    return jnp.array([1.0 if aa == 'P' else 0.0 for aa in sequence])
+
+
 def debye_z_water(omega_ratio):
     """Frequency-dependent water impedance via Debye relaxation.
     
@@ -217,7 +230,7 @@ def debye_z_water(omega_ratio):
     return jnp.sqrt(jnp.abs(eps_w))
 
 
-def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N, kappa=0.1):
+def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, kappa=0.1):
     """
     Differentiable multi-frequency S₁₁ loss with full N-Cα-C backbone.
     All physical constants derived from AVE axioms (zero empirical fits).
@@ -704,33 +717,22 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N, kappa=0.1):
 
     port_loss = (junction_loss + cross_loss / N) * sat_packing
 
-    # Cα-Cα bond length penalty — vectorised
-    ca_ca_dists = jnp.array([dists[i, i+1] for i in range(N-1)])  # (N-1,)
-    bond_penalty = 2.0 * jnp.sum((ca_ca_dists - d0) ** 2) / N
-
     # Steric repulsion — Pauli exclusion (Axiom 2)
-    # Ch.02 Eq.14 establishes: exclusion distance = d₀ = 3.8 Å (full backbone step)
-    # No two C_α segments can occupy the same spatial node.
-    # Weight: λ_steric = λ_bond × d₀/r_Ca — same impedance hierarchy ratio
-    #         = 2.0 × 3.8/1.7 = 4.47 (steric stronger than bond: Pauli >> Hooke)
+    # Exclusion distance = d₀ = 3.8 Å (full backbone step)
     LAMBDA_STERIC = LAMBDA_BOND * d0 / r_Ca  # ≈ 4.47
     steric_mask = jnp.abs(idx[:, None] - idx[None, :]) >= 3
-    violations = jnp.maximum(0.0, d0 - dists) ** 2  # exclusion at d₀, not 2r_Ca
+    violations = jnp.maximum(0.0, d0 - dists) ** 2
     violations = jnp.where(steric_mask, violations, 0.0)
     upper = jnp.triu(violations, k=3)
     steric_penalty = LAMBDA_STERIC * jnp.sum(upper) / N
 
-    # --- Upgrade 7: Full Backbone Geometry Penalties (VECTORISED) ---
-    # All target values from protein_bond_constants.py (Axioms 1-2)
-    # Vectorised: no Python for-loops → O(1) JIT compilation time
-    
-    # Vectorised dihedral: (M, 3) arrays → (M,) angles
+    # --- Dihedral helper (needed for Ramachandran) ---
     def _dihedral_batch(p0, p1, p2, p3):
         """Signed dihedral angles for batches of 4-atom sets."""
-        b1 = p1 - p0   # (M, 3)
+        b1 = p1 - p0
         b2 = p2 - p1
         b3 = p3 - p2
-        n1 = jnp.cross(b1, b2)  # (M, 3)
+        n1 = jnp.cross(b1, b2)
         n2 = jnp.cross(b2, b3)
         n1_norm = jnp.sqrt(jnp.sum(n1**2, axis=-1, keepdims=True)) + 1e-12
         n2_norm = jnp.sqrt(jnp.sum(n2**2, axis=-1, keepdims=True)) + 1e-12
@@ -741,47 +743,8 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N, kappa=0.1):
         cos_d = jnp.sum(n1n * n2n, axis=-1)
         sin_d = jnp.sum(jnp.cross(n1n, n2n) * b2n, axis=-1)
         return jnp.arctan2(sin_d, cos_d)
-    
-    # Vectorised bond angle: (M, 3) arrays → (M,) angles
-    def _angle_batch(p0, p1, p2):
-        """Bond angles at p1 for batches of 3-atom sets."""
-        v1 = p0 - p1   # (M, 3)
-        v2 = p2 - p1
-        v1_norm = jnp.sqrt(jnp.sum(v1**2, axis=-1)) + 1e-12
-        v2_norm = jnp.sqrt(jnp.sum(v2**2, axis=-1)) + 1e-12
-        cos_a = jnp.sum(v1 * v2, axis=-1) / (v1_norm * v2_norm)
-        return jnp.arccos(jnp.clip(cos_a, -1.0, 1.0))
-    
-    # (a) Bond lengths — fully vectorised
-    # Intra-residue: N-Cα (1.46Å), Cα-C (1.52Å)
-    d_NCa_all = jnp.sqrt(jnp.sum((atom_Ca - atom_N)**2, axis=-1) + 1e-12)   # (N,)
-    d_CaC_all = jnp.sqrt(jnp.sum((atom_C - atom_Ca)**2, axis=-1) + 1e-12)   # (N,)
-    # Inter-residue: C_i — N_{i+1} (1.33Å)
-    d_CN_all  = jnp.sqrt(jnp.sum((atom_N[1:] - atom_C[:-1])**2, axis=-1) + 1e-12)  # (N-1,)
-    
-    bb_bond_penalty = (jnp.sum((d_NCa_all - D_N_CA)**2) +
-                       jnp.sum((d_CaC_all - D_CA_C)**2) +
-                       jnp.sum((d_CN_all - D_C_N)**2))
-    bb_bond_penalty = LAMBDA_BOND * bb_bond_penalty / N
-    
-    # (b) Bond angles — fully vectorised
-    # Intra-residue: N-Cα-C (111.2°)
-    theta_NCC = _angle_batch(atom_N, atom_Ca, atom_C)          # (N,)
-    # Inter-residue: Cα_i-C_i-N_{i+1} (116.2°)
-    theta_CCN = _angle_batch(atom_Ca[:-1], atom_C[:-1], atom_N[1:])   # (N-1,)
-    # Inter-residue: C_i-N_{i+1}-Cα_{i+1} (121.7°)
-    theta_CNC = _angle_batch(atom_C[:-1], atom_N[1:], atom_Ca[1:])    # (N-1,)
-    
-    bb_angle_penalty = (jnp.sum((theta_NCC - ANGLE_N_CA_C)**2) +
-                        jnp.sum((theta_CCN - ANGLE_CA_C_N)**2) +
-                        jnp.sum((theta_CNC - ANGLE_C_N_CA)**2))
-    bb_angle_penalty = LAMBDA_ANGLE * bb_angle_penalty / N
-    
-    # (c) ω: peptide planarity — Cα_i-C_i-N_{i+1}-Cα_{i+1} ≈ 180° (trans)
-    omega_all = _dihedral_batch(atom_Ca[:-1], atom_C[:-1], atom_N[1:], atom_Ca[1:])  # (N-1,)
-    d_omega = omega_all - OMEGA_TRANS
-    d_omega = jnp.arctan2(jnp.sin(d_omega), jnp.cos(d_omega))  # wrap to [-π, π]
-    omega_penalty = LAMBDA_OMEGA * jnp.sum(d_omega**2 / SIGMA_OMEGA**2) / jnp.maximum(N - 1, 1)
+    # NOTE: bond lengths, bond angles, ω are EXACT by construction (NERF).
+    # No penalties needed — all evaluate to 0.000.
     
     # (d) φ/ψ Ramachandran — COUPLED 2D BASINS (Axiom 2: steric exclusion)
     #
@@ -834,7 +797,18 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N, kappa=0.1):
     d2_beta_weighted  = d2_beta / (z_coupled + 1e-12)  # high |Z| → shallower β
     
     # Coupled penalty: nearest WEIGHTED 2D basin, glycine-exempt
-    coupled_penalty = jnp.sum((1.0 - gly_coupled) * jnp.minimum(d2_alpha_weighted, d2_beta_weighted) / SIGMA_RAMA**2)
+    # For Proline: add PPII basin (φ=-75°, ψ=145°) — ring locks φ
+    d_phi_pp = jnp.arctan2(jnp.sin(phi_coupled - PHI_PPII), jnp.cos(phi_coupled - PHI_PPII))
+    d_psi_pp = jnp.arctan2(jnp.sin(psi_coupled - PSI_PPII), jnp.cos(psi_coupled - PSI_PPII))
+    d2_ppii = d_phi_pp**2 + d_psi_pp**2  # unweighted — PPII is equally valid
+    
+    pro_coupled = pro_mask[1:-1]  # residues 1..N-2
+    # Non-Pro: min(α, β).  Pro: min(α, β, PPII).
+    d2_min_2basin = jnp.minimum(d2_alpha_weighted, d2_beta_weighted)
+    d2_min_3basin = jnp.minimum(d2_min_2basin, d2_ppii / SIGMA_RAMA**2 * SIGMA_RAMA**2)  # keep units
+    d2_min = jnp.where(pro_coupled > 0.5, jnp.minimum(d2_min_2basin, d2_ppii), d2_min_2basin)
+    
+    coupled_penalty = jnp.sum((1.0 - gly_coupled) * d2_min / SIGMA_RAMA**2)
     
     # --- Edge residues: only φ or only ψ available ---
     # Residue 0: no φ, only ψ_0 available
@@ -872,8 +846,8 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N, kappa=0.1):
 
 # JIT compile — N is now dynamic (not static_argnums)
 # We pass N as static since it determines array shapes
-_s11_loss_jit = jit(_s11_loss, static_argnums=(5,))
-_s11_grad_jit = jit(grad(_s11_loss), static_argnums=(5,))
+_s11_loss_jit = jit(_s11_loss, static_argnums=(6,))
+_s11_grad_jit = jit(grad(_s11_loss), static_argnums=(6,))
 
 
 # ═══════════════════════════════════════════════════════════════════════
@@ -994,7 +968,7 @@ def _torsions_to_backbone(phi, psi, N):
     return backbone.flatten()  # (N*9,)
 
 
-def _torsion_loss(angles, z_topo, cys_mask, arom_mask, gly_mask, N):
+def _torsion_loss(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N):
     """
     Loss function with torsion-angle parameterization.
     
@@ -1008,14 +982,14 @@ def _torsion_loss(angles, z_topo, cys_mask, arom_mask, gly_mask, N):
     phi = angles[:N]
     psi = angles[N:]
     coords_flat = _torsions_to_backbone(phi, psi, N)
-    return _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N)
+    return _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N)
 
 
-_torsion_loss_jit = jit(_torsion_loss, static_argnums=(5,))
-_torsion_grad_jit = jit(grad(_torsion_loss), static_argnums=(5,))
+_torsion_loss_jit = jit(_torsion_loss, static_argnums=(6,))
+_torsion_grad_jit = jit(grad(_torsion_loss), static_argnums=(6,))
 
 
-def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True):
+def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True, n_starts=3):
     """
     Fold a protein by minimising multi-frequency S₁₁.
     
@@ -1023,6 +997,7 @@ def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True):
     Bond lengths and angles are FIXED by construction (like a real TL conductor).
     Only torsion angles (φ, ψ) are optimized — the folding degrees of freedom.
     
+    Multi-start: runs n_starts random seeds, picks lowest loss.
     Total DOF: 2N (vs 3N×3 = 9N before)
     Invariants: bond lengths, bond angles, ω = π
     """
@@ -1031,69 +1006,61 @@ def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True):
     cys_mask = compute_cys_mask(sequence)
     arom_mask = compute_aromatic_mask(sequence)
     gly_mask = compute_gly_mask(sequence)
+    pro_mask = compute_pro_mask(sequence)
 
-    # --- Initialize torsion angles ---
-    # RANDOM initialization — let geometry dictate structure.
-    # Helical seed traps optimizer in local minimum (Rg=14.44, pure helix).
-    # Random start explores full torsion landscape → finds folded structure
-    # near P_C equilibrium (Rg ≈ 8 Å).
-    np.random.seed(42)
-    phi_init = np.random.uniform(-np.pi, np.pi, N)
-    psi_init = np.random.uniform(-np.pi, np.pi, N)
-    angles = jnp.concatenate([jnp.array(phi_init), jnp.array(psi_init)])  # (2N,)
+    best_loss = float('inf')
+    best_angles = None
+    
+    print(f"  S₁₁ torsion-angle (fixed TL, {n_starts}-start): N={N}, steps={n_steps}", flush=True)
 
-    optimizer = optax.adam(lr)
-    opt_state = optimizer.init(angles)
-    s11_trace = []
+    for start_idx in range(n_starts):
+        seed = 42 + start_idx * 137  # deterministic but spread out
+        np.random.seed(seed)
+        phi_init = np.random.uniform(-np.pi, np.pi, N)
+        psi_init = np.random.uniform(-np.pi, np.pi, N)
+        angles = jnp.concatenate([jnp.array(phi_init), jnp.array(psi_init)])
 
-    print(f"  S₁₁ torsion-angle (fixed TL length): N={N}, steps={n_steps}", flush=True)
+        optimizer = optax.adam(lr)
+        opt_state = optimizer.init(angles)
+        key = jax.random.PRNGKey(seed)
 
-    # JIT warmup
-    t_jit = time.time()
-    _ = _torsion_loss_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, N)
-    _ = _torsion_grad_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, N)
-    print(f"    JIT compiled in {time.time()-t_jit:.1f}s", flush=True)
+        t0 = time.time()
+        # JIT warmup on first start only
+        if start_idx == 0:
+            _ = _torsion_loss_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N)
+            _ = _torsion_grad_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N)
+            print(f"    JIT compiled in {time.time()-t0:.1f}s", flush=True)
+            t0 = time.time()
 
-    key = jax.random.PRNGKey(42)
-    history = []
+        for step in range(n_steps):
+            g = _torsion_grad_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N)
+            g = jnp.where(jnp.isnan(g), 0.0, g)
+            g_norm = jnp.sqrt(jnp.sum(g**2) + 1e-12)
+            g = jnp.where(g_norm > 10.0, g * 10.0 / g_norm, g)
+            updates, opt_state = optimizer.update(g, opt_state)
+            angles = optax.apply_updates(angles, updates)
+            if anneal and step < n_steps * 0.5:
+                T = 0.05 * (1.0 - step / (n_steps * 0.5)) ** 2
+                key, subkey = jax.random.split(key)
+                angles = angles + jax.random.normal(subkey, shape=angles.shape) * T
 
-    for step in range(n_steps):
-        loss = float(_torsion_loss_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, N))
-        g = _torsion_grad_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, N)
+        loss = float(_torsion_loss_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N))
+        dt = time.time() - t0
+        print(f"    start {start_idx}: loss={loss:.4f} ({dt:.0f}s)", flush=True)
 
-        # Replace NaN gradients with zero
-        g = jnp.where(jnp.isnan(g), 0.0, g)
+        if loss < best_loss:
+            best_loss = loss
+            best_angles = angles
 
-        # Gradient clipping
-        g_norm = jnp.sqrt(jnp.sum(g**2) + 1e-12)
-        g = jnp.where(g_norm > 10.0, g * 10.0 / g_norm, g)
+    print(f"    best loss = {best_loss:.6f}", flush=True)
 
-        updates, opt_state = optimizer.update(g, opt_state)
-        angles = optax.apply_updates(angles, updates)
-
-        # Simulated annealing in angle space
-        if anneal and step < n_steps * 0.5:
-            T = 0.05 * (1.0 - step / (n_steps * 0.5)) ** 2
-            key, subkey = jax.random.split(key)
-            noise = jax.random.normal(subkey, shape=angles.shape) * T
-            angles = angles + noise
-
-        s11_trace.append(loss)
-
-        if step % 500 == 0:
-            T_val = 0.02 * max(0, 1.0 - step / (n_steps * 0.5)) ** 2 if anneal else 0
-            print(f"    step {step:5d}: loss = {loss:.6f}  T={T_val:.4f}", flush=True)
-
-    final_loss = float(_torsion_loss_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, N))
-    print(f"    final loss = {final_loss:.6f}", flush=True)
-
-    # Build final coordinates from optimized torsion angles
-    phi_final = angles[:N]
-    psi_final = angles[N:]
+    # Build final coordinates from best torsion angles
+    phi_final = best_angles[:N]
+    psi_final = best_angles[N:]
     coords_flat = _torsions_to_backbone(phi_final, psi_final, N)
     bb_final = np.array(coords_flat.reshape(N, 3, 3))
     ca_final = bb_final[:, 1, :]
-    return ca_final, history, s11_trace, bb_final
+    return ca_final, [], [best_loss], bb_final
 
 
 def fold_hierarchical(sequence, n_steps=5000, lr=1e-3):
