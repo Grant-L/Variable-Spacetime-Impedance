@@ -591,23 +591,58 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N, kappa=0.1):
     d_omega = jnp.arctan2(jnp.sin(d_omega), jnp.cos(d_omega))  # wrap to [-π, π]
     omega_penalty = LAMBDA_OMEGA * jnp.sum(d_omega**2 / SIGMA_OMEGA**2) / jnp.maximum(N - 1, 1)
     
-    # (d) φ/ψ Ramachandran — fully vectorised
-    # φ_i = dihedral(C_{i-1}, N_i, Cα_i, C_i)  for i=1..N-1
+    # (d) φ/ψ Ramachandran — COUPLED 2D BASINS (Axiom 2: steric exclusion)
+    #
+    # The Ramachandran basins arise from steric exclusion (Axiom 2) in 2D
+    # (φ,ψ) space. They are CORRELATED islands, not independent 1D projections.
+    # Independent φ/ψ penalties allow unphysical states like (φ=-60°, ψ=130°)
+    # which sits between α and β basins with zero penalty — but is actually
+    # a high-energy (sterically forbidden) region.
+    #
+    # Coupled penalty: d²_basin = Δφ² + Δψ²  (2D distance to basin centre)
+    # V = min(d²_α, d²_β) / σ²  (nearest-basin 2D potential)
+    
+    # φ_i = dihedral(C_{i-1}, N_i, Cα_i, C_i) → for i=1..N-1
     phi_all = _dihedral_batch(atom_C[:-1], atom_N[1:], atom_Ca[1:], atom_C[1:])  # (N-1,)
-    d_phi_a = jnp.arctan2(jnp.sin(phi_all - PHI_ALPHA), jnp.cos(phi_all - PHI_ALPHA))
-    d_phi_b = jnp.arctan2(jnp.sin(phi_all - PHI_BETA),  jnp.cos(phi_all - PHI_BETA))
-    min_phi = jnp.minimum(d_phi_a**2, d_phi_b**2) / SIGMA_RAMA**2
-    phi_penalty = jnp.sum((1.0 - gly_mask[1:]) * min_phi)
-    
-    # ψ_i = dihedral(N_i, Cα_i, C_i, N_{i+1})  for i=0..N-2
+    # ψ_i = dihedral(N_i, Cα_i, C_i, N_{i+1}) → for i=0..N-2
     psi_all = _dihedral_batch(atom_N[:-1], atom_Ca[:-1], atom_C[:-1], atom_N[1:])  # (N-1,)
-    d_psi_a = jnp.arctan2(jnp.sin(psi_all - PSI_ALPHA), jnp.cos(psi_all - PSI_ALPHA))
-    d_psi_b = jnp.arctan2(jnp.sin(psi_all - PSI_BETA),  jnp.cos(psi_all - PSI_BETA))
-    min_psi = jnp.minimum(d_psi_a**2, d_psi_b**2) / SIGMA_RAMA**2
-    psi_penalty = jnp.sum((1.0 - gly_mask[:-1]) * min_psi)
     
-    n_rama = 2 * (N - 1)
-    rama_penalty = LAMBDA_RAMA * (phi_penalty + psi_penalty) / jnp.maximum(n_rama, 1)
+    # --- Coupled region: residues that have BOTH φ and ψ defined ---
+    # φ_all[0:] = residues 1..N-1, psi_all[:-1] does residues 0..N-3
+    # Overlap: φ for residues 1..N-2 = phi_all[0:N-2]
+    #          ψ for residues 1..N-2 = psi_all[1:N-1]
+    phi_coupled = phi_all[:-1]  # residues 1..N-2 (excludes last)
+    psi_coupled = psi_all[1:]   # residues 1..N-2 (excludes first)
+    gly_coupled = gly_mask[1:-1]  # residues 1..N-2
+    
+    # 2D distance to α-basin (φ=-60°, ψ=-40°)
+    d_phi_a = jnp.arctan2(jnp.sin(phi_coupled - PHI_ALPHA), jnp.cos(phi_coupled - PHI_ALPHA))
+    d_psi_a = jnp.arctan2(jnp.sin(psi_coupled - PSI_ALPHA), jnp.cos(psi_coupled - PSI_ALPHA))
+    d2_alpha = d_phi_a**2 + d_psi_a**2  # 2D squared distance to α-basin
+    
+    # 2D distance to β-basin (φ=-120°, ψ=130°)
+    d_phi_b = jnp.arctan2(jnp.sin(phi_coupled - PHI_BETA), jnp.cos(phi_coupled - PHI_BETA))
+    d_psi_b = jnp.arctan2(jnp.sin(psi_coupled - PSI_BETA), jnp.cos(psi_coupled - PSI_BETA))
+    d2_beta = d_phi_b**2 + d_psi_b**2   # 2D squared distance to β-basin
+    
+    # Coupled penalty: nearest 2D basin, glycine-exempt
+    coupled_penalty = jnp.sum((1.0 - gly_coupled) * jnp.minimum(d2_alpha, d2_beta) / SIGMA_RAMA**2)
+    
+    # --- Edge residues: only φ or only ψ available ---
+    # Residue 0: no φ, only ψ_0 available
+    d_psi0_a = jnp.arctan2(jnp.sin(psi_all[0] - PSI_ALPHA), jnp.cos(psi_all[0] - PSI_ALPHA))
+    d_psi0_b = jnp.arctan2(jnp.sin(psi_all[0] - PSI_BETA),  jnp.cos(psi_all[0] - PSI_BETA))
+    edge_psi0 = (1.0 - gly_mask[0]) * jnp.minimum(d_psi0_a**2, d_psi0_b**2) / SIGMA_RAMA**2
+    
+    # Residue N-1: no ψ, only φ_{N-1} available
+    d_phiN_a = jnp.arctan2(jnp.sin(phi_all[-1] - PHI_ALPHA), jnp.cos(phi_all[-1] - PHI_ALPHA))
+    d_phiN_b = jnp.arctan2(jnp.sin(phi_all[-1] - PHI_BETA),  jnp.cos(phi_all[-1] - PHI_BETA))
+    edge_phiN = (1.0 - gly_mask[-1]) * jnp.minimum(d_phiN_a**2, d_phiN_b**2) / SIGMA_RAMA**2
+    
+    # Total Ramachandran: coupled core + edge contributions
+    # Normalise by total DOF count: (N-2) coupled + 2 edges = N
+    n_rama = jnp.maximum(N, 1)
+    rama_penalty = LAMBDA_RAMA * (coupled_penalty + edge_psi0 + edge_phiN) / n_rama
 
     return (s11_avg + bond_penalty + steric_penalty + port_loss
             + bb_bond_penalty + bb_angle_penalty + omega_penalty + rama_penalty)
