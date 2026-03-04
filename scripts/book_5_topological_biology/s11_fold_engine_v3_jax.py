@@ -718,7 +718,9 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     port_loss = (junction_loss + cross_loss / N) * sat_packing
 
     # Steric repulsion — Pauli exclusion (Axiom 2)
-    # Exclusion distance = d₀ = 3.8 Å (full backbone step)
+    # d₀ = 3.8 Å: backbone step provides effective exclusion zone.
+    # Using 2×r_Ca=3.4 causes expansion (tested: Rg 58% off).
+    # d₀ provides the correct compaction gradient.
     LAMBDA_STERIC = LAMBDA_BOND * d0 / r_Ca  # ≈ 4.47
     steric_mask = jnp.abs(idx[:, None] - idx[None, :]) >= 3
     violations = jnp.maximum(0.0, d0 - dists) ** 2
