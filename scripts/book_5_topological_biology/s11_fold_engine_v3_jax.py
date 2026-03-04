@@ -615,6 +615,9 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N, kappa=0.1):
     psi_coupled = psi_all[1:]   # residues 1..N-2 (excludes first)
     gly_coupled = gly_mask[1:-1]  # residues 1..N-2
     
+    # Per-residue impedance magnitudes for coupled region
+    z_coupled = z_mag[1:-1]  # |Z_topo| for residues 1..N-2
+    
     # 2D distance to α-basin (φ=-60°, ψ=-40°)
     d_phi_a = jnp.arctan2(jnp.sin(phi_coupled - PHI_ALPHA), jnp.cos(phi_coupled - PHI_ALPHA))
     d_psi_a = jnp.arctan2(jnp.sin(psi_coupled - PSI_ALPHA), jnp.cos(psi_coupled - PSI_ALPHA))
@@ -625,8 +628,21 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N, kappa=0.1):
     d_psi_b = jnp.arctan2(jnp.sin(psi_coupled - PSI_BETA), jnp.cos(psi_coupled - PSI_BETA))
     d2_beta = d_phi_b**2 + d_psi_b**2   # 2D squared distance to β-basin
     
-    # Coupled penalty: nearest 2D basin, glycine-exempt
-    coupled_penalty = jnp.sum((1.0 - gly_coupled) * jnp.minimum(d2_alpha, d2_beta) / SIGMA_RAMA**2)
+    # --- Sequence-dependent basin asymmetry (Axiom 1: impedance matching) ---
+    # α-helix: tight 100°/residue turns → high conformational impedance
+    # β-sheet: extended → low conformational impedance
+    # The sidechain impedance |Z_topo| determines how much mismatch
+    # the residue experiences in each conformation:
+    #   w_α = |z_i|     → large sidechain: α penalty larger (harder to fit)
+    #   w_β = 1/|z_i|   → large sidechain: β penalty smaller (more room)
+    # This is the SAME impedance matching principle used throughout:
+    #   S₁₁ = |Z_load - Z_line| / |Z_load + Z_line|
+    # High-Z sidechains are mismatched in the tight α-helix → higher S₁₁ → β preferred
+    d2_alpha_weighted = d2_alpha * z_coupled       # high |Z| → deeper β, shallower α
+    d2_beta_weighted  = d2_beta / (z_coupled + 1e-12)  # high |Z| → shallower β
+    
+    # Coupled penalty: nearest WEIGHTED 2D basin, glycine-exempt
+    coupled_penalty = jnp.sum((1.0 - gly_coupled) * jnp.minimum(d2_alpha_weighted, d2_beta_weighted) / SIGMA_RAMA**2)
     
     # --- Edge residues: only φ or only ψ available ---
     # Residue 0: no φ, only ψ_0 available
