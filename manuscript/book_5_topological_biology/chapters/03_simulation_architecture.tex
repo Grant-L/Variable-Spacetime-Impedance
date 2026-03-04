@@ -377,24 +377,37 @@ The Poly-D failure is \emph{expected physics}: a homopolyanion chain experiences
 
 \subsection{Villin HP35 Benchmark}
 
-Villin headpiece subdomain HP35 (PDB: 1VII, 35 residues, three-helix bundle) is a standard benchmark for protein folding algorithms.  The engine was run with 15\,000 Adam steps at $\eta = 2 \times 10^{-3}$:
+Villin headpiece subdomain HP35 (PDB: 1VII, 35 residues, three-helix bundle) is a standard benchmark for protein folding algorithms.  The engine was upgraded from C$_\alpha$-only to full N--C$_\alpha$--C backbone (3~atoms per residue, Upgrade~7b), enabling proper $\phi/\psi$ dihedral computation.  Results with 10\,000 Adam steps at $\eta = 2 \times 10^{-3}$:
 
 \begin{center}
 \begin{tabular}{@{}l r l@{}}
 \toprule
 \textbf{Metric} & \textbf{Value} & \textbf{Expected} \\
 \midrule
-$S_{11}$ & $0.95 \to 0.78$ & Convergent \\
-$S_{11}$ & $0.95 \to 0.81$ & Convergent \\
-$R_g$    & 9.7~\AA & 8--10~\AA~\checkmark \\
-End-to-end & 27.0~\AA & $<30$~\AA~\checkmark \\
-Helix content & 24\% & $\sim\!60\%$ \\
+Loss & $320 \to 2.81$ & Convergent \\
+$R_g$    & 4.5~\AA & 8--10~\AA \\
+End-to-end & 14.7~\AA & $<30$~\AA~\checkmark \\
+$\phi$ chirality & 100\% negative & \checkmark \\
+$\alpha$-helix & 9\% & $\sim\!60\%$ \\
+$\beta$-sheet  & 15\% & --- \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-The addition of a Ramachandran pseudo-dihedral penalty (Upgrade~7) improved the helical content from 15\% to 24\% and brought $R_g = 9.7$~\AA{} into excellent agreement with the experimental value of $\sim\!9.8$~\AA.  The Ramachandran constraint enforces a double-well potential on the C$_\alpha$ pseudo-torsion angle $\tau$:
-\begin{equation}
-    V_\text{rama}(\tau) = \frac{\lambda}{N-3} \sum_{i=0}^{N-4} (1 - g_{i+1}) \frac{\min\!\bigl[(\tau_i - \tau_\alpha)^2,\; (\tau_i - \tau_\beta)^2\bigr]}{\sigma^2}
-\end{equation}
-where $\tau_\alpha = 50^\circ$ (\hbox{$\alpha$-helix} basin), $\tau_\beta = -170^\circ$ (\hbox{$\beta$-sheet} basin), $\sigma = d_0/r_{C_\alpha} \approx 2.24$ rad (basin width from backbone geometry), $\lambda = 1/(2Q) \approx 0.071$ (amide-V coupling scale), and $g_{i+1} = 1$ at glycine positions (exempt: no sidechain steric constraint).  The 24\% helical content remains below the experimental $\sim\!60\%$; the residual gap reflects the Cα-only representation's inability to distinguish $\phi$ from $\psi$ with a single pseudo-torsion.
+The full backbone representation enforces four constraint layers, each with an axiom-derived penalty weight:
+\begin{center}
+\begin{tabular}{@{}l l r l@{}}
+\toprule
+\textbf{Layer} & \textbf{Weight} & \textbf{Value} & \textbf{Derivation} \\
+\midrule
+Bond stretch & $\lambda_\text{bond} = 2Z_0$ & 2.000 & Axiom 1 (backbone $Z$) \\
+Angle bend   & $\lambda_\text{angle} = 2(r_{C_\alpha}/d_0)^2$ & 0.400 & Geometric lever \\
+$\omega$ planarity & $\lambda_\omega = 2\,d_{\text{N--C}_\alpha}/d_{\text{C--N}}$ & 2.195 & Bond stiffness ratio \\
+$\phi/\psi$ Rama & $\lambda_\text{rama} = 2(2r_{C_\alpha}/d_0)$ & 1.789 & Pauli packing fraction \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The packing fraction $2r_{C_\alpha}/d_0 = 0.895$ is noteworthy: it is the protein-scale analog of the electromagnetic packing fraction $P_C = 8\pi\alpha \approx 0.183$, reflecting the scale invariance of the impedance coupling structure (Axiom~1).
+
+The engine correctly enforces backbone chirality (100\% negative $\phi$) and produces compact structure ($R_g = 4.5$~\AA), but favours the $\beta$-basin ($\phi \approx -120^\circ$, $\psi \approx 130^\circ$) over the $\alpha$-basin ($\phi \approx -60^\circ$, $\psi \approx -40^\circ$).  The residual $\alpha/\beta$ selectivity requires explicit hydrogen-bonding impedance (N--H$\cdots$O=C cross-coupling)---an identified next upgrade that would bias $i \to i{+}4$ contacts over $i \to i{+}2$.
