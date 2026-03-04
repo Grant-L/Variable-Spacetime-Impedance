@@ -3,9 +3,17 @@ import matplotlib.pyplot as plt
 import os
 import control
 import warnings
+import sys
 
 # Suppress warnings for clean output
 warnings.filterwarnings('ignore')
+
+# --- Physics engine imports ---
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'src'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'mechanics'))
+
+from scripts.mechanics.spice_organic_mapper import get_inductance, get_capacitance
+from ave.solvers.protein_bond_constants import Z_TOPO, Q_BACKBONE
 
 # Set aesthetic plot parameters
 plt.rcParams['figure.figsize'] = (12, 8)
@@ -43,33 +51,40 @@ def create_lc_filter(L, C, R=0.1):
 
 def get_amino_acid_component(aa_name):
     """
-    Returns the effective topological (L, C) parameters for the R-group
-    based on the established AVE node definitions.
+    Returns the effective topological (L, C, R) parameters for the R-group
+    derived from the AVE physics engine.
+    
+    L: backbone inductance from atomic mass (L = m/ξ²)
+    C: backbone capacitance from bond stiffness (C = ξ²/k)
+    R: dissipation from Z_topo magnitude (impedance mismatch loss)
     """
-    topology_map = {
-        # Glycine: No side chain, minimal capacitance, highly flexible (mismatch prone in bulk)
-        'Gly': {'L': 1.0e-9, 'C': 0.1e-12, 'R': 0.05, 'desc': 'Flexible / Sheet'},
-        
-        # Alanine: Methyl group, low topological drag, perfect helix packer
-        'Ala': {'L': 2.0e-9, 'C': 1.0e-12, 'R': 0.1, 'desc': 'Helix Former'},
-        
-        # Leucine: Larger alkyl, strongly supports helix spacing
-        'Leu': {'L': 3.5e-9, 'C': 1.8e-12, 'R': 0.15, 'desc': 'Helix Former'},
-        
-        # Valine: Branched at C-beta, causes severe steric / impedance mismatch
-        'Val': {'L': 4.0e-9, 'C': 0.5e-12, 'R': 0.25, 'desc': 'Branched / Sheet'},
-        
-        # Proline: Cyclic bonded to backbone, acts as a rigid inductive lock (Kink)
-        'Pro': {'L': 8.0e-9, 'C': 3.0e-12, 'R': 0.5, 'desc': 'Rigid Kink'},
-        
-        # Serine: Hydroxyl group, shifts capacitance
-        'Ser': {'L': 2.5e-9, 'C': 2.5e-12, 'R': 0.2, 'desc': 'Polar / Coil'},
+    # Axiom-derived backbone parameters
+    L_backbone = get_inductance('C')   # Carbon Cα inductance [H]
+    C_backbone = get_capacitance('C-C')  # C-C bond capacitance [F]
+    
+    # Map amino acid 3-letter codes to 1-letter for Z_topo lookup
+    aa_map = {
+        'Gly': 'G', 'Ala': 'A', 'Val': 'V', 'Leu': 'L',
+        'Ile': 'I', 'Pro': 'P', 'Phe': 'F', 'Trp': 'W',
+        'Met': 'M', 'Ser': 'S', 'Thr': 'T', 'Cys': 'C',
+        'Tyr': 'Y', 'His': 'H', 'Asp': 'D', 'Glu': 'E',
+        'Asn': 'N', 'Gln': 'Q', 'Lys': 'K', 'Arg': 'R',
     }
     
-    if aa_name not in topology_map:
-        raise ValueError(f"Topological parameters for {aa_name} not yet defined.")
-        
-    return topology_map[aa_name]
+    code = aa_map.get(aa_name)
+    if code is None:
+        raise ValueError(f"Unknown amino acid: {aa_name}")
+    
+    z = abs(Z_TOPO[code])  # |Z_topo| from physics engine
+    
+    # Scale L and C by Z_topo to model sidechain shunt loading:
+    # High |Z| → heavy/rigid sidechain → larger effective L, altered C
+    # R from dissipation: lossy sidechains have higher R
+    L_eff = L_backbone * (1.0 + z)
+    C_eff = C_backbone / (1.0 + z)
+    R_eff = z * np.sqrt(L_backbone / C_backbone)  # Z_topo × Z_characteristic
+    
+    return {'L': L_eff, 'C': C_eff, 'R': R_eff}
 
 def build_protein_transmission_line(sequence):
     """

@@ -27,37 +27,8 @@ import sys, os, time
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'mechanics'))
 
-# Complex Z_topo: R + jX
-# R = sidechain volume / hydrophobic character (from axiom-derived table)
-# X = charge reactance, SCALED BY 1/Q where Q ≈ 7 is the backbone
-#     amide-V resonator quality factor.
-#
-# At resonance, reactive coupling is suppressed by the Q-factor:
-#   X_eff = X_charge / Q
-# This means hydrophobic (resistive) coupling dominates (~85%)
-# with electrostatic (reactive) coupling as a perturbation (~15%).
-# This ratio is DERIVED, not fitted — it comes from the backbone's
-# resonance width in aqueous environment.
-#
-# Q derivation: amide-V mode at 23 THz, measured linewidth ~3 THz
-#   → Q = f₀/Δf = 23/3.3 ≈ 7
-Q_BACKBONE = 7.0
-
-Z_TOPO_COMPLEX = {
-    # Hydrophobic: R from axiom table, X = 0
-    'A': 0.53 + 0.00j, 'V': 0.93 + 0.00j, 'I': 0.73 + 0.00j,
-    'L': 1.00 + 0.00j, 'M': 0.87 + 0.00j, 'F': 1.57 + 0.00j,
-    'W': 3.40 + 0.00j, 'P': 5.02 + 0.00j, 'G': 0.50 + 0.00j,
-    # Negative charge (capacitive): X = -R_charge / Q
-    'D': 0.66 - 0.66/Q_BACKBONE*1j, 'E': 0.52 - 0.52/Q_BACKBONE*1j,
-    # Positive charge (inductive): X = +R_charge / Q
-    'K': 0.60 + 0.60/Q_BACKBONE*1j, 'R': 0.55 + 0.55/Q_BACKBONE*1j,
-    'H': 2.50 + 2.50/(2*Q_BACKBONE)*1j,  # H partially protonated → X/2
-    # Polar uncharged: X = ±R / (2Q) — weak H-bond donor/acceptor reactance
-    'S': 1.64 + 1.64/(2*Q_BACKBONE)*1j, 'T': 1.73 + 1.73/(2*Q_BACKBONE)*1j,
-    'C': 1.74 - 1.74/(2*Q_BACKBONE)*1j, 'Y': 1.31 - 1.31/(2*Q_BACKBONE)*1j,
-    'N': 1.10 + 1.10/(2*Q_BACKBONE)*1j, 'Q': 0.63 + 0.63/(2*Q_BACKBONE)*1j,
-}
+# Import canonical Z_topo from the physics engine (single source of truth)
+from ave.solvers.protein_bond_constants import Z_TOPO as Z_TOPO_COMPLEX, Q_BACKBONE
 
 # Real magnitudes for ABCD cascade (≈ R since X << R)
 Z_TOPO = {k: abs(v) for k, v in Z_TOPO_COMPLEX.items()}

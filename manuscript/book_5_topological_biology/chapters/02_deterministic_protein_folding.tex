@@ -8,7 +8,7 @@ The Algebraic Vacuum Equation (AVE) proposes a much simpler, purely mechanical r
 \section{AVE Topological Impedance}
 Historically, biologists rely on statistical methods, like Chou-Fasman propensities, to estimate whether a sequence will form an Alpha-Helix or a Beta-Sheet. In Variable Spacetime Mechanics, these arbitrary sequence ``propensities'' are recognised as a physical property: \textbf{Topological Impedance}.
 
-Certain sidechains map to a low topological impedance coefficient ($Z_{topo} < 1.0$), allowing the backbone atoms to pack tightly and curl into the balanced cylindrical geometry of an Alpha-Helix. Conversely, bulky or rigid sidechains map to a high topological impedance coefficient ($Z_{topo} > 1.0$). These sequences repel adjacent backbone nodes, forcing the structure to uncoil and flatten into an extended Beta-Sheet to minimise local geometrical strain.
+Each amino acid sidechain maps to a complex topological impedance coefficient $Z_{topo} = R + jX$, where $R$ encodes the sidechain's hydrophobic coupling strength and $X$ encodes its charge reactance.  The \emph{secondary structure} of a sequence does not follow from a simple per-residue threshold; it emerges from the multi-frequency $S_{11}$ response of the full ABCD transmission line cascade.  Small, symmetric sidechains (Ala, Gly) present minimal shunt loading on the backbone waveguide, allowing smooth helical winding.  Branched, bulky, or rigid sidechains (Pro, Trp, His) create impedance discontinuities that flatten the backbone into extended Beta-Sheet or rigid kink conformations.
 
 \subsection{Quantitative $Z_{topo}$ from SPICE Backbone Impedance}
 
@@ -19,26 +19,38 @@ The topological impedance coefficient is not an arbitrary propensity score. It i
 \end{equation}
 where $Z_{\text{backbone}}$ is the characteristic impedance of the N--C$_\alpha$--C repeating unit. When $|Z_R| \gg |Z_{\text{backbone}}|$, the sidechain is effectively invisible to the backbone wave and the chain curls freely (helix). When $|Z_R| \lesssim |Z_{\text{backbone}}|$, the sidechain mass loads the junction node, creating destructive interference and steric clashes that force the chain to flatten (sheet).
 
-Table~\ref{tab:z_topo_values} lists the computed $Z_{topo}$ for representative amino acids:
+Table~\ref{tab:z_topo_values} lists the canonical complex $Z_{topo}$ values from the physics engine (\texttt{protein\_bond\_constants.py}):
 
 \begin{table}[H]
 \centering
-\begin{tabular}{lcccl}
-\hline
-\textbf{Amino Acid} & \textbf{R-Group Mass (Da)} & \textbf{Notch (cm$^{-1}$)} & $Z_{topo}$ & \textbf{Predicted State} \\
-\hline
-Alanine (A)        & 15.0   & 1192 & 0.8  & Alpha-Helix \\
-Leucine (L)        & 57.1   & 1192 & 0.9  & Alpha-Helix \\
-Glutamate (E)      & 73.1   & 1192 & 0.95 & Alpha-Helix \\
-Lysine (K)         & 72.1   & 1192 & 0.95 & Alpha-Helix \\
-Cysteine (C)       & 47.1   & 1192 & 1.1  & Moderate    \\
-Serine (S)         & 31.0   & 1192 & 2.5  & Sheet/Coil  \\
-Valine (V)         & 43.1   & 1344 & 3.8  & Beta-Sheet  \\
-Glycine (G)        & 1.0    & 2819 & 4.5  & Sheet/Coil  \\
-Proline (P)        & 42.1   & 1192 & 5.0  & Rigid Kink  \\
-\hline
+\small
+\begin{tabular}{@{}l c c r l l@{}}
+\toprule
+\textbf{Amino Acid} & $R$ & $X$ & $|Z|$ & \textbf{Type} & \textbf{Preferred Structure} \\
+\midrule
+Glycine (G)       & 0.50 & 0.000   & 0.50 & Hydrophobic   & Coil (minimal stub) \\
+Alanine (A)       & 0.53 & 0.000   & 0.53 & Hydrophobic   & Alpha-Helix \\
+Glutamate (E)     & 0.52 & $-0.074$ & 0.53 & Neg.\ charge  & Alpha-Helix \\
+Arginine (R)      & 0.55 & $+0.079$ & 0.56 & Pos.\ charge  & Alpha-Helix \\
+Lysine (K)        & 0.60 & $+0.086$ & 0.61 & Pos.\ charge  & Alpha-Helix \\
+Glutamine (Q)     & 0.63 & $+0.045$ & 0.63 & Polar         & Alpha-Helix \\
+Aspartate (D)     & 0.66 & $-0.094$ & 0.67 & Neg.\ charge  & Moderate \\
+Isoleucine (I)    & 0.73 & 0.000   & 0.73 & Hydrophobic   & Alpha-Helix \\
+Methionine (M)    & 0.87 & 0.000   & 0.87 & Hydrophobic   & Alpha-Helix \\
+Valine (V)        & 0.93 & 0.000   & 0.93 & Hydrophobic   & Beta-Sheet \\
+Leucine (L)       & 1.00 & 0.000   & 1.00 & Hydrophobic   & Alpha-Helix \\
+Asparagine (N)    & 1.10 & $+0.079$ & 1.10 & Polar         & Moderate \\
+Tyrosine (Y)      & 1.31 & $-0.094$ & 1.31 & Polar         & Moderate \\
+Phenylalanine (F) & 1.57 & 0.000   & 1.57 & Hydrophobic   & Moderate \\
+Serine (S)        & 1.64 & $+0.117$ & 1.64 & Polar         & Coil \\
+Threonine (T)     & 1.73 & $+0.124$ & 1.74 & Polar         & Moderate \\
+Cysteine (C)      & 1.74 & $-0.124$ & 1.74 & Polar         & Moderate \\
+Histidine (H)     & 2.50 & $+0.179$ & 2.51 & Polar (half)  & Moderate \\
+Tryptophan (W)    & 3.40 & 0.000   & 3.40 & Hydrophobic   & Beta-Sheet \\
+Proline (P)       & 5.02 & 0.000   & 5.02 & Hydrophobic   & Rigid Kink \\
+\bottomrule
 \end{tabular}
-\caption{Topological impedance $Z_{topo}$ (Eq.~\ref{eq:z_topo_def}) derived from the zero-parameter SPICE backbone impedance ratio. Values below 1.0 predict Alpha-Helix formation; values above 1.0 predict Beta-Sheet or extended conformations. No statistical propensity fitting is used.}
+\caption{Complex topological impedance $Z_{topo} = R + jX$ for all 20 standard amino acids. $R$ encodes the sidechain's hydrophobic shunt coupling; $X$ encodes charge reactance scaled by $1/Q$ ($Q \approx 7$, backbone amide-V resonator).  The secondary structure classification is not a simple $|Z|$ threshold---it emerges from the multi-frequency $S_{11}$ response of the full ABCD cascade (Chapter~\ref{ch:protein_sim_architecture}).  No statistical propensity fitting is used.}
 \label{tab:z_topo_values}
 \end{table}
 
@@ -54,14 +66,14 @@ To circumvent this, the AVE optimisation engine models the protein sequence in t
     \centering
     \includegraphics[width=1.0\textwidth]{ave_helix_progression.png}
     \vspace{0.3cm}
-    \caption{\textbf{Topological Gradient Descent (Alpha-Helix):} Rather than stepping through an NP-Hard search of random 3D rotations, the AVE solver initializes the backbone geometry as a random continuous coil and applies 1D SPICE impedance parameters as local spatial driving potentials. \textit{Polyalanine} ($Z_{topo} \approx 0.8$) exerts local torque toward continuous curvature, smoothly collapsing the random coil into a perfect helical wrapper without getting stuck in local minima.}
+    \caption{\textbf{Topological Gradient Descent (Alpha-Helix):} Rather than stepping through an NP-Hard search of random 3D rotations, the AVE solver initializes the backbone geometry as a random continuous coil and applies 1D SPICE impedance parameters as local spatial driving potentials. \textit{Polyalanine} ($|Z_{topo}| = 0.53$) presents minimal shunt loading on the backbone, allowing the chain to smoothly collapse into a perfect helical wrapper without getting stuck in local minima.}
     \label{fig:protein_folding_helix}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1.0\textwidth]{ave_sheet_progression.png}
-    \caption{\textbf{Topological Gradient Descent (Beta-Sheet):} For \textit{Polyvaline} ($Z_{topo} \approx 3.8$), the high topological mismatch penalises curvature, exerting steric pressure. The sequence uncoils, flattening into an extended Beta-Sheet geometry to minimise local spatial strain.}
+    \caption{\textbf{Topological Gradient Descent (Beta-Sheet):} For \textit{Polyvaline} ($|Z_{topo}| = 0.93$), $\beta$-branching at the $C_\beta$ carbon creates an impedance discontinuity at every other backbone junction, generating high multi-frequency $S_{11}$. The sequence uncoils, flattening into an extended Beta-Sheet geometry to minimise total transmission line strain.}
     \label{fig:protein_folding_sheet}
 \end{figure}
 
@@ -491,7 +503,7 @@ $\beta$-sheet & Coupled stripline array & Antiparallel microstrip pair \\
 \subsection{Current Limitations}
 
 \begin{enumerate}
-    \item \textbf{Boundary-Zone Residues.} Five amino acids (W, H, R, Y, G) lie in the $Z_{topo} \approx 1.0$--$1.7$ boundary zone. These require corrections for $\pi$-stacking (W, H, Y), multi-conformer sampling (R), and conformational entropy (G).
+    \item \textbf{Boundary-Zone Residues.} Five amino acids (W, H, R, Y, G) produce ambiguous secondary structure predictions. These require corrections for $\pi$-stacking (W, H, Y), multi-conformer sampling (R), and conformational entropy (G).
     \item \textbf{RMSD $\sim 6$~\AA.} The model correctly predicts secondary structure type and produces physically realistic $R_g$ values (Chignolin $R_g$ within 4\% of PDB), but per-residue coordinate accuracy (mean RMSD $\approx 6.2$~\AA) lags behind empirical methods. The remaining error is dominated by tertiary topology: Villin's 3-helix bundle ($10.1$~\AA) requires Axiom~4 non-linear coupling to resolve.
     \item \textbf{Solvent Model Is Implicit.} The sigmoid burial function provides a differentiable approximation to solvent-accessible surface area, but explicit solvent-mediated hydrogen bonding and dielectric screening at the protein--water interface would improve accuracy for charged and polar surfaces.
     \item \textbf{$O(N^2)$ Scaling.} The pairwise coupling scans scale quadratically. Spatial hashing or cell lists would be needed for proteins $> 200$ residues.
