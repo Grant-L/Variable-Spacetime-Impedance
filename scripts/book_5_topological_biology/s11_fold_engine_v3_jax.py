@@ -33,6 +33,7 @@ from ave.solvers.protein_bond_constants import (
     BACKBONE_BONDS, BACKBONE_ANGLES,
     D_HB_DETECT, KAPPA_HB,
 )
+from ave.core.constants import P_C  # Packing fraction = 8πα ≈ 0.183
 
 # Real magnitudes for ABCD cascade (≈ R since X << R)
 Z_TOPO = {k: abs(v) for k, v in Z_TOPO_COMPLEX.items()}
@@ -611,8 +612,20 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N, kappa=0.1):
             z_m = 2.0 * z_p * z_q / (z_p**2 + z_q**2 + 1e-12)
             s21_cross = z_m * jnp.exp(-d_pq / R_BURIAL)
             cross_loss = cross_loss - has_both * s21_cross**2
+    # ═══════════════════════════════════════════════════════════════════
+    # P_C SATURATION (Axiom 4 trace reversal at protein scale)
+    # ═══════════════════════════════════════════════════════════════════
+    # When packing η > P_C, coupling saturates → K=2G → expansion.
+    # Same physics: Cauchy implosion (ch.01), galactic rotation (ch.07).
+    # η = N × r³ / R³, η_ratio = η / P_C (normalised to saturation limit)
+    com = jnp.mean(coords, axis=0)
+    Rg_sq = jnp.mean(jnp.sum((coords - com)**2, axis=1))
+    R_eff = jnp.sqrt(5.0 / 3.0 * Rg_sq + 1e-12)  # effective sphere radius
+    eta = N * _r_Ca**3 / (R_eff**3 + 1e-12)        # packing fraction
+    eta_ratio = jnp.clip(eta / P_C, 0.0, 0.999)     # normalised to P_C
+    sat_packing = jnp.sqrt(1.0 - eta_ratio**2)       # Axiom 4 saturation
 
-    port_loss = junction_loss + cross_loss / N
+    port_loss = (junction_loss + cross_loss / N) * sat_packing
 
     # Cα-Cα bond length penalty — vectorised
     ca_ca_dists = jnp.array([dists[i, i+1] for i in range(N-1)])  # (N-1,)
@@ -772,8 +785,35 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N, kappa=0.1):
     #
     # Remaining scaffolding for N-Cα/Cα-C bonds and angles.
     # All weights trace to Z₀, r_Ca, d₀ (Axioms 1-2).
+
+    # ═══════════════════════════════════════════════════════════════════
+    # PACKING PRESSURE (Axiom 4: P_C = 8πα)
+    # ═══════════════════════════════════════════════════════════════════
+    # The vacuum packing fraction P_C ≈ 0.183 sets the equilibrium density
+    # at ALL scales (ch.01: Cauchy implosion, ch.03: protein folding).
+    #
+    # Equilibrium radius: R_eq = r_Ca × (N/P_C)^(1/3)
+    #   Villin HP35 (N=35): R_eq = 1.7 × 5.76 = 9.8 Å ← target!
+    #
+    # Osmotic pressure under AVE = radiation pressure from Z_H₂O
+    # thermal waves reflecting off the protein-solvent impedance boundary.
+    # When packing η > P_C → unstable → repulsive pressure → expansion.
+    com = jnp.mean(coords, axis=0)
+    Rg_sq = jnp.mean(jnp.sum((coords - com)**2, axis=1))
+    Rg_current = jnp.sqrt(Rg_sq + 1e-12)
+    # P_C predicts equilibrium Rg:
+    R_eq = _r_Ca * (N / P_C) ** (1.0 / 3.0)  # enclosing sphere radius
+    Rg_eq = R_eq * jnp.sqrt(3.0 / 5.0)       # Rg of uniform sphere
+    # Packing pressure: one-sided penalty when Rg < Rg_eq (over-packed)
+    # Weight: 2Z₀ — same as bond stretch (Axiom 1: maximum impedance mismatch)
+    # Packing equilibrium is as fundamental as bond equilibrium:
+    # both are impedance matching at a physical boundary.
+    LAMBDA_PACKING = 2.0 * _Z0   # = 2.0 (same as LAMBDA_BOND)
+    packing_pressure = LAMBDA_PACKING * jnp.maximum(0.0, 1.0 - Rg_current / Rg_eq)**2
+
     return (s11_avg + bond_penalty + steric_penalty + jnp.maximum(0.0, port_loss)
-            + bb_bond_penalty + bb_angle_penalty + omega_penalty + rama_penalty)
+            + bb_bond_penalty + bb_angle_penalty + omega_penalty + rama_penalty
+            + packing_pressure)
 
 
 # JIT compile — N is now dynamic (not static_argnums)
