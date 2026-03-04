@@ -374,3 +374,22 @@ Poly-C & 1.034 & 0.996 & 92$^\circ$ & 4.7 & \checkmark \\
 \end{table}
 
 The Poly-D failure is \emph{expected physics}: a homopolyanion chain experiences Coulomb self-repulsion at every junction node (all $X_D < 0$, all conjugate matches positive-definite).  Without counter-ions or solvent screening, the minimum-$S_{11}$ geometry is an extended rod---which is precisely what the engine returns.  In mixed sequences with compensating positive residues, aspartate participates normally in secondary structure.
+
+\subsection{Villin HP35 Benchmark}
+
+Villin headpiece subdomain HP35 (PDB: 1VII, 35 residues, three-helix bundle) is a standard benchmark for protein folding algorithms.  The engine was run with 15\,000 Adam steps at $\eta = 2 \times 10^{-3}$:
+
+\begin{center}
+\begin{tabular}{@{}l r l@{}}
+\toprule
+\textbf{Metric} & \textbf{Value} & \textbf{Expected} \\
+\midrule
+$S_{11}$ & $0.95 \to 0.78$ & Convergent \\
+$R_g$    & 8.5~\AA & 8--10~\AA~\checkmark \\
+End-to-end & 23.2~\AA & $<30$~\AA~\checkmark \\
+Helix content & 15\% & $\sim\!60\%$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The engine correctly predicts the \emph{size} of the native fold ($R_g = 8.5$~\AA{} vs.\ experimental $\sim\!9.8$~\AA) but underestimates helical content.  The C$_\alpha$-only representation lacks explicit backbone dihedral constraints ($\phi, \psi$); without these, the optimizer can satisfy the $S_{11}$ objective through tight folds rather than regular helices.  Adding Ramachandran basin enforcement---derived from the peptide bond geometry (Axioms 1--2)---is the identified next step for improving secondary structure fidelity.
