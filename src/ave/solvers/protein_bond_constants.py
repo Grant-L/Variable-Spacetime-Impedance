@@ -103,27 +103,43 @@ D0_OVER_BOHR = CA_CA_BOND_LENGTH_ANGSTROM / BOHR_RADIUS_ANGSTROM
 Q_BACKBONE = 7.0
 
 # Per-residue topological impedance (R + jX)
-# R: sidechain hydrophobic volume (from periodic table solver)
-# X: charge reactance / Q (from electrostatic properties)
+# 
+# AB INITIO DERIVATION (no empirical fits):
+#   R = Z_R-group / Z_backbone  where:
+#     Z_R = √(L_R / C_R)  — R-group characteristic impedance
+#     Z_bb = √(L_bb / C_bb) — backbone peptide unit impedance
+#     L = m/ξ² (atomic inductance from mass)
+#     C = ξ²/k (bond capacitance from force constant)
+#   X = charge reactance / Q
+#
+# Derivation script: scripts/book_5_topological_biology/derive_z_topo_first_principles.py
+# Full derivation chain: Axioms 1-4 → ξ_topo → L,C → Z → Z_topo
+#
 Z_TOPO = {
-    # Hydrophobic: R only
-    'A': 0.53 + 0.00j, 'V': 0.93 + 0.00j, 'I': 0.73 + 0.00j,
-    'L': 1.00 + 0.00j, 'M': 0.87 + 0.00j, 'F': 1.57 + 0.00j,
-    'W': 3.40 + 0.00j, 'P': 5.02 + 0.00j, 'G': 0.50 + 0.00j,
-    # Negative charge (capacitive)
-    'D': 0.66 - 0.66/Q_BACKBONE*1j,
-    'E': 0.52 - 0.52/Q_BACKBONE*1j,
-    # Positive charge (inductive)
-    'K': 0.60 + 0.60/Q_BACKBONE*1j,
-    'R': 0.55 + 0.55/Q_BACKBONE*1j,
-    'H': 2.50 + 2.50/(2*Q_BACKBONE)*1j,
-    # Polar uncharged
-    'S': 1.64 + 1.64/(2*Q_BACKBONE)*1j,
-    'T': 1.73 + 1.73/(2*Q_BACKBONE)*1j,
-    'C': 1.74 - 1.74/(2*Q_BACKBONE)*1j,
-    'Y': 1.31 - 1.31/(2*Q_BACKBONE)*1j,
-    'N': 1.10 + 1.10/(2*Q_BACKBONE)*1j,
-    'Q': 0.63 + 0.63/(2*Q_BACKBONE)*1j,
+    # Hydrophobic: R from Z_R/Z_bb, X = 0
+    'G': 0.3036 + 0.00j,    # R=H (minimal stub)
+    'A': 0.5684 + 0.00j,    # R=CH₃
+    'V': 0.6050 + 0.00j,    # R=CH(CH₃)₂
+    'I': 0.6104 + 0.00j,    # R=CH(CH₃)(CH₂CH₃)
+    'L': 0.6104 + 0.00j,    # R=CH₂CH(CH₃)₂
+    'M': 0.7229 + 0.00j,    # R=CH₂CH₂SCH₃
+    'F': 0.7855 + 0.00j,    # R=CH₂C₆H₅
+    'W': 0.8947 + 0.00j,    # R=CH₂(indole)
+    'P': 0.6324 + 0.00j,    # R=—CH₂CH₂CH₂— (cyclic)
+    # Negative charge (capacitive): X = -R/Q
+    'D': 0.9488 - 0.9488/Q_BACKBONE*1j,  # R=CH₂COO⁻
+    'E': 0.8486 - 0.8486/Q_BACKBONE*1j,  # R=CH₂CH₂COO⁻
+    # Positive charge (inductive): X = +R/Q
+    'K': 0.6386 + 0.6386/Q_BACKBONE*1j,  # R=(CH₂)₄NH₃⁺
+    'R': 0.7403 + 0.7403/Q_BACKBONE*1j,  # R=(CH₂)₃guanidinium
+    'H': 0.8618 + 0.8618/(2*Q_BACKBONE)*1j,  # R=CH₂(imidazole), half-protonated
+    # Polar uncharged: X = ±R/(2Q) — weak H-bond reactance
+    'S': 0.7641 + 0.7641/(2*Q_BACKBONE)*1j,  # R=CH₂OH
+    'T': 0.7125 + 0.7125/(2*Q_BACKBONE)*1j,  # R=CH(OH)CH₃
+    'C': 0.8240 - 0.8240/(2*Q_BACKBONE)*1j,  # R=CH₂SH
+    'Y': 0.8332 - 0.8332/(2*Q_BACKBONE)*1j,  # R=CH₂C₆H₄OH
+    'N': 0.8397 + 0.8397/(2*Q_BACKBONE)*1j,  # R=CH₂CONH₂
+    'Q': 0.7818 + 0.7818/(2*Q_BACKBONE)*1j,  # R=CH₂CH₂CONH₂
 }
 
 
