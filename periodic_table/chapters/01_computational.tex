@@ -79,7 +79,36 @@ Because of the massive $\sim 9.72d$ secondary shell offset in Lithium-7, it exhi
     \label{fig:ee_network_analytics}
 \end{figure}
 
+\section{Derivation of the Nucleon Spacing ($d$) from Axiom 1}
+\label{sec:d_derivation}
+
+The fundamental spatial scale of the nuclear LC network is the \textbf{proton spin radius} $d$---the radius of a single nucleon's gyroscopic orbit. This is derived directly from the substrate topology (Axiom~1) and the torus knot isomorphism (Axiom~2).
+
+Each nucleon is a self-intersecting torus knot whose rest energy is entirely stored in the standing-wave mode of the vacuum LC lattice. By Axiom~1, the standing-wave condition requires the loop circumference to equal exactly 4 half-wavelengths of the nucleon's Compton oscillation:
+\begin{equation}
+    2\pi \cdot \frac{d}{2} = 4 \cdot \frac{\lambda_{\text{Compton}}}{2}
+    = 4 \cdot \frac{\pi \hbar}{m_p c}
+    \quad\Longrightarrow\quad
+    \boxed{d = \frac{4\hbar}{m_p c} \approx 0.841 \text{ fm}}
+    \label{eq:d_proton}
+\end{equation}
+This is the \texttt{D\_PROTON} constant in the physics engine. No empirical fit is involved---$d$ is fully determined by $\hbar$, $m_p$, and $c$ (all Axiom~1 substrate quantities).
+
+\subsection{Intra-Alpha Distance ($D_{\text{intra}}$) from Tetrahedral Packing}
+
+The Helium-4 Alpha particle consists of 4 nucleons (2$p$ + 2$n$) at the vertices of a regular tetrahedron. For a tetrahedron with edge length $a$, the center-to-vertex distance is $a\sqrt{3/8}$. The nucleons pack at the minimum mutual distance set by their spin radii:
+\begin{equation}
+    a = d \cdot \sqrt{8}
+    \quad\text{(tetrahedral edge from spin radius)}
+\end{equation}
+This follows from the FCC close-packing condition: four spheres of diameter $d$ touch at vertices of a tetrahedron whose edge length is $d\sqrt{8}$. Therefore the nearest-neighbor nucleon separation within the alpha is:
+\begin{equation}
+    \boxed{D_{\text{intra}} = d\sqrt{8} = \frac{4\hbar}{m_p c} \cdot \sqrt{8} \approx 2.379 \text{ fm}}
+    \label{eq:d_intra}
+\end{equation}
+
 \section{Derivation of the Mutual Coupling Constant ($K$)}
+\label{sec:K_derivation}
 The key to reducing the nuclear binding problem to a zero-parameter derivation lies in expressing the mutual coupling constant $K$ in terms of already-derived AVE quantities.
 
 The mutual inductance between two nucleon defects (proton-class $6^3_2$ Borromean links) is fundamentally an electromagnetic coupling mediated by the vacuum $LC$ network. The base coupling scale is therefore the Coulomb constant:
@@ -91,9 +120,26 @@ Each proton-class nucleon is a cinquefoil $(2,5)$ torus knot with $c = 5$ topolo
 
 At nuclear separations ($d \sim r_{\text{proton}} \approx 0.88$ fm), the nucleon strain fields are close enough that the current distributions deform to concentrate flux toward the adjacent coil---the well-known \textbf{proximity effect} in EE transformer theory. The first-order radiative correction to the mutual coupling is $1/(1 - \alpha/3)$, where $\alpha/3$ represents the isotropic 3D spatial average of the electromagnetic vertex correction.
 
-The full derived expression is:
+Assembling these three factors:
+\begin{align}
+    K &= \underbrace{c_{\text{proton}}}_{= \, 5}
+         \;\times\;
+         \underbrace{\frac{\pi}{2}}_{\text{phase/crossing}}
+         \;\times\;
+         \underbrace{\alpha \hbar c}_{\approx\, 1.4400}
+         \;\times\;
+         \underbrace{\frac{1}{1 - \alpha/3}}_{\approx\, 1.00243}
+    \nonumber\\[6pt]
+    &= 5 \times 1.5708 \times 1.4400 \times 1.00243
+    \nonumber\\[4pt]
+    &= 7.8540 \times 1.4400 \times 1.00243
+    \nonumber\\[4pt]
+    &\approx 11.337 \text{ MeV}\cdot\text{fm}
+    \label{eq:k_mutual_expanded}
+\end{align}
+
 \begin{equation}
-    \boxed{K = \frac{c_{\text{proton}} \cdot \pi/2 \cdot \alpha \hbar c}{1 - \alpha/3} = \frac{5\pi}{2} \cdot \frac{\alpha \hbar c}{1 - \alpha/3} \approx 11.337 \text{ MeV}\cdot\text{fm}}
+    \boxed{K = \frac{5\pi}{2} \cdot \frac{\alpha \hbar c}{1 - \alpha/3} \approx 11.337 \text{ MeV}\cdot\text{fm}}
     \label{eq:k_mutual}
 \end{equation}
 
@@ -248,7 +294,7 @@ Reverse bias ($p$--$p$) & $\alpha\hbar c / r_{ij}$ (Coulomb) & \texttt{ALPHA}$\t
 
 The breakdown voltage $V_{BR}$ is the maximum reverse Coulomb stress that one alpha cluster can absorb internally before its dielectric junction avalanches. Each alpha cluster contains exactly 6 nucleon-nucleon pair channels, of which one is a proton-proton pair. The total internal Coulomb capacity is therefore the energy stored in all 6 pair slots at the intra-alpha separation:
 \begin{equation}
-    V_{BR} = \frac{6 \, \alpha\hbar c}{D_\text{intra}} = \frac{6 \, \alpha\hbar c}{d\sqrt{8}} \approx 3.594 \text{ MeV}
+    V_{BR} = \frac{6 \, \alpha\hbar c}{D_\text{intra}} = \frac{6 \, \alpha\hbar c}{d\sqrt{8}} \approx 3.631 \text{ MeV}
     \label{eq:V_BR}
 \end{equation}
 This is derived entirely from Axiom~2 ($\alpha\hbar c$) and Axiom~1 ($D_\text{intra} = d\sqrt{8}$). No empirical device parameter is introduced.
