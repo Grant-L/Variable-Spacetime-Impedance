@@ -67,6 +67,18 @@ XI_TOPO: float = e_charge / L_NODE             # ≈ 4.149e-7 C/m
 # Volumetric packing fraction  p_c = 8πα
 P_C: float = 8.0 * pi * ALPHA                  # ≈ 0.1834
 
+# Equilibrium packing fraction for 3D structures (proteins, etc.)
+# η_eq = P_C × (1 − ν_vac) = 8πα × 5/7
+#
+# DERIVATION: Of the 7 compliance modes in the K4/SRS lattice,
+# only 5 (transverse) contribute to 3D spatial coupling between
+# structural elements. The 2 longitudinal modes carry energy along
+# the chain direction but do not create inter-element contacts.
+# The accessible packing fraction is therefore (1 − ν) × P_C.
+#
+# Same ν_vac = 2/7 that governs:  sin²θ_W, α_s, CKM, PMNS
+ETA_EQ: float = P_C * (1.0 - 2.0 / 7.0)       # = P_C × 5/7 ≈ 0.1310
+
 # 1D Electromagnetic string tension  T_EM = m_e c² / ℓ_node
 T_EM: float = (M_E * C_0**2) / L_NODE          # ≈ 0.212 N
 
