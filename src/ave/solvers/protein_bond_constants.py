@@ -95,12 +95,47 @@ D0_OVER_BOHR = CA_CA_BOND_LENGTH_ANGSTROM / BOHR_RADIUS_ANGSTROM
 
 
 # ═══════════════════════════════════════════════════════════════
+# H-bond mutual inductance constants (derived from backbone bonds)
+# ═══════════════════════════════════════════════════════════════
+#
+# An H-bond is the mutual inductance between two backbone LC oscillators:
+#   Donor:   N-H dipole (inductive: current flows N→H)
+#   Acceptor: C=O dipole (capacitive: charge accumulates at O)
+#
+# This is the protein-scale analog of K_MUTUAL at the nuclear scale
+# (mutual inductance between nucleon knots):
+#   Nuclear:  K = (cπ/2) × αℏc / (1 − α/3)  → 1/d coupling
+#   Protein:  Y_HB = κ_HB × Z_match × exp(−d/d₀)  → shunt admittance
+#
+# All parameters from BACKBONE_BONDS (Axioms 1-2):
+
+# H-bond dipole lengths (from covalent bond geometry)
+D_NH = BACKBONE_BONDS['N-H']['length_A']   # 1.01 Å — donor dipole
+D_CO = BACKBONE_BONDS['C=O']['length_A']   # 1.23 Å — acceptor dipole
+
+# H-bond detection distance: sum of dipole lengths
+# In the N-Cα-C representation, we detect N_i···C_j proximity
+# The actual H···O distance ≈ 1.8-2.0 Å, but d(N,C) ≈ d_NH + d_CO + d_H···O
+# Simplified: d_detect = d_NH + d_CO + d₀/2 (half a backbone step covers
+# the N..C distance in an α-helix i→i+4 contact)
+D_HB_DETECT = D_NH + D_CO   # = 2.24 Å (tight detection for strong coupling)
+
+# H-bond coupling strength: 1/(2Q) — same amide-V quality factor
+# This is the critical coupling point (κ = 1/2) divided by Q,
+# ensuring H-bond coupling is resonance-modulated
+# (Q_BACKBONE defined below in amino acid impedance section)
+
+
+# ═══════════════════════════════════════════════════════════════
 # Amino acid impedance table (from axiom-derived properties)
 # ═══════════════════════════════════════════════════════════════
 
 # Q-factor of the backbone amide-V resonator
 # Derived: amide-V mode at 23 THz, linewidth ~3 THz → Q = f₀/Δf ≈ 7
 Q_BACKBONE = 7.0
+
+# H-bond coupling strength (deferred from above — needs Q_BACKBONE)
+KAPPA_HB = 1.0 / (2.0 * Q_BACKBONE)  # = 1/14 ≈ 0.071
 
 # Per-residue topological impedance (R + jX)
 # 

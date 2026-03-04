@@ -31,6 +31,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'mechanics'))
 from ave.solvers.protein_bond_constants import (
     Z_TOPO as Z_TOPO_COMPLEX, Q_BACKBONE,
     BACKBONE_BONDS, BACKBONE_ANGLES,
+    D_HB_DETECT, KAPPA_HB,
 )
 
 # Real magnitudes for ABCD cascade (≈ R since X << R)
@@ -308,6 +309,54 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N, kappa=0.1):
     pi_coupling = jnp.where(mask, 0.0, pi_coupling)  # exclude i,i±1,i±2
     Y_pi = pi_coupling.sum(axis=1)
     Y_shunt = Y_shunt + Y_pi
+    # --- Upgrade 8: H-Bond Mutual Inductance (Directional) ---
+    # Backbone H-bonds are mutual inductance between N-H (donor) and C=O (acceptor)
+    # dipoles. This is the protein-scale analog of K_MUTUAL at the nuclear scale.
+    #
+    # DIRECTIONAL COUPLING: unlike general proximity coupling, H-bonds have
+    # angular dependence from the dipole-dipole interaction:
+    #   Y_HB ∝ cos(θ) × exp(-d/d₀) × sigmoid(detection)
+    # where θ is the angle between:
+    #   - Donor direction: Cα→N (proxy for N-H direction)
+    #   - Separation vector: N_i→C_j
+    #
+    # Axiom trace: d_NH = 1.01 Å, d_CO = 1.23 Å (BACKBONE_BONDS, Axioms 1-2)
+    #              κ_HB = 1/(2Q) = 1/14 (amide-V quality factor)
+    #              λ_HB = 2(2r/d₀) = LAMBDA_RAMA (Pauli packing fraction)
+    
+    # Pairwise N_i to C_j distances
+    diff_NC = atom_N[:, None, :] - atom_C[None, :, :]  # (N, N, 3)
+    d_NC = jnp.sqrt(jnp.sum(diff_NC**2, axis=-1) + 1e-12)  # (N, N)
+    
+    # Sequence separation mask: exclude i, i±1, i±2 (local backbone)
+    idx_nc = jnp.arange(N)
+    nc_mask = jnp.abs(idx_nc[:, None] - idx_nc[None, :]) <= 2
+    
+    # Direction vectors for directional coupling:
+    # Donor direction at N_i: (Cα_i → N_i) normalised ≈ N-H direction
+    donor_dir = atom_N - atom_Ca  # (N, 3)
+    donor_norm = jnp.sqrt(jnp.sum(donor_dir**2, axis=-1, keepdims=True)) + 1e-12
+    donor_hat = donor_dir / donor_norm  # (N, 3)
+    
+    # Separation unit vector: N_i → C_j
+    sep_hat = diff_NC / (d_NC[:, :, None] + 1e-12)  # (N, N, 3)
+    
+    # Angular factor: cos(θ) = dot(donor_hat_i, sep_hat_{i,j})
+    # H-bond forms when donor points toward acceptor (cos > 0)
+    cos_theta = jnp.sum(donor_hat[:, None, :] * (-sep_hat), axis=-1)  # (N, N)
+    cos_theta = jnp.maximum(0.0, cos_theta)  # only attractive when aligned
+    
+    # H-bond proximity detection (smooth sigmoid)
+    hb_proximity = jax.nn.sigmoid(BETA_BURIAL * (D_HB_DETECT + d0 - d_NC))
+    
+    # Directional H-bond coupling:
+    #   κ_HB × cos(θ) × exp(-d/d₀) × sigmoid(detection)
+    # Weight = LAMBDA_RAMA (packing fraction scale — H-bonds are steric coupling)
+    hb_coupling = LAMBDA_RAMA * KAPPA_HB * cos_theta * jnp.exp(-d_NC / d0) * hb_proximity
+    hb_coupling = jnp.where(nc_mask, 0.0, hb_coupling)
+    
+    Y_hbond = hb_coupling.sum(axis=1)  # (N,)
+    Y_shunt = Y_shunt + Y_hbond
 
     # --- Upgrade 6: Enhanced Axiom 4 Close-Range Coupling ---
     # Second saturation layer for inter-helix contacts (d < 2d₀)
