@@ -697,24 +697,24 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N, kappa=0.1):
     n_rama = jnp.maximum(N, 1)
     rama_penalty = LAMBDA_RAMA * (coupled_penalty + edge_psi0 + edge_phiN) / n_rama
     # ═══════════════════════════════════════════════════════════════════
-    # PURE FIRST PRINCIPLES LOSS (no scaffolding)
+    # LOSS FUNCTION — diagnosed via pure S₁₁ test (commit db484f8)
     # ═══════════════════════════════════════════════════════════════════
-    # If the backbone IS a transmission line, geometry EMERGES from S₁₁.
+    # Pure S₁₁ test shows geometry does NOT emerge from current cascade:
+    #   - Phase delay βℓ = ωd/d₀ is PERIODIC → multiple d give same S₁₁
+    #   - port_loss can go negative → optimizer exploits this
+    #   - Without constraints: bonds=5.4±1.8Å, angles=40°, 0% SS
     #
-    #   s11_avg      = ABCD cascade reflection (Axioms 1, 3, 4)
-    #                  Phase delay βℓ = ωd/d₀ → bond lengths emerge
-    #                  Junction impedance matching → angles/dihedrals emerge
+    # The penalty terms are REQUIRED because the ABCD cascade computes
+    # Cα→Cα hops (not the full N→Cα→C→N backbone path). To achieve
+    # true first-principles emergence, the cascade would need:
+    #   1. Non-periodic phase (loss ∝ (1-cos(βℓ-ω))² or evanescent term)
+    #   2. Full backbone ABCD segments (N-Cα, Cα-C, C-N bonds each)
+    #   3. Port coupling bounded ∈ [0,1] (no negative loss exploit)
     #
-    #   steric       = Pauli exclusion (Axiom 2)
-    #                  Two knots cannot share a lattice node
-    #
-    #   port_loss    = Cavity cross-coupling (Axiom 1)
-    #                  Segment-segment S₂₁ → tertiary structure
-    #
-    # Removed scaffolding (should EMERGE from S₁₁):
-    #   bond_penalty, bb_bond_penalty, bb_angle_penalty,
-    #   omega_penalty, rama_penalty
-    return s11_avg + steric_penalty + port_loss
+    # Until then, these axiom-derived penalties enforce what the cascade
+    # cannot yet derive. All weights trace to Z₀, r_Ca, d₀ (Axioms 1-2).
+    return (s11_avg + bond_penalty + steric_penalty + port_loss
+            + bb_bond_penalty + bb_angle_penalty + omega_penalty + rama_penalty)
 
 
 # JIT compile — N is now dynamic (not static_argnums)
