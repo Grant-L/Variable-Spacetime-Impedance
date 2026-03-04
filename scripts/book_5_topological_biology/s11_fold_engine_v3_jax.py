@@ -1034,11 +1034,13 @@ def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True):
     gly_mask = compute_gly_mask(sequence)
 
     # --- Initialize torsion angles ---
-    # Seed in α-helical region with small random perturbation
+    # RANDOM initialization — let geometry dictate structure.
+    # Helical seed traps optimizer in local minimum (Rg=14.44, pure helix).
+    # Random start explores full torsion landscape → finds folded structure
+    # near P_C equilibrium (Rg ≈ 8 Å).
     np.random.seed(42)
-    phi_init = np.full(N, -60.0 * np.pi / 180.0) + np.random.normal(0, 0.15, N)
-    psi_init = np.full(N, -40.0 * np.pi / 180.0) + np.random.normal(0, 0.15, N)
-    # φ₀ and ψ_{N-1} are unused (chain ends) but keep them for array simplicity
+    phi_init = np.random.uniform(-np.pi, np.pi, N)
+    psi_init = np.random.uniform(-np.pi, np.pi, N)
     angles = jnp.concatenate([jnp.array(phi_init), jnp.array(psi_init)])  # (2N,)
 
     optimizer = optax.adam(lr)
@@ -1072,7 +1074,7 @@ def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True):
 
         # Simulated annealing in angle space
         if anneal and step < n_steps * 0.5:
-            T = 0.02 * (1.0 - step / (n_steps * 0.5)) ** 2
+            T = 0.05 * (1.0 - step / (n_steps * 0.5)) ** 2
             key, subkey = jax.random.split(key)
             noise = jax.random.normal(subkey, shape=angles.shape) * T
             angles = angles + noise
