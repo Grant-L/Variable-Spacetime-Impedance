@@ -315,6 +315,7 @@ BOND_DEFS = {
     'C-C': ('C', 'C', 2),
     'C=C': ('C', 'C', 4),
     'C-N': ('C', 'N', 2),
+    'C~N': ('C', 'N', 3),   # peptide bond (partial double, amide)
     'C=O': ('C', 'O', 4),
     'C-O': ('C', 'O', 2),
     'N-H': ('N', 'H', 2),
@@ -326,14 +327,14 @@ BOND_DEFS = {
 
 # Known IR-derived force constants for comparison [N/m]
 KNOWN_K = {
-    'C-H': 494, 'C-C': 354, 'C=C': 965, 'C-N': 461,
+    'C-H': 494, 'C-C': 354, 'C=C': 965, 'C-N': 461, 'C~N': 640,
     'C=O': 1170, 'C-O': 489, 'N-H': 641, 'O-H': 745,
     'S-H': 390, 'C-S': 253, 'S-S': 236,
 }
 
 # Known crystallographic bond lengths for comparison [m]
 KNOWN_D = {
-    'C-H': 1.09e-10, 'C-C': 1.54e-10, 'C=C': 1.34e-10, 'C-N': 1.47e-10,
+    'C-H': 1.09e-10, 'C-C': 1.54e-10, 'C=C': 1.34e-10, 'C-N': 1.47e-10, 'C~N': 1.33e-10,
     'C=O': 1.23e-10, 'C-O': 1.43e-10, 'N-H': 1.01e-10, 'O-H': 0.96e-10,
     'S-H': 1.34e-10, 'C-S': 1.82e-10, 'S-S': 2.05e-10,
 }

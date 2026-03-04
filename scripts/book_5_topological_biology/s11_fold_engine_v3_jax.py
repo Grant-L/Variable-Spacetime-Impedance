@@ -89,6 +89,10 @@ SIGMA_OMEGA = jnp.radians(10.0)   # ω is tightly constrained (±10°)
 D_N_CA = BACKBONE_BONDS['N-Ca']['length_A']   # 1.46 Å
 D_CA_C = BACKBONE_BONDS['Ca-C']['length_A']   # 1.52 Å
 D_C_N  = BACKBONE_BONDS['C-N']['length_A']    # 1.33 Å
+# Shared electron counts (from bond_energy_solver: ε_bond = n_e/α)
+N_E_N_CA = BACKBONE_BONDS['N-Ca']['n_electrons']  # 2 (single bond)
+N_E_CA_C = BACKBONE_BONDS['Ca-C']['n_electrons']  # 2 (single bond)
+N_E_C_N  = BACKBONE_BONDS['C-N']['n_electrons']   # 3 (partial double / peptide)
 # Backbone bond angles
 ANGLE_N_CA_C = jnp.radians(BACKBONE_ANGLES['N-Ca-C'])   # 111.2°
 ANGLE_CA_C_N = jnp.radians(BACKBONE_ANGLES['Ca-C-N'])   # 116.2°
@@ -448,9 +452,9 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N, kappa=0.1):
     # Contrast: 0.707/0.577 = 1.22 → 22% impedance step at peptide bonds
     # This is the semiconductor band-gap junction analog:
     # high contrast → strong reflection → geometry-sensitive S₁₁
-    Z_NCa = 1.0 / jnp.sqrt(2.0)   # single bond: 2 electrons
-    Z_CaC = 1.0 / jnp.sqrt(2.0)   # single bond: 2 electrons
-    Z_CN  = 1.0 / jnp.sqrt(3.0)   # peptide bond: 3 electrons (partial double)
+    Z_NCa = 1.0 / jnp.sqrt(float(N_E_N_CA))   # single bond: 2 electrons
+    Z_CaC = 1.0 / jnp.sqrt(float(N_E_CA_C))   # single bond: 2 electrons
+    Z_CN  = 1.0 / jnp.sqrt(float(N_E_C_N))    # peptide bond: 3 electrons (partial double)
     z_triplet = jnp.array([Z_NCa, Z_CaC, Z_CN])
     z_last = jnp.array([Z_NCa, Z_CaC])
     seg_Zc = jnp.concatenate([jnp.tile(z_triplet, N-1), z_last])  # (3N-1,)

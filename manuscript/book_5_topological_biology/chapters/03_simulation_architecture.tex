@@ -155,22 +155,50 @@ where $e_i$ is the fractional exposure (1 = fully solvent-exposed, 0 = fully bur
 \end{equation}
 and $n_\text{max} = \max(N/3, 4)$.  This creates a penalty for exposing hydrophobic residues: their high $R_i$ stubs reflect energy back into the backbone, but when exposed, the solvent shunt drains that energy to ground.  Burial eliminates the shunt, reducing $S_{11}$.
 
-\subsection{Layer 4: ABCD Transmission Line Cascade}
+\subsection{Layer 4: Full Backbone ABCD Cascade}
 
-The backbone is modelled as $N-1$ cascaded transmission line sections.  Each section $i$ has:
-\begin{itemize}
-    \item Characteristic impedance: $Z_c^{(i)} = \frac{1}{2}(|Z_i| + |Z_{i+1}|)$
-    \item Electrical length: $\beta \ell^{(i)} = \omega \cdot d_i / d_0 - \delta_\chi^{(i)}$
-    \item Shunt admittance at junction: $Y_i = Y_i^{\text{shunt}} + Y_i^{\text{solvent}}$
-\end{itemize}
-
-The ABCD matrix for section $i$ is:
+The backbone is modelled as $3N{-}1$ cascaded transmission line sections---one per individual covalent bond (Ch.~2: ``$L$-$C$ ladder from bond stiffness'').  Each residue contributes three segments:
 \begin{equation}
-    \mathbf{T}_i = \underbrace{\begin{pmatrix} \cos\beta\ell & jZ_c\sin\beta\ell \\ j\sin\beta\ell/Z_c & \cos\beta\ell \end{pmatrix}}_{\text{transmission line}} \cdot \underbrace{\begin{pmatrix} 1 & 0 \\ Y_i & 1 \end{pmatrix}}_{\text{shunt element}}
-    \label{eq:abcd_section}
+    \underbrace{\text{N}_i \!-\! \text{C}_\alpha^i}_{d_0 = 1.46~\text{\AA}} \;\longrightarrow\;
+    \underbrace{\text{C}_\alpha^i \!-\! \text{C}_i}_{d_0 = 1.52~\text{\AA}} \;\longrightarrow\;
+    \underbrace{\text{C}_i \!-\! \text{N}_{i+1}}_{d_0 = 1.33~\text{\AA}}
+    \label{eq:backbone_segments}
 \end{equation}
+giving a total of $3N{-}1$ sections (the last residue lacks the inter-residue C--N bond).
 
-The total cascade is $\mathbf{T} = \prod_{i=0}^{N-2} \mathbf{T}_i$, computed via a JIT-compiled \texttt{jax.lax.fori\_loop} for $O(N)$ scaling with zero Python overhead.
+\paragraph{Segment impedances from shared electrons.}
+The characteristic impedance of each segment is derived from the same physics as the nuclear bond energy solver (\texttt{bond\_energy\_solver.py}, line~245): the bond-region dielectric $\varepsilon_\text{bond} = n_e / \alpha$, giving:
+\begin{equation}
+    Z_\text{seg} = \sqrt{\mu / \varepsilon} \;\propto\; \frac{1}{\sqrt{n_e}}
+    \label{eq:z_seg_electron}
+\end{equation}
+\begin{center}
+\begin{tabular}{@{}l c c r@{}}
+\toprule
+\textbf{Bond} & \textbf{Type} & $n_e$ & $Z = 1/\sqrt{n_e}$ \\
+\midrule
+N--C$_\alpha$ & single & 2 & 0.707 \\
+C$_\alpha$--C & single & 2 & 0.707 \\
+C--N (peptide) & partial double & 3 & 0.577 \\
+\bottomrule
+\end{tabular}
+\end{center}
+The 22\% impedance mismatch at each peptide bond junction is the protein-scale analog of a semiconductor band-gap junction: it creates strong reflections that make $S_{11}$ sensitive to local geometry.
+
+\paragraph{Lossy propagation (strain loss).}
+The ABCD matrix uses a \emph{complex} propagation constant $\gamma = \alpha + j\beta$:
+\begin{equation}
+    \alpha_i = \frac{|d_i - d_0^{(i)}|}{d_0^{(i)}}, \qquad \beta_i = \omega \cdot \frac{d_i}{d_0^{(i)}} - \delta_\chi^{(i)}
+    \label{eq:complex_gamma}
+\end{equation}
+where $d_i$ is the actual bond distance and $d_0^{(i)}$ is the target length from \texttt{BACKBONE\_BONDS}.  The strain loss $\alpha$ \emph{breaks the periodicity} of $\cos\beta\ell$: at $d = d_0$, $\alpha = 0$ (lossless, minimum $S_{11}$); at $d \neq d_0$, $\alpha > 0$ (lossy, $S_{11}$ increases monotonically).  This is confirmed by a pure $S_{11}$ diagnostic (commit \texttt{9fc8f9c}): the C--N peptide bond \emph{emerges} at $1.38 \pm 0.10$~\AA\ (target 1.33, 4\% off) without any geometric penalty.
+
+The ABCD matrix for each lossy section is:
+\begin{equation}
+    \mathbf{T}_i = \begin{pmatrix} \cosh\gamma\ell & Z_c\sinh\gamma\ell \\ \sinh\gamma\ell/Z_c & \cosh\gamma\ell \end{pmatrix} \cdot \begin{pmatrix} 1 & 0 \\ Y_i & 1 \end{pmatrix}
+    \label{eq:abcd_lossy}
+\end{equation}
+which reduces to the lossless case ($\cos/\sin$) when $\alpha = 0$.  The sidechain shunt admittance $Y_i$ is applied only at C$_\alpha$ junctions (where R-groups attach).  The total cascade $\mathbf{T} = \prod_{i=0}^{3N-2} \mathbf{T}_i$ is computed via \texttt{jax.lax.fori\_loop} for $O(N)$ scaling.
 
 The port reflection coefficient is:
 \begin{equation}
@@ -384,9 +412,9 @@ Villin headpiece subdomain HP35 (PDB: 1VII, 35 residues, three-helix bundle) is 
 \toprule
 \textbf{Metric} & \textbf{Value} & \textbf{Expected} \\
 \midrule
-Loss & $377 \to 4.13$ & Convergent \\
+Loss & $377 \to 3.53$ & Convergent \\
 $R_g$    & 5.1~\AA & 8--10~\AA \\
-End-to-end & 15.8~\AA & $<30$~\AA~\checkmark \\
+End-to-end & 14.9~\AA & $<30$~\AA~\checkmark \\
 $\phi$ chirality & 100\% negative & \checkmark \\
 $\alpha$-helix & 64\% & $\sim\!60\%$~\checkmark \\
 $\beta$-sheet  & 24\% & --- \\
@@ -406,6 +434,7 @@ Angle bend   & $\lambda_\text{angle} = 2(r_{C_\alpha}/d_0)^2$ & 0.400 & Geometri
 $\omega$ planarity & $\lambda_\omega = 2\,d_{\text{N--C}_\alpha}/d_{\text{C--N}}$ & 2.195 & Bond stiffness ratio \\
 $\phi/\psi$ Rama & $\lambda_\text{rama} = 2(2r_{C_\alpha}/d_0)$ & 1.789 & Pauli packing fraction \\
 Steric exclusion & $\lambda_\text{steric} = \lambda_\text{bond} \cdot d_0/r_{C_\alpha}$ & 4.471 & Pauli $\gg$ Hooke (Ch.~2 Eq.~14) \\
+Port coupling & $\max(0, \mathcal{L}_\text{port})$ & --- & Bounded $S_{21} \in [0,1]$ \\
 \bottomrule
 \end{tabular}
 \end{center}

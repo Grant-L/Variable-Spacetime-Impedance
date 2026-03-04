@@ -61,11 +61,11 @@ BOHR_RADIUS_ANGSTROM = BOHR_RADIUS_M * 1e10  # ≈ 0.529 Å
 # These emerge from the covalent bonding of C, N, O atoms whose
 # nuclear structure is computed by the AVE nuclear solver
 BACKBONE_BONDS = {
-    'Ca-C':   {'length_A': 1.52, 'type': 'single', 'atoms': ('C', 'C')},
-    'C-N':    {'length_A': 1.33, 'type': 'partial_double', 'atoms': ('C', 'N')},
-    'N-Ca':   {'length_A': 1.46, 'type': 'single', 'atoms': ('N', 'C')},
-    'C=O':    {'length_A': 1.23, 'type': 'double', 'atoms': ('C', 'O')},
-    'N-H':    {'length_A': 1.01, 'type': 'single', 'atoms': ('N', 'H')},
+    'Ca-C':   {'length_A': 1.52, 'type': 'single',         'atoms': ('C', 'C'), 'n_electrons': 2},
+    'C-N':    {'length_A': 1.33, 'type': 'partial_double',  'atoms': ('C', 'N'), 'n_electrons': 3},
+    'N-Ca':   {'length_A': 1.46, 'type': 'single',         'atoms': ('N', 'C'), 'n_electrons': 2},
+    'C=O':    {'length_A': 1.23, 'type': 'double',          'atoms': ('C', 'O'), 'n_electrons': 4},
+    'N-H':    {'length_A': 1.01, 'type': 'single',         'atoms': ('N', 'H'), 'n_electrons': 2},
 }
 
 # Backbone bond angles
