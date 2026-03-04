@@ -521,12 +521,17 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N, kappa=0.1):
     bond_dists = d_phys_arr
     bond_penalty = 2.0 * jnp.sum((bond_dists - d0) ** 2) / N
 
-    # Steric repulsion — vectorised over upper triangle
+    # Steric repulsion — Pauli exclusion (Axiom 2)
+    # Ch.02 Eq.14 establishes: exclusion distance = d₀ = 3.8 Å (full backbone step)
+    # No two C_α segments can occupy the same spatial node.
+    # Weight: λ_steric = λ_bond × d₀/r_Ca — same impedance hierarchy ratio
+    #         = 2.0 × 3.8/1.7 = 4.47 (steric stronger than bond: Pauli >> Hooke)
+    LAMBDA_STERIC = LAMBDA_BOND * d0 / r_Ca  # ≈ 4.47
     steric_mask = jnp.abs(idx[:, None] - idx[None, :]) >= 3
-    violations = jnp.maximum(0.0, STERIC - dists) ** 2
+    violations = jnp.maximum(0.0, d0 - dists) ** 2  # exclusion at d₀, not 2r_Ca
     violations = jnp.where(steric_mask, violations, 0.0)
     upper = jnp.triu(violations, k=3)
-    steric_penalty = 1.0 * jnp.sum(upper) / N
+    steric_penalty = LAMBDA_STERIC * jnp.sum(upper) / N
 
     # --- Upgrade 7: Full Backbone Geometry Penalties (VECTORISED) ---
     # All target values from protein_bond_constants.py (Axioms 1-2)
