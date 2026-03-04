@@ -347,80 +347,40 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     pi_coupling = jnp.where(mask, 0.0, pi_coupling)  # exclude i,i±1,i±2
     Y_pi = pi_coupling.sum(axis=1)
     Y_shunt = Y_shunt + Y_pi
-    # --- Upgrade 8: H-Bond via REAL O···H Geometry (5-Atom NERF) ---
-    # Backbone H-bonds: C=O_i ··· H-N_j mutual inductance.
-    # Now uses ACTUAL O and H atom positions (not Cα proxy).
+    # --- Upgrade 8: H-Bond Mutual Inductance (Directional) ---
+    # Backbone H-bonds are mutual inductance between N-H (donor) and C=O (acceptor)
+    # dipoles. Uses N_i-C_j distance as proxy until 5-atom NERF H-bond
+    # gradients are stabilised.
     #
-    # α-helix: O_i bonds to H_{i+4} at ~2.0 Å, N-H···O angle ~160°
-    # β-sheet: O_i bonds to H_j at ~1.9 Å (inter-strand)
-    #
-    # Physics (Axiom 1): H-bond = mutual inductance between C=O and N-H
-    # LC oscillators. Coupling ∝ cos(θ)/d² × exp(-d/d_HB).
-    # κ_HB = 1/(2Q) = 1/14 from amide-V quality factor.
+    # Axiom trace: κ_HB = 1/(2Q) = 1/14 (amide-V quality factor)
     
-    # --- Compute O positions (carbonyl oxygen) ---
-    D_C_O = 1.23   # Å — C=O bond length
-    THETA_CO = jnp.radians(121.4)  # Cα-C=O angle
-    v_CaCi = atom_C[:-1] - atom_Ca[:-1]
-    v_CNi  = atom_N[1:] - atom_C[:-1]
-    v_CaCi_n = v_CaCi / (jnp.sqrt(jnp.sum(v_CaCi**2, axis=-1, keepdims=True)) + 1e-12)
-    v_CNi_n  = v_CNi / (jnp.sqrt(jnp.sum(v_CNi**2, axis=-1, keepdims=True)) + 1e-12)
-    plane_o = jnp.cross(v_CaCi_n, v_CNi_n)
-    plane_o = plane_o / (jnp.sqrt(jnp.sum(plane_o**2, axis=-1, keepdims=True)) + 1e-12)
-    o_dir = (-v_CaCi_n * jnp.cos(THETA_CO) + 
-             jnp.cross(plane_o, -v_CaCi_n) * jnp.sin(THETA_CO))
-    o_pos_inner = atom_C[:-1] + D_C_O * o_dir
-    o_last = atom_C[-1:] + D_C_O * (atom_C[-1:] - atom_Ca[-1:]) / (jnp.sqrt(jnp.sum((atom_C[-1:]-atom_Ca[-1:])**2, axis=-1, keepdims=True)) + 1e-12)
-    o_pos = jnp.concatenate([o_pos_inner, o_last], axis=0)  # (N, 3)
+    # Pairwise N_i to C_j distances
+    diff_NC = atom_N[:, None, :] - atom_C[None, :, :]  # (N, N, 3)
+    d_NC = jnp.sqrt(jnp.sum(diff_NC**2, axis=-1) + 1e-12)  # (N, N)
     
-    # --- Compute H positions (amide hydrogen) ---
-    D_N_H_bond = 1.01   # Å — N-H bond length
-    THETA_NH = jnp.radians(119.2)  # C-N-H angle
-    v_NCa_h = atom_Ca[1:] - atom_N[1:]
-    v_NC_h  = atom_C[:-1] - atom_N[1:]
-    v_NCa_hn = v_NCa_h / (jnp.sqrt(jnp.sum(v_NCa_h**2, axis=-1, keepdims=True)) + 1e-12)
-    v_NC_hn  = v_NC_h / (jnp.sqrt(jnp.sum(v_NC_h**2, axis=-1, keepdims=True)) + 1e-12)
-    plane_h = jnp.cross(v_NCa_hn, v_NC_hn)
-    plane_h = plane_h / (jnp.sqrt(jnp.sum(plane_h**2, axis=-1, keepdims=True)) + 1e-12)
-    h_dir = (-v_NC_hn * jnp.cos(THETA_NH) + 
-             jnp.cross(plane_h, -v_NC_hn) * jnp.sin(THETA_NH))
-    h_pos_inner = atom_N[1:] + D_N_H_bond * h_dir
-    h_first = atom_N[:1] + D_N_H_bond * (atom_N[:1] - atom_Ca[:1]) / (jnp.sqrt(jnp.sum((atom_N[:1]-atom_Ca[:1])**2, axis=-1, keepdims=True)) + 1e-12)
-    h_pos = jnp.concatenate([h_first, h_pos_inner], axis=0)  # (N, 3)
-    h_pos = jnp.where(pro_mask[:, None] > 0.5, atom_N, h_pos)  # Pro: no H
+    # Sequence separation mask: exclude i, i±1, i±2 (local backbone)
+    idx_nc = jnp.arange(N)
+    nc_mask = jnp.abs(idx_nc[:, None] - idx_nc[None, :]) <= 2
     
-    # --- O_i ··· H_j distance matrix ---
-    diff_OH = o_pos[:, None, :] - h_pos[None, :, :]  # (N, N, 3)
-    d_OH = jnp.sqrt(jnp.sum(diff_OH**2, axis=-1) + 1e-12)  # (N, N)
+    # Direction vectors for directional coupling:
+    # Donor direction at N_i: (Cα_i → N_i) normalised ≈ N-H direction
+    donor_dir = atom_N - atom_Ca  # (N, 3)
+    donor_norm = jnp.sqrt(jnp.sum(donor_dir**2, axis=-1, keepdims=True)) + 1e-12
+    donor_hat = donor_dir / donor_norm  # (N, 3)
     
-    # Sequence separation: exclude i, i±1, i±2 (local backbone)
-    idx_hb = jnp.arange(N)
-    hb_local_mask = jnp.abs(idx_hb[:, None] - idx_hb[None, :]) <= 2
+    # Separation unit vector: N_i → C_j
+    sep_hat = diff_NC / (d_NC[:, :, None] + 1e-12)  # (N, N, 3)
     
-    # N-H direction at donor j
-    nh_dir = h_pos - atom_N  # (N, 3) — N→H direction
-    nh_norm = jnp.sqrt(jnp.sum(nh_dir**2, axis=-1, keepdims=True)) + 1e-12
-    nh_hat = nh_dir / nh_norm  # (N, 3)
+    # Angular factor: cos(θ) = dot(donor_hat_i, sep_hat_{i,j})
+    cos_theta = jnp.sum(donor_hat[:, None, :] * (-sep_hat), axis=-1)  # (N, N)
+    cos_theta = jnp.maximum(0.0, cos_theta)
     
-    # O···H direction: H_j → O_i (acceptor direction)
-    oh_hat = diff_OH / (d_OH[:, :, None] + 1e-12)  # (N, N, 3)
+    # H-bond proximity detection
+    hb_proximity = jax.nn.sigmoid(BETA_BURIAL * (D_HB_DETECT + d0 - d_NC))
     
-    # Angular factor: cos(N-H···O) = dot(H→N, H→O)
-    # H-bond strongest when N-H and H···O are collinear (cos ≈ 1)
-    cos_nho = jnp.sum((-nh_hat[None, :, :]) * (-oh_hat), axis=-1)  # (N, N)
-    cos_nho = jnp.maximum(0.0, cos_nho)  # only when aligned
-    
-    # H-bond detection: smooth sigmoid at D_HB = 1.01 + 1.23 = 2.24 Å
-    D_HB = D_N_H_bond + D_C_O  # N-H + C=O bond lengths
-    hb_proximity = jax.nn.sigmoid(BETA_BURIAL * (D_HB + 1.0 - d_OH))  # detection with margin
-    
-    # Exclude Proline donors (no amide H)
-    pro_donor_mask = (1.0 - pro_mask[None, :])  # (1, N) → broadcast
-    
-    # H-bond coupling: κ_HB × cos(θ) × exp(-d_OH/d₀) × detection × !Pro
-    hb_coupling = (LAMBDA_RAMA * KAPPA_HB * cos_nho * 
-                   jnp.exp(-d_OH / d0) * hb_proximity * pro_donor_mask)
-    hb_coupling = jnp.where(hb_local_mask, 0.0, hb_coupling)
+    # Directional H-bond coupling
+    hb_coupling = LAMBDA_RAMA * KAPPA_HB * cos_theta * jnp.exp(-d_NC / d0) * hb_proximity
+    hb_coupling = jnp.where(nc_mask, 0.0, hb_coupling)
     
     Y_hbond = hb_coupling.sum(axis=1)  # (N,)
     Y_shunt = Y_shunt + Y_hbond
@@ -889,19 +849,22 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     R_CB_C = (1.70 + 1.70) * SIGMA_FACTOR  # ≈ 3.03 Å — Cβ-C (helix at 3.20: ALLOWED)
     R_CB_CB = (1.70 + 1.70) * SIGMA_FACTOR # ≈ 3.03 Å — Cβ-Cβ
     
-    # LOCAL masks: |i-j| >= 1 for O/H/Cβ cross-terms (these create Rama basins)
-    local_mask = jnp.abs(idx[:, None] - idx[None, :]) >= 1
+    # LOCAL masks for different atom types:
+    # O/H cross-terms: |i-j| >= 2 (O_i-H_{i+1} is bonded at 1.50 Å: O=C-N-H)
+    # Cβ cross-terms:  |i-j| >= 1 (Cβ is a stub, not in main chain)
+    oh_mask = jnp.abs(idx[:, None] - idx[None, :]) >= 2
+    cb_mask = jnp.abs(idx[:, None] - idx[None, :]) >= 1
     
     # --- O steric ---
     # O-Cβ (the PRIMARY Ramachandran constraint for φ)
     d_OCB = jnp.sqrt(jnp.sum((o_pos[:, None, :] - cb_pos[None, :, :])**2, axis=-1) + 1e-12)
     ocb_violations = jnp.maximum(0.0, R_O_CB - d_OCB) ** 2
-    ocb_violations = jnp.where(local_mask, ocb_violations, 0.0)
+    ocb_violations = jnp.where(oh_mask, ocb_violations, 0.0)
     
     # O-N 
     d_ON = jnp.sqrt(jnp.sum((o_pos[:, None, :] - atom_N[None, :, :])**2, axis=-1) + 1e-12)
     on_violations = jnp.maximum(0.0, R_O_N - d_ON) ** 2
-    on_violations = jnp.where(local_mask, on_violations, 0.0)
+    on_violations = jnp.where(oh_mask, on_violations, 0.0)
     
     # O-O
     d_OO = jnp.sqrt(jnp.sum((o_pos[:, None, :] - o_pos[None, :, :])**2, axis=-1) + 1e-12)
@@ -913,26 +876,26 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     # H-C (the PRIMARY Ramachandran constraint for ψ)
     d_HC = jnp.sqrt(jnp.sum((h_pos[:, None, :] - atom_C[None, :, :])**2, axis=-1) + 1e-12)
     hc_violations = jnp.maximum(0.0, R_H_C - d_HC) ** 2
-    hc_violations = jnp.where(local_mask, hc_violations, 0.0)
+    hc_violations = jnp.where(oh_mask, hc_violations, 0.0)
     
     # H-Cβ
     d_HCB = jnp.sqrt(jnp.sum((h_pos[:, None, :] - cb_pos[None, :, :])**2, axis=-1) + 1e-12)
     hcb_violations = jnp.maximum(0.0, R_H_CB - d_HCB) ** 2
-    hcb_violations = jnp.where(local_mask, hcb_violations, 0.0)
+    hcb_violations = jnp.where(oh_mask, hcb_violations, 0.0)
     
     # H-O
     d_HO = jnp.sqrt(jnp.sum((h_pos[:, None, :] - o_pos[None, :, :])**2, axis=-1) + 1e-12)
     ho_violations = jnp.maximum(0.0, R_H_O - d_HO) ** 2
-    ho_violations = jnp.where(local_mask, ho_violations, 0.0)
+    ho_violations = jnp.where(oh_mask, ho_violations, 0.0)
     
     # --- Cβ-backbone steric (local) ---
     d_CBN = jnp.sqrt(jnp.sum((cb_pos[:, None, :] - atom_N[None, :, :])**2, axis=-1) + 1e-12)
     cbn_violations = jnp.maximum(0.0, R_CB_N - d_CBN) ** 2
-    cbn_violations = jnp.where(local_mask, cbn_violations, 0.0)
+    cbn_violations = jnp.where(cb_mask, cbn_violations, 0.0)
     
     d_CBC = jnp.sqrt(jnp.sum((cb_pos[:, None, :] - atom_C[None, :, :])**2, axis=-1) + 1e-12)
     cbc_violations = jnp.maximum(0.0, R_CB_C - d_CBC) ** 2
-    cbc_violations = jnp.where(local_mask, cbc_violations, 0.0)
+    cbc_violations = jnp.where(cb_mask, cbc_violations, 0.0)
     
     # Cβ-Cβ (longer range)
     d_CBCB = jnp.sqrt(jnp.sum((cb_pos[:, None, :] - cb_pos[None, :, :])**2, axis=-1) + 1e-12)
