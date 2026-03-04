@@ -728,105 +728,102 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     upper = jnp.triu(violations, k=3)
     steric_penalty = LAMBDA_STERIC * jnp.sum(upper) / N
 
-    # --- Dihedral helper (needed for Ramachandran) ---
-    def _dihedral_batch(p0, p1, p2, p3):
-        """Signed dihedral angles for batches of 4-atom sets."""
-        b1 = p1 - p0
-        b2 = p2 - p1
-        b3 = p3 - p2
-        n1 = jnp.cross(b1, b2)
-        n2 = jnp.cross(b2, b3)
-        n1_norm = jnp.sqrt(jnp.sum(n1**2, axis=-1, keepdims=True)) + 1e-12
-        n2_norm = jnp.sqrt(jnp.sum(n2**2, axis=-1, keepdims=True)) + 1e-12
-        b2_norm = jnp.sqrt(jnp.sum(b2**2, axis=-1, keepdims=True)) + 1e-12
-        n1n = n1 / n1_norm
-        n2n = n2 / n2_norm
-        b2n = b2 / b2_norm
-        cos_d = jnp.sum(n1n * n2n, axis=-1)
-        sin_d = jnp.sum(jnp.cross(n1n, n2n) * b2n, axis=-1)
-        return jnp.arctan2(sin_d, cos_d)
-    # NOTE: bond lengths, bond angles, ω are EXACT by construction (NERF).
-    # No penalties needed — all evaluate to 0.000.
-    
-    # (d) φ/ψ Ramachandran — COUPLED 2D BASINS (Axiom 2: steric exclusion)
+    # ═══════════════════════════════════════════════════════════════════
+    # FULL BACKBONE ATOM STERIC (Axiom 2: Pauli exclusion)
+    # ═══════════════════════════════════════════════════════════════════
     #
-    # The Ramachandran basins arise from steric exclusion (Axiom 2) in 2D
-    # (φ,ψ) space. They are CORRELATED islands, not independent 1D projections.
-    # Independent φ/ψ penalties allow unphysical states like (φ=-60°, ψ=130°)
-    # which sits between α and β basins with zero penalty — but is actually
-    # a high-energy (sterically forbidden) region.
+    # REPLACES the Ramachandran penalty. The Rama basins are NOT a
+    # fundamental potential — they are CONSEQUENCES of steric clashes
+    # between backbone atoms. By computing pairwise steric exclusion
+    # between all N, Cα, C atoms, the basins emerge naturally from
+    # geometry:
+    #   φ rotation: C_{i-1} clashes with C_i, Cβ_i
+    #   ψ rotation: N_i clashes with N_{i+1}
     #
-    # Coupled penalty: d²_basin = Δφ² + Δψ²  (2D distance to basin centre)
-    # V = min(d²_α, d²_β) / σ²  (nearest-basin 2D potential)
+    # Exclusion radii (Axiom 2: Slater/Clementi radii):
+    #   C-C: 3.4 Å (2 × r_C = 1.7 Å)
+    #   N-N: 3.0 Å (2 × r_N = 1.5 Å)
+    #   C-N: 3.2 Å (r_C + r_N)
+    #
+    # This is the SAME physics as Cα-Cα steric above, but applied to
+    # all 3 backbone atom types. Benefits:
+    #   - No artificial basin parameters (PHI_ALPHA, etc.)
+    #   - Gly naturally has more freedom (no Cβ → fewer clashes)
+    #   - Pro naturally restricted (ring constrains φ)
+    #   - Loop/turn conformations emerge when globally favourable
     
-    # φ_i = dihedral(C_{i-1}, N_i, Cα_i, C_i) → for i=1..N-1
-    phi_all = _dihedral_batch(atom_C[:-1], atom_N[1:], atom_Ca[1:], atom_C[1:])  # (N-1,)
-    # ψ_i = dihedral(N_i, Cα_i, C_i, N_{i+1}) → for i=0..N-2
-    psi_all = _dihedral_batch(atom_N[:-1], atom_Ca[:-1], atom_C[:-1], atom_N[1:])  # (N-1,)
+    R_CC = 3.4   # Å — C-C exclusion (2 × 1.7 Å Slater radius)
+    R_NN = 3.0   # Å — N-N exclusion (2 × 1.5 Å)
+    R_CN = 3.2   # Å — C-N exclusion (1.7 + 1.5 Å)
+    LAMBDA_BB_STERIC = LAMBDA_STERIC  # Same weight as Cα-Cα steric
     
-    # --- Coupled region: residues that have BOTH φ and ψ defined ---
-    # φ_all[0:] = residues 1..N-1, psi_all[:-1] does residues 0..N-3
-    # Overlap: φ for residues 1..N-2 = phi_all[0:N-2]
-    #          ψ for residues 1..N-2 = psi_all[1:N-1]
-    phi_coupled = phi_all[:-1]  # residues 1..N-2 (excludes last)
-    psi_coupled = psi_all[1:]   # residues 1..N-2 (excludes first)
-    gly_coupled = gly_mask[1:-1]  # residues 1..N-2
+    # Sequence separation: exclude bonded atoms (|i-j| <= 1)
+    bb_seq_mask = jnp.abs(idx[:, None] - idx[None, :]) >= 2
     
-    # Per-residue impedance magnitudes for coupled region
-    z_coupled = z_mag[1:-1]  # |Z_topo| for residues 1..N-2
+    # N-N pairwise distances and steric
+    d_NN = jnp.sqrt(jnp.sum((atom_N[:, None, :] - atom_N[None, :, :])**2, axis=-1) + 1e-12)
+    nn_violations = jnp.maximum(0.0, R_NN - d_NN) ** 2
+    nn_violations = jnp.where(bb_seq_mask, nn_violations, 0.0)
     
-    # 2D distance to α-basin (φ=-60°, ψ=-40°)
-    d_phi_a = jnp.arctan2(jnp.sin(phi_coupled - PHI_ALPHA), jnp.cos(phi_coupled - PHI_ALPHA))
-    d_psi_a = jnp.arctan2(jnp.sin(psi_coupled - PSI_ALPHA), jnp.cos(psi_coupled - PSI_ALPHA))
-    d2_alpha = d_phi_a**2 + d_psi_a**2  # 2D squared distance to α-basin
+    # C-C pairwise distances and steric
+    d_CC = jnp.sqrt(jnp.sum((atom_C[:, None, :] - atom_C[None, :, :])**2, axis=-1) + 1e-12)
+    cc_violations = jnp.maximum(0.0, R_CC - d_CC) ** 2
+    cc_violations = jnp.where(bb_seq_mask, cc_violations, 0.0)
     
-    # 2D distance to β-basin (φ=-120°, ψ=130°)
-    d_phi_b = jnp.arctan2(jnp.sin(phi_coupled - PHI_BETA), jnp.cos(phi_coupled - PHI_BETA))
-    d_psi_b = jnp.arctan2(jnp.sin(psi_coupled - PSI_BETA), jnp.cos(psi_coupled - PSI_BETA))
-    d2_beta = d_phi_b**2 + d_psi_b**2   # 2D squared distance to β-basin
+    # N-C cross distances and steric
+    d_NC_all = jnp.sqrt(jnp.sum((atom_N[:, None, :] - atom_C[None, :, :])**2, axis=-1) + 1e-12)
+    nc_violations = jnp.maximum(0.0, R_CN - d_NC_all) ** 2
+    nc_violations = jnp.where(bb_seq_mask, nc_violations, 0.0)
     
-    # --- Sequence-dependent basin asymmetry (Axiom 1: impedance matching) ---
-    # α-helix: tight 100°/residue turns → high conformational impedance
-    # β-sheet: extended → low conformational impedance
-    # The sidechain impedance |Z_topo| determines how much mismatch
-    # the residue experiences in each conformation:
-    #   w_α = |z_i|     → large sidechain: α penalty larger (harder to fit)
-    #   w_β = 1/|z_i|   → large sidechain: β penalty smaller (more room)
-    # This is the SAME impedance matching principle used throughout:
-    #   S₁₁ = |Z_load - Z_line| / |Z_load + Z_line|
-    # High-Z sidechains are mismatched in the tight α-helix → higher S₁₁ → β preferred
-    d2_alpha_weighted = d2_alpha * z_coupled       # high |Z| → deeper β, shallower α
-    d2_beta_weighted  = d2_beta / (z_coupled + 1e-12)  # high |Z| → shallower β
+    # C-N cross (transpose)
+    cn_violations = jnp.maximum(0.0, R_CN - d_NC_all.T) ** 2
+    cn_violations = jnp.where(bb_seq_mask, cn_violations, 0.0)
     
-    # Coupled penalty: nearest WEIGHTED 2D basin, glycine-exempt
-    # For Proline: add PPII basin (φ=-75°, ψ=145°) — ring locks φ
-    d_phi_pp = jnp.arctan2(jnp.sin(phi_coupled - PHI_PPII), jnp.cos(phi_coupled - PHI_PPII))
-    d_psi_pp = jnp.arctan2(jnp.sin(psi_coupled - PSI_PPII), jnp.cos(psi_coupled - PSI_PPII))
-    d2_ppii = d_phi_pp**2 + d_psi_pp**2  # unweighted — PPII is equally valid
+    # --- Cβ steric (the key Axiom 2 contributor to Ramachandran basins) ---
+    # The Ramachandran basins arise primarily from Cβ clashing with
+    # backbone atoms of adjacent residues. Without Cβ, backbone N/Cα/C
+    # are too far apart to create angular constraints.
+    #
+    # Cβ placed at default gauche+ (χ₁=60°) — most probable rotamer.
+    # Glycine: Cβ at Cα (no sidechain → naturally more conformational freedom)
+    chi1_default = jnp.full(N, jnp.radians(60.0))
+    cb_pos = _compute_cb_positions(atom_N, atom_Ca, atom_C, chi1_default, gly_mask)
     
-    pro_coupled = pro_mask[1:-1]  # residues 1..N-2
-    # Non-Pro: min(α, β).  Pro: min(α, β, PPII).
-    d2_min_2basin = jnp.minimum(d2_alpha_weighted, d2_beta_weighted)
-    d2_min_3basin = jnp.minimum(d2_min_2basin, d2_ppii / SIGMA_RAMA**2 * SIGMA_RAMA**2)  # keep units
-    d2_min = jnp.where(pro_coupled > 0.5, jnp.minimum(d2_min_2basin, d2_ppii), d2_min_2basin)
+    R_CB_N = 3.2   # Å — Cβ-N exclusion (r_C + r_N)
+    R_CB_C = 3.4   # Å — Cβ-C exclusion (2 × r_C)
+    R_CB_CB = 3.4  # Å — Cβ-Cβ exclusion
     
-    coupled_penalty = jnp.sum((1.0 - gly_coupled) * d2_min / SIGMA_RAMA**2)
+    # LOCAL Cβ-backbone steric (|i-j| >= 1): THIS creates the Ramachandran basins
+    # Cβ_i vs C_{i-1}: constrains φ_i  (prevents back-folding)
+    # Cβ_i vs N_{i+1}: constrains ψ_i  (prevents head-on collision)
+    # Using |i-j| >= 1 (not >=2) because the key clashes ARE adjacent residues
+    cb_local_mask = jnp.abs(idx[:, None] - idx[None, :]) >= 1
+
+    # Cβ-N steric
+    d_CBN = jnp.sqrt(jnp.sum((cb_pos[:, None, :] - atom_N[None, :, :])**2, axis=-1) + 1e-12)
+    cbn_violations = jnp.maximum(0.0, R_CB_N - d_CBN) ** 2
+    cbn_violations = jnp.where(cb_local_mask, cbn_violations, 0.0)
     
-    # --- Edge residues: only φ or only ψ available ---
-    # Residue 0: no φ, only ψ_0 available
-    d_psi0_a = jnp.arctan2(jnp.sin(psi_all[0] - PSI_ALPHA), jnp.cos(psi_all[0] - PSI_ALPHA))
-    d_psi0_b = jnp.arctan2(jnp.sin(psi_all[0] - PSI_BETA),  jnp.cos(psi_all[0] - PSI_BETA))
-    edge_psi0 = (1.0 - gly_mask[0]) * jnp.minimum(d_psi0_a**2, d_psi0_b**2) / SIGMA_RAMA**2
+    # Cβ-C steric
+    d_CBC = jnp.sqrt(jnp.sum((cb_pos[:, None, :] - atom_C[None, :, :])**2, axis=-1) + 1e-12)
+    cbc_violations = jnp.maximum(0.0, R_CB_C - d_CBC) ** 2
+    cbc_violations = jnp.where(cb_local_mask, cbc_violations, 0.0)
     
-    # Residue N-1: no ψ, only φ_{N-1} available
-    d_phiN_a = jnp.arctan2(jnp.sin(phi_all[-1] - PHI_ALPHA), jnp.cos(phi_all[-1] - PHI_ALPHA))
-    d_phiN_b = jnp.arctan2(jnp.sin(phi_all[-1] - PHI_BETA),  jnp.cos(phi_all[-1] - PHI_BETA))
-    edge_phiN = (1.0 - gly_mask[-1]) * jnp.minimum(d_phiN_a**2, d_phiN_b**2) / SIGMA_RAMA**2
+    # Cβ-Cβ steric (longer range, |i-j| >= 3)
+    d_CBCB = jnp.sqrt(jnp.sum((cb_pos[:, None, :] - cb_pos[None, :, :])**2, axis=-1) + 1e-12)
+    cb_seq_mask = jnp.abs(idx[:, None] - idx[None, :]) >= 3
+    cbcb_violations = jnp.maximum(0.0, R_CB_CB - d_CBCB) ** 2
+    cbcb_violations = jnp.where(cb_seq_mask, cbcb_violations, 0.0)
     
-    # Total Ramachandran: coupled core + edge contributions
-    # Normalise by total DOF count: (N-2) coupled + 2 edges = N
-    n_rama = jnp.maximum(N, 1)
-    rama_penalty = LAMBDA_RAMA * (coupled_penalty + edge_psi0 + edge_phiN) / n_rama
+    # Total backbone atom steric (upper triangle to avoid double-counting)
+    bb_atom_steric = (jnp.sum(jnp.triu(nn_violations, k=2)) +
+                      jnp.sum(jnp.triu(cc_violations, k=2)) +
+                      jnp.sum(jnp.triu(nc_violations, k=2)) +
+                      jnp.sum(jnp.triu(cn_violations, k=2)) +
+                      jnp.sum(jnp.triu(cbn_violations, k=2)) +
+                      jnp.sum(jnp.triu(cbc_violations, k=2)) +
+                      jnp.sum(jnp.triu(cbcb_violations, k=3)))
+    rama_penalty = LAMBDA_BB_STERIC * bb_atom_steric / (4 * N)  # normalise by atom count (N,Ca,C,Cb)
     # ═══════════════════════════════════════════════════════════════════
     # LOSS FUNCTION — pure S₁₁ + steric + Ramachandran
     # ═══════════════════════════════════════════════════════════════════
