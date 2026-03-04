@@ -748,24 +748,12 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N, kappa=0.1):
     n_rama = jnp.maximum(N, 1)
     rama_penalty = LAMBDA_RAMA * (coupled_penalty + edge_psi0 + edge_phiN) / n_rama
     # ═══════════════════════════════════════════════════════════════════
-    # LOSS FUNCTION — diagnosed via pure S₁₁ test (commit db484f8)
+    # PURE S₁₁ RETEST — all 3 roadmap items now implemented:
+    #   1. ✓ Non-periodic phase: strain loss α = |d-d₀|/d₀ (complex γ)
+    #   2. ✓ Full backbone ABCD: 3N-1 per-bond segments
+    #   3. ✓ Port coupling bounded: max(0, port_loss) below
     # ═══════════════════════════════════════════════════════════════════
-    # Pure S₁₁ test shows geometry does NOT emerge from current cascade:
-    #   - Phase delay βℓ = ωd/d₀ is PERIODIC → multiple d give same S₁₁
-    #   - port_loss can go negative → optimizer exploits this
-    #   - Without constraints: bonds=5.4±1.8Å, angles=40°, 0% SS
-    #
-    # The penalty terms are REQUIRED because the ABCD cascade computes
-    # Cα→Cα hops (not the full N→Cα→C→N backbone path). To achieve
-    # true first-principles emergence, the cascade would need:
-    #   1. Non-periodic phase (loss ∝ (1-cos(βℓ-ω))² or evanescent term)
-    #   2. Full backbone ABCD segments (N-Cα, Cα-C, C-N bonds each)
-    #   3. Port coupling bounded ∈ [0,1] (no negative loss exploit)
-    #
-    # Until then, these axiom-derived penalties enforce what the cascade
-    # cannot yet derive. All weights trace to Z₀, r_Ca, d₀ (Axioms 1-2).
-    return (s11_avg + bond_penalty + steric_penalty + port_loss
-            + bb_bond_penalty + bb_angle_penalty + omega_penalty + rama_penalty)
+    return s11_avg + steric_penalty + jnp.maximum(0.0, port_loss)
 
 
 # JIT compile — N is now dynamic (not static_argnums)
