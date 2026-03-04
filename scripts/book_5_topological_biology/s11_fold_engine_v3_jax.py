@@ -397,24 +397,43 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N, kappa=0.1):
     n_neighbors_smooth = burial_contrib.sum(axis=1)  # (N,) smooth neighbor count
 
     n_max = jnp.maximum(N / 3.0, 4.0)
-    exposure = jnp.clip(1.0 - n_neighbors_smooth / n_max, 0.0, 1.0)
-    # Solvent coupling added per-frequency in the S₁₁ sweep (see below)
+    exposure_raw = jnp.clip(1.0 - n_neighbors_smooth / n_max, 0.0, 1.0)
+    
+    # --- P_C GLOBAL PACKING SATURATION (Trace Reversal at Protein Scale) ---
+    # Same Axiom 4 operator as galactic rotation (galactic_rotation.py L180):
+    #   Galaxy:  g_drag = √(g_N·a₀) × √(1 - g_N/a₀)  → drag saturates at a₀
+    #   Protein: burial_benefit × √(1 - η/P_C)         → burial saturates at P_C
+    #
+    # When global packing η → P_C (trace reversal, K=2G):
+    #   burial benefit → 0, exposure_min → 1
+    #   → solvent shunt stays high → no more compaction reward
+    #   → expansion until η = P_C → equilibrium at Rg_eq
+    #
+    # Compute global packing fraction
+    _com = jnp.mean(coords, axis=0)
+    _Rg_sq = jnp.mean(jnp.sum((coords - _com)**2, axis=1))
+    _R_eff = jnp.sqrt(5.0 / 3.0 * _Rg_sq + 1e-12)
+    _eta = N * _r_Ca**3 / (_R_eff**3 + 1e-12)
+    _eta_ratio = jnp.clip(_eta / P_C, 0.0, 0.999)
+    _sat_global = jnp.sqrt(1.0 - _eta_ratio**2)  # Axiom 4: 1 at η=0, 0 at η=P_C
+    
+    # Floor on exposure: at η=P_C, all residues are fully "exposed"
+    # (solvent pressure penetrates the entire structure)
+    exposure_floor = 1.0 - _sat_global  # 0 at η=0 (sparse), 1 at η=P_C (dense)
+    exposure = jnp.maximum(exposure_raw, exposure_floor)
 
     # --- Core Packing Saturation (Inner Galaxy Analog) ---
-    # SAME Axiom 4 physics as galactic rotation (Book 7, Ch.2):
-    #   Inner galaxy: high shear γ̇ > γ̇_yield → η_eff → 0 → Keplerian
-    #   Inner protein: high packing n > n_max → Y_shunt → 0 → decoupled
+    # SAME Axiom 4 physics as galactic rotation (galactic_rotation.py L180):
+    #   Galaxy:  S = saturation_factor(g_N, a₀)  → drag saturates at a₀
+    #   Protein: S = saturation_factor(η, P_C)   → coupling saturates at P_C
     #
-    # When a residue is densely packed (many neighbors within R_BURIAL),
-    # its mutual inductance saturates — it cannot support additional
-    # inductive coupling. This prevents over-compaction:
-    #   Y_eff(i) = Y_shunt(i) × √(1 − (n_i/n_max)²)
+    # The GLOBAL packing fraction η = N×r³/R³ is the protein's "gravitational
+    # acceleration" — when dense (η > P_C), the vacuum can't support further
+    # coupling → trace reversal (K=2G) → structure must expand.
     #
-    # Without this: densely packed cores attract MORE (1/d² at short range)
-    # With this: densely packed cores SATURATE (Keplerian), structure relaxes
-    packing_ratio = jnp.clip(n_neighbors_smooth / n_max, 0.0, 0.999)
-    packing_saturation = jnp.sqrt(1.0 - packing_ratio**2)  # Axiom 4
-    Y_shunt = Y_shunt * packing_saturation
+    # Coefficient: 1 (no fitted weight — same as galactic rotation)
+    # _sat_global computed above in P_C burial saturation block (L411-420)
+    Y_shunt = Y_shunt * _sat_global
     # ═══════════════════════════════════════════════════════════════════
     # FULL BACKBONE ABCD CASCADE (3N-1 segments)
     # ═══════════════════════════════════════════════════════════════════
@@ -786,34 +805,11 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N, kappa=0.1):
     # Remaining scaffolding for N-Cα/Cα-C bonds and angles.
     # All weights trace to Z₀, r_Ca, d₀ (Axioms 1-2).
 
-    # ═══════════════════════════════════════════════════════════════════
-    # PACKING PRESSURE (Axiom 4: P_C = 8πα)
-    # ═══════════════════════════════════════════════════════════════════
-    # The vacuum packing fraction P_C ≈ 0.183 sets the equilibrium density
-    # at ALL scales (ch.01: Cauchy implosion, ch.03: protein folding).
-    #
-    # Equilibrium radius: R_eq = r_Ca × (N/P_C)^(1/3)
-    #   Villin HP35 (N=35): R_eq = 1.7 × 5.76 = 9.8 Å ← target!
-    #
-    # Osmotic pressure under AVE = radiation pressure from Z_H₂O
-    # thermal waves reflecting off the protein-solvent impedance boundary.
-    # When packing η > P_C → unstable → repulsive pressure → expansion.
-    com = jnp.mean(coords, axis=0)
-    Rg_sq = jnp.mean(jnp.sum((coords - com)**2, axis=1))
-    Rg_current = jnp.sqrt(Rg_sq + 1e-12)
-    # P_C predicts equilibrium Rg:
-    R_eq = _r_Ca * (N / P_C) ** (1.0 / 3.0)  # enclosing sphere radius
-    Rg_eq = R_eq * jnp.sqrt(3.0 / 5.0)       # Rg of uniform sphere
-    # Packing pressure: one-sided penalty when Rg < Rg_eq (over-packed)
-    # Weight: 2Z₀ — same as bond stretch (Axiom 1: maximum impedance mismatch)
-    # Packing equilibrium is as fundamental as bond equilibrium:
-    # both are impedance matching at a physical boundary.
-    LAMBDA_PACKING = 2.0 * _Z0   # = 2.0 (same as LAMBDA_BOND)
-    packing_pressure = LAMBDA_PACKING * jnp.maximum(0.0, 1.0 - Rg_current / Rg_eq)**2
+    # P_C saturation applied directly to Y_shunt and exposure (above)
+    # No fitted penalty needed — same pattern as galactic_rotation.py
 
     return (s11_avg + bond_penalty + steric_penalty + jnp.maximum(0.0, port_loss)
-            + bb_bond_penalty + bb_angle_penalty + omega_penalty + rama_penalty
-            + packing_pressure)
+            + bb_bond_penalty + bb_angle_penalty + omega_penalty + rama_penalty)
 
 
 # JIT compile — N is now dynamic (not static_argnums)
