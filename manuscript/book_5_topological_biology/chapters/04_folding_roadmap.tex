@@ -1,0 +1,121 @@
+\chapter{Roadmap: From Equation of State to Full Folding}
+\label{ch:folding_roadmap}
+
+This chapter maps the path from the current engine --- which correctly predicts protein \emph{equilibrium size} and \emph{secondary structure content} --- to a full first-principles protein structure predictor.
+
+\section{What Has Been Solved}
+
+\begin{table}[H]
+\centering
+\caption{Current engine capabilities.  All predictions derive from $\alpha$, $\nu = 2/7$, and $r_{C_\alpha} = 1.7$~\AA.}
+\label{tab:solved_capabilities}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+\textbf{Capability} & \textbf{Accuracy} & \textbf{Derivation} \\
+\midrule
+Equilibrium $R_g$ & 0.4--2.3\% & $\eta_\text{eq} = P_C(1-\nu) = 8\pi\alpha \times 5/7$ \\
+Secondary structure & 72--100\% & $S_{11}$ cascade + Axiom 2 Ramachandran \\
+Bond geometry & Exact & NERF torsion-angle parameterisation \\
+Hydrophobic burial & Qualitative & Solvent shunt $Y_\text{solvent} = e/Z_\text{water}$ \\
+Salt bridge formation & Qualitative & Conjugate $Z$ matching: $\operatorname{Re}(Z_i Z_j^*) > 0$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{What Remains: Five Tiers to Full Folding}
+
+The path from equilibrium thermodynamics to atomic-resolution structure prediction has five tiers, each building on the previous.  Each tier is a self-contained first-principles extension --- no fitted parameters.
+
+\subsection{Tier 1: Side-Chain $\chi_1$ Torsion Angles}
+\label{sec:tier1_chi}
+
+\paragraph{Current limitation.} Sidechains are encoded as scalar impedance $|Z_\text{topo}|$ with no spatial extent.  Two residues with identical $|Z|$ but different shapes (e.g.\ Leu vs Ile) produce the same fold.
+
+\paragraph{First-principles extension.}
+Each residue has 1--4 $\chi$ (chi) torsion angles describing sidechain rotation about covalent bonds.  Adding $\chi_1$ (the first sidechain torsion) gives each residue a directional ``stub'' in 3D space.
+
+\begin{itemize}
+    \item \textbf{DOF increase}: $2N \to 3N$ (add $\chi_1$ per residue)
+    \item \textbf{Bond geometry}: Fixed by covalent radii (Axioms 1--2), same as backbone NERF
+    \item \textbf{Steric exclusion}: Extended to include sidechain atoms (Axiom 2)
+    \item \textbf{Impedance coupling}: $Y_\text{shunt}$ now depends on sidechain \emph{orientation}, not just $|Z|$
+\end{itemize}
+
+\paragraph{Expected impact.} Distinguishes Leu/Ile/Val rotamers.  Should improve tertiary contact specificity without any additional physics.
+
+\subsection{Tier 2: PDB Validation (RMSD to Crystal Structures)}
+\label{sec:tier2_pdb}
+
+\paragraph{Current limitation.} We predict size ($R_g$) and secondary structure content, but have not compared atom positions to known crystal structures.
+
+\paragraph{Validation protocol.}
+\begin{enumerate}
+    \item Fold Villin HP35 (PDB: 1YRF), Trp-cage (1L2Y), GB1 hairpin (2GB1)
+    \item Compute backbone C$_\alpha$ RMSD after optimal superposition
+    \item Report RMSD, GDT-TS, and TM-score
+    \item Compare to baseline (extended chain, ideal helix, random coil)
+\end{enumerate}
+
+\paragraph{Success criterion.} C$_\alpha$ RMSD $< 5$~\AA\ for Villin HP35 would demonstrate that the impedance cascade produces not just the right statistics but the right \emph{topology}.
+
+\subsection{Tier 3: Multi-Chain and Oligomeric Assembly}
+\label{sec:tier3_multichain}
+
+\paragraph{Current limitation.} Single-chain only.  Many proteins function as dimers, trimers, or larger assemblies.
+
+\paragraph{First-principles extension.}
+Each chain is a separate ABCD cascade terminating at its $N$- and $C$-terminus.  Inter-chain coupling uses the \emph{same} $Y_\text{shunt}$ physics as intra-chain contacts:
+\begin{equation}
+    Y_{ij}^\text{inter} = \frac{\kappa \cdot m_{ij}}{d_{ij}^2}, \qquad i \in \text{chain A},\; j \in \text{chain B}
+\end{equation}
+The loss function sums $S_{11}$ over all chains.  Assembly emerges from impedance matching across the interface --- the same physics that drives folding.
+
+\subsection{Tier 4: Folding Kinetics and Pathway Prediction}
+\label{sec:tier4_kinetics}
+
+\paragraph{Current limitation.} The optimizer finds a minimum in 5000 gradient steps.  Real proteins fold on $\mu$s--ms timescales through specific pathways.
+
+\paragraph{First-principles extension.}
+The ABCD cascade provides a \emph{time-domain} picture: energy injected at one terminus propagates through the backbone as a wave.  The folding pathway is the sequence of impedance-matching events that converts propagating modes to standing modes:
+\begin{enumerate}
+    \item \textbf{Nucleation}: First stable helix turn forms where $S_{11}$ is locally minimum (highest conjugate match)
+    \item \textbf{Propagation}: Impedance-matched regions grow outward (wave front)
+    \item \textbf{Collapse}: Long-range $S_{21}$ cross-coupling zips the structure
+\end{enumerate}
+This predicts folding nucleation sites from the sequence impedance profile alone.
+
+\subsection{Tier 5: Function Prediction from Impedance Landscape}
+\label{sec:tier5_function}
+
+\paragraph{Current limitation.} We predict structure but not function.
+
+\paragraph{First-principles extension.}
+The impedance mismatch map $S_{11}(i)$ along the backbone identifies:
+\begin{itemize}
+    \item \textbf{Active sites}: Regions of high $|S_{11}|$ (impedance discontinuity) that catalyse reactions by concentrating energy
+    \item \textbf{Binding sites}: Regions of low $|S_{11}|$ (smooth impedance) that accommodate ligand insertion
+    \item \textbf{Allosteric pathways}: Connected regions of moderate $|S_{11}|$ that transmit conformational signals
+\end{itemize}
+Function prediction requires no additional physics --- only the impedance landscape of the folded structure.
+
+\section{Implementation Priority}
+
+\begin{table}[H]
+\centering
+\caption{Priority-ordered implementation roadmap.}
+\label{tab:roadmap_priority}
+\begin{tabular}{@{}c l l l l@{}}
+\toprule
+\textbf{Tier} & \textbf{Task} & \textbf{Effort} & \textbf{New Physics?} & \textbf{Validation} \\
+\midrule
+1 & $\chi_1$ sidechain torsions & Medium & No & Rotamer recovery \\
+2 & PDB RMSD comparison & Small & No & RMSD $< 5$~\AA \\
+3 & Multi-chain assembly & Medium & No & Dimer interfaces \\
+4 & Folding kinetics & Large & Yes (time domain) & Nucleation sites \\
+5 & Function prediction & Large & No & Active site ID \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Immediate next step.}
+Tier~2 (PDB validation) requires \emph{zero} code changes --- only downloading crystal structures and computing RMSD against the current engine output.  This is the fastest path to answering the question: \emph{does the impedance cascade predict the correct tertiary fold, or only the correct envelope?}
