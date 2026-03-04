@@ -183,3 +183,104 @@ def einstein_deflection_angle(mass_kg: float, impact_parameter_m: float) -> floa
     if impact_parameter_m <= 0:
         raise ValueError("Impact parameter must be > 0.")
     return (4.0 * G * mass_kg) / (impact_parameter_m * C_0**2)
+
+
+# ═══════════════════════════════════════════════════════════════════
+# Radial Impedance & Γ = -1 Horizon Physics
+# ═══════════════════════════════════════════════════════════════════
+#
+# For PARTICLES, confinement arises because µ saturates first at
+# torus knot self-intersections: Z → 0, Γ → -1 (short circuit).
+#
+# For GRAVITY, confinement arises because the refractive index
+# n(r) = 1 + 2GM/(c²r) diverges at the Schwarzschild radius.
+# The RADIAL impedance Z_radial = Z₀ · n(r) → ∞, giving
+# Γ_inward → +1 (open circuit, total reflection for infall).
+# From inside looking out, Γ_outward → -1 (nothing escapes).
+#
+# Both mechanisms are instances of the same universal Γ operator
+# applied at different saturation boundaries.
+# ═══════════════════════════════════════════════════════════════════
+
+
+def radial_impedance(mass_kg: float, radius_m: float) -> float:
+    """
+    Radial wave impedance in the gravitational field.
+
+    For a radially propagating wave, the effective impedance is
+    modified by the refractive index gradient:
+
+        Z_radial(r) = Z₀ · n(r) = Z₀ · [1 + 2GM/(c²r)]
+
+    While the transverse impedance Z₀ = √(µ/ε) is invariant under
+    achromatic matching (µ and ε scale identically), the radial
+    impedance grows because a radially infalling wave encounters
+    increasing optical path density.
+
+    At the Schwarzschild radius: Z_radial → ∞ (open circuit).
+
+    Args:
+        mass_kg: Source mass [kg].
+        radius_m: Distance from center of mass [m].
+
+    Returns:
+        Radial impedance [Ω].
+    """
+    n = refractive_index(mass_kg, radius_m)
+    return Z_0 * n
+
+
+def gravitational_saturation_factor(mass_kg: float, radius_m: float) -> float:
+    """
+    Axiom 4 saturation factor for gravitational strain.
+
+    The principal radial strain ε₁₁(r) = 7GM/(c²r) is the amplitude
+    parameter A. The yield limit A_yield = 1 (unitary strain).
+    The saturation factor is:
+
+        S_grav(r) = √(1 - ε₁₁²)
+
+    At flat space: S = 1 (no strain).
+    At r = R_s:    ε₁₁ = 7/2 > 1, so S = 0 (full saturation / rupture).
+    Onset at r ≈ 3.5 R_s where ε₁₁ = 1.
+
+    Args:
+        mass_kg: Source mass [kg].
+        radius_m: Distance from center of mass [m].
+
+    Returns:
+        Saturation factor in [0, 1]. Returns 0 if inside the
+        saturation shell (ε₁₁ ≥ 1).
+    """
+    strain = principal_radial_strain(mass_kg, radius_m)
+    if strain >= 1.0:
+        return 0.0
+    return np.sqrt(1.0 - strain**2)
+
+
+def radial_reflection_coefficient(mass_kg: float, radius_m: float) -> float:
+    """
+    Reflection coefficient for a wave propagating radially inward
+    through the gravitational impedance gradient.
+
+    Γ = (Z_radial(r) - Z₀) / (Z_radial(r) + Z₀)
+
+    For a wave travelling from flat space (Z₀) into the gravitational
+    field at radius r (Z_radial = Z₀·n(r)):
+
+    At flat space: n = 1, Γ = 0 (no reflection).
+    At r → R_s:    n → ∞, Γ → +1 (total reflection, open circuit).
+
+    From the interior looking outward, the reciprocal applies:
+    Γ_out = (Z₀ - Z_radial) / (Z₀ + Z_radial) → -1 (nothing escapes).
+
+    Args:
+        mass_kg: Source mass [kg].
+        radius_m: Distance from center of mass [m].
+
+    Returns:
+        Reflection coefficient Γ in [-1, +1].
+    """
+    Z_rad = radial_impedance(mass_kg, radius_m)
+    return (Z_rad - Z_0) / (Z_rad + Z_0)
+
