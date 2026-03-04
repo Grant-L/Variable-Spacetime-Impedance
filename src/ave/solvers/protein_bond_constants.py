@@ -61,11 +61,13 @@ BOHR_RADIUS_ANGSTROM = BOHR_RADIUS_M * 1e10  # ≈ 0.529 Å
 # These emerge from the covalent bonding of C, N, O atoms whose
 # nuclear structure is computed by the AVE nuclear solver
 BACKBONE_BONDS = {
-    'Ca-C':   {'length_A': 1.52, 'type': 'single',         'atoms': ('C', 'C'), 'n_electrons': 2},
-    'C-N':    {'length_A': 1.33, 'type': 'partial_double',  'atoms': ('C', 'N'), 'n_electrons': 3},
-    'N-Ca':   {'length_A': 1.46, 'type': 'single',         'atoms': ('N', 'C'), 'n_electrons': 2},
-    'C=O':    {'length_A': 1.23, 'type': 'double',          'atoms': ('C', 'O'), 'n_electrons': 4},
-    'N-H':    {'length_A': 1.01, 'type': 'single',         'atoms': ('N', 'H'), 'n_electrons': 2},
+    # mass_Da = sum of both bonded atoms (from bond_energy_solver NUCLEAR_MASSES)
+    # Z = √(μ/ε) = √(mass_Da / n_electrons) per place_nuclear_defect physics
+    'Ca-C':   {'length_A': 1.52, 'type': 'single',         'atoms': ('C', 'C'), 'n_electrons': 2, 'mass_Da': 24.0},   # 12+12
+    'C-N':    {'length_A': 1.33, 'type': 'partial_double',  'atoms': ('C', 'N'), 'n_electrons': 3, 'mass_Da': 26.0},   # 12+14
+    'N-Ca':   {'length_A': 1.46, 'type': 'single',         'atoms': ('N', 'C'), 'n_electrons': 2, 'mass_Da': 26.0},   # 14+12
+    'C=O':    {'length_A': 1.23, 'type': 'double',          'atoms': ('C', 'O'), 'n_electrons': 4, 'mass_Da': 28.0},   # 12+16
+    'N-H':    {'length_A': 1.01, 'type': 'single',         'atoms': ('N', 'H'), 'n_electrons': 2, 'mass_Da': 15.0},   # 14+1
 }
 
 # Backbone bond angles

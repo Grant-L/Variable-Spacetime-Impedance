@@ -94,6 +94,10 @@ D_C_N  = BACKBONE_BONDS['C-N']['length_A']    # 1.33 Å
 N_E_N_CA = BACKBONE_BONDS['N-Ca']['n_electrons']  # 2 (single bond)
 N_E_CA_C = BACKBONE_BONDS['Ca-C']['n_electrons']  # 2 (single bond)
 N_E_C_N  = BACKBONE_BONDS['C-N']['n_electrons']   # 3 (partial double / peptide)
+# Atomic masses (from bond_energy_solver: μ = mass/m_e)
+M_N_CA = BACKBONE_BONDS['N-Ca']['mass_Da']   # 26 Da (N=14 + C=12)
+M_CA_C = BACKBONE_BONDS['Ca-C']['mass_Da']   # 24 Da (C=12 + C=12)
+M_C_N  = BACKBONE_BONDS['C-N']['mass_Da']    # 26 Da (C=12 + N=14)
 # Backbone bond angles
 ANGLE_N_CA_C = jnp.radians(BACKBONE_ANGLES['N-Ca-C'])   # 111.2°
 ANGLE_CA_C_N = jnp.radians(BACKBONE_ANGLES['Ca-C-N'])   # 116.2°
@@ -460,21 +464,25 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N, kappa=0.1):
     d0_last = jnp.array([D_N_CA, D_CA_C])  # (2,)
     seg_d0 = jnp.concatenate([jnp.tile(d0_triplet, N-1), d0_last])  # (3N-1,)
     
-    # Segment impedances: Z = √(μ/ε) ∝ 1/√(n_shared_electrons)
-    # From bond_energy_solver (line 245): ε_bond = n_e × (1/α)
-    # At protein scale, μ is same across backbone; ε varies with electrons.
+    # Segment impedances: Z = √(μ/ε) = √(mass_Da / n_electrons)
+    # From bond_energy_solver.place_nuclear_defect:
+    #   μ_local += mass_kg / M_E    (mass IS inductance → B field → repulsion)
+    #   ε_local += n_electrons / α   (electrons IS permittivity → E field → attraction)
+    #   Z = √(μ/ε) — the impedance IS the balance of B and E fields
     #
-    # Bond types (from BOND_DEFS and periodic table):
-    #   N-Cα: single bond, 2 shared e⁻  → Z = 1/√2 = 0.707
-    #   Cα-C: single bond, 2 shared e⁻  → Z = 1/√2 = 0.707
-    #   C-N peptide: partial double, 3 shared e⁻ → Z = 1/√3 = 0.577
+    # Previous: Z = 1/√(n_e) — ε ONLY, no mass (no B field, no repulsion)
+    # Now:      Z = √(mass/n_e) — FULL impedance (both E and B fields)
     #
-    # Contrast: 0.707/0.577 = 1.22 → 22% impedance step at peptide bonds
-    # This is the semiconductor band-gap junction analog:
-    # high contrast → strong reflection → geometry-sensitive S₁₁
-    Z_NCa = 1.0 / jnp.sqrt(float(N_E_N_CA))   # single bond: 2 electrons
-    Z_CaC = 1.0 / jnp.sqrt(float(N_E_CA_C))   # single bond: 2 electrons
-    Z_CN  = 1.0 / jnp.sqrt(float(N_E_C_N))    # peptide bond: 3 electrons (partial double)
+    # Bond types:
+    #   N-Cα: 26 Da, 2e⁻ → Z = √(26/2) = 3.61  (was 0.707)
+    #   Cα-C: 24 Da, 2e⁻ → Z = √(24/2) = 3.46  (was 0.707)
+    #   C-N:  26 Da, 3e⁻ → Z = √(26/3) = 2.94  (was 0.577)
+    #
+    # Contrast: 3.61/2.94 = 1.23 → 23% at peptide bonds
+    # NEW: N-Cα ≠ Cα-C (3.61 vs 3.46, 4%) — N atom's extra mass breaks symmetry
+    Z_NCa = jnp.sqrt(M_N_CA / float(N_E_N_CA))   # √(26/2) = 3.61
+    Z_CaC = jnp.sqrt(M_CA_C / float(N_E_CA_C))   # √(24/2) = 3.46
+    Z_CN  = jnp.sqrt(M_C_N  / float(N_E_C_N))    # √(26/3) = 2.94
     z_triplet = jnp.array([Z_NCa, Z_CaC, Z_CN])
     z_last = jnp.array([Z_NCa, Z_CaC])
     seg_Zc = jnp.concatenate([jnp.tile(z_triplet, N-1), z_last])  # (3N-1,)
