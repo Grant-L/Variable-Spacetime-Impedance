@@ -696,9 +696,25 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N, kappa=0.1):
     # Normalise by total DOF count: (N-2) coupled + 2 edges = N
     n_rama = jnp.maximum(N, 1)
     rama_penalty = LAMBDA_RAMA * (coupled_penalty + edge_psi0 + edge_phiN) / n_rama
-
-    return (s11_avg + bond_penalty + steric_penalty + port_loss
-            + bb_bond_penalty + bb_angle_penalty + omega_penalty + rama_penalty)
+    # ═══════════════════════════════════════════════════════════════════
+    # PURE FIRST PRINCIPLES LOSS (no scaffolding)
+    # ═══════════════════════════════════════════════════════════════════
+    # If the backbone IS a transmission line, geometry EMERGES from S₁₁.
+    #
+    #   s11_avg      = ABCD cascade reflection (Axioms 1, 3, 4)
+    #                  Phase delay βℓ = ωd/d₀ → bond lengths emerge
+    #                  Junction impedance matching → angles/dihedrals emerge
+    #
+    #   steric       = Pauli exclusion (Axiom 2)
+    #                  Two knots cannot share a lattice node
+    #
+    #   port_loss    = Cavity cross-coupling (Axiom 1)
+    #                  Segment-segment S₂₁ → tertiary structure
+    #
+    # Removed scaffolding (should EMERGE from S₁₁):
+    #   bond_penalty, bb_bond_penalty, bb_angle_penalty,
+    #   omega_penalty, rama_penalty
+    return s11_avg + steric_penalty + port_loss
 
 
 # JIT compile — N is now dynamic (not static_argnums)
