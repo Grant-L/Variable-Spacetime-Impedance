@@ -410,73 +410,124 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N, kappa=0.1):
     packing_ratio = jnp.clip(n_neighbors_smooth / n_max, 0.0, 0.999)
     packing_saturation = jnp.sqrt(1.0 - packing_ratio**2)  # Axiom 4
     Y_shunt = Y_shunt * packing_saturation
-
-    # Backbone segment impedances and distances
-    Zc_arr = 0.5 * (z_mag[:-1] + z_mag[1:])   # (N-1,) real magnitudes
-    d_phys_arr = jnp.array([dists[i, i+1] for i in range(N-1)])  # (N-1,)
-    Y_shunt_arr = Y_shunt[1:]                     # (N-1,) shunts at nodes 1..N-1
+    # ═══════════════════════════════════════════════════════════════════
+    # FULL BACKBONE ABCD CASCADE (3N-1 segments)
+    # ═══════════════════════════════════════════════════════════════════
+    # Each backbone bond is its own TL segment:
+    #   N₀-Cα₀, Cα₀-C₀, C₀-N₁, N₁-Cα₁, Cα₁-C₁, C₁-N₂, ...
+    #   seg[3i]   = N_i → Cα_i  (d₀ = 1.46 Å)
+    #   seg[3i+1] = Cα_i → C_i  (d₀ = 1.52 Å)
+    #   seg[3i+2] = C_i → N_{i+1} (d₀ = 1.33 Å)  [i < N-1]
+    # Total: 3N-1 segments (ch.02: "L-C ladder from bond stiffness")
+    
+    # --- Build segment arrays ---
+    # Actual bond distances from 3D coordinates
+    d_NCa = jnp.sqrt(jnp.sum((atom_Ca - atom_N)**2, axis=-1) + 1e-12)   # (N,)
+    d_CaC = jnp.sqrt(jnp.sum((atom_C - atom_Ca)**2, axis=-1) + 1e-12)   # (N,)
+    d_CN  = jnp.sqrt(jnp.sum((atom_N[1:] - atom_C[:-1])**2, axis=-1) + 1e-12)  # (N-1,)
+    
+    # Interleave into backbone order: [NCa₀, CaC₀, CN₀, NCa₁, CaC₁, CN₁, ...]
+    triplets = jnp.stack([d_NCa[:-1], d_CaC[:-1], d_CN], axis=1)  # (N-1, 3)
+    last_pair = jnp.array([d_NCa[-1], d_CaC[-1]])  # (2,)
+    seg_d = jnp.concatenate([triplets.reshape(-1), last_pair])  # (3N-1,)
+    
+    # Target bond lengths from BACKBONE_BONDS (Axioms 1-2)
+    d0_triplet = jnp.array([D_N_CA, D_CA_C, D_C_N])  # (3,) = [1.46, 1.52, 1.33]
+    d0_last = jnp.array([D_N_CA, D_CA_C])  # (2,)
+    seg_d0 = jnp.concatenate([jnp.tile(d0_triplet, N-1), d0_last])  # (3N-1,)
+    
+    # Segment impedances: Z = d₀_bond / d₀ (bond-to-backbone ratio)
+    # This is the natural impedance of each bond type:
+    #   N-Cα: Z = 1.46/3.8 = 0.384 (single bond, flexible)
+    #   Cα-C: Z = 1.52/3.8 = 0.400 (single bond)
+    #   C-N:  Z = 1.33/3.8 = 0.350 (partial double bond, stiff)
+    z_triplet = jnp.array([D_N_CA / d0, D_CA_C / d0, D_C_N / d0])
+    z_last = jnp.array([D_N_CA / d0, D_CA_C / d0])
+    seg_Zc = jnp.concatenate([jnp.tile(z_triplet, N-1), z_last])  # (3N-1,)
+    
+    # Shunt admittance at junctions (3N-2 junctions between segments)
+    # Sidechain R-group attaches at Cα → shunt at junction 3i (i=0..N-1)
+    # All other junctions get zero sidechain shunt
+    n_junctions = 3 * N - 2
+    seg_Y_base = jnp.zeros(n_junctions)
+    # Place sidechain Y_shunt at Cα positions (every 3rd junction)
+    ca_indices = jnp.arange(N) * 3  # [0, 3, 6, ..., 3(N-1)]
+    ca_indices = jnp.clip(ca_indices, 0, n_junctions - 1)  # safety
+    seg_Y_base = seg_Y_base.at[ca_indices].set(Y_shunt)
+    n_bb_segs = 3 * N - 1
 
     # --- Chirality: Non-Reciprocal Phase ---
     # Lattice chirality (SRS/K4 net) → non-reciprocal waveguide
     # δ_chiral = Ramachandran asymmetry / Q, χ_scale = d₀³/11 (helix geometry)
 
-    # Bond vectors (N-1 vectors)
+    # Bond vectors (N-1 vectors between Cα atoms)
     bonds = coords[1:] - coords[:-1]  # (N-1, 3)
 
     # Triple product at each interior segment: (b_{i} × b_{i+1}) · b_{i+2}
-    # for segments i = 0..N-4, giving N-3 values
-    # Pad to N-1 with zeros for terminal segments
     cross = jnp.cross(bonds[:-2], bonds[1:-1])       # (N-3, 3)
     triple = jnp.sum(cross * bonds[2:], axis=1)       # (N-3,)
-    # Smooth chirality signal
     chi_signal = jnp.tanh(triple / CHI_SCALE)
 
-    # Helix propensity: chirality matters most for low-Z (helix-forming) residues
-    # For high-Z (sheet), chirality correction is suppressed
+    # Helix propensity: chirality matters most for low-Z residues
     z_avg_seg = 0.5 * (z_mag[:-1] + z_mag[1:])        # (N-1,)
-    helix_weight = jnp.clip(1.0 - z_avg_seg / 2.0, 0.0, 1.0)  # 1 for Z<1, 0 for Z>2
+    helix_weight = jnp.clip(1.0 - z_avg_seg / 2.0, 0.0, 1.0)
 
-    # Pad chi_signal to N-1 (terminal segments get zero chirality)
     chi_padded = jnp.concatenate([jnp.array([0.0]), chi_signal, jnp.array([0.0])])
-    chiral_correction = DELTA_CHI * chi_padded * helix_weight[:]
+    chiral_per_residue = DELTA_CHI * chi_padded * helix_weight[:]  # (N-1,)
+    # Spread chirality to all 3 segments per residue
+    chi_triplets = jnp.stack([chiral_per_residue, chiral_per_residue, chiral_per_residue], axis=1)  # (N-1, 3)
+    # Handle: chi_triplets has N-1 triplets (3(N-1) values), seg needs 3N-1
+    # Last residue (no inter-residue bond): 2 segments with zero chirality
+    seg_chi = jnp.concatenate([chi_triplets.reshape(-1), jnp.zeros(2)])[:n_bb_segs]
 
     # --- Multi-frequency S₁₁ via lax.fori_loop ---
-    # Upgrade 2: Solvent impedance is now frequency-dependent
     def s11_at_freq(freq):
         w = 2.0 * jnp.pi * freq
-        beta_l_arr = w * d_phys_arr / d0 - chiral_correction  # Non-reciprocal phase
-        cos_arr = jnp.cos(beta_l_arr)
-        sin_arr = jnp.sin(beta_l_arr)
+        
+        # Complex propagation constant γ = α + jβ per segment
+        # β = phase delay (propagating)
+        # α = bond strain loss (evanescent when d ≠ d₀)
+        #
+        # α = |d - d₀| / d₀ → BREAKS PERIODICITY
+        # At d = d₀: α = 0 → lossless → minimum S₁₁
+        # At d ≠ d₀: α > 0 → lossy → S₁₁ increases monotonically
+        beta_arr = w * seg_d / seg_d0 - seg_chi  # phase delay per segment
+        alpha_arr = jnp.abs(seg_d - seg_d0) / seg_d0  # strain loss
+        gamma_arr = alpha_arr + 1j * beta_arr  # complex propagation
+
+        # Lossy TL ABCD: cosh(γℓ), sinh(γℓ) — reduces to cos/sin when α=0
+        cosh_arr = jnp.cosh(gamma_arr)
+        sinh_arr = jnp.sinh(gamma_arr)
 
         # Frequency-dependent solvent impedance (Debye relaxation)
         Z_water_f = debye_z_water(freq)
         Y_solvent_f = exposure / Z_water_f
-        Y_total_arr = (Y_shunt + Y_solvent_f)[1:]  # (N-1,)
+        # Add solvent to Cα junctions
+        seg_Y_total = seg_Y_base.at[ca_indices].add(Y_solvent_f)
 
-        # ABCD cascade via lax.fori_loop
-        # State: (A, B, C, D) as complex scalars
+        # ABCD cascade via lax.fori_loop (3N-1 steps)
         init_state = jnp.array([1.0 + 0j, 0.0 + 0j, 0.0 + 0j, 1.0 + 0j])
 
         def cascade_step(i, state):
             A, B, C, D = state[0], state[1], state[2], state[3]
-            cos_bl = cos_arr[i]
-            sin_bl = sin_arr[i]
-            Zc = Zc_arr[i]
+            ch = cosh_arr[i]
+            sh = sinh_arr[i]
+            Zc = seg_Zc[i] + 1e-12
 
-            # Transmission line section
-            A_n = A * cos_bl + B * (1j * sin_bl / Zc)
-            B_n = A * (1j * Zc * sin_bl) + B * cos_bl
-            C_n = C * cos_bl + D * (1j * sin_bl / Zc)
-            D_n = C * (1j * Zc * sin_bl) + D * cos_bl
+            # Lossy transmission line section
+            A_n = A * ch + B * (sh / Zc)
+            B_n = A * (Zc * sh) + B * ch
+            C_n = C * ch + D * (sh / Zc)
+            D_n = C * (Zc * sh) + D * ch
 
-            # Shunt admittance (now includes freq-dependent solvent)
-            Y = Y_total_arr[i]
+            # Shunt admittance at junction (if not last segment)
+            Y = jnp.where(i < n_junctions, seg_Y_total[jnp.clip(i, 0, n_junctions - 1)], 0.0)
             C_n = C_n + Y * A_n
             D_n = D_n + Y * B_n
 
             return jnp.array([A_n, B_n, C_n, D_n])
 
-        final = lax.fori_loop(0, N - 1, cascade_step, init_state)
+        final = lax.fori_loop(0, n_bb_segs, cascade_step, init_state)
         A, B, C, D = final[0], final[1], final[2], final[3]
 
         numer = A + B / Z0 - C * Z0 - D
@@ -549,9 +600,9 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N, kappa=0.1):
 
     port_loss = junction_loss + cross_loss / N
 
-    # Bond length penalty — vectorised
-    bond_dists = d_phys_arr
-    bond_penalty = 2.0 * jnp.sum((bond_dists - d0) ** 2) / N
+    # Cα-Cα bond length penalty — vectorised
+    ca_ca_dists = jnp.array([dists[i, i+1] for i in range(N-1)])  # (N-1,)
+    bond_penalty = 2.0 * jnp.sum((ca_ca_dists - d0) ** 2) / N
 
     # Steric repulsion — Pauli exclusion (Axiom 2)
     # Ch.02 Eq.14 establishes: exclusion distance = d₀ = 3.8 Å (full backbone step)
