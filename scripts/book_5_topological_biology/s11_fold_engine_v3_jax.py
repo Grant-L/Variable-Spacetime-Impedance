@@ -485,7 +485,36 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N, kappa=0.1):
     Z_CN  = jnp.sqrt(M_C_N  / float(N_E_C_N))    # √(26/3) = 2.94
     z_triplet = jnp.array([Z_NCa, Z_CaC, Z_CN])
     z_last = jnp.array([Z_NCa, Z_CaC])
-    seg_Zc = jnp.concatenate([jnp.tile(z_triplet, N-1), z_last])  # (3N-1,)
+    seg_Zc_base = jnp.concatenate([jnp.tile(z_triplet, N-1), z_last])  # (3N-1,)
+    
+    # --- Per-Residue μ Enhancement (place_nuclear_defect at protein scale) ---
+    # bond_energy_solver: μ_local += mass/m_e → Z increases at defect site
+    # protein_bond_constants: Z_TOPO R = Z_R/Z_bb, where Z_R = √(m_sc/ξ²·C)
+    #   → R IS the sidechain mass contribution to impedance
+    #
+    # Z_eff = Z_bb × √(1 + R²)  from:
+    #   Z = √(μ/ε), μ_total = μ_bb + μ_sc, μ_sc/μ_bb = R²
+    #
+    # Spread: segments adjacent to Cα get full R² boost
+    #   seg[3i]   = N_i→Cα_i:  gets R_i
+    #   seg[3i+1] = Cα_i→C_i:  gets R_i
+    #   seg[3i+2] = C_i→N_{i+1}: average of R_i and R_{i+1}
+    #
+    # Gly (R=0.30): √(1+0.09) = 1.04 (4% boost — minimal stub)
+    # Trp (R=0.89): √(1+0.80) = 1.34 (34% boost — massive indole)
+    R_sc = z_mag  # (N,) — |Z_TOPO[aa]| = R = sidechain mass/impedance ratio
+    
+    # Build enhancement per segment (3N-1,)
+    # Segments [3i, 3i+1]: get R_i (segments at Cα_i)
+    # Segment [3i+2]: gets (R_i + R_{i+1})/2 (peptide bond between residues)
+    R_at_NCa = R_sc[:-1]                             # (N-1,) R for N-Cα
+    R_at_CaC = R_sc[:-1]                             # (N-1,) R for Cα-C
+    R_at_CN  = (R_sc[:-1] + R_sc[1:]) / 2.0          # (N-1,) R for C-N (average)
+    R_triplets = jnp.stack([R_at_NCa, R_at_CaC, R_at_CN], axis=1).reshape(-1)  # (3(N-1),)
+    R_last = jnp.array([R_sc[-1], R_sc[-1]])                                    # (2,)
+    R_all = jnp.concatenate([R_triplets, R_last])                               # (3N-1,)
+    
+    seg_Zc = seg_Zc_base * jnp.sqrt(1.0 + R_all**2)  # Z_eff = Z_bb × √(1+R²)
     
     # --- Backbone NEXT Cross-Talk (EE Signal Integrity) ---
     # When the chain folds near itself, non-bonded backbone segments
