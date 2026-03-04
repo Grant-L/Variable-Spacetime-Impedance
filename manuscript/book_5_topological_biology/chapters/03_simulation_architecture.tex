@@ -385,11 +385,16 @@ Villin headpiece subdomain HP35 (PDB: 1VII, 35 residues, three-helix bundle) is 
 \textbf{Metric} & \textbf{Value} & \textbf{Expected} \\
 \midrule
 $S_{11}$ & $0.95 \to 0.78$ & Convergent \\
-$R_g$    & 8.5~\AA & 8--10~\AA~\checkmark \\
-End-to-end & 23.2~\AA & $<30$~\AA~\checkmark \\
-Helix content & 15\% & $\sim\!60\%$ \\
+$S_{11}$ & $0.95 \to 0.81$ & Convergent \\
+$R_g$    & 9.7~\AA & 8--10~\AA~\checkmark \\
+End-to-end & 27.0~\AA & $<30$~\AA~\checkmark \\
+Helix content & 24\% & $\sim\!60\%$ \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-The engine correctly predicts the \emph{size} of the native fold ($R_g = 8.5$~\AA{} vs.\ experimental $\sim\!9.8$~\AA) but underestimates helical content.  The C$_\alpha$-only representation lacks explicit backbone dihedral constraints ($\phi, \psi$); without these, the optimizer can satisfy the $S_{11}$ objective through tight folds rather than regular helices.  Adding Ramachandran basin enforcement---derived from the peptide bond geometry (Axioms 1--2)---is the identified next step for improving secondary structure fidelity.
+The addition of a Ramachandran pseudo-dihedral penalty (Upgrade~7) improved the helical content from 15\% to 24\% and brought $R_g = 9.7$~\AA{} into excellent agreement with the experimental value of $\sim\!9.8$~\AA.  The Ramachandran constraint enforces a double-well potential on the C$_\alpha$ pseudo-torsion angle $\tau$:
+\begin{equation}
+    V_\text{rama}(\tau) = \frac{\lambda}{N-3} \sum_{i=0}^{N-4} (1 - g_{i+1}) \frac{\min\!\bigl[(\tau_i - \tau_\alpha)^2,\; (\tau_i - \tau_\beta)^2\bigr]}{\sigma^2}
+\end{equation}
+where $\tau_\alpha = 50^\circ$ (\hbox{$\alpha$-helix} basin), $\tau_\beta = -170^\circ$ (\hbox{$\beta$-sheet} basin), $\sigma = d_0/r_{C_\alpha} \approx 2.24$ rad (basin width from backbone geometry), $\lambda = 1/(2Q) \approx 0.071$ (amide-V coupling scale), and $g_{i+1} = 1$ at glycine positions (exempt: no sidechain steric constraint).  The 24\% helical content remains below the experimental $\sim\!60\%$; the residual gap reflects the Cα-only representation's inability to distinguish $\phi$ from $\psi$ with a single pseudo-torsion.
