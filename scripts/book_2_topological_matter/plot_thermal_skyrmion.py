@@ -1,9 +1,11 @@
 """
 Plot cold vs thermally-corrected Skyrmion profiles.
 
-Shows the effect of the δ_th = 1/(28π) thermal correction on the
+Shows the effect of the δ_th = 1/(14π²) residual thermal correction on the
 Faddeev-Skyrme coupling κ_FS, demonstrating how vacuum thermal noise
-softens the quartic term and shifts the scalar eigenvalue from ~1185 to ~1160.
+softens the quartic term.  The larger lattice-resolution component of
+the old δ_th = 1/(28π) is now handled by Axiom 4 gradient saturation
+inside the energy functional itself.
 
 Output: assets/sim_outputs/thermal_skyrmion_comparison.png
 """
@@ -57,7 +59,7 @@ f_warm = skyrmion_profile(r, KAPPA_FS)
 ax1.plot(r, f_cold / np.pi, color='#58a6ff', linewidth=2.5,
          label=rf'Cold ($\kappa = 8\pi = {KAPPA_FS_COLD:.2f}$)')
 ax1.plot(r, f_warm / np.pi, color='#f0883e', linewidth=2.5, linestyle='--',
-         label=rf'Thermal ($\kappa_{{eff}} = {KAPPA_FS:.2f},\ \delta_{{th}} = 1/28\pi$)')
+         label=rf'Thermal ($\kappa_{{eff}} = {KAPPA_FS:.2f},\ \delta_{{th}} = 1/14\pi^2$)')
 ax1.set_xlabel(r'$r / \ell_{node}$', fontsize=13, color='white')
 ax1.set_ylabel(r'Profile $f(r) / \pi$', fontsize=13, color='white')
 ax1.set_title('Hedgehog Profile: Cold vs Thermal', fontsize=14, color='white', pad=10)
@@ -66,18 +68,18 @@ ax1.grid(True, alpha=0.15, color='#30363d')
 
 # Right panel: Energy densities
 ax2.plot(r, u_cold * r**2, color='#58a6ff', linewidth=2.5,
-         label=rf'Cold: $I_{{scalar}} \approx 1185\,m_e$')
+         label=rf'Cold: $I_{{scalar}} \approx 1171\,m_e$')
 ax2.plot(r, u_warm * r**2, color='#f0883e', linewidth=2.5, linestyle='--',
-         label=rf'Thermal: $I_{{scalar}} \approx 1160\,m_e$')
+         label=rf'Thermal: $I_{{scalar}} \approx 1162\,m_e$')
 ax2.fill_between(r, u_cold * r**2, u_warm * r**2, alpha=0.15, color='#da3633',
-                 label=rf'$\Delta E \approx 2\%$ (thermal softening)')
+                 label=rf'$\Delta E \approx 0.8\%$ (thermal + saturation)')
 ax2.set_xlabel(r'$r / \ell_{node}$', fontsize=13, color='white')
 ax2.set_ylabel(r'$r^2 \cdot \mathcal{E}(r)$ (energy integrand)', fontsize=13, color='white')
 ax2.set_title('Scalar Energy Integrand: Thermal Reduction', fontsize=14, color='white', pad=10)
 ax2.legend(fontsize=10, facecolor='#161b22', edgecolor='#30363d', labelcolor='white')
 ax2.grid(True, alpha=0.15, color='#30363d')
 
-fig.suptitle(r'Grüneisen Thermal Correction: $\delta_{th} = 1/(28\pi)$',
+fig.suptitle(r'Grüneisen Thermal Correction: $\delta_{th} = 1/(14\pi^2)$',
              fontsize=16, color='white', y=1.02)
 plt.tight_layout()
 

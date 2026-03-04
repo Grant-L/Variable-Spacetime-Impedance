@@ -38,10 +38,12 @@ def gen_ee_bench():
     l_node = 3.86e-13
     E_yield = V_yield / l_node
 
-    # ── Panel 1: C_eff / C_0 vs Gap Voltage ──
+    # ── Panel 1: ε_eff / ε₀ vs Gap Voltage ──
+    # Delegates to the engine's saturation_factor (Axiom 4 kernel)
+    from ave.axioms.scale_invariant import saturation_factor
     V_sweep = np.linspace(0, V_yield * 1.02, 1000)
     safe_V = np.clip(V_sweep, 0, V_yield * 0.999)
-    C_ratio = np.sqrt(1 - (safe_V / V_yield)**2)
+    C_ratio = saturation_factor(safe_V, V_yield)
     C_ratio[V_sweep >= V_yield] = 0.05
 
     # Standard physics: flat
@@ -56,7 +58,7 @@ def gen_ee_bench():
     ax1.plot(V_sweep / 1e3, C_std, color='#ff3333', lw=2, linestyle='--',
             label='Standard EM (Linear)')
     ax1.plot(V_sweep / 1e3, C_ratio, color='#00ffcc', lw=3,
-            label=r'AVE: $C_{eff}/C_0 = \sqrt{1-(V/V_{yield})^2}$')
+            label=r'AVE: $\varepsilon_{eff}/\varepsilon_0 = \sqrt{1-(V/V_{yield})^2}$')
     ax1.axvline(V_yield / 1e3, color='white', lw=2, linestyle=':',
                label=f'$V_{{yield}}$ = {V_yield/1e3:.2f} kV')
     ax1.axvspan(V_yield * 0.85 / 1e3, V_yield / 1e3, alpha=0.15,

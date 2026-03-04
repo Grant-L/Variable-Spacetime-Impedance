@@ -42,16 +42,16 @@ from typing import Optional
 
 from ave.core.constants import (
     C_0, EPSILON_0, MU_0, Z_0, B_SNAP, L_NODE, ALPHA,
+    e_charge, M_E, HBAR,
 )
 from ave.axioms.scale_invariant import (
     saturation_factor,
+    mu_eff as _si_mu_eff,
     impedance,
     reflection_coefficient,
 )
 
-# Electron properties (local copies for numerical work)
-E_CHARGE = 1.602176634e-19    # [C]
-M_ELECTRON = 9.1093837015e-31  # [kg]
+# Boltzmann constant (not yet in core/constants.py)
 K_B = 1.380649e-23             # [J/K]
 
 
@@ -110,8 +110,7 @@ def meissner_mu_eff(B_applied: float | np.ndarray,
     Returns:
         Effective permeability [H/m].
     """
-    S = saturation_factor(B_applied, B_critical)
-    return MU_0 * S
+    return _si_mu_eff(B_applied, B_critical, mu_base=MU_0)
 
 
 def superconducting_impedance(B_applied: float | np.ndarray,
@@ -174,7 +173,7 @@ def meissner_reflection(B_applied: float | np.ndarray,
 # ═══════════════════════════════════════════════════════════════
 
 def london_penetration_depth(n_s: float,
-                             m_eff: float = M_ELECTRON) -> float:
+                             m_eff: float = M_E) -> float:
     r"""
     London penetration depth from superfluid density.
 
@@ -195,7 +194,7 @@ def london_penetration_depth(n_s: float,
     Returns:
         London penetration depth [m].
     """
-    return np.sqrt(m_eff / (MU_0 * n_s * E_CHARGE**2))
+    return np.sqrt(m_eff / (MU_0 * n_s * e_charge**2))
 
 
 def coherence_length(v_F: float, delta_0: float) -> float:
@@ -216,7 +215,6 @@ def coherence_length(v_F: float, delta_0: float) -> float:
     Returns:
         Coherence length [m].
     """
-    from ave.core.constants import HBAR
     return HBAR * v_F / (np.pi * delta_0)
 
 

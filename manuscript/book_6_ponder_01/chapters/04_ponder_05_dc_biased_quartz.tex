@@ -1,20 +1,22 @@
 \chapter{PONDER-05: DC-Biased Quartz Thruster}
 \label{ch:ponder_05}
 
-The PONDER-05 configuration accesses Axiom 4's nonlinear dielectric regime by applying a static $30\text{ kV}$ DC bias across a quartz cylinder, overlaid with a modest $500\text{ V}$ AC perturbation at $50\text{ kHz}$. The DC bias holds the material at $68.7\%$ of the kinetic yield voltage ($V_{yield} = 43.65\text{ kV}$), where the effective vacuum permittivity has already dropped by $27.4\%$ from its zero-field value.
+The PONDER-05 configuration accesses Axiom 4's nonlinear dielectric regime by applying a static $30\text{ kV}$ DC bias across a quartz cylinder, overlaid with a modest $500\text{ V}$ AC perturbation at $50\text{ kHz}$. The DC bias holds the material at $68.7\%$ of the kinetic yield voltage ($V_{yield} = 43.65\text{ kV}$), where the effective vacuum permittivity has already collapsed by $27.4\%$ from its zero-field value while the effective capacitance has risen by $37.7\%$.
 
 \section{The Nonlinear Operating Regime}
 
-Axiom 4 defines the vacuum's effective permittivity as:
+The universal saturation kernel $S$ (Axiom~4) governs \emph{two} measurable quantities with opposite behaviours:
 \begin{equation}
-    \frac{\varepsilon_{eff}(V)}{\varepsilon_0} = \sqrt{1 - \left(\frac{V}{V_{yield}}\right)^2}
+    \varepsilon_{eff}(V) = \varepsilon_0 \cdot \underbrace{\sqrt{1 - \left(\frac{V}{V_{yield}}\right)^{\!2}}}_{S \;\to\; 0}
+    \qquad\qquad
+    C_{eff}(V) = \frac{C_0}{\underbrace{\sqrt{1 - \left(\frac{V}{V_{yield}}\right)^{\!2}}}_{S \;\to\; 0}} \;\to\; \infty
 \end{equation}
 where $V_{yield} = \sqrt{\alpha} \cdot V_{snap} \approx 43.65\text{ kV}$. At $V_{DC} = 30\text{ kV}$:
 \begin{equation}
-    \frac{\varepsilon_{eff}}{\varepsilon_0} = \sqrt{1 - \left(\frac{30}{43.65}\right)^2} = \sqrt{1 - 0.4726} \approx 0.726
+    S\big|_{30\text{kV}} = \sqrt{1 - \left(\frac{30}{43.65}\right)^{\!2}} = \sqrt{1 - 0.4726} \approx 0.726
 \end{equation}
 
-The vacuum permittivity at the DC operating point is $72.6\%$ of its unbiased value---a measurable $27.4\%$ depression.
+The constitutive permittivity \emph{drops} to $72.6\%$ of its zero-field value (the vacuum becomes a weaker dielectric), while the measured capacitance \emph{rises} to $1/0.726 \approx 137.7\%$ (the node absorbs more displacement current under strain).
 
 \section{DC Cross-Term Amplification}
 
@@ -28,23 +30,18 @@ The $2V_{DC}V_{ac}$ cross term provides \textbf{linear amplification} of the AC 
     \text{Amplification} = \frac{2V_{DC}}{V_{ac}} = \frac{2 \times 30{,}000}{500} = 120\times
 \end{equation}
 
-This $120\times$ cross-term amplification transforms a barely detectable AC-only thrust into a massive $469\,\mu\text{N}$ signal---nearly $500\times$ above the $1\,\mu\text{N}$ torsion balance detection floor.
+This $120\times$ cross-term amplification transforms a barely detectable AC-only thrust into a $469\,\mu\text{N}$ signal---nearly $500\times$ above the $1\,\mu\text{N}$ torsion balance detection floor.
 
-\section{Acoustic Steepening and Shockwave Onset}
+\section{Rarefaction Wave Inversion}
 
 Near $V_{yield}$, the nonlinear $\varepsilon_{eff}(V)$ curve creates a velocity asymmetry. The local phase velocity of acoustic perturbations depends on the instantaneous voltage:
 \begin{equation}
-    c_{phase}(V) \propto \frac{1}{\sqrt{\varepsilon_{eff}(V)}} \propto \left(1 - \left(\frac{V}{V_{yield}}\right)^2\right)^{-1/4}
+    c_{phase}(V) \propto \frac{1}{\sqrt{\varepsilon_{eff}(V)}} \propto \left(1 - \left(\frac{V}{V_{yield}}\right)^2\right)^{1/4}
 \end{equation}
 
-At the positive peak of the AC cycle ($V_{DC} + V_{ac}$), the phase velocity is higher than at the negative peak ($V_{DC} - V_{ac}$). This velocity asymmetry causes the wave crest to steepen relative to the trough---precisely the mechanism that forms acoustic shockwaves in nonlinear media.
+At the positive peak of the AC cycle ($V_{DC} + V_{ac}$), the phase velocity is \textit{slower} than at the negative peak ($V_{DC} - V_{ac}$). This velocity asymmetry causes the wave crest to lag relative to the trough---the exact opposite mechanism of standard forward acoustic shockwaves.
 
-The steepening factor $\mathcal{S}$ is defined as the ratio of phase velocities:
-\begin{equation}
-    \mathcal{S} = \frac{c_{phase}(V_{DC} + V_{ac})}{c_{phase}(V_{DC} - V_{ac})}
-\end{equation}
-
-At $V_{DC} = 30\text{ kV}$, $V_{ac} = 500\text{ V}$: $\mathcal{S} \approx 1.014$ (modest asymmetry). At $V_{DC} = 43\text{ kV}$: $\mathcal{S} \approx 1.65$ (strong steepening, onset of shockwave formation). This nonlinear excess thrust above the linear cross-term prediction is the signature of Axiom 4.
+Rather than steepening into a compressive shock front, the topological wave stretches out into a \textbf{rarefaction fan} (a backward-breaking wave). Because the steepening evaluates to a fraction less than 1, any nonlinear excess forward thrust previously derived from this mechanism is inverted. Further research is required to determine if a continuous rarefaction wave drawn through a dielectric lattice produces unidirectional macro-thrust, or if it acts as a reverse-thrust drag brake on the PONDER system.
 
 \section{The Quartz Cylinder}
 
@@ -92,24 +89,31 @@ This $3.7\times$ reduction in reflected acoustic power ensures that the generate
 
 Quartz dissipates $< 0.001\text{ mW}$ at these operating conditions ($\tan\delta = 10^{-5}$). The oil bath provides additional convective cooling ($h \approx 100\text{ W/m}^2\text{K}$), rendering thermal artifacts entirely negligible. The temperature rise of the quartz surface is $< 0.001$\textdegree C even after hours of continuous operation.
 
-\section{Predicted Thrust Profile}
+\section{Predicted Thrust Profile (Linear Base)}
 
-The total predicted thrust as a function of DC bias voltage:
+Because the acoustic shockwave mechanism mathematically inverts into a rarefaction wave under the correct structural denominator operator, the purely nonlinear excess thrust cannot be predicted by standard compressive fluid dynamics. The table below represents only the linear cross-term amplifications as a function of the local permittivity modulation ($\varepsilon_{eff}/\varepsilon_0$).
 
 \begin{center}
-\begin{tabular}{|c|c|c|c|}
+\begin{tabular}{|c|c|c|}
 \hline
-$V_{DC}$ (kV) & Cross-Term $F_{lin}$ ($\mu$N) & Nonlinear Excess ($\mu$N) & $\varepsilon_{eff}/\varepsilon_0$ \\ \hline
-0   & 0    & 0    & 1.000 \\
-10  & 156  & 0.8  & 0.974 \\
-20  & 313  & 7.2  & 0.889 \\
-30  & 469  & 35   & 0.726 \\
-40  & 626  & 180  & 0.397 \\
-43  & 672  & 510  & 0.159 \\ \hline
+$V_{DC}$ (kV) & Cross-Term $F_{lin}$ ($\mu$N) & $\varepsilon_{eff}/\varepsilon_0$ \\ \hline
+0   & 0    & 1.000 \\
+10  & 156  & 1.027 \\
+20  & 313  & 1.125 \\
+30  & 469  & 1.377 \\
+40  & 626  & 2.493 \\
+43  & 672  & 5.923 \\ \hline
 \end{tabular}
 \end{center}
 
-The linear cross-term dominates below $30\text{ kV}$. Above $30\text{ kV}$, the nonlinear excess grows explosively as $\varepsilon_{eff}$ collapses toward zero. At $43\text{ kV}$ ($98.5\%$ of $V_{yield}$), the nonlinear excess \textit{exceeds} the linear prediction---the unmistakable signature of Axiom 4's dielectric saturation.
+The linear cross-term currently serves as the only mathematically sound bound for macroscopic thrust generation, pending a rigorous re-derivation of the macroscopic rarefaction wave integral using the Maxwell Stress Tensor.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{ponder05_saturation_curves.png}
+    \caption{Left: the dual behaviour of the Axiom~4 saturation kernel --- $\varepsilon_{eff}$ collapses toward zero while $C_{eff}$ diverges as voltage approaches $V_{yield} = 43.65$~kV. The 30~kV DC bias point is marked. Right: the linear cross-term thrust scales linearly with DC bias, providing a $469\,\mu$N signal at 30~kV --- $469\times$ above the torsion balance detection floor.}
+    \label{fig:ponder05_saturation}
+\end{figure}
 
 \section{Bill of Materials}
 

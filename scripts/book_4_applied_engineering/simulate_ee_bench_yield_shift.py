@@ -9,21 +9,14 @@ constant, linear baseline. AVE dictates that the vacuum is a non-linear
 structural lattice governed by a strict squared saturation operator limit 
 (Axiom 4), bounded fundamentally by the Fine Structure Constant (alpha).
 
-If a high-voltage potential is applied across a microscopic gap (to maximize 
-the V/m E-field gradient), as the potential approaches the absolute 
-macroscopic breakdown limit (43,650 Volts), the lattice CANNOT continue 
-to polarize linearly. It physically plateaus. 
-
-This causes an anomalous, measureable drop in the effective Capacitance (C) 
-and the local Refractive Index (n) of the gap, fundamentally breaking 
-standard linear QED predictions before generating an actual spark.
+The saturation kernel S(A) = sqrt(1 - (A/A_yield)^2) drives TWO observables:
+  1. Constitutive permittivity epsilon_eff = epsilon_0 * S -> 0 (collapse)
+  2. Observable capacitance C_eff = C_0 / S -> infinity (divergence)
 
 The Experiment:
-1. A precision High-Voltage PCB with a micrometer-scale air/vacuum gap.
-2. A voltage sweep from 0V to 45,000V.
-3. Continuous monitoring of the gap capacitance via ultra-precision LCR meter,
-   or monitoring the optical phase shift via an interferometer beam passed 
-   through the gap.
+  - LCR meter: Sees C_eff SPIKE upward (anomalous capacitance increase)
+  - Interferometer: Sees n ~ sqrt(S) DROP (loss of optical phase delay)
+  Both are signatures of the same saturation phenomenon.
 """
 
 import os
@@ -36,7 +29,7 @@ project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
 sys.path.append(str(project_root / "src"))
 
 def simulate_ee_bench_plateau():
-    print("[*] Generating the EE Bench Dielectric Yield Shift predictions...")
+    print("[*] Generating the EE Bench Dielectric Yield predictions...")
     
     # -------------------------------------------------------------
     # Experimental Parameters (Zero-Parameter Foundation)
@@ -51,38 +44,29 @@ def simulate_ee_bench_plateau():
     V_NODE_LIMIT = (M_E * C_0**2 / e_charge) * np.sqrt(ALPHA)
     
     # Macroscopic E-Field Saturation Limit (V/m)
-    # This is the physical strain limit normalized over the macroscopic geometry
     E_BREAKDOWN = V_NODE_LIMIT / l_node  # Approx 1.13e17 V/m
     
     # Sweep E-field from 0 to just past the yield limit
-    # We sweep by fraction of the breakdown absolute limit for clean charting
     e_fields = np.linspace(0, E_BREAKDOWN, 1000)
     
     # -------------------------------------------------------------
     # Theoretical Models
     # -------------------------------------------------------------
-    # Standard Physics: Capacitance and Refractive Index are dead flat (linear E-field response)
-    # until a sudden, catastrophic plasma ionization arc (spark).
-    standard_capacitance_ratio = np.ones_like(e_fields)
+    # Standard Physics: Both C and n are dead flat (linear)
+    standard_flat = np.ones_like(e_fields)
     
-    # AVE Physics: Non-Linear Saturation Operator
-    # As E -> E_BREAKDOWN, the physical displacement nodes cannot stretch further.
-    # The effective dielectric constant epsilon_r (and thus Capacitance) 
-    # compresses non-linearly according to the squared Axiom 4 operator limit.
-    # epsilon_eff(E) = epsilon_0 * sqrt(1 - (E / E_BREAKDOWN)^2)
-    # *Note: In actual materials, atomic breakdown occurs first. This requires
-    # an ultra-hard dielectric or high-vacuum gap to isolate the spatial strain.
-    
-    # Using a smoothed clip to model the plateau right at the edge
+    # AVE: Universal Saturation Factor
     safe_e = np.clip(e_fields, 0, E_BREAKDOWN * 0.999)
-    # The geometric plateau factor
-    ave_dielectric_factor = np.sqrt(1.0 - (safe_e / E_BREAKDOWN)**2)
-    # At the yield limit, the classical lattice "snaps" (loss of structural polarization)
-    ave_dielectric_factor[e_fields >= E_BREAKDOWN] = 0.05 # Complete baseline collapse
+    S = np.sqrt(1.0 - (safe_e / E_BREAKDOWN)**2)
+    S[e_fields >= E_BREAKDOWN] = 0.01  # Clip at structural failure
     
-    # Because Refractive Index n ~ sqrt(epsilon), the optical metric also shrinks
-    ave_refractive_shift = np.sqrt(ave_dielectric_factor)
-    standard_refractive_shift = np.ones_like(e_fields)
+    # Observable 1: Capacitance ratio C_eff/C_0 = 1/S -> SPIKES upward
+    C_ratio = 1.0 / S
+    C_ratio[e_fields >= E_BREAKDOWN] = 50.0  # Clip for visualization
+    
+    # Observable 2: Refractive index n ~ sqrt(epsilon_eff) = sqrt(eps_0*S) -> DROPS
+    # Normalized: n/n_0 = S^(1/2)
+    n_ratio = np.sqrt(S)
     
     # -------------------------------------------------------------
     # Rendering the Experimental Blueprints
@@ -104,41 +88,39 @@ def simulate_ee_bench_plateau():
     plot_e_fields = e_fields / 1e17
     plot_breakdown = E_BREAKDOWN / 1e17
 
-    # Panel 1: Capacitance Measurement (LCR Meter Shift)
-    ax1.plot(plot_e_fields, standard_capacitance_ratio, color='#ff3333', linestyle='--', lw=2, label='Standard EM (Linear Permittivity)')
-    ax1.plot(plot_e_fields, ave_dielectric_factor, color='#00ffcc', lw=3, label=r'AVE Non-Linear Plateau ($C_{eff}$)')
+    # Panel 1: LCR Meter — Observable Capacitance SPIKES
+    ax1.plot(plot_e_fields, standard_flat, color='#ff3333', linestyle='--', lw=2, label='Standard EM (Linear)')
+    ax1.plot(plot_e_fields, C_ratio, color='#00ffcc', lw=3, label=r'AVE: $C_{eff}/C_0 = 1/\sqrt{1-(E/E_{yield})^2}$')
     
     ax1.axvline(plot_breakdown, color='white', linestyle=':', lw=2, label=r'$E_{yield} \approx 1.13 \times 10^{17}$ V/m')
-    
-    # Annotate the measurable "Danger Zone" before arc where the capacitance clearly deviates
     ax1.axvspan(plot_breakdown * 0.85, plot_breakdown, color='#ffff99', alpha=0.2, label='LCR Detectable Anomaly Window')
 
     ax1.set_xlim([0, plot_breakdown * 1.05])
-    ax1.set_ylim([0, 1.1])
-    ax1.set_title("Benchtop LCR Sensor: Normalized Capacitance vs E-Field")
+    ax1.set_ylim([0, 10])
+    ax1.set_title("Benchtop LCR Sensor: Capacitance Spike vs E-Field")
     ax1.set_xlabel(r"Applied Macroscopic E-Field ($\times 10^{17}$ V/m)")
-    ax1.set_ylabel(r"Effective Capacitance Ratio ($C_{meas} / C_0$)")
-    ax1.legend(loc='lower left')
+    ax1.set_ylabel(r"Observable Capacitance Ratio ($C_{meas} / C_0$)")
+    ax1.legend(loc='upper left')
 
-    # Panel 2: Optical Interferometry (Refractive Index Shift)
-    ax2.plot(plot_e_fields, standard_refractive_shift, color='#ff3333', linestyle='--', lw=2, label='Standard GR (Flat Optical Metric)')
-    ax2.plot(plot_e_fields, ave_refractive_shift, color='#ffcc00', lw=3, label=r'AVE Optical Saturation ($\Delta n_{eff}$)')
+    # Panel 2: Interferometer — Refractive Index DROPS
+    ax2.plot(plot_e_fields, standard_flat, color='#ff3333', linestyle='--', lw=2, label='Standard GR (Flat Optical Metric)')
+    ax2.plot(plot_e_fields, n_ratio, color='#ffcc00', lw=3, label=r'AVE: $n_{eff}/n_0 = (1-(E/E_{yield})^2)^{1/4}$')
     
     ax2.axvline(plot_breakdown, color='white', linestyle=':', lw=2, label='Absolute Yield Limit')
     ax2.axvspan(plot_breakdown * 0.85, plot_breakdown, color='#ff99ff', alpha=0.2, label='Laser Phase Shift Window')
 
     ax2.set_xlim([0, plot_breakdown * 1.05])
     ax2.set_ylim([0, 1.1])
-    ax2.set_title("Interferometer Bench: Optical Refractive Index vs E-Field")
+    ax2.set_title("Interferometer Bench: Refractive Index Loss vs E-Field")
     ax2.set_xlabel(r"Applied Macroscopic E-Field ($\times 10^{17}$ V/m)")
-    ax2.set_ylabel(r"Optical Metric Shift ($n_{eff} / n_0$)")
+    ax2.set_ylabel(r"Optical Phase Ratio ($n_{eff} / n_0$)")
     ax2.legend(loc='lower left')
 
     plt.tight_layout()
     
     outdir = project_root / "assets" / "sim_outputs"
     os.makedirs(outdir, exist_ok=True)
-    target = outdir / "ee_bench_plateau_prediction.png"
+    target = outdir / "ee_bench_saturation_prediction.png"
     plt.savefig(target, dpi=300)
     print(f"[*] Visualized EE Bench Falsification Limits: {target}")
 

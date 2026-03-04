@@ -85,7 +85,7 @@ $28$ & $14\alpha$ & FCC-14            & Face-centered cubic closure \\
 \end{tabular}
 \end{center}
 
-The ``magic'' is literally just clean geometric closure: a complete Platonic or Archimedean solid where every alpha cluster is symmetrically equivalent and the total strain field has zero net dipole moment.
+The underlying pattern is clean geometric closure: a complete Platonic or Archimedean solid where every alpha cluster is symmetrically equivalent and the total strain field has zero net dipole moment.
 
 \section{The Platonic Progression}
 
@@ -130,10 +130,10 @@ None is fitted; all emerge from the axioms.
 \toprule
 \textbf{Constant} & \textbf{Formula} & \textbf{Value} & \textbf{Physical Meaning} \\
 \midrule
-$\delta_{th}$ & $\dfrac{1}{28\pi}
-    = \dfrac{\nu_{vac}}{\kappa_{cold}}$
-    & 0.01137
-    & Thermal softening fraction \\[6pt]
+$\delta_{th}$ & $\dfrac{1}{14\pi^2}
+    = \dfrac{\nu_{vac}}{\kappa_{cold}} \cdot \dfrac{2}{\pi}$
+    & 0.00724
+    & Residual thermal softening \\[6pt]
 $K_{mut}$ & $\dfrac{5\pi}{2}\cdot\dfrac{\alpha\hbar c}{1-\alpha/3}$
     & 11.34 MeV$\cdot$fm
     & Nuclear mutual inductance \\[6pt]
@@ -161,19 +161,20 @@ $r_s(\odot)$ & $\dfrac{2GM_\odot}{c^2}$
 \end{tabular}
 \end{center}
 
-\subsection{Thermal Softening ($\delta_{th} = 1/(28\pi)$)}
+\subsection{Thermal Softening ($\delta_{th} = 1/(14\pi^2)$)}
 
 The proton's core temperature $\sim m_p c^2 / k_B \approx 10^{13}$~K
 softens the quartic Skyrme repulsion by partially averaging out the
-gradient tensor.  The softening fraction is the ratio of the
-lattice's compliance ($\nu_{vac} = 2/7$, the Poisson ratio) to its
-Skyrme stiffness ($\kappa_{cold} = 8\pi$, the Faddeev--Skyrme coupling):
+gradient tensor.  With the lattice gradient saturation (Axiom~4) now
+handled inside the energy functional, the residual softening fraction
+is the RMS noise averaging:
 \begin{equation}
-    \delta_{th} = \frac{\nu_{vac}}{\kappa_{cold}}
-    = \frac{2/7}{8\pi} = \frac{1}{28\pi} \approx 0.01137
+    \delta_{th} = \frac{\nu_{vac}}{\kappa_{cold}} \cdot \frac{2}{\pi}
+    = \frac{2/7}{8\pi} \cdot \frac{2}{\pi} = \frac{1}{14\pi^2} \approx 0.00724
 \end{equation}
 Both $\nu_{vac}$ and $\kappa_{cold}$ are pure geometric constants
-derived independently.
+derived independently; the $2/\pi$ factor is the mean-to-peak ratio
+of rectified sinusoidal thermal noise.
 
 \subsection{Nuclear Mutual Inductance ($K_{mut}$)}
 

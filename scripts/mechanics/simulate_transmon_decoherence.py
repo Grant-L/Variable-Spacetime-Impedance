@@ -1,3 +1,17 @@
+"""
+DEPRECATED — Use scripts/book_4_applied_engineering/simulate_transmon_decoherence.py instead.
+
+This legacy version uses bulk stochastic noise (non-physical) and a single-point amplitude
+metric. The canonical version implements boundary-impedance thermalization with a
+Cauchy-Schwarz normalized coherence overlap, as required by the AVE framework.
+"""
+import warnings
+warnings.warn(
+    "This script is deprecated. Use "
+    "scripts/book_4_applied_engineering/simulate_transmon_decoherence.py instead.",
+    DeprecationWarning, stacklevel=2,
+)
+
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import animation

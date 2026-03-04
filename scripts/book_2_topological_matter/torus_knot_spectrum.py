@@ -43,9 +43,17 @@ def energy_density(r, r_opt, n, kappa):
     phi1 = phase_profile(r, r_opt, n)
     phi2 = phase_profile(r + dr, r_opt, n)
     dphi = (phi2 - phi1) / dr
-    kinetic = 0.5 * dphi ** 2
+
+    # Axiom 4: gradient saturation at the lattice Nyquist limit
+    # gradient yield = π / ℓ_node = π in natural units (ℓ_node = 1)
+    gradient_yield = np.pi
+    ratio_sq = min(dphi**2 / gradient_yield**2, 1.0 - 1e-15)
+    S = np.sqrt(1.0 - ratio_sq)
+    dphi_eff = dphi * S
+
+    kinetic = 0.5 * dphi_eff ** 2
     skyrme = 0.5 * np.sin(phi1) ** 2 / (r ** 2 + 1e-12)
-    return 4 * np.pi * r ** 2 * (kinetic + kappa ** 2 * skyrme * dphi ** 2)
+    return 4 * np.pi * r ** 2 * (kinetic + kappa ** 2 * skyrme * dphi_eff ** 2)
 
 
 def compute_I_scalar(crossing_number, kappa=KAPPA_FS):
@@ -130,7 +138,6 @@ def run_spectrum():
     fig, ax = plt.subplots(1, 1, figsize=(10, 7))
 
     # Plot PDG resonances as horizontal bands
-    pdg_masses = sorted(set(m for m, _, _ in PDG_RESONANCES.values()))
     for name, (mass, jp, stars) in PDG_RESONANCES.items():
         alpha = 0.8 if stars == '****' else 0.4
         ax.axhline(mass, color='#2196F3', alpha=alpha * 0.3, linewidth=8)
@@ -155,10 +162,23 @@ def run_spectrum():
                         arrowprops=dict(arrowstyle='->', color='#E53935',
                                         lw=0.8))
 
+    # Note: gradient saturation annotation
+    ax.text(0.97, 0.18,
+            'Axiom 4 gradient saturation\n'
+            r'$S(|\partial\phi/\partial r|,\;\pi/\ell_{node})$' '\n'
+            'applied inside the energy\n'
+            'functional at all crossing\n'
+            'numbers (zero free parameters).',
+            transform=ax.transAxes,
+            ha='right', va='bottom',
+            fontsize=9, color='#1B5E20',
+            bbox=dict(boxstyle='round,pad=0.4', facecolor='#E8F5E9',
+                      edgecolor='#4CAF50', alpha=0.9))
+
     ax.set_xlabel('Crossing Number c  [(2,q) torus knot]', fontsize=12)
     ax.set_ylabel('Mass (MeV)', fontsize=12)
     ax.set_title('Torus Knot Ladder — Baryon Resonance Spectrum\n'
-                 r'$m(c) = I_{scalar}(\kappa_{eff}/c)\,/\,(1 - 2p_c) + 1$',
+                 r'$m(c) = I_{scalar}(\kappa_{eff}/c,\;S_{Ax4})\,/\,(1 - 2p_c) + 1$',
                  fontsize=14, fontweight='bold')
     ax.set_xlim(2, 18)
     ax.set_ylim(400, 2800)

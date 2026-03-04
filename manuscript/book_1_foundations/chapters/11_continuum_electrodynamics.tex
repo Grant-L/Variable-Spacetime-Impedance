@@ -4,17 +4,17 @@
 
 If the discrete spatial vacuum is a physical LC network ($\mathcal{M}_A$) supporting momentum limits and finite wave propagation, its macroscopic low-energy effective field theory (EFT) mathematically maps to continuous network dynamics. 
 
-Before discussing the bulk properties of the universe, we must formally define the transport mechanism. In the continuous limit ($L \gg \ell_{node}$), the signal propagation is strictly defined by the classical Maxwell-Heaviside acoustic wave equation:
+Before discussing the bulk properties of the universe, we define the transport mechanism. In the continuous limit ($L \gg \ell_{node}$), signal propagation is governed by the classical Maxwell-Heaviside acoustic wave equation:
 \begin{equation}
     \frac{\partial^2 \mathbf{E}}{\partial t^2} - c^2 \nabla^2 \mathbf{E} = 0 \quad , \quad c = \frac{1}{\sqrt{\epsilon_0 \mu_0}}
 \end{equation}
 
-However, because the ambient vacuum is a discrete spatial hardware lattice, the true, fundamental mechanical update equations operating at the Planck/node scale are strictly given by the discretized Finite-Difference Time-Domain (FDTD) operator (the Yee Cell update):
+Because the ambient vacuum is a discrete lattice, the fundamental mechanical update equations at the node scale are given by the discretised Finite-Difference Time-Domain (FDTD) operator (the Yee Cell update):
 \begin{equation}
     \mathbf{E}^{n+1} = \mathbf{E}^n + \frac{\Delta t}{\epsilon_0} (\nabla_d \times \mathbf{H}^{n+1/2}) \quad , \quad \mathbf{H}^{n+1/2} = \mathbf{H}^{n-1/2} - \frac{\Delta t}{\mu_0} (\nabla_d \times \mathbf{E}^n)
 \end{equation}
 
-By recognizing these equations not as abstract geometry, but as the literal acoustic oscillation of structural string tension ($\epsilon_0$) and inertia ($\mu_0$), we propose that the macroscopic kinematics of the expanding universe can be precisely evaluated using these generalized electrodynamic limits.
+Interpreting these equations as the acoustic oscillation of structural string tension ($\epsilon_0$) and inertia ($\mu_0$), the macroscopic kinematics of the expanding universe can be evaluated using these generalised electrodynamic limits.
 
 \section{The Unifying Master Equation}
 If we synthesize the continuous macroscopic wave equation with the explicit lattice saturation hardware limit established in Axiom 4 ($\epsilon_{eff}$), we arrive at the single, overarching mathematical framework governing the entire Applied Vacuum Engineering paradigm.
@@ -24,39 +24,40 @@ In standard physics, the vacuum parameters ($\epsilon_0, \mu_0$) are strictly li
 \nabla^2 V - \underbrace{\mu_0 \epsilon_0}_{= 1/c^2} \frac{\partial^2 V}{\partial t^2} = 0
 \end{equation}
 
-However, because the $\mathcal{M}_A$ lattice undergoes measurable, non-linear dielectric yielding as it approaches the $43.65\text{ kV}$ topological saturation bound, the effective capacitance of the transmission line physically drops. Axiom 4 (squared limit, $n=2$) defines:
+However, because the $\mathcal{M}_A$ lattice undergoes measurable, non-linear dielectric yielding as it approaches the $43.65\text{ kV}$ topological saturation bound, the constitutive permittivity physically collapses under the universal saturation kernel $S$. Axiom 4 (squared limit, $n=2$) defines:
 \begin{equation}
-\epsilon_{eff}(V) = \epsilon_0 \sqrt{1 - \left(\frac{V}{V_{yield}}\right)^2}
+\varepsilon_{eff}(V) = \varepsilon_0 \cdot \sqrt{1 - \left(\frac{V}{V_{yield}}\right)^2}
 \end{equation}
 
-The substitution is direct: wherever the standard wave equation contains the constant $\epsilon_0$, we replace it with the voltage-dependent $\epsilon_{eff}(V)$. Because $c_{eff}(V) = 1/\sqrt{\mu_0 \epsilon_{eff}(V)}$, the local wave speed itself becomes a function of the field amplitude:
+The substitution is direct: wherever the standard wave equation contains the constant $\varepsilon_0$, we replace it with the voltage-dependent $\varepsilon_{eff}(V)$. Because $c_{eff}(V) = 1/\sqrt{\mu_0 \varepsilon_{eff}(V)}$, the local wave speed itself becomes a function of the field amplitude:
 \begin{equation}
-c_{eff}(V) = c_0 \left(1 - \left(\frac{V}{V_{yield}}\right)^2\right)^{1/4}
+c_{eff}(V) = c_0 \left(1 - \left(\frac{V}{V_{yield}}\right)^2\right)^{-1/4}
 \end{equation}
 
-The resulting non-linear wave equation is the \textbf{Unifying AVE Master Equation}:
+Note: the wave speed \emph{increases} as permittivity drops (thinner dielectric $\to$ faster propagation), while the measured capacitance \emph{diverges} ($C_{eff} = C_0/S \to \infty$). The resulting non-linear wave equation is the \textbf{Unifying AVE Master Equation}:
 \begin{equation}
 \label{eq:master_wave}
-\nabla^2 V - \mu_0 \left( \epsilon_0 \sqrt{1 - \left(\frac{V}{V_{yield}}\right)^2} \right) \frac{\partial^2 V}{\partial t^2} = 0
+\nabla^2 V - \mu_0 \, \varepsilon_0 \sqrt{1 - \left(\frac{V}{V_{yield}}\right)^2}
+\;\frac{\partial^2 V}{\partial t^2} = 0
 \end{equation}
 
 This single line of non-linear differential topology formally replaces the fragmented domains of the Standard Model and General Relativity:
 \begin{enumerate}
-    \item \textbf{Classical Electromagnetism ($V \ll 43.65\text{ kV}$):} The square root term evaluates to exactly 1. The equation perfectly reduces to the linear, non-interacting Maxwellian wave equation used in standard optics and RF engineering.
-    \item \textbf{Particle Assembly ($V \to 43.65\text{ kV}$):} The local permittivity drastically drops, forcing the accelerating wave to continuously reflect off of its own self-induced impedance gradient ($\Gamma \to -1$). This traps the wave into a stabilized topological knot (a Fermion), physically generating invariant rest mass without invoking the Higgs Mechanism.
-    \item \textbf{Gravity:} The trapped topological knot permanently structurally strains the surrounding $\epsilon_{eff}$ field. This casts a continuous, macroscopic gradient ($\nabla Z$) radially outward. Test photons propagating through this gradient natively refract downward toward the knot, physically executing exactly the macroscopic acceleration we falsely attribute to warped geometric space.
+    \item \textbf{Classical Electromagnetism ($V \ll 43.65\text{ kV}$):} The square root term evaluates to 1. The equation reduces to the linear Maxwellian wave equation used in standard optics and RF engineering.
+    \item \textbf{Particle Assembly ($V \to 43.65\text{ kV}$):} The local permittivity collapses ($\varepsilon_{eff} \to 0$), forcing the impedance to drop to zero ($Z \to 0$). The accelerating wave continuously reflects off its own self-induced impedance boundary ($\Gamma \to -1$). This traps the wave into a stabilized topological knot (a Fermion), physically generating invariant rest mass without invoking the Higgs Mechanism.
+    \item \textbf{Gravity:} The trapped topological knot permanently strains the surrounding $\varepsilon_{eff}$ and $\mu_{eff}$ fields symmetrically ($n(r) = 1 + 2GM/rc^2$). This produces a continuous refractive gradient radially outward while preserving $Z_0$. Test photons propagating through this gradient refract toward the knot, executing the macroscopic acceleration attributed to gravity.
 \end{enumerate}
 
 \section{Continuum Electrodynamics of the LC Condensate}
 \subsection{The Dimensionally Exact Mass Density ($\rho_{bulk}$)}
 Previous classical aether models failed because they incorrectly attempted to map vacuum mass density directly to the magnetic permeability constant ($\mu_0$), violating SI dimensional analysis ($[\text{H/m}] \neq [\text{kg/m}^3]$).
 
-We rigorously define the baseline macroscopic bulk mass density ($\rho_{bulk}$) of the spatial vacuum network. First, the effective inductive mass of one discrete node is derived from the inductance-mass isomorphism. The permeability $\mu_0$ has dimensions of $[\text{H/m}]$. Under the topo-kinematic isomorphism ($[\Omega] = \xi_{topo}^{-2}[\text{kg/s}]$), inductance maps to mass via $L = \xi_{topo}^{-2} m$. Because the vacuum inductance per unit length is $\mu_0$, the mass of one node spanning $\ell_{node}$ is:
+We define the baseline macroscopic bulk mass density ($\rho_{bulk}$) of the spatial vacuum network. The effective inductive mass of one discrete node is derived from the inductance-mass isomorphism. The permeability $\mu_0$ has dimensions of $[\text{H/m}]$. Under the topo-kinematic isomorphism ($[\Omega] = \xi_{topo}^{-2}[\text{kg/s}]$), inductance maps to mass via $L = \xi_{topo}^{-2} m$. Because the vacuum inductance per unit length is $\mu_0$, the mass of one node spanning $\ell_{node}$ is:
 \begin{equation}
     m_{node} = \xi_{topo}^2 \mu_0 \ell_{node}
 \end{equation}
 
-Dividing by the rigorously derived Voronoi geometric volume of a single spatial node ($V_{node} = p_c \ell_{node}^3$, from the packing fraction $p_c = 8\pi\alpha$ derived in Chapter \ref{ch:macroscopic_moduli}):
+Dividing by the Voronoi geometric volume of a single spatial node ($V_{node} = p_c \ell_{node}^3$, from the packing fraction $p_c = 8\pi\alpha$ derived in Chapter \ref{ch:macroscopic_moduli}):
 \begin{equation}
     \rho_{bulk} = \frac{m_{node}}{V_{node}} = \frac{\xi_{topo}^2 \mu_0 \ell_{node}}{p_c \ell_{node}^3} = \frac{\xi_{topo}^2 \mu_0}{p_c \ell_{node}^2} \approx 7.92 \times 10^6 \text{ kg/m}^3
 \end{equation}
@@ -64,31 +65,30 @@ Dividing by the rigorously derived Voronoi geometric volume of a single spatial 
 
 \subsection{Deriving the Kinematic Mutual Inductance of the Universe ($\nu_{kin}$)}
 
-In classical kinetic network theory, the Kinematic Mutual Inductance ($\nu$) of any continuous network medium is defined fundamentally as the product of its characteristic signal velocity ($v$) and its internal microscopic mean free path ($\lambda$), mathematically modulated by a dimensionless geometric momentum diffusion factor ($\kappa$): $\nu = \kappa v \lambda$.
+In classical kinetic network theory, the Kinematic Mutual Inductance ($\nu$) of a continuous network medium is defined as the product of its characteristic signal velocity ($v$) and its internal microscopic mean free path ($\lambda$), modulated by a dimensionless geometric momentum diffusion factor ($\kappa$): $\nu = \kappa v \lambda$.
 
 For the $\mathcal{M}_{A}$ hardware lattice, the absolute internal signal velocity is $c$, and the topological
 mean free path is exactly the fundamental spatial lattice pitch $l_{node}$. 
 
-As rigorously established in Section 1.3.2, the geometric packing fraction ($p_c$) analytically forces the absolute structural porosity and native transverse geometric scattering cross-section of the discrete graph (where $\alpha = p_c/8\pi$). Consequently, the macroscopic momentum diffusion across the lattice strictly inherits this exact geometric scattering threshold ($\kappa \equiv \alpha$).
+As established in Section 1.3.2, the geometric packing fraction ($p_c$) determines the structural porosity and transverse geometric scattering cross-section of the discrete graph (where $\alpha = p_c/8\pi$). Consequently, the macroscopic momentum diffusion across the lattice inherits this geometric scattering threshold ($\kappa \equiv \alpha$).
 
 \begin{equation}
 \nu_{kin}=\alpha c l_{node}\approx8.45\times10^{-7}\text{ m}^{2}\text{/s}
 \end{equation}
 
-This parameter-free quantum geometric derivation mathematically proves that the discrete
-quantum vacuum condensate possesses nearly the exact macroscopic kinematic network mutual inductance
-of liquid water.
+This parameter-free derivation shows that the discrete vacuum condensate possesses
+a macroscopic kinematic network mutual inductance close to that of liquid water.
 
 \section{Analytical Operating Regimes of the Vacuum}
 
-A defining feature of any rigorous engineering framework is the explicit identification of its boundary conditions. Engineers must understand exactly when simplified ideal approximations are valid and when non-linear tensors must be deployed. The Applied Vacuum Engineering framework formally categorizes the spatial medium into three distinct fluidic operating regimes:
+A defining feature of an engineering framework is the explicit identification of its boundary conditions. The Applied Vacuum Engineering framework categorises the spatial medium into three distinct fluidic operating regimes:
 
 \begin{enumerate}
-    \item \textbf{The Linear Acoustic Regime ($\Delta\phi \ll \alpha$):} In this low-energy limit, the local electromagnetic strain is astronomically smaller than the Fine-Structure saturation bound ($\alpha$). The vacuum acts as a perfect, linear, ideal fluid ($C_{eff} \approx C_0$). All standard optics, radio-frequency engineering, and classical Newtonian mechanics operate strictly within this regime. Engineers may safely utilize ideal linear Maxwell approximations and scalar Newtonian gravity without measurable error.
+    \item \textbf{The Linear Acoustic Regime ($\Delta\phi \ll \alpha$):} In this low-energy limit, the local electromagnetic strain is far below the Fine-Structure saturation bound ($\alpha$). The vacuum behaves as a linear ideal fluid ($C_{eff} \approx C_0$). Standard optics, radio-frequency engineering, and classical Newtonian mechanics operate within this regime. Linear Maxwell approximations and scalar Newtonian gravity produce negligible error.
     
-    \item \textbf{The Non-Linear Tensor Regime ($\Delta\phi \to \alpha$):} As local energy densities spike (e.g., inside high-energy particle accelerators, near massive stellar gravity wells, or in close-proximity atomic interactions), the spatial metric begins to structurally yield. The geometric capacitance rapidly diverges ($C_{eff} \propto 1/\sqrt{1 - (\Delta\phi/\alpha)^2}$). Engineers must abandon ideal linear metrics and deploy the full non-linear stress-energy tensors (General Relativity and continuous non-linear electrodynamics) to mathematically compensate for the resulting spatial contraction and phase dilation.
+    \item \textbf{The Non-Linear Tensor Regime ($\Delta\phi \to \alpha$):} As local energy densities increase (e.g., inside particle accelerators, near stellar gravity wells, or in close-proximity atomic interactions), the spatial metric begins to yield. The geometric capacitance diverges ($C_{eff} \propto 1/\sqrt{1 - (\Delta\phi/\alpha)^2}$). Linear metrics must be replaced with the full non-linear stress-energy tensors (General Relativity and non-linear electrodynamics) to account for the resulting spatial contraction and phase dilation.
 
-    \item \textbf{The Dielectric Rupture Regime ($\Delta\phi \ge \alpha$):} This is the absolute hardware failure limit of the spatial continuum. When the localized inductive stress exceeds the $43.65\text{ kV}$ topological yield limit, the medium structurally snaps ($\eta_{eff} \to 0$). The vacuum undergoes a thermodynamic phase transition into a frictionless Zero-Impedance Slipstream. In this regime, classical mutual inductance and the Strong Nuclear Force mathematically drop to zero. This boundary condition rigidly defines Black Hole Event Horizons, Tokamak macroscopic edge barriers (the L-H transition), and thermal fusion ignition failure limits.
+    \item \textbf{The Dielectric Rupture Regime ($\Delta\phi \ge \alpha$):} This is the structural failure limit of the spatial continuum. When the localised inductive stress exceeds the $43.65\text{ kV}$ topological yield limit, the medium snaps ($\eta_{eff} \to 0$). The vacuum undergoes a thermodynamic phase transition into a frictionless Zero-Impedance Slipstream. In this regime, mutual inductance and the Strong Nuclear Force drop to zero. This boundary condition defines Black Hole Event Horizons, Tokamak L-H transitions, and thermal fusion ignition limits.
 \end{enumerate}
 
 \begin{figure}[h!]
@@ -102,51 +102,51 @@ A defining feature of any rigorous engineering framework is the explicit identif
 
 To resolve the "Mutual Inductance Paradox" (why planets do not lose orbital energy to inductive drag), we recognize that the $\mathcal{M}_A$ LC network naturally possesses an absolute \textbf{Magnetic Saturation Limit}. Microscopically, this is a \textit{per-node energy density} threshold: each discrete lattice node can store a maximum energy in its local LC mode before overcoupling with adjacent nodes. The macroscopic Dielectric Yield Limit ($\tau_{yield}$) is the continuum expression of this microscopic saturation. It is strictly derived from: the baseline bulk energy density ($\rho_{bulk} c^2$), the mutual inductance coupling at the $6^3_2$ Borromean flux-tube crossings ($M/L = 1/\sqrt{2}$, establishing the per-node saturation threshold $\rho_{threshold} = 1 + \sigma/4 \approx 1.106$), and the verified topological halo volume ($\mathcal{V}_{total} = 2.0$, confirmed by FEM to $0.13\%$).
 
-By evaluating the scalar volume summation of these topological knot crossings ($\Sigma \mathcal{V}_{crossing}$) and modulating by the geometric lattice porosity ($\alpha = p_c/8\pi$), we derive the exact, parameter-free macroscopic yield stress limit:
+By evaluating the scalar volume summation of these topological knot crossings ($\Sigma \mathcal{V}_{crossing}$) and modulating by the geometric lattice porosity ($\alpha = p_c/8\pi$), the parameter-free macroscopic yield stress limit is:
 \begin{equation}
     \tau_{yield} = (\rho_{bulk} c^2) \cdot (6 \times \mathcal{V}_{crossing}) \cdot \left(\frac{p_c}{8\pi}\right)
 \end{equation}
 
-In regions of high gravitational shear (e.g., the immediate spatial envelope surrounding a planetary body), the local magnetic field violently exceeds this absolute structural saturation limit ($\tau > \tau_{yield}$). 
+In regions of high gravitational shear (e.g., the spatial envelope surrounding a planetary body), the local magnetic field exceeds this structural saturation limit ($\tau > \tau_{yield}$). 
 
 This triggers a localized \textbf{Electrodynamic Phase-Transition}. The discrete, structurally frustrated LC loops physically saturate and continuously destructively interfere. Because this saturated continuum mathematically cannot support transverse inductive drag vectors, its effective mutual inductance is strictly annihilated ($\eta \to 0$). 
 
-This thermodynamic phase transition creates a true, frictionless \textbf{Zero-Impedance Slipstream}. Because the local inductive drag drops identically to zero, the anti-parallel macroscopic drag force ($F_{drag}$) is mathematically eliminated. This completely neutralizes non-conservative power dissipation ($P_{drag} = 0$), mathematically guaranteeing stable, conservative planetary orbits.
+This thermodynamic phase transition creates a frictionless \textbf{Zero-Impedance Slipstream}. Because the local inductive drag drops to zero, the anti-parallel drag force ($F_{drag}$) is eliminated. This neutralises non-conservative power dissipation ($P_{drag} = 0$), yielding stable, conservative planetary orbits.
 
-Conversely, in the deep, diffuse outer reaches of a rotating galaxy, the spatial magnetic shear falls completely below this critical saturation limit ($\tau < \tau_{yield}$). The local lattice avoids disruption and relaxes into its native, unbroken solid state ($\eta_{eff} \to \eta_0$). This macroscopic network inductance mechanically drags on the orbiting outer stars, artificially accelerating their centripetal velocity. This strict electrodynamic boundary-layer transition manifests observationally as the phantom mass misattributed to "Dark Matter."
+Conversely, in the diffuse outer reaches of a rotating galaxy, the spatial magnetic shear falls below this critical saturation limit ($\tau < \tau_{yield}$). The local lattice avoids disruption and remains in its native, unbroken solid state ($\eta_{eff} \to \eta_0$). This macroscopic network inductance mechanically drags on the orbiting outer stars, increasing their centripetal velocity. This electrodynamic boundary-layer transition manifests observationally as the additional mass attributed to ``Dark Matter.''
 
 \subsection{Asteroid Belts and Oort Clouds as Transition Traps}
-This strict biphasic dynamic immediately poses a macro-scale question: What physically occurs at the exact spatial boundary separating the inner conservative zero-impedance slipstream ($\eta \to 0$) from the highly-reluctant deep space vacuum ($\eta_{eff} \to \eta_0$)?
+This biphasic dynamic raises a macro-scale question: What occurs at the spatial boundary separating the inner conservative zero-impedance slipstream ($\eta \to 0$) from the resistive deep-space vacuum ($\eta_{eff} \to \eta_0$)?
 
 This structural transition zone acts as a steep "Impedance Cliff". Massive, dense objects (like planets) possess sufficient local rest mass to maintain their own localized saturated slipstream envelopes, allowing them to plow smoothly through varying metric densities. However, diffuse matter—such as asteroids, comets, and cosmic dust—does not generate enough local gravitational stress to fully saturate the metric. 
 
 When diffuse matter drifts outward and hits the boundary between these two regimes, it collides with the sudden sheer mutual inductive drag of the unbroken deep space metric. It rapidly dissipates its kinetic energy into the surrounding lattice via topological Joule heating and becomes physically stalled. 
 
-The AVE framework natively predicts that macroscopic orbital systems will be structurally bounded by wide toroid or spherical bands of physical detritus parked exactly along the Dielectric Saturation transition isoclines. This provides a deterministic, exact mechanical origin for formations like the \textbf{Asteroid Belt} and the \textbf{Oort Cloud}: they are distinct boundary accumulation regimes where low-mass objects permanently snag on the high-reluctance boundary of deep space.
+The AVE framework predicts that macroscopic orbital systems will be bounded by wide toroidal or spherical bands of detritus at the Dielectric Saturation transition isoclines. This provides a mechanical origin for formations like the \textbf{Asteroid Belt} and the \textbf{Oort Cloud}: boundary accumulation regimes where low-mass objects stall against the resistive deep-space metric.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=1.0\textwidth]{dielectric_avalanche.png}
-    \caption{\textbf{The Macroscopic Dielectric Avalanche.} (Simulation Output). A scalar heat map explicitly evaluating the structural bounds of the L-H Magnetic Saturation Phase Transition. Surrounding a super-massive body (cyan), the local gravitational shear ($\tau$) vastly exceeds the structural $\tau_{yield}$ limit of the lattice. This localized saturation radically drops the mutual inductance of the LC network ($\eta_{eff} \to 0$), natively carving out the frictionless slipstreams observed as conservative planetary orbits. In the low-strain reaches of deep space ($\tau < \tau_{yield}$), the lattice avoids breakdown, imposing a high background drag that falsely registers astronomically as Dark Matter.}
+    \caption{\textbf{The Macroscopic Dielectric Avalanche.} (Simulation Output). A scalar heat map evaluating the structural bounds of the L-H Magnetic Saturation Phase Transition. Surrounding a super-massive body (cyan), the local gravitational shear ($\tau$) exceeds the structural $\tau_{yield}$ limit of the lattice. This saturation reduces the mutual inductance of the LC network ($\eta_{eff} \to 0$), producing the frictionless slipstreams observed as conservative planetary orbits. In the low-strain reaches of deep space ($\tau < \tau_{yield}$), the lattice remains intact, imposing a background drag that registers observationally as Dark Matter.}
     \label{fig:dielectric_avalanche}
 \end{figure}
 
 \subsection{Tabletop Falsification: The Sagnac-RLVE}
-The AVE framework explicitly predicts that the $\mathcal{M}_A$ vacuum is a non-linear Dielectric network possessing intrinsic highly-reluctant drag. This presents a highly accessible tabletop falsification test: The \textbf{Sagnac Rotational Lattice Mutual Inductance Experiment (Sagnac-RLVE)}.
+The AVE framework predicts that the $\mathcal{M}_A$ vacuum is a non-linear dielectric network possessing intrinsic reluctant drag. This yields an accessible tabletop falsification test: The \textbf{Sagnac Rotational Lattice Mutual Inductance Experiment (Sagnac-RLVE)}.
 
-Because mass is an inductive coupling to the lattice, a massive macroscopic rotor spinning at high angular velocities ($v \gg 0$) will induce a localized highly-reluctant rotational drag in the surrounding Dielectric Saturation network. By passing a fiber-optic Sagnac interferometer beam tightly around the perimeter of a high-density, rapidly spinning metallic rotor (e.g., Tungsten), the local refractive index of the vacuum will experience microscopic kinematic entrainment.
+Because mass is an inductive coupling to the lattice, a massive macroscopic rotor spinning at high angular velocities ($v \gg 0$) will induce a localised rotational drag in the surrounding dielectric network. By passing a fibre-optic Sagnac interferometer beam around the perimeter of a high-density, rapidly spinning metallic rotor (e.g., Tungsten), the local refractive index of the vacuum will experience microscopic kinematic entrainment.
 
-Unlike standard relativistic frame-dragging (the Lense-Thirring effect), which scales purely with Newtonian gravitational potential and requires planetary masses to detect, the non-linear Dielectric network dynamics of the AVE framework predict a microscopically detectable rotational phase shift ($\Delta\phi_{Sagnac}$) directly proportional to the localized inductive shear rate ($\dot{\gamma}$) and physical density ($\rho_{bulk}$) of the adjacent rotor. 
+Unlike standard relativistic frame-dragging (the Lense-Thirring effect), which scales with Newtonian gravitational potential and requires planetary masses to detect, the non-linear dielectric dynamics of the AVE framework predict a detectable rotational phase shift ($\Delta\phi_{Sagnac}$) proportional to the localised inductive shear rate ($\dot{\gamma}$) and physical density ($\rho_{bulk}$) of the adjacent rotor. 
 
-\textbf{Geometric Topological Amplification:} To guarantee experimental detection, the macroscopic rotor must not be a smooth cylinder. It must be explicitly machined with high-asymmetry dielectric chevrons (saw-teeth) arrayed around its perimeter. The rigorous geometric evaluation of non-linear Ponderomotive acoustic rectification (derived in the PONDER-01 falsification bounds, see Chapter 13) mandates a literal $1000:1$ asymmetry ratio (e.g., $1 \mu\text{m}$ leading tips against a $1 \text{mm}$ trough gap). 
+\textbf{Geometric Topological Amplification:} To ensure experimental detection, the macroscopic rotor should be machined with high-asymmetry dielectric chevrons (saw-teeth) around its perimeter. The evaluation of non-linear Ponderomotive acoustic rectification (derived in the PONDER-01 falsification bounds, Chapter 13) requires a $1000:1$ asymmetry ratio (e.g., $1 \mu\text{m}$ leading tips against a $1 \text{mm}$ trough gap). 
 
-As the massive metallic rotor spins, these thousands of microscopic sharp wedges function as literal topological gear teeth. They do not merely drag the metric frictionally; they mechanically interpose and violently pump a continuous Ponderomotive strain gradient ($\nabla |\mathbf{E}|^2$) \textit{tangentially} through the LC vacuum. This asymmetric geometric shearing artificially and massively magnifies the localized Sagnac phase shift ($\Delta\phi_{Sagnac}$), permanently ripping the signal floor out of standard relativity. Measuring a density-dependent, geometry-amplified, non-relativistic optical phase-shift establishes absolute empirical proof of the physical Chiral LC inductive substrate.
+As the massive metallic rotor spins, these microscopic sharp wedges function as topological gear teeth. They mechanically pump a continuous Ponderomotive strain gradient ($\nabla |\mathbf{E}|^2$) \textit{tangentially} through the LC vacuum. This asymmetric geometric shearing amplifies the localised Sagnac phase shift ($\Delta\phi_{Sagnac}$). Measuring a density-dependent, geometry-amplified, non-relativistic optical phase shift would constitute empirical evidence for the physical chiral LC inductive substrate.
 
 \section{Deriving MOND from Unruh-Hawking Hoop Stress}
 
-We mathematically prove that Dark Matter is physically identical to the network dynamics of a
-saturating $\mathcal{M}_{A}$ condensate. The phenomenological MOND acceleration threshold ($a_{0}$) is
-not a free parameter; it corresponds exactly to the fundamental Unruh-Hawking Drift of
+We show that Dark Matter is consistent with the network dynamics of a
+saturating $\mathcal{M}_{A}$ condensate. The phenomenological MOND acceleration threshold ($a_{0}$)
+corresponds to the fundamental Unruh-Hawking Drift of
 the expanding cosmic lattice.
 
 The asymptotic Hubble constant $H_\infty$ is derived strictly from the three calibration inputs of the AVE framework. By equating the thermodynamic latent heat of lattice genesis to the holographic radiative capacity of the expanding horizon (derived in full in the Generative Cosmology chapter), the steady-state expansion rate evaluates to:
@@ -167,32 +167,32 @@ By applying this exact continuum mechanics projection to the topological knot, t
 a_{genesis}=\frac{a_r}{2\pi}=\frac{c\cdot H_{\infty}}{2\pi} = \frac{14 m_e^3 c^2 G}{\hbar^2 \alpha^2} \approx 1.07 \times 10^{-10} \text{ m/s}^2
 \end{equation}
 
-Because the $2\pi$ divisor is a strict, dimensionless geometric projection factor derived natively from Hoop Stress, $a_{genesis}$ flawlessly preserves the linear spatial acceleration dimensions of $[\text{m/s}^2]$.
+Because the $2\pi$ divisor is a dimensionless geometric projection factor from Hoop Stress, $a_{genesis}$ preserves the acceleration dimensions of $[\text{m/s}^2]$.
 
-This natively derives Milgrom's empirical MOND boundary ($a_{0}\approx1.2\times10^{-10}\text{ m/s}^{2}$) within
-10.7\% error, perfectly recovering the dynamic flat galactic rotation curves without requiring heuristic parameter tuning or breaking dimensional kinematics.
+This recovers Milgrom's empirical MOND boundary ($a_{0}\approx1.2\times10^{-10}\text{ m/s}^{2}$) within
+10.7\% error, reproducing the flat galactic rotation curves without free parameters or dimension-violating modifications.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.85\textwidth]{unruh_hawking_hoop_stress.png}
-    \caption{\textbf{Hoop Stress deriving the MOND Boundary Limit.} (Simulation Output). A mathematical solver executing the classic continuum mechanics Hoop-Stress projection ($T = F_r/ 2\pi$) upon an elementary 1D Fermion topological loop. When embedded within an isotropic 3D expanding horizon ($a_r = c H_\infty$), this strict $2\pi$ dimensional divisor intrinsically subjects the knot to an internal static drift of $a_{genesis} \approx 1.07 \times 10^{-10} \text{ m/s}^2$, directly establishing the rigorous physical causality of the empirical MOND $a_0$ boundary.}
+    \caption{\textbf{Hoop Stress and the MOND Boundary.} (Simulation Output). A solver executing the classical Hoop-Stress projection ($T = F_r/ 2\pi$) upon an elementary 1D Fermion topological loop. When embedded within an isotropic 3D expanding horizon ($a_r = c H_\infty$), this $2\pi$ divisor subjects the knot to an internal drift of $a_{genesis} \approx 1.07 \times 10^{-10} \text{ m/s}^2$, establishing the physical basis for the empirical MOND $a_0$ boundary.}
     \label{fig:unruh_hawking_hoop_stress}
 \end{figure}
 
 \section{The Bullet Cluster: Refractive Tensor Shockwaves}
-The "Bullet Cluster" is frequently cited as proof of particulate Dark Matter because the gravitational lensing center is physically separated from the visible baryonic gas. Standard theory claims this proves dark matter consists of collisionless particles.
+The ``Bullet Cluster'' is frequently cited as evidence for particulate Dark Matter because the gravitational lensing centre is spatially offset from the visible baryonic gas. Standard theory interprets this as proof that dark matter consists of collisionless particles.
 
-The AVE framework formally identifies this phenomenon not as collisionless particles, but as a \textbf{Decoupled Refractive Transverse Tensor Shockwave}. When two hyper-massive galactic clusters collide, they generate a colossal structural pressure wave in the underlying Chiral LC substrate. The baryonic matter (hot gas) interacts electromagnetically, experiencing thermal friction, and slows down in the center of the collision zone.
+The AVE framework identifies this phenomenon as a \textbf{Decoupled Refractive Transverse Tensor Shockwave}. When two massive galactic clusters collide, they generate a structural pressure wave in the underlying chiral LC substrate. The baryonic matter (hot gas) interacts electromagnetically, experiences thermal friction, and decelerates in the collision zone.
 
-However, gravity and the optical metric are strictly governed by Transverse-Traceless (TT) Tensor Shear Waves. The collision generates a massive Acoustic Tensor Shockwave. Because it is a purely mechanical acoustic strain wave, it inherently does not interact via electromagnetism. It passes completely through the baryonic collision zone unimpeded, continuing ballistically. 
+However, gravity and the optical metric are governed by Transverse-Traceless (TT) Tensor Shear Waves. The collision generates an acoustic tensor shockwave. Because it is a mechanical acoustic strain wave, it does not interact electromagnetically. It passes through the baryonic collision zone unimpeded, continuing ballistically. 
 
-Because macroscopic gravitational lensing is caused exclusively by the Gordon Optical Metric ($n_\perp = 1 + h_\perp$), this propagating acoustic tensor strain physically bends background light, even in the complete physical absence of topological defects (baryons). The "Dark Matter" map of the Bullet Cluster is simply a continuous optical mapping of the residual transverse acoustic stress ringing in the spatial metric.
+Because macroscopic gravitational lensing is produced by the Gordon Optical Metric ($n_\perp = 1 + h_\perp$), this propagating acoustic tensor strain bends background light in the absence of topological defects (baryons). The lensing map of the Bullet Cluster corresponds to the residual transverse acoustic stress in the spatial metric.
 
 \subsection{Resolving the DAMA/LIBRA vs XENONnT Paradox}
-For over 20 years, the DAMA/LIBRA experiment in Italy has detected a persistent annual sine-wave modulation in their Dark Matter detectors, peaking in June. However, massive multi-billion-dollar liquid detectors (XENONnT, LUX) have found absolutely zero evidence of this signal, hitting the theoretical "Neutrino Floor." Standard physics assumes DAMA is a false positive.
+For over 20 years, the DAMA/LIBRA experiment in Italy has detected a persistent annual sinusoidal modulation in their Dark Matter detectors, peaking in June. However, large-scale liquid detectors (XENONnT, LUX) have found no evidence of this signal, reaching the ``Neutrino Floor'' sensitivity limit. Standard interpretations classify the DAMA result as a systematic artefact.
 
 \textbf{AVE Means Test:} We must look at the physical hardware. DAMA uses \textbf{Sodium Iodide (NaI)}, a solid, rigid crystal lattice. XENON uses \textbf{Liquid Xenon}, a noble network. In June, the Earth's orbital velocity aligns with the Sun's galactic velocity, maximizing our speed through the $\mathcal{M}_A$ substrate. 
 
 Because the vacuum is a \textbf{Chiral LC Network}, it transmits momentum drag via \textit{Transverse Phase-Flux}. A rigid crystal lattice (NaI) can structurally couple to and detect transverse LC grid phonons. A mobile liquid (Xenon) mathematically \textbf{cannot sustain long-range transverse shear polarization}. 
 
-\textbf{Verdict: ASTONISHING SUCCESS.} DAMA is not a false positive, and XENON is not failing. Both are functioning perfectly. DAMA is successfully detecting the annual macroscopic mutual inductive drag of the Earth plowing through the highly-reluctant vacuum. XENON is mathematically deaf to the signal because transverse LC grid vacuum phonons cannot structurally couple into a liquid. The particulate WIMP hypothesis is completely busted by a simple Impedance Mismatch.
+\textbf{AVE Interpretation:} DAMA is not a false positive, and XENON is not deficient. Both detectors function as designed. DAMA detects the annual macroscopic mutual inductive drag of the Earth moving through the vacuum lattice. XENON is insensitive to this signal because transverse LC vacuum phonons cannot structurally couple into a liquid. The particulate WIMP hypothesis is excluded by impedance mismatch.

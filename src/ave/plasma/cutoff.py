@@ -20,12 +20,10 @@ The FDTD engine already implements this: when E > V_snap/dx,
 
 import numpy as np
 from dataclasses import dataclass
-from ave.core.constants import C_0, EPSILON_0, MU_0, V_SNAP, ALPHA, L_NODE
-from ave.axioms.scale_invariant import saturation_factor
+from ave.core.constants import C_0, EPSILON_0, MU_0, V_SNAP, ALPHA, L_NODE, e_charge, M_E
+from ave.axioms.scale_invariant import saturation_factor, epsilon_eff as _si_epsilon_eff
 
-# Electron properties
-E_CHARGE = 1.602176634e-19    # [C]
-M_ELECTRON = 9.1093837015e-31  # [kg]
+# Boltzmann constant (not yet in core/constants.py)
 K_B = 1.380649e-23             # [J/K]
 
 
@@ -37,7 +35,7 @@ class PlasmaParameters:
     @property
     def plasma_frequency(self) -> float:
         """ω_p = √(n_e e² / (m_e ε₀))  [rad/s]"""
-        return np.sqrt(self.n_e * E_CHARGE**2 / (M_ELECTRON * EPSILON_0))
+        return np.sqrt(self.n_e * e_charge**2 / (M_E * EPSILON_0))
 
     @property
     def plasma_frequency_hz(self) -> float:
@@ -55,8 +53,8 @@ class PlasmaParameters:
         λ_D = √(ε₀ k_B T / (n_e e²))  [m]
         Default T = 1 eV.
         """
-        T_K = T_eV * E_CHARGE / K_B
-        return np.sqrt(EPSILON_0 * K_B * T_K / (self.n_e * E_CHARGE**2))
+        T_K = T_eV * e_charge / K_B
+        return np.sqrt(EPSILON_0 * K_B * T_K / (self.n_e * e_charge**2))
 
     @property
     def dielectric_function(self) -> callable:
@@ -90,7 +88,7 @@ def ave_plasma_frequency() -> float:
     """
     # At atomic scale, n_e ≈ 1/ℓ_node³ (one electron per lattice cell)
     n_e_lattice = 1.0 / L_NODE**3
-    return np.sqrt(n_e_lattice * E_CHARGE**2 / (M_ELECTRON * EPSILON_0))
+    return np.sqrt(n_e_lattice * e_charge**2 / (M_E * EPSILON_0))
 
 
 def dielectric_function_ave(omega: float, E_field: float) -> float:
@@ -109,10 +107,9 @@ def dielectric_function_ave(omega: float, E_field: float) -> float:
     Returns:
         Effective permittivity [F/m].
     """
-    # Saturation term (Axiom 4)
+    # Saturation term (Axiom 4) — delegates to scale_invariant.epsilon_eff
     V_local = E_field * L_NODE
-    ratio_sq = min((V_local / V_SNAP)**2, 1.0 - 1e-12)
-    sat_factor = saturation_factor(V_local, V_SNAP)
+    eps_saturated = _si_epsilon_eff(V_local, V_SNAP, eps_base=EPSILON_0)
 
     # Drude term
     omega_p = ave_plasma_frequency()
@@ -121,7 +118,7 @@ def dielectric_function_ave(omega: float, E_field: float) -> float:
     else:
         drude = 0.0
 
-    return EPSILON_0 * sat_factor * max(drude, 0.0)
+    return eps_saturated * max(drude, 0.0)
 
 
 def electron_density_from_frequency(f_hz: float) -> float:
@@ -138,7 +135,7 @@ def electron_density_from_frequency(f_hz: float) -> float:
         Electron density [m⁻³].
     """
     omega = 2 * np.pi * f_hz
-    return omega**2 * M_ELECTRON * EPSILON_0 / E_CHARGE**2
+    return omega**2 * M_E * EPSILON_0 / e_charge**2
 
 
 # ============================================================

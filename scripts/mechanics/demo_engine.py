@@ -20,7 +20,7 @@ def main():
     # 1. Initialize the Environment
     NX, NY = 100, 100
     grid = VacuumGrid(nx=NX, ny=NY)
-    grid.set_temperature(0.5)  # Inject significant background thermal noise   
+    grid.set_temperature(0.5, mode='bulk')  # Bulk noise for visual demo
     # 2. Instantiate Topological Nodes (e.g. A cluster of mass)
     num_particles = 15
     nodes = []

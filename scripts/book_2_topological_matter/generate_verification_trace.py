@@ -48,7 +48,7 @@ Dynamic Output — Generated from src/ave/core/constants.py
 
 [SECTOR 2: BARYON SECTOR & STRONG FORCE]
 > Faddeev-Skyrme Coupling (κ_cold):      8π = {kc:.4f}
-> Thermal Correction (δ_th):             1/(28π) = {dth:.6f}
+> Thermal Correction (δ_th):             1/(14π²) = {dth:.6f}
 > Effective Coupling (κ_eff):            {keff:.4f}
 > Dynamic I_scalar:                      {I:.2f} m_e
 > Toroidal Halo Volume (V_halo):         {Vh:.1f}

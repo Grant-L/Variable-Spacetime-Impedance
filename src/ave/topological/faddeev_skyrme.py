@@ -68,9 +68,17 @@ class TopologicalHamiltonian1D:
     def _energy_density_integrand(self, r: float, r_opt: float, n: float) -> float:
         """
         Evaluates the local energy density of the Faddeev-Skyrme functional
-        at a specific radius r.
-        Note: The true 3D tensor trace uses external geometric bounding from `tensors.py`.
-        Here we strictly evaluate the localized 1D radial scalar component.
+        at a specific radius r, including Axiom 4 gradient saturation.
+
+        The lattice has a maximum resolvable phase gradient of π/ℓ_node
+        (one full half-rotation per cell).  When the solver's continuous
+        profile produces gradients approaching this limit, the saturation
+        factor S(|dφ/dr| / (π/ℓ_node)) smoothly reduces the effective
+        gradient — the same operator that governs FDTD field updates,
+        plasma cutoff, and galactic rotation drag.
+
+        Note: The true 3D tensor trace uses external geometric bounding
+        from `tensors.py`.  Here we evaluate the 1D radial scalar.
         """
         # Central-difference derivative for improved accuracy
         dr = 1e-6
@@ -78,8 +86,19 @@ class TopologicalHamiltonian1D:
         phi2 = self._phase_profile(r + dr, r_opt, n)
         dphi_dr = (phi2 - phi1) / dr
 
+        # Axiom 4: gradient saturation at the lattice Nyquist limit
+        # The solver operates in natural units where r is measured in
+        # units of ℓ_node (i.e. ℓ_node = 1).  The maximum resolvable
+        # phase gradient is therefore π per unit length (one half-
+        # rotation per cell).
+        gradient_yield = np.pi  # π / ℓ_node = π / 1 in natural units
+        ratio_sq = dphi_dr**2 / gradient_yield**2
+        ratio_sq = min(ratio_sq, 1.0 - 1e-15)  # clip for numerical safety
+        S = np.sqrt(1.0 - ratio_sq)
+        dphi_dr_eff = dphi_dr * S
+
         # Quadratic stiffness term (Standard Dirichlet tension)
-        kinetic_term = 0.5 * (dphi_dr**2)
+        kinetic_term = 0.5 * (dphi_dr_eff**2)
 
         # Quartic stabilization term (Skyrme/Faddeev Tensor repulsion)
         # Prevents the defect from collapsing to a singularity
@@ -87,7 +106,7 @@ class TopologicalHamiltonian1D:
         skyrme_term = 0.5 * (np.sin(phi1)**2) / (r**2 + 1e-12)
 
         # Total density scaled spherically
-        density = 4 * np.pi * (r**2) * (kinetic_term + (self.kappa**2) * skyrme_term * dphi_dr**2)
+        density = 4 * np.pi * (r**2) * (kinetic_term + (self.kappa**2) * skyrme_term * dphi_dr_eff**2)
 
         return density
 

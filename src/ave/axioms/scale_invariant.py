@@ -135,6 +135,14 @@ def epsilon_eff(amplitude, yield_limit: float = V_SNAP,
         \varepsilon_{eff}(A) = \varepsilon_{base}
             \cdot \sqrt{1 - (A / A_{yield})^2}
 
+    At A = 0: ε_eff → ε_base (linear Maxwell recovered).
+    At A → A_yield: ε_eff → 0 (dielectric collapse / impedance divergence).
+
+    NOTE: This is the CONSTITUTIVE permittivity (material property of the
+    lattice node). This DECREASES under strain. The OBSERVABLE capacitance
+    C_eff = 1/S → ∞ (diverges), which matches Euler-Heisenberg QED.
+    These are different quantities: ε is a property, C is a response.
+
     Args:
         amplitude: Local strain (scalar or array).
         yield_limit: Saturation voltage / strain limit.

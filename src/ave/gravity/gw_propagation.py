@@ -9,31 +9,24 @@ used across all other scales.
 
 Physical picture (from Ch. 19):
   - Mass = localized topological energy deficit in the LC lattice
-  - Gravity = dielectric refraction: Z(r) varies radially around mass
+  - Gravity = dielectric refraction: n(r) varies radially around mass
   - GW = transverse shear (μ-sector) perturbation radiating outward
   - At h ~ 10⁻²¹, the strain is 10¹⁹× below V_SNAP → no saturation
   - Therefore: perfectly linear, lossless, c-speed propagation
 
-Key identities:
-  Schwarzschild: ε_eff(r) = ε₀ / (1 − r_s/r)
-                 μ_eff(r) = μ₀ · (1 − r_s/r)    [shear sector]
-                 Z(r)     = Z₀ · (1 − r_s/r)
+Key identities (SYMMETRIC GRAVITY):
+  Refractive index: n(r) = 1 / (1 − r_s/r)
+  ε_eff(r) = ε₀ · n(r)
+  μ_eff(r) = μ₀ · n(r)
+  Z(r) = √(μ_eff/ε_eff) = √(μ₀·n / ε₀·n) ≡ Z₀ (CONSTANT!)
 
-  At r → r_s:  ε → ∞, μ → 0, Z → 0 → Γ → −1 (total reflection)
-  This IS the event horizon — it's the superconductor/plasma duality
-  applied to the gravitational sector.
+  Symmetric Gravity enforces Z ≡ Z₀ everywhere.
+  Γ = 0 everywhere — no reflection, perfect impedance matching.
+  The local speed of light slows: c_local = c/n(r).
+  Light bending and time dilation are REFRACTIVE effects.
 
-  GW propagation: same FDTD engine, same saturation_factor, applied
-  to strain amplitudes h << V_SNAP/mc² → linear regime.
-
-Correspondences:
-
-    Plasma           Superconductor    Gravity Well
-    ──────           ──────────────    ────────────
-    ε → 0            μ → 0             ε → ∞, μ → 0
-    E-field expelled B-field expelled  GW confined
-    ω < ω_p          B < B_c            r < r_s
-    Γ → −1           Γ → −1            Γ → −1 (horizon)
+  There are NO black hole echoes. The event horizon is a refractive
+  singularity (n → ∞, c_local → 0), not an impedance boundary.
 """
 
 import numpy as np
@@ -50,7 +43,7 @@ from ave.axioms.scale_invariant import (
 
 
 # ═══════════════════════════════════════════════════════════════
-# Schwarzschild impedance profile — gravity as dielectric refraction
+# Schwarzschild refractive profile — gravity as symmetric refraction
 # ═══════════════════════════════════════════════════════════════
 
 def schwarzschild_radius(M: float) -> float:
@@ -69,19 +62,45 @@ def schwarzschild_radius(M: float) -> float:
     return 2 * G * M / C_0**2
 
 
+def refractive_index(r: float | np.ndarray,
+                      r_s: float) -> float | np.ndarray:
+    r"""
+    Effective refractive index around a Schwarzschild mass.
+
+    Symmetric Gravity requires both ε and μ to scale by the same
+    factor n(r), preserving Z ≡ Z₀. The simplest mapping from
+    the Schwarzschild metric gives:
+
+    .. math::
+        n(r) = \frac{1}{1 - r_s / r}
+
+    As r → r_s: n → ∞ (light stops — refractive singularity).
+    Far from mass: n → 1 (flat vacuum).
+
+    This produces gravitational lensing identically to a graded-index
+    optical medium, and time dilation via c_local = c/n.
+
+    Args:
+        r: Radial distance [m].
+        r_s: Schwarzschild radius [m].
+
+    Returns:
+        Refractive index (≥ 1).
+    """
+    r = np.asarray(r, dtype=float)
+    ratio = np.minimum(r_s / r, 0.9999)
+    return 1.0 / (1.0 - ratio)
+
+
 def epsilon_eff_schwarzschild(r: float | np.ndarray,
                                r_s: float) -> float | np.ndarray:
     r"""
     Effective permittivity in a Schwarzschild gravity well.
 
+    Symmetric Gravity: ε and μ scale identically by n(r).
+
     .. math::
-        \varepsilon_{eff}(r) = \frac{\varepsilon_0}{1 - r_s / r}
-
-    As r → r_s: ε → ∞ (capacitor fully charged — dielectric rupture).
-    Far from mass (r >> r_s): ε → ε₀ (flat vacuum).
-
-    This is the gravitational analog of plasma ε-saturation, but
-    INVERTED: gravity INCREASES ε instead of reducing it.
+        \varepsilon_{eff}(r) = \varepsilon_0 \cdot n(r)
 
     Args:
         r: Radial distance [m].
@@ -90,8 +109,8 @@ def epsilon_eff_schwarzschild(r: float | np.ndarray,
     Returns:
         Effective permittivity [F/m].
     """
-    ratio = np.minimum(r_s / np.asarray(r, dtype=float), 0.9999)
-    return EPSILON_0 / (1 - ratio)
+    n = refractive_index(r, r_s)
+    return EPSILON_0 * n
 
 
 def mu_eff_schwarzschild(r: float | np.ndarray,
@@ -99,14 +118,10 @@ def mu_eff_schwarzschild(r: float | np.ndarray,
     r"""
     Effective permeability in a Schwarzschild gravity well.
 
+    Symmetric Gravity: ε and μ scale identically by n(r).
+
     .. math::
-        \mu_{eff}(r) = \mu_0 \cdot (1 - r_s / r)
-
-    As r → r_s: μ → 0 (inductor shorts — like a superconductor!).
-    Far from mass: μ → μ₀.
-
-    The event horizon is a MAGNETIC saturation point:
-    μ_eff → 0 means Z → 0 means Γ → −1 (total reflection).
+        \mu_{eff}(r) = \mu_0 \cdot n(r)
 
     Args:
         r: Radial distance [m].
@@ -115,8 +130,8 @@ def mu_eff_schwarzschild(r: float | np.ndarray,
     Returns:
         Effective permeability [H/m].
     """
-    ratio = np.minimum(r_s / np.asarray(r, dtype=float), 0.9999)
-    return MU_0 * (1 - ratio)
+    n = refractive_index(r, r_s)
+    return MU_0 * n
 
 
 def gravitational_impedance(r: float | np.ndarray,
@@ -124,20 +139,25 @@ def gravitational_impedance(r: float | np.ndarray,
     r"""
     Characteristic impedance at radius r in a Schwarzschild field.
 
-    .. math::
-        Z(r) = \sqrt{\mu_{eff}(r) / \varepsilon_{eff}(r)}
-             = Z_0 \cdot (1 - r_s / r)
+    Under Symmetric Gravity, Z is strictly invariant:
 
-    Z → 0 at the horizon (total impedance mismatch with vacuum).
-    Z → Z₀ far away.
+    .. math::
+        Z(r) = \sqrt{\mu_{eff} / \varepsilon_{eff}}
+             = \sqrt{\mu_0 \cdot n / (\varepsilon_0 \cdot n)}
+             = Z_0
+
+    The impedance is CONSTANT everywhere. There is no impedance
+    mismatch, no reflection boundary, and no black hole echoes.
 
     Args:
         r: Radial distance [m].
         r_s: Schwarzschild radius [m].
 
     Returns:
-        Impedance [Ω].
+        Impedance [Ω] (always Z₀).
     """
+    # Impedance is strictly Z₀ under symmetric gravity.
+    # We compute it explicitly to verify numerical consistency.
     mu = mu_eff_schwarzschild(r, r_s)
     eps = epsilon_eff_schwarzschild(r, r_s)
     return impedance(mu, eps)
@@ -148,24 +168,20 @@ def horizon_reflection(r: float | np.ndarray,
     r"""
     Reflection coefficient at radius r in a Schwarzschild field.
 
+    Under Symmetric Gravity, Γ = 0 everywhere (perfect matching):
+
     .. math::
-        \Gamma(r) = \frac{Z(r) - Z_0}{Z(r) + Z_0}
+        \Gamma(r) = \frac{Z(r) - Z_0}{Z(r) + Z_0} = 0
 
-    At r → r_s: Z → 0, so Γ → −1 (total reflection — event horizon).
-    At r → ∞: Z → Z₀, so Γ → 0 (matched — flat space).
-
-    This is the SAME ``reflection_coefficient()`` used for:
-      - Pauli exclusion (Γ → −1 at particle boundary)
-      - Plasma cutoff (Γ → −1 below ω_p)
-      - Meissner effect (Γ → −1 for B < B_c)
-      - Seismic Moho reflection
+    There is NO reflection at the event horizon. GW energy propagates
+    inward without scattering.
 
     Args:
         r: Radial distance [m].
         r_s: Schwarzschild radius [m].
 
     Returns:
-        Reflection coefficient (−1 ≤ Γ ≤ 0).
+        Reflection coefficient (always ~0).
     """
     Z_r = gravitational_impedance(r, r_s)
     return reflection_coefficient(Z_0, Z_r)
@@ -179,13 +195,8 @@ def gw_strain_to_voltage(h: float, freq_hz: float = 100.0) -> float:
     r"""
     Convert GW strain to equivalent voltage across one lattice cell.
 
-    The GW strain h ≈ 10⁻²¹ corresponds to a fractional lattice
-    deformation. The equivalent voltage is:
-
     .. math::
         V_{GW} = h \cdot c \cdot \ell_{node} \cdot 2\pi f
-
-    This is the maximum electric field perturbation per cell.
 
     Args:
         h: Gravitational wave strain amplitude (dimensionless).
@@ -219,81 +230,19 @@ def gw_local_speed(r: float, r_s: float) -> float:
     r"""
     Local GW propagation speed in a Schwarzschild field.
 
-    .. math::
-        c_{local}(r) = \frac{1}{\sqrt{\varepsilon_{eff} \cdot \mu_{eff}}}
-                     = c_0
-
-    In the AVE framework, ε × μ = ε₀μ₀ everywhere
-    (even in a gravity well), so the LOCAL speed of light
-    at any radius is always c₀. Time dilation and length
-    contraction are refractive effects, not speed changes.
-
-    Returns:
-        Local wave speed [m/s] (always c₀).
-    """
-    # ε_eff × μ_eff = ε₀/(1-rs/r) × μ₀(1-rs/r) = ε₀μ₀ = 1/c²
-    return float(C_0)
-
-
-def refractive_index(r: float | np.ndarray,
-                      r_s: float) -> float | np.ndarray:
-    r"""
-    Effective refractive index around a Schwarzschild mass.
-
-    Although the LOCAL speed is c, the COORDINATE speed (as measured
-    by a distant observer) is reduced:
+    Under Symmetric Gravity, the local speed of light is reduced:
 
     .. math::
-        n(r) = \frac{c}{c_{coord}(r)}
-             = \frac{(1 + r_s/(4r'))^3}{1 - r_s/(4r')}
+        c_{local}(r) = c_0 / n(r) = c_0 \cdot (1 - r_s/r)
 
-    In isotropic coordinates r' ≈ r for r >> r_s.
-    Simplified (weak field): n ≈ 1 + r_s / r.
-
-    This is the refractive index that bends light paths → gravitational
-    lensing. It uses the same math as optical lensing through a
-    graded-index medium.
-
-    Args:
-        r: Radial distance [m].
-        r_s: Schwarzschild radius [m].
+    Near the horizon, c_local → 0 (light effectively stops).
+    Far from mass, c_local → c₀.
 
     Returns:
-        Refractive index (≥ 1).
+        Local wave speed [m/s].
     """
-    r = np.asarray(r, dtype=float)
-    return 1 + r_s / r
-
-
-# ═══════════════════════════════════════════════════════════════
-# Black hole echo prediction
-# ═══════════════════════════════════════════════════════════════
-
-def echo_delay(M: float) -> float:
-    r"""
-    Predicted delay between post-merger gravitational wave echoes.
-
-    In AVE, the event horizon is a Γ = −1 reflection boundary (Z → 0).
-    Post-merger GW energy bounces between the photon sphere and the
-    horizon, producing echoes separated by:
-
-    .. math::
-        \Delta t_{echo} \approx \frac{4 G M}{c^3} \cdot
-        \ln\left(\frac{r_{ph}}{r_s - r_{ph}}\right)
-
-    For a 30 M☉ merger: Δt ≈ 0.1–0.3 s (consistent with Abedi et al.).
-
-    Args:
-        M: Total mass of the merged remnant [kg].
-
-    Returns:
-        Echo delay time [s].
-    """
-    r_s = schwarzschild_radius(M)
-    r_ph = 1.5 * r_s  # Photon sphere at 3GM/c²
-    # Tortoise coordinate delay
-    delta_r_star = r_s * np.log(r_ph / (r_ph - r_s + 1e-30))
-    return 2 * delta_r_star / C_0
+    n = refractive_index(r, r_s)
+    return float(C_0 / n)
 
 
 # ═══════════════════════════════════════════════════════════════
@@ -324,7 +273,6 @@ def gw_propagation_summary(M_solar: float = 30.0,
     results = {
         'M_kg': M,
         'r_s_m': r_s,
-        'echo_delay_s': echo_delay(M),
         'linear_propagation': is_linear_propagation(h),
         'V_gw_over_V_snap': gw_strain_to_voltage(h) / V_SNAP,
         'profiles': [],
@@ -335,11 +283,12 @@ def gw_propagation_summary(M_solar: float = 30.0,
         results['profiles'].append({
             'r_over_rs': mult,
             'r_m': r,
+            'n_refract': float(refractive_index(r, r_s)),
             'epsilon_eff': float(epsilon_eff_schwarzschild(r, r_s)),
             'mu_eff': float(mu_eff_schwarzschild(r, r_s)),
             'Z_ohm': float(gravitational_impedance(r, r_s)),
             'gamma': float(horizon_reflection(r, r_s)),
-            'n_refract': float(refractive_index(r, r_s)),
+            'c_local': gw_local_speed(r, r_s),
         })
 
     return results

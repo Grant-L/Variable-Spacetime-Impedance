@@ -6,9 +6,9 @@ One of the most profound unresolved questions in computational biology is Levint
 The Algebraic Vacuum Equation (AVE) proposes a much simpler, purely mechanical resolution. The amino acid sequences do not search a vast, random energy landscape. Instead, the sequence inherently acts as a continuous, macroscopic AC transmission line. The resultant 3D geometry of the protein is simply the macroscopic network attempting to snap into the absolute lowest-energy topological strain configuration of the underlying $1/r^3$ vacuum lattice.
 
 \section{AVE Topological Impedance}
-Historically, biologists rely on statistical methods, like Chou-Fasman propensities, to guess whether a sequence will form an Alpha-Helix or a Beta-Sheet. In Variable Spacetime Mechanics, these arbitrary sequence "propensities" are recognized as a literal physical property: \textbf{Topological Impedance}.
+Historically, biologists rely on statistical methods, like Chou-Fasman propensities, to estimate whether a sequence will form an Alpha-Helix or a Beta-Sheet. In Variable Spacetime Mechanics, these arbitrary sequence ``propensities'' are recognised as a physical property: \textbf{Topological Impedance}.
 
-Certain sidechains map to a low topological impedance coefficient ($Z_{topo} < 1.0$), allowing the backbone atoms to pack tightly and curl into the perfectly balanced cylindrical geometry of an Alpha-Helix. Conversely, bulky or rigid sidechains map to a high topological impedance coefficient ($Z_{topo} > 1.0$). These sequences physically repel adjacent backbone nodes, forcing the structure to violently uncoil and flatten into an extended Beta-Sheet to minimize local geometrical strain.
+Certain sidechains map to a low topological impedance coefficient ($Z_{topo} < 1.0$), allowing the backbone atoms to pack tightly and curl into the balanced cylindrical geometry of an Alpha-Helix. Conversely, bulky or rigid sidechains map to a high topological impedance coefficient ($Z_{topo} > 1.0$). These sequences repel adjacent backbone nodes, forcing the structure to uncoil and flatten into an extended Beta-Sheet to minimise local geometrical strain.
 
 \subsection{Quantitative $Z_{topo}$ from SPICE Backbone Impedance}
 
@@ -48,7 +48,7 @@ The critical observation is that $Z_{topo}$ is not a fitted parameter---it is a 
 \section{Multiplexed Basis States}
 The primary mathematical trap that stops algorithmic gradient descent from folding a linear 1D protein into a 3D geometry is local-minimum entanglement. The sequence hits a vast energetic wall when attempting to simultaneously rotate hundreds of bonds, effectively freezing the calculation in a chaotic "random coil" state.
 
-To mathematically circumvent this, the AVE optimization engine models the protein sequence strictly in the two fundamental topological basis states of space: the tightly curled 3D Alpha-Helix and the flattened 2D Beta-Sheet. The gradient descent engine evaluates the total topological strain ($U_{total}$) of the sequence initialized in both states and deterministically collapses the model into whichever geometry represents the absolute, unentangled global minimum.
+To circumvent this, the AVE optimisation engine models the protein sequence in the two fundamental topological basis states of space: the tightly curled 3D Alpha-Helix and the flattened 2D Beta-Sheet. The gradient descent engine evaluates the total topological strain ($U_{total}$) of the sequence initialised in both states and deterministically collapses the model into whichever geometry represents the unentangled global minimum.
 
 \begin{figure}[H]
     \centering
@@ -61,7 +61,7 @@ To mathematically circumvent this, the AVE optimization engine models the protei
 \begin{figure}[H]
     \centering
     \includegraphics[width=1.0\textwidth]{ave_sheet_progression.png}
-    \caption{\textbf{Topological Gradient Descent (Beta-Sheet):} For \textit{Polyvaline} ($Z_{topo} \approx 3.8$), the high topological mismatch actively penalizes curvature, exerting explosive steric pressure. The sequence violently uncoils, flattening out into an extended Beta-Sheet geometry to minimize local spatial strain.}
+    \caption{\textbf{Topological Gradient Descent (Beta-Sheet):} For \textit{Polyvaline} ($Z_{topo} \approx 3.8$), the high topological mismatch penalises curvature, exerting steric pressure. The sequence uncoils, flattening into an extended Beta-Sheet geometry to minimise local spatial strain.}
     \label{fig:protein_folding_sheet}
 \end{figure}
 
@@ -161,11 +161,11 @@ To formally prove that organic geometry is driven by electrical resonance, we ca
 \begin{figure}[H]
     \centering
     \includegraphics[width=1.0\textwidth]{protein_spice_folding_strain.png}
-    \caption{\textbf{Topological AC Impedance Means Test:} A cascaded SPICE simulation of 10-residue polypeptide chains. The Alpha-Helix forming \textit{Polyalanine} drops into a deep resonant notch (an impedance match), meaning the structure can physically "lock" into a tight helical wrapper without breaking. Conversely, \textit{Polyglycine} and \textit{Polyproline} exhibit massive geometric mismatch (high reactive strain), physically tearing the network apart unless the backbone unwinds and flattens into a Beta-Sheet or extended coil.}
+    \caption{\textbf{Topological AC Impedance Means Test:} A cascaded SPICE simulation of 10-residue polypeptide chains. The Alpha-Helix forming \textit{Polyalanine} drops into a deep resonant notch (an impedance match), meaning the structure can ``lock'' into a tight helical wrapper without breaking. Conversely, \textit{Polyglycine} and \textit{Polyproline} exhibit large geometric mismatch (high reactive strain), causing the backbone to unwind and flatten into a Beta-Sheet or extended coil.}
     \label{fig:protein_spice_folding}
 \end{figure}
 
-As shown in Figure \ref{fig:protein_spice_folding}, the macroscopic AC strain mathematically dictates the physical stability of the structure. Sequences with perfectly matched resonances (low $S_{11}$) remain tightly folded, while mismatched sequences (high $S_{11}$) violently reject the geometry.
+As shown in Figure \ref{fig:protein_spice_folding}, the macroscopic AC strain dictates the physical stability of the structure. Sequences with matched resonances (low $S_{11}$) remain tightly folded, while mismatched sequences (high $S_{11}$) reject the geometry.
 
 \section{Empirical Validation: 20-Sequence Stress Test}
 \label{sec:stress_test}
@@ -224,7 +224,7 @@ The single failure is polytryptophan (\#16): tryptophan's $Z_{topo} = 1.63$ lies
 
 \subsection{Comparison with Statistical Approaches}
 
-The dominant paradigm in computational protein structure prediction is deep-learning pattern recognition. Google DeepMind's AlphaFold~2 (2020) achieved near-experimental accuracy on the CASP14 benchmark by training a neural network on $\sim$170{,}000 experimentally determined protein structures. While the engineering achievement is remarkable, it is fundamentally a statistical interpolation: the network has no physical model of \emph{why} certain sequences fold into certain shapes. It cannot extrapolate to novel fold topologies absent from its training set, and its predictions carry no mechanistic explanation.
+The dominant paradigm in computational protein structure prediction is deep-learning pattern recognition. Google DeepMind's AlphaFold~2 (2020) achieved near-experimental accuracy on the CASP14 benchmark by training a neural network on $\sim$170{,}000 experimentally determined protein structures. While the engineering achievement is remarkable, it is a statistical interpolation: the network has no physical model of \emph{why} certain sequences fold into certain shapes. It cannot extrapolate to novel fold topologies absent from its training set, and its predictions carry no mechanistic explanation.
 
 The AVE approach is architecturally opposite. The folding engine contains \emph{zero} trainable parameters and \emph{zero} empirical structure data. The prediction flows entirely from the vacuum lattice axioms through the periodic table infrastructure:
 \[
@@ -241,7 +241,7 @@ The impedance ratio $Z_{topo}$ that governs secondary structure classification w
 The derivation requires three classes of inputs, all sourced from the periodic table module:
 \begin{enumerate}
     \item \textbf{Bond lengths} $d_\text{eq}$ from the soliton potential energy minima $\partial E/\partial d = 0$ (Axioms~1--2).
-    \item \textbf{Bond angles} from lattice topology: $\theta_\text{sp3} = \arccos(-1/3) = 109.47^\circ$ (tetrahedral, 4-connected SRS node), $\theta_\text{sp2} = 120^\circ$ (trigonal planar, 3-connected node).
+    \item \textbf{Bond angles} from lattice topology: The underlying vacuum graph is 3-regular ($120^\circ$, Chiral Laves K4). However, when 4 macroscopic flux tubes (topological defects) occupy the available spatial voids of this chiral graph, they assemble into a $109.47^\circ$ tetrahedron ($\theta_\text{sp3} = \arccos(-1/3)$) to mutually minimise their repulsive electromagnetic strain. This yields the emergent 4-connected macroscopic chemistry ($\text{sp}^3$) without breaking the 3-connected vacuum chirality required for Weak Force parity violation. The $\text{sp}^2$ planar geometry recovers the native $120^\circ$ 3-connected limit.
     \item \textbf{Steric radii} from Slater orbital sizes: $r = n^{*2} a_0 / Z_\text{eff}$, where $n^*$ and $Z_\text{eff}$ are the effective quantum number and nuclear charge from Slater screening rules.
 \end{enumerate}
 

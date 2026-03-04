@@ -2,10 +2,10 @@
 \chapter{Quantum Formalism and Signal Dynamics}
 \label{ch:quantum_signal_dynamics}
 
-Standard Quantum Field Theory (QFT) relies on an abstract Lagrangian density ($\mathcal{L}$) describing fields as mathematical operators. In Applied Vacuum Engineering, the continuous quantum formalism is derived directly from the exact discrete finite-element signal dynamics of the $\mathcal{M}_A$ hardware.
+Standard Quantum Field Theory (QFT) relies on a Lagrangian density ($\mathcal{L}$) describing fields as mathematical operators. In Applied Vacuum Engineering, the continuous quantum formalism is derived from the discrete finite-element signal dynamics of the $\mathcal{M}_A$ lattice.
 
 \section{The Dielectric Lagrangian: Hardware Mechanics}
-The mathematical substitution of $\xi_{topo}$ directly converts the standard electromagnetic Lagrangian density into strictly continuous mechanical stress ($\text{N/m}^2$), rigorously grounding Axiom 3 in bulk continuum mechanics. The total macroscopic energy density of the manifold is the exact sum of the energy stored in the capacitive edges (dielectric strain) and the inductive nodes (kinematic inertia). To construct a relativistically invariant action principle, the Lagrangian difference ($\mathcal{L} = \mathcal{T} - \mathcal{U}$) is evaluated.
+The substitution of $\xi_{topo}$ converts the electromagnetic Lagrangian density into continuous mechanical stress ($\text{N/m}^2$), grounding Axiom 3 in bulk continuum mechanics. The total macroscopic energy density of the manifold is the sum of the energy stored in the capacitive edges (dielectric strain) and the inductive nodes (kinematic inertia). To construct a relativistically invariant action principle, the Lagrangian difference ($\mathcal{L} = \mathcal{T} - \mathcal{U}$) is evaluated.
 
 The canonical field variable for evaluating transverse waves across a discrete graph is the \textbf{Magnetic Vector Potential} ($\mathbf{A}$), defining the magnetic flux linkage per unit length ($[\text{Wb/m}] = [\text{V}\cdot\text{s/m}]$). Because the generalized velocity of this coordinate is identically the electric field ($\mathbf{E} = -\partial_t \mathbf{A}$), the capacitive energy takes the role of kinetic energy ($\mathcal{T}$), and the inductive energy acts as potential energy ($\mathcal{U}$).
 \begin{equation}
@@ -25,7 +25,7 @@ This establishes a fundamental dimensional equivalence: the magnetic vector pote
 
 When evaluating the full kinetic energy density term using this mechanical substitution,
 and retrieving the exact capacitive compliance derivation from Chapter 2 ($\epsilon_{0}\equiv\xi_{topo}^2[\text{N}^{-1}]$),
-the fundamental topological scaling constants strictly and legally cancel out:
+the topological scaling constants cancel:
 
 \begin{equation}
 [\mathcal{L}_{kin}]=\frac{1}{2}\epsilon_{0}|\partial_{t}A|^{2}\Rightarrow(\xi_{topo}^{2}[\text{N}^{-1}])\left(\xi_{topo}^{-1}\frac{\text{kg}}{\text{s}^2}\right)^{2}=\left(\frac{\xi_{topo}^{2}}{\xi_{topo}^{2}}\right)\frac{\text{kg}^{2}}{\text{N}\cdot \text{s}^{4}}=\frac{\text{kg}^{2}}{(\text{kg}\cdot \text{m}/\text{s}^{2})\cdot \text{s}^{4}}\equiv\left[\frac{\text{N}}{\text{m}^{2}}\right]
@@ -35,12 +35,12 @@ Minimizing the quantum action is mathematically equivalent to minimizing the con
 inductive bulk stress (Pascals) of the $\mathcal{M}_{A}$ manifold.
 
 \section{Deriving the Quantum Formalism from Signal Bandwidth}
-Standard Quantum Mechanics posits its formalism---complex Hilbert spaces and non-commuting operators---as axiomatic postulates[cite: 1776]. In the AVE framework, these are derived as the direct algebraic consequences of transmitting finite-bandwidth signals across a discrete mechanical graph[cite: 1777].
+Standard Quantum Mechanics introduces its formalism---complex Hilbert spaces and non-commuting operators---as axiomatic postulates[cite: 1776]. In the AVE framework, these follow as algebraic consequences of transmitting finite-bandwidth signals across a discrete mechanical graph[cite: 1777].
 
 \subsection{The Paley-Wiener Hilbert Space}
-Because the $\mathcal{M}_A$ lattice has a fundamental pitch $\ell_{node}$, it acts as an absolute spatial Nyquist sampling grid[cite: 1778]. The maximum spatial frequency the lattice can support without aliasing is the strict geometric Brillouin boundary: $k_{max} = \pi / \ell_{node}$[cite: 1779].
+Because the $\mathcal{M}_A$ lattice has a fundamental pitch $\ell_{node}$, it acts as a spatial Nyquist sampling grid[cite: 1778]. The maximum spatial frequency the lattice can support without aliasing is the Brillouin boundary: $k_{max} = \pi / \ell_{node}$[cite: 1779].
 
-By the \textbf{Whittaker-Shannon Interpolation Theorem}, any perfectly band-limited continuous signal $\mathbf{A}(\mathbf{x})$ propagating through this discrete lattice can be reconstructed uniquely everywhere in space using a superposition of orthogonal sinc functions[cite: 1780]. Mathematically, the set of all such band-limited functions formally constitutes a Reproducing Kernel Hilbert Space known as the \textbf{Paley-Wiener Space} ($PW_{\pi/\ell_{node}}$)[cite: 1781].
+By the \textbf{Whittaker-Shannon Interpolation Theorem}, any band-limited signal $\mathbf{A}(\mathbf{x})$ propagating through this discrete lattice can be reconstructed uniquely using a superposition of orthogonal sinc functions[cite: 1780]. The set of all such band-limited functions constitutes a Reproducing Kernel Hilbert Space known as the \textbf{Paley-Wiener Space} ($PW_{\pi/\ell_{node}}$)[cite: 1781].
 
 To map the real-valued physical lattice potential $\mathbf{A}(\mathbf{x},t)$ to the complex continuous quantum state vector $\Psi(\mathbf{x},t)$, the standard signal-processing \textbf{Analytic Signal} representation utilizing the Hilbert Transform ($\mathcal{H}_{transform}$) is applied[cite: 1782]:
 \begin{equation}
@@ -48,7 +48,7 @@ To map the real-valued physical lattice potential $\mathbf{A}(\mathbf{x},t)$ to 
 \end{equation}
 The complex continuous Hilbert space of standard quantum mechanics is formally identical to the Paley-Wiener signal-processing representation of the discrete vacuum hardware.
 
-\subsection{The Authentic Generalized Uncertainty Principle (GUP)}
+\subsection{The Generalized Uncertainty Principle (GUP)}
 On a discrete graph with pitch $\ell_{node}$, continuous coordinate translation is physically impossible[cite: 1783]. For a macroscopic wave propagating through a stochastic 3D amorphous solid, the effective continuous momentum operator $\langle \hat{P} \rangle$ is defined as an isotropic ensemble average of the symmetric central finite-difference operator across adjacent nodes[cite: 1784]:
 \begin{equation}
     \langle \hat{P} \rangle \approx \frac{\hbar}{\ell_{node}} \sin\left(\frac{\ell_{node} \hat{p}_c}{\hbar}\right)
@@ -64,14 +64,14 @@ Applying the generalized Robertson-Schr\"odinger relation yields the rigorous \t
     \Delta x_{AVE} = \sqrt{(\Delta x_{SM})^2 + \left(\frac{\ell_{node}}{2}\right)^2} \ge \frac{\ell_{node}}{2}
 \end{equation}
 
-\textbf{The Physical Origin of the GUP Gap:} In the low-energy limit ($p_c \ll \hbar/\ell_{node}$), the cosine evaluates to $1$, continuously recovering standard Heisenberg physics ($\Delta x \Delta p \ge \hbar/2$)[cite: 1785]. However, standard physics assumes the universe is a mathematical continuum, implying that as kinetic momentum approaches infinity, the spatial locality $\Delta x$ can be compressed into an infinitely small singularity. This flawed assumption is the exclusive origin of Ultraviolet (UV) Singularities in standard Field Theories.
+\textbf{The Physical Origin of the GUP Gap:} In the low-energy limit ($p_c \ll \hbar/\ell_{node}$), the cosine evaluates to $1$, recovering standard Heisenberg physics ($\Delta x \Delta p \ge \hbar/2$)[cite: 1785]. Standard continuum physics assumes that as kinetic momentum increases without bound, $\Delta x$ can shrink arbitrarily. This assumption is the origin of Ultraviolet (UV) divergences in standard Field Theories.
 
-In the AVE hardware matrix, as extreme kinetic energies approach the absolute breaking point of the lattice (the Brillouin zone boundary), the cosine expectation value shrinks toward zero. The curve separates from the standard continuum limit and hits a rigid mathematical plateau. This \textbf{GUP Gap} proves that a macroscopic pressure wave physically cannot be compressed smaller than the structural nodes generating it. The lattice structurally intercepts and forbids all point-mass paradoxes and UV singularities before they can mathematically form[cite: 1786].
+In the AVE framework, as kinetic energies approach the Brillouin zone boundary of the lattice, the cosine expectation value decreases toward zero. The curve separates from the continuum limit and saturates at a finite plateau. This \textbf{GUP Gap} indicates that a pressure wave cannot be localised below the structural pitch of the lattice, providing a built-in UV regularisation[cite: 1786].
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=1.0\textwidth]{ave_gup_resolution.png}
-    \caption{\textbf{The Authentic Generalized Uncertainty Principle.} In the continuum limit (red), the uncertainty variance approaches zero, illegally suggesting infinite localization precisely at the UV energy wall. In the discrete AVE limit (cyan), the absolute geometric Brillouin boundary strictly forces the finite-difference momentum to plateau, rigorously enforcing a minimum localization length.}
+    \caption{\textbf{The Generalized Uncertainty Principle.} In the continuum limit (red), the uncertainty variance approaches zero, implying unbounded localisation at high energies. In the discrete AVE limit (cyan), the Brillouin boundary forces the finite-difference momentum to plateau, enforcing a minimum localisation length.}
     \label{fig:gup_resolution}
 \end{figure}
 
@@ -90,12 +90,12 @@ For non-relativistic speeds ($v \ll c$), the second time derivative of the envel
 The Schr\"odinger Equation evaluates precisely as the paraxial envelope equation of a classical macroscopic pressure wave propagating through the discrete massive $LC$ circuits of the vacuum[cite: 1788].
 
 \section{Wave-Particle Duality and The Zero-Impedance Boundary}
-The framework natively asserts that subatomic particles are topological knots where the spatial LC metric reaches absolute dielectric saturation. Two distinct thresholds govern this process:
+The framework asserts that subatomic particles are topological knots where the spatial LC metric reaches dielectric saturation. Two distinct thresholds govern this process:
 \begin{itemize}
     \item \textbf{The Kinetic Yield Limit} ($E_k = \sqrt{\alpha} \cdot m_e c^2 \approx 43.65 \text{ keV}$): the threshold where non-linear saturation effects become dominant and the soliton begins to self-confine.
     \item \textbf{The Absolute Snap Limit} ($V_{snap} = m_e c^2 / e \approx 511 \text{ kV}$): the maximum inter-node potential difference before the lattice structurally ruptures (derived in Chapter \ref{ch:macroscopic_moduli}).
 \end{itemize}
-The kinetic yield governs mass assembly and confinement; the snap limit governs dielectric breakdown and pair production. By rigorously extracting the Transmission Line mathematics of the saturation boundary, the AVE framework formally derives the physical origin of solid matter and wave-particle duality.
+The kinetic yield governs mass assembly and confinement; the snap limit governs dielectric breakdown and pair production. The Transmission Line mathematics of the saturation boundary provide a derivation of the physical origin of solid matter and wave-particle duality.
 
 \begin{figure}[h!]
     \centering
@@ -105,7 +105,7 @@ The kinetic yield governs mass assembly and confinement; the snap limit governs 
 \end{figure}
 
 \subsection{The $0 \ \Omega$ Boundary Condition}
-As the surrounding relaxed vacuum rests at its characteristic impedance $Z_{vac} \approx 377 \ \Omega$, the saturated core of the localized knot hits its absolute elastic capacity. Because the LC nodes within the saturated core can no longer support alternating transverse displacement, its effective dynamic RF impedance drops precipitously to $0 \ \Omega$ (an RF short circuit).
+The surrounding relaxed vacuum has a characteristic impedance $Z_{vac} \approx 377 \ \Omega$. At the saturated core of the localised knot, the LC nodes can no longer support alternating transverse displacement, so the effective dynamic RF impedance drops to $0 \ \Omega$ (an RF short circuit).
 
 In transmission line theory, when a wave hits an impedance boundary, the ratio of reflected energy is governed strictly by the Reflection Coefficient ($\Gamma$):
 \begin{equation}
@@ -116,21 +116,21 @@ By evaluating the ratio at the saturated knot boundary ($Z_{knot} = 0 \ \Omega$)
 \begin{equation}
     \Gamma = \frac{0 - 377}{0 + 377} = \mathbf{-1}
 \end{equation}
-A Reflection Coefficient of $-1$ signifies \textbf{100\% Perfect Reflectance}.
+A Reflection Coefficient of $-1$ signifies total reflectance.
 
-\subsection{Perfect Internal Confinement and Matter Assembly}
-Because the boundary of the saturated knot represents a violently steep impedance gradient dropping to $0 \ \Omega$, any acoustic energy circulating \textit{inside} the knot is perfectly trapped. It strikes the boundary and reflects 100\% inward. 
-Therefore, a subatomic particle does not require a discrete "Strong Nuclear Force" carrier to hold it together; it is a stable, self-sustaining acoustic standing wave perpetually trapped inside a perfect spherical $0 \ \Omega$ mirror of its own geometric creation.
+\subsection{Internal Confinement and Matter Assembly}
+Because the boundary of the saturated knot represents a steep impedance gradient dropping to $0 \ \Omega$, any acoustic energy circulating \textit{inside} the knot is fully reflected inward. 
+A subatomic particle in this model is a stable, self-sustaining acoustic standing wave trapped inside a spherical $0 \ \Omega$ impedance boundary of its own geometric creation.
 
-\subsection{Perfect Scattering and The Pauli Exclusion Principle}
-Conversely, when an external classical wave (such as a photon) travels through the $377 \ \Omega$ relaxed vacuum and strikes the knot, it hits this exact same $0 \ \Omega$ wall. The photon cannot pass through the saturated volume; it experiences 100\% reflection and scatters violently off the boundary. 
+\subsection{Scattering and The Pauli Exclusion Principle}
+Conversely, when an external wave (such as a photon) travels through the $377 \ \Omega$ relaxed vacuum and encounters the knot, it meets the same $0 \ \Omega$ boundary. The photon cannot penetrate the saturated volume; it experiences total reflection. 
 
-This explicit macroscopic transmission line mismatch is the exact mechanical origin of the \textbf{Pauli Exclusion Principle} and the concept of "hardness" or "cross-sectional area" in particle physics. Two saturated knots mathematically cannot occupy the same spatial coordinates because their respective $0 \ \Omega$ boundaries perfectly repel each other's inductive phase energy. Solid matter explicitly emerges from empty space continuous wave mechanics entirely through absolute macroscopic impedance reflection.
+This transmission line mismatch provides a mechanical basis for the \textbf{Pauli Exclusion Principle} and the concept of cross-sectional area in particle physics. Two saturated knots cannot occupy the same spatial coordinates because their respective $0 \ \Omega$ boundaries reflect each other's inductive phase energy. Solid matter emerges from vacuum wave mechanics through macroscopic impedance reflection.
 
 \section{The Physical Origin of Quantum Foam and Virtual Particles}
-In the standard model of cosmology, the vacuum is often described at the Planck scale as a chaotic, boiling geometry known as ``Quantum Foam,'' teeming with virtual particles randomly drifting into and out of existence. Standard Quantum Field Theory relies heavily on these mathematical virtual artifacts to balance perturbative equations, leading to immense infinities such as the Cosmological Constant Problem, where theoretical vacuum energy density calculations exceed empirical observations by over 120 orders of magnitude.
+In the standard model of cosmology, the vacuum at the Planck scale is described as a turbulent geometry (``Quantum Foam'') populated by virtual particles that appear and disappear continuously. Standard Quantum Field Theory uses these virtual contributions to balance perturbative equations, which leads to large discrepancies such as the Cosmological Constant Problem, where the predicted vacuum energy density exceeds observations by approximately 120 orders of magnitude.
 
-The AVE framework natively eliminates this discrepancy by replacing abstract virtual mathematical constructs with the rigorous physical dynamics of an active electrical network.
+The AVE framework addresses this discrepancy by replacing virtual particle constructs with the physical dynamics of an active electrical network.
 
 \subsection{Quantum Foam as Baseline RMS Thermal Noise}
 Because the physical vacuum $\mathcal{M}_A$ is a literal LC Resonant Network, it is subject to the absolute laws of electrical engineering. In any physical inductor-capacitor (LC) network operating above absolute zero, there exists an irreducible, baseline RMS thermal noise floor. 
@@ -138,11 +138,11 @@ Because the physical vacuum $\mathcal{M}_A$ is a literal LC Resonant Network, it
 What standard physics identifies as ``Quantum Foam''---the underlying geometric turbulence of empty space---is explicitly defined in the AVE framework as the continuous, irreducible electromagnetic AC transients (voltage and current ripples) propagating randomly across the discrete topological grid. It is not geometry itself boiling; it is the chaotic, baseline electrical noise floor of the universe's hardware substrate. This provides a deterministic, continuous mechanical origin for Zero-Point Energy (ZPE) bounded strictly by the finite geometry of the local spatial node.
 
 \subsection{Virtual Particles as Failed Topologies}
-In AVE, stable elemental ``Matter'' (such as the electron) is strictly defined as a completely closed, localized topological knot (specifically, a $0_1$ Unknot---a single closed flux tube loop at minimum ropelength $= 2\pi$) that mathematically locks geometrically into the macroscopic lattice. Maintaining this structural lock requires immense, sustained threshold energy (the $43.65$ keV structural yield limit derived in Chapter \ref{ch:gravity_and_yield}).
+In AVE, stable ``Matter'' (such as the electron) is defined as a closed, localised topological knot (specifically, a $0_1$ Unknot---a single closed flux tube loop at minimum ropelength $= 2\pi$) that locks geometrically into the lattice. Maintaining this structural lock requires sustained threshold energy (the $43.65$ keV structural yield limit derived in Chapter \ref{ch:gravity_and_yield}).
 
-When the continuous AC transients (the Quantum Foam) spike violently, they momentarily twist the local LC phase, creating transient geometric loops. However, because these continuous random spikes overwhelmingly lack the sustained, massive inductive tension required to twist and fully close a perfectly locked unknot, the intrinsic continuous $\mu_0, \epsilon_0$ tension of the lattice instantly snaps the twisted loop back to its flat ground state.
+When the continuous AC transients (the Quantum Foam) spike, they momentarily twist the local LC phase, creating transient geometric loops. However, because these random spikes generally lack the sustained inductive tension required to close a stable unknot, the intrinsic $\mu_0, \epsilon_0$ tension of the lattice returns the twisted loop to its flat ground state.
 
-Therefore, ``Virtual Particles'' drifting in and out of existence are not magical apparitions bridging alternate dimensions. They are, precisely, \textbf{failed topologies}. They are transient, localized phase twists rapidly generated by the electrical node noise that mathematically fail to achieve stable resonant closure, instantly unwinding and dissipating back into the baseline thermal noise floor.
+In this interpretation, ``Virtual Particles'' are \textbf{failed topologies}: transient, localised phase twists generated by thermal node noise that fail to achieve stable resonant closure, unwinding and dissipating back into the baseline noise floor.
 
 \section{Deterministic Interference and The Measurement Effect}
 In the Double Slit Experiment, the topological defect (particle) passes through Slit A, but the continuous transverse inductive wake generated by its motion passes through \textit{both} slits[cite: 1789]. The particle deterministically navigates the resulting transverse ponderomotive gradients ($\mathbf{F} \propto \nabla |\Psi|^2$) into the quantized standing-wave troughs[cite: 1790].
@@ -167,7 +167,7 @@ In a stochastic thermal substrate, the probability that the extracted work trigg
 \textbf{The Born Rule} represents the deterministic thermodynamic equation for momentum extraction from a wave-bearing lattice by a thresholded Ohmic load[cite: 1794]. Placing a detector at Slit B irreversibly thermalizes the spatial pressure wave (decoherence), permanently attenuating the interference gradients[cite: 1795].
 
 \section{Non-Linear Dynamics and Topological Shockwaves}
-The linear wave equation assumes constant compliance ($\epsilon_0$). However, Axiom 4 defines the vacuum as a non-linear dielectric strictly bounded by the fine-structure limit ($\alpha$). To rigorously align with standard QED energy bounds and classical electrodynamics, the saturation operator evaluates via a strictly squared geometric limit ($n=2$).
+The linear wave equation assumes constant compliance ($\epsilon_0$). Axiom 4, however, defines the vacuum as a non-linear dielectric bounded by the fine-structure limit ($\alpha$). The saturation operator takes a squared geometric form ($n=2$), consistent with QED energy bounds and classical electrodynamics.
 
 To preserve dimensional homogeneity on a 1D continuous transmission line, the telegrapher equations utilize the continuous macroscopic non-linear modulus $\epsilon(\Delta\phi)$:
 \begin{equation}
@@ -175,33 +175,33 @@ To preserve dimensional homogeneity on a 1D continuous transmission line, the te
     \frac{\partial^{2}\Delta\phi}{\partial z^{2}} = \mu_0 \epsilon(\Delta\phi)\frac{\partial^{2}\Delta\phi}{\partial t^{2}} + \mu_0 \frac{d\epsilon}{d\Delta\phi}\left(\frac{\partial \Delta\phi}{\partial t}\right)^{2}
 \end{equation}
 
-Enforcing the physical squared Saturation Operator defined in Axiom 4:
+Enforcing the Saturation Operator defined in Axiom 4:
 \begin{equation}
-    \epsilon(\Delta\phi) = \frac{\epsilon_{0}}{\sqrt{1 - \left(\frac{\Delta\phi}{\alpha}\right)^2}} \implies \epsilon(\Delta\phi) \approx \epsilon_0 \left[1 + \frac{1}{2}\left(\frac{\Delta\phi}{\alpha}\right)^2\right]
+    \epsilon(\Delta\phi) = \epsilon_{0}\sqrt{1 - \left(\frac{\Delta\phi}{\alpha}\right)^2} \implies \epsilon(\Delta\phi) \approx \epsilon_0 \left[1 - \frac{1}{2}\left(\frac{\Delta\phi}{\alpha}\right)^2\right]
 \end{equation}
 
-The continuous dielectric displacement $D = \epsilon(\Delta\phi) \cdot \Delta\phi$ evaluates precisely to $D_{NL} \approx \epsilon_0 \Delta\phi + \frac{\epsilon_0}{2\alpha^2}(\Delta\phi)^3$. The stored volumetric energy density ($U$) is the integral of the field with respect to displacement ($U = \int \Delta\phi \, dD$):
+The continuous dielectric displacement $D = \epsilon(\Delta\phi) \cdot \Delta\phi$ evaluates to $D_{NL} \approx \epsilon_0 \Delta\phi - \frac{\epsilon_0}{2\alpha^2}(\Delta\phi)^3$. The stored volumetric energy density ($U$) is the integral of the field with respect to displacement ($U = \int \Delta\phi \, dD$):
 \begin{equation}
-    U \approx \int \epsilon_0 \left( \Delta\phi + \frac{3}{2\alpha^2}(\Delta\phi)^3 \right) d(\Delta\phi) = \mathbf{\frac{1}{2}\epsilon_0 (\Delta\phi)^2 + \frac{3}{8\alpha^2}\epsilon_0 (\Delta\phi)^4}
+    U \approx \frac{1}{2}\epsilon_0 (\Delta\phi)^2 - \frac{3}{8\alpha^2}\epsilon_0 (\Delta\phi)^4
 \end{equation}
 
-This higher-order non-linear evaluation strictly and analytically yields the $(\Delta\phi)^4$ energy density limit fundamentally required by the continuous Standard Model \textbf{Euler-Heisenberg QED Lagrangian}. Furthermore, the corresponding $D \propto (\Delta\phi)^3$ displacement physically derives the precise macroscopic 3rd-order optical non-linearity responsible for the standard optical \textbf{Kerr Effect ($\chi^{(3)}$)}.
+The $(\Delta\phi)^4$ correction term corresponds to the energy density structure of the \textbf{Euler-Heisenberg QED Lagrangian}. The corresponding $D \propto (\Delta\phi)^3$ displacement yields the 3rd-order optical non-linearity associated with the \textbf{Kerr Effect ($\chi^{(3)}$)}.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.95\textwidth]{vacuum_dielectric_saturation.png}
-    \caption{The three regimes of the non-linear vacuum permittivity $\varepsilon_{eff}(\Delta\phi)$ defined by Axiom 4. \textbf{Regime I} (green): Linear response where $\varepsilon \approx \varepsilon_0$. \textbf{Regime II} (orange): The Euler-Heisenberg $E^4$ correction becomes significant. \textbf{Regime III} (red): Full dielectric saturation as $\Delta\phi \to \alpha$, corresponding to Schwinger pair-production threshold.}
+    \caption{\textbf{Axiom 4 Saturation Observables.} (Top) Constitutive permittivity $\varepsilon_{eff} = \varepsilon_0 S(A)$ collapses toward zero as field strain approaches the yield limit. (Bottom) Measurable capacitance $C_{eff} = C_0 / S(A)$ diverges as the same kernel drives the reciprocal response. Three regimes are shaded: \textbf{I} (green) Linear, \textbf{II} (orange) Euler-Heisenberg $E^4$ correction, \textbf{III} (red) full saturation at the Schwinger pair-production threshold.}
     \label{fig:vacuum_dielectric_saturation}
 \end{figure}
-As the local strain approaches the absolute yield limit, the localized wave speed $c_{eff}(\Delta\phi) = c_0 [1 - (\Delta\phi/\alpha)^2]^{1/4}$ collapses toward zero. The fast-moving tail of a highly energetic wave packet overtakes the slow-moving peak, steepening until it topologically snaps. This macroscopic structural shockwave represents the continuous, mechanistic origin of discrete pair-production.
+As the local strain approaches the yield limit, the localised wave speed $c_{eff}(\Delta\phi) = c_0 [1 - (\Delta\phi/\alpha)^2]^{1/4}$ decreases toward zero. The fast-moving tail of the wave packet overtakes the slow-moving peak, steepening until it topologically snaps. This structural shockwave provides a continuous mechanical origin for discrete pair-production.
 
 \section{Classical Causality of Quantum Entanglement (Bell's Theorem)}
-One of the foundational pillars of standard Quantum Mechanics is the assumption of ``Non-Locality''---that two entangled particles can instantaneously correlate their measured states across vast cosmic distances, violating the speed of light. This phenomenon, formalized by Bell's Theorem, forces orthodox physics to abandon classical deterministic reality in favor of ``spooky action at a distance.''
+A central result of standard Quantum Mechanics is ``Non-Locality''---the observation that two entangled particles exhibit correlated measurement outcomes regardless of spatial separation, as formalised by Bell's Theorem.
 
-The AVE framework definitively proves that Quantum Entanglement is a purely local, classical, deterministic phenomenon. The apparent ``instantaneous'' connection is simply a misidentification of the signal transmission medium.
+The AVE framework proposes that Quantum Entanglement can be understood as a local, classical, deterministic phenomenon. The apparent instantaneous correlation arises from a distinct signal transmission channel within the lattice.
 
 \subsection{Transverse vs. Longitudinal Wave Propagation}
-Standard Physics assumes that all information must travel via light (photons), which propagates at exactly $c$. In the $\mathcal{M}_A$ LC network, light is explicitly defined as a \textbf{Transverse Electromagnetic Wave}. The propagation speed ($c$) of this transverse wave is dictated entirely by the characteristic impedance ($Z_0 = \sqrt{L/C}$) of the internal phase oscillation. 
+Standard physics assumes all information travels via photons at $c$. In the $\mathcal{M}_A$ LC network, light is defined as a \textbf{Transverse Electromagnetic Wave} whose propagation speed ($c$) is set by the characteristic impedance ($Z_0 = \sqrt{L/C}$) of the internal phase oscillation. 
 
 However, the physical 3D lattice is constructed of rigid structural strings possessing an extreme bulk modulus ($K_{bulk}$). While the transverse wiggle (light) is bounded by $c$, the \textbf{Longitudinal Tension Wave} (acoustic compression along the axis of the string itself) propagates at a velocity dictated by the lattice's fundamental stiffness:
 \begin{equation}
@@ -225,6 +225,6 @@ Because the 3D grid is incompressible ($k = 2G$), longitudinal tension waves pro
 \subsection{The Local Mechanism of Entanglement}
 When two ``entangled'' topological knots (e.g., an electron-positron pair) are synthesized, they are physically connected by identical longitudinal strings within the $\mathcal{M}_A$ matrix. If one particle's spin axis is forcefully rotated by a measurement detector, it mechanically cranks the connecting string. 
 
-This mechanical torque sends a superluminal Longitudinal Tension Wave along the string towards the sister particle. Because $v_{long} > c$, the tension wave arrives and deterministically pulls the sister particle into the correlated alignment before any standard electromagnetic transverse wave (light) could cross the distance.
+This mechanical torque sends a longitudinal tension wave along the string toward the sister particle. Because $v_{long} > c$, the tension wave arrives and deterministically pulls the sister particle into the correlated alignment before any transverse electromagnetic signal (light) could traverse the distance.
 
-Bell's Theorem incorrectly assumes $c$ is the absolute speed limit for \textit{all} causality. In AVE, $c$ is only the speed limit for \textit{transverse} signaling. \textbf{Entanglement is strictly the superluminal acoustic synchronization of macroscopic LC network nodes.} There is no ``spooky action,'' only hidden classical mechanics.
+Bell's Theorem assumes $c$ is the speed limit for all causal influence. In the AVE interpretation, $c$ limits only \textit{transverse} signalling. Entanglement is modelled as the superluminal acoustic synchronisation of LC network nodes via longitudinal modes that carry no freely encodable information.

@@ -24,7 +24,7 @@ def main():
     
     # Grid initialization (representing the 2D cross-section of the continuous vacuum)
     grid = VacuumGrid(nx=NX, ny=NY, c2=0.20)
-    grid.set_temperature(0.5) # Sets ambient grid noise amplitude
+    grid.set_temperature(0.5, mode='bulk') # Bulk noise: entropy scattering demo
     
     # We will simulate a highly ordered, high-energy wave-packet (like a particle or laser pulse)
     # entering the center of the grid, and watch how its ordered energy geometrically scatters.

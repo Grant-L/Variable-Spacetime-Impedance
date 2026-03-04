@@ -138,7 +138,7 @@ defect, the local impedance drops to zero:
 
 $\Gamma = -1$ means \textbf{total reflection with phase inversion}.
 Energy inside the soliton cannot escape because every outward-propagating
-mode is perfectly reflected back.
+mode is reflected back.
 
 This is formally identical to:
 \begin{itemize}
@@ -181,8 +181,8 @@ $c$ & \textbf{Knot type} & $r_{conf}/\ell_{node}$ & \textbf{Particle} \\
 3   & Trefoil $(2,3)$    & $\kappa_{FS}/3$  & Electron \\
 5   & Cinquefoil $(2,5)$ & $\kappa_{FS}/5$  & Proton \\
 7   & $(2,7)$            & $\kappa_{FS}/7$  & $\Delta(1232)$ \\
-9   & $(2,9)$            & $\kappa_{FS}/9$  & $\Delta(1620)$ \\
-11  & $(2,11)$           & $\kappa_{FS}/11$ & $\Delta(1950)$ \\
+9   & $(2,9)$            & $\kappa_{FS}/9$  & $\Delta(1600)$ \\
+11  & $(2,11)$           & $\kappa_{FS}/11$ & $\Delta(1900)$ \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -453,7 +453,7 @@ $V \to \infty$.
 \end{enumerate}
 
 The physics engine verifies this computationally: the Faddeev-Skyrme
-scalar $I_{scalar}(c=5) = 1165.96$ is identical whether computed on a
+scalar $I_{scalar}(c=5) = 1162.0$ is identical whether computed on a
 box of $2\times r_{conf}$, $10^3 \times r_{conf}$, or $10^6 \times r_{conf}$.
 
 %======================================================================
@@ -527,7 +527,7 @@ $\Delta > 0$ persists.
     $r_{conf} = \kappa_{FS}/c$ and the Faddeev-Skyrme functional.
     \textit{Neither quantity depends on $\ell$}:
     \begin{itemize}
-        \item $\kappa_{FS} = 8\pi(1 - 1/(28\pi))$ is a pure
+        \item $\kappa_{FS} = 8\pi(1 - 1/(14\pi^2))$ is a pure
         geometric constant.
         \item The crossing number $c$ is a topological invariant.
         \item $I_{scalar}(c)$ depends only on $\kappa_{FS}$

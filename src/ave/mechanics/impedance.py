@@ -12,40 +12,11 @@ import numpy as np
 from ave.core.constants import G, C_0, ISOTROPIC_PROJECTION
 from ave.axioms.scale_invariant import saturation_factor
 
-def calculate_refractive_strain(mass_kg: float, radius_m: float) -> float:
-    """
-    Calculates the localized effective physical refractive index (n(r)) of the
-    vacuum LC network created by the inductive rest energy of a massive body.
-    
-    n(r) = 1 + h_perp
-    where h_perp is the transverse optical strain.
-    
-    Args:
-        mass_kg (float): Mass of the polarizing body.
-        radius_m (float): Distance from the center of mass.
-        
-    Returns:
-        float: The effective localized refractive index (n >= 1.0).
-    """
-    if radius_m <= 0:
-        raise ValueError("Radius must be greater than 0.")
-        
-    # 1D Principal Radial Strain: ε₁₁ = 7GM/(rc²)
-    # Contract via trace-reversed Poisson ratio (2/7):
-    #   n(r) = 1 + (2/7)·ε₁₁ = 1 + 2GM/(rc²)
-    n_r = 1.0 + (2 * G * mass_kg) / ((C_0**2) * radius_m)
-    
-    return n_r
-
-
-def is_dielectric_rupture(mass_kg: float, radius_m: float) -> bool:
-    """
-    Checks if the local metric strain exceeds the Axiom 4 Dielectric Saturation limit (Unitary Strain).
-    This physically defines the Event Horizon (Schwarzschild Radius) not as curved geometry,
-    but as the catastrophic impedance collapse limit.
-    """
-    schwarzschild_r = (2 * G * mass_kg) / (C_0**2)
-    return radius_m <= schwarzschild_r
+# Re-export from gravity module (single source of truth)
+from ave.gravity import refractive_index as calculate_refractive_strain  # noqa: F401
+from ave.gravity import is_dielectric_rupture  # noqa: F401
+# NOTE: calculate_refractive_strain and is_dielectric_rupture are
+# re-exported from ave.gravity above. No local implementation needed.
 
 
 def get_mutual_inductance(shear_rate: float, background_inductance: float, saturation_threshold: float) -> float:

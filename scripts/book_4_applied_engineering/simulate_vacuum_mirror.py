@@ -8,17 +8,17 @@ project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
 sys.path.insert(0, str(project_root / "src"))
 
 from ave.core.constants import ALPHA, V_YIELD, Z_0, EPSILON_0
+from ave.axioms.scale_invariant import epsilon_eff, impedance as _impedance
 
 def calculate_effective_permittivity(V_applied):
-    """Calculate the non-linear plateau of effective permittivity based on AVE Axiom 4."""
-    # Prevent complex numbers past the yield limit, capping it
+    """Non-linear permittivity collapse via Axiom 4 saturation kernel."""
     V = np.clip(V_applied, 0, V_YIELD * 0.9999)
-    return EPSILON_0 * np.sqrt(1 - (V / V_YIELD)**2)
+    return epsilon_eff(V, V_YIELD)
 
 def calculate_impedance(V_applied):
-    """If epsilon drops, Z local spikes."""
+    """If epsilon drops, Z local spikes. Delegates to scale_invariant.impedance."""
     eps_eff = calculate_effective_permittivity(V_applied)
-    return np.sqrt(4 * np.pi * 1e-7 / eps_eff)
+    return _impedance(4 * np.pi * 1e-7, eps_eff)
 
 def paschen_curve(p, d, gas='Air'):
     """

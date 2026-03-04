@@ -1,0 +1,34 @@
+% eq_axiom_4.tex — Axiom 4 (Saturation / Universal Yield Kernel)
+% Single source of truth. \input this wherever Axiom 4 is formally stated.
+%
+\begin{tcolorbox}[colframe=black!70, colback=gray!5, title=Axiom 4 — Universal Saturation Kernel]
+The universal yield kernel bounding all LC modes:
+\begin{equation}
+    S(A) = \sqrt{1 - \left(\frac{A}{A_{yield}}\right)^{\!2}}
+    \label{eq:axiom4_saturation}
+\end{equation}
+At $A = 0$: $S = 1$ (linear Maxwell recovered).\quad
+At $A \to A_{yield}$: $S \to 0$ (saturation).
+
+\medskip
+\textbf{Derived consequences:}
+
+\begin{center}\small
+\begin{tabular}{llll}
+\toprule
+\textbf{Observable} & \textbf{Formula} & \textbf{At saturation} & \textbf{Physical meaning} \\
+\midrule
+$\mu_{eff}$   & $\mu_0 \cdot S$       & $\to 0$       & Inductor shorts (Meissner) \\
+$\varepsilon_{eff}$ & $\varepsilon_0 \cdot S$ & $\to 0$     & Dielectric collapses \\
+$C_{eff}$     & $C_0 / S$             & $\to \infty$  & Capacitance absorbs energy \\
+$Z$ (symmetric) & $\sqrt{\mu/\varepsilon} = Z_0$ & invariant & Impedance preserved \\
+$c_{eff}$     & $c_0 \cdot S^{1/2}$  & $\to 0$       & Wave packet confined (mass) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\medskip
+\textbf{Confinement theorem:} At a self-intersecting torus knot (particle),
+the B-field saturates $\mu$ first $\to$ $Z \to 0$, $\Gamma \to -1$
+$\to$ standing wave = rest mass.
+\end{tcolorbox}
