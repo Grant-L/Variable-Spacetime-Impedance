@@ -283,8 +283,24 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N, kappa=0.1):
 
     coupling = KAPPA * conjugate_match * C_sat / (dists**2 + 1e-12)
 
+    # --- Axiom 4: Long-Range Saturation Envelope ---
+    # SAME physics as galactic rotation (Book 7, Ch.2, Eq.23):
+    #   η_eff(γ̇) = η₀ × √(1 − (γ̇/γ̇_yield)²)
+    # At galactic scale: beyond MOND boundary a₀, mutual inductance
+    # saturates → evanescent coupling → no "dark matter" drag.
+    # At protein scale: beyond R_BURIAL = 2d₀, backbone mutual inductance
+    # saturates → evanescent coupling → no over-compaction.
+    #
+    # Without this: 1/d² coupling persists at all distances,
+    # creating a "dark matter halo" around the protein core.
+    # With this: coupling decays smoothly to zero at R_BURIAL,
+    # allowing the structure to expand to its natural Rg.
+    long_range_ratio = jnp.clip(dists / R_BURIAL, 0.0, 0.999)
+    saturation_envelope = jnp.sqrt(1.0 - long_range_ratio**2)  # Axiom 4
+    coupling = coupling * saturation_envelope
+
     idx = jnp.arange(N)
-    mask = (jnp.abs(idx[:, None] - idx[None, :]) <= 2) | (dists > 15.0)
+    mask = jnp.abs(idx[:, None] - idx[None, :]) <= 2  # local backbone only
     coupling = jnp.where(mask, 0.0, coupling)
     Y_shunt = coupling.sum(axis=1)  # (N,)
 
