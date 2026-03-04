@@ -479,6 +479,27 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N, kappa=0.1):
     z_last = jnp.array([Z_NCa, Z_CaC])
     seg_Zc = jnp.concatenate([jnp.tile(z_triplet, N-1), z_last])  # (3N-1,)
     
+    # --- Backbone NEXT Cross-Talk (EE Signal Integrity) ---
+    # When the chain folds near itself, non-bonded backbone segments
+    # create Near-End Cross-Talk (NEXT) — backward coupling into the
+    # aggressor port, which adds DIRECTLY to S₁₁.
+    #
+    # Physics (bond_energy_solver analogy):
+    #   Nuclear: μ overlap → impedance mismatch → repulsion
+    #   Protein: NEXT → S₁₁ penalty → expansion
+    #
+    # NEXT coupling: K_backward ∝ (d₀/d)² × |Γ_ij| (near-field × mismatch)
+    # Γ_ij = |Z_i - Z_j| / (Z_i + Z_j)  — reflection at the crosstalk junction
+    # This is the SAME reflection coefficient from Axiom 1.
+    #
+    # Coefficient: 1/N (normalise like S₁₁_avg, no fitted weight)
+    seq_sep_mask = (jnp.abs(idx[:, None] - idx[None, :]) > 2).astype(jnp.float32)
+    K_near_field = (d0 / (dists + 1e-12))**2 * seq_sep_mask
+    # Γ from sidechain impedances (z_mag already computed)
+    Gamma_ij = jnp.abs(z_mag[:, None] - z_mag[None, :]) / (z_mag[:, None] + z_mag[None, :] + 1e-12)
+    xtalk_matrix = K_near_field * Gamma_ij          # (N, N)
+    xtalk_loss = jnp.sum(xtalk_matrix) / (N * N)    # normalised
+    
     # Shunt admittance at junctions (3N-2 junctions between segments)
     # Sidechain R-group attaches at Cα → shunt at junction 3i (i=0..N-1)
     # All other junctions get zero sidechain shunt
@@ -809,7 +830,8 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N, kappa=0.1):
     # No fitted penalty needed — same pattern as galactic_rotation.py
 
     return (s11_avg + bond_penalty + steric_penalty + jnp.maximum(0.0, port_loss)
-            + bb_bond_penalty + bb_angle_penalty + omega_penalty + rama_penalty)
+            + bb_bond_penalty + bb_angle_penalty + omega_penalty + rama_penalty
+            + xtalk_loss)
 
 
 # JIT compile — N is now dynamic (not static_argnums)
