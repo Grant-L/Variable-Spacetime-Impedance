@@ -84,20 +84,19 @@ def render_gargantua():
     # Render Settings
     # -------------------------------------------------------------
     WIDTH, HEIGHT = 2000, 1000
-    MAX_STEPS = 3000
-    DTAU = 0.06       # Smaller step = smoother arcs, eliminates banding
+    MAX_STEPS = 3500
+    DTAU = 0.06       # Balance between smoothness and convergence
     N_SAMPLES = 2     # 2 samples sufficient for anti-aliasing
 
-    # Disk Geometry — wider for the iconic silhouette
-    R_IN = 2.5
-    R_OUT = 12.0
+    # Disk Geometry — inner edge inside photon sphere for circular shadow
+    # Photon sphere at r_iso ≈ 1.87; R_IN must be INSIDE this
+    # to fill the gap and produce a clean circular shadow boundary.
+    R_IN = 1.0
+    R_OUT = 18.0
 
     # Accretion Disk Temperature Profile (Shakura-Sunyaev thin disk)
-    # EHT M87*: T_e ~ 10^10 K.  We map to effective visual temperatures:
-    #   Inner edge: ~12 000 K (blue-white)
-    #   Mid disk:   ~ 5 000 K (solar yellow)
-    #   Outer edge: ~ 1 800 K (deep red)
-    T_INNER = 6000.0  # Kelvin at R_IN (solar temp = golden/orange core)
+    # Inner edge now at r=1.0 (deep in the gravitational well)
+    T_INNER = 10000.0   # Kelvin at R_IN (hotter since closer to horizon)
 
     # Schwarzschild radius for gravitational redshift
     R_S = 1.0  # in code units (rh = 0.5 in isotropic coords)
@@ -126,7 +125,7 @@ def render_gargantua():
     # -------------------------------------------------------------
     # Camera
     # -------------------------------------------------------------
-    cam_pos = np.array([0.0, -40.0, 6.0])
+    cam_pos = np.array([0.0, -40.0, 10.0])  # ~14° above equator
     look_at = np.array([0.0, 0.0, -0.5])
     up = np.array([0.0, 0.0, 1.0])
 
@@ -283,9 +282,11 @@ def render_gargantua():
                     x = R_IN / rc_r
                     T_disk = T_INNER * x**0.75 * np.maximum(1.0 - np.sqrt(x), 0.01)**0.25
 
-                    # ── Gravitational Redshift ──
-                    # z_grav = 1 / sqrt(1 - R_S / r_crossing)
-                    z_grav = 1.0 / np.sqrt(np.maximum(1.0 - R_S / rc_r, 0.05))
+                    # ── Gravitational Redshift (Isotropic Coordinates) ──
+                    # In isotropic coords: z_grav = W/U = (1+rh/r)/(1-rh/r)
+                    W_cross = 1.0 + rh / rc_r
+                    U_cross = np.maximum(1.0 - rh / rc_r, 0.05)
+                    z_grav = W_cross / U_cross
 
                     # ── Relativistic Doppler Shift ──
                     # Keplerian orbital velocity: v = sqrt(M/r), tangential
