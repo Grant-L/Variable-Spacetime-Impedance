@@ -789,41 +789,136 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     chi1_default = jnp.full(N, jnp.radians(60.0))
     cb_pos = _compute_cb_positions(atom_N, atom_Ca, atom_C, chi1_default, gly_mask)
     
+    # --- Carbonyl O positions (5-atom NERF) ---
+    # O is bonded to C_i, in the Cα_i-C_i-N_{i+1} peptide plane
+    # C=O bond: 1.23 Å at 121° from C-N bond, opposite to Cα side
+    D_C_O = 1.23   # Å — C=O bond length
+    THETA_CO = jnp.radians(121.4)  # Cα-C=O angle
+    
+    # For residues 0..N-2 (have both C_i and N_{i+1})
+    v_CaCi = atom_C[:-1] - atom_Ca[:-1]  # Cα→C direction
+    v_CNi  = atom_N[1:] - atom_C[:-1]    # C→N(next) direction
+    v_CaCi_n = v_CaCi / (jnp.sqrt(jnp.sum(v_CaCi**2, axis=-1, keepdims=True)) + 1e-12)
+    v_CNi_n  = v_CNi / (jnp.sqrt(jnp.sum(v_CNi**2, axis=-1, keepdims=True)) + 1e-12)
+    
+    # O direction: rotate from -Cα direction by 121° toward N direction in the plane
+    # Peptide plane normal
+    plane_n = jnp.cross(v_CaCi_n, v_CNi_n)
+    plane_n = plane_n / (jnp.sqrt(jnp.sum(plane_n**2, axis=-1, keepdims=True)) + 1e-12)
+    # O is at 121° from C-Cα (opposite side of C-N)
+    o_dir = (-v_CaCi_n * jnp.cos(THETA_CO) + 
+             jnp.cross(plane_n, -v_CaCi_n) * jnp.sin(THETA_CO))
+    o_pos_inner = atom_C[:-1] + D_C_O * o_dir  # (N-1, 3)
+    # Last residue: approximate O along -Cα direction  
+    o_last = atom_C[-1:] + D_C_O * (atom_C[-1:] - atom_Ca[-1:]) / (jnp.sqrt(jnp.sum((atom_C[-1:]-atom_Ca[-1:])**2, axis=-1, keepdims=True)) + 1e-12)
+    o_pos = jnp.concatenate([o_pos_inner, o_last], axis=0)  # (N, 3)
+    
+    # --- Amide H positions (5-atom NERF) ---
+    # H is bonded to N_i, in the C_{i-1}-N_i-Cα_i peptide plane
+    # N-H bond: 1.01 Å at 119° from N-Cα bond, roughly trans to C_{i-1}
+    # Proline has no amide H (ring closure)
+    D_N_H = 1.01   # Å — N-H bond length
+    THETA_NH = jnp.radians(119.2)  # C-N-H angle
+    
+    # For residues 1..N-1 (have both C_{i-1} and N_i)
+    v_NCa = atom_Ca[1:] - atom_N[1:]   # N→Cα direction
+    v_NC  = atom_C[:-1] - atom_N[1:]   # N→C(prev) direction
+    v_NCa_n = v_NCa / (jnp.sqrt(jnp.sum(v_NCa**2, axis=-1, keepdims=True)) + 1e-12)
+    v_NC_n  = v_NC / (jnp.sqrt(jnp.sum(v_NC**2, axis=-1, keepdims=True)) + 1e-12)
+    
+    # H direction: opposite to C(prev) side, in the peptide plane
+    plane_h = jnp.cross(v_NCa_n, v_NC_n)
+    plane_h = plane_h / (jnp.sqrt(jnp.sum(plane_h**2, axis=-1, keepdims=True)) + 1e-12)
+    h_dir = (-v_NC_n * jnp.cos(THETA_NH) + 
+             jnp.cross(plane_h, -v_NC_n) * jnp.sin(THETA_NH))
+    h_pos_inner = atom_N[1:] + D_N_H * h_dir  # (N-1, 3)
+    # First residue: approximate H along -Cα direction
+    h_first = atom_N[:1] + D_N_H * (atom_N[:1] - atom_Ca[:1]) / (jnp.sqrt(jnp.sum((atom_N[:1]-atom_Ca[:1])**2, axis=-1, keepdims=True)) + 1e-12)
+    h_pos = jnp.concatenate([h_first, h_pos_inner], axis=0)  # (N, 3)
+    # Zero out H for Proline (no amide H)
+    h_pos = jnp.where(pro_mask[:, None] > 0.5, atom_N, h_pos)
+    
+    # --- Steric exclusion radii for O and H ---
+    R_O_CB = 3.1   # Å — O-Cβ exclusion (r_O + r_C = 1.4 + 1.7)
+    R_O_N  = 2.9   # Å — O-N exclusion (r_O + r_N = 1.4 + 1.5)
+    R_O_O  = 2.8   # Å — O-O exclusion (2 × r_O = 2 × 1.4)
+    R_H_C  = 2.7   # Å — H-C exclusion (r_H + r_C = 1.0 + 1.7)
+    R_H_CB = 2.7   # Å — H-Cβ exclusion (same)
+    R_H_O  = 2.4   # Å — H-O exclusion (r_H + r_O = 1.0 + 1.4)
+    
     R_CB_N = 3.2   # Å — Cβ-N exclusion (r_C + r_N)
     R_CB_C = 3.4   # Å — Cβ-C exclusion (2 × r_C)
     R_CB_CB = 3.4  # Å — Cβ-Cβ exclusion
     
-    # LOCAL Cβ-backbone steric (|i-j| >= 1): THIS creates the Ramachandran basins
-    # Cβ_i vs C_{i-1}: constrains φ_i  (prevents back-folding)
-    # Cβ_i vs N_{i+1}: constrains ψ_i  (prevents head-on collision)
-    # Using |i-j| >= 1 (not >=2) because the key clashes ARE adjacent residues
-    cb_local_mask = jnp.abs(idx[:, None] - idx[None, :]) >= 1
-
-    # Cβ-N steric
+    # LOCAL masks: |i-j| >= 1 for O/H/Cβ cross-terms (these create Rama basins)
+    local_mask = jnp.abs(idx[:, None] - idx[None, :]) >= 1
+    
+    # --- O steric ---
+    # O-Cβ (the PRIMARY Ramachandran constraint for φ)
+    d_OCB = jnp.sqrt(jnp.sum((o_pos[:, None, :] - cb_pos[None, :, :])**2, axis=-1) + 1e-12)
+    ocb_violations = jnp.maximum(0.0, R_O_CB - d_OCB) ** 2
+    ocb_violations = jnp.where(local_mask, ocb_violations, 0.0)
+    
+    # O-N 
+    d_ON = jnp.sqrt(jnp.sum((o_pos[:, None, :] - atom_N[None, :, :])**2, axis=-1) + 1e-12)
+    on_violations = jnp.maximum(0.0, R_O_N - d_ON) ** 2
+    on_violations = jnp.where(local_mask, on_violations, 0.0)
+    
+    # O-O
+    d_OO = jnp.sqrt(jnp.sum((o_pos[:, None, :] - o_pos[None, :, :])**2, axis=-1) + 1e-12)
+    oo_violations = jnp.maximum(0.0, R_O_O - d_OO) ** 2
+    oo_mask = jnp.abs(idx[:, None] - idx[None, :]) >= 2
+    oo_violations = jnp.where(oo_mask, oo_violations, 0.0)
+    
+    # --- H steric ---
+    # H-C (the PRIMARY Ramachandran constraint for ψ)
+    d_HC = jnp.sqrt(jnp.sum((h_pos[:, None, :] - atom_C[None, :, :])**2, axis=-1) + 1e-12)
+    hc_violations = jnp.maximum(0.0, R_H_C - d_HC) ** 2
+    hc_violations = jnp.where(local_mask, hc_violations, 0.0)
+    
+    # H-Cβ
+    d_HCB = jnp.sqrt(jnp.sum((h_pos[:, None, :] - cb_pos[None, :, :])**2, axis=-1) + 1e-12)
+    hcb_violations = jnp.maximum(0.0, R_H_CB - d_HCB) ** 2
+    hcb_violations = jnp.where(local_mask, hcb_violations, 0.0)
+    
+    # H-O
+    d_HO = jnp.sqrt(jnp.sum((h_pos[:, None, :] - o_pos[None, :, :])**2, axis=-1) + 1e-12)
+    ho_violations = jnp.maximum(0.0, R_H_O - d_HO) ** 2
+    ho_violations = jnp.where(local_mask, ho_violations, 0.0)
+    
+    # --- Cβ-backbone steric (local) ---
     d_CBN = jnp.sqrt(jnp.sum((cb_pos[:, None, :] - atom_N[None, :, :])**2, axis=-1) + 1e-12)
     cbn_violations = jnp.maximum(0.0, R_CB_N - d_CBN) ** 2
-    cbn_violations = jnp.where(cb_local_mask, cbn_violations, 0.0)
+    cbn_violations = jnp.where(local_mask, cbn_violations, 0.0)
     
-    # Cβ-C steric
     d_CBC = jnp.sqrt(jnp.sum((cb_pos[:, None, :] - atom_C[None, :, :])**2, axis=-1) + 1e-12)
     cbc_violations = jnp.maximum(0.0, R_CB_C - d_CBC) ** 2
-    cbc_violations = jnp.where(cb_local_mask, cbc_violations, 0.0)
+    cbc_violations = jnp.where(local_mask, cbc_violations, 0.0)
     
-    # Cβ-Cβ steric (longer range, |i-j| >= 3)
+    # Cβ-Cβ (longer range)
     d_CBCB = jnp.sqrt(jnp.sum((cb_pos[:, None, :] - cb_pos[None, :, :])**2, axis=-1) + 1e-12)
     cb_seq_mask = jnp.abs(idx[:, None] - idx[None, :]) >= 3
     cbcb_violations = jnp.maximum(0.0, R_CB_CB - d_CBCB) ** 2
     cbcb_violations = jnp.where(cb_seq_mask, cbcb_violations, 0.0)
     
-    # Total backbone atom steric (upper triangle to avoid double-counting)
-    bb_atom_steric = (jnp.sum(jnp.triu(nn_violations, k=2)) +
-                      jnp.sum(jnp.triu(cc_violations, k=2)) +
-                      jnp.sum(jnp.triu(nc_violations, k=2)) +
-                      jnp.sum(jnp.triu(cn_violations, k=2)) +
-                      jnp.sum(jnp.triu(cbn_violations, k=2)) +
-                      jnp.sum(jnp.triu(cbc_violations, k=2)) +
-                      jnp.sum(jnp.triu(cbcb_violations, k=3)))
-    rama_penalty = LAMBDA_BB_STERIC * bb_atom_steric / (4 * N)  # normalise by atom count (N,Ca,C,Cb)
+    # Total 5-atom backbone steric
+    bb_atom_steric = (
+        # N, Cα(via Ca steric above), C backbone
+        jnp.sum(jnp.triu(nn_violations, k=2)) +
+        jnp.sum(jnp.triu(cc_violations, k=2)) +
+        jnp.sum(jnp.triu(nc_violations, k=2)) +
+        jnp.sum(jnp.triu(cn_violations, k=2)) +
+        # Cβ
+        jnp.sum(cbn_violations) + jnp.sum(cbc_violations) +
+        jnp.sum(jnp.triu(cbcb_violations, k=3)) +
+        # O (carbonyl)
+        jnp.sum(ocb_violations) + jnp.sum(on_violations) +
+        jnp.sum(jnp.triu(oo_violations, k=2)) +
+        # H (amide)
+        jnp.sum(hc_violations) + jnp.sum(hcb_violations) +
+        jnp.sum(ho_violations)
+    )
+    rama_penalty = LAMBDA_BB_STERIC * bb_atom_steric / (6 * N)  # 6 atoms: N, Cα, C, O, H, Cβ
     # ═══════════════════════════════════════════════════════════════════
     # LOSS FUNCTION — pure S₁₁ + steric + Ramachandran
     # ═══════════════════════════════════════════════════════════════════
