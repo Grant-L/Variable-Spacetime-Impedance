@@ -410,4 +410,18 @@ $\phi/\psi$ Rama & $\lambda_\text{rama} = 2(2r_{C_\alpha}/d_0)$ & 1.789 & Pauli 
 
 The packing fraction $2r_{C_\alpha}/d_0 = 0.895$ is noteworthy: it is the protein-scale analog of the electromagnetic packing fraction $P_C = 8\pi\alpha \approx 0.183$, reflecting the scale invariance of the impedance coupling structure (Axiom~1).
 
-The engine correctly enforces backbone chirality (100\% negative $\phi$) and produces compact structure ($R_g = 4.5$~\AA), but favours the $\beta$-basin ($\phi \approx -120^\circ$, $\psi \approx 130^\circ$) over the $\alpha$-basin ($\phi \approx -60^\circ$, $\psi \approx -40^\circ$).  The residual $\alpha/\beta$ selectivity requires explicit hydrogen-bonding impedance (N--H$\cdots$O=C cross-coupling)---an identified next upgrade that would bias $i \to i{+}4$ contacts over $i \to i{+}2$.
+The engine correctly enforces backbone chirality (100\% negative $\phi$) and produces compact structure ($R_g = 4.5$~\AA), but favours the $\beta$-basin ($\phi \approx -120^\circ$, $\psi \approx 130^\circ$) over the $\alpha$-basin ($\phi \approx -60^\circ$, $\psi \approx -40^\circ$).
+
+\subsubsection{Upgrade 8: H-Bond Mutual Inductance}
+
+To address $\alpha/\beta$ selectivity, the engine implements directional hydrogen-bond cross-coupling as backbone mutual inductance.  An H-bond is the protein-scale analog of $K_\text{MUTUAL}$ at the nuclear scale (Book~2, Ch.~6): mutual inductance between two coupled LC oscillators---the N--H donor dipole and the C=O acceptor dipole.
+
+The directional coupling follows the same angular suppression as the HOPF-01 wire crossing mutual inductance:
+\begin{equation}
+    Y_{\text{HB}}^{ij} = \lambda_\text{rama}\, \kappa_\text{HB}\, \cos\theta\, e^{-d_{\text{NC}}/d_0}\, \sigma(D_\text{HB} + d_0 - d_{\text{NC}})
+\end{equation}
+where $\cos\theta = \hat{\mathbf{d}}_{\text{donor}} \cdot (-\hat{\mathbf{r}}_{ij})$ is the angular alignment between the Cα$\to$N direction (proxy for N--H) and the separation vector, $\kappa_\text{HB} = 1/(2Q) = 1/14$ (amide-V quality factor), $D_\text{HB} = d_\text{NH} + d_\text{CO} = 2.24$~\AA{} (detection threshold from backbone bond lengths, Axioms~1--2), and $\sigma(\cdot)$ is a smooth sigmoid detection function.
+
+The angular factor ensures H-bonds are \emph{directional} (not isotropic): only N--H groups pointing toward C=O groups contribute, consistent with the dipole-dipole nature of the interaction.
+
+\textbf{Current status:} The H-bond term is physically correct and adds non-zero directional coupling, but does not significantly alter the $\alpha/\beta$ secondary structure distribution at Villin HP35 scale (24\% total SS with or without the term).  The dominant backbone geometry penalties ($\lambda_\text{bond} = 2.0$, $\lambda_\text{rama} = 1.79$) control the $\phi/\psi$ landscape; the H-bond shunt admittance contributes at a lower energy scale ($\kappa_\text{HB} = 0.071$).  Future work will investigate whether multi-body H-bond cooperativity (where a chain of consecutive H-bonds progressively stabilises the $\alpha$-basin) can break the $\alpha/\beta$ degeneracy.
