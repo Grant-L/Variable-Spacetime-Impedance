@@ -384,12 +384,12 @@ Villin headpiece subdomain HP35 (PDB: 1VII, 35 residues, three-helix bundle) is 
 \toprule
 \textbf{Metric} & \textbf{Value} & \textbf{Expected} \\
 \midrule
-Loss & $340 \to 3.03$ & Convergent \\
-$R_g$    & 4.6~\AA & 8--10~\AA \\
-End-to-end & 14.1~\AA & $<30$~\AA~\checkmark \\
+Loss & $377 \to 4.13$ & Convergent \\
+$R_g$    & 5.1~\AA & 8--10~\AA \\
+End-to-end & 15.8~\AA & $<30$~\AA~\checkmark \\
 $\phi$ chirality & 100\% negative & \checkmark \\
-$\alpha$-helix & 55\% & $\sim\!60\%$~\checkmark \\
-$\beta$-sheet  & 33\% & --- \\
+$\alpha$-helix & 64\% & $\sim\!60\%$~\checkmark \\
+$\beta$-sheet  & 24\% & --- \\
 \textbf{Total SS} & \textbf{88\%} & $>70\%$~\checkmark \\
 \bottomrule
 \end{tabular}
@@ -405,6 +405,7 @@ Bond stretch & $\lambda_\text{bond} = 2Z_0$ & 2.000 & Axiom 1 (backbone $Z$) \\
 Angle bend   & $\lambda_\text{angle} = 2(r_{C_\alpha}/d_0)^2$ & 0.400 & Geometric lever \\
 $\omega$ planarity & $\lambda_\omega = 2\,d_{\text{N--C}_\alpha}/d_{\text{C--N}}$ & 2.195 & Bond stiffness ratio \\
 $\phi/\psi$ Rama & $\lambda_\text{rama} = 2(2r_{C_\alpha}/d_0)$ & 1.789 & Pauli packing fraction \\
+Steric exclusion & $\lambda_\text{steric} = \lambda_\text{bond} \cdot d_0/r_{C_\alpha}$ & 4.471 & Pauli $\gg$ Hooke (Ch.~2 Eq.~14) \\
 \bottomrule
 \end{tabular}
 \end{center}
