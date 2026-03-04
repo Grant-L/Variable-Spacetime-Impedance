@@ -436,13 +436,23 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N, kappa=0.1):
     d0_last = jnp.array([D_N_CA, D_CA_C])  # (2,)
     seg_d0 = jnp.concatenate([jnp.tile(d0_triplet, N-1), d0_last])  # (3N-1,)
     
-    # Segment impedances: Z = d₀_bond / d₀ (bond-to-backbone ratio)
-    # This is the natural impedance of each bond type:
-    #   N-Cα: Z = 1.46/3.8 = 0.384 (single bond, flexible)
-    #   Cα-C: Z = 1.52/3.8 = 0.400 (single bond)
-    #   C-N:  Z = 1.33/3.8 = 0.350 (partial double bond, stiff)
-    z_triplet = jnp.array([D_N_CA / d0, D_CA_C / d0, D_C_N / d0])
-    z_last = jnp.array([D_N_CA / d0, D_CA_C / d0])
+    # Segment impedances: Z = √(μ/ε) ∝ 1/√(n_shared_electrons)
+    # From bond_energy_solver (line 245): ε_bond = n_e × (1/α)
+    # At protein scale, μ is same across backbone; ε varies with electrons.
+    #
+    # Bond types (from BOND_DEFS and periodic table):
+    #   N-Cα: single bond, 2 shared e⁻  → Z = 1/√2 = 0.707
+    #   Cα-C: single bond, 2 shared e⁻  → Z = 1/√2 = 0.707
+    #   C-N peptide: partial double, 3 shared e⁻ → Z = 1/√3 = 0.577
+    #
+    # Contrast: 0.707/0.577 = 1.22 → 22% impedance step at peptide bonds
+    # This is the semiconductor band-gap junction analog:
+    # high contrast → strong reflection → geometry-sensitive S₁₁
+    Z_NCa = 1.0 / jnp.sqrt(2.0)   # single bond: 2 electrons
+    Z_CaC = 1.0 / jnp.sqrt(2.0)   # single bond: 2 electrons
+    Z_CN  = 1.0 / jnp.sqrt(3.0)   # peptide bond: 3 electrons (partial double)
+    z_triplet = jnp.array([Z_NCa, Z_CaC, Z_CN])
+    z_last = jnp.array([Z_NCa, Z_CaC])
     seg_Zc = jnp.concatenate([jnp.tile(z_triplet, N-1), z_last])  # (3N-1,)
     
     # Shunt admittance at junctions (3N-2 junctions between segments)
