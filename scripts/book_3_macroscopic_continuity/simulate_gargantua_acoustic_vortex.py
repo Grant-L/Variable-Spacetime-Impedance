@@ -84,7 +84,7 @@ def render_gargantua():
     # Render Settings
     # -------------------------------------------------------------
     WIDTH, HEIGHT = 2000, 1000
-    MAX_STEPS = 5000
+    MAX_STEPS = 3000
     DTAU = 0.06       # Smaller step = smoother arcs, eliminates banding
     N_SAMPLES = 2     # 2 samples sufficient for anti-aliasing
 
@@ -120,7 +120,8 @@ def render_gargantua():
     # -------------------------------------------------------------
     M = 1.0
     rh = 0.5 * M
-    alpha = 1.8   # Strong frame dragging coefficient
+    a_star = 0.999    # Kerr dimensionless spin parameter
+    a_kerr = a_star * M  # Kerr angular momentum parameter
 
     # -------------------------------------------------------------
     # Camera
@@ -209,25 +210,36 @@ def render_gargantua():
             sub_idx = active_idx[active_sub]
 
             # ── AVE Hamiltonian Optics ──
+            # Isotropic Schwarzschild refractive index:
+            #   n(r) = W³/U,  W = 1 + rh/r,  U = 1 - rh/r
             W = 1.0 + rh / r_mag
             U = np.maximum(1.0 - rh / r_mag, 1e-4)
             n = (W**3) / U
 
-            dn_dr = 2.0 * (W**2) * (2.0 - rh / r_mag) / (U**2) * (-rh / (r_mag**2))
+            # dn/dr = -W² · rh/r² · (3U + W) / U²
+            #       = -W² · rh/r² · (4 - 2rh/r) / U²
+            dn_dr = -W**2 * (rh / r_mag**2) * (4.0 - 2.0 * rh / r_mag) / U**2
             r_hat = r_act / r_mag[:, None]
             grad_n = dn_dr[:, None] * r_hat
 
-            # Frame dragging
+            # Frame dragging: Kerr angular velocity ω = 2Mar/(r²+a²)²
+            r2 = r_mag**2
+            denom = (r2 + a_kerr**2)**2
+            omega = 2.0 * M * a_kerr * r_mag / denom
             v_drag = np.zeros_like(r_act)
-            v_drag[:, 0] = -r_act[:, 1]
-            v_drag[:, 1] = r_act[:, 0]
-            v_drag *= (alpha / (r_mag**3))[:, None]
+            v_drag[:, 0] = -omega * r_act[:, 1]
+            v_drag[:, 1] = omega * r_act[:, 0]
 
             Lz = r_act[:, 0] * p_act[:, 1] - r_act[:, 1] * p_act[:, 0]
-            grad_pv = np.zeros_like(r_act)
-            grad_pv[:, 0] = -3.0 * alpha * Lz / (r_mag**5) * r_act[:, 0] + (alpha / (r_mag**3)) * p_act[:, 1]
-            grad_pv[:, 1] = -3.0 * alpha * Lz / (r_mag**5) * r_act[:, 1] - (alpha / (r_mag**3)) * p_act[:, 0]
-            grad_pv[:, 2] = -3.0 * alpha * Lz / (r_mag**5) * r_act[:, 2]
+            # Gradient of ω·Lz term for momentum update
+            #   d(ω)/dr = 2Ma(r²+a²)²·1 - 2Mar·2(r²+a²)·2r / (r²+a²)⁴
+            #           = 2Ma[(r²+a²) - 4r²] / (r²+a²)³
+            #           = 2Ma[a² - 3r²] / (r²+a²)³
+            domega_dr = 2.0 * M * a_kerr * (a_kerr**2 - 3.0 * r2) / (r2 + a_kerr**2)**3
+            grad_pv = domega_dr[:, None] * (r_act / r_mag[:, None]) * Lz[:, None]
+            # Add ω × cross-term
+            grad_pv[:, 0] += omega * p_act[:, 1]
+            grad_pv[:, 1] -= omega * p_act[:, 0]
 
             p_mag_sq = np.sum(p_act**2, axis=1)
 
@@ -238,7 +250,16 @@ def render_gargantua():
             p_new = p_act + dp
 
             # ── Accretion Disk (equatorial crossing) ──
+            # Detect z-sign change with softening to avoid cusp artifacts
+            # from horizon-grazing rays that barely brush z=0
             crosses = (r_act[:, 2] * r_new[:, 2]) <= 0
+            # Exclude rays extremely close to the horizon (cusp artifact zone)
+            if np.any(crosses):
+                c_mag = np.linalg.norm(r_act[crosses], axis=1)
+                too_close = c_mag < rh * 1.5
+                if np.any(too_close):
+                    cross_idx_all = np.where(crosses)[0]
+                    crosses[cross_idx_all[too_close]] = False
             if np.any(crosses):
                 c_idx = np.where(crosses)[0]
                 dz = r_new[c_idx, 2] - r_act[c_idx, 2]
@@ -266,13 +287,19 @@ def render_gargantua():
                     # z_grav = 1 / sqrt(1 - R_S / r_crossing)
                     z_grav = 1.0 / np.sqrt(np.maximum(1.0 - R_S / rc_r, 0.05))
 
-                    # ── Doppler Shift ──
-                    v_disk_x = -rcy / (rc_r**1.5)
-                    v_disk_y = rcx / (rc_r**1.5)
-                    doppler = 1.0 - (v_disk_x * p_act[ci, 0] + v_disk_y * p_act[ci, 1]) * 2.5
+                    # ── Relativistic Doppler Shift ──
+                    # Keplerian orbital velocity: v = sqrt(M/r), tangential
+                    v_disk_x = -rcy / (rc_r**1.5)  # v_x = -v_orb * sin(φ)
+                    v_disk_y = rcx / (rc_r**1.5)    # v_y = +v_orb * cos(φ)
+                    beta_sq = 1.0 / rc_r            # |v|² = M/r (M=1)
+                    gamma_inv = np.sqrt(np.maximum(1.0 - beta_sq, 0.01))
+                    # v · p̂  (projection of disk velocity onto ray direction)
+                    v_dot_p = v_disk_x * p_act[ci, 0] + v_disk_y * p_act[ci, 1]
+                    # Full relativistic: f_obs/f_emit = √(1-β²) / (1 - v·p̂)
+                    doppler = gamma_inv / np.maximum(1.0 - v_dot_p, 0.05)
                     doppler = np.clip(doppler, 0.15, 4.0)
 
-                    # Observed temperature = emitted / (z_grav * z_doppler_inv)
+                    # Observed temperature = emitted × doppler / z_grav
                     T_observed = T_disk * doppler / z_grav
 
                     # Convert to RGB
@@ -284,7 +311,7 @@ def render_gargantua():
                     phi = np.arctan2(rcy, rcx)
                     turb = 0.85 + 0.15 * np.sin(phi * 7.3 + rc_r * 3.1) * np.sin(phi * 13.7 - rc_r * 5.7)
                     base_lum = (2.5 / (rc_r - R_IN + 0.5)**1.2) * turb
-                    base_lum *= doppler**2.5
+                    base_lum *= doppler**3.0  # I_obs = I_emit × δ³ (optically thick)
 
                     # Disk optical depth: inner thick, outer fading
                     opacity = np.clip(1.0 - ((rc_r - R_IN) / (R_OUT - R_IN))**3, 0.1, 1.0)
