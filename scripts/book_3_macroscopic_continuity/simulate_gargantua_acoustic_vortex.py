@@ -289,11 +289,14 @@ def render_gargantua():
                     z_grav = W_cross / U_cross
 
                     # ── Relativistic Doppler Shift ──
-                    # Keplerian orbital velocity: v = sqrt(M/r), tangential
-                    v_disk_x = -rcy / (rc_r**1.5)  # v_x = -v_orb * sin(φ)
-                    v_disk_y = rcx / (rc_r**1.5)    # v_y = +v_orb * cos(φ)
-                    beta_sq = 1.0 / rc_r            # |v|² = M/r (M=1)
-                    gamma_inv = np.sqrt(np.maximum(1.0 - beta_sq, 0.01))
+                    # Keplerian velocity must use Schwarzschild radius,
+                    # not isotropic radius.  r_S = r_iso × (1+rh/r_iso)²
+                    r_schwarz = rc_r * (1.0 + rh / rc_r)**2
+                    v_orb = np.sqrt(np.minimum(1.0 / r_schwarz, 0.95))  # cap at 0.95c
+                    v_disk_x = -rcy / rc_r * v_orb   # -v_orb × sin(φ)
+                    v_disk_y =  rcx / rc_r * v_orb   # +v_orb × cos(φ)
+                    beta_sq = v_orb**2
+                    gamma_inv = np.sqrt(1.0 - beta_sq)
                     # v · p̂  (projection of disk velocity onto ray direction)
                     v_dot_p = v_disk_x * p_act[ci, 0] + v_disk_y * p_act[ci, 1]
                     # Full relativistic: f_obs/f_emit = √(1-β²) / (1 - v·p̂)
@@ -384,8 +387,8 @@ def render_gargantua():
 
     # Tone mapping: gentle Reinhard (preserve warmth and contrast)
     lum = 0.2126 * image_tensor[:, :, 0] + 0.7152 * image_tensor[:, :, 1] + 0.0722 * image_tensor[:, :, 2]
-    # Use higher key for brighter image
-    lum_mapped = lum * 1.5 / (1.0 + lum)
+    # Use higher key for brighter image, especially receding side
+    lum_mapped = lum * 2.5 / (1.0 + lum)
     scale = np.where(lum > 1e-6, lum_mapped / lum, 1.0)
     image_tensor *= scale[:, :, None]
     image_tensor = np.clip(image_tensor, 0.0, 1.0)
