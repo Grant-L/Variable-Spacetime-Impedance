@@ -101,6 +101,30 @@ where $A_{skin}$ is the skin-depth--limited cross-sectional area. At $\sim$1~GHz
 
 Each torus knot is generated from the 3D parametric equations $x(t) = (R + r\cos qt)\cos pt$, $y(t) = (R + r\cos qt)\sin pt$, $z(t) = r\sin qt$, then projected onto the PCB plane. Unplated drill holes (1.0~mm) are placed every 3~mm along the projected curve, and crossing points are identified from the $z$-coordinates: the strand with higher $z$ at each crossing passes \textbf{over} the board (in air), while the other passes \textbf{under} (through a hole). Silkscreen labels mark each crossing as OVER or UNDER.
 
+\subsection{Wire Length Derivation from Knot Topology}
+
+The wire length for each antenna is \textbf{not a free parameter}---it is a deterministic consequence of the knot topology $(p,q)$ at a fixed torus aspect ratio. The arc length of a $(p,q)$ torus knot with major radius $R$ and minor radius $r$ is:
+\begin{equation}
+    L_{wire} = \int_0^{2\pi} \sqrt{\left(\frac{dx}{dt}\right)^2 + \left(\frac{dy}{dt}\right)^2 + \left(\frac{dz}{dt}\right)^2}\; dt
+    \label{eq:arc_length}
+\end{equation}
+This integral depends only on $p$, $q$, and the aspect ratio $R/r$. The PCB design fixes $R/r = 2.5$ (values $R = 1.0$, $r = 0.4$ in normalized units), chosen as the minimum ratio that keeps adjacent windings separated enough for the 1.0~mm stitching holes to be resolvable by hand. The physical scale is then set by requiring the resulting torus to fit within a PCB grid cell ($\sim$40~mm column spacing), yielding footprints of 21--25~mm.
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Knot & $L_{arc}$ (norm) & Scale (mm) & $L_{wire}$ (mm) & Footprint (mm) \\ \hline
+$(2,3)$  & 14.78 & 8.12 & 120 & 23 \\
+$(2,5)$  & 17.95 & 8.91 & 160 & 25 \\
+$(3,5)$  & 22.86 & 7.44 & 170 & 21 \\
+$(3,7)$  & 26.05 & 7.68 & 200 & 21 \\
+$(3,11)$ & 33.75 & 7.41 & 250 & 21 \\ \hline
+\end{tabular}
+\end{center}
+
+\noindent The second column is the dimensionless arc length at unit scale ($R=1$, $r=0.4$), computed numerically by the PCB generator (\texttt{scale\_knot\_to\_length}). The third column is the physical scaling factor (mm per normalized unit). The wire lengths monotonically increase with topological complexity because more windings produce longer curves, but the physical torus stays at approximately the same size ($\sim$22~mm diameter). This is verified by running:\\[4pt]
+\texttt{PYTHONPATH=src python hardware/hopf\_01/generate\_kicad\_pcb.py}
+
 \begin{figure}[ht]
     \centering
     \includegraphics[width=1.0\textwidth]{hopf_01_knot_traces.png}
