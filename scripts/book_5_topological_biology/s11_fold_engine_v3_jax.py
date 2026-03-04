@@ -838,17 +838,27 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     # Zero out H for Proline (no amide H)
     h_pos = jnp.where(pro_mask[:, None] > 0.5, atom_N, h_pos)
     
-    # --- Steric exclusion radii for O and H ---
-    R_O_CB = 3.1   # Å — O-Cβ exclusion (r_O + r_C = 1.4 + 1.7)
-    R_O_N  = 2.9   # Å — O-N exclusion (r_O + r_N = 1.4 + 1.5)
-    R_O_O  = 2.8   # Å — O-O exclusion (2 × r_O = 2 × 1.4)
-    R_H_C  = 2.7   # Å — H-C exclusion (r_H + r_C = 1.0 + 1.7)
-    R_H_CB = 2.7   # Å — H-Cβ exclusion (same)
-    R_H_O  = 2.4   # Å — H-O exclusion (r_H + r_O = 1.0 + 1.4)
+    # --- Steric exclusion radii ---
+    # The VdW sum (r_i + r_j) gives the LJ zero-crossing distance r_min,
+    # NOT the hard-sphere exclusion. Atoms CAN approach closer than r_min
+    # (e.g. helices: Cβ-C(i-1) = 3.20 Å < r_min = 3.4 Å).
+    #
+    # The correct hard-sphere exclusion is the LJ repulsive distance:
+    #   σ = r_min / 2^(1/6) ≈ 0.891 × r_min
+    #
+    # This is pure LJ geometry (Axiom 2 potential shape), not tuning.
+    SIGMA_FACTOR = 1.0 / (2.0 ** (1.0/6.0))  # ≈ 0.891
     
-    R_CB_N = 3.2   # Å — Cβ-N exclusion (r_C + r_N)
-    R_CB_C = 3.4   # Å — Cβ-C exclusion (2 × r_C)
-    R_CB_CB = 3.4  # Å — Cβ-Cβ exclusion
+    R_O_CB = (1.52 + 1.70) * SIGMA_FACTOR  # ≈ 2.87 Å — O-Cβ
+    R_O_N  = (1.52 + 1.55) * SIGMA_FACTOR  # ≈ 2.73 Å — O-N
+    R_O_O  = (1.52 + 1.52) * SIGMA_FACTOR  # ≈ 2.71 Å — O-O
+    R_H_C  = (1.20 + 1.70) * SIGMA_FACTOR  # ≈ 2.58 Å — H-C
+    R_H_CB = (1.20 + 1.70) * SIGMA_FACTOR  # ≈ 2.58 Å — H-Cβ
+    R_H_O  = (1.20 + 1.52) * SIGMA_FACTOR  # ≈ 2.42 Å — H-O
+    
+    R_CB_N = (1.70 + 1.55) * SIGMA_FACTOR  # ≈ 2.90 Å — Cβ-N
+    R_CB_C = (1.70 + 1.70) * SIGMA_FACTOR  # ≈ 3.03 Å — Cβ-C (helix at 3.20: ALLOWED)
+    R_CB_CB = (1.70 + 1.70) * SIGMA_FACTOR # ≈ 3.03 Å — Cβ-Cβ
     
     # LOCAL masks: |i-j| >= 1 for O/H/Cβ cross-terms (these create Rama basins)
     local_mask = jnp.abs(idx[:, None] - idx[None, :]) >= 1
