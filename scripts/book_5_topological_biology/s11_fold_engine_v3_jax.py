@@ -877,10 +877,155 @@ _s11_loss_jit = jit(_s11_loss, static_argnums=(5,))
 _s11_grad_jit = jit(grad(_s11_loss), static_argnums=(5,))
 
 
+# ═══════════════════════════════════════════════════════════════════════
+# NERF: Natural Extension Reference Frame (torsion → 3D coordinates)
+# ═══════════════════════════════════════════════════════════════════════
+# The backbone is a FIXED-LENGTH CONDUCTOR:
+#   Bond lengths: FIXED by covalent bonds (Axioms 1-2)
+#   Bond angles: FIXED by orbital hybridization
+#   Only torsion angles (φ, ψ) are free — these ARE the folding DOF
+#
+# This is the antenna length argument: a real TL has fixed conductor
+# length. The optimizer may only bend it, not shorten it.
+
+def _nerf_place_atom(A, B, C, bond_len, bond_angle, torsion):
+    """
+    Place atom D given three previous atoms A, B, C.
+    
+    D is placed at:
+      - distance `bond_len` from C
+      - angle `bond_angle` at C (B-C-D angle)
+      - torsion `torsion` around B-C axis (A-B-C-D dihedral)
+    
+    Uses vectorised rotation (no atan2 → fully differentiable).
+    """
+    # Bond vectors
+    bc = C - B
+    bc_n = bc / (jnp.linalg.norm(bc) + 1e-12)
+    
+    ab = B - A
+    # Normal to ABC plane
+    n = jnp.cross(ab, bc)
+    n = n / (jnp.linalg.norm(n) + 1e-12)
+    
+    # Build local frame at C: bc_n (along bond), n (normal), m (in-plane)
+    m = jnp.cross(n, bc_n)
+    
+    # New bond direction in local frame, then rotate by torsion
+    d_local = jnp.array([
+        -jnp.cos(bond_angle),                     # along -bc direction
+        jnp.sin(bond_angle) * jnp.cos(torsion),   # in-plane component
+        jnp.sin(bond_angle) * jnp.sin(torsion),   # out-of-plane component
+    ])
+    
+    # Transform to global frame
+    D = C + bond_len * (d_local[0] * bc_n + d_local[1] * m + d_local[2] * n)
+    return D
+
+
+def _torsions_to_backbone(phi, psi, N):
+    """
+    Convert torsion angles (φ, ψ) to full backbone coordinates.
+    Uses jax.lax.fori_loop for fast JIT compilation.
+    
+    Args:
+        phi: (N,) array of φ angles (rotation about N-Cα)
+        psi: (N,) array of ψ angles (rotation about Cα-C)
+        N: number of residues
+    
+    Returns:
+        coords_flat: (N*9,) flattened backbone coordinates
+    """
+    OMEGA = jnp.pi  # trans peptide bond (fixed)
+    
+    # Bond lengths (FIXED — from protein_bond_constants.py)
+    d_NCa = D_N_CA   # 1.46 Å
+    d_CaC = D_CA_C   # 1.52 Å
+    d_CN  = D_C_N    # 1.33 Å
+    
+    # Bond angles (FIXED — from protein_bond_constants.py)
+    a_NCaC = float(ANGLE_N_CA_C)   # 111.2°
+    a_CaCN = float(ANGLE_CA_C_N)   # 116.2°
+    a_CNCa = float(ANGLE_C_N_CA)   # 121.7°
+    
+    # Pre-allocate atom array: (3*N_max, 3)
+    # Use dynamic_slice for fori_loop compatibility
+    N_max = phi.shape[0]  # = N
+    atoms = jnp.zeros((3 * N_max, 3))
+    
+    # Seed first residue: N₀, Cα₀, C₀
+    N0 = jnp.array([0.0, 0.0, 0.0])
+    Ca0 = jnp.array([d_NCa, 0.0, 0.0])
+    C0 = Ca0 + d_CaC * jnp.array([
+        jnp.cos(jnp.pi - a_NCaC),
+        jnp.sin(jnp.pi - a_NCaC),
+        0.0
+    ])
+    atoms = atoms.at[0].set(N0)
+    atoms = atoms.at[1].set(Ca0)
+    atoms = atoms.at[2].set(C0)
+    
+    def body_fn(i, atoms):
+        # Previous 3 atoms
+        prev_N  = atoms[3*(i-1)]      # N_{i-1}
+        prev_Ca = atoms[3*(i-1) + 1]  # Cα_{i-1}
+        prev_C  = atoms[3*(i-1) + 2]  # C_{i-1}
+        
+        # N_i: ψ_{i-1} torsion
+        Ni = _nerf_place_atom(prev_N, prev_Ca, prev_C, d_CN, a_CaCN, psi[i-1])
+        # Cα_i: ω torsion (fixed at π)
+        Cai = _nerf_place_atom(prev_Ca, prev_C, Ni, d_NCa, a_CNCa, OMEGA)
+        # C_i: φ_i torsion
+        Ci = _nerf_place_atom(prev_C, Ni, Cai, d_CaC, a_NCaC, phi[i])
+        
+        atoms = atoms.at[3*i].set(Ni)
+        atoms = atoms.at[3*i + 1].set(Cai)
+        atoms = atoms.at[3*i + 2].set(Ci)
+        return atoms
+    
+    atoms = jax.lax.fori_loop(1, N_max, body_fn, atoms)
+    
+    # Reshape to (N, 3_atoms, 3_xyz)
+    backbone = atoms[:3*N_max].reshape(N_max, 3, 3)
+    
+    # Center on Cα centroid
+    ca_com = backbone[:, 1, :].mean(axis=0)
+    backbone = backbone - ca_com[None, None, :]
+    
+    return backbone.flatten()  # (N*9,)
+
+
+def _torsion_loss(angles, z_topo, cys_mask, arom_mask, gly_mask, N):
+    """
+    Loss function with torsion-angle parameterization.
+    
+    Args:
+        angles: (2N,) array — first N are φ, next N are ψ
+        (remaining args passed through to _s11_loss)
+    
+    Returns:
+        S₁₁ loss (scalar)
+    """
+    phi = angles[:N]
+    psi = angles[N:]
+    coords_flat = _torsions_to_backbone(phi, psi, N)
+    return _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N)
+
+
+_torsion_loss_jit = jit(_torsion_loss, static_argnums=(5,))
+_torsion_grad_jit = jit(grad(_torsion_loss), static_argnums=(5,))
+
+
 def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True):
     """
     Fold a protein by minimising multi-frequency S₁₁.
-    Full N-Cα-C backbone representation.
+    
+    TORSION-ANGLE PARAMETERIZATION:
+    Bond lengths and angles are FIXED by construction (like a real TL conductor).
+    Only torsion angles (φ, ψ) are optimized — the folding degrees of freedom.
+    
+    Total DOF: 2N (vs 3N×3 = 9N before)
+    Invariants: bond lengths, bond angles, ω = π
     """
     N = len(sequence)
     z_topo = compute_z_topo(sequence)
@@ -888,142 +1033,63 @@ def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True):
     arom_mask = compute_aromatic_mask(sequence)
     gly_mask = compute_gly_mask(sequence)
 
-    # --- Build ideal backbone from bond geometry ---
-    # Start with α-helical φ=-60°, ψ=-40°, ω=180°
+    # --- Initialize torsion angles ---
+    # Seed in α-helical region with small random perturbation
     np.random.seed(42)
-    
-    # Per-residue backbone atoms: N, Cα, C
-    backbone = np.zeros((N, 3, 3))  # (residues, 3 atoms, xyz)
-    
-    # First residue: place N at origin, Cα along x, C in xy-plane
-    backbone[0, 0] = [0.0, 0.0, 0.0]          # N
-    backbone[0, 1] = [D_N_CA, 0.0, 0.0]       # Cα
-    # C placed at proper angle from N-Cα
-    a_NCC = float(ANGLE_N_CA_C)
-    backbone[0, 2] = backbone[0, 1] + D_CA_C * np.array([
-        np.cos(np.pi - a_NCC), np.sin(np.pi - a_NCC), 0.0
-    ])
-    
-    # Build subsequent residues using ideal peptide geometry
-    for i in range(1, N):
-        # Previous C position
-        C_prev = backbone[i-1, 2]
-        Ca_prev = backbone[i-1, 1]
-        N_prev = backbone[i-1, 0]
-        
-        # Direction along C_prev → (from Ca_prev)
-        d_CaC = C_prev - Ca_prev
-        d_CaC = d_CaC / (np.linalg.norm(d_CaC) + 1e-10)
-        
-        # Perpendicular (roughly): use cross with up vector
-        up = np.array([0.0, 0.0, 1.0])
-        perp = np.cross(d_CaC, up)
-        if np.linalg.norm(perp) < 0.1:
-            up = np.array([0.0, 1.0, 0.0])
-            perp = np.cross(d_CaC, up)
-        perp = perp / (np.linalg.norm(perp) + 1e-10)
-        up2 = np.cross(perp, d_CaC)
-        
-        # Place N_i at proper distance from C_{i-1} (peptide bond = 1.33 Å)
-        a_CN = float(ANGLE_CA_C_N)
-        # φ rotation for helical seeding
-        phi_seed = -60.0 * np.pi / 180.0 + np.random.normal(0, 0.1)
-        
-        backbone[i, 0] = C_prev + D_C_N * (
-            d_CaC * np.cos(np.pi - a_CN) +
-            perp * np.sin(np.pi - a_CN) * np.cos(phi_seed) +
-            up2 * np.sin(np.pi - a_CN) * np.sin(phi_seed)
-        )
-        
-        # Place Cα_i at proper distance from N_i
-        d_CN = backbone[i, 0] - C_prev
-        d_CN = d_CN / (np.linalg.norm(d_CN) + 1e-10)
-        
-        perp2 = np.cross(d_CN, up2)
-        if np.linalg.norm(perp2) < 0.1:
-            perp2 = np.cross(d_CN, perp)
-        perp2 = perp2 / (np.linalg.norm(perp2) + 1e-10)
-        up3 = np.cross(perp2, d_CN)
-        
-        a_CNA = float(ANGLE_C_N_CA)
-        backbone[i, 1] = backbone[i, 0] + D_N_CA * (
-            d_CN * np.cos(np.pi - a_CNA) +
-            perp2 * np.sin(np.pi - a_CNA) * 0.9 +
-            up3 * np.sin(np.pi - a_CNA) * 0.4
-        )
-        
-        # Place C_i at proper distance from Cα_i
-        d_NCa = backbone[i, 1] - backbone[i, 0]
-        d_NCa = d_NCa / (np.linalg.norm(d_NCa) + 1e-10)
-        
-        perp3 = np.cross(d_NCa, up3)
-        if np.linalg.norm(perp3) < 0.1:
-            perp3 = np.cross(d_NCa, perp2)
-        perp3 = perp3 / (np.linalg.norm(perp3) + 1e-10)
-        up4 = np.cross(perp3, d_NCa)
-        
-        a_NCC2 = float(ANGLE_N_CA_C)
-        backbone[i, 2] = backbone[i, 1] + D_CA_C * (
-            d_NCa * np.cos(np.pi - a_NCC2) +
-            perp3 * np.sin(np.pi - a_NCC2) * 0.9 +
-            up4 * np.sin(np.pi - a_NCC2) * 0.4
-        )
-    
-    # Small random perturbation to break symmetry
-    backbone += np.random.normal(0, 0.05, size=backbone.shape)
-    coords_flat = jnp.array(backbone.flatten())  # (N*9,)
+    phi_init = np.full(N, -60.0 * np.pi / 180.0) + np.random.normal(0, 0.15, N)
+    psi_init = np.full(N, -40.0 * np.pi / 180.0) + np.random.normal(0, 0.15, N)
+    # φ₀ and ψ_{N-1} are unused (chain ends) but keep them for array simplicity
+    angles = jnp.concatenate([jnp.array(phi_init), jnp.array(psi_init)])  # (2N,)
 
     optimizer = optax.adam(lr)
-    opt_state = optimizer.init(coords_flat)
-
-    history = [np.array(backbone[:, 1, :])]  # Store Cα trajectory
+    opt_state = optimizer.init(angles)
     s11_trace = []
 
-    print(f"  S₁₁ JAX+Adam (lax): N={N}, steps={n_steps}", flush=True)
+    print(f"  S₁₁ torsion-angle (fixed TL length): N={N}, steps={n_steps}", flush=True)
 
     # JIT warmup
     t_jit = time.time()
-    _ = _s11_loss_jit(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N)
-    _ = _s11_grad_jit(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N)
+    _ = _torsion_loss_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, N)
+    _ = _torsion_grad_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, N)
     print(f"    JIT compiled in {time.time()-t_jit:.1f}s", flush=True)
 
     key = jax.random.PRNGKey(42)
+    history = []
 
     for step in range(n_steps):
-        loss = float(_s11_loss_jit(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N))
-        g = _s11_grad_jit(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N)
+        loss = float(_torsion_loss_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, N))
+        g = _torsion_grad_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, N)
+
+        # Replace NaN gradients with zero
+        g = jnp.where(jnp.isnan(g), 0.0, g)
 
         # Gradient clipping
         g_norm = jnp.sqrt(jnp.sum(g**2) + 1e-12)
         g = jnp.where(g_norm > 10.0, g * 10.0 / g_norm, g)
 
         updates, opt_state = optimizer.update(g, opt_state)
-        coords_flat = optax.apply_updates(coords_flat, updates)
+        angles = optax.apply_updates(angles, updates)
 
-        # Simulated annealing
+        # Simulated annealing in angle space
         if anneal and step < n_steps * 0.5:
             T = 0.02 * (1.0 - step / (n_steps * 0.5)) ** 2
             key, subkey = jax.random.split(key)
-            noise = jax.random.normal(subkey, shape=coords_flat.shape) * T
-            coords_flat = coords_flat + noise
-
-        # Re-center (shift all backbone atoms by Cα centroid)
-        bb_3d = coords_flat.reshape(N, 3, 3)
-        ca_mean = bb_3d[:, 1, :].mean(axis=0)  # Cα centroid
-        bb_3d = bb_3d - ca_mean[None, None, :]
-        coords_flat = bb_3d.flatten()
+            noise = jax.random.normal(subkey, shape=angles.shape) * T
+            angles = angles + noise
 
         s11_trace.append(loss)
 
         if step % 500 == 0:
             T_val = 0.02 * max(0, 1.0 - step / (n_steps * 0.5)) ** 2 if anneal else 0
             print(f"    step {step:5d}: loss = {loss:.6f}  T={T_val:.4f}", flush=True)
-            history.append(np.array(bb_3d[:, 1, :]))  # Store Cα
 
-    final_loss = float(_s11_loss_jit(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N))
+    final_loss = float(_torsion_loss_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, N))
     print(f"    final loss = {final_loss:.6f}", flush=True)
 
-    # Return Cα coordinates + full backbone for hierarchical continuation
+    # Build final coordinates from optimized torsion angles
+    phi_final = angles[:N]
+    psi_final = angles[N:]
+    coords_flat = _torsions_to_backbone(phi_final, psi_final, N)
     bb_final = np.array(coords_flat.reshape(N, 3, 3))
     ca_final = bb_final[:, 1, :]
     return ca_final, history, s11_trace, bb_final
