@@ -28,7 +28,10 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'mechanics'))
 
 # Import canonical Z_topo from the physics engine (single source of truth)
-from ave.solvers.protein_bond_constants import Z_TOPO as Z_TOPO_COMPLEX, Q_BACKBONE
+from ave.solvers.protein_bond_constants import (
+    Z_TOPO as Z_TOPO_COMPLEX, Q_BACKBONE,
+    BACKBONE_BONDS, BACKBONE_ANGLES,
+)
 
 # Real magnitudes for ABCD cascade (≈ R since X << R)
 Z_TOPO = {k: abs(v) for k, v in Z_TOPO_COMPLEX.items()}
@@ -65,21 +68,35 @@ ALPHA_PI = 24.0 / (jnp.pi * 3.8**2)  # ≈ 0.53
 # Boosts gradient signal for tertiary compaction
 D_TERTIARY = 2.0 * 3.8  # = 7.6 Å
 
-# --- Upgrade 7: Ramachandran Backbone Constraint ---
-# Pseudo-dihedral τ from 4 consecutive Cα atoms maps to backbone φ/ψ.
-# The allowed basins are geometric consequences of:
-#   - Peptide bond planarity (ω ≈ 180°) from C-N partial double bond (Axiom 2)
-#   - Steric exclusion (2×r_Slater) from Pauli repulsion (Axiom 2)
-#   - Bond angles from covalent orbital geometry (Axioms 1-2)
-# Basin centres in Cα pseudo-dihedral space:
-TAU_ALPHA = jnp.radians(50.0)    # α-helix basin (φ≈-60°, ψ≈-40°)
-TAU_BETA = jnp.radians(-170.0)   # β-sheet basin (φ≈-120°, ψ≈130°)
-# Basin width: σ = d₀ / r_Cα ≈ 3.8/1.7 ≈ 2.24 rad (generous to allow turns)
-SIGMA_RAMA = 3.8 / 1.7  # ≈ 2.24 rad, from backbone geometry ratio
-# Penalty weight: λ = 1/(2Q) — balances dihedral enforcement with S₁₁ compaction
-# Tested λ=1/Q: over-constrains backbone → delays compaction (21% helix, Rg=10.7Å)
-# λ=1/(2Q) gives better balance: 24% helix, Rg=9.7Å (matches experimental 9.8Å)
+# --- Upgrade 7: Full Backbone Ramachandran (N-Cα-C representation) ---
+# With 3 atoms per residue, we compute proper backbone dihedrals:
+#   φ = dihedral(C_{i-1}, N_i, Cα_i, C_i)
+#   ψ = dihedral(N_i, Cα_i, C_i, N_{i+1})
+#   ω = dihedral(Cα_i, C_i, N_{i+1}, Cα_{i+1}) ≈ 180° (trans peptide)
+# Basin centres from standard Ramachandran plot (Axioms 1-2 → bond geometry → steric exclusion):
+PHI_ALPHA = jnp.radians(-60.0)    # α-helix φ
+PSI_ALPHA = jnp.radians(-40.0)    # α-helix ψ
+PHI_BETA  = jnp.radians(-120.0)   # β-sheet φ
+PSI_BETA  = jnp.radians(130.0)    # β-sheet ψ
+OMEGA_TRANS = jnp.radians(180.0)  # trans peptide bond
+# Basin width: σ = 30° ≈ 0.52 rad (typical Ramachandran basin half-width)
+SIGMA_RAMA = jnp.radians(30.0)
+# ω penalty scale: peptide planarity is very strong (partial double bond)
+SIGMA_OMEGA = jnp.radians(10.0)   # ω is tightly constrained (±10°)
+# Penalty weights
 LAMBDA_RAMA = 1.0 / (2.0 * Q_BACKBONE)  # ≈ 0.071
+LAMBDA_OMEGA = 1.0 / Q_BACKBONE          # ≈ 0.143 (stronger: ω is nearly fixed)
+# Backbone bond lengths from protein_bond_constants.py
+D_N_CA = BACKBONE_BONDS['N-Ca']['length_A']   # 1.46 Å
+D_CA_C = BACKBONE_BONDS['Ca-C']['length_A']   # 1.52 Å
+D_C_N  = BACKBONE_BONDS['C-N']['length_A']    # 1.33 Å
+# Backbone bond angles
+ANGLE_N_CA_C = jnp.radians(BACKBONE_ANGLES['N-Ca-C'])   # 111.2°
+ANGLE_CA_C_N = jnp.radians(BACKBONE_ANGLES['Ca-C-N'])   # 116.2°
+ANGLE_C_N_CA = jnp.radians(BACKBONE_ANGLES['C-N-Ca'])   # 121.7°
+# Bond/angle penalty weights
+LAMBDA_BOND = 2.0     # bond length penalty weight
+LAMBDA_ANGLE = 0.5    # bond angle penalty weight
 
 # --- Upgrade 2: Debye Solvent Constants ---
 # Water Debye relaxation time: τ = 8.3 ps
@@ -163,18 +180,25 @@ def debye_z_water(omega_ratio):
 
 def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N, kappa=0.1):
     """
-    Differentiable multi-frequency S₁₁ loss with conjugate matching.
+    Differentiable multi-frequency S₁₁ loss with full N-Cα-C backbone.
     All physical constants derived from AVE axioms (zero empirical fits).
     
     Args:
-        coords_flat: (N*3,) flattened Cα coordinates
+        coords_flat: (N*9,) flattened backbone coordinates [N, Cα, C per residue]
         z_topo: (N,) complex impedance array
-        cys_mask: (N,) float mask — 1.0 at Cys positions, 0.0 elsewhere
+        cys_mask: (N,) float mask — 1.0 at Cys positions
         arom_mask: (N,) float mask — 1.0 at aromatic positions (W,H,Y,F)
         gly_mask: (N,) float mask — 1.0 at Gly positions (Ramachandran exempt)
         N: number of residues (static)
     """
-    coords = coords_flat.reshape(N, 3)
+    # Full backbone: (N, 3, 3) — atom_N, atom_Ca, atom_C per residue
+    bb = coords_flat.reshape(N, 3, 3)
+    atom_N  = bb[:, 0, :]  # (N, 3) — nitrogen positions
+    atom_Ca = bb[:, 1, :]  # (N, 3) — Cα positions
+    atom_C  = bb[:, 2, :]  # (N, 3) — carbonyl carbon positions
+    
+    # For compatibility with existing physics layers, use Cα as main coords
+    coords = atom_Ca  # (N, 3)
 
     # --- AXIOM-DERIVED CONSTANTS ---
     # Full derivation chain: Axioms 1-4 → physical observables → engine constants
@@ -426,55 +450,95 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N, kappa=0.1):
     upper = jnp.triu(violations, k=3)
     steric_penalty = 1.0 * jnp.sum(upper) / N
 
-    # --- Upgrade 7: Ramachandran Pseudo-Dihedral Penalty ---
-    # For 4 consecutive Cα atoms (i, i+1, i+2, i+3), compute the
-    # pseudo-torsion angle τ via the signed dihedral:
-    #   τ = atan2(n₁ × n₂ · b₂, n₁ · n₂)
-    # where n₁ = b₁ × b₂, n₂ = b₂ × b₃, b_k = r_{k+1} - r_k
-    #
-    # The penalty is a double-well potential:
-    #   V(τ) = λ · min((τ - τ_α)², (τ - τ_β)²) / σ²
-    # with basins at τ_α = 50° (α-helix) and τ_β = -170° (β-sheet)
+    # --- Upgrade 7: Full Backbone Geometry Penalties ---
+    # All target values from protein_bond_constants.py (Axioms 1-2)
+    
+    # Helper: compute dihedral angle from 4 points
+    def _dihedral(p0, p1, p2, p3):
+        """Signed dihedral angle (radians) for atoms p0-p1-p2-p3."""
+        b1 = p1 - p0
+        b2 = p2 - p1
+        b3 = p3 - p2
+        n1 = jnp.cross(b1, b2)
+        n2 = jnp.cross(b2, b3)
+        n1n = n1 / (jnp.sqrt(jnp.sum(n1**2)) + 1e-12)
+        n2n = n2 / (jnp.sqrt(jnp.sum(n2**2)) + 1e-12)
+        b2n = b2 / (jnp.sqrt(jnp.sum(b2**2)) + 1e-12)
+        cos_d = jnp.dot(n1n, n2n)
+        sin_d = jnp.dot(jnp.cross(n1n, n2n), b2n)
+        return jnp.arctan2(sin_d, cos_d)
+    
+    # Helper: compute bond angle from 3 points
+    def _angle(p0, p1, p2):
+        """Bond angle (radians) at p1 between p0-p1-p2."""
+        v1 = p0 - p1
+        v2 = p2 - p1
+        cos_a = jnp.dot(v1, v2) / (jnp.sqrt(jnp.sum(v1**2)) * jnp.sqrt(jnp.sum(v2**2)) + 1e-12)
+        return jnp.arccos(jnp.clip(cos_a, -1.0, 1.0))
+    
+    # (a) Intra-residue bond lengths: N-Cα (1.46Å), Cα-C (1.52Å)
+    bb_bond_penalty = 0.0
+    for i in range(N):
+        d_NCa = jnp.sqrt(jnp.sum((atom_Ca[i] - atom_N[i])**2) + 1e-12)
+        d_CaC = jnp.sqrt(jnp.sum((atom_C[i] - atom_Ca[i])**2) + 1e-12)
+        bb_bond_penalty = bb_bond_penalty + (d_NCa - D_N_CA)**2 + (d_CaC - D_CA_C)**2
+    
+    # Inter-residue peptide bond: C_i — N_{i+1} (1.33Å)
+    for i in range(N - 1):
+        d_CN = jnp.sqrt(jnp.sum((atom_N[i+1] - atom_C[i])**2) + 1e-12)
+        bb_bond_penalty = bb_bond_penalty + (d_CN - D_C_N)**2
+    
+    bb_bond_penalty = LAMBDA_BOND * bb_bond_penalty / N
+    
+    # (b) Bond angles: N-Cα-C (111.2°), Cα-C-N (116.2°), C-N-Cα (121.7°)
+    bb_angle_penalty = 0.0
+    # Intra-residue: N-Cα-C
+    for i in range(N):
+        theta = _angle(atom_N[i], atom_Ca[i], atom_C[i])
+        bb_angle_penalty = bb_angle_penalty + (theta - ANGLE_N_CA_C)**2
+    # Inter-residue: Cα_i-C_i-N_{i+1} and C_i-N_{i+1}-Cα_{i+1}
+    for i in range(N - 1):
+        theta1 = _angle(atom_Ca[i], atom_C[i], atom_N[i+1])
+        theta2 = _angle(atom_C[i], atom_N[i+1], atom_Ca[i+1])
+        bb_angle_penalty = bb_angle_penalty + (theta1 - ANGLE_CA_C_N)**2 + (theta2 - ANGLE_C_N_CA)**2
+    
+    bb_angle_penalty = LAMBDA_ANGLE * bb_angle_penalty / N
+    
+    # (c) ω: peptide bond planarity — Cα_i-C_i-N_{i+1}-Cα_{i+1} ≈ 180° (trans)
+    omega_penalty = 0.0
+    for i in range(N - 1):
+        omega = _dihedral(atom_Ca[i], atom_C[i], atom_N[i+1], atom_Ca[i+1])
+        d_omega = omega - OMEGA_TRANS
+        d_omega = jnp.arctan2(jnp.sin(d_omega), jnp.cos(d_omega))  # wrap
+        omega_penalty = omega_penalty + d_omega**2 / SIGMA_OMEGA**2
+    omega_penalty = LAMBDA_OMEGA * omega_penalty / jnp.maximum(N - 1, 1)
+    
+    # (d) φ/ψ Ramachandran: proper backbone dihedrals
+    #   φ_i = dihedral(C_{i-1}, N_i, Cα_i, C_i)
+    #   ψ_i = dihedral(N_i, Cα_i, C_i, N_{i+1})
     rama_penalty = 0.0
-    if N >= 4:
-        for i in range(N - 3):
-            b1 = coords[i+1] - coords[i]
-            b2 = coords[i+2] - coords[i+1]
-            b3 = coords[i+3] - coords[i+2]
-            
-            # Normal vectors to the two planes
-            n1 = jnp.cross(b1, b2)
-            n2 = jnp.cross(b2, b3)
-            
-            # Normalise (with safe epsilon)
-            n1_norm = n1 / (jnp.sqrt(jnp.sum(n1**2)) + 1e-12)
-            n2_norm = n2 / (jnp.sqrt(jnp.sum(n2**2)) + 1e-12)
-            b2_norm = b2 / (jnp.sqrt(jnp.sum(b2**2)) + 1e-12)
-            
-            # Signed dihedral angle
-            cos_tau = jnp.dot(n1_norm, n2_norm)
-            sin_tau = jnp.dot(jnp.cross(n1_norm, n2_norm), b2_norm)
-            tau = jnp.arctan2(sin_tau, cos_tau)
-            
-            # Double-well: distance to nearest allowed basin
-            # Use angular difference (handles periodicity)
-            d_alpha = tau - TAU_ALPHA
-            d_beta = tau - TAU_BETA
-            # Wrap to [-π, π]
-            d_alpha = jnp.arctan2(jnp.sin(d_alpha), jnp.cos(d_alpha))
-            d_beta = jnp.arctan2(jnp.sin(d_beta), jnp.cos(d_beta))
-            
-            min_dist_sq = jnp.minimum(d_alpha**2, d_beta**2)
-            
-            # Glycine exemption: Gly has no sidechain steric constraint
-            # Use gly_mask at position i+1 (the central residue of the dihedral)
-            gly_exempt = gly_mask[i+1]
-            
-            rama_penalty = rama_penalty + (1.0 - gly_exempt) * min_dist_sq / SIGMA_RAMA**2
-        
-        rama_penalty = LAMBDA_RAMA * rama_penalty / (N - 3)
+    n_rama = 0
+    # φ: defined for residues 1..N-1 (needs C_{i-1})
+    for i in range(1, N):
+        phi = _dihedral(atom_C[i-1], atom_N[i], atom_Ca[i], atom_C[i])
+        d_alpha = jnp.arctan2(jnp.sin(phi - PHI_ALPHA), jnp.cos(phi - PHI_ALPHA))
+        d_beta  = jnp.arctan2(jnp.sin(phi - PHI_BETA),  jnp.cos(phi - PHI_BETA))
+        min_phi = jnp.minimum(d_alpha**2, d_beta**2) / SIGMA_RAMA**2
+        rama_penalty = rama_penalty + (1.0 - gly_mask[i]) * min_phi
+        n_rama = n_rama + 1
+    # ψ: defined for residues 0..N-2 (needs N_{i+1})
+    for i in range(N - 1):
+        psi = _dihedral(atom_N[i], atom_Ca[i], atom_C[i], atom_N[i+1])
+        d_alpha = jnp.arctan2(jnp.sin(psi - PSI_ALPHA), jnp.cos(psi - PSI_ALPHA))
+        d_beta  = jnp.arctan2(jnp.sin(psi - PSI_BETA),  jnp.cos(psi - PSI_BETA))
+        min_psi = jnp.minimum(d_alpha**2, d_beta**2) / SIGMA_RAMA**2
+        rama_penalty = rama_penalty + (1.0 - gly_mask[i]) * min_psi
+        n_rama = n_rama + 1
+    
+    rama_penalty = LAMBDA_RAMA * rama_penalty / jnp.maximum(n_rama, 1)
 
-    return s11_avg + bond_penalty + steric_penalty + port_loss + rama_penalty
+    return (s11_avg + bond_penalty + steric_penalty + port_loss
+            + bb_bond_penalty + bb_angle_penalty + omega_penalty + rama_penalty)
 
 
 # JIT compile — N is now dynamic (not static_argnums)
@@ -486,7 +550,7 @@ _s11_grad_jit = jit(grad(_s11_loss), static_argnums=(5,))
 def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True):
     """
     Fold a protein by minimising multi-frequency S₁₁.
-    Adam + multi-freq + simulated annealing.
+    Full N-Cα-C backbone representation.
     """
     N = len(sequence)
     z_topo = compute_z_topo(sequence)
@@ -494,36 +558,95 @@ def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True):
     arom_mask = compute_aromatic_mask(sequence)
     gly_mask = compute_gly_mask(sequence)
 
-    # Z-dependent initialisation
+    # --- Build ideal backbone from bond geometry ---
+    # Start with α-helical φ=-60°, ψ=-40°, ω=180°
     np.random.seed(42)
-    d0 = 3.8
-    coords = np.zeros((N, 3))
-    direction = np.array([1.0, 0.0, 0.0])
-    up = np.array([0.0, 0.0, 1.0])
-
+    
+    # Per-residue backbone atoms: N, Cα, C
+    backbone = np.zeros((N, 3, 3))  # (residues, 3 atoms, xyz)
+    
+    # First residue: place N at origin, Cα along x, C in xy-plane
+    backbone[0, 0] = [0.0, 0.0, 0.0]          # N
+    backbone[0, 1] = [D_N_CA, 0.0, 0.0]       # Cα
+    # C placed at proper angle from N-Cα
+    a_NCC = float(ANGLE_N_CA_C)
+    backbone[0, 2] = backbone[0, 1] + D_CA_C * np.array([
+        np.cos(np.pi - a_NCC), np.sin(np.pi - a_NCC), 0.0
+    ])
+    
+    # Build subsequent residues using ideal peptide geometry
     for i in range(1, N):
-        z = float(jnp.abs(z_topo[i]))
-        if z <= 1.0:
-            angle = np.radians(100)
-            cos_a, sin_a = np.cos(angle), np.sin(angle)
-            d_rot = direction * cos_a + np.cross(up, direction) * sin_a
-            d_rot += up * np.dot(up, direction) * (1 - cos_a)
-            step = d_rot * 0.92 + up * 0.39
-            step = step / (np.linalg.norm(step) + 1e-10) * d0
-            direction = d_rot / (np.linalg.norm(d_rot) + 1e-10)
-        else:
-            zigzag = up * ((-1)**i) * 0.15
-            step = (direction + zigzag)
-            step = step / (np.linalg.norm(step) + 1e-10) * d0
-        coords[i] = coords[i-1] + step
-
-    coords += np.random.normal(0, 0.15, size=coords.shape)
-    coords_flat = jnp.array(coords.flatten())
+        # Previous C position
+        C_prev = backbone[i-1, 2]
+        Ca_prev = backbone[i-1, 1]
+        N_prev = backbone[i-1, 0]
+        
+        # Direction along C_prev → (from Ca_prev)
+        d_CaC = C_prev - Ca_prev
+        d_CaC = d_CaC / (np.linalg.norm(d_CaC) + 1e-10)
+        
+        # Perpendicular (roughly): use cross with up vector
+        up = np.array([0.0, 0.0, 1.0])
+        perp = np.cross(d_CaC, up)
+        if np.linalg.norm(perp) < 0.1:
+            up = np.array([0.0, 1.0, 0.0])
+            perp = np.cross(d_CaC, up)
+        perp = perp / (np.linalg.norm(perp) + 1e-10)
+        up2 = np.cross(perp, d_CaC)
+        
+        # Place N_i at proper distance from C_{i-1} (peptide bond = 1.33 Å)
+        a_CN = float(ANGLE_CA_C_N)
+        # φ rotation for helical seeding
+        phi_seed = -60.0 * np.pi / 180.0 + np.random.normal(0, 0.1)
+        
+        backbone[i, 0] = C_prev + D_C_N * (
+            d_CaC * np.cos(np.pi - a_CN) +
+            perp * np.sin(np.pi - a_CN) * np.cos(phi_seed) +
+            up2 * np.sin(np.pi - a_CN) * np.sin(phi_seed)
+        )
+        
+        # Place Cα_i at proper distance from N_i
+        d_CN = backbone[i, 0] - C_prev
+        d_CN = d_CN / (np.linalg.norm(d_CN) + 1e-10)
+        
+        perp2 = np.cross(d_CN, up2)
+        if np.linalg.norm(perp2) < 0.1:
+            perp2 = np.cross(d_CN, perp)
+        perp2 = perp2 / (np.linalg.norm(perp2) + 1e-10)
+        up3 = np.cross(perp2, d_CN)
+        
+        a_CNA = float(ANGLE_C_N_CA)
+        backbone[i, 1] = backbone[i, 0] + D_N_CA * (
+            d_CN * np.cos(np.pi - a_CNA) +
+            perp2 * np.sin(np.pi - a_CNA) * 0.9 +
+            up3 * np.sin(np.pi - a_CNA) * 0.4
+        )
+        
+        # Place C_i at proper distance from Cα_i
+        d_NCa = backbone[i, 1] - backbone[i, 0]
+        d_NCa = d_NCa / (np.linalg.norm(d_NCa) + 1e-10)
+        
+        perp3 = np.cross(d_NCa, up3)
+        if np.linalg.norm(perp3) < 0.1:
+            perp3 = np.cross(d_NCa, perp2)
+        perp3 = perp3 / (np.linalg.norm(perp3) + 1e-10)
+        up4 = np.cross(perp3, d_NCa)
+        
+        a_NCC2 = float(ANGLE_N_CA_C)
+        backbone[i, 2] = backbone[i, 1] + D_CA_C * (
+            d_NCa * np.cos(np.pi - a_NCC2) +
+            perp3 * np.sin(np.pi - a_NCC2) * 0.9 +
+            up4 * np.sin(np.pi - a_NCC2) * 0.4
+        )
+    
+    # Small random perturbation to break symmetry
+    backbone += np.random.normal(0, 0.05, size=backbone.shape)
+    coords_flat = jnp.array(backbone.flatten())  # (N*9,)
 
     optimizer = optax.adam(lr)
     opt_state = optimizer.init(coords_flat)
 
-    history = [np.array(coords_flat.reshape(N, 3))]
+    history = [np.array(backbone[:, 1, :])]  # Store Cα trajectory
     s11_trace = []
 
     print(f"  S₁₁ JAX+Adam (lax): N={N}, steps={n_steps}", flush=True)
@@ -554,22 +677,26 @@ def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True):
             noise = jax.random.normal(subkey, shape=coords_flat.shape) * T
             coords_flat = coords_flat + noise
 
-        # Re-center
-        coords_3d = coords_flat.reshape(N, 3)
-        coords_3d = coords_3d - coords_3d.mean(axis=0)
-        coords_flat = coords_3d.flatten()
+        # Re-center (shift all backbone atoms by Cα centroid)
+        bb_3d = coords_flat.reshape(N, 3, 3)
+        ca_mean = bb_3d[:, 1, :].mean(axis=0)  # Cα centroid
+        bb_3d = bb_3d - ca_mean[None, None, :]
+        coords_flat = bb_3d.flatten()
 
         s11_trace.append(loss)
 
         if step % 500 == 0:
             T_val = 0.02 * max(0, 1.0 - step / (n_steps * 0.5)) ** 2 if anneal else 0
             print(f"    step {step:5d}: loss = {loss:.6f}  T={T_val:.4f}", flush=True)
-            history.append(np.array(coords_3d))
+            history.append(np.array(bb_3d[:, 1, :]))  # Store Cα
 
     final_loss = float(_s11_loss_jit(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N))
     print(f"    final loss = {final_loss:.6f}", flush=True)
 
-    return np.array(coords_flat.reshape(N, 3)), history, s11_trace
+    # Return Cα coordinates + full backbone for hierarchical continuation
+    bb_final = np.array(coords_flat.reshape(N, 3, 3))
+    ca_final = bb_final[:, 1, :]
+    return ca_final, history, s11_trace, bb_final
 
 
 def fold_hierarchical(sequence, n_steps=5000, lr=1e-3):
@@ -592,23 +719,24 @@ def fold_hierarchical(sequence, n_steps=5000, lr=1e-3):
     
     if N <= 20:
         # Short proteins: single stage suffices
-        return fold_s11_jax(sequence, n_steps=n_steps, lr=lr, anneal=True)
+        ca, hist, trace, bb = fold_s11_jax(sequence, n_steps=n_steps, lr=lr, anneal=True)
+        return ca, hist, trace
     
     # Stage 1: Secondary structure (60% of steps, stronger anneal)
     print(f"  === Stage 1: Secondary structure ({int(n_steps * 0.6)} steps) ===")
-    coords, hist1, trace1 = fold_s11_jax(
+    coords, hist1, trace1, bb_stage1 = fold_s11_jax(
         sequence, n_steps=int(n_steps * 0.6), lr=lr, anneal=True
     )
     
     # Stage 2: Tertiary packing (40% of steps, lower lr, no anneal)
     print(f"  === Stage 2: Tertiary packing ({int(n_steps * 0.4)} steps) ===")
-    # Restart optimizer from Stage 1 final coords
+    # Restart optimizer from Stage 1 final backbone (full N-Cα-C)
     N = len(sequence)
     z_topo = compute_z_topo(sequence)
     cys_mask = compute_cys_mask(sequence)
     arom_mask = compute_aromatic_mask(sequence)
     gly_mask = compute_gly_mask(sequence)
-    coords_flat = jnp.array(coords.flatten())
+    coords_flat = jnp.array(bb_stage1.flatten())  # Full backbone
     
     optimizer = optax.adam(lr * 0.3)  # Lower lr for fine-tuning
     opt_state = optimizer.init(coords_flat)
@@ -625,19 +753,20 @@ def fold_hierarchical(sequence, n_steps=5000, lr=1e-3):
         updates, opt_state = optimizer.update(g, opt_state)
         coords_flat = optax.apply_updates(coords_flat, updates)
         
-        coords_3d = coords_flat.reshape(N, 3)
-        coords_3d = coords_3d - coords_3d.mean(axis=0)
-        coords_flat = coords_3d.flatten()
+        bb_3d = coords_flat.reshape(N, 3, 3)
+        ca_mean = bb_3d[:, 1, :].mean(axis=0)
+        bb_3d = bb_3d - ca_mean[None, None, :]
+        coords_flat = bb_3d.flatten()
         
         trace1.append(loss)
         if step % 500 == 0:
             print(f"    step {step:5d}: loss = {loss:.6f}  (packing)", flush=True)
-            hist1.append(np.array(coords_3d))
+            hist1.append(np.array(bb_3d[:, 1, :]))
     
     final_loss = float(_s11_loss_jit(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N))
     print(f"    Stage 2 final loss = {final_loss:.6f}", flush=True)
     
-    return np.array(coords_flat.reshape(N, 3)), hist1, trace1
+    return np.array(coords_flat.reshape(N, 3, 3)[:, 1, :]), hist1, trace1
 
 # =====================================================================
 if __name__ == '__main__':
@@ -650,7 +779,7 @@ if __name__ == '__main__':
     for name, seq in test_seqs:
         print(f"\n--- {name} ---", flush=True)
         t0 = time.time()
-        coords, history, trace = fold_s11_jax(seq, n_steps=5000, lr=1e-3)
+        coords, history, trace, _ = fold_s11_jax(seq, n_steps=5000, lr=1e-3)
         dt = time.time() - t0
         print(f"  Time: {dt:.1f}s", flush=True)
         print(f"  Loss: {trace[0]:.4f} → {trace[-1]:.4f}", flush=True)
