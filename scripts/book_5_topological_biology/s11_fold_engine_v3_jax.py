@@ -748,12 +748,18 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N, kappa=0.1):
     n_rama = jnp.maximum(N, 1)
     rama_penalty = LAMBDA_RAMA * (coupled_penalty + edge_psi0 + edge_phiN) / n_rama
     # ═══════════════════════════════════════════════════════════════════
-    # PURE S₁₁ RETEST — all 3 roadmap items now implemented:
-    #   1. ✓ Non-periodic phase: strain loss α = |d-d₀|/d₀ (complex γ)
-    #   2. ✓ Full backbone ABCD: 3N-1 per-bond segments
-    #   3. ✓ Port coupling bounded: max(0, port_loss) below
+    # LOSS FUNCTION — partially emerged, scaffolding still needed
     # ═══════════════════════════════════════════════════════════════════
-    return s11_avg + steric_penalty + jnp.maximum(0.0, port_loss)
+    # Pure S₁₁ retest (commit 9fc8f9c) with 3N-1 backbone + strain loss:
+    #   C-N bonds: EMERGED at 1.38±0.10 Å (target 1.33, 4% off) ✓
+    #   N-Cα, Cα-C: still need scaffolding (2.3 Å vs ~1.5 target)
+    #   α-helix: 3% (vs 0% before, partial emergence)
+    #   Loss: stays positive (port clamp works) ✓
+    #
+    # Remaining scaffolding for N-Cα/Cα-C bonds and angles.
+    # All weights trace to Z₀, r_Ca, d₀ (Axioms 1-2).
+    return (s11_avg + bond_penalty + steric_penalty + jnp.maximum(0.0, port_loss)
+            + bb_bond_penalty + bb_angle_penalty + omega_penalty + rama_penalty)
 
 
 # JIT compile — N is now dynamic (not static_argnums)
