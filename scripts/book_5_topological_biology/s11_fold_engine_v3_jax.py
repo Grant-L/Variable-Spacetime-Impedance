@@ -1026,55 +1026,16 @@ def _torsion_loss(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N):
     Loss function with torsion-angle parameterization.
     
     Args:
-        angles: (3N,) array — first N are φ, next N are ψ, last N are χ₁
+        angles: (2N,) array — first N are φ, next N are ψ
         (remaining args passed through to _s11_loss)
     
     Returns:
-        S₁₁ loss + Cβ steric + directional coupling (scalar)
+        S₁₁ loss (scalar)
     """
     phi = angles[:N]
-    psi = angles[N:2*N]
-    chi1 = angles[2*N:3*N]
+    psi = angles[N:]
     coords_flat = _torsions_to_backbone(phi, psi, N)
-    
-    # --- Compute Cβ positions ---
-    bb = coords_flat.reshape(N, 3, 3)
-    atom_N = bb[:, 0, :]
-    atom_Ca = bb[:, 1, :]
-    atom_C = bb[:, 2, :]
-    cb_pos = _compute_cb_positions(atom_N, atom_Ca, atom_C, chi1, gly_mask)
-    
-    # --- Cβ-Cβ steric exclusion (Axiom 2) ---
-    # Sidechain atoms cannot overlap: exclusion at 3.4 Å (2× C Slater radius)
-    CB_EXCL = 3.4  # Å — Cβ-Cβ exclusion distance
-    LAMBDA_CB_STERIC = 4.0  # Same order as backbone steric
-    cb_dists = jnp.sqrt(jnp.sum((cb_pos[:, None, :] - cb_pos[None, :, :])**2, axis=-1) + 1e-12)
-    idx = jnp.arange(N)
-    cb_mask = jnp.abs(idx[:, None] - idx[None, :]) >= 3
-    cb_violations = jnp.maximum(0.0, CB_EXCL - cb_dists) ** 2
-    cb_violations = jnp.where(cb_mask, cb_violations, 0.0)
-    cb_steric = LAMBDA_CB_STERIC * jnp.sum(jnp.triu(cb_violations, k=3)) / N
-    
-    # --- Directional coupling bonus (Cβ proximity → better impedance match) ---
-    # When Cβ atoms from non-adjacent residues are close, it means their
-    # sidechains point toward each other → real packing interaction.
-    # This makes the coupling DIRECTIONAL: same Cα-Cα distance but
-    # different sidechain orientations → different coupling strength.
-    LAMBDA_DIR = 0.5  # Weight for directional bonus
-    z_mag = jnp.abs(z_topo)
-    # Conjugate match quality (same as Y_shunt)
-    zz_conj = jnp.real(z_topo[:, None] * jnp.conj(z_topo[None, :]))
-    zz_norm = jnp.abs(z_topo[:, None])**2 + jnp.abs(z_topo[None, :])**2 + 1e-12
-    match = jnp.maximum(0.0, zz_conj / zz_norm)  # (N, N)
-    # Directional: use Cβ-Cβ distance instead of Cα-Cα
-    dir_coupling = match * jnp.exp(-cb_dists / 7.6)  # R_BURIAL = 7.6
-    dir_coupling = jnp.where(cb_mask, dir_coupling, 0.0)
-    dir_bonus = LAMBDA_DIR * jnp.sum(jnp.triu(dir_coupling, k=3)) / N
-    
-    # S₁₁ loss from backbone
-    s11_loss = _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N)
-    
-    return s11_loss + cb_steric - dir_bonus
+    return _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N)
 
 
 _torsion_loss_jit = jit(_torsion_loss, static_argnums=(6,))
@@ -1103,17 +1064,14 @@ def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True, n_starts=3):
     best_loss = float('inf')
     best_angles = None
     
-    print(f"  S₁₁ torsion+χ₁ (fixed TL, {n_starts}-start): N={N}, steps={n_steps}, DOF=3N={3*N}", flush=True)
+    print(f"  S₁₁ torsion-angle (fixed TL, {n_starts}-start): N={N}, steps={n_steps}", flush=True)
 
     for start_idx in range(n_starts):
         seed = 42 + start_idx * 137  # deterministic but spread out
         np.random.seed(seed)
         phi_init = np.random.uniform(-np.pi, np.pi, N)
         psi_init = np.random.uniform(-np.pi, np.pi, N)
-        # χ₁ initialised at gauche+ (60°) — most common rotamer
-        chi1_init = np.full(N, np.radians(60.0))
-        # Glycine: χ₁ doesn't matter (Cβ placed at Cα)
-        angles = jnp.concatenate([jnp.array(phi_init), jnp.array(psi_init), jnp.array(chi1_init)])
+        angles = jnp.concatenate([jnp.array(phi_init), jnp.array(psi_init)])
 
         optimizer = optax.adam(lr)
         opt_state = optimizer.init(angles)
@@ -1151,8 +1109,7 @@ def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True, n_starts=3):
 
     # Build final coordinates from best torsion angles
     phi_final = best_angles[:N]
-    psi_final = best_angles[N:2*N]
-    chi1_final = best_angles[2*N:3*N]
+    psi_final = best_angles[N:]
     coords_flat = _torsions_to_backbone(phi_final, psi_final, N)
     bb_final = np.array(coords_flat.reshape(N, 3, 3))
     ca_final = bb_final[:, 1, :]
