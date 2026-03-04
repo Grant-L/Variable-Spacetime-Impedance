@@ -395,6 +395,22 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, N, kappa=0.1):
     exposure = jnp.clip(1.0 - n_neighbors_smooth / n_max, 0.0, 1.0)
     # Solvent coupling added per-frequency in the S₁₁ sweep (see below)
 
+    # --- Core Packing Saturation (Inner Galaxy Analog) ---
+    # SAME Axiom 4 physics as galactic rotation (Book 7, Ch.2):
+    #   Inner galaxy: high shear γ̇ > γ̇_yield → η_eff → 0 → Keplerian
+    #   Inner protein: high packing n > n_max → Y_shunt → 0 → decoupled
+    #
+    # When a residue is densely packed (many neighbors within R_BURIAL),
+    # its mutual inductance saturates — it cannot support additional
+    # inductive coupling. This prevents over-compaction:
+    #   Y_eff(i) = Y_shunt(i) × √(1 − (n_i/n_max)²)
+    #
+    # Without this: densely packed cores attract MORE (1/d² at short range)
+    # With this: densely packed cores SATURATE (Keplerian), structure relaxes
+    packing_ratio = jnp.clip(n_neighbors_smooth / n_max, 0.0, 0.999)
+    packing_saturation = jnp.sqrt(1.0 - packing_ratio**2)  # Axiom 4
+    Y_shunt = Y_shunt * packing_saturation
+
     # Backbone segment impedances and distances
     Zc_arr = 0.5 * (z_mag[:-1] + z_mag[1:])   # (N-1,) real magnitudes
     d_phys_arr = jnp.array([dists[i, i+1] for i in range(N-1)])  # (N-1,)
