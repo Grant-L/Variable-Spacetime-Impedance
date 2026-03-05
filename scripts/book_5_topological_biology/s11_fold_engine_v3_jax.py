@@ -385,6 +385,42 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     Y_hbond = hb_coupling.sum(axis=1)  # (N,)
     Y_shunt = Y_shunt + Y_hbond
 
+    # --- Adjacent Peptide-Plane Coupling (Axiom 1: local mutual inductance) ---
+    # Each peptide unit has a plane (Cα_i, C_i, N_{i+1}) with dipole C=O···H-N.
+    # Adjacent peptide planes are coupled LC oscillators (Axiom 1).
+    # Their mutual inductance depends on relative orientation:
+    #   M_ij = κ_HB × cos(n̂_i · n̂_{i+1})
+    # where n̂_i is the peptide plane normal.
+    #
+    # This is the SAME κ_HB = 1/(2Q) used for long-range H-bonds,
+    # applied to |i-j|=1 (previously excluded by the nc_mask).
+    #
+    # Physical effect:
+    #   α-helix: adjacent planes ≈ parallel → cos ≈ +0.8 → strong coupling
+    #   β-sheet: adjacent planes alternate → cos ≈ −0.6 → weak coupling
+    #   random: cos varies → avg ≈ 0 → no net coupling
+    
+    # Peptide plane normals: n̂_i = (Cα_i→C_i) × (C_i→N_{i+1})
+    v_CaC = atom_C - atom_Ca          # (N, 3) — Cα→C within each residue
+    v_CN_next = atom_N[1:] - atom_C[:-1]  # (N-1, 3) — C_i→N_{i+1}
+    plane_normals_raw = jnp.cross(v_CaC[:-1], v_CN_next)  # (N-1, 3)
+    plane_norm_mag = jnp.sqrt(jnp.sum(plane_normals_raw**2, axis=-1, keepdims=True)) + 1e-12
+    plane_hat = plane_normals_raw / plane_norm_mag  # (N-1, 3) normalised
+    
+    # Dot product of adjacent plane normals
+    cos_plane_align = jnp.sum(plane_hat[:-1] * plane_hat[1:], axis=-1)  # (N-2,)
+    
+    # Local mutual inductance: κ_HB × cos(alignment)
+    # Positive cos (parallel planes) → increases Y_shunt → LOWERS S₁₁
+    # This naturally favours helical conformations.
+    # Weight: LAMBDA_RAMA × KAPPA_HB (same scale as H-bond coupling)
+    peptide_coupling = LAMBDA_RAMA * KAPPA_HB * cos_plane_align  # (N-2,)
+    
+    # Add to Y_shunt at positions i+1 (the Cα between the two coupled planes)
+    # Pad to (N,) — first and last residues have no adjacent coupling
+    Y_peptide = jnp.concatenate([jnp.zeros(1), peptide_coupling, jnp.zeros(1)])  # (N,)
+    Y_shunt = Y_shunt + Y_peptide
+
     # --- Upgrade 6: Enhanced Axiom 4 Close-Range Coupling ---
     # Second saturation layer for inter-helix contacts (d < 2d₀)
     # Strengthens tertiary compaction gradient
