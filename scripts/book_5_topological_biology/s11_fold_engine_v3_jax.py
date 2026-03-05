@@ -401,6 +401,10 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     
     Y_hbond = hb_coupling.sum(axis=1)  # (N,)
     Y_shunt = Y_shunt + Y_hbond
+    # NOTE: Tested Cβ-Cβ sidechain stub coupling in Y_shunt.
+    # SS dropped 24%→9% (RMSD improved 7.61→7.03). Extra Y_shunt
+    # over-damps ABCD cascade resonances. Cβ enters correctly
+    # via steric exclusion (line 866), not via coupling.
 
     # --- Adjacent Peptide-Plane Coupling (Axiom 1: local mutual inductance) ---
     # Each peptide unit has a plane (Cα_i, C_i, N_{i+1}) with dipole C=O···H-N.
