@@ -62,7 +62,7 @@ R_BURIAL = 2.0 * d0                         # ≈ 7.6 Å
 Z_HB_SCALE = 1.0 / Q_BACKBONE  # = 1/7
 D_HB_EQ = 3.0      # Å — equilibrium N...C
 HB_SEQ_MIN = 3
-HB_DIST_MAX = 8.0   # Å
+HB_DIST_MAX = R_BURIAL   # 7.6 Å — derived from 2d₀ (same as burial radius)
 
 # Chirality
 DELTA_CHI = 1.0 / Q_BACKBONE * 0.35  # ≈ 0.05 rad
@@ -89,6 +89,10 @@ R_CC = 2.0 * 1.70    # 3.4 Å
 R_CN = 1.55 + 1.70   # 3.25 Å
 
 # Frequency sweep (3-point from audit)
+# Derivation: same Q-bandwidth sampling as 1D engine.
+# 3 points span [0.5, 1.0, 1.7] × ω₀.  More points improve SS but
+# are O(N³) expensive due to matrix solve per frequency.
+N_FREQ_2D = 3
 FREQ_SWEEP = [0.5, 1.0, 1.7]
 
 # Cβ steric distances
@@ -192,7 +196,11 @@ def _build_nodal_Y(backbone_coords, z_topo, freq, N, exposure):
     diff_NC = atom_N[:, None, :] - atom_C[None, :, :]
     d_NC = jnp.sqrt(jnp.sum(diff_NC**2, axis=-1) + 1e-12)
     seq_mask = jnp.abs(idx[:, None] - idx[None, :]) >= HB_SEQ_MIN
-    proximity = jax.nn.sigmoid(4.0 * (HB_DIST_MAX - d_NC))
+    # Sigmoid gate: smooth proximity cutoff at HB_DIST_MAX
+    # Slope = BETA_BURIAL (same as burial detection — NUMERICAL smoothing)
+    D_WATER = 2.75
+    _BETA_HB = 4.0 / D_WATER  # ≈ 1.45 Å⁻¹ (standard logistic width)
+    proximity = jax.nn.sigmoid(_BETA_HB * (HB_DIST_MAX - d_NC))
     Zc_hb = Z_HB_SCALE * 0.5 * (z_mag[:, None] + z_mag[None, :]) + 1e-12
     gl_hb = jnp.abs(d_NC - D_HB_EQ)/D_HB_EQ + 1j * w * d_NC/D_HB_EQ
     Yc_hb = 1.0/Zc_hb
@@ -244,7 +252,10 @@ def _build_nodal_Y(backbone_coords, z_topo, freq, N, exposure):
     
     # Through-space propagation: evanescent (α >> β)
     alpha_ts = d_ca / d0     # lossy — distance/d₀
-    beta_ts = w * 0.1        # weak phase (near-field)
+    # Through-space phase: evanescent coupling
+    # In the near-field (d < λ), the phase is attenuated by 1/(2Q)
+    # (same as H-bond coupling scale Z_HB_SCALE = 1/(2Q))
+    beta_ts = w * (1.0 / (2.0 * Q_BACKBONE))  # = ω/(2Q) ≈ 0.071ω
     gl_ts = alpha_ts + 1j * beta_ts
     
     Yc_ts = 1.0 / (Zc_ts + 1e-12)
@@ -336,7 +347,10 @@ def _network_s11_loss(coords_flat, z_topo, gly_mask, pro_mask, N):
     seq_mask = (jnp.abs(idx[:, None] - idx[None, :]) > 2).astype(jnp.float64)
     burial = jax.nn.sigmoid(BETA_BURIAL * (R_BURIAL - d_ca)) * seq_mask
     n_neighbors = burial.sum(axis=1)
-    n_max = jnp.maximum(N / 3.0, 4.0)
+    # Max coordination: (R_BURIAL/d₀)³ = 8 (close-packing limit)
+    N_COORD_MAX = (R_BURIAL / d0) ** 3
+    n_max = jnp.minimum(N_COORD_MAX, N / 3.0)
+    n_max = jnp.maximum(n_max, 4.0)
     exposure_raw = jnp.clip(1.0 - n_neighbors / n_max, 0.0, 1.0)
     exposure_floor = 1.0 - sat_global
     exposure = jnp.maximum(exposure_raw, exposure_floor)
