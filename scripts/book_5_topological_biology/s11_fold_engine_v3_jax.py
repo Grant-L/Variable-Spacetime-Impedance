@@ -496,6 +496,11 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     # Each frequency contributes one S₁₁ sample; the tertiary term
     # should be normalised to the SAME per-frequency scale.
     Y_tertiary = (1.0/N_FREQ) * KAPPA * conjugate_match * C_tertiary * close_range / (dists**2 + 1e-12)
+    # NOTE: Tested Q-decay on tertiary (same as hydrophobic).
+    # Villin: SS improved 24%→30% (H=30%!). Trp-cage: SS dropped 33%→17%.
+    # Tertiary already has spatial filter (d < D_TERTIARY = 7.6Å), so
+    # Q-decay over-attenuates for short chains. Kept as future option
+    # for N>50 chains where N²-tertiary may still dominate.
     Y_shunt = Y_shunt + Y_tertiary.sum(axis=1)
 
     # --- Solvent Impedance Boundary (Upgrade 2: Debye Z(ω)) ---
