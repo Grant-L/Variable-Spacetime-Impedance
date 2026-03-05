@@ -375,6 +375,12 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     # Direction vectors for directional coupling:
     # Donor direction at N_i: (Cα_i → N_i) normalised ≈ N-H direction
     # This IS the current direction in the TL (current flows N→Cα)
+    #
+    # NOTE: Tested bilateral directionality (donor + acceptor angular factors).
+    # Loss exploded (0.82→4.32) because backbone N,C are circuit NODES
+    # (scalar junctions), not oriented COILS — geometric mean
+    # √(cos_d × cos_a) killed coupling when either angle ≈ 0.
+    # Donor-only is correct: captures TL current flow direction.
     donor_dir = atom_N - atom_Ca  # (N, 3)
     donor_norm = jnp.sqrt(jnp.sum(donor_dir**2, axis=-1, keepdims=True)) + 1e-12
     donor_hat = donor_dir / donor_norm  # (N, 3)
