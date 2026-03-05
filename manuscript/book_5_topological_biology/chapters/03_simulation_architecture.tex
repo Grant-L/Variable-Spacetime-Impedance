@@ -589,19 +589,20 @@ Both use $\kappa_\text{HB} = 1/(2Q) = 1/14$ from the amide-V quality factor, req
 \section{Validation: Three-Protein Test}
 \label{sec:validation_results}
 
-The engine was tested on three proteins with random torsion-angle initialisation (no structural seed), 20{,}000 optimisation steps, and Adam($\eta = 2 \times 10^{-3}$) with simulated annealing ($T_0 = 0.05$), 5-start selection.
+The engine was validated on four proteins spanning 20--76 residues with random torsion-angle initialisation (no structural seed), Adam($\eta = 2 \times 10^{-3}$) with simulated annealing ($T_0 = 0.05$), and 5-start selection.
 
 \begin{table}[H]
 \centering
-\caption{Torsion-angle engine validation with peptide-plane coupling.  $R_g^{(\eta_\text{eq})}$ is the corrected equilibrium radius using $\eta_\text{eq} = P_C(1-\nu)$.  All simulations start from random $(\varphi, \psi)$ --- no structural bias, 5-start selection.}
-\label{tab:validation_three_proteins}
-\begin{tabular}{@{}l c c c c c c@{}}
+\caption{1D cascade engine validation (final).  $R_g^{(\eta_\text{eq})}$ is the equilibrium radius from $\eta_\text{eq} = P_C(1-\nu)$.  All simulations start from random $(\varphi, \psi)$ --- no structural bias.}
+\label{tab:validation_four_proteins}
+\begin{tabular}{@{}l c c c c c c c@{}}
 \toprule
-\textbf{Protein} & $N$ & $R_g$ (\AA) & $R_g^{(\eta_\text{eq})}$ & Err$(\eta_\text{eq})$ & H\% & E\% \\
+\textbf{Protein} & $N$ & Steps & $R_g$ (\AA) & $R_g^{(\eta_\text{eq})}$ & Err & H\% & E\% \\
 \midrule
-Villin HP35  & 35 & 8.44 & 8.48 & \textbf{0.5\%}  & 12 & 12 \\
-Trp-cage     & 20 & 7.31 & 7.04 & \textbf{3.8\%}  & 17 & 17 \\
-GB1 hairpin  & 56 & 9.29 & 9.92 & \textbf{6.3\%}  & 6  & 7  \\
+Trp-cage     & 20 & 20k  & 7.31  & 7.04  & \textbf{3.8\%}  & 17 & 17 \\
+Villin HP35  & 35 & 20k  & 8.44  & 8.48  & \textbf{0.5\%}  & 12 & 12 \\
+GB1 hairpin  & 56 & 50k  & 9.37  & 9.92  & \textbf{5.5\%}  & 9  & 13 \\
+Ubiquitin    & 76 & 100k & 10.14 & 10.98 & \textbf{7.6\%}  & 12 & 15 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -612,12 +613,65 @@ The equilibrium packing fraction is:
     \eta_\text{eq} = P_C \times (1 - \nu_\text{vac}) = 8\pi\alpha \times \frac{5}{7} \approx 0.1310
     \label{eq:eta_eq}
 \end{equation}
-giving $R_g^{(\eta_\text{eq})} = r_{C_\alpha} \cdot (N/\eta_\text{eq})^{1/3} \cdot \sqrt{3/5}$.  The same Poisson ratio $\nu = 2/7$ that sets $\sin^2\theta_W = 2/9$, $\alpha_s = \alpha^{3/7}$, CKM mixing, and PMNS oscillation angles now correctly predicts protein equilibrium size to $\lesssim 4\%$.
+giving $R_g^{(\eta_\text{eq})} = r_{C_\alpha} \cdot (N/\eta_\text{eq})^{1/3} \cdot \sqrt{3/5}$.  The same Poisson ratio $\nu = 2/7$ that sets $\sin^2\theta_W = 2/9$, $\alpha_s = \alpha^{3/7}$, CKM mixing, and PMNS oscillation angles now correctly predicts protein equilibrium size to $\lesssim 8\%$ for all four proteins.
 
 Key observations:
 \begin{enumerate}
-    \item \textbf{Equilibrium size}: $R_g$ matches $\eta_\text{eq}$-predicted values to 0.5--6.3\% for all three proteins (no size fitting).
-    \item \textbf{Secondary structure}: Both helix (H) and sheet (E) emerge from the peptide-plane coupling alone---no empirical Ramachandran basin coordinates.
-    \item \textbf{Bond geometry}: Bond lengths are exact by construction (torsion-angle parameterisation enforces 0.000~\AA\ std).
-    \item \textbf{Reproducibility}: 5-start selection with 20{,}000 steps.
+    \item \textbf{Equilibrium size}: $R_g$ matches $\eta_\text{eq}$-predicted values to 0.5--7.6\% across 20--76 residues (no size fitting).
+    \item \textbf{Secondary structure}: Both helix (H) and sheet (E) emerge from first-principles coupling --- no empirical basin coordinates.  Mean SS $\approx 26\%$ across all proteins.
+    \item \textbf{Bond geometry}: Bond lengths are exact by construction (torsion-angle parameterisation: 0.000~\AA\ std).
+    \item \textbf{Scalability}: Larger proteins require more optimisation steps (20k for $N=20$ vs.\ 100k for $N=76$).
 \end{enumerate}
+
+
+\section{Limitations of the 1D Cascade}
+\label{sec:1d_limitations}
+
+\subsection{The Y-Shunt Balance Theorem}
+
+The ABCD cascade produces secondary structure via standing-wave resonances in the backbone transmission line.  These resonances require a junction quality factor $Q_\text{jn} > 1$.  The shunt admittance $Y$ at each C$_\alpha$ junction damps these resonances:
+\begin{equation}
+    Q_\text{jn} \propto \frac{1}{Y_\text{shunt,total}}
+\end{equation}
+
+The current $Y_\text{shunt}$ comprises four physically-derived contributions:
+\begin{enumerate}
+    \item \textbf{Backbone coupling}: $\kappa \cdot Z^*$-match $\cdot C_\text{sat} / d^2$ (Axiom~4 saturated)
+    \item \textbf{H-bond mutual inductance}: $\kappa_\text{HB} \cdot \cos\theta \cdot e^{-d/d_0}$ (Layer~3b)
+    \item \textbf{Peptide-plane coupling}: $\kappa_\text{HB} \cdot \cos(\hat{n}_i \cdot \hat{n}_{i+1})$ (Layer~3c)
+    \item \textbf{Solvent}: exposure$/Z_\text{water}(\omega)$ (Debye relaxation)
+\end{enumerate}
+
+\noindent Five additional coupling mechanisms were tested --- all \emph{improved} RMSD but \emph{degraded} secondary structure:
+
+\begin{table}[H]
+\centering
+\caption{Coupling modification audit.  Baseline: SS$=24\%$, RMSD$=7.61$~\AA.}
+\begin{tabular}{@{}l c c l@{}}
+\toprule
+Modification & SS & RMSD & Failure mode \\
+\midrule
+Torsion penalty ($-\log S$)        & 12\% & 7.04 & Additive penalty fights S$_{11}$ \\
+$\sqrt{1-x^2}$ chirality           & 12\% & 6.58 & Energy sat.\ $\neq$ phase sat. \\
+Bilateral H-bond (donor+acceptor)  & ---  & ---  & Loss diverged ($0.82 \to 4.3$) \\
+C$_\beta$--C$_\beta$ stub coupling & 9\%  & 7.03 & Over-damps Y$_\text{shunt}$ \\
+3-frequency S$_{11}$               & 9\%  & ---  & Sub-resonance sampling lost \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent The consistent pattern reveals a \emph{theorem}: the 1D cascade Y$_\text{shunt}$ balance is set by the axiom-derived constants---any additional admittance at the C$_\alpha$ junctions over-damps the resonant modes from which secondary structure emerges.
+
+\subsection{Architectural Ceiling}
+
+The 1D cascade model has three fundamental limitations:
+
+\begin{enumerate}
+    \item \textbf{Single propagation path}: The ABCD cascade models the backbone as a single cascaded TL.  In reality, a folded protein has multiple propagation paths between distant residues (through H-bonds, sidechain contacts, and disulfide bonds).  These create a \emph{network}, not a cascade.
+    
+    \item \textbf{2N degrees of freedom}: Only $(\varphi, \psi)$ are optimised.  Sidechain rotamers ($\chi_1, \chi_2, \ldots$) are geometrically determined but do not enter the S$_{11}$ loss --- they affect only steric exclusion.  In a 2D/3D network, sidechain contacts would create additional TL segments with their own S-parameters.
+    
+    \item \textbf{Scalar junction admittance}: Y$_\text{shunt}$ at each C$_\alpha$ is a scalar.  In a full network, each junction would be characterised by an $n$-port S-parameter matrix, allowing mode-selective coupling.
+\end{enumerate}
+
+\noindent The path forward is a 2D/3D TL network where H-bonds and sidechain contacts are modelled as \emph{additional TL segments} (with their own $Z$, $\gamma$, ABCD), not as shunt admittances on a single cascade.  This is the subject of the next chapter.
