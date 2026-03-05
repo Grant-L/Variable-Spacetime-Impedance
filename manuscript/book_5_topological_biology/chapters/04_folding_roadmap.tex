@@ -1,121 +1,171 @@
-\chapter{Roadmap: From Equation of State to Full Folding}
-\label{ch:folding_roadmap}
+\chapter{Multi-Path TL Network Solver}
+\label{ch:network_solver}
 
-This chapter maps the path from the current engine --- which correctly predicts protein \emph{equilibrium size} and \emph{secondary structure content} --- to a full first-principles protein structure predictor.
+Chapter~\ref{ch:sim_architecture} established the 1D ABCD cascade as a transmission-line model of the protein backbone.
+While this cascade predicts equilibrium size ($R_g$ to within 0.5--7.6\%) and secondary structure content (22--34\%), it has an intrinsic limitation: \emph{there is only one propagation path}.
+Every impedance mismatch along the backbone creates a backwards-reflected wave that adds directly to $|S_{11}|^2$, and the Y-shunt coupling terms that model H-bonds and sidechain contacts cannot create \emph{alternative propagation paths}---only modify the existing cascade.
 
-\section{What Has Been Solved}
+This chapter presents the solution: upgrading from a 1D cascade to a 2D S-parameter network, where every bond type---backbone, H-bond, through-space contact---becomes a full transmission-line segment connecting two nodes in an admittance matrix.
 
-\begin{table}[H]
-\centering
-\caption{Current engine capabilities.  All predictions derive from $\alpha$, $\nu = 2/7$, and $r_{C_\alpha} = 1.7$~\AA.}
-\label{tab:solved_capabilities}
-\begin{tabular}{@{}l l l@{}}
-\toprule
-\textbf{Capability} & \textbf{Accuracy} & \textbf{Derivation} \\
-\midrule
-Equilibrium $R_g$ & 0.4--2.3\% & $\eta_\text{eq} = P_C(1-\nu) = 8\pi\alpha \times 5/7$ \\
-Secondary structure & 72--100\% & $S_{11}$ cascade + Axiom 2 Ramachandran \\
-Bond geometry & Exact & NERF torsion-angle parameterisation \\
-Hydrophobic burial & Qualitative & Solvent shunt $Y_\text{solvent} = e/Z_\text{water}$ \\
-Salt bridge formation & Qualitative & Conjugate $Z$ matching: $\operatorname{Re}(Z_i Z_j^*) > 0$ \\
-\bottomrule
-\end{tabular}
-\end{table}
+% ═══════════════════════════════════════════════════════════════
+\section{Architecture: From Cascade to Network}
+\label{sec:cascade_to_network}
 
-\section{What Remains: Five Tiers to Full Folding}
+\subsection{The Y-Shunt Balance Theorem}
+\label{sec:yshunt_balance}
 
-The path from equilibrium thermodynamics to atomic-resolution structure prediction has five tiers, each building on the previous.  Each tier is a self-contained first-principles extension --- no fitted parameters.
-
-\subsection{Tier 1: Side-Chain $\chi_1$ Torsion Angles}
-\label{sec:tier1_chi}
-
-\paragraph{Current limitation.} Sidechains are encoded as scalar impedance $|Z_\text{topo}|$ with no spatial extent.  Two residues with identical $|Z|$ but different shapes (e.g.\ Leu vs Ile) produce the same fold.
-
-\paragraph{First-principles extension.}
-Each residue has 1--4 $\chi$ (chi) torsion angles describing sidechain rotation about covalent bonds.  Adding $\chi_1$ (the first sidechain torsion) gives each residue a directional ``stub'' in 3D space.
-
-\begin{itemize}
-    \item \textbf{DOF increase}: $2N \to 3N$ (add $\chi_1$ per residue)
-    \item \textbf{Bond geometry}: Fixed by covalent radii (Axioms 1--2), same as backbone NERF
-    \item \textbf{Steric exclusion}: Extended to include sidechain atoms (Axiom 2)
-    \item \textbf{Impedance coupling}: $Y_\text{shunt}$ now depends on sidechain \emph{orientation}, not just $|Z|$
-\end{itemize}
-
-\paragraph{Expected impact.} Distinguishes Leu/Ile/Val rotamers.  Should improve tertiary contact specificity without any additional physics.
-
-\subsection{Tier 2: PDB Validation (RMSD to Crystal Structures)}
-\label{sec:tier2_pdb}
-
-\paragraph{Current limitation.} We predict size ($R_g$) and secondary structure content, but have not compared atom positions to known crystal structures.
-
-\paragraph{Validation protocol.}
-\begin{enumerate}
-    \item Fold Villin HP35 (PDB: 1YRF), Trp-cage (1L2Y), GB1 hairpin (2GB1)
-    \item Compute backbone C$_\alpha$ RMSD after optimal superposition
-    \item Report RMSD, GDT-TS, and TM-score
-    \item Compare to baseline (extended chain, ideal helix, random coil)
-\end{enumerate}
-
-\paragraph{Success criterion.} C$_\alpha$ RMSD $< 5$~\AA\ for Villin HP35 would demonstrate that the impedance cascade produces not just the right statistics but the right \emph{topology}.
-
-\subsection{Tier 3: Multi-Chain and Oligomeric Assembly}
-\label{sec:tier3_multichain}
-
-\paragraph{Current limitation.} Single-chain only.  Many proteins function as dimers, trimers, or larger assemblies.
-
-\paragraph{First-principles extension.}
-Each chain is a separate ABCD cascade terminating at its $N$- and $C$-terminus.  Inter-chain coupling uses the \emph{same} $Y_\text{shunt}$ physics as intra-chain contacts:
+The 1D engine models non-bonded contacts as shunt admittances at backbone junctions:
 \begin{equation}
-    Y_{ij}^\text{inter} = \frac{\kappa \cdot m_{ij}}{d_{ij}^2}, \qquad i \in \text{chain A},\; j \in \text{chain B}
+    Y_\text{shunt}(i) = \sum_{j \neq i} \frac{\kappa \, m_{ij} \, C_\text{sat}(d_{ij})}{d_{ij}^2} \cdot S_\text{env}(d_{ij})
+    \label{eq:yshunt}
 \end{equation}
-The loss function sums $S_{11}$ over all chains.  Assembly emerges from impedance matching across the interface --- the same physics that drives folding.
+where $\kappa = 1/2$ (critical coupling), $m_{ij}$ is the conjugate impedance match, $C_\text{sat}$ is the Axiom~4 dielectric saturation factor, and $S_\text{env}$ is the long-range saturation envelope.
 
-\subsection{Tier 4: Folding Kinetics and Pathway Prediction}
-\label{sec:tier4_kinetics}
+However, Y-shunt terms have a \emph{double-edged} effect: they absorb energy from propagating modes (lowering $|S_{11}|$), but they also damp the standing-wave resonances that drive secondary structure formation.
+Beyond a critical shunt magnitude, additional coupling \emph{degrades} SS accuracy---the Y-Shunt Balance Theorem (Section~\ref{sec:1d_limitations}).
 
-\paragraph{Current limitation.} The optimizer finds a minimum in 5000 gradient steps.  Real proteins fold on $\mu$s--ms timescales through specific pathways.
+\subsection{Network Topology}
+\label{sec:network_topology}
 
-\paragraph{First-principles extension.}
-The ABCD cascade provides a \emph{time-domain} picture: energy injected at one terminus propagates through the backbone as a wave.  The folding pathway is the sequence of impedance-matching events that converts propagating modes to standing modes:
-\begin{enumerate}
-    \item \textbf{Nucleation}: First stable helix turn forms where $S_{11}$ is locally minimum (highest conjugate match)
-    \item \textbf{Propagation}: Impedance-matched regions grow outward (wave front)
-    \item \textbf{Collapse}: Long-range $S_{21}$ cross-coupling zips the structure
-\end{enumerate}
-This predicts folding nucleation sites from the sequence impedance profile alone.
+The 2D engine replaces Y-shunt perturbations with full TL segments that create \emph{alternative propagation paths} through the network.
+Each segment has characteristic impedance $Z_c$, propagation constant $\gamma = \alpha + j\beta$, and length $\ell$:
 
-\subsection{Tier 5: Function Prediction from Impedance Landscape}
-\label{sec:tier5_function}
-
-\paragraph{Current limitation.} We predict structure but not function.
-
-\paragraph{First-principles extension.}
-The impedance mismatch map $S_{11}(i)$ along the backbone identifies:
 \begin{itemize}
-    \item \textbf{Active sites}: Regions of high $|S_{11}|$ (impedance discontinuity) that catalyse reactions by concentrating energy
-    \item \textbf{Binding sites}: Regions of low $|S_{11}|$ (smooth impedance) that accommodate ligand insertion
-    \item \textbf{Allosteric pathways}: Connected regions of moderate $|S_{11}|$ that transmit conformational signals
+    \item \textbf{Backbone segments} ($3N-1$ total): N$_i$--C$\alpha_i$, C$\alpha_i$--C$_i$, C$_i$--N$_{i+1}$, with $Z_c$ from bond impedance $\sqrt{m_\text{bond}/n_e}$ and chirality phase correction $\delta_\chi$
+    \item \textbf{H-bond cross-links} ($N^2$ potential, gated by proximity): N$_i$--C$_j$ for $|i-j| \geq 3$, with $Z_c = Z_\text{avg}/(2Q)$ and $\kappa_\text{HB} = 1/(2Q) = 1/14$ coupling
+    \item \textbf{Through-space TL segments}: C$\alpha_i$--C$\alpha_j$ for $|i-j| \geq 3$, with impedance from conjugate $Z$-match and Axiom~4 dielectric saturation
+    \item \textbf{Solvent ground loads}: Exposed C$\alpha$ nodes terminated with Debye $Z_\text{water}(\omega)$
+    \item \textbf{Peptide-plane coupling}: Adjacent backbone shunt $Y_\text{pep} = \lambda_R \kappa_\text{HB} \cos(\hat{n}_i \cdot \hat{n}_{i+1})$
 \end{itemize}
-Function prediction requires no additional physics --- only the impedance landscape of the folded structure.
 
-\section{Implementation Priority}
+\subsection{Y-Parameter Formulation}
+\label{sec:y_param}
+
+Each TL segment maps to a $2 \times 2$ admittance matrix:
+\begin{equation}
+    \mathbf{Y}_\text{seg} = \begin{pmatrix}
+        Y_c \coth(\gamma\ell) & -Y_c \operatorname{csch}(\gamma\ell) \\
+        -Y_c \operatorname{csch}(\gamma\ell) & Y_c \coth(\gamma\ell)
+    \end{pmatrix}, \qquad Y_c = 1/Z_c
+    \label{eq:y_matrix_tl}
+\end{equation}
+At each node, Kirchhoff's current law requires the sum of all connected Y-matrices.
+The global nodal admittance matrix $\mathbf{Y}_\text{global}$ ($3N \times 3N$, complex) is assembled by stamping each segment's $2\times 2$ Y-matrix at its node indices.
+
+\subsection{S$_{11}$ via Schur Complement}
+\label{sec:schur}
+
+The input port is at node~0 (N-terminus nitrogen, N$_0$).
+All other $3N-1$ nodes are internal.
+The 1-port input admittance is obtained by Schur complement reduction:
+\begin{equation}
+    Y_\text{in} = Y_{00} - \mathbf{Y}_{0x} \, \mathbf{Y}_{xx}^{-1} \, \mathbf{Y}_{x0}
+    \label{eq:schur}
+\end{equation}
+where $\mathbf{Y}_{xx}$ is the $(3N-1) \times (3N-1)$ internal block, solved via \texttt{jnp.linalg.solve} for numerical stability.
+The reflection coefficient follows:
+\begin{equation}
+    |S_{11}|^2 = \left| \frac{1 - Z_0 Y_\text{in}}{1 + Z_0 Y_\text{in}} \right|^2
+    \label{eq:s11_network}
+\end{equation}
+Multi-frequency averaging over $\omega/\omega_0 \in \{0.5, 1.0, 1.7\}$ produces the final loss, modulated by the global $P_C$ packing saturation (Axiom~4 trace reversal, identical to Chapter~\ref{ch:sim_architecture}).
+
+% ═══════════════════════════════════════════════════════════════
+\section{Compaction Physics}
+\label{sec:compaction}
+
+The through-space C$\alpha$--C$\alpha$ TL segments provide the compaction driving force.
+Their impedance encodes three physical layers:
+
+\paragraph{Conjugate impedance matching.}
+For residues $i, j$ with complex impedances $Z_i, Z_j$:
+\begin{equation}
+    m_{ij} = \max\!\left(0,\; \frac{\operatorname{Re}(Z_i Z_j^*)}{|Z_i||Z_j|}\right) \in [0, 1]
+    \label{eq:conj_match}
+\end{equation}
+Hydrophobic pairs ($m_{ij} \to 1$) create low-impedance through-space paths that attract.
+Like-charged pairs ($m_{ij} = 0$) create no path---repulsion emerges from the S$_{11}$ gradient at close range.
+
+\paragraph{Axiom~4 dielectric saturation.}
+Close-contact amplification:
+\begin{equation}
+    C_\text{sat} = 1 + \frac{m_{ij}}{\sqrt{1 - (d_0/d_{ij})^2}}
+    \label{eq:c_sat_network}
+\end{equation}
+Well-matched close pairs get amplified coupling; mismatched close pairs do not.
+
+\paragraph{Long-range saturation envelope.}
+Same Axiom~4 operator as galactic rotation:
+\begin{equation}
+    S_\text{env}(d) = \sqrt{1 - (d/R_\text{burial})^2}, \qquad R_\text{burial} = 2d_0 = 7.6\;\text{\AA}
+    \label{eq:sat_envelope}
+\end{equation}
+Beyond $R_\text{burial}$, coupling decays to zero---preventing the ``dark matter halo'' of over-compaction.
+
+% ═══════════════════════════════════════════════════════════════
+\section{Benchmark Results}
+\label{sec:2d_benchmark}
+
+Table~\ref{tab:2d_benchmark} compares the 1D ABCD cascade (Chapter~\ref{ch:sim_architecture}) with the 2D TL network on four benchmark proteins.
 
 \begin{table}[H]
 \centering
-\caption{Priority-ordered implementation roadmap.}
-\label{tab:roadmap_priority}
-\begin{tabular}{@{}c l l l l@{}}
+\caption{1D ABCD cascade vs 2D S-parameter network.
+All constants identical between engines; only the network topology differs.
+$R_g$ target from $\eta_\text{eq} = P_C(1-\nu)$.
+10\,000 gradient steps, 3 random starts, Adam optimiser ($\text{lr}=2\times 10^{-3}$).}
+\label{tab:2d_benchmark}
+\begin{tabular}{@{}l c r r r r r r@{}}
 \toprule
-\textbf{Tier} & \textbf{Task} & \textbf{Effort} & \textbf{New Physics?} & \textbf{Validation} \\
+\textbf{Protein} & $N$ & \multicolumn{2}{c}{\textbf{$R_g$ error}} & \multicolumn{2}{c}{\textbf{SS \%}} & \multicolumn{2}{c}{\textbf{RMSD (\AA)}} \\
+\cmidrule(lr){3-4} \cmidrule(lr){5-6} \cmidrule(lr){7-8}
+ & & 1D & 2D & 1D & 2D & 1D & 2D \\
 \midrule
-1 & $\chi_1$ sidechain torsions & Medium & No & Rotamer recovery \\
-2 & PDB RMSD comparison & Small & No & RMSD $< 5$~\AA \\
-3 & Multi-chain assembly & Medium & No & Dimer interfaces \\
-4 & Folding kinetics & Large & Yes (time domain) & Nucleation sites \\
-5 & Function prediction & Large & No & Active site ID \\
+Trp-cage (1L2Y) & 20 & 3.8\% & 10.8\% & 34 & 6 & 5.65 & 5.87 \\
+Villin HP35 (1YRF) & 35 & 0.5\% & 11.4\% & 24 & \textbf{27} & 7.61 & 8.44 \\
+GB1 (1PGA) & 56 & 5.5\% & 10.9\% & 22 & 17 & 9.89 & 10.51 \\
+Ubiquitin (1UBQ) & 76 & 7.6\% & 11.8\% & 27 & 16 & 10.83 & 11.26 \\
+\midrule
+\textbf{Mean} & & 4.4\% & 11.2\% & 26.8 & 16.5 & 8.50 & 9.02 \\
+\midrule
+\multicolumn{2}{@{}l}{\textbf{$|S_{11}|^2$ (loss)}} & \multicolumn{2}{c}{0.82 $\to$ 0.075} & \multicolumn{4}{c}{\textit{15$\times$ lower reflection}} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\paragraph{Immediate next step.}
-Tier~2 (PDB validation) requires \emph{zero} code changes --- only downloading crystal structures and computing RMSD against the current engine output.  This is the fastest path to answering the question: \emph{does the impedance cascade predict the correct tertiary fold, or only the correct envelope?}
+\section{Analysis}
+\label{sec:2d_analysis}
+
+\subsection{Where the Network Wins}
+\begin{enumerate}
+    \item \textbf{Impedance matching}: The network $|S_{11}|^2$ is 15$\times$ lower than the cascade (0.075 vs 0.82), confirming that multi-path wave propagation provides fundamentally better impedance matching.
+    \item \textbf{Villin secondary structure}: 27\% vs 24\%---the first case where the 2D topology outperforms the 1D cascade on SS.
+    \item \textbf{JIT scalability}: Compilation time is nearly constant (1.8--2.3\,s) regardless of $N$, because the vectorised Y-matrix assembly scales as $O(N^2)$ tensor operations rather than $O(N^2)$ traced Python loops.
+\end{enumerate}
+
+\subsection{Where the Cascade Still Wins}
+\begin{enumerate}
+    \item \textbf{$R_g$ accuracy}: The 1D engine achieves 0.5--7.6\% error; the 2D engine consistently over-compacts at $\sim$11\%.
+    The through-space coupling may need a size-dependent attenuation floor.
+    \item \textbf{SS for small proteins}: Trp-cage SS dropped from 34\% to 6\%.
+    With $N=20$, the $N^2$ through-space TL segments create too many coupling paths relative to the $3N-1$ backbone segments, drowning the resonance structure.
+    \item \textbf{Speed}: 6$\times$ slower per optimisation step ($\sim$90\,s vs 14\,s) due to the $(3N-1) \times (3N-1)$ matrix solve at each frequency.
+\end{enumerate}
+
+\subsection{Physical Interpretation}
+
+The 1D cascade has higher $|S_{11}|^2$ but better structural accuracy because its Y-shunt couplings, while physically approximate, preserve the standing-wave resonance structure that drives SS emergence.
+The 2D network has lower $|S_{11}|^2$ but the optimizer finds minima where the multi-path propagation ``short-circuits'' the backbone instead of setting up the precise resonance patterns needed for helices and sheets.
+
+This suggests the next step is not adding more coupling paths, but improving how existing paths interact---enforcing the \emph{resonance condition} that standing waves in the backbone must match the periodicity of secondary structure elements.
+
+% ═══════════════════════════════════════════════════════════════
+\section{Roadmap}
+\label{sec:2d_roadmap}
+
+\begin{enumerate}
+\item \textbf{Resonance-aware coupling}: Weight through-space segments by their alignment with backbone standing-wave nodes, so coupling reinforces rather than disrupts SS.
+\item \textbf{$\beta$-sheet TL segments}: Currently only $\alpha$-helix N$_i$--C$_j$ H-bonds form; antiparallel $\beta$-sheet requires C$_i$--N$_j$ pairing (reversed polarity).
+\item \textbf{3D Yee-lattice FDTD}: Replace the lumped Y-matrix with a spatial impedance grid where $\varepsilon(x) = Z_\text{topo}$ and the protein backbone perturbs the lattice---capturing wave diffraction around the structure.
+\item \textbf{Hybrid 1D$+$2D}: Use the 1D cascade for backbone propagation (preserving SS) and the 2D network only for long-range contacts (providing compaction), combining the strengths of both architectures.
+\end{enumerate}
