@@ -453,7 +453,59 @@ Port coupling & $\max(0, \mathcal{L}_\text{port})$ & --- & Bounded $S_{21} \in [
 
 The packing fraction $2r_{C_\alpha}/d_0 = 0.895$ is noteworthy: it is the protein-scale analog of the electromagnetic packing fraction $P_C = 8\pi\alpha \approx 0.183$, reflecting the scale invariance of the impedance coupling structure (Axiom~1).
 
-The engine correctly enforces backbone chirality (100\% negative $\phi$) and produces 91\% secondary structure with balanced $\alpha/\beta$ content.
+The engine correctly enforces backbone chirality (100\% negative $\phi$).
+
+\subsubsection{Upgrade 10: 5-Atom Backbone Steric (Replaces Ramachandran)}
+\label{sec:5atom_steric}
+
+Earlier versions used an explicit Ramachandran potential with pre-defined $\alpha/\beta$ basin coordinates.  While effective (94\% SS), this was an \emph{artificial constraint}: the basin locations were empirical inputs, not derived from the axioms.
+
+The Ramachandran basins are \emph{consequences} of steric clashes between backbone atoms---not a fundamental potential.  The correct first-principles approach models these clashes directly using the \textbf{5-atom backbone}: N, C$_\alpha$, C, O (carbonyl), H (amide), plus C$_\beta$ (sidechain stub).
+
+\paragraph{Atom placement.}
+O and H positions are fully determined by the peptide plane geometry---no new DOFs:
+\begin{align}
+    \mathbf{r}_{\text{O}_i} &= \mathbf{r}_{C_i} + 1.23\,\hat{\mathbf{e}}_O \qquad (121.4^\circ \text{ from } C_\alpha\text{--}C \text{ in peptide plane}) \\
+    \mathbf{r}_{\text{H}_i} &= \mathbf{r}_{N_i} + 1.01\,\hat{\mathbf{e}}_H \qquad (119.2^\circ \text{ from } C\text{--}N \text{; Pro excluded})
+\end{align}
+
+\paragraph{Steric exclusion radii.}
+The hard-sphere exclusion is the LJ repulsive distance $\sigma_{ij} = (r_i + r_j) / 2^{1/6} \approx 0.891 \times (r_i + r_j)$, not the raw VdW sum (which is the zero-crossing, not the wall).
+
+\paragraph{Bonded-pair masking.}
+O/H cross-terms use $|i-j| \geq 2$ (O$_i$--H$_{i+1}$ is bonded at 1.50~\AA\ through O=C--N--H).  C$_\beta$ uses $|i-j| \geq 1$ (stub, not main chain).
+
+\subsubsection{Upgrade 8: H-Bond Mutual Inductance}
+
+Directional hydrogen-bond coupling uses N$_i$--C$_j$ distance as proxy:
+\begin{equation}
+    Y_{\text{HB}}^{ij} = \lambda_\text{rama}\, \kappa_\text{HB}\, \cos\theta\, e^{-d_{\text{NC}}/d_0}\, \sigma(D_\text{HB} + d_0 - d_{\text{NC}})
+\end{equation}
+where $\kappa_\text{HB} = 1/(2Q) = 1/14$ and $\cos\theta$ provides angular dependence.
+
+\textbf{Current status:} The loss function is $S_{11}$ + C$_\alpha$ steric + 5-atom backbone steric + port coupling + NEXT cross-talk + H-bond.  No Ramachandran basin penalties are needed.
+
+\section{Validation: Villin HP35}
+\label{sec:validation_results}
+
+\begin{table}[H]
+\centering
+\caption{5-atom backbone steric validation (Villin HP35, $N=35$).}
+\label{tab:validation_5atom}
+\begin{tabular}{@{}l c c c c@{}}
+\toprule
+\textbf{Engine Version} & $R_g$ (\AA) & Err($\eta_\text{eq}$) & RMSD (\AA) & SS\% \\
+\midrule
+Old Ramachandran (lookup)          & 8.42 & 0.8\%         & 7.25 & 94\% \\
+\textbf{5-atom steric (Axiom 2)}   & \textbf{8.47} & \textbf{0.1\%} & \textbf{6.22} & 3\%  \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Derived equilibrium packing.}
+$\eta_\text{eq} = P_C(1 - \nu_\text{vac}) = 8\pi\alpha \times 5/7 \approx 0.1310$, giving $R_g^{(\eta_\text{eq})} = r_{C_\alpha} (N/\eta_\text{eq})^{1/3} \sqrt{3/5} = 8.48$~\AA.
+
+Key observations: (1)~$R_g = 8.47$ matches prediction to 0.1\%; (2)~RMSD 6.22~\AA\ is 14\% better than the Ramachandran engine; (3)~SS = 3\% indicates that steric exclusion constrains forbidden regions but does not \emph{drive} helix formation (the attractive LJ well is needed); (4)~bond lengths exact by construction.
 
 \textbf{Critical correction: coupled 2D Ramachandran basins.}  The Ramachandran basins arise from Pauli steric exclusion (Axiom~2) acting \emph{simultaneously} on both $\phi$ and $\psi$.  An earlier implementation penalised $\phi$ and $\psi$ independently:
 \begin{equation}
