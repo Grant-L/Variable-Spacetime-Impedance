@@ -717,11 +717,30 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
         gamma = numer / denom
         return jnp.real(gamma * jnp.conj(gamma))
 
-    # Average S₁₁ over frequency sweep
-    s11_total = 0.0
-    for f in FREQ_SWEEP:
-        s11_total = s11_total + s11_at_freq(f)
-    s11_avg = s11_total / len(FREQ_SWEEP)
+    # ═══════════════════════════════════════════════════════════════════
+    # SPECTRAL CONTRAST with AXIOM 4 TRACE REVERSAL
+    # ═══════════════════════════════════════════════════════════════════
+    # A periodic backbone (helix/sheet) creates a Bragg stop-band at
+    # specific frequencies → S₁₁ varies across the frequency sweep.
+    #
+    # TRACE REVERSAL (Axiom 4): raw S₁₁ saturates for long chains
+    # (S₁₁ → 1 regardless of structure). The physical observable is
+    # the standing-wave ENERGY STORED in the cavity, not the raw
+    # reflection. At the Bragg frequency:
+    #   - Partial reflection (S₁₁ ≈ 0.7): maximum standing-wave energy
+    #   - Total reflection (S₁₁ → 1): no standing wave, energy reflects
+    #   - No reflection (S₁₁ → 0): no cavity, wave propagates through
+    #
+    # The saturated S₁₁ encodes this:
+    #   S₁₁_sat = S₁₁ × √(1 - S₁₁²)    [Axiom 4 saturation]
+    # This peaks at S₁₁ = 1/√2 (the 3 dB point) and vanishes at
+    # both S₁₁ = 0 (no cavity) and S₁₁ = 1 (total reflection).
+    # The spectral contrast of S₁₁_sat detects true band gap structure.
+    s11_per_freq = jnp.array([s11_at_freq(f) for f in FREQ_SWEEP])
+    s11_avg = jnp.mean(s11_per_freq)
+    # Axiom 4: saturated S₁₁ = standing-wave energy storage
+    s11_sat = s11_per_freq * jnp.sqrt(jnp.clip(1.0 - s11_per_freq**2, 1e-12, 1.0))
+    spectral_contrast = jnp.max(s11_sat) - jnp.min(s11_sat)
 
     # ═══════════════════════════════════════════════════════════════════
     # MULTI-PORT SEGMENTED S₁₁ (Kirkwood/orbital mode quantization)
@@ -815,13 +834,9 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     # Detect segment boundaries via local Γ
     gamma_local = jnp.abs(z_mag[1:] - z_mag[:-1]) / (z_mag[1:] + z_mag[:-1] + 1e-12)
     # Turn detection: sigmoid gate at Γ_turn
-    # Derivation: a structural turn occurs when the local impedance
-    # mismatch reflects enough power to break the standing-wave resonance.
-    # The half-power point of a Q=7 resonator occurs at:
-    #   Γ² = 1/(2Q) → Γ = 1/√(2Q) ≈ 0.267
-    # Below this, the mismatch is sub-threshold (same segment).
-    # Above this, enough power is reflected to define a segment boundary.
-    _SIGMOID_SHARPNESS = Q_BACKBONE * (d0 / r_Ca)  # ≈ 15.7 (NUMERICAL smoothing)
+    # Γ² = 1/(2Q) → Γ = 1/√(2Q) ≈ 0.267 (cavity confinement criterion)
+    # Slope: NUMERICAL smoothing — must preserve gradient through cum_turn
+    _SIGMOID_SHARPNESS = Q_BACKBONE * (d0 / r_Ca)  # ≈ 15.7 (NUMERICAL)
     _GAMMA_TURN = 1.0 / jnp.sqrt(2.0 * Q_BACKBONE)  # ≈ 0.267 (derived from Q)
     is_turn = jax.nn.sigmoid(_SIGMOID_SHARPNESS * (gamma_local - _GAMMA_TURN))
     transmission = 1.0 - gamma_local**2
@@ -884,7 +899,7 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     eta_ratio = jnp.clip(eta / P_C, 0.0, 0.999)     # normalised to P_C
     sat_packing = jnp.sqrt(1.0 - eta_ratio**2)       # Axiom 4 saturation
 
-    # Use combined S₁₁ (global + local) instead of just global
+    # port_loss includes s11_combined for compaction + junction/cross coupling
     port_loss = (s11_combined + junction_loss + cross_loss / N) * sat_packing
 
     # Steric repulsion — Pauli exclusion (Axiom 2)
@@ -1104,8 +1119,10 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     #     via Y_shunt → S₁₁ cascade
     # Rg emerges from S₁₁ cascade + P_C saturation alone.
 
+    # Spectral contrast reward: 1/N_FREQ normalisation (same scale as s11_avg)
     return (s11_avg + steric_penalty + jnp.maximum(0.0, port_loss)
-            + rama_penalty + xtalk_loss)
+            + rama_penalty + xtalk_loss
+            - spectral_contrast / N_FREQ)
 
 
 # JIT compile — N is now dynamic (not static_argnums)
