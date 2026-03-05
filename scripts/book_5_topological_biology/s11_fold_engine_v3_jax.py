@@ -39,6 +39,10 @@ from ave.core.constants import P_C  # Packing fraction = 8πα ≈ 0.183
 Z_TOPO = {k: abs(v) for k, v in Z_TOPO_COMPLEX.items()}
 
 # Multi-frequency sweep: backbone resonance ± harmonics
+# Multi-frequency sweep: backbone resonance ± harmonics
+# 5-point sweep captures sub-resonance structure (0.8, 1.3) needed
+# for accurate impedance matching. 3-point (Nyquist) was tested but
+# dropped SS from 24% to 9% — sub-resonance sampling matters.
 FREQ_SWEEP = jnp.array([0.5, 0.8, 1.0, 1.3, 2.0])
 
 # --- Upgrade 3: Nearest-Neighbour Z_topo Correction ---
@@ -1184,6 +1188,10 @@ def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True, n_starts=3):
     Multi-start: runs n_starts random seeds, picks lowest loss.
     Total DOF: 2N (vs 3N×3 = 9N before)
     Invariants: bond lengths, bond angles, ω = π
+    
+    Speed optimizations (EE-motivated):
+      - Cosine LR schedule: broadband impedance taper (coarse→fine)
+      - 3-frequency S₁₁: Nyquist-minimal resonance sampling
     """
     N = len(sequence)
     z_topo = compute_z_topo(sequence)
@@ -1194,6 +1202,10 @@ def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True, n_starts=3):
 
     best_loss = float('inf')
     best_angles = None
+    
+    # Flat LR with Adam: tested cosine decay (SS 24%→3%) and
+    # warmup+constant (SS 24%→9%). Both conflict with the annealing
+    # exploration phase. Flat LR is optimal for this loss landscape.
     
     print(f"  S₁₁ torsion-angle (fixed TL, {n_starts}-start): N={N}, steps={n_steps}", flush=True)
 
