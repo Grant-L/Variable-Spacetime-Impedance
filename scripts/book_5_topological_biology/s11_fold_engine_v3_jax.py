@@ -715,32 +715,55 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
         numer = A + B / Z0 - C * Z0 - D
         denom = A + B / Z0 + C * Z0 + D + 1e-20
         gamma = numer / denom
-        return jnp.real(gamma * jnp.conj(gamma))
+        s11_power = jnp.real(gamma * jnp.conj(gamma))
+        # S₂₁ = 2 / denom (complex transmission coefficient)
+        s21 = 2.0 / denom
+        s21_phase = jnp.angle(s21)  # unwrapped phase of S₂₁
+        return s11_power, s21_phase
 
     # ═══════════════════════════════════════════════════════════════════
-    # SPECTRAL CONTRAST with AXIOM 4 TRACE REVERSAL
+    # SPECTRAL ANALYSIS: S₁₁ contrast + S₂₁ GROUP DELAY
     # ═══════════════════════════════════════════════════════════════════
-    # A periodic backbone (helix/sheet) creates a Bragg stop-band at
-    # specific frequencies → S₁₁ varies across the frequency sweep.
+    # The ABCD cascade yields two independent observables:
     #
-    # TRACE REVERSAL (Axiom 4): raw S₁₁ saturates for long chains
-    # (S₁₁ → 1 regardless of structure). The physical observable is
-    # the standing-wave ENERGY STORED in the cavity, not the raw
-    # reflection. At the Bragg frequency:
-    #   - Partial reflection (S₁₁ ≈ 0.7): maximum standing-wave energy
-    #   - Total reflection (S₁₁ → 1): no standing wave, energy reflects
-    #   - No reflection (S₁₁ → 0): no cavity, wave propagates through
+    #   1. S₁₁ (reflection) — HOW MUCH reflects
+    #      → drives Rg (global compaction)
     #
-    # The saturated S₁₁ encodes this:
-    #   S₁₁_sat = S₁₁ × √(1 - S₁₁²)    [Axiom 4 saturation]
-    # This peaks at S₁₁ = 1/√2 (the 3 dB point) and vanishes at
-    # both S₁₁ = 0 (no cavity) and S₁₁ = 1 (total reflection).
-    # The spectral contrast of S₁₁_sat detects true band gap structure.
-    s11_per_freq = jnp.array([s11_at_freq(f) for f in FREQ_SWEEP])
+    #   2. S₂₁ phase → GROUP DELAY τ_g = -dφ/dω
+    #      → WHERE the wave slows down (band edge resonance)
+    #      → drives SS (periodic structure detection)
+    #
+    # In EE: a periodic transmission line (Bragg grating) has group
+    # velocity → 0 at the band edge. Energy accumulates in standing
+    # waves. This is EXACTLY how SS forms: the backbone traps wave
+    # energy at the helix/sheet periodicity.
+    #
+    # TRACE REVERSAL (Axiom 4): raw S₁₁ saturates for long chains.
+    # S₁₁_sat = S₁₁ × √(1 - S₁₁²) peaks at 3 dB, vanishes at 0 and 1.
+    s11_list = []
+    phase_list = []
+    for f in FREQ_SWEEP:
+        s11_f, phase_f = s11_at_freq(f)
+        s11_list.append(s11_f)
+        phase_list.append(phase_f)
+    s11_per_freq = jnp.array(s11_list)
+    phases = jnp.array(phase_list)
     s11_avg = jnp.mean(s11_per_freq)
+
     # Axiom 4: saturated S₁₁ = standing-wave energy storage
     s11_sat = s11_per_freq * jnp.sqrt(jnp.clip(1.0 - s11_per_freq**2, 1e-12, 1.0))
     spectral_contrast = jnp.max(s11_sat) - jnp.min(s11_sat)
+
+    # GROUP DELAY: τ_g = -dφ(S₂₁)/dω at each interior frequency
+    # High group delay = wave trapped = standing wave = SS
+    # Central difference for interior points, forward/backward at edges
+    dw = FREQ_SWEEP[1:] - FREQ_SWEEP[:-1]  # frequency spacings
+    dphi = phases[1:] - phases[:-1]         # phase differences
+    # Unwrap: if |Δφ| > π, wrap by ±2π (JAX-compatible)
+    dphi = dphi - 2.0 * jnp.pi * jnp.round(dphi / (2.0 * jnp.pi))
+    tau_g = -dphi / (dw + 1e-12)            # group delay per interval
+    # Peak group delay across all frequency intervals
+    group_delay_peak = jnp.max(tau_g)
 
     # ═══════════════════════════════════════════════════════════════════
     # MULTI-PORT SEGMENTED S₁₁ (Kirkwood/orbital mode quantization)
@@ -1120,9 +1143,15 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     # Rg emerges from S₁₁ cascade + P_C saturation alone.
 
     # Spectral contrast reward: 1/N_FREQ normalisation (same scale as s11_avg)
+    # Group delay reward: τ_g_peak / N (normalized by transit time)
+    # Axiom 4 saturation on group delay: can't exceed transit time N
+    tau_g_sat = group_delay_peak * jnp.sqrt(
+        jnp.clip(1.0 - (group_delay_peak / (N + 1e-12))**2, 1e-12, 1.0)
+    )
     return (s11_avg + steric_penalty + jnp.maximum(0.0, port_loss)
             + rama_penalty + xtalk_loss
-            - spectral_contrast / N_FREQ)
+            - spectral_contrast / N_FREQ
+            - tau_g_sat / N)
 
 
 # JIT compile — N is now dynamic (not static_argnums)
