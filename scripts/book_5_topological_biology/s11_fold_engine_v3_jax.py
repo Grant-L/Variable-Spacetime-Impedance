@@ -614,6 +614,10 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     # Triple product at each interior segment: (b_{i} × b_{i+1}) · b_{i+2}
     cross = jnp.cross(bonds[:-2], bonds[1:-1])       # (N-3, 3)
     triple = jnp.sum(cross * bonds[2:], axis=1)       # (N-3,)
+    # Chirality limiter: tanh is the correct operator for PHASE signals
+    # (monotonically saturates to ±1). Tested Axiom 4 √(1−x²) but it
+    # peaks at x=1/√2 then DROPS — suppresses large chirality (SS 24%→12%).
+    # Axiom 4 √(1−x²) is for ENERGY saturation (faddeev_skyrme.py), not phase.
     chi_signal = jnp.tanh(triple / CHI_SCALE)
 
     # Helix propensity: chirality matters most for low-Z residues
