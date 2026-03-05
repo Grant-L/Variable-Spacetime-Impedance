@@ -1552,7 +1552,7 @@ def fold_cotranslational(sequence, steps_per_residue=200, lr=2e-3,
             print(f"    k={k}: loss={loss_k:.4f} ({time.time()-t_step:.1f}s)",
                   flush=True)
     
-    # Build final coordinates from full-chain angles
+    # Build final coordinates from co-translationally folded angles
     phi_final = jnp.array(all_phi)
     psi_final = jnp.array(all_psi)
     coords_flat = _torsions_to_backbone(phi_final, psi_final, N)
