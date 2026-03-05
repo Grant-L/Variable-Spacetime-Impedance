@@ -518,39 +518,31 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     
     # --- P_C GLOBAL PACKING SATURATION (Trace Reversal at Protein Scale) ---
     # Same Axiom 4 operator as galactic rotation (galactic_rotation.py L180):
-    #   Galaxy:  g_drag = √(g_N·a₀) × √(1 - g_N/a₀)  → drag saturates at a₀
-    #   Protein: burial_benefit × √(1 - η/P_C)         → burial saturates at P_C
+    #   Galaxy:  S = √(1 - g_N/a₀)  — varies spatially across the disk
+    #   Protein: S = √(1 - η/P_C)   — global packing fraction
     #
-    # When global packing η → P_C (trace reversal, K=2G):
-    #   burial benefit → 0, exposure_min → 1
-    #   → solvent shunt stays high → no more compaction reward
-    #   → expansion until η = P_C → equilibrium at Rg_eq
-    #
-    # Compute global packing fraction
+    # NOTE: Tested per-residue S(η_i) using local n_neighbors (semiconductor
+    # depletion region analogy). SS dropped 33%→11% because helix contacts
+    # make helix regions "dense" → kills coupling at the SS formation site.
+    # The per-residue approach is correct in PRINCIPLE but requires the 2D
+    # S-parameter network (Ch.4) where contacts are TL segments, not Y-shunt.
     _com = jnp.mean(coords, axis=0)
     _Rg_sq = jnp.mean(jnp.sum((coords - _com)**2, axis=1))
     _R_eff = jnp.sqrt(5.0 / 3.0 * _Rg_sq + 1e-12)
     _eta = N * _r_Ca**3 / (_R_eff**3 + 1e-12)
     _eta_ratio = jnp.clip(_eta / P_C, 0.0, 0.999)
-    _sat_global = jnp.sqrt(1.0 - _eta_ratio**2)  # Axiom 4: 1 at η=0, 0 at η=P_C
-    
+    _sat_global = jnp.sqrt(1.0 - _eta_ratio**2)  # Axiom 4
+
     # Floor on exposure: at η=P_C, all residues are fully "exposed"
-    # (solvent pressure penetrates the entire structure)
-    exposure_floor = 1.0 - _sat_global  # 0 at η=0 (sparse), 1 at η=P_C (dense)
+    exposure_floor = 1.0 - _sat_global
     exposure = jnp.maximum(exposure_raw, exposure_floor)
 
-    # --- Core Packing Saturation (Inner Galaxy Analog) ---
-    # SAME Axiom 4 physics as galactic rotation (galactic_rotation.py L180):
-    #   Galaxy:  S = saturation_factor(g_N, a₀)  → drag saturates at a₀
-    #   Protein: S = saturation_factor(η, P_C)   → coupling saturates at P_C
-    #
-    # The GLOBAL packing fraction η = N×r³/R³ is the protein's "gravitational
-    # acceleration" — when dense (η > P_C), the vacuum can't support further
-    # coupling → trace reversal (K=2G) → structure must expand.
-    #
-    # Coefficient: 1 (no fitted weight — same as galactic rotation)
-    # _sat_global computed above in P_C burial saturation block (L411-420)
+    # Apply global saturation to Y_shunt
     Y_shunt = Y_shunt * _sat_global
+    # NOTE: Tested flat ν_vac = 2/7 mode projection here.
+    # SS dropped 33%→6% (Trp-cage). The projection should be DYNAMIC
+    # (via saturation, like galactic rotation), not a flat multiplier.
+    # The saturation_factor IS the mode projection mechanism.
     # ═══════════════════════════════════════════════════════════════════
     # FULL BACKBONE ABCD CASCADE (3N-1 segments)
     # ═══════════════════════════════════════════════════════════════════
