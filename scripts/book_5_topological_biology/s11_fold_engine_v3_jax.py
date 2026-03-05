@@ -723,6 +723,86 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
         s11_total = s11_total + s11_at_freq(f)
     s11_avg = s11_total / len(FREQ_SWEEP)
 
+    # ═══════════════════════════════════════════════════════════════════
+    # MULTI-PORT SEGMENTED S₁₁ (Kirkwood/orbital mode quantization)
+    # ═══════════════════════════════════════════════════════════════════
+    # For large N, the full cascade S₁₁ saturates (wave can't reach the
+    # C-terminus). Solution: inject at multiple ports along the chain
+    # and measure local S₁₁ per segment — like Kirkwood gap mode numbers
+    # vs individual particle orbits, or electron orbital quantization.
+    #
+    # Coherence length: N_COH = 2Q = 14 backbone segments ≈ 5 residues.
+    # For N ≤ 2Q/3: full cascade is coherent → s11_avg dominates.
+    # For N > 2Q/3: local measurements needed → segmented S₁₁.
+    #
+    # Weighting: Axiom 4 saturation between global and local:
+    #   w_local = √(1 - (N_COH/N)²)  → 0 at small N, 1 at large N
+    #   s11_combined = (1 - w_local) × s11_global + w_local × s11_local
+    #
+    N_COH = 2 * Q_BACKBONE  # = 14 backbone segments = coherence length
+    N_COH_RESIDUES = max(5, int(N_COH / 3))  # = 5 residues
+
+    # Number of segments for multi-port injection
+    n_ports = max(1, N // N_COH_RESIDUES)  # ~1 port per coherence length
+    port_starts = jnp.linspace(0, N - N_COH_RESIDUES, n_ports).astype(int)
+    port_starts = jnp.clip(port_starts, 0, N - 2)
+
+    def local_s11_at_port(port_start):
+        """S₁₁ of a local sub-cascade starting at backbone segment 3×port_start."""
+        seg_start = 3 * port_start
+        seg_end = jnp.minimum(3 * (port_start + N_COH_RESIDUES), n_bb_segs)
+
+        # Local cascade at center frequency (ω₀ = 1.0)
+        w = 2.0 * jnp.pi * 1.0  # center frequency
+        beta_arr = w * seg_d / seg_d0 - seg_chi
+        alpha_arr = jnp.abs(seg_d - seg_d0) / seg_d0
+        gamma_arr = alpha_arr + 1j * beta_arr
+        cosh_arr_l = jnp.cosh(gamma_arr)
+        sinh_arr_l = jnp.sinh(gamma_arr)
+
+        init = jnp.array([1.0 + 0j, 0.0 + 0j, 0.0 + 0j, 1.0 + 0j])
+
+        def step_local(i, state):
+            A, B, C, D = state[0], state[1], state[2], state[3]
+            # Only update when within [seg_start, seg_end)
+            active = ((i >= seg_start) & (i < seg_end)).astype(jnp.float64)
+            ch = cosh_arr_l[jnp.clip(i, 0, n_bb_segs - 1)]
+            sh = sinh_arr_l[jnp.clip(i, 0, n_bb_segs - 1)]
+            Zc = seg_Zc[jnp.clip(i, 0, n_bb_segs - 1)] + 1e-12
+            # TL update (only when active)
+            A_n = A * ch + B * (sh / Zc)
+            B_n = A * (Zc * sh) + B * ch
+            C_n = C * ch + D * (sh / Zc)
+            D_n = C * (Zc * sh) + D * ch
+            # Junction shunt
+            j_idx = jnp.clip(i, 0, n_junctions - 1)
+            Y = jnp.where(i < n_junctions, seg_Y_base[j_idx], 0.0)
+            C_n = C_n + Y * A_n
+            D_n = D_n + Y * B_n
+            # Mix: active → updated, inactive → identity
+            A_out = active * A_n + (1.0 - active) * A
+            B_out = active * B_n + (1.0 - active) * B
+            C_out = active * C_n + (1.0 - active) * C
+            D_out = active * D_n + (1.0 - active) * D
+            return jnp.array([A_out, B_out, C_out, D_out])
+
+        final = lax.fori_loop(0, n_bb_segs, step_local, init)
+        A, B, C, D = final[0], final[1], final[2], final[3]
+        numer = A + B / Z0 - C * Z0 - D
+        denom = A + B / Z0 + C * Z0 + D + 1e-20
+        g = numer / denom
+        return jnp.real(g * jnp.conj(g))
+
+    # Compute local S₁₁ at each port
+    local_s11_vals = jnp.array([local_s11_at_port(ps) for ps in port_starts])
+    s11_local = jnp.mean(local_s11_vals)
+
+    # Axiom 4 weighting: transition from global → local as N increases
+    # w_local = √(1 - (N_COH/(3N))²) — same saturation form
+    coh_ratio = jnp.clip(N_COH / (3.0 * N), 0.0, 0.999)
+    w_local = jnp.sqrt(1.0 - coh_ratio**2)
+    s11_combined = (1.0 - w_local) * s11_avg + w_local * s11_local
+
     # --- Cross-Coupled Cavity Filter ---
     # A folded protein is coupled resonant cavities, not a single cascade.
     # Layer 1: Adjacent segment coupling through turns (local junctions)
@@ -770,8 +850,10 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     junction_loss = (jnp.sum(s_self_arr**2) - jnp.sum(s21_arr**2)) / N
 
     # Layer 2: Non-adjacent cross-coupling (helix1↔helix3 near-field)
+    # Dynamic K_SEG: scales with chain length beyond coherence regime
+    # K_SEG = max(4, ceil(N / N_COH_RESIDUES)) — one segment per coherence length
+    K_SEG = max(4, (N + N_COH_RESIDUES - 1) // N_COH_RESIDUES)
     cum_turn = jnp.concatenate([jnp.array([0.0]), jnp.cumsum(is_turn)])
-    K_SEG = 4
     cross_loss = 0.0
     for p in range(K_SEG):
         for q in range(p + 2, K_SEG):
@@ -802,7 +884,8 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     eta_ratio = jnp.clip(eta / P_C, 0.0, 0.999)     # normalised to P_C
     sat_packing = jnp.sqrt(1.0 - eta_ratio**2)       # Axiom 4 saturation
 
-    port_loss = (junction_loss + cross_loss / N) * sat_packing
+    # Use combined S₁₁ (global + local) instead of just global
+    port_loss = (s11_combined + junction_loss + cross_loss / N) * sat_packing
 
     # Steric repulsion — Pauli exclusion (Axiom 2)
     # d₀ = 3.8 Å: backbone step provides effective exclusion zone.
