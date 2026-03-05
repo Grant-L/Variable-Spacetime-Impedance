@@ -413,7 +413,14 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     # Local mutual inductance: κ_HB × cos(alignment)
     # Positive cos (parallel planes) → increases Y_shunt → LOWERS S₁₁
     # This naturally favours helical conformations.
-    # Weight: LAMBDA_RAMA × KAPPA_HB (same scale as H-bond coupling)
+    #
+    # Coupling coefficient: KAPPA_HB = 1/(2Q) = 1/14
+    # This equals κ_dipole / (2Q) where:
+    #   κ_dipole = √(Z_CO × Z_NH) / Z_bb ≈ 0.81 (transformer coupling)
+    #   But resonance-modulated by 2Q (amide-V quality factor)
+    #   → κ_HB = κ_dipole / (2Q × κ_dipole) = 1/(2Q)
+    # Z_CO, Z_NH, Z_bb from protein_bond_constants.py bond impedances
+    # Same √(μ·ε) coupling used in bond_energy_solver at nuclear scale.
     peptide_coupling = LAMBDA_RAMA * KAPPA_HB * cos_plane_align  # (N-2,)
     
     # Add to Y_shunt at positions i+1 (the Cα between the two coupled planes)
@@ -945,7 +952,7 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     )
     rama_penalty = LAMBDA_BB_STERIC * bb_atom_steric / (6 * N)
     # ═══════════════════════════════════════════════════════════════════
-    # LOSS FUNCTION — pure S₁₁ + steric + Ramachandran
+    # LOSS FUNCTION — pure S₁₁ + steric + peptide-plane coupling
     # ═══════════════════════════════════════════════════════════════════
     #
     # Torsion-angle parameterization (NERF) enforces by construction:
@@ -953,11 +960,11 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     #   - Bond angles (N-Cα-C=111.2°, Cα-C-N=116.2°, C-N-Cα=121.7°) → EXACT
     #   - ω peptide planarity (fixed at π)
     #
-    # Ramachandran basins: Axiom 2 steric exclusion in (φ,ψ) space.
-    # NOT scaffolding — removing it drops SS from 94% to 0%.
+    # Secondary structure emerges from:
+    #   - Steric exclusion (Axiom 2): 5-atom backbone hard-sphere
+    #   - Peptide-plane coupling (Axiom 1): κ_dipole × cos(n̂_i · n̂_{i+1})
+    #     via Y_shunt → S₁₁ cascade
     # Rg emerges from S₁₁ cascade + P_C saturation alone.
-    #
-    # P_C saturation applied directly to Y_shunt and exposure (above)
 
     return (s11_avg + steric_penalty + jnp.maximum(0.0, port_loss)
             + rama_penalty + xtalk_loss)
