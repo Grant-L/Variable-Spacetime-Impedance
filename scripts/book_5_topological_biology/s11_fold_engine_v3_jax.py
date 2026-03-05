@@ -334,7 +334,34 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     saturation_envelope = jnp.sqrt(1.0 - long_range_ratio**2)  # Axiom 4
     coupling = coupling * saturation_envelope
 
+    # --- Resonance-Aware Coupling (Manuscript Ch.4 Roadmap §1) ---
+    # Hydrophobic Y_shunt enters the BACKBONE cascade.  The backbone has
+    # quality factor Q = 7 (amide-V resonance), so a standing wave at
+    # position i decays as exp(-|Δi|/(2πQ)) along the chain.
+    #
+    # Coupling between residues i and j can only reinforce backbone
+    # periodicity if j is within the Q-decay envelope of i.  Beyond
+    # this, the coupling adds damping (Y_shunt) WITHOUT creating a
+    # resonance pattern → drowns the peptide-plane SS signal.
+    #
+    # Scale: 2πQ ≈ 44 residues (one full Q-decay length).
+    #   |i-j| = 4  (helix contact):  factor = 0.86
+    #   |i-j| = 20 (Trp-cage end):   factor = 0.64
+    #   |i-j| = 44 (1/e decay):      factor = 0.37
+    #   |i-j| = 76 (Ubiquitin end):  factor = 0.18
+    #
+    # This restores the Y-shunt balance: for large N, the N²-scaling
+    # hydrophobic coupling no longer overwhelms the N-scaling peptide-
+    # plane coupling that drives secondary structure emergence.
+    #
+    # No new parameters: Q_BACKBONE = 7.0 is already derived from
+    # the amide-V resonance (f₀/Δf = 23/3.3 THz, Axiom 1).
     idx = jnp.arange(N)
+    seq_sep = jnp.abs(idx[:, None] - idx[None, :]).astype(jnp.float64)
+    Q_decay_length = 2.0 * jnp.pi * Q_BACKBONE  # ≈ 44 residues
+    resonance_weight = jnp.exp(-seq_sep / Q_decay_length)
+    coupling = coupling * resonance_weight
+
     mask = jnp.abs(idx[:, None] - idx[None, :]) <= 2  # local backbone only
     coupling = jnp.where(mask, 0.0, coupling)
     Y_shunt = coupling.sum(axis=1)  # (N,)
