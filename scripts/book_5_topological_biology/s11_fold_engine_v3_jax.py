@@ -1432,6 +1432,140 @@ def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True, n_starts=3):
     return ca_final, [], [best_loss], bb_final
 
 
+def fold_cotranslational(sequence, steps_per_residue=200, lr=2e-3,
+                          k0=8, window=30, n_starts=1):
+    """
+    Co-translational folding: models the biological manufacturing process.
+    
+    BIOLOGY:
+      The ribosome synthesizes the protein N→C, one amino acid at a time.
+      Translation rate: ~6 aa/s (eukaryote) = 170 ms per residue.
+      α-helix forms in ~100 ns, β-turn in ~1 μs — 10⁵× faster.
+      → Each residue reaches EQUILIBRIUM before the next arrives.
+    
+    ALGORITHM:
+      1. Start with k₀=8 residues (minimum stable helix = 2 turns)
+      2. Optimize the sub-chain's torsion angles  
+      3. Add one residue, warm-start from previous solution
+      4. Repeat until the full chain is folded
+    
+    PARAMETERS (all biology-derived):
+      k₀ = 8:   minimum stable helix (2 turns × 3.6 residues/turn)
+      W = 30:   ribosome exit tunnel shields ~30 residues
+      steps_per_residue = 200: quasi-static (SS forms 10⁵× faster)
+    
+    The existing _s11_loss function handles any chain length via
+    JIT with static N. Each unique N is compiled once and cached.
+    """
+    N = len(sequence)
+    full_z_topo = compute_z_topo(sequence)
+    full_cys_mask = compute_cys_mask(sequence)
+    full_arom_mask = compute_aromatic_mask(sequence)
+    full_gly_mask = compute_gly_mask(sequence)
+    full_pro_mask = compute_pro_mask(sequence)
+    
+    # Initialize all angles randomly
+    np.random.seed(42)
+    all_phi = np.random.uniform(-np.pi, np.pi, N)
+    all_psi = np.random.uniform(-np.pi, np.pi, N)
+    
+    print(f"  Co-translational fold: N={N}, k₀={k0}, W={window}, "
+          f"steps/res={steps_per_residue}", flush=True)
+    
+    # Phase 1: Fold initial segment (k₀ residues) with full optimization
+    k = min(k0, N)
+    z_k = full_z_topo[:k]
+    cys_k = full_cys_mask[:k]
+    arom_k = full_arom_mask[:k]
+    gly_k = full_gly_mask[:k]
+    pro_k = full_pro_mask[:k]
+    
+    angles_k = jnp.concatenate([jnp.array(all_phi[:k]),
+                                 jnp.array(all_psi[:k])])
+    
+    # Initial segment gets more steps (nucleation)
+    optimizer = optax.adam(lr)
+    opt_state = optimizer.init(angles_k)
+    key = jax.random.PRNGKey(42)
+    
+    t0 = time.time()
+    # JIT warmup for initial size
+    _ = _torsion_loss_jit(angles_k, z_k, cys_k, arom_k, gly_k, pro_k, k)
+    _ = _torsion_grad_jit(angles_k, z_k, cys_k, arom_k, gly_k, pro_k, k)
+    print(f"    JIT compiled for k={k} in {time.time()-t0:.1f}s", flush=True)
+    
+    n_init_steps = steps_per_residue * 5  # 5× more for nucleation
+    for step in range(n_init_steps):
+        g = _torsion_grad_jit(angles_k, z_k, cys_k, arom_k, gly_k, pro_k, k)
+        g = jnp.where(jnp.isnan(g), 0.0, g)
+        g_norm = jnp.sqrt(jnp.sum(g**2) + 1e-12)
+        g = jnp.where(g_norm > 10.0, g * 10.0 / g_norm, g)
+        updates, opt_state = optimizer.update(g, opt_state)
+        angles_k = optax.apply_updates(angles_k, updates)
+        # Anneal during first half
+        if step < n_init_steps * 0.5:
+            T = 0.05 * (1.0 - step / (n_init_steps * 0.5)) ** 2
+            key, subkey = jax.random.split(key)
+            angles_k = angles_k + jax.random.normal(subkey, shape=angles_k.shape) * T
+    
+    loss_k = float(_torsion_loss_jit(angles_k, z_k, cys_k, arom_k, gly_k, pro_k, k))
+    all_phi[:k] = np.array(angles_k[:k])
+    all_psi[:k] = np.array(angles_k[k:])
+    print(f"    k={k}: loss={loss_k:.4f} ({time.time()-t0:.0f}s)", flush=True)
+    
+    # Phase 2: Grow chain one residue at a time
+    for k in range(k0 + 1, N + 1):
+        t_step = time.time()
+        # Prepare sub-chain of length k
+        z_k = full_z_topo[:k]
+        cys_k = full_cys_mask[:k]
+        arom_k = full_arom_mask[:k]
+        gly_k = full_gly_mask[:k]
+        pro_k = full_pro_mask[:k]
+        
+        # Warm-start: use previously optimized angles + random for new residue
+        angles_k = jnp.concatenate([
+            jnp.array(all_phi[:k]),
+            jnp.array(all_psi[:k])
+        ])
+        
+        # Fresh optimizer for each growth step
+        optimizer = optax.adam(lr)
+        opt_state = optimizer.init(angles_k)
+        
+        for step in range(steps_per_residue):
+            g = _torsion_grad_jit(angles_k, z_k, cys_k, arom_k, gly_k, pro_k, k)
+            g = jnp.where(jnp.isnan(g), 0.0, g)
+            g_norm = jnp.sqrt(jnp.sum(g**2) + 1e-12)
+            g = jnp.where(g_norm > 10.0, g * 10.0 / g_norm, g)
+            updates, opt_state = optimizer.update(g, opt_state)
+            angles_k = optax.apply_updates(angles_k, updates)
+        
+        # Store optimized angles
+        all_phi[:k] = np.array(angles_k[:k])
+        all_psi[:k] = np.array(angles_k[k:])
+        
+        # Progress reporting every 10 residues
+        if k % 10 == 0 or k == N:
+            loss_k = float(_torsion_loss_jit(angles_k, z_k, cys_k, arom_k,
+                                              gly_k, pro_k, k))
+            print(f"    k={k}: loss={loss_k:.4f} ({time.time()-t_step:.1f}s)",
+                  flush=True)
+    
+    # Build final coordinates from full-chain angles
+    phi_final = jnp.array(all_phi)
+    psi_final = jnp.array(all_psi)
+    coords_flat = _torsions_to_backbone(phi_final, psi_final, N)
+    bb_final = np.array(coords_flat.reshape(N, 3, 3))
+    ca_final = bb_final[:, 1, :]
+    final_loss = float(_torsion_loss_jit(
+        jnp.concatenate([phi_final, psi_final]),
+        full_z_topo, full_cys_mask, full_arom_mask, full_gly_mask,
+        full_pro_mask, N))
+    print(f"    Final loss (N={N}): {final_loss:.4f}", flush=True)
+    return ca_final, [], [final_loss], bb_final
+
+
 def fold_hierarchical(sequence, n_steps=5000, lr=1e-3):
     """
     Upgrade 5: Hierarchical Fold-Then-Pack.
