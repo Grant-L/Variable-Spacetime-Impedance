@@ -827,68 +827,59 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     # Zero out H for Proline (no amide H)
     h_pos = jnp.where(pro_mask[:, None] > 0.5, atom_N, h_pos)
     
-    # --- Steric exclusion radii ---
-    # The VdW sum (r_i + r_j) gives the LJ zero-crossing distance r_min,
-    # NOT the hard-sphere exclusion. Atoms CAN approach closer than r_min
-    # (e.g. helices: Cβ-C(i-1) = 3.20 Å < r_min = 3.4 Å).
-    #
-    # The correct hard-sphere exclusion is the LJ repulsive distance:
-    #   σ = r_min / 2^(1/6) ≈ 0.891 × r_min
-    #
-    # This is pure LJ geometry (Axiom 2 potential shape), not tuning.
+    # --- LJ σ distances (zero-crossing = VdW sum / 2^(1/6)) ---
     SIGMA_FACTOR = 1.0 / (2.0 ** (1.0/6.0))  # ≈ 0.891
+    R_O_CB = (1.52 + 1.70) * SIGMA_FACTOR  # ≈ 2.87 Å
+    R_O_N  = (1.52 + 1.55) * SIGMA_FACTOR  # ≈ 2.73 Å
+    R_O_O  = (1.52 + 1.52) * SIGMA_FACTOR  # ≈ 2.71 Å
+    R_H_C  = (1.20 + 1.70) * SIGMA_FACTOR  # ≈ 2.58 Å
+    R_H_CB = (1.20 + 1.70) * SIGMA_FACTOR  # ≈ 2.58 Å
+    R_H_O  = (1.20 + 1.52) * SIGMA_FACTOR  # ≈ 2.42 Å
+    R_CB_N = (1.70 + 1.55) * SIGMA_FACTOR  # ≈ 2.90 Å
+    R_CB_C = (1.70 + 1.70) * SIGMA_FACTOR  # ≈ 3.03 Å
+    R_CB_CB = (1.70 + 1.70) * SIGMA_FACTOR # ≈ 3.03 Å
     
-    R_O_CB = (1.52 + 1.70) * SIGMA_FACTOR  # ≈ 2.87 Å — O-Cβ
-    R_O_N  = (1.52 + 1.55) * SIGMA_FACTOR  # ≈ 2.73 Å — O-N
-    R_O_O  = (1.52 + 1.52) * SIGMA_FACTOR  # ≈ 2.71 Å — O-O
-    R_H_C  = (1.20 + 1.70) * SIGMA_FACTOR  # ≈ 2.58 Å — H-C
-    R_H_CB = (1.20 + 1.70) * SIGMA_FACTOR  # ≈ 2.58 Å — H-Cβ
-    R_H_O  = (1.20 + 1.52) * SIGMA_FACTOR  # ≈ 2.42 Å — H-O
+    # Bonded-pair masks
+    oh_mask = jnp.abs(idx[:, None] - idx[None, :]) >= 2  # O/H: exclude bonded O=C-N-H
+    cb_mask = jnp.abs(idx[:, None] - idx[None, :]) >= 1  # Cβ: stub, not main chain
     
-    R_CB_N = (1.70 + 1.55) * SIGMA_FACTOR  # ≈ 2.90 Å — Cβ-N
-    R_CB_C = (1.70 + 1.70) * SIGMA_FACTOR  # ≈ 3.03 Å — Cβ-C (helix at 3.20: ALLOWED)
-    R_CB_CB = (1.70 + 1.70) * SIGMA_FACTOR # ≈ 3.03 Å — Cβ-Cβ
-    
-    # LOCAL masks for different atom types:
-    # O/H cross-terms: |i-j| >= 2 (O_i-H_{i+1} is bonded at 1.50 Å: O=C-N-H)
-    # Cβ cross-terms:  |i-j| >= 1 (Cβ is a stub, not in main chain)
-    oh_mask = jnp.abs(idx[:, None] - idx[None, :]) >= 2
-    cb_mask = jnp.abs(idx[:, None] - idx[None, :]) >= 1
+    # --- Backbone atom steric exclusion (Axiom 2: Pauli) ---
+    # Hard-sphere at σ = VdW_sum / 2^(1/6) (LJ zero-crossing).
+    #
+    # NOTE: Full LJ 6-12 (with attractive well) was tested but causes
+    # gradient instability at backbone distances (2-3 Å). The (σ/r)^12
+    # repulsive wall is too steep. Future: use Morse potential or
+    # softer power law. The well depth would be ε = ℏω_amide/Q ≈ 0.46 kT
+    # (same pattern as K_MUTUAL at nuclear scale).
     
     # --- O steric ---
-    # O-Cβ (the PRIMARY Ramachandran constraint for φ)
     d_OCB = jnp.sqrt(jnp.sum((o_pos[:, None, :] - cb_pos[None, :, :])**2, axis=-1) + 1e-12)
     ocb_violations = jnp.maximum(0.0, R_O_CB - d_OCB) ** 2
     ocb_violations = jnp.where(oh_mask, ocb_violations, 0.0)
     
-    # O-N 
     d_ON = jnp.sqrt(jnp.sum((o_pos[:, None, :] - atom_N[None, :, :])**2, axis=-1) + 1e-12)
     on_violations = jnp.maximum(0.0, R_O_N - d_ON) ** 2
     on_violations = jnp.where(oh_mask, on_violations, 0.0)
     
-    # O-O
     d_OO = jnp.sqrt(jnp.sum((o_pos[:, None, :] - o_pos[None, :, :])**2, axis=-1) + 1e-12)
     oo_violations = jnp.maximum(0.0, R_O_O - d_OO) ** 2
     oo_mask = jnp.abs(idx[:, None] - idx[None, :]) >= 2
     oo_violations = jnp.where(oo_mask, oo_violations, 0.0)
     
     # --- H steric ---
-    # H-C (the PRIMARY Ramachandran constraint for ψ)
     d_HC = jnp.sqrt(jnp.sum((h_pos[:, None, :] - atom_C[None, :, :])**2, axis=-1) + 1e-12)
     hc_violations = jnp.maximum(0.0, R_H_C - d_HC) ** 2
     hc_violations = jnp.where(oh_mask, hc_violations, 0.0)
     
-    # H-Cβ
     d_HCB = jnp.sqrt(jnp.sum((h_pos[:, None, :] - cb_pos[None, :, :])**2, axis=-1) + 1e-12)
     hcb_violations = jnp.maximum(0.0, R_H_CB - d_HCB) ** 2
     hcb_violations = jnp.where(oh_mask, hcb_violations, 0.0)
     
-    # H-O
     d_HO = jnp.sqrt(jnp.sum((h_pos[:, None, :] - o_pos[None, :, :])**2, axis=-1) + 1e-12)
     ho_violations = jnp.maximum(0.0, R_H_O - d_HO) ** 2
     ho_violations = jnp.where(oh_mask, ho_violations, 0.0)
     
-    # --- Cβ-backbone steric (local) ---
+    # --- Cβ-backbone steric ---
     d_CBN = jnp.sqrt(jnp.sum((cb_pos[:, None, :] - atom_N[None, :, :])**2, axis=-1) + 1e-12)
     cbn_violations = jnp.maximum(0.0, R_CB_N - d_CBN) ** 2
     cbn_violations = jnp.where(cb_mask, cbn_violations, 0.0)
@@ -905,22 +896,18 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     
     # Total 5-atom backbone steric
     bb_atom_steric = (
-        # N, Cα(via Ca steric above), C backbone
         jnp.sum(jnp.triu(nn_violations, k=2)) +
         jnp.sum(jnp.triu(cc_violations, k=2)) +
         jnp.sum(jnp.triu(nc_violations, k=2)) +
         jnp.sum(jnp.triu(cn_violations, k=2)) +
-        # Cβ
         jnp.sum(cbn_violations) + jnp.sum(cbc_violations) +
         jnp.sum(jnp.triu(cbcb_violations, k=3)) +
-        # O (carbonyl)
         jnp.sum(ocb_violations) + jnp.sum(on_violations) +
         jnp.sum(jnp.triu(oo_violations, k=2)) +
-        # H (amide)
         jnp.sum(hc_violations) + jnp.sum(hcb_violations) +
         jnp.sum(ho_violations)
     )
-    rama_penalty = LAMBDA_BB_STERIC * bb_atom_steric / (6 * N)  # 6 atoms: N, Cα, C, O, H, Cβ
+    rama_penalty = LAMBDA_BB_STERIC * bb_atom_steric / (6 * N)
     # ═══════════════════════════════════════════════════════════════════
     # LOSS FUNCTION — pure S₁₁ + steric + Ramachandran
     # ═══════════════════════════════════════════════════════════════════
