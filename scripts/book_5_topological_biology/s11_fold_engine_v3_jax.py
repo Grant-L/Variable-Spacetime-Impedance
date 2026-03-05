@@ -347,73 +347,47 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     pi_coupling = jnp.where(mask, 0.0, pi_coupling)  # exclude i,i±1,i±2
     Y_pi = pi_coupling.sum(axis=1)
     Y_shunt = Y_shunt + Y_pi
-    # --- Upgrade 8: H-Bond Mutual Inductance (Real O···H Geometry) ---
-    # Backbone H-bonds are mutual inductance between N-H (donor) and C=O (acceptor)
-    # dipoles. Uses actual O_i···H_j distances instead of N-C proxy.
+    # --- Upgrade 8: H-Bond Mutual Inductance (Backbone TL Node Coupling) ---
+    # H-bonds are mutual inductance between backbone LC sections (Axiom 1).
+    # Coupling uses N_i···C_j distance — these are TL NODES, not a proxy.
+    #
+    # EE rationale: In the ABCD cascade (line 520), the backbone is a
+    # cascaded TL with segments N-Cα-C. Y_shunt enters at Cα junctions
+    # (line 626). The coupling between two sections depends on the
+    # distance between TL NODES (backbone N, C atoms), not between
+    # dipole endpoints (O, H atoms). Same as transformer coupling:
+    # k depends on distance between COIL CENTERS, not field line tips.
     #
     # Axiom trace: κ_HB = 1/(2Q) = 1/14 (amide-V quality factor)
-    #
-    # O/H positions use stop_gradient to prevent gradient explosion
-    # through the cross-product peptide plane computations. Gradients
-    # flow through the backbone (N, Cα, C) coordinates only.
     
-    # --- Compute O positions (C=O at 121.4° from Cα-C, in peptide plane) ---
-    D_C_O_hb = 1.23   # Å — C=O bond length
-    THETA_CO_hb = jnp.radians(121.4)
-    v_CaC_hb = atom_C[:-1] - atom_Ca[:-1]
-    v_CN_hb = atom_N[1:] - atom_C[:-1]
-    v_CaC_hb_n = v_CaC_hb / (jnp.sqrt(jnp.sum(v_CaC_hb**2, axis=-1, keepdims=True)) + 1e-12)
-    v_CN_hb_n = v_CN_hb / (jnp.sqrt(jnp.sum(v_CN_hb**2, axis=-1, keepdims=True)) + 1e-12)
-    plane_o = jnp.cross(v_CaC_hb_n, v_CN_hb_n)
-    plane_o = plane_o / (jnp.sqrt(jnp.sum(plane_o**2, axis=-1, keepdims=True)) + 1e-12)
-    o_dir_hb = (-v_CaC_hb_n * jnp.cos(THETA_CO_hb) + 
-                jnp.cross(plane_o, -v_CaC_hb_n) * jnp.sin(THETA_CO_hb))
-    o_inner = atom_C[:-1] + D_C_O_hb * o_dir_hb
-    o_last = atom_C[-1:] + D_C_O_hb * (atom_C[-1:] - atom_Ca[-1:]) / (jnp.sqrt(jnp.sum((atom_C[-1:]-atom_Ca[-1:])**2, axis=-1, keepdims=True)) + 1e-12)
-    o_hb = jax.lax.stop_gradient(jnp.concatenate([o_inner, o_last], axis=0))  # (N, 3)
+    # Pairwise N_i to C_j distances (backbone TL node separation)
+    diff_NC = atom_N[:, None, :] - atom_C[None, :, :]  # (N, N, 3)
+    d_NC = jnp.sqrt(jnp.sum(diff_NC**2, axis=-1) + 1e-12)  # (N, N)
     
-    # --- Compute H positions (N-H at 119.2° from Cα-N, in peptide plane) ---
-    D_N_H_hb = 1.01   # Å — N-H bond length
-    THETA_NH_hb = jnp.radians(119.2)
-    v_NCa_hb = atom_Ca[1:] - atom_N[1:]
-    v_NC_hb = atom_C[:-1] - atom_N[1:]
-    v_NCa_hb_n = v_NCa_hb / (jnp.sqrt(jnp.sum(v_NCa_hb**2, axis=-1, keepdims=True)) + 1e-12)
-    v_NC_hb_n = v_NC_hb / (jnp.sqrt(jnp.sum(v_NC_hb**2, axis=-1, keepdims=True)) + 1e-12)
-    plane_h_hb = jnp.cross(v_NCa_hb_n, v_NC_hb_n)
-    plane_h_hb = plane_h_hb / (jnp.sqrt(jnp.sum(plane_h_hb**2, axis=-1, keepdims=True)) + 1e-12)
-    h_dir_hb = (-v_NC_hb_n * jnp.cos(THETA_NH_hb) + 
-                jnp.cross(plane_h_hb, -v_NC_hb_n) * jnp.sin(THETA_NH_hb))
-    h_inner = atom_N[1:] + D_N_H_hb * h_dir_hb
-    h_first = atom_N[:1] + D_N_H_hb * (atom_N[:1] - atom_Ca[:1]) / (jnp.sqrt(jnp.sum((atom_N[:1]-atom_Ca[:1])**2, axis=-1, keepdims=True)) + 1e-12)
-    h_hb = jax.lax.stop_gradient(jnp.concatenate([h_first, h_inner], axis=0))  # (N, 3)
-    
-    # Pairwise O_i to H_j distances (real geometry)
-    diff_OH = o_hb[:, None, :] - h_hb[None, :, :]  # (N, N, 3)
-    d_OH = jnp.sqrt(jnp.sum(diff_OH**2, axis=-1) + 1e-12)  # (N, N)
-    
-    # Sequence separation mask: exclude |i-j| <= 2 (bonded O_i-H_{i+1} at ~2.5Å)
-    idx_oh = jnp.arange(N)
-    oh_hb_mask = jnp.abs(idx_oh[:, None] - idx_oh[None, :]) <= 2
+    # Sequence separation mask: exclude i, i±1, i±2 (local backbone)
+    idx_nc = jnp.arange(N)
+    nc_mask = jnp.abs(idx_nc[:, None] - idx_nc[None, :]) <= 2
     
     # Direction vectors for directional coupling:
-    # Donor direction at H_j: (N_j → H_j) normalised
-    donor_dir_hb = h_hb - atom_N  # (N, 3)
-    donor_norm_hb = jnp.sqrt(jnp.sum(donor_dir_hb**2, axis=-1, keepdims=True)) + 1e-12
-    donor_hat_hb = donor_dir_hb / donor_norm_hb  # (N, 3)
+    # Donor direction at N_i: (Cα_i → N_i) normalised ≈ N-H direction
+    # This IS the current direction in the TL (current flows N→Cα)
+    donor_dir = atom_N - atom_Ca  # (N, 3)
+    donor_norm = jnp.sqrt(jnp.sum(donor_dir**2, axis=-1, keepdims=True)) + 1e-12
+    donor_hat = donor_dir / donor_norm  # (N, 3)
     
-    # Separation unit vector: H_j → O_i (acceptor direction)
-    sep_hat_hb = -diff_OH / (d_OH[:, :, None] + 1e-12)  # (N, N, 3)
+    # Separation unit vector: N_i → C_j
+    sep_hat = diff_NC / (d_NC[:, :, None] + 1e-12)  # (N, N, 3)
     
-    # Angular factor: cos(θ) = dot(donor_hat_j, sep_hat_{i,j})
-    cos_theta_hb = jnp.sum(donor_hat_hb[None, :, :] * sep_hat_hb, axis=-1)  # (N, N)
-    cos_theta_hb = jnp.maximum(0.0, cos_theta_hb)
+    # Angular factor: cos(θ) = dot(donor_hat_i, sep_hat_{i,j})
+    cos_theta = jnp.sum(donor_hat[:, None, :] * (-sep_hat), axis=-1)  # (N, N)
+    cos_theta = jnp.maximum(0.0, cos_theta)
     
-    # H-bond proximity detection (real O···H distance)
-    hb_proximity = jax.nn.sigmoid(BETA_BURIAL * (D_HB_DETECT + d0 - d_OH))
+    # H-bond proximity detection
+    hb_proximity = jax.nn.sigmoid(BETA_BURIAL * (D_HB_DETECT + d0 - d_NC))
     
-    # Directional H-bond coupling using real O···H geometry
-    hb_coupling = LAMBDA_RAMA * KAPPA_HB * cos_theta_hb * jnp.exp(-d_OH / d0) * hb_proximity
-    hb_coupling = jnp.where(oh_hb_mask, 0.0, hb_coupling)
+    # Directional H-bond coupling (backbone TL node mutual inductance)
+    hb_coupling = LAMBDA_RAMA * KAPPA_HB * cos_theta * jnp.exp(-d_NC / d0) * hb_proximity
+    hb_coupling = jnp.where(nc_mask, 0.0, hb_coupling)
     
     Y_hbond = hb_coupling.sum(axis=1)  # (N,)
     Y_shunt = Y_shunt + Y_hbond
