@@ -13,10 +13,12 @@ Each amino acid sidechain maps to a complex topological impedance coefficient $Z
 \subsection{Quantitative $Z_{topo}$ from SPICE Backbone Impedance}
 
 The topological impedance coefficient is not an arbitrary propensity score. It is a direct physical ratio derived from the Chapter~\ref{ch:biological_circuitry} SPICE transfer function analysis. For a given amino acid with R-group shunt impedance $Z_R(\omega)$ at the backbone passband frequency $\omega_0 \approx 2\pi \times 23$ THz (the backbone amide V resonance from Table~\ref{tab:batch_resonance}):
+\begin{resultbox}{Topological Impedance}
 \begin{equation}
     Z_{topo} \;\equiv\; \frac{|Z_{\text{backbone}}(\omega_0)|}{|Z_R(\omega_0)|}
     \label{eq:z_topo_def}
 \end{equation}
+\end{resultbox}
 where $Z_{\text{backbone}}$ is the characteristic impedance of the N--C$_\alpha$--C repeating unit. When $|Z_R| \gg |Z_{\text{backbone}}|$, the sidechain is effectively invisible to the backbone wave and the chain curls freely (helix). When $|Z_R| \lesssim |Z_{\text{backbone}}|$, the sidechain mass loads the junction node, creating destructive interference and steric clashes that force the chain to flatten (sheet).
 
 Table~\ref{tab:z_topo_values} lists the \emph{ab initio} derived complex $Z_{topo}$ values.  The resistive component $R$ is computed from the ratio of R-group to backbone characteristic impedance:
@@ -154,11 +156,13 @@ where $d_{\text{hb}} = 5.4$~\AA\ is the ideal $C_\alpha(i)$--$C_\alpha(i{+}4)$ d
 
 \paragraph{7. $S_{11}$ Feedback Gain Modulation (PID Error Signal).}
 The preceding forces operate in an open-loop fashion: each is computed independently from the current geometry. To close the loop between the 1D impedance model and the 3D engine, we compute the local reflection coefficient $\Gamma(i)$ at each backbone junction:
+\begin{resultbox}{$S_{11}$ Feedback Gain Modulation (PID Error Signal)}
 \begin{equation}
     \Gamma_i = \frac{Z_{topo}^{(i+1)} - Z_{topo}^{(i)}}{Z_{topo}^{(i+1)} + Z_{topo}^{(i)}}, \qquad
     g_i = 1 + |\Gamma_i|^2
     \label{eq:s11_feedback}
 \end{equation}
+\end{resultbox}
 The gain factor $g_i \in [1, 2]$ multiplies all forces at residue $i$. Where $S_{11}$ is high (impedance mismatch), forces are amplified to drive more aggressive structural adjustment. Where $S_{11}$ is low (good match), forces relax---the chain is locally converged. In PID terms: $|\Gamma|^2$ is the proportional error, and the gain modulation is the controller output. This feedback is computed every 500 gradient steps to amortise cost.
 
 \paragraph{Numerical Stability.}
@@ -377,10 +381,12 @@ Villin HP35 (3-helix)       & 1YRF & 35 & 7.31 & 6.5 & 8.9 & $102^\circ$ & $82^\
 The eight-force engine encodes each physical effect as a separate force term with its own spring constant. A more fundamental AVE approach asks: \emph{can every structural feature emerge from a single impedance-matching criterion?}
 
 We replace all eight forces with a single objective function:
+\begin{resultbox}{$S_{11}$ Objective Function}
 \begin{equation}
     E(\mathbf{r}) = |S_{11}(\mathbf{r})|^2 \quad \text{where } S_{11} = \frac{A + B/Z_0 - CZ_0 - D}{A + B/Z_0 + CZ_0 + D}
     \label{eq:s11_energy}
 \end{equation}
+\end{resultbox}
 and the ABCD matrix is the cascaded product of backbone sections with \emph{conjugate impedance matching}:
 \begin{equation}
     Y_{ij}^{\text{shunt}} = \frac{\kappa}{d_{ij}^2} \cdot \max\!\left(0,\; \frac{\operatorname{Re}(Z_i \, Z_j^*)}{|Z_i|\,|Z_j|}\right) \qquad \text{for } |i - j| > 2, \; d_{ij} < 15\,\text{\AA}

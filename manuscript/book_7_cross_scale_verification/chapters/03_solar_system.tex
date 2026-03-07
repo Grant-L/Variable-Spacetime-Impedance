@@ -9,11 +9,13 @@
 
 The solar wind creates a radial impedance profile extending from
 the photosphere to the interstellar medium:
+\begin{resultbox}{Heliospheric Impedance Profile}
 \begin{equation}
     Z_{sw}(r) = \frac{Z_0}{\sqrt{1 - (\omega_p(r)/\omega)^2}},
     \quad n_e(r) = n_0 \left(\frac{1\;\text{AU}}{r}\right)^2
     \label{eq:heliospheric_Z}
 \end{equation}
+\end{resultbox}
 The heliopause at $\sim$120~AU acts as an impedance boundary
 where $n_e$ drops sharply to interstellar values.
 
@@ -24,12 +26,14 @@ The anomalous non-gravitational acceleration of 'Oumuamua
 ($a_{\text{obs}} \approx 5.0 \times 10^{-6}$~m/s$^2$ at 1~AU,
 scaling as $1/r^2$) is naturally explained by solar radiation
 pressure on a high area-to-mass body:
+\begin{resultbox}{'Oumuamua Non-Gravitational Acceleration}
 \begin{equation}
     a_{\text{rad}} = \frac{L_\odot}{4\pi r^2 c} \cdot
     \frac{A}{m} \approx 4.54 \times 10^{-6}\;\text{m/s}^2
     \quad (A/m \approx 1\;\text{m}^2/\text{kg})
     \label{eq:oumuamua_accel}
 \end{equation}
+\end{resultbox}
 This gives a 91\% match with zero free parameters.
 
 \section{Oort Cloud as Saturation Boundary}
@@ -37,6 +41,7 @@ This gives a 91\% match with zero free parameters.
 
 The inner boundary of the Oort Cloud corresponds to the radius where
 solar gravitational acceleration reaches the MOND threshold:
+\begin{resultbox}{Oort Cloud Saturation Boundary}
 \begin{equation}
     g_N(r) = \frac{GM_\odot}{r^2} = a_0
     \quad\longrightarrow\quad
@@ -44,6 +49,7 @@ solar gravitational acceleration reaches the MOND threshold:
     \approx 7{,}400\;\text{AU}
     \label{eq:oort_saturation}
 \end{equation}
+\end{resultbox}
 This falls within the observed Hills Cloud range (2,000--5,000~AU inner edge),
 confirming that the Oort Cloud is the solar system's \textit{impedance boundary}.
 
@@ -76,12 +82,14 @@ $a_{\text{gap}} = a_J \cdot (q/p)^{2/3}$.  All five major gaps
 Each planet's magnetic dipole field creates a magnetopause:
 the boundary where magnetic pressure balances solar wind
 dynamic pressure.  In impedance terms:
+\begin{resultbox}{Planetary Magnetopause Standoff}
 \begin{equation}
     \frac{B^2(r_{mp})}{2\mu_0} = \frac{1}{2}\rho_{sw} v_{sw}^2
     \quad\longrightarrow\quad
     r_{mp} = R_p \left(\frac{B_{eq}^2}{2\mu_0 P_{sw}}\right)^{1/6}
     \label{eq:magnetopause}
 \end{equation}
+\end{resultbox}
 The reflection coefficient $\Gamma$ at the magnetopause is computed
 using the same \texttt{reflection\_coefficient()} function as all
 other domains.
@@ -90,9 +98,11 @@ other domains.
 
 At the magnetopause, the reflected solar wind superposes with the
 incident field.  By transmission line theory:
+\begin{resultbox}{Chapman-Ferraro Boundary Enhancement}
 \begin{equation}
     B_{eff} = B_{dipole} \times (1 + |\Gamma|)
 \end{equation}
+\end{resultbox}
 For a highly reflective boundary, $B_{eff} \to 2 B_{dipole}$, giving
 $4\times$ pressure enhancement.  This is the Chapman-Ferraro result
 derived from first principles of impedance matching.
@@ -101,9 +111,11 @@ derived from first principles of impedance matching.
 
 Trapped magnetospheric particles contribute pressure via the adiabatic
 invariant.  The trapped fraction is derived from the dipole loss cone:
+\begin{resultbox}{Dipole Loss Cone Trapped Fraction}
 \begin{equation}
     f_{trap} = 1 - \sqrt{1 - (R_p/R_{mp})^3}
 \end{equation}
+\end{resultbox}
 
 \subsection{Jupiter: Io Plasma Torus}
 

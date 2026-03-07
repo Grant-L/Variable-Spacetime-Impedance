@@ -1,71 +1,13 @@
 \documentclass[11pt, letterpaper, openright]{book}
 
-% =========================================
-% PREAMBLE: THE ENGINEERING AESTHETIC
-% =========================================
+% --- Shared Preamble (packages, layout, header/footer) ---
+\input{../manuscript/structure/preamble.tex}
 
-% --- Typography & Encoding ---
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{lmodern} 
-\usepackage{microtype} 
-
-% --- Layout & Geometry ---
-\usepackage[margin=1.2in, headheight=14pt]{geometry}
-\usepackage{fancyhdr} 
-\usepackage{emptypage} 
-
-% --- Mathematics & Science ---
-\usepackage{amsmath, amssymb, amsfonts}
-\usepackage{amsthm}
-\usepackage{mathtools}
-\usepackage{siunitx} 
-\usepackage{bm} 
-
-% --- Graphics & Floats ---
-\usepackage{graphicx}
+% --- Graphics Path (spice_manual-specific) ---
 \graphicspath{{../assets/}{../assets/figures/}{../assets/sim_outputs/}{assets/}{assets/sim_outputs/}}
-\usepackage{float}
-\usepackage{booktabs} 
-\usepackage{tabularx}
-\usepackage{caption}
-\usepackage[table,xcdraw]{xcolor}
 
-% --- Navigation & Linking ---
-\usepackage[hidelinks]{hyperref} 
-\usepackage{tocloft}
-
-% Custom abstract environment for book class
-\newenvironment{abstract}
-  {\small
-   \begin{center}
-   \bfseries Abstract\vspace{-.5em}\vspace{0pt}
-   \end{center}
-   \quotation}
-  {\endquotation} 
-
-% --- Code & Verbatim ---
-\usepackage{listings}
-\usepackage{tcolorbox}
-\tcbuselibrary{skins, breakable}
-
-% =========================================
-% CUSTOM COMMANDS & DEFINITIONS
-% =========================================
-% (Placeholder for commands, using standard definitions directly for now)
-\newcommand{\vacuum}{\ensuremath{M_A}}
-\newcommand{\slew}{\ensuremath{c}}
-\newcommand{\planck}{\ensuremath{\hbar}}
-\newcommand{\permeability}{\ensuremath{\mu_0}}
-\newcommand{\permittivity}{\ensuremath{\epsilon_0}}
-\newcommand{\impedance}{\ensuremath{Z_0}}
-
-% Header/Footer Configuration
-\pagestyle{fancy}
-\fancyhf{}
-\fancyhead[LE,RO]{\thepage}
-\fancyhead[RE]{\itshape Applied Vacuum Engineering}
-\fancyhead[LO]{\itshape\nouppercase{\leftmark}}
+% --- Shared Commands & Box Styles ---
+\input{../manuscript/structure/commands.tex}
 
 % =========================================
 % DOCUMENT STRUCTURE

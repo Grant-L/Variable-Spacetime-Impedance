@@ -44,13 +44,17 @@ To definitively visualize the macroscopic fluid-dynamic nature of this topologic
 The CFD integrations successfully modeling topological transit (such as Figure \ref{fig:warp_metric_cfd}) do not utilize a static linear wave equation. To produce the physical steepening that forms the Cherenkov bow-shocks, we must acknowledge that extreme local compression of the dielectric matrix physically increases its local stiffness ($K_{eff}$).
 
 The simulation engine integrates the following Non-Linear Scalar Wave Equation for continuous topological density ($\rho$):
+\begin{resultbox}{Non-Linear Scalar Wave Equation}
 \begin{equation}
     \frac{\partial^2 \rho}{\partial t^2} = \nabla \cdot (c_{eff}^2 \nabla \rho)
 \end{equation}
+\end{resultbox}
 where the effective local speed of sound (the speed of light $c_{eff}$) dynamically modulates based on the localized compression amplitude:
+\begin{resultbox}{Effective Speed of Sound (Steepening)}
 \begin{equation}
     c_{eff}^2 = c_0^2 \left( 1 + \kappa \bar{\rho} \right)
 \end{equation}
+\end{resultbox}
 Here, $\kappa$ represents the non-linear bulk steepening coefficient of the vacuum lattice, and $\bar{\rho}$ is the normalized local volumetric strain. As a macroscopic boundary accelerates forward, it compresses the vacuum ahead of it ($\bar{\rho} > 0$). This compression increases the local restorative stiffness, causing the crest of the induced wave to travel faster than its trough. This continuous self-steepening is the continuum-mechanical origin of the Alcubierre-type shock fronts calculated in the FDTD simulations.
 \begin{figure}[ht]
     \centering

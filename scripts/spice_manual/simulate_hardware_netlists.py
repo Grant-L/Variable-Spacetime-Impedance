@@ -21,7 +21,7 @@ import numpy as np
 project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
 sys.path.append(str(project_root / "src"))
 
-from ave.core.constants import ALPHA, M_E, C_0, e_charge, Z_0
+from ave.core.constants import ALPHA, M_E, C_0, e_charge, Z_0, L_NODE
 
 OUT_DIR = project_root / "spice_manual" / "assets" / "sim_outputs"
 os.makedirs(OUT_DIR, exist_ok=True)
@@ -35,8 +35,7 @@ def gen_ee_bench():
 
     # ── Derived constants ──
     V_yield = float((M_E * C_0**2 / e_charge) * np.sqrt(ALPHA))
-    l_node = 3.86e-13
-    E_yield = V_yield / l_node
+    E_yield = V_yield / L_NODE
 
     # ── Panel 1: ε_eff / ε₀ vs Gap Voltage ──
     # Delegates to the engine's saturation_factor (Axiom 4 kernel)

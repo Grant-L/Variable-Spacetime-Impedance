@@ -18,10 +18,12 @@ This chapter presents the AVE resolution in four steps.
 
 The AVE framework posits that the vacuum is an LC lattice with physical
 node spacing:
+\begin{resultbox}{Fundamental Lattice Pitch}
 \begin{equation}
     \ell_{node} = \frac{\hbar}{m_e c} \approx 3.86 \times 10^{-13}\;\text{m}
     \label{eq:lattice_pitch}
 \end{equation}
+\end{resultbox}
 Unlike Wilson's lattice QCD (where the lattice is a computational tool
 and the continuum limit $a \to 0$ must be taken), the AVE lattice spacing
 is \textit{the physical vacuum structure}.  No continuum limit is required
@@ -76,12 +78,12 @@ Substituting the plane-wave ansatz $V_n = V_0 e^{i(kn\ell - \omega t)}$:
 \end{equation}
 
 Therefore the \textbf{lattice dispersion relation} is:
+\begin{resultbox}{Lattice Dispersion Relation}
 \begin{equation}
-    \boxed{%
     \omega(k) = \frac{2c}{\ell}\;\left|\sin\!\left(\frac{k\ell}{2}\right)\right|
-    }
     \label{eq:lattice_dispersion}
 \end{equation}
+\end{resultbox}
 
 \begin{figure}[htbp]
 \centering
@@ -165,12 +167,12 @@ The soliton's topology is classified by the crossing number $c$ of
 its torus knot winding.  Each crossing constrains the phase gradient
 $\partial_r\phi$ by absorbing a fraction $1/c$ of the total
 Faddeev-Skyrme coupling $\kappa_{FS}$:
+\begin{resultbox}{Soliton Confinement Radius}
 \begin{equation}
-    \boxed{%
     r_{conf} = \frac{\kappa_{FS}}{c}
-    }
     \label{eq:confinement_radius}
 \end{equation}
+\end{resultbox}
 The $(2,q)$ torus knot ladder uses only odd $q$:
 \begin{center}
 \small
@@ -320,11 +322,13 @@ A $(2,q)$ torus knot on the lattice has $q$ crossings, each
 representing a $\pi$-rotation in the SU(2) sector (the fundamental
 spinor rotation).  The total phase winding of $q\pi$ decomposes
 into irreducible representations of SU($N$) where:
+\begin{resultbox}{SU(N) Gauge Group Emergence}
 \begin{equation}
-    \boxed{N = \frac{q+1}{2}}
+    N = \frac{q+1}{2}
     \quad\text{for odd } q
     \label{eq:gauge_rank}
 \end{equation}
+\end{resultbox}
 
 This gives the physical correspondence:
 
@@ -366,15 +370,15 @@ compact simple gauge group $G$ of rank $\le N$.
 %======================================================================
 
 The Hamiltonian is derived directly from Axioms~1--4:
+\begin{resultbox}{Explicit Lattice Hamiltonian}
 \begin{equation}
-    \boxed{%
     H = \sum_{n} \left[
     \frac{1}{2}\varepsilon_{eff}(\mathbf{E}_n)\,|\mathbf{E}_n|^2
     + \frac{1}{2\mu_{eff}(\mathbf{B}_n)}\,|\mathbf{B}_n|^2
     \right] \ell_{node}^3
-    }
     \label{eq:lattice_hamiltonian}
 \end{equation}
+\end{resultbox}
 where the saturation (Axiom~4) modifies the constitutive parameters:
 \begin{align}
     \varepsilon_{eff}(E) &= \varepsilon_0

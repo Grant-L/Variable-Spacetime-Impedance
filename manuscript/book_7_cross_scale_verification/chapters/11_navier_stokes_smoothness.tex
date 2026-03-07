@@ -25,13 +25,13 @@ This chapter presents the AVE resolution in three steps.
 
 On the AVE lattice with spacing $\ell_{node}$, the Navier-Stokes
 equations become a system of ODEs:
+\begin{resultbox}{Lattice Navier-Stokes Equations}
 \begin{equation}
-    \boxed{%
     \frac{du_n}{dt} = -u_n \cdot \nabla_{\ell} u_n
     + \nu \nabla^2_{\ell} u_n - \nabla_{\ell} p_n
-    }
     \label{eq:lattice_ns}
 \end{equation}
+\end{resultbox}
 where $\nabla_{\ell}$ is the discrete gradient and
 $\nabla^2_{\ell}$ is the discrete Laplacian:
 \begin{equation}
@@ -90,9 +90,11 @@ The maximum velocity on the AVE lattice is bounded by $c$.
 
     \item No energy, momentum, or information can propagate faster
     than $c$ on the lattice.  Therefore no fluid velocity can exceed $c$:
+    \begin{resultbox}{Absolute Velocity Bound}
     \begin{equation}
-        \boxed{|\mathbf{u}(x,t)| \le c \quad \forall\; x, t}
+        |\mathbf{u}(x,t)| \le c \quad \forall\; x, t
     \end{equation}
+    \end{resultbox}
     \hfill$\square$
 \end{enumerate}
 

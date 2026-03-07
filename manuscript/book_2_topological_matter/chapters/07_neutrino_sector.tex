@@ -30,14 +30,18 @@ Consequently, the neutrino avoids the dielectric saturation capacitance divergen
 The Standard Model exhibits a distinct geometric asymmetry: all experimentally observed neutrinos are strictly left-handed. The AVE framework derives parity violation directly from the electromagnetic rotational phase of the macroscopic LC network.
 
 Transverse waves propagating through a structurally chiral network exhibit an asymmetric dispersion relation:
+\begin{resultbox}{Chiral Asymmetric Dispersion}
 \begin{equation}
     \omega^2 = c^2 k^2 \mp \gamma_c k
 \end{equation}
+\end{resultbox}
 
 where $\gamma_c$ is the Cosserat bending stiffness coupling, with dimensions of $[\text{m/s}^2]$. It is derived from the micropolar elastic constants of the chiral lattice:
+\begin{resultbox}{Cosserat Bending Stiffness Coupling}
 \begin{equation}
     \gamma_c = \frac{G_{vac} \ell_{node}^2}{\rho_{bulk}} \cdot \frac{1}{\ell_{node}} = \frac{G_{vac} \ell_{node}}{\rho_{bulk}} = \frac{m_e c^2}{\rho_{bulk} \ell_{node}^3} \ell_{node}^2 = \frac{m_e c^2}{\rho_{bulk} \ell_{node}}
 \end{equation}
+\end{resultbox}
 Evaluating numerically: $\gamma_c \approx 2.12 \times 10^{16} \text{ m/s}^2$. The critical wavenumber below which right-handed torsional waves are evanescent is $k_{crit} = \gamma_c / c^2 \approx 2.36 \times 10^{-1} \text{ m}^{-1}$, corresponding to macroscopic wavelengths $\lambda > 2\pi/k_{crit} \approx 27 \text{ m}$.
 
 When a \textbf{left-handed} torsional wave propagates, the sign algebraically matches the intrinsic structural grain of the substrate ($\omega^2 = c^2 k^2 + \gamma_c k$). The frequency squared remains strictly positive, allowing the signal to propagate freely at all energy scales.
@@ -53,9 +57,11 @@ However, a \textbf{right-handed} torsional wave shears \textit{against} the elec
 
 Below this critical wavenumber, the $\gamma_c$ restoring torque overwhelms the kinetic term, forcing the frequency squared negative. In discrete wave mechanics, an imaginary frequency forces the solution to become an \textbf{Evanescent Wave}. The LC Network acts as a mechanical \textbf{high-pass filter}. Right-handed neutrinos are mechanically forbidden from existing at low, macroscopic energies, preventing them from forming stable ground states and deriving Parity Violation.
 
+\begin{resultbox}{Parity Violation (Evanescent Limit)}
 \begin{equation}
     \omega^2 = c^2 k^2 - \gamma_c k < 0
 \end{equation}
+\end{resultbox}
 The frequency squared is forced negative. In discrete wave mechanics, an imaginary frequency forces the solution to become an \textbf{Evanescent Wave}. The right-handed neutrino is mechanically forbidden from propagating. The LC Network subjects it to Anderson localisation, causing the wave envelope to decay to zero within a single fundamental node length. Parity violation is thus an electrodynamic filter consequence.
 
 \begin{figure}[h]
@@ -67,9 +73,11 @@ The frequency squared is forced negative. In discrete wave mechanics, an imagina
 
 \section{The Neutrino Mass Eigenvalue}
 Because the neutrino is a pure \textbf{screw dislocation}---a propagating torsional twist in the Cosserat sector---its mass is set by the ratio of torsional to translational coupling, multiplied by the dielectric compliance:
+\begin{resultbox}{The Neutrino Mass}
 \begin{equation}
     m_\nu = m_e \cdot \alpha \cdot \frac{m_e}{M_W}
 \end{equation}
+\end{resultbox}
 
 \textbf{Physical meaning:} $m_e/M_W$ is the ratio of the translational energy scale to the torsional (Cosserat) energy scale, and $\alpha$ is the dielectric coupling between sectors. Together, the neutrino mass is suppressed by $\alpha \times (m_e/M_W)$ relative to the electron. Evaluating numerically: $m_\nu \approx 0.024 \text{ eV per flavor}$.
 
@@ -93,8 +101,10 @@ Because neutrinos possess inductive rest mass, their matter-waves are subjected 
 Neutrino oscillation is formally modeled not as an abstract state-vector rotation, but as the classical, acoustic \textbf{Beat Frequency} of a multi-harmonic torsional wave packet undergoing microscopic structural dispersion across the fundamental hardware grid.
 
 To accurately model the solar neutrino flux observed at Super-Kamiokande, we define the emitted macroscopic wave packet ($\Psi(x,t)$) strictly as the linear superposition of the three mass eigenstates:
+\begin{resultbox}{Neutrino Macroscopic Wave Packet}
 \begin{equation}
     \Psi(x,t) = A_1 \cos(k_1 x - \omega_1 t) + A_2 \cos(k_2 x - \omega_2 t) + A_3 \cos(k_3 x - \omega_3 t)
 \end{equation}
+\end{resultbox}
 
 Because the group velocities vary ($v_{g,3} < v_{g,2} < v_{g,1}$), the heavier $\nu_3$ component systematically lags behind the lighter $\nu_1$ component over interstellar distances. The evolving phase differential dynamically shifts the macroscopic amplitude peak. The ``flavour'' measured by the detector is determined by whichever mass eigenstate is peaking at the moment the localised wave-packet interacts with the dense topological lattice of the water tank. No non-local matrix rotations are required; neutrino oscillation is classical mechanical dispersion.

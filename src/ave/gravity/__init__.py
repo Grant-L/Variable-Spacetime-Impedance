@@ -14,6 +14,11 @@ Key results (Ch. 9):
 
 import numpy as np
 from ave.core.constants import G, C_0, Z_0, MU_0, EPSILON_0, NU_VAC
+from ave.axioms.scale_invariant import (
+    impedance as _impedance,
+    saturation_factor,
+    reflection_coefficient as _reflection_coefficient,
+)
 
 
 def principal_radial_strain(mass_kg: float, radius_m: float) -> float:
@@ -142,7 +147,7 @@ def local_impedance(mass_kg: float, radius_m: float) -> float:
     """
     mu = local_mu(mass_kg, radius_m)
     ep = local_epsilon(mass_kg, radius_m)
-    return np.sqrt(mu / ep)
+    return _impedance(mu, ep)
 
 
 def gravitational_potential(mass_kg: float, radius_m: float) -> float:
@@ -253,9 +258,7 @@ def gravitational_saturation_factor(mass_kg: float, radius_m: float) -> float:
         saturation shell (ε₁₁ ≥ 1).
     """
     strain = principal_radial_strain(mass_kg, radius_m)
-    if strain >= 1.0:
-        return 0.0
-    return np.sqrt(1.0 - strain**2)
+    return float(saturation_factor(strain, yield_limit=1.0, clip=True))
 
 
 def radial_reflection_coefficient(mass_kg: float, radius_m: float) -> float:
@@ -282,5 +285,5 @@ def radial_reflection_coefficient(mass_kg: float, radius_m: float) -> float:
         Reflection coefficient Γ in [-1, +1].
     """
     Z_rad = radial_impedance(mass_kg, radius_m)
-    return (Z_rad - Z_0) / (Z_rad + Z_0)
+    return float(_reflection_coefficient(Z_0, Z_rad))
 

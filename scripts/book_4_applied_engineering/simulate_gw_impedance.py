@@ -12,12 +12,19 @@ import numpy as np
 import scipy.spatial as spatial
 from scipy.optimize import minimize
 import os
+import sys
+import pathlib
+
+project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
+sys.path.append(str(project_root / "src"))
+
+from ave.core.constants import P_C
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 # --- 1. AVE PHYSICAL CONSTANTS ---
-L_NODE = 1.0            # Baseline impedance length scale
-TARGET_PACKING = float("0.1834") # QED Packing Limit (8 * pi * alpha)
+L_NODE = 1.0            # Baseline impedance length scale (normalized for simulation)
+TARGET_PACKING = float(P_C)  # QED Packing Limit (8 * pi * alpha)
 OVER_BRACE_RATIO = 1.74 # Tuned Poisson-disk coupling bridge
 
 PARAMS = {

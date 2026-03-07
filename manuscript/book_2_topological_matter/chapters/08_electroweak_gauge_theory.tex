@@ -9,9 +9,11 @@ The spherically symmetric geometric solution dictates that the twist amplitude d
 
 \subsection{Magnetism as Convective Vorticity}
 When a twisted node translates at a velocity $\mathbf{v}$, it induces a convective shear flow in the momentum field. In classical network dynamics, the time evolution of a translating steady-state strain field $\mathbf{D}(\mathbf{r} - \mathbf{v}t)$ is governed by the convective material derivative:
+\begin{resultbox}{Convective Material Derivative}
 \begin{equation}
     \partial_t \mathbf{D} = -(\mathbf{v} \cdot \nabla)\mathbf{D} \implies \nabla \times (\mathbf{v} \times \mathbf{D})
 \end{equation}
+\end{resultbox}
 Equating this to the Maxwell-Ampere law derives the macroscopic magnetic field from network dynamics: $\mathbf{H} = \mathbf{v} \times \mathbf{D}$.
 
 This relationship is supported by dimensional analysis. Applying the topological conversion constant ($\xi_{topo} \equiv e/\ell_{node}$), the displacement field reduces to $[\mathbf{D}] = \xi_{topo}[1/\text{m}]$. Evaluating the cross product $[\mathbf{v} \times \mathbf{D}]$ yields $\xi_{topo}[1/\text{s}]$. Standard SI units for magnetic field intensity $\mathbf{H}$ ($[\text{A/m}]$) reduce to this same dimensional basis ($\xi_{topo}[1/\text{s}]$). Magnetism is thereby dimensionally shown to represent the continuous kinematic vorticity of the vacuum condensate.
@@ -27,9 +29,11 @@ Because the $\mathcal{M}_A$ vacuum is incompressible ($K = 2G$), an irrotational
 In classical electrodynamics, the ratio of the LC network's microrotational bending inductance ($\gamma_c$) to the macroscopic optical shear modulus ($G_{vac}$) defines a fundamental \textbf{Characteristic Length Scale} ($l_c = \sqrt{\gamma_c/G_{vac}}$). This length scale is identified as the physical origin of the weak force range ($r_W \approx 10^{-18}$ m).
 
 Weak interactions lack the kinetic energy required to overcome the ambient LC rotational inductance. Any physical excitation operating \textit{below} a medium's natural cutoff frequency becomes an \textbf{Evanescent Wave}. The static field equation transforms from the Laplace equation to the massive Helmholtz equation ($\nabla^2 \theta - \frac{1}{l_c^2}\theta = 0$). The solution yields the \textbf{Yukawa Potential}:
+\begin{resultbox}{Yukawa Potential as Evanescent Cutoff}
 \begin{equation}
     V_{weak}(r) \propto \frac{e^{-r/l_c}}{r}
 \end{equation}
+\end{resultbox}
 
 \subsection{Deriving the Gauge Bosons (\texorpdfstring{$W^{\pm}/Z^{0}$}{W/Z}) as Evanescent Modes}
 
@@ -44,76 +48,100 @@ Because Axiom 1 bounds the physical diameter of a fundamental flux tube to $d \e
 
 Because the rest mass of an evanescent cutoff mode scales with the square root of its ratio of structural stiffness to inertia ($\omega \propto \sqrt{k/m}$), the mass ratio evaluates to $m_W/m_Z = \sqrt{GJ / EI}$. Because the $\mathcal{M}_A$ metric is a discrete lumped-element LC network, the localised nodal inertia ($\mu_0$) is invariant across both the torsional and bending excitation modes. Because the mass term is constant, the geometric wave equations reduce to the square root of the stiffness ratio, avoiding the geometrically distinct inertial denominators required in classical continuum solid mechanics. Substituting the fundamental cylinder geometry ($J=2I$) yields $\sqrt{2G/E}$. Applying the standard isotropic elastic continuous identity ($E = 2G(1+\nu)$) reduces this stiffness ratio to:
 
+\begin{resultbox}{Weak Boson Mass Ratio via Stiffness}
 \begin{equation}
 \frac{m_W}{m_Z} = \sqrt{\frac{2G}{2G(1+\nu_{vac})}} = \frac{1}{\sqrt{1+\nu_{vac}}}
 \end{equation}
+\end{resultbox}
 
 By substituting the geometric Chiral LC trace-reversed limit derived in Chapter 4 ($\nu_{vac} \equiv 2/7$), the weak mixing angle emerges as an analytical prediction:
 
+\begin{resultbox}{The Weak Mixing Angle}
 \begin{equation}
 \frac{m_W}{m_Z} = \frac{1}{\sqrt{1+2/7}} = \frac{1}{\sqrt{9/7}} = \frac{\sqrt{7}}{3} \approx 0.881917
 \end{equation}
+\end{resultbox}
 
 This derivation matches the experimental ratio to within 0.05\% error, offering a direct mechanical origin for the mass splitting without invoking symmetry-breaking scalar fields. The corresponding on-shell weak mixing angle is:
+\begin{resultbox}{On-Shell Weak Mixing Angle}
 \begin{equation}
     \sin^2\theta_W^{\text{on-shell}} \equiv 1 - \left(\frac{M_W}{M_Z}\right)^2 = 1 - \frac{7}{9} = \frac{2}{9} \approx 0.2222
 \end{equation}
+\end{resultbox}
 This matches the PDG on-shell value ($0.2230$) to within $0.35\%$. The commonly quoted MSbar value ($0.2312$) incorporates radiative corrections and is a distinct quantity.
 
 \subsection{The Absolute $W$ Boson Mass: Chirality Mismatch Self-Energy}
 
 A twist defect in the vacuum creates a torsional field that obeys the same 3D Laplace equation as the Coulomb field: $\nabla^2\theta = 0$, giving $\theta(r) \propto 1/r$ and $|\nabla\theta|^2 \propto 1/r^4$. The self-energy integral is:
+\begin{resultbox}{Torsional Self-Energy Integral}
 \begin{equation}
     E_{\text{twist}} = \frac{T_{EM}^2}{4\pi\,\varepsilon_T\, r_0}
 \end{equation}
+\end{resultbox}
 where $T_{EM}$ is the lattice tension (torsional ``charge''), $r_0 = \ell_{node}/(2\pi)$ is the flux tube UV cutoff (Axiom 1), and $\varepsilon_T$ is the torsional permittivity of the chiral lattice.
 
 The Chiral SRS net (Axiom 2) has an intrinsic handedness. A twist that \emph{matches} the lattice chirality propagates freely (this is why left-handed neutrinos are nearly massless). A twist that \emph{opposes} the chirality fights the LC ground state, incurring a stiffness penalty.
 
 The factor $\alpha^2$ is derived from the interaction Lagrangian. The twist field $\phi$ couples to the EM background through the Axiom~4 dielectric susceptibility $\varepsilon(\phi) = \varepsilon_0(1 + \alpha f(\phi))$, giving:
+\begin{resultbox}{Torsional-EM Interaction Lagrangian}
 \begin{equation}
     \mathcal{L}_{\text{int}} = \frac{\varepsilon_0 \alpha}{2}\,\phi\,|\mathbf{E}|^2
 \end{equation}
+\end{resultbox}
 The self-energy is a \textbf{two-vertex process} (second-order perturbation theory):
+\begin{resultbox}{Second-Order Self-Energy}
 \begin{equation}
     E_{\text{self}} = \iint \mathcal{L}_{\text{int}}(\mathbf{x})\, G(\mathbf{x}-\mathbf{x}')\, \mathcal{L}_{\text{int}}(\mathbf{x}')\, d^3x\, d^3x' \;\propto\; \alpha \times \alpha = \alpha^2
 \end{equation}
+\end{resultbox}
 \section{Electroweak Mechanics: Summary of Key Results}
 
 The electroweak sector is derived in full in Chapter \ref{ch:electroweak_higgs}. Here we summarize only the critical results that interlock with the gauge structure derived in this chapter.
 
 \subsection{The Weak Mixing Angle and Boson Masses}
 The weak mixing angle is derived from the Perpendicular Axis Theorem (PAT) applied to cylindrical flux tubes with Poisson ratio $\nu_{vac} = 2/7$:
+\begin{resultbox}{Analytical On-Shell Weak Mixing Angle}
 \begin{equation}
     \sin^2\theta_W = 1 - \frac{7}{9} = \frac{2}{9} \approx 0.2222 \qquad (\text{PDG on-shell: } 0.2230, \; -0.35\%)
 \end{equation}
+\end{resultbox}
 
 The W and Z masses follow from the torsional self-energy of the unknot:
+\begin{resultbox}{The W and Z Boson Masses}
 \begin{equation}
     M_W = \frac{m_e}{8\pi\alpha^3\sqrt{3/7}} \approx 79{,}923 \text{ MeV}, \qquad M_Z = \frac{3}{\sqrt{7}}M_W \approx 90{,}624 \text{ MeV}
 \end{equation}
+\end{resultbox}
 
 The Schwinger anomalous magnetic moment is derived from the on-site impedance correction of the hopping unknot (full derivation in Chapter \ref{ch:electroweak_higgs}):
+\begin{resultbox}{Schwinger Anomalous Magnetic Moment}
 \begin{equation}
     a_e = \frac{\alpha}{2\pi} \approx 0.001161
 \end{equation}
+\end{resultbox}
 
 \subsection{From Photon to Electron: The Self-Trapping Transition}
 
 A circularly polarized photon on the Chiral LC lattice is a torsional helix---the $\vec{E}$ and $\vec{H}$ vectors rotate around the propagation axis with pitch equal to the wavelength. The transverse radius of this helix is set by the angular momentum coherence length:
+\begin{resultbox}{Angular Momentum Coherence Length}
 \begin{equation}
     R_{\text{helix}} = \frac{\lambda}{2\pi} = \frac{c}{2\pi f}
 \end{equation}
+\end{resultbox}
 This is a \emph{scaling law}: higher frequency $\to$ tighter helix $\to$ smaller polarization footprint on the lattice. The photon's spin angular momentum is concentrated in a cylinder of radius $R_{\text{helix}}$ around the propagation axis.
 
 \paragraph{The critical frequency.} As $f$ increases, $R$ shrinks. When the frequency reaches the Compton frequency,
+\begin{resultbox}{The Self-Trapping Frequency}
 \begin{equation}
     f_C = \frac{m_e c^2}{\hbar} \approx 1.24 \times 10^{20} \text{ Hz},
 \end{equation}
+\end{resultbox}
 the helix radius collapses to
+\begin{resultbox}{Helix Self-Closing Radius}
 \begin{equation}
     R_{\text{helix}} \to \frac{\ell_{\text{node}}}{2\pi}
 \end{equation}
+\end{resultbox}
 ---a fraction of a single lattice cell. The photon's field now wraps entirely within one node. Its leading wavefront interferes with its own trailing edge. \textbf{The photon catches its own tail.}
 
 \paragraph{Topological trapping.} At this point the helix self-closes into an unknot---a topologically stable loop confined to a single lattice site. The circulating EM energy can no longer propagate; it is trapped. The photon has become an electron:
@@ -136,19 +164,25 @@ The fine structure constant $\alpha = (V_{\text{peak}}/V_{\text{snap}})^2 / (4\p
 
 \subsection{U(1) Electromagnetism from the Lattice Plaquette}
 The physical continuous connection between adjacent nodes $i$ and $j$ is mathematically described by a unitary link variable $U_{ij} = e^{i\theta_{ij}}$, where $\theta_{ij}$ is the phase accumulated along the edge. The simplest gauge-invariant geometric quantity is the triangular plaquette---the product of link variables around a closed 3-node loop:
+\begin{resultbox}{Lattice Gauge Plaquette}
 \begin{equation}
     U_P = U_{ij}U_{jk}U_{ki} = e^{i(\theta_{ij} + \theta_{jk} + \theta_{ki})}
 \end{equation}
+\end{resultbox}
 
 The total phase around the plaquette is the discrete lattice curl of the gauge connection. For small phase gradients ($\theta_{ij} \approx A_\mu \ell_{node}$), the Taylor expansion of $U_P$ yields:
+\begin{resultbox}{Discrete Lattice Curl}
 \begin{equation}
     \theta_{ij} + \theta_{jk} + \theta_{ki} = \oint \mathbf{A} \cdot d\mathbf{l} = \iint (\nabla \times \mathbf{A}) \cdot d\mathbf{S} = \iint \mathbf{B} \cdot d\mathbf{S} \equiv \Phi_P
 \end{equation}
+\end{resultbox}
 
 The lattice action is constructed by summing over all plaquettes the deviation from unit phase:
+\begin{resultbox}{U(1) Lattice Action to Maxwell Limit}
 \begin{equation}
     S_{lattice} = \sum_P \left(1 - \text{Re}\, U_P\right) = \sum_P \left(1 - \cos\Phi_P\right) \approx \sum_P \frac{1}{2}\Phi_P^2 \longrightarrow \int \frac{1}{4}F_{\mu\nu}F^{\mu\nu}\, d^4x
 \end{equation}
+\end{resultbox}
 
 The continuum limit ($\ell_{node} \to 0$) recovers the Maxwell Lagrangian ($-\frac{1}{4}F_{\mu\nu}F^{\mu\nu}$). \textbf{U(1) Electromagnetism} is therefore the enforcement of unitary topological continuity across the discrete graph---the standard Wilson formulation of lattice gauge theory, here derived from the physical structure of the $\mathcal{M}_A$ hardware.
 

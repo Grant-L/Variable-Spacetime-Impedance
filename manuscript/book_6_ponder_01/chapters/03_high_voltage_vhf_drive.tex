@@ -15,9 +15,11 @@ The original PONDER-01 design sought to maximize the ponderomotive gradient ($\n
 \end{figure}
 
 The predicted thrust scales as:
+\begin{resultbox}{Predicted Topological Thrust}
 \begin{equation}
     F_{thrust} = k_{topo} \cdot A_{electrode} \cdot \varepsilon_0 \nabla |\mathbf{E}|^2
 \end{equation}
+\end{resultbox}
 where $k_{topo}$ is the topological coupling coefficient derived in Chapter~1. For a $25\text{ cm}^2$ electrode at $100\text{ MHz}$, this yields a predicted $45\,\mu$N---well above the $1\,\mu$N torsion balance detection floor.
 
 \section{The Thermal Catastrophe}
@@ -27,9 +29,11 @@ Comprehensive engineering analysis reveals a fatal thermal limitation in the PON
 \subsection{Dielectric Heating at VHF}
 
 The power dissipated in a dielectric under AC drive is:
+\begin{resultbox}{Dielectric Power Dissipation}
 \begin{equation}
     P_{diss} = \omega C V_{rms}^2 \tan\delta
 \end{equation}
+\end{resultbox}
 
 For the BaTiO$_3$ multilayer ceramic capacitor (MLCC) array in PONDER-01 ($\varepsilon_r = 3000$, $\tan\delta = 0.015$) at $100\text{ MHz}$:
 \begin{equation}

@@ -10,12 +10,14 @@ By mathematically mapping atomic mass to \textbf{Geometric Inductance} ($L$) and
 \section{The Electromechanical Transduction Constant}
 
 The vacuum lattice (Axiom~1) has per-unit-length parameters $\mu_0$ [H/m] and $\varepsilon_0$ [F/m]. The topological conversion constant $\xi_\text{topo}$ maps charge dislocation to spatial dislocation:
+\begin{resultbox}{The Electromechanical Transduction Constant}
 \begin{equation}
     \xi_\text{topo} \;\equiv\; \frac{e}{\ell_\text{node}}
     \;=\; \frac{e \, m_e \, c}{\hbar}
     \;\approx\; 4.149 \times 10^{-7} \;\text{C/m}
     \label{eq:xi_topo}
 \end{equation}
+\end{resultbox}
 This constant provides the universal electromechanical coupling of the lattice. Its square, $\xi^2 = e^2 m_e^2 c^2 / \hbar^2$, acts as the dimensional bridge between mechanical quantities (mass, stiffness) and electrical quantities (inductance, capacitance). \textbf{No free parameters are introduced.}
 
 \section{The Atomic Translation Layer}
@@ -23,11 +25,13 @@ This constant provides the universal electromechanical coupling of the lattice. 
 \subsection{Mass $\rightarrow$ Inductance:  $L = m / \xi^2$}
 
 In AVE, the atomic nucleus is a tightly bound, high-density topological knot in the $M_A$ lattice. This knot provides localized rotational inertia. In electrical terms, inertia is defined as \textbf{Inductance} ($L$). The dimensional transduction via $\xi^2$ yields:
+\begin{resultbox}{Topological Inductance of an Atom}
 \begin{equation}
-    \boxed{L_\text{atom} \;=\; \frac{m_\text{atom}}{\xi^2_\text{topo}}}
+    L_\text{atom} \;=\; \frac{m_\text{atom}}{\xi^2_\text{topo}}
     \qquad [\text{Henries}]
     \label{eq:L_atom}
 \end{equation}
+\end{resultbox}
 This is derived directly from Axioms~1--2; no scaling factors are needed. The CODATA atomic masses serve as the only measured input. Table~\ref{tab:inductances} lists the resulting values for the core organic elements:
 
 \begin{table}[h]
@@ -50,11 +54,13 @@ Sulfur (S)   & 32.065 & 309.3 & 41.5 \\
 \subsection{Bond Stiffness $\rightarrow$ Capacitance:  $C = \xi^2 / k$}
 
 Chemical bonds define the structural tension between nuclei. In AVE terms, shared valence electrons create a zone of dielectric compliance ($\varepsilon_\text{eff}$). A covalent bond is therefore a \textbf{Capacitor} ($C$). Critically, tighter bonds have \emph{less} compliance and thus \emph{lower} absolute capacitance:
+\begin{resultbox}{Topological Capacitance of a Bond}
 \begin{equation}
-    \boxed{C_\text{bond} \;=\; \frac{\xi^2_\text{topo}}{k_\text{bond}}}
+    C_\text{bond} \;=\; \frac{\xi^2_\text{topo}}{k_\text{bond}}
     \qquad [\text{Farads}]
     \label{eq:C_bond}
 \end{equation}
+\end{resultbox}
 where $k_\text{bond}$ [N/m] is the stretching force constant. These values are conventionally obtained from infrared spectroscopy (Shimanouchi, 1972; NIST Chemistry WebBook), but in Section~\ref{sec:first_principles_k} we show that they can be derived from first principles using only $\varepsilon_0$, $m_e$, $\hbar$, and $e$---eliminating any dependence on spectroscopic measurement.
 
 \begin{table}[h]
@@ -345,10 +351,12 @@ No force constants, no IR frequencies, no bond lengths are used as input.
 \subsection{Topological and Angular Projections}
 
 The raw curvature $d^2E/dd^2$ must be projected topologically from the 3D isotropic lattice onto the 1D bond axis to recover the macroscopic force constant $k$:
+\begin{resultbox}{Projected Macroscopic Force Constant}
 \begin{equation}
     k_\text{pred} = (\text{Isotropy}) \times (\text{Balance}) \times \left. \frac{d^2 E}{d d^2} \right|_{d = d_\text{eq}}
     \label{eq:projected_k}
 \end{equation}
+\end{resultbox}
 
 \paragraph{Isotropy Projection (1/3).}
 Bond stretching displaces two nuclei along \emph{one} spatial axis. On the isotropic chiral lattice (SRS net, $K_4$ crystal), the electromagnetic coupling distributes equally among 3 equivalent spatial dimensions. The potential energy curvature projects onto the bond axis with weight $1/D$ where $D = 3$. This is the electromagnetic analogue of the equipartition theorem.

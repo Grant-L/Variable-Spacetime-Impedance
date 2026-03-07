@@ -74,8 +74,36 @@ BACKBONE_BONDS = {
 BACKBONE_ANGLES = {
     'N-Ca-C':  111.2,  # degrees (tetrahedral-derived)
     'Ca-C-N':  116.2,  # degrees
+    'Ca-C-O':  121.4,  # degrees (carbonyl oxygen, Engh & Huber 1991)
     'C-N-Ca':  121.7,  # degrees (amide planarity)
 }
+
+
+# ═══════════════════════════════════════════════════════════════
+# Backbone bond impedances (derived from Axiom 1: Z = √(μ/ε))
+# ═══════════════════════════════════════════════════════════════
+#
+# Each covalent bond has a characteristic impedance:
+#   Z = √(mass_Da / n_electrons) = √(μ/ε)
+#
+# The C-N peptide bond (partial double, 3e⁻) has 19% lower impedance
+# than the N-Cα single bond (2e⁻). This creates a periodic impedance
+# grating in the backbone — each peptide unit (N-Cα-C) has an internal
+# impedance profile that drives Bragg-like reflections at the amide-V
+# resonance frequency (23 THz).
+
+Z_BOND_N_CA = np.sqrt(BACKBONE_BONDS['N-Ca']['mass_Da'] /
+                       BACKBONE_BONDS['N-Ca']['n_electrons'])     # √(26/2) ≈ 3.606
+Z_BOND_CA_C = np.sqrt(BACKBONE_BONDS['Ca-C']['mass_Da'] /
+                       BACKBONE_BONDS['Ca-C']['n_electrons'])     # √(24/2) ≈ 3.464
+Z_BOND_C_N  = np.sqrt(BACKBONE_BONDS['C-N']['mass_Da'] /
+                       BACKBONE_BONDS['C-N']['n_electrons'])      # √(26/3) ≈ 2.944
+
+# Normalised to mean backbone impedance (compatible with z_topo scale)
+Z_BOND_MEAN = (Z_BOND_N_CA + Z_BOND_CA_C + Z_BOND_C_N) / 3.0   # ≈ 3.338
+Z_N_CA_NORM = Z_BOND_N_CA / Z_BOND_MEAN                          # ≈ 1.080
+Z_CA_C_NORM = Z_BOND_CA_C / Z_BOND_MEAN                          # ≈ 1.038
+Z_C_N_NORM  = Z_BOND_C_N  / Z_BOND_MEAN                          # ≈ 0.882
 
 
 # ═══════════════════════════════════════════════════════════════

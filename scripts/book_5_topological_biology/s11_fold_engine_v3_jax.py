@@ -239,7 +239,7 @@ def debye_z_water(omega_ratio):
     return jnp.sqrt(jnp.abs(eps_w))
 
 
-def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, kappa=0.1):
+def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, kappa=0.1, chi1=None, chi2=None, cg_mask=None):
     """
     Differentiable multi-frequency S₁₁ loss with full N-Cα-C backbone.
     All physical constants derived from AVE axioms (zero empirical fits).
@@ -251,6 +251,7 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
         arom_mask: (N,) float mask — 1.0 at aromatic positions (W,H,Y,F)
         gly_mask: (N,) float mask — 1.0 at Gly positions (Ramachandran exempt)
         N: number of residues (static)
+        chi1: (N,) sidechain χ₁ torsion angles (if None, default 60° gauche+)
     """
     # Full backbone: (N, 3, 3) — atom_N, atom_Ca, atom_C per residue
     bb = coords_flat.reshape(N, 3, 3)
@@ -1016,10 +1017,19 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     # backbone atoms of adjacent residues. Without Cβ, backbone N/Cα/C
     # are too far apart to create angular constraints.
     #
-    # Cβ placed at default gauche+ (χ₁=60°) — most probable rotamer.
+    # Cβ placed via χ₁ torsion: if chi1 is provided, use it; else default 60°.
     # Glycine: Cβ at Cα (no sidechain → naturally more conformational freedom)
-    chi1_default = jnp.full(N, jnp.radians(60.0))
-    cb_pos = _compute_cb_positions(atom_N, atom_Ca, atom_C, chi1_default, gly_mask)
+    chi1_arr = chi1 if chi1 is not None else jnp.full(N, jnp.radians(60.0))
+    cb_pos = _compute_cb_positions(atom_N, atom_Ca, atom_C, chi1_arr, gly_mask)
+    
+    # --- Cγ placement (χ₂ DOF: sidechain branching point) ---
+    # Cγ is the branching point where the sidechain stub splits into
+    # 2+ sub-branches (power divider in TL analogy). Its position
+    # determines inter-sidechain packing topology.
+    # Gly (no sidechain) and Ala (Cβ=CH₃, no Cγ) are masked.
+    chi2_arr = chi2 if chi2 is not None else jnp.full(N, jnp.radians(60.0))
+    cg_mask_arr = cg_mask if cg_mask is not None else jnp.ones(N)
+    cg_pos = _compute_cg_positions(atom_Ca, cb_pos, chi2_arr, cg_mask_arr, gly_mask)
     
     # --- Carbonyl O positions (5-atom NERF) ---
     # O is bonded to C_i, in the Cα_i-C_i-N_{i+1} peptide plane
@@ -1081,6 +1091,12 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     R_CB_N = (1.70 + 1.55) * SIGMA_FACTOR  # ≈ 2.90 Å
     R_CB_C = (1.70 + 1.70) * SIGMA_FACTOR  # ≈ 3.03 Å
     R_CB_CB = (1.70 + 1.70) * SIGMA_FACTOR # ≈ 3.03 Å
+    # Cγ σ distances (same VdW radius as Cβ = 1.70 Å)
+    R_CG_N  = R_CB_N   # ≈ 2.90 Å
+    R_CG_C  = R_CB_C   # ≈ 3.03 Å
+    R_CG_CB = R_CB_CB  # ≈ 3.03 Å
+    R_CG_CG = R_CB_CB  # ≈ 3.03 Å
+    R_O_CG  = R_O_CB   # ≈ 2.87 Å
     
     # Bonded-pair masks
     oh_mask = jnp.abs(idx[:, None] - idx[None, :]) >= 2  # O/H: exclude bonded O=C-N-H
@@ -1137,7 +1153,40 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     cbcb_violations = jnp.maximum(0.0, R_CB_CB - d_CBCB) ** 2
     cbcb_violations = jnp.where(cb_seq_mask, cbcb_violations, 0.0)
     
-    # Total 5-atom backbone steric
+    # --- Cγ steric (branching point topology) ---
+    # Cγ exclusion with backbone and other sidechains.
+    # Masked for Gly/Ala (cg_pos == cb_pos → zero distance violations masked)
+    cg_seq_mask = jnp.abs(idx[:, None] - idx[None, :]) >= 2
+    cg_has = cg_mask_arr[:, None] * cg_mask_arr[None, :]  # both have Cγ
+    cg_one = jnp.maximum(cg_mask_arr[:, None], cg_mask_arr[None, :])  # at least one
+    
+    d_CGN = jnp.sqrt(jnp.sum((cg_pos[:, None, :] - atom_N[None, :, :])**2, axis=-1) + 1e-12)
+    cgn_violations = jnp.maximum(0.0, R_CG_N - d_CGN) ** 2
+    cgn_violations = jnp.where(cg_seq_mask, cgn_violations, 0.0)
+    cgn_violations = cgn_violations * cg_mask_arr[:, None]  # only if residue has Cγ
+    
+    d_CGC = jnp.sqrt(jnp.sum((cg_pos[:, None, :] - atom_C[None, :, :])**2, axis=-1) + 1e-12)
+    cgc_violations = jnp.maximum(0.0, R_CG_C - d_CGC) ** 2
+    cgc_violations = jnp.where(cg_seq_mask, cgc_violations, 0.0)
+    cgc_violations = cgc_violations * cg_mask_arr[:, None]
+    
+    d_CGCB = jnp.sqrt(jnp.sum((cg_pos[:, None, :] - cb_pos[None, :, :])**2, axis=-1) + 1e-12)
+    cgcb_violations = jnp.maximum(0.0, R_CG_CB - d_CGCB) ** 2
+    cgcb_seq = jnp.abs(idx[:, None] - idx[None, :]) >= 2  # not bonded Cγ-Cβ
+    cgcb_violations = jnp.where(cgcb_seq, cgcb_violations, 0.0)
+    cgcb_violations = cgcb_violations * cg_mask_arr[:, None]
+    
+    d_CGCG = jnp.sqrt(jnp.sum((cg_pos[:, None, :] - cg_pos[None, :, :])**2, axis=-1) + 1e-12)
+    cgcg_violations = jnp.maximum(0.0, R_CG_CG - d_CGCG) ** 2
+    cgcg_violations = jnp.where(cg_seq_mask, cgcg_violations, 0.0)
+    cgcg_violations = cgcg_violations * cg_has  # both must have Cγ
+    
+    d_OCG = jnp.sqrt(jnp.sum((o_pos[:, None, :] - cg_pos[None, :, :])**2, axis=-1) + 1e-12)
+    ocg_violations = jnp.maximum(0.0, R_O_CG - d_OCG) ** 2
+    ocg_violations = jnp.where(oh_mask, ocg_violations, 0.0)
+    ocg_violations = ocg_violations * cg_mask_arr[None, :]
+    
+    # Total 6-atom backbone+sidechain steric
     bb_atom_steric = (
         jnp.sum(jnp.triu(nn_violations, k=2)) +
         jnp.sum(jnp.triu(cc_violations, k=2)) +
@@ -1148,7 +1197,12 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
         jnp.sum(ocb_violations) + jnp.sum(on_violations) +
         jnp.sum(jnp.triu(oo_violations, k=2)) +
         jnp.sum(hc_violations) + jnp.sum(hcb_violations) +
-        jnp.sum(ho_violations)
+        jnp.sum(ho_violations) +
+        # Cγ steric (5 new terms)
+        jnp.sum(cgn_violations) + jnp.sum(cgc_violations) +
+        jnp.sum(cgcb_violations) +
+        jnp.sum(jnp.triu(cgcg_violations, k=2)) +
+        jnp.sum(ocg_violations)
     )
     rama_penalty = LAMBDA_BB_STERIC * bb_atom_steric / (6 * N)
     # ═══════════════════════════════════════════════════════════════════
@@ -1353,21 +1407,94 @@ def _compute_cb_positions(atom_N, atom_Ca, atom_C, chi1, gly_mask):
     return cb_pos
 
 
-def _torsion_loss(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N):
+def _compute_cg_positions(atom_Ca, cb_pos, chi2, cg_mask, gly_mask):
+    """Compute Cγ positions from Cα, Cβ, and χ₂ torsion angle.
+    
+    Cγ is the branching point (power divider in TL analogy) where the
+    sidechain stub splits into sub-branches. Placed using:
+      - Bond length: Cβ-Cγ = 1.52 Å (same as Cα-Cβ, tetrahedral C-C)
+      - Bond angle: Cα-Cβ-Cγ = 113.8° (tetrahedral sp³)
+      - χ₂ torsion: rotation about the Cα-Cβ axis
+    
+    Gly (no sidechain) and Ala (Cβ=CH₃, no Cγ): masked to Cβ position.
+    """
+    D_CB_CG = 1.52  # Å — Cβ-Cγ bond length (from protein_bond_constants.py)
+    THETA_CG = jnp.radians(113.8)  # Cα-Cβ-Cγ angle (tetrahedral sp³)
+    
+    # Cα→Cβ direction (rotation axis for χ₂)
+    v_CaCb = cb_pos - atom_Ca
+    v_CaCb_n = v_CaCb / (jnp.sqrt(jnp.sum(v_CaCb**2, axis=-1, keepdims=True)) + 1e-12)
+    
+    # Cγ base direction: extend from Cβ along the Cα-Cβ axis, tilted by bond angle
+    # Anti-bisector of Cα-Cβ axis: Cγ roughly extends the chain
+    # Need a perpendicular reference. Use an arbitrary perpendicular to v_CaCb.
+    # Create a robust perpendicular via cross product with a non-parallel vector
+    ref = jnp.where(
+        jnp.abs(v_CaCb_n[:, 0:1]) < 0.9,
+        jnp.broadcast_to(jnp.array([1.0, 0.0, 0.0]), v_CaCb_n.shape),
+        jnp.broadcast_to(jnp.array([0.0, 1.0, 0.0]), v_CaCb_n.shape)
+    )
+    perp = jnp.cross(v_CaCb_n, ref)
+    perp = perp / (jnp.sqrt(jnp.sum(perp**2, axis=-1, keepdims=True)) + 1e-12)
+    
+    # Base Cγ direction: extend from Cβ at tetrahedral angle to Cα-Cβ bond
+    cg_base = v_CaCb_n * jnp.cos(jnp.pi - THETA_CG) + perp * jnp.sin(jnp.pi - THETA_CG)
+    
+    # Rotate by χ₂ around Cα-Cβ axis using Rodrigues formula
+    k = v_CaCb_n  # rotation axis
+    cos_chi = jnp.cos(chi2)[:, None]
+    sin_chi = jnp.sin(chi2)[:, None]
+    cg_rot = (cg_base * cos_chi +
+              jnp.cross(k, cg_base) * sin_chi +
+              k * jnp.sum(k * cg_base, axis=-1, keepdims=True) * (1 - cos_chi))
+    
+    # Place Cγ
+    cg_pos = cb_pos + D_CB_CG * cg_rot
+    
+    # Mask: Gly (no Cβ) and residues without Cγ (Ala) → Cγ at Cβ position
+    # (zero distance → no steric violation contribution from masked residues)
+    no_cg = jnp.maximum(gly_mask, 1.0 - cg_mask)[:, None]
+    cg_pos = jnp.where(no_cg > 0.5, cb_pos, cg_pos)
+    
+    return cg_pos
+
+
+def compute_cg_mask(sequence):
+    """Return (N,) float mask: 1.0 where residue has Cγ, 0.0 for Gly/Ala.
+    
+    Amino acids WITHOUT Cγ:
+      G (Glycine): no sidechain at all
+      A (Alanine): Cβ = CH₃ (methyl group, no further branching)
+    
+    All other 18 amino acids have at least one Cγ atom.
+    Pro has Cγ bonded back to N (ring), but it still has a Cγ atom.
+    """
+    NO_CG = {'G', 'A'}
+    return jnp.array([0.0 if aa in NO_CG else 1.0 for aa in sequence])
+
+
+def _torsion_loss(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, cg_mask=None):
     """
     Loss function with torsion-angle parameterization.
     
     Args:
-        angles: (2N,) array — first N are φ, next N are ψ
+        angles: (2N,), (3N,), or (4N,) array.
+          If 2N: first N=φ, second N=ψ (χ₁, χ₂ default to 60°)
+          If 3N: first N=φ, second N=ψ, third N=χ₁
+          If 4N: first N=φ, second N=ψ, third N=χ₁, fourth N=χ₂
+        cg_mask: (N,) float — 1.0 where residue has Cγ, 0.0 for Gly/Ala
         (remaining args passed through to _s11_loss)
     
     Returns:
         S₁₁ loss (scalar)
     """
     phi = angles[:N]
-    psi = angles[N:]
+    psi = angles[N:2*N]
+    chi1 = angles[2*N:3*N] if angles.shape[0] > 2*N else None
+    chi2 = angles[3*N:] if angles.shape[0] > 3*N else None
     coords_flat = _torsions_to_backbone(phi, psi, N)
-    return _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N)
+    return _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N,
+                     chi1=chi1, chi2=chi2, cg_mask=cg_mask)
 
 
 _torsion_loss_jit = jit(_torsion_loss, static_argnums=(6,))
@@ -1380,10 +1507,12 @@ def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True, n_starts=3):
     
     TORSION-ANGLE PARAMETERIZATION:
     Bond lengths and angles are FIXED by construction (like a real TL conductor).
-    Only torsion angles (φ, ψ) are optimized — the folding degrees of freedom.
+    Torsion angles (φ, ψ, χ₁, χ₂) are optimized — the folding degrees of freedom.
+    χ₁ controls Cβ stub orientation → drives 5 of 18 steric terms.
+    χ₂ controls Cγ branching point → drives 5 additional steric terms.
     
     Multi-start: runs n_starts random seeds, picks lowest loss.
-    Total DOF: 2N (vs 3N×3 = 9N before)
+    Total DOF: 4N (φ, ψ backbone + χ₁ Cβ + χ₂ Cγ sidechain)
     Invariants: bond lengths, bond angles, ω = π
     
     Speed optimizations (EE-motivated):
@@ -1396,6 +1525,7 @@ def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True, n_starts=3):
     arom_mask = compute_aromatic_mask(sequence)
     gly_mask = compute_gly_mask(sequence)
     pro_mask = compute_pro_mask(sequence)
+    cg_mask = compute_cg_mask(sequence)
 
     best_loss = float('inf')
     best_angles = None
@@ -1411,7 +1541,23 @@ def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True, n_starts=3):
         np.random.seed(seed)
         phi_init = np.random.uniform(-np.pi, np.pi, N)
         psi_init = np.random.uniform(-np.pi, np.pi, N)
-        angles = jnp.concatenate([jnp.array(phi_init), jnp.array(psi_init)])
+        # χ₁ initialized at random rotamer states (Axiom 2: tetrahedral sp³)
+        # Three staggered minima: gauche+ (−60°), gauche− (+60°), trans (180°)
+        chi1_init = np.random.choice(
+            [np.radians(-60), np.radians(60), np.radians(180)], N)
+        # χ₂ initialized at random rotamer states (same tetrahedral sp³ minima)
+        chi2_init = np.random.choice(
+            [np.radians(-60), np.radians(60), np.radians(180)], N)
+        # Glycine has no sidechain → χ₁, χ₂ irrelevant
+        # Alanine has no Cγ → χ₂ irrelevant
+        for i in range(N):
+            if sequence[i] == 'G':
+                chi1_init[i] = 0.0
+                chi2_init[i] = 0.0
+            elif sequence[i] == 'A':
+                chi2_init[i] = 0.0
+        angles = jnp.concatenate([jnp.array(phi_init), jnp.array(psi_init),
+                                  jnp.array(chi1_init), jnp.array(chi2_init)])
 
         optimizer = optax.adam(lr)
         opt_state = optimizer.init(angles)
@@ -1420,24 +1566,32 @@ def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True, n_starts=3):
         t0 = time.time()
         # JIT warmup on first start only
         if start_idx == 0:
-            _ = _torsion_loss_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N)
-            _ = _torsion_grad_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N)
+            _ = _torsion_loss_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, cg_mask)
+            _ = _torsion_grad_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, cg_mask)
             print(f"    JIT compiled in {time.time()-t0:.1f}s", flush=True)
             t0 = time.time()
 
-        for step in range(n_steps):
-            g = _torsion_grad_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N)
+        # ── Compiled optimization loop (jax.lax.fori_loop) ──
+        anneal_steps = int(n_steps * 0.5) if anneal else 0
+        
+        def opt_step(step, carry):
+            angles_c, opt_state_c, key_c = carry
+            g = _torsion_grad_jit(angles_c, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, cg_mask)
             g = jnp.where(jnp.isnan(g), 0.0, g)
             g_norm = jnp.sqrt(jnp.sum(g**2) + 1e-12)
             g = jnp.where(g_norm > 10.0, g * 10.0 / g_norm, g)
-            updates, opt_state = optimizer.update(g, opt_state)
-            angles = optax.apply_updates(angles, updates)
-            if anneal and step < n_steps * 0.5:
-                T = 0.05 * (1.0 - step / (n_steps * 0.5)) ** 2
-                key, subkey = jax.random.split(key)
-                angles = angles + jax.random.normal(subkey, shape=angles.shape) * T
+            updates, new_opt_state = optimizer.update(g, opt_state_c)
+            new_angles = optax.apply_updates(angles_c, updates)
+            T = 0.05 * jnp.maximum(0.0, 1.0 - step / jnp.maximum(1.0, anneal_steps)) ** 2
+            key_c, subkey = jax.random.split(key_c)
+            noise = jax.random.normal(subkey, shape=new_angles.shape) * T
+            new_angles = jnp.where(step < anneal_steps, new_angles + noise, new_angles)
+            return (new_angles, new_opt_state, key_c)
+        
+        angles, opt_state, key = jax.lax.fori_loop(
+            0, n_steps, opt_step, (angles, opt_state, key))
 
-        loss = float(_torsion_loss_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N))
+        loss = float(_torsion_loss_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, cg_mask))
         dt = time.time() - t0
         print(f"    start {start_idx}: loss={loss:.4f} ({dt:.0f}s)", flush=True)
 
@@ -1449,7 +1603,7 @@ def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True, n_starts=3):
 
     # Build final coordinates from best torsion angles
     phi_final = best_angles[:N]
-    psi_final = best_angles[N:]
+    psi_final = best_angles[N:2*N]
     coords_flat = _torsions_to_backbone(phi_final, psi_final, N)
     bb_final = np.array(coords_flat.reshape(N, 3, 3))
     ca_final = bb_final[:, 1, :]
@@ -1492,6 +1646,11 @@ def fold_cotranslational(sequence, steps_per_residue=200, lr=2e-3,
     np.random.seed(42)
     all_phi = np.random.uniform(-np.pi, np.pi, N)
     all_psi = np.random.uniform(-np.pi, np.pi, N)
+    all_chi1 = np.random.choice(
+        [np.radians(-60), np.radians(60), np.radians(180)], N)
+    for i in range(N):
+        if sequence[i] == 'G':
+            all_chi1[i] = 0.0
     
     print(f"  Co-translational fold: N={N}, k₀={k0}, W={window}, "
           f"steps/res={steps_per_residue}", flush=True)
@@ -1505,7 +1664,8 @@ def fold_cotranslational(sequence, steps_per_residue=200, lr=2e-3,
     pro_k = full_pro_mask[:k]
     
     angles_k = jnp.concatenate([jnp.array(all_phi[:k]),
-                                 jnp.array(all_psi[:k])])
+                                 jnp.array(all_psi[:k]),
+                                 jnp.array(all_chi1[:k])])
     
     # Initial segment gets more steps (nucleation)
     optimizer = optax.adam(lr)
@@ -1534,7 +1694,8 @@ def fold_cotranslational(sequence, steps_per_residue=200, lr=2e-3,
     
     loss_k = float(_torsion_loss_jit(angles_k, z_k, cys_k, arom_k, gly_k, pro_k, k))
     all_phi[:k] = np.array(angles_k[:k])
-    all_psi[:k] = np.array(angles_k[k:])
+    all_psi[:k] = np.array(angles_k[k:2*k])
+    all_chi1[:k] = np.array(angles_k[2*k:])
     print(f"    k={k}: loss={loss_k:.4f} ({time.time()-t0:.0f}s)", flush=True)
     
     # Phase 2: Grow chain one residue at a time
@@ -1550,7 +1711,8 @@ def fold_cotranslational(sequence, steps_per_residue=200, lr=2e-3,
         # Warm-start: use previously optimized angles + random for new residue
         angles_k = jnp.concatenate([
             jnp.array(all_phi[:k]),
-            jnp.array(all_psi[:k])
+            jnp.array(all_psi[:k]),
+            jnp.array(all_chi1[:k])
         ])
         
         # Fresh optimizer for each growth step
@@ -1567,7 +1729,8 @@ def fold_cotranslational(sequence, steps_per_residue=200, lr=2e-3,
         
         # Store optimized angles
         all_phi[:k] = np.array(angles_k[:k])
-        all_psi[:k] = np.array(angles_k[k:])
+        all_psi[:k] = np.array(angles_k[k:2*k])
+        all_chi1[:k] = np.array(angles_k[2*k:])
         
         # Progress reporting every 10 residues
         if k % 10 == 0 or k == N:
@@ -1583,7 +1746,7 @@ def fold_cotranslational(sequence, steps_per_residue=200, lr=2e-3,
     bb_final = np.array(coords_flat.reshape(N, 3, 3))
     ca_final = bb_final[:, 1, :]
     final_loss = float(_torsion_loss_jit(
-        jnp.concatenate([phi_final, psi_final]),
+        jnp.concatenate([phi_final, psi_final, jnp.array(all_chi1)]),
         full_z_topo, full_cys_mask, full_arom_mask, full_gly_mask,
         full_pro_mask, N))
     print(f"    Final loss (N={N}): {final_loss:.4f}", flush=True)

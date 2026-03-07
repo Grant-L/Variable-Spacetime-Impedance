@@ -1,31 +1,57 @@
-% --- Global Hardware Constants ---
-\providecommand{\Lvac}{L_{node}}       % Lattice Inductance
-\providecommand{\Cvac}{C_{node}}       % Lattice Capacitance
-\providecommand{\Zvac}{Z_0}            % Characteristic Impedance
-\providecommand{\Wcut}{\omega_{sat}}   % Saturation Frequency
-\providecommand{\lp}{l_{node}}              % Lattice Pitch
+% =========================================
+% SHARED PREAMBLE: Applied Vacuum Engineering
+% =========================================
+% All books \input{} this file for consistent formatting.
+% NOTE: \documentclass and \graphicspath remain in each main.tex
+%       because they are build-specific.
 
-% --- Citation Commands ---
-\newcommand{\citestart}{}              
-\newcommand{\citeend}{}                
+% --- Typography & Encoding ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern} 
+\usepackage{microtype} 
 
-% --- Theorem-like Environments (amsthm) ---
-\newtheorem{theorem}{Theorem}[chapter]
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{lemma}[theorem]{Lemma}
+% --- Layout & Geometry ---
+\usepackage[margin=1.2in, headheight=14pt]{geometry}
+\usepackage{fancyhdr} 
+\usepackage{emptypage} 
 
-% --- Custom Boxes ---
+% --- Mathematics & Science ---
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{siunitx} 
+\usepackage{bm} 
 
-% 1. Axiom Box: Gold/Blue for fundamental Vacuum Engineering postulates
-\newtcolorbox{axiombox}[1][]{
-    colback=blue!2!white, colframe=blue!75!black, fonttitle=\bfseries,
-    title=Vacuum Engineering Postulate: #1, enhanced, breakable, attach title to upper, 
-    after title={:\enskip}, arc=0mm
-}
-\newenvironment{axiom}[1][]{\begin{axiombox}[#1]}{\end{axiombox}}
+% --- Graphics & Floats ---
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs} 
+\usepackage{tabularx}
+\usepackage{caption}
+\usepackage[table,xcdraw]{xcolor}
 
-% 2. Simulation Environment: Green for Module Results
-\newtcolorbox[auto counter, number within=chapter]{simbox}[1][]{
-    colback=green!5!white, colframe=green!50!black, fonttitle=\bfseries,
-    title=Computational Module \thetcbcounter: #1, enhanced, breakable
-}
+% --- Navigation & Linking ---
+\usepackage[hidelinks]{hyperref} 
+\usepackage{tocloft}
+
+% Custom abstract environment for book class
+\newenvironment{abstract}
+  {\small
+   \begin{center}
+   \bfseries Abstract\vspace{-.5em}\vspace{0pt}
+   \end{center}
+   \quotation}
+  {\endquotation} 
+
+% --- Code & Verbatim ---
+\usepackage{listings}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins, breakable}
+
+% --- Header/Footer Configuration ---
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[RE]{\itshape Applied Vacuum Engineering}
+\fancyhead[LO]{\itshape\nouppercase{\leftmark}}

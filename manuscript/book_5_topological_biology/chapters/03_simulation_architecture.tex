@@ -60,6 +60,7 @@ Each amino acid maps to a complex impedance $Z_i = R_i + jX_i$ where:
     \item $X_i$ encodes the sidechain's charge reactance, scaled by the backbone $Q$-factor:
 \end{itemize}
 
+\begin{resultbox}{Topological Charge Reactance}
 \begin{equation}
     X_i = \begin{cases}
         -R_i / Q     & \text{negative charge (capacitive): D, E} \\
@@ -69,6 +70,7 @@ Each amino acid maps to a complex impedance $Z_i = R_i + jX_i$ where:
     \end{cases}
     \label{eq:x_charge}
 \end{equation}
+\end{resultbox}
 
 The $Q$-factor scaling ensures that resistive (hydrophobic) coupling dominates at $\sim 85\%$, with reactive (electrostatic) coupling as a $\sim 15\%$ perturbation.  This ratio is \emph{derived} from the backbone's amide-V resonance width.
 
@@ -114,10 +116,12 @@ The loss function (Eq.~\ref{eq:total_loss}) consists of eight axiom-derived phys
 
 Non-local residue pairs ($|i-j| > 2$, $d_{ij} < 15$~\AA) couple through a complex admittance based on their conjugate impedance product:
 
+\begin{resultbox}{Conjugate Shunt Admittance}
 \begin{equation}
     Y_{ij}^{\text{shunt}} = \frac{\kappa \cdot m_{ij} \cdot C_{ij}^{\text{sat}}}{d_{ij}^2}
     \label{eq:shunt_admittance}
 \end{equation}
+\end{resultbox}
 where the normalised conjugate match quality is:
 \begin{equation}
     m_{ij} = \max\!\left(0,\; \frac{\operatorname{Re}(Z_i \, Z_j^*)}{|Z_i|\,|Z_j|}\right)
@@ -136,10 +140,12 @@ Thus Coulomb-like repulsion \emph{emerges} from the gradient: bringing like-char
 
 The capacitive saturation factor from Axiom~4 amplifies coupling between well-matched close pairs:
 
+\begin{resultbox}{Dielectric Saturation Amplification}
 \begin{equation}
     C_{ij}^{\text{sat}} = 1 + \left(\frac{1}{\sqrt{1 - (d_0/d_{ij})^2}} - 1\right) \cdot m_{ij}
     \label{eq:c_sat}
 \end{equation}
+\end{resultbox}
 
 The ratio $d_0/d_{ij}$ is clipped to $[0, 0.95]$ for numerical stability.  When a pair is well-matched \emph{and} close ($d_{ij} \lesssim d_0$), the saturation factor can reach $C^{\text{sat}} \approx 3\times$, providing strong gradient signal for helix packing.  When mismatched, $m_{ij} = 0$ suppresses the amplification entirely.
 
@@ -174,7 +180,7 @@ where $d_{ij}^\text{NC} = ||\mathbf{r}_{N_i} - \mathbf{r}_{C_j}||$ is the backbo
 
 The coupling strength is $\kappa_\text{HB} = 1/(2Q) = 1/14$, which equals the transformer coupling coefficient $\kappa_\text{dipole} = \sqrt{Z_\text{C=O} \cdot Z_\text{N-H}}/Z_\text{bb} \approx 0.81$ modulated by the resonance quality factor $2Q$:
 \begin{equation}
-    Z_\text{C=O} = \sqrt{28/4} = 2.65, \quad Z_\text{N-H} = \sqrt{15/2} = 2.74, \quad Z_\text{bb} = \tfrac{1}{3}(Z_\text{N-C_\alpha} + Z_\text{C_\alpha-C} + Z_\text{C-N}) \approx 3.34
+    Z_\text{C=O} = \sqrt{28/4} = 2.65, \quad Z_\text{N-H} = \sqrt{15/2} = 2.74, \quad Z_\text{bb} = \tfrac{1}{3}(Z_{\text{N-C}_\alpha} + Z_{\text{C}_\alpha\text{-C}} + Z_\text{C-N}) \approx 3.34
     \label{eq:bond_impedances}
 \end{equation}
 where each bond impedance $Z = \sqrt{m_\text{Da}/n_e}$ follows the same $\sqrt{\mu/\varepsilon}$ operator used at nuclear scale by the bond energy solver.
@@ -217,10 +223,12 @@ giving a total of $3N{-}1$ sections (the last residue lacks the inter-residue C-
 
 \paragraph{Segment impedances from nuclear mass and shared electrons.}
 The characteristic impedance of each segment uses the \emph{full} impedance formula from \texttt{place\_nuclear\_defect} in \texttt{bond\_energy\_solver.py}: local permeability $\mu \propto m_{\text{atoms}}$ (mass is inductance, B-field, repulsion) and local permittivity $\varepsilon \propto n_e$ (shared electrons, E-field, attraction):
+\begin{resultbox}{Segment Characteristic Impedance}
 \begin{equation}
     Z_\text{seg} = \sqrt{\frac{\mu}{\varepsilon}} = \sqrt{\frac{m_\text{Da}}{n_e}}
     \label{eq:z_seg_full}
 \end{equation}
+\end{resultbox}
 where $m_\text{Da}$ is the total mass (in Daltons) of the two bonded atoms.
 
 \begin{center}
@@ -333,7 +341,7 @@ These are not ``forces''---they are smooth, differentiable loss terms whose grad
 
 \subsection{Adam with Simulated Annealing}
 
-The coordinates $\mathbf{r}$ are optimised using the Adam optimiser (Kingma \& Ba, 2015) implemented via \texttt{optax.adam(lr=10^{-3})}:
+The coordinates $\mathbf{r}$ are optimised using the Adam optimiser (Kingma \& Ba, 2015) implemented via \texttt{optax.adam(lr=1e-3)}:
 
 \begin{equation}
     \mathbf{r}^{(t+1)} = \mathbf{r}^{(t)} - \eta \cdot \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon}
@@ -872,3 +880,159 @@ Unified $\sqrt{x(2-x)}$ profile  & 0\%    & 18\%   & Too weak without Lorentz bo
 \noindent The Q-decay result (SS$=$22.8\%) represents the \emph{architectural ceiling} of the 1D cascade: it is the maximum SS achievable within axiom compliance using only $Y_\text{shunt}$ couplings.  The local peptide-plane coupling (adjacent-junction, not $Y_\text{shunt}$) is the sole SS driver, and Q-decay prevents the N$^2$-scaling hydrophobic damping from overwhelming it.
 
 The path to higher SS is the 1.5D stub architecture (Chapter~4): H-bonds modeled as transmission line stubs with their own $Z_\text{HB}$, $\gamma_\text{HB}$, and propagation delay, enabling frequency-selective resonance between non-adjacent backbone positions.
+
+
+% ═══════════════════════════════════════════════════════════════
+% MULTI-SCALE ARCHITECTURE
+% ═══════════════════════════════════════════════════════════════
+
+\section{Multi-Scale Impedance-Stratified Architecture}
+\label{sec:multiscale_architecture}
+
+The architectural ceiling theorem (Section~\ref{sec:architectural_ceiling}) demonstrates that a single 1D ABCD cascade cannot generate secondary structure above $\sim$23\%.  The fundamental issue is one of \emph{scale conflation}: modeling every backbone bond as a distributed TL element treats a protein as one continuous microstrip, when it is physically a network of discrete components connected by traces.
+
+Classical EE provides clear guidance via the \textbf{lumped/distributed/network} hierarchy.  A circuit element is lumped when $\lambda \gg d$ (wavelength far exceeds size), distributed when $\lambda \sim d$, and requires full-wave analysis when $\lambda \ll d$.  Mapping this to protein scales:
+
+\begin{table}[H]
+\centering
+\caption{Classical EE hierarchy mapped to protein physics scales.}
+\label{tab:multiscale_mapping}
+\small
+\begin{tabular}{@{}l l l l l@{}}
+\toprule
+\textbf{EE Concept} & \textbf{Protein Scale} & \textbf{Size} & \textbf{Model} & \textbf{Code} \\
+\midrule
+Component (R,L,C) & Covalent bond & 1.5~\AA & Lumped element & \texttt{protein\_bond\_constants} \\
+Stub & Sidechain & 3.8~\AA & Shunt $Y$ & $Z_\text{TOPO}$ table \\
+Filter section & SS element & 10--60~\AA & Short TL cascade & \texttt{abcd\_cascade\_jax} \\
+PCB network & Tertiary contacts & 20--100~\AA & $K \times K$ $Y$-matrix & \texttt{s\_param\_network} \\
+Full-wave & Full protein & 20--300~\AA & FDTD & \texttt{fdtd\_fold\_engine} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Biological Process $\to$ EE $\to$ Solver}
+\label{sec:biology_ee_solver}
+
+Protein synthesis follows a fixed pipeline that maps directly to classical EE design flow:
+
+\begin{enumerate}
+\item \textbf{Gene $\to$ Sequence} (Schematic $\to$ Netlist).  The amino acid sequence IS the netlist: each residue is a component with impedance $Z_\text{TOPO}[\text{aa}]$.
+
+\item \textbf{Peptide Bond} (Solder Joint).  Covalent N--C link with fixed $Z = \sqrt{m/n_e}$.  Bond lengths and angles are manufacturing constraints, not design variables.
+
+\item \textbf{SS Nucleation} (Filter Section Self-Assembly).  Local H-bonds form when 4+ helix-propensity residues are adjacent ($i \to i{+}4$ coupling).  This is a quasi-periodic TL section creating a bandpass filter.  The structural energy within each section follows the bond solver pattern: $E_k = \langle Z_\text{seg} \rangle$.
+
+\item \textbf{Hydrophobic Collapse} (Impedance Matching).  Hydrophobic sidechains in water have high $\Gamma$; burying them against other hydrophobic residues \emph{matches} impedances ($\Gamma \to 0$).
+
+\item \textbf{Tertiary Packing} (PCB Layout).  SS elements connect via H-bonds, hydrophobic contacts, and disulfide cross-links.  Modeled as a $K \times K$ admittance matrix.
+\end{enumerate}
+
+
+\subsection{Segmentation at Impedance Discontinuities}
+\label{sec:segmentation}
+
+The key innovation is partitioning the chain into SS elements at \emph{impedance discontinuities} --- the protein-scale analog of segmenting a TL at connectors and vias.  Three types of boundary are detected:
+
+\begin{enumerate}
+\item \textbf{Proline} --- rigid pyrrolidine ring, no H-bond donor.  Always a boundary (helix breaker).
+\item \textbf{Glycine} --- minimal sidechain ($|Z| = 0.30$), maximal flexibility.  Boundary when isolated (strand breaker).
+\item \textbf{Large $\Delta Z$} --- when the local reflection coefficient exceeds the cavity threshold:
+\begin{equation}
+|\Gamma_i| = \frac{|Z_{i+1} - Z_i|}{|Z_{i+1} + Z_i|} > \frac{1}{\sqrt{2Q}} \approx 0.267
+\label{eq:boundary_threshold}
+\end{equation}
+This is the \emph{same} threshold used for turn detection (Eq.~\ref{eq:gamma_turn}): it is the reflection coefficient at which $|\Gamma|^2 = 1/(2Q)$, the critical coupling point.
+\end{enumerate}
+
+Validation on three test proteins shows the segmentation correctly identifies known SS boundaries:
+
+\begin{table}[H]
+\centering
+\caption{Impedance-based segmentation vs.\ known secondary structure.}
+\label{tab:segmentation_validation}
+\small
+\begin{tabular}{@{}l c l l@{}}
+\toprule
+\textbf{Protein} & \textbf{$K$ elements} & \textbf{Boundaries} & \textbf{Known SS matched} \\
+\midrule
+Trp-cage (N=20) & 5 & D--G $\Delta Z$, Pro, Gly, Pro & Helix, turn, 3$_{10}$, polyPro \\
+Villin (N=35) & 4 & V--F $\Delta Z$, Pro, K--E $\Delta Z$ & 3 helices \\
+GB1 (N=56) & 5 & L--N $\Delta Z$, K--G $\Delta Z$, D--N $\Delta Z$, V--D $\Delta Z$ & $\beta_1$, helix, $\beta_2 + \beta_3$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Energy Function: Nodal $Y$-Matrix $S_{11}$}
+\label{sec:multiscale_energy}
+
+The multi-scale fold engine uses segmentation (Section~\ref{sec:multiscale_segmentation}) for initialisation and the full $S_{11}$ network loss from the S-parameter engine (Chapter~\ref{ch:protein_sim_architecture}) for gradient descent.
+
+\paragraph{Why lumped approximations fail.}
+Early iterations attempted to replace the full network loss with lumped per-segment averages:
+\begin{equation}
+    E_\text{lumped} = \bigl\langle Z_\text{seg} \times \sqrt{1+R^2} \times \sqrt{1+\kappa_\text{steric}} \times \sqrt{1-\kappa_\text{HB}} \times (1 + \text{exposure} \times |\Gamma|^2) \bigr\rangle
+    \label{eq:lumped_failed}
+\end{equation}
+where each multiplicative term has a clear EE motivation ($\mu$-enhancement, Pauli exclusion, transformer coupling, standing-wave solvation).  While each term is physically correct in isolation, the \emph{mean} impedance cannot capture the network effects---interference, resonance, and conformation-dependent coupling---that drive secondary structure formation.  A helix creates a periodic impedance lattice with passband resonance at the helical pitch; this effect only emerges through wave propagation (ABCD cascade), not through averaging.
+
+\paragraph{The correct EE approach.}
+In circuit analysis, the standard tool for a complex network is nodal admittance analysis: build the $Y$-matrix, extract $S$-parameters.  The loss function is therefore the same $|S_{11}|^2$ cascade from Section~\ref{sec:s11_cascade}, computed on the full conformation-dependent network:
+\begin{equation}
+    \mathcal{L}(\varphi, \psi) = \overline{|S_{11}(\omega)|^2}\big|_{Y = Y(\varphi,\psi)}
+    + \lambda_\text{steric} + \mathcal{L}_\text{Rama} + \mathcal{L}_\text{xtalk}
+    \label{eq:v7_loss}
+\end{equation}
+where the $Y$-matrix includes all conformation-dependent terms:
+\begin{itemize}
+    \item \textbf{Backbone:} tridiagonal $Y$ from N--C$_\alpha$--C bond segments (ABCD cascade);
+    \item \textbf{Sidechain stubs:} shunt $Y = 1/Z_\text{TOPO}$ at each C$_\alpha$ junction;
+    \item \textbf{H-bond coupling:} transformer mutual inductance $\kappa_\text{HB}$ for pairs within $d < D_\text{HB}$;
+    \item \textbf{Hydrophobic coupling:} through-space admittance $Y \propto \exp(-d/R_\text{burial})$ for nonpolar contacts;
+    \item \textbf{Solvent loading:} shunt $Y_\text{solvent} = \text{exposure}/Z_\text{water}(\omega)$ at exposed C$_\alpha$ nodes;
+    \item \textbf{Chirality:} non-reciprocal phase $\delta_\chi$ from triple products of bond vectors;
+    \item \textbf{Packing saturation:} Axiom~4 factor $S(\eta) = \sqrt{1 - \eta^2/P_C^2}$ on total $Y_\text{shunt}$.
+\end{itemize}
+
+\paragraph{Complex impedance and hydrophobicity.}
+A key insight:\ the hydrophilic/hydrophobic distinction emerges naturally from the \emph{reactive} component of $Z_\text{TOPO}$.  In the physics engine, $Z_\text{TOPO} = R + jX$ where:
+\begin{itemize}
+    \item Nonpolar residues (G,A,V,I,L,M,F,W,P): $X = 0$ (purely resistive);
+    \item Charged residues (D,E,K,R): $X = \pm R/Q$ (capacitive/inductive);
+    \item Polar uncharged (S,T,C,Y,N,Q): $X = \pm R/(2Q)$ (weak reactance).
+\end{itemize}
+The complex reflection coefficient at the sidechain--water boundary is:
+\begin{equation}
+    \Gamma_i = \frac{Z_{\text{TOPO},i} - Z_\text{water}(\omega)}{Z_{\text{TOPO},i} + Z_\text{water}(\omega)}
+    \label{eq:complex_gamma}
+\end{equation}
+where $Z_\text{water}(\omega) = \sqrt{\varepsilon_\infty + (\varepsilon_s - \varepsilon_\infty)/(1 + j\omega\tau)}$ from the Debye model.  Nonpolar residues have $|\Gamma|^2 \approx 0.14$ (high mismatch), while charged residues achieve $|\Gamma|^2 \approx 0.07$ through conjugate impedance matching of their reactive component with water's Debye relaxation.  No empirical hydrophobicity scale is required---it emerges from the impedance physics.
+
+\paragraph{Optimisation strategy.}
+The multi-scale engine contributes the optimisation framework:
+\begin{enumerate}
+    \item \textbf{Segmentation-aware initialisation}: element boundaries from Section~\ref{sec:multiscale_segmentation};
+    \item \textbf{Extended optimisation}: 20\,000 Adam steps (vs.\ 5\,000 in v3 standalone);
+    \item \textbf{Multi-start}: 3 random restarts for better landscape sampling;
+    \item \textbf{Higher learning rate}: $\eta = 2 \times 10^{-3}$ (vs.\ $10^{-3}$).
+\end{enumerate}
+
+\begin{table}[H]
+\centering
+\caption{Multi-scale + $S_{11}$ network loss (v7) vs.\ lumped approximations and standalone $S_{11}$.  All constants from AVE axioms; zero empirical fitting.}
+\label{tab:v7_results}
+\small
+\begin{tabular}{@{}l c c c c c@{}}
+\toprule
+\textbf{Version} & \textbf{Loss function} & \textbf{Trp-cage $R_g$ err.}  & \textbf{Trp SS} & \textbf{Villin $R_g$ err.} & \textbf{Vil SS} \\
+\midrule
+v2b (lumped)     & $\langle Z_\text{seg} \rangle$        & 15.0\% $\uparrow$ & 6\%  & 16.6\% $\uparrow$ & 0\% \\
+v5 (standing wave) & $Z_\text{seg} \times (1 + e|\Gamma|^2)$ & 30.2\% $\uparrow$ & 6\% & 29.4\% $\uparrow$ & 3\% \\
+v3 standalone    & $|S_{11}|^2$ (5k steps)               & 3.4\%             & 33\% & 3.7\%              & 30\% \\
+\textbf{v7}      & $|S_{11}|^2$ \textbf{(20k steps)}     & \textbf{0.0\%}    & \textbf{39\%} & \textbf{4.1\%} & \textbf{24\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Implementation: \texttt{scripts/book\_5\_topological\_biology/multiscale\_fold\_engine.py} (optimisation loop) calling \texttt{s11\_fold\_engine\_v3\_jax.py} (network loss).
+

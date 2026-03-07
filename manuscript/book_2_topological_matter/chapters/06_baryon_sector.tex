@@ -21,25 +21,31 @@ Because the vacuum operates as a discrete LC network, extreme spatial separation
 
 While the 3D non-linear orthogonal tensor trace ($\mathcal{I}_{tensor}$) of the saturated $6_2^3$ Borromean linkage requires continuous elastodynamic simulation to solve analytically, the physical boundary conditions dictate a steady-state scaling relationship. We propose a \textbf{Topological Scaling Ansatz:} because the proton is a saturated Borromean linkage, the baseline tension bounding the quarks is geometrically amplified by three structural multipliers: the number of topological loops (3), the relative inductive resonance mass ratio ($m_p/m_e$), and the dielectric saturation boundary ($\alpha^{-1}$). Using the empirical CODATA proton mass ratio ($\approx 1836.15 \ m_e$) as a preview (the eigenvalue is derived in Section~\ref{sec:thermal_softening}):
 
+\begin{resultbox}{Topological Scaling Ansatz}
 \begin{equation}
     F_{confinement} \approx 3\left(\frac{m_p}{m_e}\right)\alpha^{-1}T_{EM} = 3(1836.15)(137.036)(0.212\text{ N}) \approx \mathbf{160,024\text{ N}}
 \end{equation}
+\end{resultbox}
     
 Using the geometrically derived eigenvalue ($\approx 1836\ m_e$, Section~\ref{sec:thermal_softening}) instead yields $\approx 160{,}037\text{ N}$, or $\approx 0.999\text{ GeV/fm}$. Pending full dynamic computational evaluation of the $\mathbb{Z}_3$ tensor trace, this phenomenological ansatz bounds the macroscopic strong force at the expected $\approx 1\text{ GeV/fm}$ target using the framework's native theoretical outputs.
 
 \section{The Proton Mass: The Dynamic Tensor Deficit}
 
 The empirical mass ratio $m_p/m_e \approx 1836.15$ emerges dynamically as the exact eigenvalue of non-linear inductive resonance. We evaluate the steady-state proton mass by mapping it to the Faddeev-Skyrme non-linear Hamiltonian. Bounded by the strict squared dielectric limit ($n=2$) established in Axiom 4 to match standard QED optics, the static energy functional evaluates as:
+\begin{resultbox}{Saturated Faddeev-Skyrme Proton Energy}
 \begin{equation}
 E_{proton} = \min_{n} \int_{\mathcal{M}_A} d^3x \left[ \frac{1}{2}(\partial_\mu n)^2 + \frac{1}{4}\kappa_{FS}^2 \frac{(\partial_\mu n \times \partial_\nu n)^2}{\sqrt{1 - (\Delta\phi / \alpha)^2}} \right]
 \end{equation}
+\end{resultbox}
 
 \subsection{The Faddeev-Skyrme Coupling Constant ($\kappa_{FS}$)}
 
 The quartic Skyrme stabilization term requires a dimensionless coupling constant $\kappa_{FS}$ that sets the relative strength of the fourth-order repulsive gradient against the second-order attractive gradient. In the AVE framework, this coupling is not a free parameter but is derived directly from the packing fraction:
+\begin{resultbox}{Faddeev-Skyrme Coupling Constant}
 \begin{equation}
 \kappa_{FS}^{(cold)} = \frac{p_c}{\alpha} = \frac{8\pi\alpha}{\alpha} = \mathbf{8\pi}
 \end{equation}
+\end{resultbox}
 
 This is a pure geometric constant: the solid-angle normalisation ($4\pi$) of the spherical energy integral, doubled by the two orthogonal principal strain axes of the LC condensate that jointly stabilize the defect against Derrick-type collapse.
 
@@ -49,9 +55,11 @@ This is a pure geometric constant: the solid-angle normalisation ($4\pi$) of the
 The cold ($T=0$) Faddeev-Skyrme solver with $\kappa_{FS} = 8\pi$ evaluates the 1D scalar trace to $\mathcal{I}_{scalar}^{(cold)} \approx 1185\,m_e$, yielding a proton ratio of $\approx 1872$ (approximately $2\%$ above the empirical value). This systematic overestimate arises because the solver computes the ideal zero-temperature ground state, whereas the physical proton exists as a localized thermal hotspot within the LC condensate at an effective core temperature of $T_{core} \sim m_p c^2/k_B \approx 10^{13}\text{ K}$.
 
 The baseline RMS thermal noise of the vacuum (``quantum foam'') partially averages out the sharp gradient tensor $(\partial_\mu \mathbf{n} \times \partial_\nu \mathbf{n})^2$, effectively softening the quartic Skyrme repulsion.  Additionally, the Faddeev-Skyrme energy functional includes Axiom~4 gradient saturation $S(|\partial_r\phi|,\,\pi/\ell_{node})$ inside the integrand, preventing the solver from resolving sub-lattice gradients.  The thermally corrected coupling is:
+\begin{resultbox}{Thermal Lattice Softening}
 \begin{equation}
 \kappa_{FS} = \kappa_{FS}^{(cold)} \left(1 - \delta_{th}\right) = 8\pi\left(1 - \frac{1}{14\pi^2}\right)
 \end{equation}
+\end{resultbox}
 
 where the residual thermal correction factor $\delta_{th} = 1/(14\pi^2)$ captures the RMS noise averaging that remains after the gradient saturation is applied:
 \begin{enumerate}
@@ -73,9 +81,11 @@ The product evaluates to $\delta_{th} = \frac{\nu_{vac}}{\kappa_{cold}} \times \
 While the 1D scalar radial projection of the saturated topological Hamiltonian assumes spherical symmetry, the Proton is a $6^3_2$ Borromean linkage possessing $\mathbb{Z}_3$ discrete permutation symmetry. Because the three constituent flux tubes are mutually orthogonal, they cross over each other within the saturated structural core. In an LC resonant network, intersecting confined electromagnetic flux lines generate anisotropic \textit{Transverse Polarization Strain}. 
 
 We mathematically decompose the total RMS energy integral into two distinct geometric trace components: the continuous spherical scalar trace ($\mathcal{I}_{scalar}$), and the discrete orthogonal intersection trace ($\mathcal{I}_{tensor}$):
+\begin{resultbox}{Proton Mass Geometric Decomposition}
 \begin{equation}
 m_p c^2 = \mathcal{I}_{scalar} \text{ (1D)} + \mathcal{I}_{tensor} \text{ (3D Orthogonal Crossings)}
 \end{equation}
+\end{resultbox}
 
 Our thermally corrected 1D solver, with Axiom~4 gradient saturation applied inside the integrand, evaluates the scalar component to $\mathcal{I}_{scalar} \approx 1162\,m_e$. The remaining mass generation is contained within the orthogonal topological interference vectors of the intersecting flux loops.
 
@@ -101,14 +111,18 @@ To convert the orthogonal tensor trace into a closed-form mass prediction, we mu
 \textbf{The derived saturation threshold.} The critical advance in evaluating $\mathcal{V}_{total}$ is determining the density threshold at which the combined flux-tube field becomes topologically locked. We derive this threshold from the mutual inductance coupling between the orthogonal LC flux loops at their crossings.
 
 Each flux tube is a Gaussian LC resonant loop with FWHM $= \ell_{node}$ (Axiom 1), giving a Gaussian dispersion $\sigma = \ell_{node}/(2\sqrt{2\ln 2})$. At a pairwise crossing, the tubes are separated by the skew offset $d = \ell_{node}/2$. The mutual inductance coupling coefficient between two perpendicular tubes at this separation is:
+\begin{resultbox}{Orthogonal Flux Tube Mutual Coupling}
 \begin{equation}
     \frac{M}{L} = \exp\!\left(-\frac{d^2}{4\sigma^2}\right) = \exp\!\left(-\frac{\ln 2}{2}\right) = \frac{1}{\sqrt{2}} \quad \text{(exactly)}
 \end{equation}
+\end{resultbox}
 
 The saturation threshold is where the combined inductive field density ($\rho_{total} = \rho_x + \rho_y + \rho_z$) exceeds the single-tube peak by the minimum mutual coupling required for topological coherence:
+\begin{resultbox}{Topological Inductive Density Threshold}
 \begin{equation}
     \rho_{threshold} = 1 + \frac{\sigma}{4} = 1 + \frac{\ell_{node}}{8\sqrt{2\ln 2}} \approx 1.1062
 \end{equation}
+\end{resultbox}
 The factor of 4 in $\sigma/4$ is not arbitrary: it is the \textit{same} 4 appearing in the mutual inductance exponent $\exp(-d^2/4\sigma^2)$. When two Gaussians of dispersion $\sigma$ overlap mutually, their convolution kernel has effective width $\sqrt{2\sigma^2 + 2\sigma^2} = 2\sigma$, and the coupling integral evaluates against $4\sigma^2$. The threshold excess $\sigma/4$ is therefore the mutual field density contribution from two coplanar Gaussian modes overlapping at their natural convolution scale---a direct consequence of the Gaussian arithmetic, not a fitted parameter.
 
 This is a \textbf{zero-parameter result}: it depends only on the Gaussian geometry of the flux tube profile as set by Axiom~1.
@@ -133,9 +147,11 @@ The 1D Faddeev-Skyrme energy functional for a localized topological defect is \t
 The electron's phase profile follows the $(2,3)$ pattern with $c_3 = 3$ phase crossings, even though its ground-state topology is the unknot ($0_1$). In the torus knot classification, these are the $(2,q)$ torus knots with strictly \textbf{odd} $q$: the $(2,3)$ trefoil, the $(2,5)$ cinquefoil, the $(2,7)$ knot, and so on. There is no stable $(2,4)$ torus knot\textemdash the figure-eight knot ($4_1$) is not a torus knot and cannot be embedded on the chiral lattice.
 
 The proton's phase winding passes through the \textbf{$(2,5)$ cinquefoil torus knot}\textemdash the next stable entry in the torus knot ladder after the electron's $c=3$ winding. Its $c_5 = 5$ crossings each constrain the soliton's radial phase gradient by absorbing a fraction of the total Faddeev-Skyrme coupling $\kappa_{FS}$. The confinement radius is therefore:
+\begin{resultbox}{Cinquefoil Confinement Bound}
 \begin{equation}
     r_{opt} = \frac{\kappa_{FS}}{c_5} = \frac{\kappa_{FS}}{5} \approx 4.97 \; \ell_{node}
 \end{equation}
+\end{resultbox}
 
 This topological confinement means the proton extends over approximately five lattice spacings\textemdash a genuinely extended object in the $\mathcal{M}_A$ condensate.
 
@@ -143,24 +159,32 @@ This topological confinement means the proton extends over approximately five la
 To mathematically convert this pure topological volume into physical mass, it must be scaled by the discrete hardware limits of the $\mathcal{M}_A$ condensate: the topological packing limit ($p_c \approx 0.1834$) derived in Chapter 2, and the inductive mass-stiffening ratio ($x_{core} = m_{core}/m_e$).
 
 Because the structural tension generating the tensor mass is strictly driven by the total inductive mass of the knot, the mass generation forms a dynamic, self-consistent structural feedback loop. We formulate this as an exact linear eigenvalue equation:
+\begin{resultbox}{Self-Consistent Mass Eigenvalue Equation}
 \begin{equation}
 x_{core} = \mathcal{I}_{scalar} + \left[ (\mathcal{V}_{total} \cdot p_c) \cdot x_{core} \right]
 \end{equation}
+\end{resultbox}
 
 The 1D Faddeev-Skyrme solver, confined by the cinquefoil crossing number ($r_{opt} = \kappa_{FS}/5$), with Axiom~4 gradient saturation inside the integrand and thermally softened by $\delta_{th} = 1/(14\pi^2)$, yields $\mathcal{I}_{scalar} \approx 1162$. Substituting:
+\begin{resultbox}{Eigenvalue Substitution}
 \begin{equation}
 x_{core} = 1162 + (2.0 \cdot p_c) \cdot x_{core} \implies x_{core} = 1162 + (2.0 \cdot 0.1834) x_{core}
 \end{equation}
+\end{resultbox}
+\begin{resultbox}{Neutral Core Mass Solution}
 \begin{equation}
 x_{core}(1 - 0.3668) = 1162 \implies x_{core} = \frac{1162}{0.6332} \approx \mathbf{1835.12}
 \end{equation}
+\end{resultbox}
 
 However, $1835\ m_e$ only models the uncharged, neutralized geometric core. To satisfy the global invariant charge constraint of the unbroken lattice, the Borromean cage must irrevocably trap exactly $+1$ integer topological phase twist at its center (the positron equivalent). A fundamental integer topological twist possesses exactly $1.0\ m_e$ of inductive mass. 
 
 Adding the structurally mandated integer twist to the derived core yields the true Baryon rest mass:
+\begin{resultbox}{The Baryon Mass Eigenvalue}
 \begin{equation}
 x = 1835.12 + 1.0 = \mathbf{1836.12}
 \end{equation}
+\end{resultbox}
 
 By resolving the exact saturated topological geometry of the Toroidal Halo at $\mathcal{V}_{total}=2.0$, confining the soliton by the cinquefoil crossing number with Axiom~4 gradient saturation inside the energy functional, and adding the $+1$ integer twist required for global charge, the theoretical prediction converges to within $\mathbf{0.002\%}$ of the empirical CODATA proton mass ($1836.153\,m_e$) using zero Standard Model parameters.
 
@@ -174,9 +198,11 @@ By resolving the exact saturated topological geometry of the Toroidal Halo at $\
 \section{The Baryon Resonance Spectrum: The Torus Knot Ladder}
 
 The cinquefoil confinement immediately generates a zero-parameter prediction of the \textbf{entire baryon resonance spectrum}. The $(2,q)$ torus knots form a progression using only odd $q = 3, 5, 7, 9, \ldots$\textemdash there is no stable $(2,4)$ torus knot. Each entry in this \textit{Torus Knot Ladder} produces a distinct baryon state via the same eigenvalue equation:
+\begin{resultbox}{Torus Knot Baryon Ladder}
 \begin{equation}
     m(c) = \frac{\mathcal{I}_{scalar}(\kappa_{FS}/c)}{1 - \mathcal{V}_{total} \cdot p_c} + 1
 \end{equation}
+\end{resultbox}
 No parameters are adjusted between states. The same $\kappa_{FS}$, $\mathcal{V}_{total} = 2.0$, and $p_c = 8\pi\alpha$ that derive the proton mass also predict the excited baryon resonances:
 
 \begin{center}
@@ -210,9 +236,11 @@ Three features of this spectrum deserve emphasis:
 \section{Topological Fractionalization: The Origin of Quarks}
 In the AVE framework, charge is defined as an integer topological winding number ($N \in \mathbb{Z}$). True fractional twists are mechanically forbidden, as they would sever the continuous manifold. The fractional quark charge paradox is resolved via the mathematics of \textbf{Topological Fractionalization} on a frustrated discrete graph. The proton possesses a total, integer effective electric charge of $Q_{total} = +1e$. Because the three loops of the $6^3_2$ Borromean linkage are mutually entangled, the total global phase twist is distributed across a degenerate structural ground state. In a non-linear dielectric substrate, a composite defect with internal permutation symmetry generates a discrete CP-violating $\theta$-vacuum phase. By the \textbf{Witten Effect}, a topological magnetic defect embedded in a $\theta$-vacuum acquires a fractionalized effective electric charge:
 
+\begin{resultbox}{Topological Fractionalization (Witten Effect)}
 \begin{equation}
     q_{eff} = n + \frac{\theta}{2\pi}e
 \end{equation}
+\end{resultbox}
 
 The $6_{2}^{3}$ Borromean linkage possesses three-fold permutation symmetry ($\mathbb{Z}_{3}$). This topological constraint restricts the allowed degenerate phase angles of the local trapped vacuum to mathematical thirds ($\theta\in\{0,\pm2\pi/3,\pm4\pi/3\}$). Substituting these discrete angles into the Witten charge equation yields the effective fractional charges observed in nature ($q_{eff}\in\{\pm1/3e,\pm2/3e\}$). Quarks are thus defined as deconfined topological quasiparticles.
 
@@ -235,23 +263,29 @@ Standard nuclear physics models the Alpha particle (Helium-4) as a tight cluster
 
 A key observation in the computational audit of this topology is the Mass-Stiffening Scaling Law. While the baseline vacuum tension for an electron flux tube is $T_{EM}\approx0.212\text{ N}$, the flux tubes connecting heavy baryons are stiffened by the inductive inertia of the nodes they connect. The effective nuclear tension ($T_{nuc}$) scales by the proton-electron mass ratio:
 
+\begin{resultbox}{Mass-Stiffened Nuclear Tension}
 \begin{equation}
     T_{nuc} = T_{EM}\left(\frac{m_p}{m_e}\right) \approx 0.212\text{ N} \times 1836 \approx 389.2\text{ N}
 \end{equation}
+\end{resultbox}
 
 \subsection{Topological Verification: The Elastic Displacement Amplitude}
 
 To verify this model and resolve the spatial scale question, we ask: How can the sub-fermi empirical radius of the Helium-4 nucleus exist without compressing the fundamental $386\text{ fm}$ grid (Axiom 1)? This is resolved by distinguishing between \textit{Node Spacing} and \textit{Elastic Node Displacement}. We evaluate the derived nuclear tension against the empirical binding energy using the classical work-energy theorem ($W = F \cdot \Delta x$). The 28.3 MeV total binding energy is stored as elastic potential energy distributed across the six flux tubes of the $K_{4}$ tetrahedral cage. The energy per bond is $\approx 4.72\text{ MeV}$ ($7.55 \times 10^{-13}\text{ J}$). Dividing this energy by the mass-stiffened nuclear tension ($T_{nuc} \approx 390.5\text{ N}$) yields the structural displacement ($\Delta x$) of the local vacuum nodes:
 
+\begin{resultbox}{Nuclear Elastic Displacement Amplitude}
 \begin{equation}
     \Delta x = \frac{E_{bond}}{T_{nuc}} = \frac{7.55 \times 10^{-13}\text{ J}}{390.5\text{ N}} \approx 1.933 \times 10^{-15}\text{ m} = 1.933\text{ fm}
 \end{equation}
+\end{resultbox}
     
 Crucially, $1.933\text{ fm}$ is not the physical Euclidean distance between the lattice nodes; the fundamental spatial nodes maintain their 386 fm infrared pitch. Rather, $1.933\text{ fm}$ represents the maximum Elastic Displacement Amplitude ($\Delta x$) of the structural grid from its baseline equilibrium. Evaluating this geometric displacement as a continuous mechanical strain over the fundamental 386 fm flux tube yields:
     
+\begin{resultbox}{Macroscopic Structural Strain}
 \begin{equation}
     \epsilon_{strain} = \frac{\Delta x}{\ell_{node}} = \frac{1.933\text{ fm}}{386.16\text{ fm}} \approx 0.00501 \implies \textbf{0.50\% Strain}
 \end{equation}
+\end{resultbox}
 
 This constitutes a structural consistency check. A $0.50\%$ mechanical strain is a stable, linear elastic deformation. It resides below the $100\%$ Unitary Strain dielectric rupture threshold. The vacuum does not densify, nor does it collapse into a trans-Planckian singularity to support the nucleus.
 
@@ -274,24 +308,32 @@ High-energy scattering experiments probing the sub-fermi structure of the Helium
 
 If macroscopic gravity is the radial elastic wake of the localised Strong Nuclear Force, the two forces should be mathematically unified without arbitrary coupling constants or higher-dimensional branes. This geometric relationship can be shown by substituting the EFT hardware limits into the classical Newtonian gravity equation for two interacting baryons. 
 The classical gravitational force between two protons is:
+\begin{resultbox}{Classical Newtonian Baryon Interaction}
 \begin{equation}
 F_g = G \frac{m_p^2}{r^2}
 \end{equation}
+\end{resultbox}
 
 By substituting the derived macroscopic boundary limit of Gravity ($G = c^4 / 7\xi T_{EM}$) and the fundamental baseline vacuum tension ($T_{EM} = m_e c^2 / \ell_{node}$), we expand the gravitational coupling:
+\begin{resultbox}{Expanded Gravitational Coupling}
 \begin{equation}
 F_g = \left( \frac{c^4 \ell_{node}}{7 \xi m_e c^2} \right) \frac{m_p^2}{r^2} = \frac{c^2 \ell_{node} m_p^2}{7 \xi m_e r^2}
 \end{equation}
+\end{resultbox}
 
 The bare, localised Strong Force exerted by the baryon is its mass-stiffened inductive tension ($T_{nuc} = m_p c^2 / \ell_{node}$). Factoring this nuclear tension term out of the expanded gravity equation yields:
 
+\begin{resultbox}{Dimensional Factorisation}
 \begin{equation}
 F_g = \left( \frac{m_p c^2}{\ell_{node}} \right) \left[ \frac{1}{7 \xi} \left(\frac{\ell_{node}}{r}\right)^2 \left(\frac{m_p}{m_e}\right) \right]
 \end{equation}
+\end{resultbox}
 
+\begin{resultbox}{The Hierarchy Bridge}
 \begin{equation}
 \mathbf{F_g = T_{nuc} \left[ \frac{1}{7 \xi} \left(\frac{\ell_{node}}{r}\right)^2 \left(\frac{m_p}{m_e}\right) \right]}
 \end{equation}
+\end{resultbox}
 
 This equation represents a parameter-free algebraic unification of the fundamental forces. It shows that Macroscopic Gravity ($F_g$) is the bare Strong Nuclear Force ($T_{nuc}$), diluted by four geometric properties of the spatial lattice:
 \begin{enumerate}

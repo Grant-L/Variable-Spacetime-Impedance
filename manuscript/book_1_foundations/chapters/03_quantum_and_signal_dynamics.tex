@@ -8,28 +8,36 @@ Standard Quantum Field Theory (QFT) relies on a Lagrangian density ($\mathcal{L}
 The substitution of $\xi_{topo}$ converts the electromagnetic Lagrangian density into continuous mechanical stress ($\text{N/m}^2$), grounding Axiom 3 in bulk continuum mechanics. The total macroscopic energy density of the manifold is the sum of the energy stored in the capacitive edges (dielectric strain) and the inductive nodes (kinematic inertia). To construct a relativistically invariant action principle, the Lagrangian difference ($\mathcal{L} = \mathcal{T} - \mathcal{U}$) is evaluated.
 
 The canonical field variable for evaluating transverse waves across a discrete graph is the \textbf{Magnetic Vector Potential} ($\mathbf{A}$), defining the magnetic flux linkage per unit length ($[\text{Wb/m}] = [\text{V}\cdot\text{s/m}]$). Because the generalized velocity of this coordinate is identically the electric field ($\mathbf{E} = -\partial_t \mathbf{A}$), the capacitive energy takes the role of kinetic energy ($\mathcal{T}$), and the inductive energy acts as potential energy ($\mathcal{U}$).
+\begin{resultbox}{Dielectric Lagrangian Density}
 \begin{equation}
     \mathcal{L}_{AVE} = \frac{1}{2} \epsilon_0 \left| \frac{\partial \mathbf{A}}{\partial t} \right|^2 - \frac{1}{2\mu_0} |\nabla \times \mathbf{A}|^2
 \end{equation}
+\end{resultbox}
 
 \subsection{Dimensional Proof: The Vector Potential as Mass Flow}
 Evaluating the SI dimensions of this continuous field confirms its mechanical identity. Applying the topological conversion constant ($\xi_{topo} \equiv e/\ell_{node}$ measured in $[\text{C/m}]$) to the canonical variable $\mathbf{A}$:
+\begin{resultbox}{Vector Potential Dimensions}
 \begin{equation}
     [\mathbf{A}] = \left[ \frac{\text{V} \cdot \text{s}}{\text{m}} \right] = \left[ \frac{\text{J} \cdot \text{s}}{\text{C} \cdot \text{m}} \right] = \left[ \frac{\text{kg} \cdot \text{m}^2 \cdot \text{s}}{\text{s}^2 \cdot \text{C} \cdot \text{m}} \right] = \left[ \frac{\text{kg} \cdot \text{m}}{\text{s} \cdot \text{C}} \right]
 \end{equation}
+\end{resultbox}
 By substituting the mathematically exact topological conversion $\text{C} \equiv \xi_{topo} \text{ m}$ derived in Chapter 2, the spatial metric evaluates to:
+\begin{resultbox}{Vector Potential as Mass Flow}
 \begin{equation}
     [\mathbf{A}] = \left[ \frac{\text{kg} \cdot \text{m}}{\text{s} \cdot (\xi_{topo} \text{ m})} \right] = \mathbf{\xi_{topo}^{-1} \left[ \frac{\text{kg}}{\text{s}} \right]}
 \end{equation}
+\end{resultbox}
 This establishes a fundamental dimensional equivalence: the magnetic vector potential ($\mathbf{A}$) is physically isomorphic to the continuous \textbf{Mass Flow Rate} (linear momentum density) of the vacuum lattice, scaled inversely by the topological dislocation constant.
 
 When evaluating the full kinetic energy density term using this mechanical substitution,
 and retrieving the exact capacitive compliance derivation from Chapter 2 ($\epsilon_{0}\equiv\xi_{topo}^2[\text{N}^{-1}]$),
 the topological scaling constants cancel:
 
+\begin{resultbox}{Kinetic Energy Density Dimensions}
 \begin{equation}
 [\mathcal{L}_{kin}]=\frac{1}{2}\epsilon_{0}|\partial_{t}A|^{2}\Rightarrow(\xi_{topo}^{2}[\text{N}^{-1}])\left(\xi_{topo}^{-1}\frac{\text{kg}}{\text{s}^2}\right)^{2}=\left(\frac{\xi_{topo}^{2}}{\xi_{topo}^{2}}\right)\frac{\text{kg}^{2}}{\text{N}\cdot \text{s}^{4}}=\frac{\text{kg}^{2}}{(\text{kg}\cdot \text{m}/\text{s}^{2})\cdot \text{s}^{4}}\equiv\left[\frac{\text{N}}{\text{m}^{2}}\right]
 \end{equation}
+\end{resultbox}
 
 Minimizing the quantum action is mathematically equivalent to minimizing the continuous
 inductive bulk stress (Pascals) of the $\mathcal{M}_{A}$ manifold.
@@ -43,26 +51,34 @@ Because the $\mathcal{M}_A$ lattice has a fundamental pitch $\ell_{node}$, it ac
 By the \textbf{Whittaker-Shannon Interpolation Theorem}, any band-limited signal $\mathbf{A}(\mathbf{x})$ propagating through this discrete lattice can be reconstructed uniquely using a superposition of orthogonal sinc functions[cite: 1780]. The set of all such band-limited functions constitutes a Reproducing Kernel Hilbert Space known as the \textbf{Paley-Wiener Space} ($PW_{\pi/\ell_{node}}$)[cite: 1781].
 
 To map the real-valued physical lattice potential $\mathbf{A}(\mathbf{x},t)$ to the complex continuous quantum state vector $\Psi(\mathbf{x},t)$, the standard signal-processing \textbf{Analytic Signal} representation utilizing the Hilbert Transform ($\mathcal{H}_{transform}$) is applied[cite: 1782]:
+\begin{resultbox}{Analytic Signal Extension}
 \begin{equation}
     \Psi(\mathbf{x},t) = \mathbf{A}(\mathbf{x},t) + i \mathcal{H}_{transform}[\mathbf{A}(\mathbf{x},t)]
 \end{equation}
+\end{resultbox}
 The complex continuous Hilbert space of standard quantum mechanics is formally identical to the Paley-Wiener signal-processing representation of the discrete vacuum hardware.
 
 \subsection{The Generalized Uncertainty Principle (GUP)}
 On a discrete graph with pitch $\ell_{node}$, continuous coordinate translation is physically impossible[cite: 1783]. For a macroscopic wave propagating through a stochastic 3D amorphous solid, the effective continuous momentum operator $\langle \hat{P} \rangle$ is defined as an isotropic ensemble average of the symmetric central finite-difference operator across adjacent nodes[cite: 1784]:
+\begin{resultbox}{Continuous Momentum Expectation}
 \begin{equation}
     \langle \hat{P} \rangle \approx \frac{\hbar}{\ell_{node}} \sin\left(\frac{\ell_{node} \hat{p}_c}{\hbar}\right)
 \end{equation}
+\end{resultbox}
 
 Evaluating the exact commutator of the continuous position operator with this discrete lattice momentum ($[\hat{x}, f(\hat{p}_c)] = i\hbar f'(\hat{p}_c)$) yields:
+\begin{resultbox}{Discrete Graph Commutator}
 \begin{equation}
     [\hat{x}, \langle \hat{P} \rangle] = i\hbar \cos\left(\frac{\ell_{node} \hat{p}_c}{\hbar}\right)
 \end{equation}
+\end{resultbox}
 
 Applying the generalized Robertson-Schr\"odinger relation yields the rigorous \textbf{Generalized Uncertainty Principle (GUP)} for the discrete vacuum. Because continuous momentum $\Delta x_{SM}$ and the fundamental node spacing are orthogonal hardware constraints, they add in quadrature (Root-Sum-Square):
+\begin{resultbox}{The Generalized Uncertainty Principle (GUP)}
 \begin{equation}
     \Delta x_{AVE} = \sqrt{(\Delta x_{SM})^2 + \left(\frac{\ell_{node}}{2}\right)^2} \ge \frac{\ell_{node}}{2}
 \end{equation}
+\end{resultbox}
 
 \textbf{The Physical Origin of the GUP Gap:} In the low-energy limit ($p_c \ll \hbar/\ell_{node}$), the cosine evaluates to $1$, recovering standard Heisenberg physics ($\Delta x \Delta p \ge \hbar/2$)[cite: 1785]. Standard continuum physics assumes that as kinetic momentum increases without bound, $\Delta x$ can shrink arbitrarily. This assumption is the origin of Ultraviolet (UV) divergences in standard Field Theories.
 
@@ -77,16 +93,20 @@ In the AVE framework, as kinetic energies approach the Brillouin zone boundary o
 
 \subsection{Deriving the Schr\"odinger Equation from Circuit Resonance}
 When a topological defect (mass) is synthesized within the graph, it acts as a localized inductive load, imposing a fundamental circuit resonance frequency ($\omega_m = mc^2/\hbar$). This mathematically transforms the massless wave equation into the massive \textbf{Klein-Gordon Equation}[cite: 1787]:
+\begin{resultbox}{Klein-Gordon Equation as Circuit Resonance}
 \begin{equation}
     \nabla^2 \mathbf{A} - \frac{1}{c^2}\frac{\partial^2 \mathbf{A}}{\partial t^2} = \left(\frac{mc}{\hbar}\right)^2 \mathbf{A}
 \end{equation}
+\end{resultbox}
 
 To map this relativistic classical evolution to non-relativistic quantum states, the \textbf{Paraxial Approximation} is applied, factoring out the rest-mass Compton frequency via a slow-varying envelope function $\mathbf{A}(\mathbf{x},t) = \Psi(\mathbf{x},t) e^{-i \omega_m t}$. 
 
 For non-relativistic speeds ($v \ll c$), the second time derivative of the envelope ($\partial_t^2 \Psi$) is negligible. The strict mass resonance terms precisely cancel out[cite: 1788]:
+\begin{resultbox}{The Schr\"odinger Equation}
 \begin{equation}
     \nabla^2 \Psi + \frac{2im}{\hbar} \frac{\partial \Psi}{\partial t} = 0 \quad \implies \quad i\hbar \frac{\partial \Psi}{\partial t} = -\frac{\hbar^2}{2m} \nabla^2 \Psi
 \end{equation}
+\end{resultbox}
 The Schr\"odinger Equation evaluates precisely as the paraxial envelope equation of a classical macroscopic pressure wave propagating through the discrete massive $LC$ circuits of the vacuum[cite: 1788].
 
 \section{Wave-Particle Duality and The Zero-Impedance Boundary}
@@ -108,14 +128,18 @@ The kinetic yield governs mass assembly and confinement; the snap limit governs 
 The surrounding relaxed vacuum has a characteristic impedance $Z_{vac} \approx 377 \ \Omega$. At the saturated core of the localised knot, the LC nodes can no longer support alternating transverse displacement, so the effective dynamic RF impedance drops to $0 \ \Omega$ (an RF short circuit).
 
 In transmission line theory, when a wave hits an impedance boundary, the ratio of reflected energy is governed strictly by the Reflection Coefficient ($\Gamma$):
+\begin{resultbox}{Transmission Line Reflection}
 \begin{equation}
     \Gamma = \frac{Z_{knot} - Z_{vacuum}}{Z_{knot} + Z_{vacuum}}
 \end{equation}
+\end{resultbox}
 
 By evaluating the ratio at the saturated knot boundary ($Z_{knot} = 0 \ \Omega$):
+\begin{resultbox}{The Absolute Impedance Boundary}
 \begin{equation}
     \Gamma = \frac{0 - 377}{0 + 377} = \mathbf{-1}
 \end{equation}
+\end{resultbox}
 A Reflection Coefficient of $-1$ signifies total reflectance.
 
 \subsection{Internal Confinement and Matter Assembly}
@@ -156,34 +180,44 @@ In the Double Slit Experiment, the topological defect (particle) passes through 
 
 \subsection{Ohmic Decoherence and the Born Rule}
 To measure a quantum state, a macroscopic detector must physically couple to the vacuum lattice[cite: 1791]. By Axiom 1, any device that couples to the $\mathbf{A}$-field and extracts kinetic energy acts as a resistive mechanical load (where $1 \, \Omega \equiv \xi_{topo}^{-2} \text{ kg/s}$)[cite: 1792]. The physical work extracted into the detector over a measurement interval $\Delta t$ is governed by classical continuous Joule heating ($P = V^2 / R$)[cite: 1793]:
+\begin{resultbox}{Extracted Measurement Work}
 \begin{equation}
     W_{extracted} = \int P_{load} dt \propto \frac{|\partial_t \mathbf{A}(x_n)|^2}{Z_{detector}} \Delta t
 \end{equation}
+\end{resultbox}
 
 In a stochastic thermal substrate, the probability that the extracted work triggers a macroscopic discrete event scales identically with the squared amplitude of the local wave envelope[cite: 1793].
+\begin{resultbox}{Deterministic Born Rule}
 \begin{equation}
     P(click | x_n) = \frac{|\partial_t \mathbf{A}(x_n)|^2}{\int |\partial_t \mathbf{A}(\mathbf{x})|^2 d^3x} \equiv |\Psi|^2
 \end{equation}
+\end{resultbox}
 \textbf{The Born Rule} represents the deterministic thermodynamic equation for momentum extraction from a wave-bearing lattice by a thresholded Ohmic load[cite: 1794]. Placing a detector at Slit B irreversibly thermalizes the spatial pressure wave (decoherence), permanently attenuating the interference gradients[cite: 1795].
 
 \section{Non-Linear Dynamics and Topological Shockwaves}
 The linear wave equation assumes constant compliance ($\epsilon_0$). Axiom 4, however, defines the vacuum as a non-linear dielectric bounded by the fine-structure limit ($\alpha$). The saturation operator takes a squared geometric form ($n=2$), consistent with QED energy bounds and classical electrodynamics.
 
 To preserve dimensional homogeneity on a 1D continuous transmission line, the telegrapher equations utilize the continuous macroscopic non-linear modulus $\epsilon(\Delta\phi)$:
+\begin{resultbox}{Non-Linear Telegrapher Equation}
 \begin{equation}
 \label{eq:nonlinear_wave}
     \frac{\partial^{2}\Delta\phi}{\partial z^{2}} = \mu_0 \epsilon(\Delta\phi)\frac{\partial^{2}\Delta\phi}{\partial t^{2}} + \mu_0 \frac{d\epsilon}{d\Delta\phi}\left(\frac{\partial \Delta\phi}{\partial t}\right)^{2}
 \end{equation}
+\end{resultbox}
 
 Enforcing the Saturation Operator defined in Axiom 4:
+\begin{resultbox}{Dielectric Saturation Taylor Expansion}
 \begin{equation}
     \epsilon(\Delta\phi) = \epsilon_{0}\sqrt{1 - \left(\frac{\Delta\phi}{\alpha}\right)^2} \implies \epsilon(\Delta\phi) \approx \epsilon_0 \left[1 - \frac{1}{2}\left(\frac{\Delta\phi}{\alpha}\right)^2\right]
 \end{equation}
+\end{resultbox}
 
 The continuous dielectric displacement $D = \epsilon(\Delta\phi) \cdot \Delta\phi$ evaluates to $D_{NL} \approx \epsilon_0 \Delta\phi - \frac{\epsilon_0}{2\alpha^2}(\Delta\phi)^3$. The stored volumetric energy density ($U$) is the integral of the field with respect to displacement ($U = \int \Delta\phi \, dD$):
+\begin{resultbox}{Euler-Heisenberg $E^4$ Correction}
 \begin{equation}
     U \approx \frac{1}{2}\epsilon_0 (\Delta\phi)^2 - \frac{3}{8\alpha^2}\epsilon_0 (\Delta\phi)^4
 \end{equation}
+\end{resultbox}
 
 The $(\Delta\phi)^4$ correction term corresponds to the energy density structure of the \textbf{Euler-Heisenberg QED Lagrangian}. The corresponding $D \propto (\Delta\phi)^3$ displacement yields the 3rd-order optical non-linearity associated with the \textbf{Kerr Effect ($\chi^{(3)}$)}.
 

@@ -1,4 +1,5 @@
 import numpy as np
+from ave.core.constants import L_NODE
 
 def main():
     print("==========================================================")
@@ -36,10 +37,9 @@ def main():
 
     # Let's assume the baseline electron radius R_e is roughly the Compton wavelength scale
     # (Just an order of magnitude check for string tension ranges)
-    # R_e = 3.86e-13 m
+    # R_e is the reduced Compton wavelength (L_NODE)
     # Circumference of a unknot is roughly L = 3 * pi * R_e
-    R_e = 3.86e-13
-    L_31 = 3 * np.pi * R_e
+    L_31 = 3 * np.pi * L_NODE
     
     T_ave = U_e_joules / L_31
     

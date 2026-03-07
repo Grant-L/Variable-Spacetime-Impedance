@@ -6,11 +6,13 @@ The PONDER-05 configuration accesses Axiom 4's nonlinear dielectric regime by ap
 \section{The Nonlinear Operating Regime}
 
 The universal saturation kernel $S$ (Axiom~4) governs \emph{two} measurable quantities with opposite behaviours:
+\begin{resultbox}{Nonlinear Dielectric Saturation Regime}
 \begin{equation}
     \varepsilon_{eff}(V) = \varepsilon_0 \cdot \underbrace{\sqrt{1 - \left(\frac{V}{V_{yield}}\right)^{\!2}}}_{S \;\to\; 0}
     \qquad\qquad
     C_{eff}(V) = \frac{C_0}{\underbrace{\sqrt{1 - \left(\frac{V}{V_{yield}}\right)^{\!2}}}_{S \;\to\; 0}} \;\to\; \infty
 \end{equation}
+\end{resultbox}
 where $V_{yield} = \sqrt{\alpha} \cdot V_{snap} \approx 43.65\text{ kV}$. At $V_{DC} = 30\text{ kV}$:
 \begin{equation}
     S\big|_{30\text{kV}} = \sqrt{1 - \left(\frac{30}{43.65}\right)^{\!2}} = \sqrt{1 - 0.4726} \approx 0.726
@@ -21,9 +23,11 @@ The constitutive permittivity \emph{drops} to $72.6\%$ of its zero-field value (
 \section{DC Cross-Term Amplification}
 
 When a small AC signal $V_{ac}\sin(\omega t)$ rides on a large DC bias $V_{DC}$, the total squared field contains a cross term:
+\begin{resultbox}{DC Cross-Term Amplification}
 \begin{equation}
     |E|^2 = (V_{DC} + V_{ac}\sin\omega t)^2 = V_{DC}^2 + 2V_{DC}V_{ac}\sin\omega t + V_{ac}^2\sin^2\omega t
 \end{equation}
+\end{resultbox}
 
 The $2V_{DC}V_{ac}$ cross term provides \textbf{linear amplification} of the AC signal. For $V_{DC} = 30\text{ kV}$ and $V_{ac} = 500\text{ V}$:
 \begin{equation}
@@ -35,9 +39,11 @@ This $120\times$ cross-term amplification transforms a barely detectable AC-only
 \section{Rarefaction Wave Inversion}
 
 Near $V_{yield}$, the nonlinear $\varepsilon_{eff}(V)$ curve creates a velocity asymmetry. The local phase velocity of acoustic perturbations depends on the instantaneous voltage:
+\begin{resultbox}{Nonlinear Acoustic Phase Velocity}
 \begin{equation}
     c_{phase}(V) \propto \frac{1}{\sqrt{\varepsilon_{eff}(V)}} \propto \left(1 - \left(\frac{V}{V_{yield}}\right)^2\right)^{1/4}
 \end{equation}
+\end{resultbox}
 
 At the positive peak of the AC cycle ($V_{DC} + V_{ac}$), the phase velocity is \textit{slower} than at the negative peak ($V_{DC} - V_{ac}$). This velocity asymmetry causes the wave crest to lag relative to the trough---the exact opposite mechanism of standard forward acoustic shockwaves.
 
@@ -75,6 +81,7 @@ At $30\text{ kV}$ across a $50\text{ mm}$ gap, the applied field is $E_{app} = 0
 \subsection{Impedance Matching}
 
 The mineral oil layer ($\varepsilon_r = 2.2$, $Z \approx 254\,\Omega$) acts as a quarter-wave impedance transformer between quartz ($Z \approx 178\,\Omega$) and free space ($Z_0 = 377\,\Omega$):
+\begin{resultbox}{Quarter-Wave Impedance Transformation}
 \begin{equation}
     \text{Reflected power:} \quad
     \begin{cases}
@@ -82,6 +89,7 @@ The mineral oil layer ($\varepsilon_r = 2.2$, $Z \approx 254\,\Omega$) acts as a
         \text{Quartz} \to \text{Oil} \to \text{Vacuum:} & \sim 3.4\%
     \end{cases}
 \end{equation}
+\end{resultbox}
 
 This $3.7\times$ reduction in reflected acoustic power ensures that the generated thrust wave efficiently radiates into the surrounding medium.
 

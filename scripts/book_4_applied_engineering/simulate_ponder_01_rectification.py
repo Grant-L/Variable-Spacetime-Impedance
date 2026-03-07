@@ -97,23 +97,19 @@ def simulate_ponder_01_thrust():
         # -------------------------------------------------------------
         # EXACT MACROSCOPIC TOPOLOGICAL COUPLING (Zero-Parameter Foundation)
         # -------------------------------------------------------------
-        from ave.core.constants import ALPHA, MU_0, C_0, EPSILON_0
-        
-        # Fundamental Node Coherence Length
-        l_node = 3.86e-13  
+        from ave.core.constants import ALPHA, MU_0, C_0, EPSILON_0, L_NODE, P_C
         
         # Rigidity Percolation Limit (p_c) matches Alpha geometrically:
         # alpha = p_c / 8*pi  ->  p_c = alpha * 8 * pi
-        p_c = ALPHA * 8 * np.pi
         
         # In AVE, the physical spatial framework possesses a literal bulk mass density:
         # rho_bulk = (xi_topo^2 * mu_0) / (p_c * l_node^2) 
         # (Assuming xi_topo = 1.0 for dimension matching here)
-        rho_bulk = MU_0 / (p_c * (l_node**2))
+        rho_bulk = MU_0 / (P_C * (L_NODE**2))
         
         # The Kinematic Mutual Inductance of the vacuum:
         # nu_vac = alpha * c * l_node
-        nu_vac = ALPHA * C_0 * l_node
+        nu_vac = ALPHA * C_0 * L_NODE
         
         # The macroscopic acoustic coupling factor to the continuous lattice
         # maps the energy density gradient through the vacuum kinematic drag:

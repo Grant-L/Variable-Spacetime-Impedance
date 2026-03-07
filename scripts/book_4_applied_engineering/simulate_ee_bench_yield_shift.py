@@ -34,17 +34,14 @@ def simulate_ee_bench_plateau():
     # -------------------------------------------------------------
     # Experimental Parameters (Zero-Parameter Foundation)
     # -------------------------------------------------------------
-    from ave.core.constants import ALPHA, M_E, C_0, e_charge
-    
-    # Fundamental Node Coherence Length
-    l_node = 3.86e-13  
+    from ave.core.constants import ALPHA, M_E, C_0, e_charge, L_NODE
     
     # Absolute Localized Node Voltage Limit (derived dynamically)
     # V_node = (m_e * c^2) / e * sqrt(alpha) -> 43,653 Volts
     V_NODE_LIMIT = (M_E * C_0**2 / e_charge) * np.sqrt(ALPHA)
     
     # Macroscopic E-Field Saturation Limit (V/m)
-    E_BREAKDOWN = V_NODE_LIMIT / l_node  # Approx 1.13e17 V/m
+    E_BREAKDOWN = V_NODE_LIMIT / L_NODE  # Approx 1.13e17 V/m
     
     # Sweep E-field from 0 to just past the yield limit
     e_fields = np.linspace(0, E_BREAKDOWN, 1000)

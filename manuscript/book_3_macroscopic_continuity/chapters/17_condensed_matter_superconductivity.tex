@@ -10,18 +10,22 @@ The AVE framework proposes an alternative classical mechanism. Rather than relyi
 In AVE, the electron is not a point particle; it is a $0_1$ topological flux loop (unknot) spinning at a high AC frequency. 
 
 The induced voltage ($V$) across a volume is defined by Faraday's Law of Induction:
+\begin{resultbox}{Faraday Induction}
 \begin{equation}
     V = - \frac{d\Phi}{dt} \equiv L \frac{dI}{dt}
 \end{equation}
+\end{resultbox}
 
 When electrons flow randomly through a room-temperature wire, their independent rotations are unsynchronised due to thermal acoustic noise in the lattice. This constant relative frequency mismatch generates micro-inductive drag ($d\vec{B}/dt \neq 0$) between them. This localized inductive drag is observed as electrical resistance.
 
 However, as the material cools toward absolute zero, the transverse acoustic jitter of the surrounding medium drops. Once the thermal noise falls below the mutual magnetic coupling strength of the dense electron gas (the Critical Temperature, $T_c$), the laws of classical coupled oscillators mandate that the knots must spontaneously synchronize their AC rotation frequencies.
 
 This macroscopic phase transition is rigorously governed by the classical \textbf{Kuramoto Model} for coupled phase oscillators. For an ensemble of $N$ topological electron nodes, the phase velocity ($\dot{\theta}_i$) of the $i$-th node is mathematically defined by its natural oscillation frequency ($\omega_i$), the mutual inductive coupling strength ($K$) of the lattice, and the ambient thermal acoustic noise ($\xi_i(T)$):
+\begin{resultbox}{The Kuramoto Phase-Locking Condition}
 \begin{equation}
     \frac{d\theta_i}{dt} = \omega_i + \frac{K}{N} \sum_{j=1}^N \sin(\theta_j - \theta_i) + \xi_i(T)
 \end{equation}
+\end{resultbox}
 
 When the transverse thermal jitter ($\xi_i(T)$) drops below the threshold coupling strength ($K$), the order parameter ($R = |\frac{1}{N}\sum e^{i\theta_j}|$) undergoes a classical phase transition to $R=1$. The entire macroscopic ensemble becomes phase-locked ($\dot{\theta}_i = \Omega_{macro}$ for all nodes).
 
@@ -33,9 +37,11 @@ When the transverse thermal jitter ($\xi_i(T)$) drops below the threshold coupli
 \end{figure}
 
 Superconductivity is the result of classical, spinning topological inductors locking into macroscopic synchronisation. If there is no relative phase difference between adjacent moving geometries, there is zero relative $d\Phi/dt$ between them. 
+\begin{resultbox}{Zero Relative Induction}
 \begin{equation}
     \text{If } \Delta\left(\frac{dB}{dt}\right)_{relative} = 0, \text{ then } \text{Resistance} = 0
 \end{equation}
+\end{resultbox}
 
 Under this interpretation, the macroscopic quantum coherence described by BCS theory corresponds identically to classical phase-locking of the electron ensemble, allowing the entire structural fluid to act as a single, frictionless topological gear train.
 
@@ -64,9 +70,11 @@ Because the total inertia of the phase-locked bulk is large, the boundary gears 
 As shown in Figure \ref{fig:meissner_gear_train}, when the coupling constant exceeds the external torque boundary condition, the boundary nodes halt. The penetration of angular momentum experiences exponential decay. 
 
 The exponential decay curve derived from classical rotational inertia corresponds to the \textbf{London Penetration Depth}:
+\begin{resultbox}{The Inertial London Penetration Depth}
 \begin{equation}
     B(x) = B_0 e^{-x/\lambda_L} \quad \Longleftrightarrow \quad \omega(x) = \omega_0 e^{-x/\lambda_{\text{inertial}}}
 \end{equation}
+\end{resultbox}
 
 Consequently, what quantum mechanics describes as ``perfect diamagnetism'' through a macroscopic complex wave function is functionally identical to the \textbf{static rejection of boundary torque} across a rigid mechanical gearbox.
 

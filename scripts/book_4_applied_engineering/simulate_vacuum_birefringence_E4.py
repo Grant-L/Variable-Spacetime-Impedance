@@ -35,7 +35,7 @@ import pathlib
 project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
 sys.path.append(str(project_root / "src"))
 
-from ave.core.constants import ALPHA, M_E, C_0, e_charge
+from ave.core.constants import ALPHA, M_E, C_0, e_charge, L_NODE
 
 def simulate_birefringence_e4():
     print("[*] Simulating E^4 Vacuum Birefringence (Optical Cavity)...")
@@ -43,9 +43,8 @@ def simulate_birefringence_e4():
     # -------------------------------------------------------------
     # Zero-Parameter Geometric Limits
     # -------------------------------------------------------------
-    l_node = 3.86e-13  
     V_NODE_LIMIT = (M_E * C_0**2 / e_charge) * np.sqrt(ALPHA)
-    E_BREAKDOWN = V_NODE_LIMIT / l_node  # Approx 1.13e17 V/m
+    E_BREAKDOWN = V_NODE_LIMIT / L_NODE  # Approx 1.13e17 V/m
     
     # Sweep extreme fields typical of petawatt laser environments
     # or advanced macroscopic pulsed power (up to 20% of yield)

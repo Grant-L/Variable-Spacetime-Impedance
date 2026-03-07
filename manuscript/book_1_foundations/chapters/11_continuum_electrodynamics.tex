@@ -5,14 +5,18 @@
 If the discrete spatial vacuum is a physical LC network ($\mathcal{M}_A$) supporting momentum limits and finite wave propagation, its macroscopic low-energy effective field theory (EFT) mathematically maps to continuous network dynamics. 
 
 Before discussing the bulk properties of the universe, we define the transport mechanism. In the continuous limit ($L \gg \ell_{node}$), signal propagation is governed by the classical Maxwell-Heaviside acoustic wave equation:
+\begin{resultbox}{Maxwell-Heaviside Acoustic Wave Equation}
 \begin{equation}
     \frac{\partial^2 \mathbf{E}}{\partial t^2} - c^2 \nabla^2 \mathbf{E} = 0 \quad , \quad c = \frac{1}{\sqrt{\epsilon_0 \mu_0}}
 \end{equation}
+\end{resultbox}
 
 Because the ambient vacuum is a discrete lattice, the fundamental mechanical update equations at the node scale are given by the discretised Finite-Difference Time-Domain (FDTD) operator (the Yee Cell update):
+\begin{resultbox}{FDTD Yee Cell Update}
 \begin{equation}
     \mathbf{E}^{n+1} = \mathbf{E}^n + \frac{\Delta t}{\epsilon_0} (\nabla_d \times \mathbf{H}^{n+1/2}) \quad , \quad \mathbf{H}^{n+1/2} = \mathbf{H}^{n-1/2} - \frac{\Delta t}{\mu_0} (\nabla_d \times \mathbf{E}^n)
 \end{equation}
+\end{resultbox}
 
 Interpreting these equations as the acoustic oscillation of structural string tension ($\epsilon_0$) and inertia ($\mu_0$), the macroscopic kinematics of the expanding universe can be evaluated using these generalised electrodynamic limits.
 
@@ -20,26 +24,34 @@ Interpreting these equations as the acoustic oscillation of structural string te
 If we synthesize the continuous macroscopic wave equation with the explicit lattice saturation hardware limit established in Axiom 4 ($\epsilon_{eff}$), we arrive at the single, overarching mathematical framework governing the entire Applied Vacuum Engineering paradigm.
 
 In standard physics, the vacuum parameters ($\epsilon_0, \mu_0$) are strictly linear constants, resulting in the fundamental D'Alembert wave operator $\Box V = 0$:
+\begin{resultbox}{D'Alembert Wave Operator}
 \begin{equation}
 \nabla^2 V - \underbrace{\mu_0 \epsilon_0}_{= 1/c^2} \frac{\partial^2 V}{\partial t^2} = 0
 \end{equation}
+\end{resultbox}
 
 However, because the $\mathcal{M}_A$ lattice undergoes measurable, non-linear dielectric yielding as it approaches the $43.65\text{ kV}$ topological saturation bound, the constitutive permittivity physically collapses under the universal saturation kernel $S$. Axiom 4 (squared limit, $n=2$) defines:
+\begin{resultbox}{Non-Linear Permittivity Collapse}
 \begin{equation}
 \varepsilon_{eff}(V) = \varepsilon_0 \cdot \sqrt{1 - \left(\frac{V}{V_{yield}}\right)^2}
 \end{equation}
+\end{resultbox}
 
 The substitution is direct: wherever the standard wave equation contains the constant $\varepsilon_0$, we replace it with the voltage-dependent $\varepsilon_{eff}(V)$. Because $c_{eff}(V) = 1/\sqrt{\mu_0 \varepsilon_{eff}(V)}$, the local wave speed itself becomes a function of the field amplitude:
+\begin{resultbox}{Field-Dependent Wave Speed}
 \begin{equation}
 c_{eff}(V) = c_0 \left(1 - \left(\frac{V}{V_{yield}}\right)^2\right)^{-1/4}
 \end{equation}
+\end{resultbox}
 
 Note: the wave speed \emph{increases} as permittivity drops (thinner dielectric $\to$ faster propagation), while the measured capacitance \emph{diverges} ($C_{eff} = C_0/S \to \infty$). The resulting non-linear wave equation is the \textbf{Unifying AVE Master Equation}:
+\begin{resultbox}{The Unifying AVE Master Equation}
 \begin{equation}
 \label{eq:master_wave}
 \nabla^2 V - \mu_0 \, \varepsilon_0 \sqrt{1 - \left(\frac{V}{V_{yield}}\right)^2}
 \;\frac{\partial^2 V}{\partial t^2} = 0
 \end{equation}
+\end{resultbox}
 
 This single line of non-linear differential topology formally replaces the fragmented domains of the Standard Model and General Relativity:
 \begin{enumerate}
@@ -53,14 +65,28 @@ This single line of non-linear differential topology formally replaces the fragm
 Previous classical aether models failed because they incorrectly attempted to map vacuum mass density directly to the magnetic permeability constant ($\mu_0$), violating SI dimensional analysis ($[\text{H/m}] \neq [\text{kg/m}^3]$).
 
 We define the baseline macroscopic bulk mass density ($\rho_{bulk}$) of the spatial vacuum network. The effective inductive mass of one discrete node is derived from the inductance-mass isomorphism. The permeability $\mu_0$ has dimensions of $[\text{H/m}]$. Under the topo-kinematic isomorphism ($[\Omega] = \xi_{topo}^{-2}[\text{kg/s}]$), inductance maps to mass via $L = \xi_{topo}^{-2} m$. Because the vacuum inductance per unit length is $\mu_0$, the mass of one node spanning $\ell_{node}$ is:
+\begin{resultbox}{Effective Inductive Node Mass}
 \begin{equation}
     m_{node} = \xi_{topo}^2 \mu_0 \ell_{node}
 \end{equation}
+\end{resultbox}
+\begin{resultbox}{Longitudinal Tension Wave Velocity}
+\begin{equation}
+    v_{longitudinal} = \sqrt{\frac{K_{bulk}}{\rho_{node}}}
+\end{equation}
+\end{resultbox}
 
 Dividing by the Voronoi geometric volume of a single spatial node ($V_{node} = p_c \ell_{node}^3$, from the packing fraction $p_c = 8\pi\alpha$ derived in Chapter \ref{ch:macroscopic_moduli}):
+\begin{resultbox}{Macroscopic Bulk Mass Density}
 \begin{equation}
     \rho_{bulk} = \frac{m_{node}}{V_{node}} = \frac{\xi_{topo}^2 \mu_0 \ell_{node}}{p_c \ell_{node}^3} = \frac{\xi_{topo}^2 \mu_0}{p_c \ell_{node}^2} \approx 7.92 \times 10^6 \text{ kg/m}^3
 \end{equation}
+\end{resultbox}
+\begin{resultbox}{Baseline Vacuum Shear Modulus}
+\begin{equation}
+    G_{vac} = \frac{T_{EM}}{\ell_{node}} = \frac{m_e c^2}{\ell_{node}^2} \approx 5.48 \times 10^{24} \text{ Pa}
+\end{equation}
+\end{resultbox}
 (Approximately the density of a White Dwarf core).
 
 \subsection{Deriving the Kinematic Mutual Inductance of the Universe ($\nu_{kin}$)}
@@ -72,9 +98,11 @@ mean free path is exactly the fundamental spatial lattice pitch $l_{node}$.
 
 As established in Section 1.3.2, the geometric packing fraction ($p_c$) determines the structural porosity and transverse geometric scattering cross-section of the discrete graph (where $\alpha = p_c/8\pi$). Consequently, the macroscopic momentum diffusion across the lattice inherits this geometric scattering threshold ($\kappa \equiv \alpha$).
 
+\begin{resultbox}{Kinematic Network Mutual Inductance}
 \begin{equation}
 \nu_{kin}=\alpha c l_{node}\approx8.45\times10^{-7}\text{ m}^{2}\text{/s}
 \end{equation}
+\end{resultbox}
 
 This parameter-free derivation shows that the discrete vacuum condensate possesses
 a macroscopic kinematic network mutual inductance close to that of liquid water.
@@ -103,9 +131,11 @@ A defining feature of an engineering framework is the explicit identification of
 To resolve the "Mutual Inductance Paradox" (why planets do not lose orbital energy to inductive drag), we recognize that the $\mathcal{M}_A$ LC network naturally possesses an absolute \textbf{Magnetic Saturation Limit}. Microscopically, this is a \textit{per-node energy density} threshold: each discrete lattice node can store a maximum energy in its local LC mode before overcoupling with adjacent nodes. The macroscopic Dielectric Yield Limit ($\tau_{yield}$) is the continuum expression of this microscopic saturation. It is strictly derived from: the baseline bulk energy density ($\rho_{bulk} c^2$), the mutual inductance coupling at the $6^3_2$ Borromean flux-tube crossings ($M/L = 1/\sqrt{2}$, establishing the per-node saturation threshold $\rho_{threshold} = 1 + \sigma/4 \approx 1.106$), and the verified topological halo volume ($\mathcal{V}_{total} = 2.0$, confirmed by FEM to $0.13\%$).
 
 By evaluating the scalar volume summation of these topological knot crossings ($\Sigma \mathcal{V}_{crossing}$) and modulating by the geometric lattice porosity ($\alpha = p_c/8\pi$), the parameter-free macroscopic yield stress limit is:
+\begin{resultbox}{Macroscopic Yield Stress Limit}
 \begin{equation}
     \tau_{yield} = (\rho_{bulk} c^2) \cdot (6 \times \mathcal{V}_{crossing}) \cdot \left(\frac{p_c}{8\pi}\right)
 \end{equation}
+\end{resultbox}
 
 In regions of high gravitational shear (e.g., the spatial envelope surrounding a planetary body), the local magnetic field exceeds this structural saturation limit ($\tau > \tau_{yield}$). 
 
@@ -150,9 +180,11 @@ corresponds to the fundamental Unruh-Hawking Drift of
 the expanding cosmic lattice.
 
 The asymptotic Hubble constant $H_\infty$ is derived strictly from the three calibration inputs of the AVE framework. By equating the thermodynamic latent heat of lattice genesis to the holographic radiative capacity of the expanding horizon (derived in full in the Generative Cosmology chapter), the steady-state expansion rate evaluates to:
+\begin{resultbox}{Asymptotic Hubble Constant}
 \begin{equation}
     H_\infty = \frac{28\pi m_e^3 c G}{\hbar^2 \alpha^2} \approx 2.247 \times 10^{-18} \text{ s}^{-1} \approx 69.32 \text{ km/s/Mpc}
 \end{equation}
+\end{resultbox}
 
 By equating the Unruh temperature of an accelerating frame with the Hawking temperature of the de Sitter horizon ($T=\hbar H_{\infty}/2\pi k_{B}$), standard continuous physics yields a continuous, linear background 3D radial acceleration of $a_r = c H_{\infty}$.
 
@@ -163,9 +195,16 @@ In classical continuum mechanics, when an isotropic outward radial force ($F_r$)
 
 By applying this exact continuum mechanics projection to the topological knot, the effective 1D longitudinal drift acceleration ($a_{genesis}$) structurally perceived by the loop is geometrically bound to:
 
+\begin{resultbox}{Geometric Drift Acceleration (MOND $a_0$)}
 \begin{equation}
 a_{genesis}=\frac{a_r}{2\pi}=\frac{c\cdot H_{\infty}}{2\pi} = \frac{14 m_e^3 c^2 G}{\hbar^2 \alpha^2} \approx 1.07 \times 10^{-10} \text{ m/s}^2
 \end{equation}
+\end{resultbox}
+\begin{resultbox}{Superluminal Lattice Compression Velocity}
+\begin{equation}
+    v_{longitudinal} = \sqrt{\frac{2G_{vac}}{\rho_{bulk}}} = \sqrt{\frac{2 \times 5.48 \times 10^{24}}{7.92 \times 10^6}} \approx 1.18 \times 10^{9} \text{ m/s} \approx 3.9c
+\end{equation}
+\end{resultbox}
 
 Because the $2\pi$ divisor is a dimensionless geometric projection factor from Hoop Stress, $a_{genesis}$ preserves the acceleration dimensions of $[\text{m/s}^2]$.
 

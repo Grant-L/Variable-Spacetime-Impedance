@@ -14,10 +14,12 @@ lattice --- the same medium governed by the same operators. In accordance with t
     \mu_{eff}(r) &= \mu_0 \cdot n(r)
 \end{align}
 where $r_s = 2GM/c^2$. Because both components scale proportionally, the macroscopic gravitational impedance remains invariant everywhere:
+\begin{resultbox}{Invariant Gravitational Impedance}
 \begin{equation}
     Z(r) = \sqrt{\frac{\mu_{eff}(r)}{\varepsilon_{eff}(r)}} = \sqrt{\frac{\mu_0 \cdot n}{\varepsilon_0 \cdot n}} \equiv Z_0
     \label{eq:Z_grav}
 \end{equation}
+\end{resultbox}
 Therefore, the reflection coefficient $\Gamma$ across any gravitational gradient evaluates identically to zero ($\Gamma = 0$). While the local speed of light slows down near mass ($c_l = c/n$), the impedance matching remains perfect. Gravitational waves experience zero reflection and zero scattering as they traverse deep gravitational wells, propagating seamlessly.
 
 \begin{figure}[H]
@@ -57,13 +59,17 @@ A gravitational wave detector is an impedance antenna.  LIGO's 4~km
 Fabry--P\'erot arms form resonant cavities in the LC vacuum, where
 each light bounce amplifies the GW-induced impedance modulation.
 The passing GW strain $h$ perturbs the local vacuum impedance:
+\begin{resultbox}{GW-Induced Impedance Perturbation}
 \begin{equation}
     \delta Z = Z_0 \cdot h
 \end{equation}
+\end{resultbox}
 The accumulated phase shift after $N$ bounces is:
+\begin{resultbox}{Fabry-P\'erot Accumulated Phase Shift}
 \begin{equation}
     \Delta\phi = \frac{2\pi f_{GW}}{c} \cdot L \cdot N \cdot h
 \end{equation}
+\end{resultbox}
 For LIGO ($L=4$~km, $N=280$, $h=10^{-21}$, $f=100$~Hz),
 $\Delta\phi \approx 2.3 \times 10^{-21}$~rad --- resolved via
 homodyne readout against 750~kW circulating laser power.
@@ -71,9 +77,11 @@ homodyne readout against 750~kW circulating laser power.
 The strain sensitivity is bounded by two quantum noise sources:
 shot noise (phase) and radiation pressure (amplitude), whose
 geometric mean is the Standard Quantum Limit:
+\begin{resultbox}{Standard Quantum Limit (Strain)}
 \begin{equation}
     h_{SQL}(f) = \sqrt{h_{shot}^2 + h_{RP}^2}
 \end{equation}
+\end{resultbox}
 
 \begin{figure}[H]
     \centering
@@ -89,9 +97,11 @@ geometric mean is the Standard Quantum Limit:
 
 \noindent
 The lattice voltage ratio for LIGO GW is:
+\begin{resultbox}{LIGO GW Saturation Ratio}
 \begin{equation}
     \frac{V_{GW}}{V_{\text{snap}}} \approx 1.4 \times 10^{-28}
 \end{equation}
+\end{resultbox}
 Twenty-eight orders of magnitude below saturation.  The vacuum is
 a \textit{perfect} lossless transmission line for gravitational waves,
 exactly as observed.
