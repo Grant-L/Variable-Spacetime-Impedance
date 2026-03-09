@@ -15,7 +15,7 @@ The universal saturation kernel $S$ (Axiom~4) governs \emph{two} measurable quan
 \end{resultbox}
 where $V_{yield} = \sqrt{\alpha} \cdot V_{snap} \approx 43.65\text{ kV}$. At $V_{DC} = 30\text{ kV}$:
 \begin{equation}
-    S\big|_{30\text{kV}} = \sqrt{1 - \left(\frac{30}{43.65}\right)^{\!2}} = \sqrt{1 - 0.4726} \approx 0.726
+    S\big|_{30\text{kV}} = \sqrt{1 - \left(\frac{30}{43.65}\right)^{\!2}} = \sqrt{1 - 0.4724} \approx 0.726
 \end{equation}
 
 The constitutive permittivity \emph{drops} to $72.6\%$ of its zero-field value (the vacuum becomes a weaker dielectric), while the measured capacitance \emph{rises} to $1/0.726 \approx 137.7\%$ (the node absorbs more displacement current under strain).
@@ -57,18 +57,18 @@ Rather than steepening into a compressive shock front, the topological wave stre
 Parameter & Value & Rationale \\ \hline
 Material & X-cut $\alpha$-quartz & Piezoelectric, ultralow loss \\
 Diameter & 50 mm & Standard resonator size \\
-Length & 50 mm & $\lambda/2$ at 50 kHz \\
+Length & 50 mm & Near $\lambda/2$ at $f_{res} \approx 59.6$~kHz \\
 $\varepsilon_r$ & 4.5 & Low permittivity $\to$ high field penetration \\
 $\tan\delta$ & $10^{-5}$ & Negligible thermal dissipation \\
 Electrodes & Sputtered Cr/Au & Ohmic contact, no air gap \\
 AC frequency & 50 kHz & Piezoelectric resonance \\
-AC amplitude & 500 V RMS & Standard ultrasonic driver \\
+AC amplitude & 500 V peak & Standard ultrasonic driver \\
 DC bias & 30 kV & $68.7\%$ of $V_{yield}$ \\
 \hline
 \end{tabular}
 \end{center}
 
-The quartz is driven at its fundamental thickness-mode resonance ($50\text{ kHz}$ for a $50\text{ mm}$ cylinder). The AC drive uses a standard ultrasonic piezo driver. The $30\text{ kV}$ DC bias is supplied by a laboratory HV power supply through a large blocking inductor ($> 1\text{ H}$) to prevent AC current from flowing into the DC supply.
+The quartz is driven near its fundamental thickness-mode resonance ($f_{res} \approx 59.6$~kHz for a $50\text{ mm}$ cylinder at $v_s = 5960$~m/s). The AC drive uses a standard ultrasonic piezo driver. The $30\text{ kV}$ DC bias is supplied by a laboratory HV power supply through a large blocking inductor ($> 1\text{ H}$) to prevent AC current from flowing into the DC supply.
 
 \section{The Mineral Oil Dielectric Bath}
 
@@ -80,18 +80,18 @@ At $30\text{ kV}$ across a $50\text{ mm}$ gap, the applied field is $E_{app} = 0
 
 \subsection{Impedance Matching}
 
-The mineral oil layer ($\varepsilon_r = 2.2$, $Z \approx 254\,\Omega$) acts as a quarter-wave impedance transformer between quartz ($Z \approx 178\,\Omega$) and free space ($Z_0 = 377\,\Omega$):
+The mineral oil layer ($\varepsilon_r = 2.2$, $Z \approx 254\,\Omega$) serves as a quarter-wave impedance transformer between quartz ($Z \approx 178\,\Omega$) and free space ($Z_0 = 377\,\Omega$). The ideal transformer impedance is $Z_{match} = \sqrt{Z_q \cdot Z_0} \approx 259\,\Omega$; mineral oil at $254\,\Omega$ is a $98\%$ match:
 \begin{resultbox}{Quarter-Wave Impedance Transformation}
 \begin{equation}
     \text{Reflected power:} \quad
     \begin{cases}
         \text{Quartz} \to \text{Vacuum (direct):} & 12.9\% \\
-        \text{Quartz} \to \text{Oil} \to \text{Vacuum:} & \sim 3.4\%
+        \text{Quartz} \to \text{Oil} \to \text{Vacuum:} & \sim 0.03\%
     \end{cases}
 \end{equation}
 \end{resultbox}
 
-This $3.7\times$ reduction in reflected acoustic power ensures that the generated thrust wave efficiently radiates into the surrounding medium.
+This $\sim 400\times$ reduction in reflected acoustic power ensures that the generated thrust wave efficiently radiates into the surrounding medium.
 
 \subsection{Thermal Management}
 
@@ -104,13 +104,13 @@ Because the acoustic shockwave mechanism mathematically inverts into a rarefacti
 \begin{center}
 \begin{tabular}{|c|c|c|}
 \hline
-$V_{DC}$ (kV) & Cross-Term $F_{lin}$ ($\mu$N) & $\varepsilon_{eff}/\varepsilon_0$ \\ \hline
+$V_{DC}$ (kV) & Cross-Term $F_{lin}$ ($\mu$N) & $C_{eff}/C_0 = 1/S$ \\ \hline
 0   & 0    & 1.000 \\
 10  & 156  & 1.027 \\
 20  & 313  & 1.125 \\
 30  & 469  & 1.377 \\
 40  & 626  & 2.493 \\
-43  & 672  & 5.923 \\ \hline
+43  & 673  & 5.923 \\ \hline
 \end{tabular}
 \end{center}
 
