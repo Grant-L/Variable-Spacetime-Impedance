@@ -32,7 +32,8 @@ def main():
 
     # Let's perform a quantitative map for the unknot Electron
     U_e = 0.51099895000  # MeV (Rest mass energy of Electron)
-    Joules_per_MeV = 1.602176634e-13
+    from ave.core.constants import e_charge as _eqc
+    Joules_per_MeV = float(_eqc) * 1e6  # from constants.py
     U_e_joules = U_e * Joules_per_MeV
 
     # Let's assume the baseline electron radius R_e is roughly the Compton wavelength scale

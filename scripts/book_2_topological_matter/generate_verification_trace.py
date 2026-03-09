@@ -24,8 +24,8 @@ H_inf_km_s_Mpc = H_INFINITY * 3.0857e22 / 1e3  # Convert 1/s to km/s/Mpc
 hubble_time_Gyr = (1.0 / H_INFINITY) / (365.25 * 24 * 3600 * 1e9)
 a_0 = C_0 * H_INFINITY / (2 * 3.141592653589793)
 confinement_force = 3 * PROTON_ELECTRON_RATIO * (1 / ALPHA) * T_EM
-confinement_GeV_fm = confinement_force * 1e-15 / 1.602e-10  # N → GeV/fm
-proton_mass_MeV = PROTON_ELECTRON_RATIO * M_E * C_0**2 / 1.602e-13
+confinement_GeV_fm = confinement_force * 1e-15 / (float(e_charge) * 1e9)  # N → GeV/fm
+proton_mass_MeV = PROTON_ELECTRON_RATIO * M_E * C_0**2 / (float(e_charge) * 1e6)
 
 # Empirical CODATA target for comparison display only.
 # This value is NOT used in any derivation — it is the reference benchmark.

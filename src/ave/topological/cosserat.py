@@ -34,8 +34,12 @@ spectrum from the torsional (Cosserat) sector of the Chiral LC lattice.
 from math import pi, sqrt
 from ave.core.constants import (
     ALPHA, M_E, C_0, NU_VAC, P_C, HBAR, L_NODE,
-    ALPHA_S, HIGGS_VEV_MEV
+    ALPHA_S, HIGGS_VEV_MEV, e_charge,
 )
+
+# Unit conversion factors from canonical e_charge
+_J_PER_MEV = float(e_charge) * 1e6   # 1 MeV in Joules
+_J_PER_EV  = float(e_charge)         # 1 eV in Joules
 
 # =============================================================================
 # WEAK MIXING ANGLE (from Poisson ratio, Chapter 4 + Chapter 8)
@@ -105,13 +109,13 @@ _SIN_THETA_W_PAT: float = sqrt(3.0 / 7.0)  # = 0.65465 (Perpendicular Axis Theor
 # Evaluating E_ring with all substitutions gives EXACTLY:
 #   M_W = m_e / (alpha^2 * p_c * sqrt(3/7))
 M_W: float = M_E / (ALPHA**2 * P_C * _SIN_THETA_W_PAT)  # in kg
-M_W_MEV: float = M_W * C_0**2 / 1.602176634e-13    # approx 79923 MeV
+M_W_MEV: float = M_W * C_0**2 / _J_PER_MEV    # approx 79923 MeV
 
 # The Z boson mass from the W mass and pole mass ratio:
 #   m_W/m_Z = sqrt(7)/3   (from Chapter 8, Perpendicular Axis Theorem)
 #   M_Z = M_W * 3/sqrt(7)
 M_Z: float = M_W * 3.0 / sqrt(7)                     # in kg
-M_Z_MEV: float = M_Z * C_0**2 / 1.602176634e-13      # approx 90624 MeV
+M_Z_MEV: float = M_Z * C_0**2 / _J_PER_MEV      # approx 90624 MeV
 
 # =============================================================================
 # COSSERAT CHARACTERISTIC LENGTH (Weak Force Range)
@@ -143,7 +147,7 @@ GF_TREE: float = sqrt(2) * pi * ALPHA / (2 * SIN2_THETA_W * M_W_GEV**2)
 #   relative to the electron mass.
 
 M_NU_BASE: float = M_E * ALPHA * (M_E / M_W)        # in kg
-M_NU_EV: float = M_NU_BASE * C_0**2 / 1.602176634e-19  # ≈ 0.024 eV
+M_NU_EV: float = M_NU_BASE * C_0**2 / _J_PER_EV  # ≈ 0.024 eV
 
 # Three flavors from the torus knot ladder:
 # Each neutrino flavor pairs with a baryon resonance.
@@ -186,11 +190,11 @@ SUM_M_NU_EV: float = sum(M_NU_FLAVORS_EV)
 
 # Muon mass — single torsional coupling (kappa sector)
 M_MU: float = M_E / (ALPHA * _SIN_THETA_W_PAT)       # in kg
-M_MU_MEV: float = M_MU * C_0**2 / 1.602176634e-13     # approx 107.0 MeV (exp: 105.66, +1.24%)
+M_MU_MEV: float = M_MU * C_0**2 / _J_PER_MEV     # approx 107.0 MeV (exp: 105.66, +1.24%)
 
 # Tau mass — full bending stiffness (gamma_C sector)
 M_TAU: float = M_E * P_C / ALPHA**2                    # in kg
-M_TAU_MEV: float = M_TAU * C_0**2 / 1.602176634e-13    # approx 1760 MeV (exp: 1776.9, -0.95%)
+M_TAU_MEV: float = M_TAU * C_0**2 / _J_PER_MEV    # approx 1760 MeV (exp: 1776.9, -0.95%)
 
 # =============================================================================
 # QUARK MASS SPECTRUM (Cosserat Projections)
@@ -215,22 +219,22 @@ M_TAU_MEV: float = M_TAU * C_0**2 / 1.602176634e-13    # approx 1760 MeV (exp: 1
 # These relations derive the entire quark mass hierarchy.
 
 # Gen 1 (Translation origin)
-M_U_MEV: float = (M_E * C_0**2 / 1.602176634e-13) / (2.0 * ALPHA_S)
-M_D_MEV: float = (M_E * C_0**2 / 1.602176634e-13) / (COS_THETA_W * ALPHA_S)
-M_U: float = M_U_MEV * 1.602176634e-13 / C_0**2
-M_D: float = M_D_MEV * 1.602176634e-13 / C_0**2
+M_U_MEV: float = (M_E * C_0**2 / _J_PER_MEV) / (2.0 * ALPHA_S)
+M_D_MEV: float = (M_E * C_0**2 / _J_PER_MEV) / (COS_THETA_W * ALPHA_S)
+M_U: float = M_U_MEV * _J_PER_MEV / C_0**2
+M_D: float = M_D_MEV * _J_PER_MEV / C_0**2
 
 # Gen 2 (Rotation origin)
 M_C_MEV: float = M_MU_MEV / sqrt(ALPHA)
 M_S_MEV: float = M_MU_MEV * COS_THETA_W
-M_C: float = M_C_MEV * 1.602176634e-13 / C_0**2
-M_S: float = M_S_MEV * 1.602176634e-13 / C_0**2
+M_C: float = M_C_MEV * _J_PER_MEV / C_0**2
+M_S: float = M_S_MEV * _J_PER_MEV / C_0**2
 
 # Gen 3 (Curvature-Twist origin)
 M_T_MEV: float = HIGGS_VEV_MEV / sqrt(2.0)
 M_B_MEV: float = M_TAU_MEV * COS_THETA_W * (8.0 / 3.0)
-M_T: float = M_T_MEV * 1.602176634e-13 / C_0**2
-M_B: float = M_B_MEV * 1.602176634e-13 / C_0**2
+M_T: float = M_T_MEV * _J_PER_MEV / C_0**2
+M_B: float = M_B_MEV * _J_PER_MEV / C_0**2
 
 # =============================================================================
 # ANOMALOUS MAGNETIC MOMENT g-2 (Schwinger)
