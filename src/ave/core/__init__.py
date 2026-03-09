@@ -6,5 +6,9 @@ onto a rigorous LC matrix.
 
 from .grid import VacuumGrid
 from .node import TopologicalNode
+from .universal_operators import universal_impedance, universal_saturation, universal_reflection
 
-__all__ = ['VacuumGrid', 'TopologicalNode']
+__all__ = [
+    'VacuumGrid', 'TopologicalNode',
+    'universal_impedance', 'universal_saturation', 'universal_reflection'
+]

@@ -491,10 +491,15 @@ def calculate_topological_mass(Z, A):
     Computes theoretical mass defect using EE Mutual Impedance.
     U_total = sum(U_self) - sum(M_ij) + E_Coulomb
     
-    Includes p-n junction Coulomb correction:
+    Uses the universal saturated pairwise potential (Operator 4):
+        ΔE_ij = universal_pairwise_energy(r_ij, K_MUTUAL, D_PROTON)
+    
+    Coulomb correction:
         ΔE_Coulomb = -αℏc × f_pp × Σ(1/r_ij)
     where f_pp = Z(Z-1)/A(A-1) is the statistical fraction of p-p pairs.
     """
+    from ave.core.universal_operators import universal_pairwise_energy
+
     N = A - Z
     raw_mass = (Z * M_P_RAW) + (N * M_N_RAW)
     
@@ -503,14 +508,17 @@ def calculate_topological_mass(Z, A):
         return raw_mass
         
     # Calculate Mutual Reactive Coupling (Binding Energy)
+    # Using the universal saturated pairwise potential (same as optimizer)
     binding_energy = 0.0
     sum_inv_r = 0.0
     for i in range(len(nodes)):
         for j in range(i + 1, len(nodes)):
             dist = np.linalg.norm(np.array(nodes[i]) - np.array(nodes[j]))
-            inv_r = 1.0 / dist
-            binding_energy += K_MUTUAL * inv_r
-            sum_inv_r += inv_r
+            # Universal Operator 4: saturated mutual coupling
+            # Returns negative for attractive (binding) energy
+            U_pair = universal_pairwise_energy(dist, K_MUTUAL, D_PROTON)
+            binding_energy -= U_pair  # Negate: U is negative, binding is positive
+            sum_inv_r += 1.0 / dist
     
     # Coulomb repulsion between proton-proton pairs (reduces binding)
     if Z > 1 and A > 1:
@@ -519,6 +527,199 @@ def calculate_topological_mass(Z, A):
         binding_energy -= coulomb_repulsion
             
     return raw_mass - binding_energy
+
+
+def _compute_energy_at_coords(nodes_flat, N, K, alpha_hc, Z_protons, A_nucleons):
+    """
+    Evaluate the total 1/d energy for an arbitrary coordinate vector.
+    Used internally by the Hessian computation.
+    """
+    coords = nodes_flat.reshape((N, 3))
+    binding = 0.0
+    sum_inv_r = 0.0
+    for i in range(N):
+        for j in range(i + 1, N):
+            dist = np.linalg.norm(coords[i] - coords[j])
+            if dist < 0.01:
+                dist = 0.01
+            inv_r = 1.0 / dist
+            binding += K * inv_r
+            sum_inv_r += inv_r
+    # Coulomb correction
+    coulomb = 0.0
+    if Z_protons > 1 and A_nucleons > 1:
+        f_pp = Z_protons * (Z_protons - 1) / (A_nucleons * (A_nucleons - 1))
+        coulomb = alpha_hc * f_pp * sum_inv_r
+    return -(binding - coulomb)  # negative because binding lowers energy
+
+
+def compute_element_impedance(Z, A):
+    """
+    Computes the full impedance characterization of an element by analysing the
+    Hessian (second-derivative matrix) of the K_mutual/d energy surface at the
+    equilibrium nuclear geometry.
+
+    Returns a dictionary containing:
+        - Z_atom:    Atomic impedance (geometric mean of mode frequencies)
+        - K_bulk:    Bulk modulus (breathing mode stiffness) [MeV/fm²]
+        - G_shear:   Shear modulus (rocking mode stiffness) [MeV/fm²]
+        - E_rupture: Thermal rupture energy (softest non-trivial mode) [MeV]
+        - Q_factor:  Quality factor (ratio of highest to lowest mode frequency)
+        - modes:     List of (frequency, character, eigenvector) tuples
+        - eigenvalues: Raw sorted eigenvalues of the Hessian
+    """
+    nodes = get_nucleon_coordinates(Z, A)
+    N = len(nodes)
+
+    if N <= 1:
+        # Single nucleon — no internal modes
+        return {
+            'Z_atom': 0.0, 'K_bulk': 0.0, 'G_shear': 0.0,
+            'E_rupture': 0.0, 'Q_factor': 1.0,
+            'modes': [], 'eigenvalues': np.array([]),
+            'n_breathing': 0, 'n_rocking': 0, 'n_ejection': 0
+        }
+
+    coords = np.array(nodes, dtype=float)
+    flat = coords.flatten()
+    ndof = 3 * N
+
+    # Numerical Hessian via central finite differences
+    h = 1e-4  # step size in fm
+    hessian = np.zeros((ndof, ndof))
+
+    for i in range(ndof):
+        flat_p = flat.copy()
+        flat_m = flat.copy()
+        flat_p[i] += h
+        flat_m[i] -= h
+        Ep = _compute_energy_at_coords(flat_p, N, K_MUTUAL, ALPHA_HC, Z, A)
+        Em = _compute_energy_at_coords(flat_m, N, K_MUTUAL, ALPHA_HC, Z, A)
+        # Diagonal: d²U/dx_i²
+        E0 = _compute_energy_at_coords(flat, N, K_MUTUAL, ALPHA_HC, Z, A)
+        hessian[i, i] = (Ep - 2 * E0 + Em) / (h ** 2)
+
+        # Off-diagonal: d²U/(dx_i dx_j) — only upper triangle, then symmetrise
+        for j in range(i + 1, ndof):
+            flat_pp = flat.copy()
+            flat_pm = flat.copy()
+            flat_mp = flat.copy()
+            flat_mm = flat.copy()
+            flat_pp[i] += h; flat_pp[j] += h
+            flat_pm[i] += h; flat_pm[j] -= h
+            flat_mp[i] -= h; flat_mp[j] += h
+            flat_mm[i] -= h; flat_mm[j] -= h
+            Epp = _compute_energy_at_coords(flat_pp, N, K_MUTUAL, ALPHA_HC, Z, A)
+            Epm = _compute_energy_at_coords(flat_pm, N, K_MUTUAL, ALPHA_HC, Z, A)
+            Emp = _compute_energy_at_coords(flat_mp, N, K_MUTUAL, ALPHA_HC, Z, A)
+            Emm = _compute_energy_at_coords(flat_mm, N, K_MUTUAL, ALPHA_HC, Z, A)
+            hessian[i, j] = (Epp - Epm - Emp + Emm) / (4 * h ** 2)
+            hessian[j, i] = hessian[i, j]
+
+    # Eigendecomposition
+    eigenvalues, eigenvectors = np.linalg.eigh(hessian)
+
+    # Filter: 6 modes should be near-zero (3 translations + 3 rotations for N≥3)
+    # For N=2, 5 near-zero modes (3 trans + 2 rot)
+    threshold = 1e-3 * np.max(np.abs(eigenvalues))  # relative threshold
+    physical_mask = eigenvalues > threshold
+    phys_evals = eigenvalues[physical_mask]
+    phys_evecs = eigenvectors[:, physical_mask]
+
+    if len(phys_evals) == 0:
+        return {
+            'Z_atom': 0.0, 'K_bulk': 0.0, 'G_shear': 0.0,
+            'E_rupture': 0.0, 'Q_factor': 1.0,
+            'modes': [], 'eigenvalues': eigenvalues,
+            'n_breathing': 0, 'n_rocking': 0, 'n_ejection': 0
+        }
+
+    # Mode classification by character of the eigenvector
+    # Breathing: all atoms move radially in/out (high correlation with r_hat)
+    # Rocking: atoms move tangentially (low r_hat correlation)
+    # Ejection: one atom dominates the displacement (halo nucleon leaving)
+    com = np.mean(coords, axis=0)
+    r_vecs = coords - com
+    r_norms = np.linalg.norm(r_vecs, axis=1)
+    r_hat = np.zeros_like(r_vecs)
+    for k in range(N):
+        if r_norms[k] > 1e-10:
+            r_hat[k] = r_vecs[k] / r_norms[k]
+
+    modes = []
+    n_breathing = 0
+    n_rocking = 0
+    n_ejection = 0
+
+    for idx in range(len(phys_evals)):
+        evec = phys_evecs[:, idx].reshape((N, 3))
+        evec_norms = np.linalg.norm(evec, axis=1)
+
+        # Participation ratio: how many atoms contribute significantly
+        if np.max(evec_norms) > 1e-10:
+            participation = (np.sum(evec_norms) ** 2) / (N * np.sum(evec_norms ** 2))
+        else:
+            participation = 0.0
+
+        # Radial correlation: dot product of displacement with r_hat
+        radial_proj = 0.0
+        for k in range(N):
+            if evec_norms[k] > 1e-10 and r_norms[k] > 1e-10:
+                radial_proj += abs(np.dot(evec[k], r_hat[k])) / evec_norms[k]
+        radial_proj /= max(N, 1)
+
+        # Classification
+        if participation < 0.3:
+            character = 'ejection'
+            n_ejection += 1
+        elif radial_proj > 0.6:
+            character = 'breathing'
+            n_breathing += 1
+        else:
+            character = 'rocking'
+            n_rocking += 1
+
+        freq = np.sqrt(abs(phys_evals[idx]))  # ω ∝ √(k/m), using unit mass
+        modes.append({
+            'eigenvalue': phys_evals[idx],
+            'frequency': freq,
+            'character': character,
+            'participation': participation,
+            'radial_proj': radial_proj
+        })
+
+    # Extract bulk properties
+    breathing_evals = [m['eigenvalue'] for m in modes if m['character'] == 'breathing']
+    rocking_evals = [m['eigenvalue'] for m in modes if m['character'] == 'rocking']
+    ejection_evals = [m['eigenvalue'] for m in modes if m['character'] == 'ejection']
+
+    K_bulk = np.mean(breathing_evals) if breathing_evals else np.mean(phys_evals)
+    G_shear = np.mean(rocking_evals) if rocking_evals else 0.0
+
+    # Thermal rupture = energy associated with the softest physical mode
+    E_rupture = phys_evals[0] if len(phys_evals) > 0 else 0.0
+
+    # Q factor = ratio of highest to lowest physical mode frequency
+    freqs = [m['frequency'] for m in modes if m['frequency'] > 0]
+    Q_factor = max(freqs) / min(freqs) if len(freqs) >= 2 else 1.0
+
+    # Atomic impedance = geometric mean of all physical mode frequencies
+    # This represents the "characteristic impedance" seen by an incoming wave
+    Z_atom = np.exp(np.mean(np.log(np.array(freqs) + 1e-30))) if freqs else 0.0
+
+    return {
+        'Z_atom': Z_atom,
+        'K_bulk': K_bulk,
+        'G_shear': G_shear,
+        'E_rupture': E_rupture,
+        'Q_factor': Q_factor,
+        'modes': modes,
+        'eigenvalues': eigenvalues,
+        'n_breathing': n_breathing,
+        'n_rocking': n_rocking,
+        'n_ejection': n_ejection
+    }
+
 
 def create_element_report(element_name, Z, A, empirical_mass_mev, save_dir):
     """

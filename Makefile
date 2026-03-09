@@ -129,13 +129,16 @@ figures:
 	@echo "[Figures] All figures generated."
 
 clean:
-	@echo "[Clean] Removing auxiliary build artifacts (preserving PDFs)..."
+	@echo "[Clean] Removing auxiliary build artifacts (preserving build/ PDFs)..."
 	rm -rf $(OUT_DIR)/aux/*
 	rm -rf future_work/build/
 	rm -rf spice_manual/build/
 	rm -rf periodic_table/main.pdf
 	rm -rf __pycache__
 	find . -type d -name "__pycache__" -exec rm -rf {} +
+	@echo "[Clean] Removing in-tree LaTeX artifacts from book directories..."
+	rm -f $(SRC_DIR)/book_*/main.pdf
+	find $(SRC_DIR)/book_* -maxdepth 1 \( -name "*.aux" -o -name "*.toc" -o -name "*.lof" -o -name "*.lot" -o -name "*.fls" -o -name "*.fdb_latexmk" -o -name "*.out" -o -name "*.log" -o -name "*.synctex.gz" \) -delete 2>/dev/null || true
 
 distclean: clean
 	@echo "[DistClean] Removing ALL build artifacts including PDFs..."

@@ -28,24 +28,24 @@ Because the static electric field is heavily polarizing the capacitive link-vari
 
 Substituting the yielding permittivity into the transmission line envelope, we define the localized impedance of the strained focal point:
 \begin{equation}
-Z_{local}(V) = \sqrt{\frac{\mu_0}{\epsilon_{eff}(V)}} = \sqrt{\frac{\mu_0}{\epsilon_0 \sqrt{1 - \left(\frac{V}{43650}\right)^2}}}
+Z_{local}(V) = \sqrt{\frac{\mu_0}{\epsilon_{eff}(V)}} = \sqrt{\frac{\mu_0}{\epsilon_0 \sqrt{1 - \left(\frac{V}{V_{yield}}\right)^2}}}
 \end{equation}
 
 Factoring out the unperturbed $Z_0$ baseline simplifies the metric to a dimensionless divergence multiplier:
 \begin{equation}
-Z_{local}(V) = Z_0 \left(1 - \left(\frac{V}{43650}\right)^2\right)^{-1/4}
+Z_{local}(V) = Z_0 \left(1 - \left(\frac{V}{V_{yield}}\right)^2\right)^{-1/4}
 \end{equation}
 
 As the experimental gap voltage $V \to 43,650\text{ V}$, the term in the parenthesis approaches zero, forcing $Z_{local} \to \infty$. This extreme, asymmetric geometric yielding breaks the fundamental isotropic impedance match that standard gravity requires. 
 
 Any electromagnetic optical wave propagating into this focal point must evaluate this boundary via the standard Reflection Coefficient ($\Gamma$):
 \begin{equation}
-\Gamma(V) = \frac{Z_{local}(V) - Z_{0}}{Z_{local}(V) + Z_{0}} = \frac{Z_0 \left(1 - \left(\frac{V}{43650}\right)^2\right)^{-1/4} - Z_0}{Z_0 \left(1 - \left(\frac{V}{43650}\right)^2\right)^{-1/4} + Z_0}
+\Gamma(V) = \frac{Z_{local}(V) - Z_{0}}{Z_{local}(V) + Z_{0}} = \frac{Z_0 \left(1 - \left(\frac{V}{V_{yield}}\right)^2\right)^{-1/4} - Z_0}{Z_0 \left(1 - \left(\frac{V}{V_{yield}}\right)^2\right)^{-1/4} + Z_0}
 \end{equation}
 
 Dividing through by $Z_0$ yields the explicit, parameter-free prediction for the localized fraction of reflected light:
 \begin{equation}
-\Gamma(V) = \frac{\left(1 - \left(\frac{V}{43650}\right)^2\right)^{-1/4} - 1}{\left(1 - \left(\frac{V}{43650}\right)^2\right)^{-1/4} + 1}
+\Gamma(V) = \frac{\left(1 - \left(\frac{V}{V_{yield}}\right)^2\right)^{-1/4} - 1}{\left(1 - \left(\frac{V}{V_{yield}}\right)^2\right)^{-1/4} + 1}
 \end{equation}
 
 As the voltage nears the yield limit, $\Gamma \to 1$ (perfect reflection), acting as an absolute topological mirror engineered directly out of localized metric strain.

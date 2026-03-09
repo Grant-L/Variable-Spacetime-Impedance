@@ -56,6 +56,7 @@ import sys, os
 # Import AVE constants
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'src')))
 from ave.core.constants import K_MUTUAL, ALPHA, HBAR, C_0, e_charge, L_NODE, PROTON_ELECTRON_RATIO, M_P_MEV, M_N_MEV, D_PROTON
+from ave.axioms.scale_invariant import avalanche_factor
 
 # =============================================================================
 # AXIOM-DERIVED CONSTANTS
@@ -287,14 +288,14 @@ def compute_binding(alpha_centers, n_alpha):
     f_pp = 0.25
     coulomb_bare = ALPHA_HC * f_pp * inv_r_sum
     
-    # --- MILLER AVALANCHE ---
+    # --- MILLER AVALANCHE (via universal operator) ---
     # Reverse voltage = cumulative Coulomb per alpha cluster
     coulomb_per_alpha = coulomb_bare / n_alpha
     vr_ratio = coulomb_per_alpha / V_BR
-    vr_clamped = min(vr_ratio, 0.9999)
     
-    # Miller multiplication factor
-    M = 1.0 / (1.0 - vr_clamped ** N_MILLER)
+    # Universal operator: avalanche_factor(V, V_BR, n_topology)
+    # n = 5 (cinquefoil crossing number)
+    M = avalanche_factor(coulomb_per_alpha, V_BR, N_MILLER)
     
     # Avalanche-enhanced Coulomb
     coulomb_eff = coulomb_bare * M
@@ -419,8 +420,7 @@ def compute_binding_halo(alpha_centers, halo_nodes, n_alpha, Z_core, Z_halo):
     
     coulomb_per_alpha = coulomb_bare_inter / n_alpha
     vr_ratio = coulomb_per_alpha / V_BR
-    vr_clamped = min(vr_ratio, 0.9999)
-    M_miller = 1.0 / (1.0 - vr_clamped ** N_MILLER)
+    M_miller = avalanche_factor(coulomb_per_alpha, V_BR, N_MILLER)
     coulomb_eff_inter = coulomb_bare_inter * M_miller
     
     be_inter = strong_inter - coulomb_eff_inter

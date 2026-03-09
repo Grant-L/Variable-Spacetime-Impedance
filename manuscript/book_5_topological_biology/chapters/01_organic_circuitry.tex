@@ -5,7 +5,7 @@
 
 Standard biology and organic chemistry model molecular interactions using the ``ball-and-stick'' visual metaphor, defined by abstract bond enthalpies and electron cloud probabilities. However, under the Applied Vacuum Engineering (AVE) framework, this chemical abstraction is incomplete. Molecules are not collections of distinct billiard balls; they are continuous, resonant RLC (Resistor-Inductor-Capacitor) circuit topologies embedded within the dielectric $M_A$ vacuum lattice.
 
-By mathematically mapping atomic mass to \textbf{Geometric Inductance} ($L$) and covalent bond stiffness to \textbf{Dielectric Capacitance} ($C$), organic chemistry becomes a subset of macroscopic RF circuit design. In this chapter, we derive the \emph{exact} translation layer required to simulate amino acids as pure SPICE electronic circuits, proving that the foundation of biology operates via high-frequency AC resonance.
+By mathematically mapping atomic mass to \textbf{Geometric Inductance} ($L$) and covalent bond stiffness to \textbf{Dielectric Capacitance} ($C$), organic chemistry becomes a subset of macroscopic RF circuit design. This chapter derives the \emph{exact} translation layer required to simulate amino acids as pure SPICE electronic circuits, proving that the foundation of biology operates via high-frequency AC resonance.
 
 \section{The Electromechanical Transduction Constant}
 
@@ -61,7 +61,7 @@ Chemical bonds define the structural tension between nuclei. In AVE terms, share
     \label{eq:C_bond}
 \end{equation}
 \end{resultbox}
-where $k_\text{bond}$ [N/m] is the stretching force constant. These values are conventionally obtained from infrared spectroscopy (Shimanouchi, 1972; NIST Chemistry WebBook), but in Section~\ref{sec:first_principles_k} we show that they can be derived from first principles using only $\varepsilon_0$, $m_e$, $\hbar$, and $e$---eliminating any dependence on spectroscopic measurement.
+where $k_\text{bond}$ [N/m] is the stretching force constant. These values are conventionally obtained from infrared spectroscopy (Shimanouchi, 1972; NIST Chemistry WebBook), but Section~\ref{sec:first_principles_k} demonstrates that they can be derived from first principles using only $\varepsilon_0$, $m_e$, $\hbar$, and $e$---eliminating any dependence on spectroscopic measurement.
 
 \begin{table}[h]
 \centering
@@ -130,7 +130,7 @@ Biological life almost exclusively utilizes L-amino acids. In AVE circuit theory
 
 \section{Simulation Results: Zero-Parameter Prediction}
 
-Using Equations~\ref{eq:L_atom} and~\ref{eq:C_bond}, we solve the full transfer function $H(f) = V_\text{out}/V_\text{in}$ of the amino acid ladder network for a representative six-molecule subset. The driving frequency sweeps from 100 GHz to 300 THz.
+Using Equations~\ref{eq:L_atom} and~\ref{eq:C_bond}, the full transfer function $H(f) = V_\text{out}/V_\text{in}$ of the amino acid ladder network is solved for a representative six-molecule subset. The driving frequency sweeps from 100~GHz to 300~THz.
 
 \begin{figure}[h]
     \centering
@@ -153,7 +153,7 @@ These frequencies correspond to the \textbf{amide V band} and \textbf{skeletal C
 
 \section{FTIR Falsification Test}
 
-To test the prediction, we overlay the computed transfer function against known experimental FTIR absorption peaks from the NIST Chemistry WebBook and Shimanouchi (1972) reference tables. The predicted curve has a \emph{fixed} frequency scale---no parameters can be tuned to improve agreement.
+To test the prediction, the computed transfer function is overlaid against known experimental FTIR absorption peaks from the NIST Chemistry WebBook and Shimanouchi (1972) reference tables. The predicted curve has a \emph{fixed} frequency scale---no parameters can be tuned to improve agreement.
 
 \begin{figure}[h]
     \centering
@@ -182,7 +182,7 @@ The mass sensitivity test (bottom right of Figure~\ref{fig:chain_sensitivity}) q
 \subsection{Batch SPICE Computation of 20 Standard Amino Acids}
 \label{sec:batch_spice}
 
-To extend the single-molecule validation (Glycine and Alanine) to the full biological alphabet, we generated topological SPICE netlists for all 20 standard L-amino acids and solved them computationally. This subsection documents every step required for independent reproduction.
+To extend the single-molecule validation (Glycine and Alanine) to the full biological alphabet, topological SPICE netlists were generated for all 20 standard L-amino acids and solved computationally. This subsection documents every step required for independent reproduction.
 
 \subsubsection{Circuit Template}
 
@@ -199,7 +199,7 @@ Every amino acid shares the same backbone circuit topology, differing only in th
 
 \subsubsection{Modified Nodal Analysis (MNA) Solver}
 
-Because the computation must be fully self-contained (independent of external SPICE simulators), we implemented a native Python AC solver using Modified Nodal Analysis. At each angular frequency $\omega = 2\pi f$, the solver:
+Because the computation must be fully self-contained (independent of external SPICE simulators), a native Python AC solver was implemented using Modified Nodal Analysis. At each angular frequency $\omega = 2\pi f$, the solver:
 
 \begin{enumerate}
     \item \textbf{Parses} the \texttt{.cir} netlist to extract nodes and component values ($R$, $L$, $C$).
@@ -294,7 +294,7 @@ Three distinct spectral clusters emerge from a computation with \emph{zero} adju
 
 The SPICE derivation in the preceding sections used bond force constants $k$ obtained from infrared spectroscopy. While the \emph{combined} transfer function of the backbone is a genuine prediction (the individual bond frequencies are inputs, but their collective filtering behavior is not), the dependence on measured $k$ values introduces partial circularity.
 
-We now show that these force constants can be derived from first principles within the AVE framework, using only the electromagnetic constants $\varepsilon_0$, $m_e$, $\hbar$, and $e$---all of which trace directly to the lattice axioms.
+The following subsection shows that these force constants can be derived from first principles within the AVE framework, using only the electromagnetic constants $\varepsilon_0$, $m_e$, $\hbar$, and $e$---all of which trace directly to the lattice axioms.
 
 \subsection{Derivation}
 

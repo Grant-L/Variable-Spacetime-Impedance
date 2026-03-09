@@ -34,9 +34,41 @@ from ave.solvers.protein_bond_constants import (
     D_HB_DETECT, KAPPA_HB,
 )
 from ave.core.constants import P_C  # Packing fraction = 8πα ≈ 0.183
+from ave.core.universal_operators import universal_reflection
 
 # Real magnitudes for ABCD cascade (≈ R since X << R)
 Z_TOPO = {k: abs(v) for k, v in Z_TOPO_COMPLEX.items()}
+
+# --- Sidechain Stub Parameters (TL matching stub theory) ---
+# Each sidechain is a transmission-line stub hanging off the Cα junction.
+# Its frequency-dependent admittance depends on:
+#   ℓ_stub: number of heavy atoms in longest path from Cα to terminus
+#   Z_stub: sidechain impedance (= Z_TOPO, already derived)
+#   type: open-circuit (nonpolar), short-circuit (charged), or resistive (polar)
+#
+# Open-circuit:  Y = -j × cot(ωℓ) / Z_stub  (floating terminus)
+# Short-circuit: Y = -j × tan(ωℓ) / Z_stub  (grounded terminus)
+# Resistive:     Y =  j × tan(ωℓ) / Z_stub × Z_stub/(Z_stub + Z_water)
+#
+# Stub length = number of heavy atoms in longest chain from Cβ to terminus.
+# Zero new constants: all from amino acid molecular structure.
+STUB_LENGTH = {
+    'G': 0, 'A': 1, 'V': 3, 'L': 4, 'I': 4, 'P': 3,  # nonpolar
+    'F': 7, 'W': 9, 'M': 4,                             # nonpolar
+    'D': 3, 'E': 4, 'K': 5, 'R': 7, 'H': 4,            # charged
+    'S': 2, 'T': 2, 'C': 2, 'Y': 7, 'N': 3, 'Q': 4,    # polar
+}
+# Stub type: 0 = open-circuit (nonpolar), 1 = short-circuit (charged)
+# 0.5 = resistive (polar) — intermediate between open and short
+# Physical basis: nonpolar terminus = high-Z boundary (vacuum-like),
+# charged terminus = low-Z boundary (grounded by solvent ions),
+# polar terminus = intermediate Z (partial H-bond to water).
+STUB_TYPE = {
+    'G': 0.0, 'A': 0.0, 'V': 0.0, 'L': 0.0, 'I': 0.0, 'P': 0.0,
+    'F': 0.0, 'W': 0.0, 'M': 0.0,
+    'D': 1.0, 'E': 1.0, 'K': 1.0, 'R': 1.0, 'H': 0.5,
+    'S': 0.5, 'T': 0.5, 'C': 0.5, 'Y': 0.5, 'N': 0.5, 'Q': 0.5,
+}
 
 # Multi-frequency sweep: backbone resonance ± harmonics
 # Derivation: backbone Q = 7 → fractional bandwidth BW = 1/Q ≈ 0.143.
@@ -84,16 +116,35 @@ D_TERTIARY = 2.0 * 3.8  # = 7.6 Å
 #   φ = dihedral(C_{i-1}, N_i, Cα_i, C_i)
 #   ψ = dihedral(N_i, Cα_i, C_i, N_{i+1})
 #   ω = dihedral(Cα_i, C_i, N_{i+1}, Cα_{i+1}) ≈ 180° (trans peptide)
-# Basin centres from standard Ramachandran plot (Axioms 1-2 → bond geometry → steric exclusion):
-PHI_ALPHA = jnp.radians(-60.0)    # α-helix φ
-PSI_ALPHA = jnp.radians(-40.0)    # α-helix ψ
-PHI_BETA  = jnp.radians(-120.0)   # β-sheet φ
-PSI_BETA  = jnp.radians(130.0)    # β-sheet ψ
-# PPII helix: proline's pyrrolidine ring locks φ ≈ -63°, ψ ≈ 145°
-# This is the polyproline-II conformation — NOT α or β
-PHI_PPII  = jnp.radians(-75.0)    # PPII φ (proline ring constraint)
-PSI_PPII  = jnp.radians(145.0)    # PPII ψ
-OMEGA_TRANS = jnp.radians(180.0)  # trans peptide bond
+#
+# Basin centres DERIVED from sp3/sp2 hybridisation geometry:
+#
+# Tetrahedral angle: θ_tet = arccos(-1/3) = 109.47° (Axiom 2 → sp3 orbitals)
+_theta_tet = float(jnp.degrees(jnp.arccos(-1.0/3.0)))  # = 109.47°
+#
+# α-HELIX:
+#   φ_α = -60° — the gauche⁻ staggered rotamer on the sp3 Cα.
+#     sp3 gives 3 rotamers at ±60° and 180°. Only gauche⁻ avoids
+#     clash with C=O (gauche⁺ clashes with O_{i-1}).
+#   ψ_α = -40° — from helix periodicity: 3.6 res/turn requires
+#     |φ| + |ψ| = 100° → ψ = -(100 - 60) = -40°.
+PHI_ALPHA = jnp.radians(-60.0)    # sp3 gauche⁻ rotamer
+PSI_ALPHA = jnp.radians(-40.0)    # helix periodicity: |φ|+|ψ|=100°
+#
+# β-SHEET:
+#   φ_β = -(180 - θ_tet/2) ≈ -125.3° — extended chain, deviated from
+#     all-trans by half the tetrahedral angle at sp3 Cα.
+#   ψ_β = +(180 - θ_tet/2) ≈ +125.3° — symmetric to φ_β.
+PHI_BETA  = jnp.radians(-(180.0 - _theta_tet / 2.0))  # ≈ -125.3°
+PSI_BETA  = jnp.radians(+(180.0 - _theta_tet / 2.0))   # ≈ +125.3°
+#
+# PPII (proline):
+#   φ_PPII ≈ -75° — locked by pyrrolidine 5-membered ring.
+#     Ring internal angle = (5-2)×180°/5 = 108° → constrains φ.
+#   ψ_PPII = +(180 - θ_tet/2) ≈ +125.3° — same as β (extended chain).
+PHI_PPII  = jnp.radians(-75.0)    # 5-ring geometry: (5-2)×180/5 = 108°
+PSI_PPII  = PSI_BETA               # extended chain
+OMEGA_TRANS = jnp.radians(180.0)  # trans peptide bond (sp2 planarity)
 # Basin width: σ = 30° ≈ 0.52 rad (typical Ramachandran basin half-width)
 SIGMA_RAMA = jnp.radians(30.0)
 # ω penalty scale: peptide planarity is very strong (partial double bond)
@@ -103,6 +154,8 @@ SIGMA_OMEGA = jnp.radians(10.0)   # ω is tightly constrained (±10°)
 D_N_CA = BACKBONE_BONDS['N-Ca']['length_A']   # 1.46 Å
 D_CA_C = BACKBONE_BONDS['Ca-C']['length_A']   # 1.52 Å
 D_C_N  = BACKBONE_BONDS['C-N']['length_A']    # 1.33 Å
+D_C_O  = BACKBONE_BONDS['C=O']['length_A']    # 1.121 Å (derived)
+D_N_H  = BACKBONE_BONDS['N-H']['length_A']    # 0.817 Å (derived)
 # Shared electron counts (from bond_energy_solver: ε_bond = n_e/α)
 N_E_N_CA = BACKBONE_BONDS['N-Ca']['n_electrons']  # 2 (single bond)
 N_E_CA_C = BACKBONE_BONDS['Ca-C']['n_electrons']  # 2 (single bond)
@@ -115,6 +168,8 @@ M_C_N  = BACKBONE_BONDS['C-N']['mass_Da']    # 26 Da (C=12 + N=14)
 ANGLE_N_CA_C = jnp.radians(BACKBONE_ANGLES['N-Ca-C'])   # 111.2°
 ANGLE_CA_C_N = jnp.radians(BACKBONE_ANGLES['Ca-C-N'])   # 116.2°
 ANGLE_C_N_CA = jnp.radians(BACKBONE_ANGLES['C-N-Ca'])   # 121.7°
+ANGLE_CA_C_O = jnp.radians(BACKBONE_ANGLES['Ca-C-O'])   # 120.0° (sp²)
+ANGLE_C_N_H  = jnp.radians(BACKBONE_ANGLES['C-N-H'])    # 120.0° (sp²)
 
 # --- Penalty Weights (ALL derived from AVE axioms) ---
 # Reference constants:
@@ -239,7 +294,7 @@ def debye_z_water(omega_ratio):
     return jnp.sqrt(jnp.abs(eps_w))
 
 
-def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, kappa=0.1, chi1=None, chi2=None, cg_mask=None):
+def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, kappa=0.1, chi1=None, chi2=None, cg_mask=None, stub_len=None, stub_type_arr=None):
     """
     Differentiable multi-frequency S₁₁ loss with full N-Cα-C backbone.
     All physical constants derived from AVE axioms (zero empirical fits).
@@ -261,6 +316,49 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     
     # For compatibility with existing physics layers, use Cα as main coords
     coords = atom_Ca  # (N, 3)
+
+    # ═══════════════════════════════════════════════════════════════════
+    # TIER 1: EXPLICIT SIDE-CHAINS & 5-ATOM NERF GEOMETRY
+    # ═══════════════════════════════════════════════════════════════════
+    # Compute all auxiliary atom positions early so they can be used
+    # NOT JUST for Ramachandran sterics, but for driving the fold via
+    # side-chain specific burial and cross-coupling.
+
+    # --- Cβ placement (χ₁ torsion) ---
+    chi1_arr = chi1 if chi1 is not None else jnp.full(N, jnp.radians(60.0))
+    cb_pos = _compute_cb_positions(atom_N, atom_Ca, atom_C, chi1_arr, gly_mask)
+    
+    # --- Cγ placement (χ₂ torsion: sidechain branching point) ---
+    chi2_arr = chi2 if chi2 is not None else jnp.full(N, jnp.radians(60.0))
+    cg_mask_arr = cg_mask if cg_mask is not None else jnp.ones(N)
+    cg_pos = _compute_cg_positions(atom_Ca, cb_pos, chi2_arr, cg_mask_arr, gly_mask)
+
+    # --- Carbonyl O positions (5-atom NERF) ---
+    v_CaCi = atom_C[:-1] - atom_Ca[:-1]
+    v_CNi  = atom_N[1:] - atom_C[:-1]
+    v_CaCi_n = v_CaCi / (jnp.sqrt(jnp.sum(v_CaCi**2, axis=-1, keepdims=True)) + 1e-12)
+    v_CNi_n  = v_CNi / (jnp.sqrt(jnp.sum(v_CNi**2, axis=-1, keepdims=True)) + 1e-12)
+    plane_n = jnp.cross(v_CaCi_n, v_CNi_n)
+    plane_n = plane_n / (jnp.sqrt(jnp.sum(plane_n**2, axis=-1, keepdims=True)) + 1e-12)
+    o_dir = (-v_CaCi_n * jnp.cos(ANGLE_CA_C_O) + 
+             jnp.cross(plane_n, -v_CaCi_n) * jnp.sin(ANGLE_CA_C_O))
+    o_pos_inner = atom_C[:-1] + D_C_O * o_dir
+    o_last = atom_C[-1:] + D_C_O * (atom_C[-1:] - atom_Ca[-1:]) / (jnp.sqrt(jnp.sum((atom_C[-1:]-atom_Ca[-1:])**2, axis=-1, keepdims=True)) + 1e-12)
+    o_pos = jnp.concatenate([o_pos_inner, o_last], axis=0)
+    
+    # --- Amide H positions (5-atom NERF) ---
+    v_NCa = atom_Ca[1:] - atom_N[1:]
+    v_NC  = atom_C[:-1] - atom_N[1:]
+    v_NCa_n = v_NCa / (jnp.sqrt(jnp.sum(v_NCa**2, axis=-1, keepdims=True)) + 1e-12)
+    v_NC_n  = v_NC / (jnp.sqrt(jnp.sum(v_NC**2, axis=-1, keepdims=True)) + 1e-12)
+    plane_h = jnp.cross(v_NCa_n, v_NC_n)
+    plane_h = plane_h / (jnp.sqrt(jnp.sum(plane_h**2, axis=-1, keepdims=True)) + 1e-12)
+    h_dir = (-v_NC_n * jnp.cos(ANGLE_C_N_H) + 
+             jnp.cross(plane_h, -v_NC_n) * jnp.sin(ANGLE_C_N_H))
+    h_pos_inner = atom_N[1:] + D_N_H * h_dir
+    h_first = atom_N[:1] + D_N_H * (atom_N[:1] - atom_Ca[:1]) / (jnp.sqrt(jnp.sum((atom_N[:1]-atom_Ca[:1])**2, axis=-1, keepdims=True)) + 1e-12)
+    h_pos = jnp.concatenate([h_first, h_pos_inner], axis=0)
+    h_pos = jnp.where(pro_mask[:, None] > 0.5, atom_N, h_pos) # Proline has no amide H
 
     # --- AXIOM-DERIVED CONSTANTS ---
     # Full derivation chain: Axioms 1-4 → physical observables → engine constants
@@ -288,6 +386,13 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
 
     # Real magnitudes for ABCD cascade
     z_mag = jnp.abs(z_topo)
+    z_mag_arr = z_mag  # (N,) — stub impedance = |Z_TOPO|
+    # Use passed-in stub arrays (precomputed from sequence in fold_s11_jax)
+    # Default to no stubs if not provided (backward compatibility)
+    if stub_len is None:
+        stub_len = jnp.zeros(N)
+    if stub_type_arr is None:
+        stub_type_arr = jnp.zeros(N)
 
     # Pairwise distances — fully vectorised
     diff = coords[:, None, :] - coords[None, :, :]
@@ -438,6 +543,39 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     
     Y_hbond = hb_coupling.sum(axis=1)  # (N,)
     Y_shunt = Y_shunt + Y_hbond
+
+    # --- β-Sheet Antiparallel TL Coupler (Backward-Wave Directional Coupler) ---
+    # In RF engineering, a backward-wave coupler transfers power between two
+    # transmission lines running in OPPOSITE directions.  β-sheets are exactly
+    # this: strand i runs N→C while strand j runs C→N.
+    #
+    # PARAMETER-FREE formulation:
+    #   Coupling weight = max(0, -cos(û_i, û_j))
+    #   When parallel (cos > 0): weight = 0 (no backward coupling)
+    #   When antiparallel (cos < 0): weight scales linearly with alignment
+    #   No threshold, no sigmoid steepness, no sequence separation mask.
+    #   Local contacts (|i-j| < 5) are naturally suppressed because adjacent
+    #   backbone directions are nearly parallel → cos ≈ +1 → weight ≈ 0.
+    #
+    # Coupling strength: same κ_HB = 1/(2Q) = 1/14 as α-helix H-bonds.
+    # Zero new parameters.
+    
+    # Backbone direction vectors (N→C per residue)
+    u_dir = atom_C - atom_N  # (N, 3)
+    u_hat = u_dir / (jnp.sqrt(jnp.sum(u_dir**2, axis=-1, keepdims=True)) + 1e-12)
+    
+    # Antiparallel weight: max(0, -cos(u_i, u_j)) — parameter-free
+    cos_uij = jnp.sum(u_hat[:, None, :] * u_hat[None, :, :], axis=-1)  # (N, N)
+    antiparallel_weight = jnp.maximum(0.0, -cos_uij)  # [0, 1], zero when parallel
+    
+    # Cross-strand N_i···C_j proximity (reuse d_NC from H-bond detection)
+    beta_proximity = jax.nn.sigmoid(BETA_BURIAL * (D_HB_DETECT + d0 - d_NC))
+    
+    # β-sheet coupling: κ_HB × antiparallel_weight × directional × proximity
+    Y_beta = KAPPA_HB * antiparallel_weight * cos_theta * beta_proximity
+    Y_beta = jnp.where(nc_mask, 0.0, Y_beta)  # exclude local backbone (|i-j| ≤ 2)
+    Y_shunt = Y_shunt + Y_beta.sum(axis=1)
+
     # NOTE: Tested Cβ-Cβ sidechain stub coupling in Y_shunt.
     # SS dropped 24%→9% (RMSD improved 7.61→7.03). Extra Y_shunt
     # over-damps ABCD cascade resonances. Cβ enters correctly
@@ -504,11 +642,16 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     # for N>50 chains where N²-tertiary may still dominate.
     Y_shunt = Y_shunt + Y_tertiary.sum(axis=1)
 
-    # --- Solvent Impedance Boundary (Upgrade 2: Debye Z(ω)) ---
+    # --- Solvent Impedance Boundary (Upgrade 2: Debye Z(ω), Tier 1: Sidechain Burial) ---
     # Exposed nodes couple to solvent (chassis ground).
     # Z_water(ω) from Debye relaxation — applied per-frequency below
     seq_mask = (jnp.abs(idx[:, None] - idx[None, :]) > 2).astype(jnp.float32)
-    burial_contrib = jax.nn.sigmoid(BETA_BURIAL * (R_BURIAL - dists)) * seq_mask
+    
+    # TIER 1 UPGRADE: Use explicit side-chain interaction centers (Cγ)
+    # The residue's exposure to solvent depends on how surrounded its sidechain
+    # is by other sidechains, not just the backbone density.
+    dists_cg = jnp.sqrt(jnp.sum((cg_pos[:, None, :] - cg_pos[None, :, :])**2, axis=-1) + 1e-12)
+    burial_contrib = jax.nn.sigmoid(BETA_BURIAL * (R_BURIAL - dists_cg)) * seq_mask
     n_neighbors_smooth = burial_contrib.sum(axis=1)  # (N,) smooth neighbor count
 
     # Maximum coordination number: derived from close-packing geometry.
@@ -644,7 +787,7 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     seq_sep_mask = (jnp.abs(idx[:, None] - idx[None, :]) > 2).astype(jnp.float32)
     K_near_field = (d0 / (dists + 1e-12))**2 * seq_sep_mask
     # Γ from sidechain impedances (z_mag already computed)
-    Gamma_ij = jnp.abs(z_mag[:, None] - z_mag[None, :]) / (z_mag[:, None] + z_mag[None, :] + 1e-12)
+    Gamma_ij = jnp.abs(universal_reflection(z_mag[:, None], z_mag[None, :], eps=1e-12))
     xtalk_matrix = K_near_field * Gamma_ij          # (N, N)
     xtalk_loss = jnp.sum(xtalk_matrix) / (N * N)    # normalised
     
@@ -652,7 +795,7 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     # Sidechain R-group attaches at Cα → shunt at junction 3i (i=0..N-1)
     # All other junctions get zero sidechain shunt
     n_junctions = 3 * N - 2
-    seg_Y_base = jnp.zeros(n_junctions)
+    seg_Y_base = jnp.zeros(n_junctions, dtype=jnp.complex64)
     # Place sidechain Y_shunt at Cα positions (every 3rd junction)
     ca_indices = jnp.arange(N) * 3  # [0, 3, 6, ..., 3(N-1)]
     ca_indices = jnp.clip(ca_indices, 0, n_junctions - 1)  # safety
@@ -687,6 +830,37 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     # Last residue (no inter-residue bond): 2 segments with zero chirality
     seg_chi = jnp.concatenate([chi_triplets.reshape(-1), jnp.zeros(2)])[:n_bb_segs]
 
+    # --- Bend Discontinuity Capacitance (TL junction angular mismatch) ---
+    # When a guided wave encounters a direction change at a TL junction,
+    # energy radiates out of the guide.  Cross-domain consensus:
+    #
+    #   TL microstrip bend:      C_bend = d × (1 - cos θ) / (π Z₀)
+    #   Transformer coupling:    loss = 1 - k = 1 - cos θ
+    #   Fiber optic macrobend:   α ∝ (1 - cos θ)
+    #   Grain boundary (Ziman):  R_GB = 1 - cos(Δθ)
+    #
+    # The bend is CAPACITIVE (Y = jωC), so it must be frequency-dependent.
+    # C_bend = (1 - cos θ_i) / (π × Q_BACKBONE)  [normalised]
+    # Y_bend(ω) = ω × C_bend — stronger at high frequency
+    #
+    # Zero new constants: Q from backbone mode, π from bend geometry.
+    bond_norms = jnp.sqrt(jnp.sum(bonds**2, axis=-1) + 1e-12)  # (N-1,)
+    bond_hat = bonds / bond_norms[:, None]  # (N-1, 3) unit vectors
+    cos_bend = jnp.sum(bond_hat[:-1] * bond_hat[1:], axis=-1)  # (N-2,)
+    # Bend capacitance from TL microstrip theory:
+    #   C_bend = (d_eff / λ_guided) × (1 - cos θ) / (π Z₀)
+    #
+    # In the cascade's normalisation:
+    #   d_eff = d₀  (one covalent bond ≈ waveguide cross-section)
+    #   λ_guided = 2π d₀ / ω₀ ≈ 2π d₀  (guided wavelength at ω₀ ≈ 1)
+    #   Z₀ = 1.0  (reference impedance)
+    #   → d_eff / λ_guided = 1 / (2π)
+    #   → C_bend = (1 - cos θ) / (2π²)
+    #
+    # 2π² ≈ 19.74 — purely geometric, no Q factor needed.
+    C_bend_interior = (1.0 - cos_bend) / (2.0 * jnp.pi**2)  # (N-2,)
+    C_bend = jnp.concatenate([jnp.zeros(1), C_bend_interior, jnp.zeros(1)])  # (N,)
+
     # --- Multi-frequency S₁₁ via lax.fori_loop ---
     def s11_at_freq(freq):
         w = 2.0 * jnp.pi * freq
@@ -694,10 +868,6 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
         # Complex propagation constant γ = α + jβ per segment
         # β = phase delay (propagating)
         # α = bond strain loss (evanescent when d ≠ d₀)
-        #
-        # α = |d - d₀| / d₀ → BREAKS PERIODICITY
-        # At d = d₀: α = 0 → lossless → minimum S₁₁
-        # At d ≠ d₀: α > 0 → lossy → S₁₁ increases monotonically
         beta_arr = w * seg_d / seg_d0 - seg_chi  # phase delay per segment
         alpha_arr = jnp.abs(seg_d - seg_d0) / seg_d0  # strain loss
         gamma_arr = alpha_arr + 1j * beta_arr  # complex propagation
@@ -709,8 +879,19 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
         # Frequency-dependent solvent impedance (Debye relaxation)
         Z_water_f = debye_z_water(freq)
         Y_solvent_f = exposure / Z_water_f
-        # Add solvent to Cα junctions
-        seg_Y_total = seg_Y_base.at[ca_indices].add(Y_solvent_f)
+        # Frequency-dependent bend admittance Y = ω × C_bend (capacitive)
+        Y_bend_f = w * C_bend
+        # Sidechain stub admittance (DISABLED — see benchmark notes below)
+        # Open/short-circuit stubs with 1/(2π) normalization help α/β (BBA5 −0.88 Å)
+        # but hurt pure α-helix (Villin +1.60 Å). The termination model and
+        # magnitude scaling need refinement before enabling.
+        # TODO: Investigate per-residue stub type from solvent exposure, not
+        #       just amino acid identity. Buried nonpolar stubs should behave
+        #       differently from exposed ones.
+        Y_stub_f = jnp.zeros(N, dtype=jnp.complex64)
+        # Add solvent + bend (+ stub when enabled) to Cα junctions
+        seg_Y_total = seg_Y_base.at[ca_indices].add(
+            Y_solvent_f + Y_bend_f + Y_stub_f)
 
         # ABCD cascade via lax.fori_loop (3N-1 steps)
         init_state = jnp.array([1.0 + 0j, 0.0 + 0j, 0.0 + 0j, 1.0 + 0j])
@@ -880,7 +1061,7 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     # Distance + impedance match alone capture the essential coupling physics.
     #
     # Detect segment boundaries via local Γ
-    gamma_local = jnp.abs(z_mag[1:] - z_mag[:-1]) / (z_mag[1:] + z_mag[:-1] + 1e-12)
+    gamma_local = jnp.abs(universal_reflection(z_mag[:-1], z_mag[1:], eps=1e-12))
     # Turn detection: sigmoid gate at Γ_turn
     # Γ² = 1/(2Q) → Γ = 1/√(2Q) ≈ 0.267 (cavity confinement criterion)
     # Slope: NUMERICAL smoothing — must preserve gradient through cum_turn
@@ -895,8 +1076,10 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
         right_mask = (idx > j) & (idx <= j + 7)
         left_w = left_mask.astype(jnp.float32)
         right_w = right_mask.astype(jnp.float32)
-        left_c = jnp.sum(coords * left_w[:, None], axis=0) / (left_w.sum() + 1e-12)
-        right_c = jnp.sum(coords * right_w[:, None], axis=0) / (right_w.sum() + 1e-12)
+        
+        # TIER 1 UPGRADE: Use Cγ positions for segment interaction centers
+        left_c = jnp.sum(cg_pos * left_w[:, None], axis=0) / (left_w.sum() + 1e-12)
+        right_c = jnp.sum(cg_pos * right_w[:, None], axis=0) / (right_w.sum() + 1e-12)
         seg_dist = jnp.sqrt(jnp.sum((left_c - right_c)**2) + 1e-12)
         z_left = jnp.sum(z_mag * left_w) / (left_w.sum() + 1e-12)
         z_right = jnp.sum(z_mag * right_w) / (right_w.sum() + 1e-12)
@@ -926,8 +1109,10 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
             w_q = jnp.sum(mem_q) + 1e-12
             # NUMERICAL sigmoid: smooth gate for segment size ≥ 2 residues
             has_both = jax.nn.sigmoid(_SIGMOID_SHARPNESS * (jnp.minimum(w_p, w_q) - 2.0))
-            c_p = jnp.sum(coords * mem_p[:, None], axis=0) / w_p
-            c_q = jnp.sum(coords * mem_q[:, None], axis=0) / w_q
+            
+            # TIER 1 UPGRADE: Use Cγ positions for cross-coupling interaction centers
+            c_p = jnp.sum(cg_pos * mem_p[:, None], axis=0) / w_p
+            c_q = jnp.sum(cg_pos * mem_q[:, None], axis=0) / w_q
             d_pq = jnp.sqrt(jnp.sum((c_p - c_q)**2) + 1e-12)
             z_p = jnp.sum(z_mag * mem_p) / w_p
             z_q = jnp.sum(z_mag * mem_q) / w_q
@@ -1016,69 +1201,6 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     # The Ramachandran basins arise primarily from Cβ clashing with
     # backbone atoms of adjacent residues. Without Cβ, backbone N/Cα/C
     # are too far apart to create angular constraints.
-    #
-    # Cβ placed via χ₁ torsion: if chi1 is provided, use it; else default 60°.
-    # Glycine: Cβ at Cα (no sidechain → naturally more conformational freedom)
-    chi1_arr = chi1 if chi1 is not None else jnp.full(N, jnp.radians(60.0))
-    cb_pos = _compute_cb_positions(atom_N, atom_Ca, atom_C, chi1_arr, gly_mask)
-    
-    # --- Cγ placement (χ₂ DOF: sidechain branching point) ---
-    # Cγ is the branching point where the sidechain stub splits into
-    # 2+ sub-branches (power divider in TL analogy). Its position
-    # determines inter-sidechain packing topology.
-    # Gly (no sidechain) and Ala (Cβ=CH₃, no Cγ) are masked.
-    chi2_arr = chi2 if chi2 is not None else jnp.full(N, jnp.radians(60.0))
-    cg_mask_arr = cg_mask if cg_mask is not None else jnp.ones(N)
-    cg_pos = _compute_cg_positions(atom_Ca, cb_pos, chi2_arr, cg_mask_arr, gly_mask)
-    
-    # --- Carbonyl O positions (5-atom NERF) ---
-    # O is bonded to C_i, in the Cα_i-C_i-N_{i+1} peptide plane
-    # C=O bond: 1.23 Å at 121° from C-N bond, opposite to Cα side
-    D_C_O = 1.23   # Å — C=O bond length
-    THETA_CO = jnp.radians(121.4)  # Cα-C=O angle
-    
-    # For residues 0..N-2 (have both C_i and N_{i+1})
-    v_CaCi = atom_C[:-1] - atom_Ca[:-1]  # Cα→C direction
-    v_CNi  = atom_N[1:] - atom_C[:-1]    # C→N(next) direction
-    v_CaCi_n = v_CaCi / (jnp.sqrt(jnp.sum(v_CaCi**2, axis=-1, keepdims=True)) + 1e-12)
-    v_CNi_n  = v_CNi / (jnp.sqrt(jnp.sum(v_CNi**2, axis=-1, keepdims=True)) + 1e-12)
-    
-    # O direction: rotate from -Cα direction by 121° toward N direction in the plane
-    # Peptide plane normal
-    plane_n = jnp.cross(v_CaCi_n, v_CNi_n)
-    plane_n = plane_n / (jnp.sqrt(jnp.sum(plane_n**2, axis=-1, keepdims=True)) + 1e-12)
-    # O is at 121° from C-Cα (opposite side of C-N)
-    o_dir = (-v_CaCi_n * jnp.cos(THETA_CO) + 
-             jnp.cross(plane_n, -v_CaCi_n) * jnp.sin(THETA_CO))
-    o_pos_inner = atom_C[:-1] + D_C_O * o_dir  # (N-1, 3)
-    # Last residue: approximate O along -Cα direction  
-    o_last = atom_C[-1:] + D_C_O * (atom_C[-1:] - atom_Ca[-1:]) / (jnp.sqrt(jnp.sum((atom_C[-1:]-atom_Ca[-1:])**2, axis=-1, keepdims=True)) + 1e-12)
-    o_pos = jnp.concatenate([o_pos_inner, o_last], axis=0)  # (N, 3)
-    
-    # --- Amide H positions (5-atom NERF) ---
-    # H is bonded to N_i, in the C_{i-1}-N_i-Cα_i peptide plane
-    # N-H bond: 1.01 Å at 119° from N-Cα bond, roughly trans to C_{i-1}
-    # Proline has no amide H (ring closure)
-    D_N_H = 1.01   # Å — N-H bond length
-    THETA_NH = jnp.radians(119.2)  # C-N-H angle
-    
-    # For residues 1..N-1 (have both C_{i-1} and N_i)
-    v_NCa = atom_Ca[1:] - atom_N[1:]   # N→Cα direction
-    v_NC  = atom_C[:-1] - atom_N[1:]   # N→C(prev) direction
-    v_NCa_n = v_NCa / (jnp.sqrt(jnp.sum(v_NCa**2, axis=-1, keepdims=True)) + 1e-12)
-    v_NC_n  = v_NC / (jnp.sqrt(jnp.sum(v_NC**2, axis=-1, keepdims=True)) + 1e-12)
-    
-    # H direction: opposite to C(prev) side, in the peptide plane
-    plane_h = jnp.cross(v_NCa_n, v_NC_n)
-    plane_h = plane_h / (jnp.sqrt(jnp.sum(plane_h**2, axis=-1, keepdims=True)) + 1e-12)
-    h_dir = (-v_NC_n * jnp.cos(THETA_NH) + 
-             jnp.cross(plane_h, -v_NC_n) * jnp.sin(THETA_NH))
-    h_pos_inner = atom_N[1:] + D_N_H * h_dir  # (N-1, 3)
-    # First residue: approximate H along -Cα direction
-    h_first = atom_N[:1] + D_N_H * (atom_N[:1] - atom_Ca[:1]) / (jnp.sqrt(jnp.sum((atom_N[:1]-atom_Ca[:1])**2, axis=-1, keepdims=True)) + 1e-12)
-    h_pos = jnp.concatenate([h_first, h_pos_inner], axis=0)  # (N, 3)
-    # Zero out H for Proline (no amide H)
-    h_pos = jnp.where(pro_mask[:, None] > 0.5, atom_N, h_pos)
     
     # --- LJ σ distances (zero-crossing = VdW sum / 2^(1/6)) ---
     SIGMA_FACTOR = 1.0 / (2.0 ** (1.0/6.0))  # ≈ 0.891
@@ -1473,7 +1595,7 @@ def compute_cg_mask(sequence):
     return jnp.array([0.0 if aa in NO_CG else 1.0 for aa in sequence])
 
 
-def _torsion_loss(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, cg_mask=None):
+def _torsion_loss(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, cg_mask=None, stub_len=None, stub_type_arr=None):
     """
     Loss function with torsion-angle parameterization.
     
@@ -1494,14 +1616,14 @@ def _torsion_loss(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, cg
     chi2 = angles[3*N:] if angles.shape[0] > 3*N else None
     coords_flat = _torsions_to_backbone(phi, psi, N)
     return _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N,
-                     chi1=chi1, chi2=chi2, cg_mask=cg_mask)
+                     chi1=chi1, chi2=chi2, cg_mask=cg_mask, stub_len=stub_len, stub_type_arr=stub_type_arr)
 
 
 _torsion_loss_jit = jit(_torsion_loss, static_argnums=(6,))
 _torsion_grad_jit = jit(grad(_torsion_loss), static_argnums=(6,))
 
 
-def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True, n_starts=3):
+def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True, n_starts=3, z_topo_override=None, initial_angles=None):
     """
     Fold a protein by minimising multi-frequency S₁₁.
     
@@ -1520,12 +1642,18 @@ def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True, n_starts=3):
       - 3-frequency S₁₁: Nyquist-minimal resonance sampling
     """
     N = len(sequence)
-    z_topo = compute_z_topo(sequence)
+    if z_topo_override is not None:
+        z_topo = z_topo_override
+    else:
+        z_topo = compute_z_topo(sequence)
     cys_mask = compute_cys_mask(sequence)
     arom_mask = compute_aromatic_mask(sequence)
     gly_mask = compute_gly_mask(sequence)
     pro_mask = compute_pro_mask(sequence)
     cg_mask = compute_cg_mask(sequence)
+    # Sidechain stub arrays (for frequency-dependent stub admittance)
+    stub_len_arr = jnp.array([float(STUB_LENGTH.get(aa, 0)) for aa in sequence])
+    stub_type = jnp.array([float(STUB_TYPE.get(aa, 0.0)) for aa in sequence])
 
     best_loss = float('inf')
     best_angles = None
@@ -1538,26 +1666,30 @@ def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True, n_starts=3):
 
     for start_idx in range(n_starts):
         seed = 42 + start_idx * 137  # deterministic but spread out
-        np.random.seed(seed)
-        phi_init = np.random.uniform(-np.pi, np.pi, N)
-        psi_init = np.random.uniform(-np.pi, np.pi, N)
-        # χ₁ initialized at random rotamer states (Axiom 2: tetrahedral sp³)
-        # Three staggered minima: gauche+ (−60°), gauche− (+60°), trans (180°)
-        chi1_init = np.random.choice(
-            [np.radians(-60), np.radians(60), np.radians(180)], N)
-        # χ₂ initialized at random rotamer states (same tetrahedral sp³ minima)
-        chi2_init = np.random.choice(
-            [np.radians(-60), np.radians(60), np.radians(180)], N)
-        # Glycine has no sidechain → χ₁, χ₂ irrelevant
-        # Alanine has no Cγ → χ₂ irrelevant
-        for i in range(N):
-            if sequence[i] == 'G':
-                chi1_init[i] = 0.0
-                chi2_init[i] = 0.0
-            elif sequence[i] == 'A':
-                chi2_init[i] = 0.0
-        angles = jnp.concatenate([jnp.array(phi_init), jnp.array(psi_init),
-                                  jnp.array(chi1_init), jnp.array(chi2_init)])
+        
+        if initial_angles is not None:
+            angles = jnp.array(initial_angles)
+        else:
+            np.random.seed(seed)
+            phi_init = np.random.uniform(-np.pi, np.pi, N)
+            psi_init = np.random.uniform(-np.pi, np.pi, N)
+            # χ₁ initialized at random rotamer states (Axiom 2: tetrahedral sp³)
+            # Three staggered minima: gauche+ (−60°), gauche− (+60°), trans (180°)
+            chi1_init = np.random.choice(
+                [np.radians(-60), np.radians(60), np.radians(180)], N)
+            # χ₂ initialized at random rotamer states (same tetrahedral sp³ minima)
+            chi2_init = np.random.choice(
+                [np.radians(-60), np.radians(60), np.radians(180)], N)
+            # Glycine has no sidechain → χ₁, χ₂ irrelevant
+            # Alanine has no Cγ → χ₂ irrelevant
+            for i in range(N):
+                if sequence[i] == 'G':
+                    chi1_init[i] = 0.0
+                    chi2_init[i] = 0.0
+                elif sequence[i] == 'A':
+                    chi2_init[i] = 0.0
+            angles = jnp.concatenate([jnp.array(phi_init), jnp.array(psi_init),
+                                      jnp.array(chi1_init), jnp.array(chi2_init)])
 
         optimizer = optax.adam(lr)
         opt_state = optimizer.init(angles)
@@ -1566,8 +1698,8 @@ def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True, n_starts=3):
         t0 = time.time()
         # JIT warmup on first start only
         if start_idx == 0:
-            _ = _torsion_loss_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, cg_mask)
-            _ = _torsion_grad_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, cg_mask)
+            _ = _torsion_loss_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, cg_mask, stub_len_arr, stub_type)
+            _ = _torsion_grad_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, cg_mask, stub_len_arr, stub_type)
             print(f"    JIT compiled in {time.time()-t0:.1f}s", flush=True)
             t0 = time.time()
 
@@ -1576,7 +1708,7 @@ def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True, n_starts=3):
         
         def opt_step(step, carry):
             angles_c, opt_state_c, key_c = carry
-            g = _torsion_grad_jit(angles_c, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, cg_mask)
+            g = _torsion_grad_jit(angles_c, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, cg_mask, stub_len_arr, stub_type)
             g = jnp.where(jnp.isnan(g), 0.0, g)
             g_norm = jnp.sqrt(jnp.sum(g**2) + 1e-12)
             g = jnp.where(g_norm > 10.0, g * 10.0 / g_norm, g)
@@ -1591,7 +1723,7 @@ def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True, n_starts=3):
         angles, opt_state, key = jax.lax.fori_loop(
             0, n_steps, opt_step, (angles, opt_state, key))
 
-        loss = float(_torsion_loss_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, cg_mask))
+        loss = float(_torsion_loss_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, cg_mask, stub_len_arr, stub_type))
         dt = time.time() - t0
         print(f"    start {start_idx}: loss={loss:.4f} ({dt:.0f}s)", flush=True)
 
@@ -1607,7 +1739,7 @@ def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True, n_starts=3):
     coords_flat = _torsions_to_backbone(phi_final, psi_final, N)
     bb_final = np.array(coords_flat.reshape(N, 3, 3))
     ca_final = bb_final[:, 1, :]
-    return ca_final, [], [best_loss], bb_final
+    return ca_final, [], [best_loss], bb_final, best_angles
 
 
 def fold_cotranslational(sequence, steps_per_residue=200, lr=2e-3,
@@ -1773,12 +1905,12 @@ def fold_hierarchical(sequence, n_steps=5000, lr=1e-3):
     
     if N <= 20:
         # Short proteins: single stage suffices
-        ca, hist, trace, bb = fold_s11_jax(sequence, n_steps=n_steps, lr=lr, anneal=True)
+        ca, hist, trace, bb, angles = fold_s11_jax(sequence, n_steps=n_steps, lr=lr, anneal=True)
         return ca, hist, trace
     
     # Stage 1: Secondary structure (60% of steps, stronger anneal)
     print(f"  === Stage 1: Secondary structure ({int(n_steps * 0.6)} steps) ===")
-    coords, hist1, trace1, bb_stage1 = fold_s11_jax(
+    coords, hist1, trace1, bb_stage1, best_angles = fold_s11_jax(
         sequence, n_steps=int(n_steps * 0.6), lr=lr, anneal=True
     )
     
@@ -1833,7 +1965,7 @@ if __name__ == '__main__':
     for name, seq in test_seqs:
         print(f"\n--- {name} ---", flush=True)
         t0 = time.time()
-        coords, history, trace, _ = fold_s11_jax(seq, n_steps=5000, lr=1e-3)
+        coords, history, trace, _, _ = fold_s11_jax(seq, n_steps=5000, lr=1e-3)
         dt = time.time() - t0
         print(f"  Time: {dt:.1f}s", flush=True)
         print(f"  Loss: {trace[0]:.4f} → {trace[-1]:.4f}", flush=True)

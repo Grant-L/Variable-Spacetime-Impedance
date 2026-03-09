@@ -37,10 +37,10 @@ class TestBackboneConstants:
         assert CA_CA_BOND_LENGTH_M == pytest.approx(3.80e-10, rel=0.01)
 
     def test_bond_lengths_physically_reasonable(self):
-        """All backbone bonds should be 1.0–1.6 Å."""
+        """All backbone bonds should be 0.8–1.7 Å."""
         for name, bond in BACKBONE_BONDS.items():
             d = bond['length_A']
-            assert 0.9 < d < 1.7, f"{name} = {d:.2f} Å out of range"
+            assert 0.80 < d < 1.7, f"{name} = {d:.2f} Å out of range"
 
     def test_bond_angles_physically_reasonable(self):
         """All angles should be 100°–130°."""

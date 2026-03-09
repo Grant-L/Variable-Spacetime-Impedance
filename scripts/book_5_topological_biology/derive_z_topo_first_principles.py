@@ -34,6 +34,7 @@ from spice_organic_mapper import (
     BOND_FORCE_CONSTANTS, XI_TOPO_SQ
 )
 from ave.solvers.protein_bond_constants import Z_TOPO, Q_BACKBONE
+from ave.core.universal_operators import universal_impedance
 
 # ═══════════════════════════════════════════════════════════════
 # 1. BACKBONE IMPEDANCE
@@ -62,7 +63,7 @@ C_NCa = get_capacitance('C-N')   # N—Cα bond
 L_backbone = L_Ca + L_Cp + L_N
 C_backbone = C_CaC + C_CN + C_NCa
 
-Z_backbone = np.sqrt(L_backbone / C_backbone)
+Z_backbone = universal_impedance(L_backbone, C_backbone)
 
 print("=" * 70)
 print("  Z_topo First-Principles Derivation")
@@ -187,7 +188,7 @@ def compute_z_rgroup(topology):
     for bond, count in topology['bonds'].items():
         C_total += count * get_capacitance(bond)
     
-    Z_R = np.sqrt(L_total / C_total)
+    Z_R = universal_impedance(L_total, C_total)
     return L_total, C_total, Z_R
 
 

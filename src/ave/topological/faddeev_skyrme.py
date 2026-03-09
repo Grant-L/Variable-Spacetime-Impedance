@@ -92,9 +92,8 @@ class TopologicalHamiltonian1D:
         # phase gradient is therefore π per unit length (one half-
         # rotation per cell).
         gradient_yield = np.pi  # π / ℓ_node = π / 1 in natural units
-        ratio_sq = dphi_dr**2 / gradient_yield**2
-        ratio_sq = min(ratio_sq, 1.0 - 1e-15)  # clip for numerical safety
-        S = np.sqrt(1.0 - ratio_sq)
+        from ave.core.universal_operators import universal_saturation
+        S = universal_saturation(dphi_dr, gradient_yield)
         dphi_dr_eff = dphi_dr * S
 
         # Quadratic stiffness term (Standard Dirichlet tension)

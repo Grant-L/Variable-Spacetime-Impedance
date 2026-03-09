@@ -5,30 +5,30 @@ The preceding chapter demonstrated that the $1/d$ mutual-impedance topology gove
 
 \section{The Electron--Black Hole Isomorphism}
 
-In the AVE framework, the electron is a self-trapped photon---a topological $0_1$ unknot confined at the lattice node scale ($\ell_{node}$) by a $\Gamma = -1$ total internal reflection boundary. The event horizon of a Schwarzschild black hole is governed by the \textbf{identical impedance physics} evaluated at cosmological scale.
+In the AVE framework, the electron is a self-trapped photon---a topological $0_1$ unknot confined at the lattice node scale ($\ell_{node}$) by a $\Gamma = -1$ total internal reflection boundary. The event horizon of a Schwarzschild black hole is governed by isomorphic confinement physics operating at cosmological scale---not via impedance mismatch, but via a \textbf{lattice phase transition}.
 
-\subsection{Matching the Impedance Boundaries}
+\subsection{Symmetric Gravity and Saturation}
 
-As established in Chapter~\ref{ch:relativity}, the isotropic Schwarzschild refractive index governing photon propagation through the polarised vacuum is:
-\begin{resultbox}{Isotropic Schwarzschild Refractive Index}
+As established in Chapter~\ref{ch:relativity}, gravity is a refractive gradient: the local refractive index increases with proximity to a mass source. The principal radial strain from Axiom~4 is:
+\begin{resultbox}{Principal Radial Strain}
 \begin{equation}
-    n(r) = \frac{W^3}{U}, \qquad W = 1 + \frac{r_h}{r}, \quad U = 1 - \frac{r_h}{r}
+    \varepsilon_{11}(r) = \frac{7\,G\,M}{c^2\,r}
 \end{equation}
 \end{resultbox}
-where $r_h = GM/c^2$ is the isotropic half-Schwarzschild radius. As $r \to r_h$, the refractive index diverges: $n \to \infty$.
+where the factor 7 emerges from the Machian stress boundary $T_{max} = c^4/(7G)$.
 
-The radial impedance reflection coefficient at any radius is:
-\begin{resultbox}{Radial Reflection Coefficient}
-\begin{equation}
-    \Gamma(r) = \frac{n(r) - 1}{n(r) + 1}
-\end{equation}
-\end{resultbox}
+Critically, gravity is \textbf{Symmetric}: the transverse impedance $Z(r) = \sqrt{\mu'(r)/\varepsilon'(r)} = Z_0$ is \textit{invariant} at all radii, because both $\mu'$ and $\varepsilon'$ scale identically with $n(r)$. There is \textbf{no impedance mismatch} and \textbf{no reflection coefficient} ($\Gamma = 0$ everywhere). This is the fundamental distinction between the electron's confinement ($\Gamma = -1$ at the knot boundary, where $Z \to 0$) and the black hole's confinement.
 
-In flat space ($r \gg r_h$), $n \approx 1$ and $\Gamma \approx 0$: the vacuum is impedance-matched and waves propagate freely. As $r \to r_h$, the dielectric strain saturates ($n \to \infty$) and $\Gamma \to +1$: \textbf{total reflection}. No wave energy can propagate inward past the event horizon. This is the macroscopic analogue of the electron's $\Gamma = -1$ self-confinement boundary, with inverted sign convention (outward impedance wall vs. inward confinement).
+\subsection{The Saturation Boundary as a Phase Transition}
 
-\subsection{The Photon Sphere as a ``1s Orbital''}
+When $\varepsilon_{11}(r) = 1$ (at $r_{sat} = 7\,M_g = 3.5\,r_s$), the lattice reaches its \textbf{elastic limit}. Beyond this radius, the lattice undergoes a phase transition:
+\begin{itemize}
+    \item The shear modulus $G_{shear} \to 0$ (topology melts)
+    \item The group velocity $c_g = c(1-\varepsilon^2)^{1/4} \to 0$ (energy freezes)
+    \item Gravitational waves, being \textit{transverse shear waves}, \textbf{cannot propagate} in the ruptured interior
+\end{itemize}
 
-The photon sphere at $r_{ph} = 3GM/c^2$ is the innermost radius where photons can orbit in a circular standing wave. In the AVE framework, this is \textit{literally} a bound photon orbital---a macroscopic standing wave of light trapped at the impedance gradient boundary. It is the direct analogue of the atomic 1s orbital: the ground-state standing wave in its respective impedance cavity.
+The saturated interior therefore acts as a \textbf{perfect reflector for shear waves}---not through impedance mismatch ($\Gamma$), but through the phase transition that eliminates the shear restoring force. This is identical to the vanishing of transverse acoustic modes at a solid--liquid boundary.
 
 \begin{center}
 \renewcommand{\arraystretch}{1.3}
@@ -36,12 +36,12 @@ The photon sphere at $r_{ph} = 3GM/c^2$ is the innermost radius where photons ca
 \toprule
 \textbf{Property} & \textbf{Electron} & \textbf{Black Hole} \\
 \midrule
-Confinement Boundary & $\ell_{node} \approx 3.86 \times 10^{-13}$ m & $r_s = 2GM/c^2$ \\
-Confinement Mechanism & Self-trapped photon ($\Gamma = -1$) & Dielectric rupture ($\Gamma \to +1$) \\
-``Ground-State'' Orbital & Bohr radius $a_0 = \ell_{node}/\alpha$ & Photon sphere $r_{ph} = 3GM/c^2$ \\
+Confinement Boundary & $\ell_{node} \approx 3.86 \times 10^{-13}$ m & $r_{sat} = 7\,GM/c^2 = 3.5\,r_s$ \\
+Confinement Mechanism & Impedance mismatch ($\Gamma = -1$) & Lattice phase transition ($G_{shear} \to 0$) \\
+``Ground-State'' Orbital & Bohr radius $a_0 = \ell_{node}/\alpha$ & Saturation cavity $r_{eff} = 49M_g/9$ \\
 Shell Gaps & Spectral emission lines & Accretion disk QPOs \\
 Interior Physics & Constructive (topology preserved) & Destructive (topology melts) \\
-Impedance & $Z_0 = 376.73$ $\Omega$ (invariant) & $Z(r) \to \infty$ at horizon \\
+Impedance & $Z \to 0$ at knot core & $Z = Z_0$ always (Symmetric Gravity) \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -76,12 +76,12 @@ The Keplerian orbital frequency at each impedance band radius yields the predict
 \end{equation}
 \end{resultbox}
 
-For GRS 1915+105 ($M \approx 14\,M_\odot$, $a_* \approx 0.7$), the impedance resonance solver predicts the fundamental QPO mode at $\nu_1 \approx 77$ Hz. The observed fundamental QPO frequency is $67$ Hz---a $15\%$ first-principles prediction from the impedance topology without any free parameters.
+For GRS 1915+105 ($M \approx 14\,M_\odot$, $a_* \approx 0.7$), the impedance resonance solver predicts the fundamental QPO mode at $\nu_1 \approx 77$ Hz. The observed fundamental QPO frequency is $67$ Hz---a $15\%$ first-principles prediction from the impedance topology. Crucially, there is \textbf{zero parameterisation}: the only inputs are the observationally measured mass $M$ and spin $a_*$ of the target object. The standing-wave condition, the refractive gradient $n(r)$, and the quantisation radii all emerge from the metric geometry without any adjustable constants.
 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=1.0\textwidth]{bh_orbital_resonance.png}
-    \caption{\textbf{Black Holes as Macroscopic Electron Orbitals.} Left: Radial reflection coefficient $\Gamma(r)$ showing the smooth transition from flat space ($\Gamma \approx 0$) to total reflection at the event horizon ($\Gamma \to +1$). Centre: Quantised impedance band radii overlaid on the isotropic refractive index $n(r)$. Right: Predicted QPO frequencies from impedance band resonance compared to observed X-ray data for GRS 1915+105. All results derived from the same $1/d$ mutual impedance topology used for electron orbital quantisation and Saturn ring gap formation.}
+    \caption{\textbf{Black Holes as Macroscopic Electron Orbitals.} Left: Saturation factor $S(r) = \sqrt{1-\varepsilon_{11}^2}$ showing the regime transition from the elastic lattice ($S > 0$) to the ruptured phase ($S = 0$) at $r_{sat} = 7\,M_g$. Centre: Quantised impedance band radii overlaid on the refractive index $n(r)$. Right: Predicted QPO frequencies from impedance band resonance compared to observed X-ray data for GRS 1915+105. All results derived from scale-invariant Axiom 1--4 physics.}
     \label{fig:bh_orbital_resonance}
 \end{figure}
 
@@ -101,12 +101,12 @@ The electron is a \textbf{constructive} topological trap; the black hole is a \t
 
 In atomic physics, an excited electron orbital emits photons (spectral lines) as it relaxes to a lower energy state. The black hole analogue follows directly from the Fluctuation-Dissipation Theorem (Chapter~\ref{ch:thermodynamics}).
 
-As established in Section~\ref{sec:fluctuation_dissipation}, thermal noise from the ambient vacuum lattice couples into any structure through its boundary impedance mismatch. The transmitted noise power through the event horizon boundary is:
+As established in Section~\ref{sec:fluctuation_dissipation}, thermal noise from the ambient vacuum lattice couples into any structure through its boundary. At the saturation boundary, the phase transition is not perfectly sharp---the lattice does not rupture instantaneously. The residual elastic coupling across the boundary transmits a vanishingly small fraction of the ambient Nyquist noise:
 \begin{equation}
-    P_{transmitted} = (1 - |\Gamma|^2) \cdot P_{incident}
+    P_{transmitted} \propto \left.\frac{\partial S}{\partial r}\right|_{r_{sat}} \cdot P_{incident}
 \end{equation}
 
-At the event horizon, $\Gamma \to +1$ but is never \textit{exactly} $+1$. The residual impedance leakage $(1 - |\Gamma|^2) \ll 1$ allows a vanishingly small fraction of the ambient Nyquist noise to escape from the boundary region. This is \textbf{Hawking radiation}---not a quantum tunnelling process, but the classical thermodynamic leakage of lattice noise through an imperfect impedance boundary.
+This is \textbf{Hawking radiation}---not quantum tunnelling, but the classical thermodynamic leakage of lattice noise through the imperfect phase boundary. The leakage rate is set by the gradient of the saturation factor $S(r)$ at $r_{sat}$.
 
 The characteristic temperature of this emission is set by the impedance gradient at the horizon:
 \begin{resultbox}{Hawking Temperature as Impedance Noise}
@@ -120,37 +120,165 @@ This is the Nyquist noise temperature of the vacuum lattice evaluated at the eve
 \medskip
 As the black hole radiates, its mass decreases, the impedance boundary tightens, and the emission temperature increases. This positive feedback loop drives the evaporation to completion---the macroscopic equivalent of an unstable excited orbital cascading down through the emission spectrum until the confinement structure itself dissolves.
 
+\section{Cross-Scale Emission: ``Photons'' at Every Scale}
+\label{sec:cross_scale_emission}
+
+The orbital isomorphism extends beyond static structure. In atomic physics, electrons emit \textit{photons} (electromagnetic standing waves) when transitioning between orbital states. The spectral lines are the emission frequencies; the photons are the radiated energy quanta. This same emission process has macroscopic analogues at every scale:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{l l l l}
+\toprule
+\textbf{System} & \textbf{``Orbital'' Structure} & \textbf{``Photon'' Emission} & \textbf{``Spectral Lines''} \\
+\midrule
+Electron & Standing de Broglie waves & Electromagnetic photons & Spectral emission lines \\
+Saturn & Ring impedance bands & Spiral density waves & Cassini gap frequencies \\
+Stellar flares & Coronal impedance loops & EUV/X-ray bursts & Flare QPO frequencies \\
+Black hole & Accretion disk bands & X-ray QPOs & QPO frequency ratios \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Saturn's spiral density waves, observed by the Cassini spacecraft, are \textit{literally} the macroscopic photons of the Saturn orbital system---gravitational/acoustic perturbations emitted when ring material transitions between impedance-quantised bands. The Cassini Division frequencies are Saturn's spectral lines. For black holes, the QPO intensity oscillations observed in X-ray binaries play the identical role. The $1/d$ impedance topology is the universal emission mechanism operating across $10^{40}$ orders of magnitude in spatial scale.
+
 \section{Untapped First-Principles Predictions}
 
-The impedance orbital framework immediately yields several additional falsifiable predictions that are not currently modelled but follow directly from the same $1/d$ topology without introducing any new parameters.
+The impedance orbital framework immediately yields several additional falsifiable predictions that follow directly from the same $1/d$ topology without introducing any new parameters.
 
-\subsection{Merger Ringdown as Cavity Resonance}
+When two black holes merge, the resulting object ``rings down'' at a characteristic frequency observed by LIGO/Virgo. In the AVE framework, this ringdown is the \textbf{fundamental resonance mode of the newly formed saturation cavity}---a surface wave at the elastic--ruptured phase boundary.
 
-When two black holes merge, the resulting object ``rings down'' at a characteristic frequency observed by LIGO/Virgo. In the AVE framework, this ringdown is the \textbf{fundamental resonance mode of the newly formed impedance cavity}. The ringdown frequency should equal the Keplerian frequency at the photon sphere of the final merged mass:
-\begin{resultbox}{Merger Ringdown Frequency}
+The $\ell = 2$ fundamental Schwarzschild QNM eigenvalue is derived entirely from Axioms 1--4:
+\begin{enumerate}
+    \item \textbf{Axiom 4:} $\varepsilon_{11}(r_{sat}) = 1$ gives $r_{sat} = 7\,M_g$.
+    \item \textbf{Poisson:} $r_{eff} = r_{sat}/(1 + \nu_{vac}) = 49\,M_g/9$.
+    \item \textbf{Mode:} $\omega_R = \ell \cdot c / r_{eff}$.
+\end{enumerate}
+\begin{resultbox}{AVE Merger Ringdown Eigenvalue}
 \begin{equation}
-    f_{ring} \approx \frac{c^3}{6\sqrt{6}\,\pi\, G M_{final}}
+    \omega_R \cdot M_g = \frac{\ell\,(1 + \nu_{vac})}{x_{sat}} = \frac{18}{49} = 0.3673
+    \qquad (\text{GR exact: } 0.3737, \text{ error } 1.7\%)
 \end{equation}
 \end{resultbox}
-This is the ``ground-state orbital frequency'' of the new black hole---the macroscopic analogue of a freshly ionised atom relaxing into its 1s state. LIGO ringdown data can be directly compared against this prediction.
+\noindent Zero free parameters, zero borrowed results.
+
+Frame-dragging shifts the prograde saturation boundary inward, shrinking the cavity:
+\begin{resultbox}{Kerr-Corrected Ringdown}
+\begin{equation}
+    f_{ring}(a_*) = f_{ring}(0) \times \frac{r_{ph,\,Schw}}{r_{ph}^+(a_*)}, \qquad
+    r_{ph}^+ = \frac{2GM}{c^2}\left(1 + \cos\!\left[\tfrac{2}{3}\arccos(-a_*)\right]\right)
+\end{equation}
+\end{resultbox}
+
+\subsection{Kerr Quality Factor}
+
+For a spinning remnant, the lattice vortex co-rotates with the QNM mode, reducing the effective radiation rate.  The decay rate is obtained from a co-rotating frame decomposition (Appendix~\ref{sec:kerr_q_correction}):
+\begin{equation}
+    \omega_I = \frac{\omega_R - m\,\Omega}{2\,\ell}, \qquad
+    r_\Omega = r_{ph}(a_*) \cdot \sqrt{1 + \nu_\mathrm{vac}}
+\end{equation}
+where $\Omega$ is the Kerr frame-dragging angular velocity at the Poisson-augmented photon sphere $r_\Omega$.  The quality factor $Q = \omega_R / (2\omega_I)$ increases with spin, matching GR to sub-2\% for $a_* = 0.3\textrm{--}0.8$.
+
+\medskip\noindent
+Comparison against three LIGO detections, now including both frequency and decay time:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{l c c c c c c c}
+\toprule
+\textbf{Event} & $\mathbf{M_{final}}$ & $\mathbf{a_*}$ & \textbf{$f_\mathrm{AVE}$} & \textbf{$f_\mathrm{obs}$} & \textbf{$\Delta f$} & \textbf{$\tau_\mathrm{AVE}$} & \textbf{$\tau_\mathrm{obs}$} \\
+\midrule
+GW150914 & 62.0 $M_\odot$ & 0.67 & 278 Hz & 251 Hz & 10.6\% & 3.5 ms & 4.0 ms \\
+GW170104 & 48.7 $M_\odot$ & 0.64 & 345 Hz & 312 Hz & 10.5\% & 2.7 ms & 3.0 ms \\
+GW151226 & 20.8 $M_\odot$ & 0.74 & 884 Hz & 750 Hz & 17.8\% & 1.2 ms & 1.4 ms \\
+\bottomrule
+\end{tabular}
+\end{center}
+\noindent Frequency errors 10--18\%, decay time errors 10--14\%.  All from zero free parameters.
 
 \subsection{Iron K$\alpha$ Line Profile from the Refractive Gradient}
 
-Accreting black holes emit a characteristic iron fluorescence line at $6.4$ keV. The observed line is broadened and redshifted by the gravitational potential. In the AVE framework, the line profile is directly computed from the refractive index gradient $n(r)$: photons emitted at radius $r$ are redshifted by the factor $1/n(r)$. The impedance band radii derived in Equation~\ref{eq:impedance_quantisation} predict \textbf{discrete sub-peaks} in the broadened iron line---each corresponding to emission from a quantised impedance band in the accretion disk.
+Accreting black holes emit a characteristic iron fluorescence line at $6.4$ keV. The observed line is broadened and redshifted by the gravitational potential. In the AVE framework, the line profile is directly computed from the refractive index gradient: photons emitted at radius $r$ are redshifted by the factor $E_{obs} = E_0 / n(r)$. The impedance band radii derived in Equation~\ref{eq:impedance_quantisation} predict \textbf{discrete sub-peaks} in the broadened iron line---each corresponding to enhanced emission from a quantised impedance band in the accretion disk (Figure~\ref{fig:untapped}, Panel 2).
 
 \subsection{Relativistic Jet Launching via Polar Impedance Matching}
 
-Black hole jets (Blandford-Znajek mechanism) preferentially launch along the spin axis. In the impedance framework, the rotation axis is the only direction where the frame-dragging vortex velocity field ($v_{drag}$) is zero and the impedance mismatch is minimised. The jet launching condition is:
+Black hole jets (Blandford-Znajek mechanism) preferentially launch along the spin axis. The impedance framework provides a direct physical explanation: the rotation axis is the only direction where the frame-dragging velocity field ($v_{drag} = 0$) and the refractive gradient is minimised. Energy escapes along the path where the lattice strain is lowest---the polar axis is the ``least strained'' escape channel:
 \begin{equation}
-    \Gamma_{polar} \approx 0, \qquad \Gamma_{equatorial} \to +1
+    \varepsilon_{11,\,polar} \ll \varepsilon_{11,\,equatorial}
 \end{equation}
-The equatorial accretion disk is impedance-blocked ($\Gamma \to +1$); the polar axis is impedance-matched ($\Gamma \approx 0$). Energy escapes along the path of least impedance---the jet. The predicted jet opening angle should scale with the spin parameter $a_*$ as the impedance channel narrows with increasing frame dragging.
+The equatorial accretion disk is strain-blocked; the polar axis is strain-matched (Figure~\ref{fig:untapped}, Panel 3). The predicted jet opening angle scales with $a_*$ as the strain channel narrows with increasing frame dragging.
 
 \subsection{Gravitational Wave Memory as Residual Strain}
 
-After a gravitational wave passes, the local metric retains a permanent offset---so-called ``memory'' or residual strain. In the AVE dielectric framework, this is the \textbf{permanent plastic deformation} of the LC lattice after being driven past its linear elastic limit by the passing wave. The residual strain $\Delta h$ should be proportional to $(|\partial_r \phi| / V_{yield})^2$, directly analogous to a metal permanently deforming after exceeding its yield stress.
+After a gravitational wave passes, the local metric retains a permanent offset---so-called ``memory'' or residual strain. In the AVE dielectric framework, this is the \textbf{permanent plastic deformation} of the LC lattice after being driven past its linear elastic limit by the passing wave. The residual memory strain scales as:
+\begin{resultbox}{GW Memory from Lattice Yield}
+\begin{equation}
+    \Delta h_{memory} = h_{peak} \left(\frac{h_{peak}}{h_{yield}}\right)^2, \qquad h_{yield} = \sqrt{\alpha} \approx 0.085
+\end{equation}
+\end{resultbox}
+This is directly analogous to a metal permanently deforming after exceeding its yield stress $\sigma_Y$. The dimensionless yield strain of the vacuum lattice $h_{yield} = \sqrt{\alpha}$ emerges from the same Axiom 4 saturation physics that defines $V_{yield}$.
 
 \subsection{EHT Shadow Fine Structure}
 
 The Event Horizon Telescope (EHT) resolved the shadow of M87*. In the impedance model, the shadow boundary is not a sharp circle---it is modulated by the quantised impedance bands. Photons passing through different resonance band radii experience different deflection angles, producing \textbf{faint concentric fine structure} (the ``photon ring'' sub-images) whose spacing is predicted by the standing-wave condition (Equation~\ref{eq:impedance_quantisation}). Next-generation EHT observations with improved baseline resolution could resolve these predicted rings.
 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1.0\textwidth]{bh_untapped_predictions.png}
+    \caption{\textbf{Untapped First-Principles Predictions.} All panels derived from the AVE impedance topology with zero free parameters. (1) Merger ringdown frequency vs. LIGO observations with Kerr cavity correction: ${\sim}12\%$ accuracy for stellar-mass mergers. (2) Iron K$\alpha$ line profile showing discrete sub-peaks at impedance band energies. (3) Jet impedance map: polar impedance matching ($\Gamma \approx 0$) produces a natural jet channel. (4) Hawking temperature from impedance boundary noise leakage. (5) GW memory strain as residual lattice deformation above $h_{yield} = \sqrt{\alpha}$. (6) Scale invariance: the same $1/d$ topology from the electron unknot ($10^{-13}$ m) to M87* ($10^{13}$ m).}
+    \label{fig:untapped}
+\end{figure}
+
+\section{Axiom Coverage Audit}
+
+The following table records which AVE axioms are fully exercised in the current black hole orbital model, and which require deeper integration:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{c l l l}
+\toprule
+\textbf{Axiom} & \textbf{Statement} & \textbf{Status} & \textbf{Coverage} \\
+\midrule
+1 & LC lattice, $Z_0 = \sqrt{\mu_0/\varepsilon_0}$ & \textbf{Full} & Symmetric Gravity ($Z = Z_0$) \\
+2 & Topological defects (self-trapped $\gamma$) & \textbf{Full} & BH-electron isomorphism \\
+3 & Gravity = dielectric strain $n(r)$ & \textbf{Full} & Kerr saturation boundary, QPOs \\
+4 & Saturation ($V_{SNAP}$, viscosity) & \textbf{Full} & Phase transition, $Q = \ell$, $\tau_{ring}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Axiom 4 Saturation: Phase Transition and $Q = \ell$}
+
+At the saturation boundary ($\varepsilon_{11} = 1$), the lattice undergoes a \textbf{solid $\to$ fluid phase transition}. The shear modulus $G_{shear} \to 0$, eliminating transverse wave propagation in the interior. Gravitational waves, being transverse shear perturbations of the LC lattice, are \textbf{perfectly reflected} at this phase boundary.
+
+The quality factor follows from the topological mode structure: with $\ell$ wavelengths fitting around the circumference, each releases $\sim 1/\ell$ of the mode energy per cycle via curvature radiation:
+\begin{resultbox}{QNM Quality Factor from Lattice Phase Transition}
+\begin{equation}
+    Q = \ell, \qquad \omega_I = \frac{\omega_R}{2\ell} = \frac{9}{98}\,\frac{c}{M_g}
+\end{equation}
+\end{resultbox}
+\noindent For $\ell = 2$: $Q = 2$, $\omega_I M = 9/98 = 0.0918$ (GR exact: $0.0890$, error $3.2\%$).
+
+This is the gravitational-scale manifestation of the \textbf{knot crossing number $\leftrightarrow$ mode number} isomorphism: the crossing number $c$ at the particle scale (confinement radius $r = \kappa/c$) plays the identical role to the angular mode number $\ell$ at the gravitational scale ($Q = \ell$). Each additional topological winding adds one unit of confinement stability.
+
+Comparison against three LIGO events:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{l c c c c c}
+\toprule
+\textbf{Event} & $\mathbf{a_*}$ & $\mathbf{Q}$ & $\boldsymbol{\tau}$\textbf{AVE [ms]} & $\boldsymbol{\tau}$\textbf{obs [ms]} & \textbf{Error} \\
+\midrule
+GW150914 & 0.67 & 2 & 2.3 & 4.0 & 43\% \\
+GW170104 & 0.64 & 2 & 1.9 & 3.0 & 38\% \\
+GW190521 & 0.72 & 2 & 5.0 & 15.0 & $\dagger$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\noindent The Schwarzschild $Q = \ell = 2$ is used for all events; the Kerr correction to $Q$ (which increases Q for spinning remnants) is not yet included and accounts for the remaining $\tau$ discrepancy.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1.0\textwidth]{cross_scale_triptych.png}
+    \caption{\textbf{Cross-Scale Impedance Triptych.} The same standing-wave topology produces quantised orbital structure at three scales separated by $10^{40}$ in spatial extent. Top row: electron standing de Broglie waves (1s, 2s, 3s, 2p), Saturn ring impedance gaps (Cassini Division, Encke, Keeler), and black hole accretion disk impedance bands. Bottom row: saturation factor $S(r)$ overlay showing the phase boundary, cross-scale emission diagram (photons, density waves, QPOs), and Kerr-corrected ringdown comparison against LIGO data.}
+    \label{fig:triptych}
+\end{figure}

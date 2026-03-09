@@ -9,11 +9,13 @@ import sys
 warnings.filterwarnings('ignore')
 
 # --- Physics engine imports ---
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'src'))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'mechanics'))
 
 from scripts.mechanics.spice_organic_mapper import get_inductance, get_capacitance
 from ave.solvers.protein_bond_constants import Z_TOPO, Q_BACKBONE
+from ave.core.universal_operators import universal_impedance
 
 # Set aesthetic plot parameters
 plt.rcParams['figure.figsize'] = (12, 8)
@@ -82,7 +84,7 @@ def get_amino_acid_component(aa_name):
     # R from dissipation: lossy sidechains have higher R
     L_eff = L_backbone * (1.0 + z)
     C_eff = C_backbone / (1.0 + z)
-    R_eff = z * np.sqrt(L_backbone / C_backbone)  # Z_topo × Z_characteristic
+    R_eff = z * universal_impedance(L_backbone, C_backbone)  # Z_topo × Z_characteristic
     
     return {'L': L_eff, 'C': C_eff, 'R': R_eff}
 

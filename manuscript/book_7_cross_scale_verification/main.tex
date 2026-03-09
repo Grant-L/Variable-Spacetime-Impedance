@@ -32,18 +32,15 @@
 % Reset chapter counter to start at 1
 \setcounter{chapter}{0}
 
-\input{chapters/01_universal_operators.tex}
-\input{chapters/02_cosmology_dark_sector.tex}
-\input{chapters/03_solar_system.tex}
-\input{chapters/04_stellar_interiors.tex}
-\input{chapters/05_gravitational_waves.tex}
-\input{chapters/06_condensed_matter.tex}
-\input{chapters/07_geophysics.tex}
-\input{chapters/08_biophysics.tex}
-\input{chapters/09_computational_proof.tex}
-\input{chapters/10_yang_mills_mass_gap.tex}
-\input{chapters/11_navier_stokes_smoothness.tex}
-\input{chapters/12_open_problems.tex}
+\input{chapters/_manifest.tex}
+
+% --- APPENDICES ---
+\appendix
+\renewcommand{\thechapter}{\Alph{chapter}}
+\input{../backmatter/01_appendices.tex}
+\input{../backmatter/02_full_derivation_chain.tex}
+\input{../backmatter/12_mathematical_closure.tex}
+\input{../backmatter/03_geometric_inevitability.tex}
 
 % --- BIBLIOGRAPHY ---
 \backmatter
@@ -51,3 +48,4 @@
 \bibliography{../references}
 
 \end{document}
+

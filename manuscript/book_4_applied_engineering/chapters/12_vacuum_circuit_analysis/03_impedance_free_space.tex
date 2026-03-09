@@ -1,12 +1,76 @@
 \section{The Impedance of Free Space (\texorpdfstring{$Z_0$}{Z0})}
+\label{sec:z0_derivation}
 
-A foundational parameter in classical electromagnetism is the Characteristic Impedance of Free Space ($Z_0 = \sqrt{\mu_0/\epsilon_0} \approx 376.73\ \Omega$) \cite{feynman1964}. In Vacuum Circuit Analysis, this possesses a literal mechanical identity. By applying our mapping, electrical impedance ($Z = V/I$) translates directly to Mechanical Acoustic Impedance ($Z_m = F/v$):
-\begin{equation}
-Z_{elec} = \frac{V}{I} = \frac{\xi_{topo}^{-1} F}{\xi_{topo} v} = \xi_{topo}^{-2} \left(\frac{F}{v}\right) = \xi_{topo}^{-2} Z_m
-\end{equation}
+A foundational parameter in classical electromagnetism is the Characteristic Impedance of Free Space, $Z_0 = \sqrt{\mu_0/\epsilon_0} \approx 376.73\;\Omega$. In the VCA framework, this possesses a literal mechanical identity: it is the \textit{acoustic impedance} of the discrete lattice, encoded into an electrical constant by the Topo-Kinematic mapping.
 
-Rearranging for the mechanical impedance reveals an exact physical identity:
+\subsection{Derivation from the Discrete LC Ladder}
+
+A single lattice cell of pitch $\ell_{node}$ carries distributed inductance and capacitance per unit length equal to the vacuum permeability and permittivity:
+\begin{resultbox}{Per-Cell Lumped Elements}
 \begin{equation}
-Z_m = \xi_{topo}^2 \cdot Z_0 = \xi_{topo}^2 \sqrt{\frac{\mu_0}{\epsilon_0}} \approx 6.48 \times 10^{-11} \left[ \frac{\text{kg}}{\text{s}} \right]
+    L_{cell} = \mu_0\, \ell_{node}, \qquad C_{cell} = \epsilon_0\, \ell_{node}
+    \label{eq:cell_elements}
 \end{equation}
-The $376.7\ \Omega$ impedance of free space is structurally isomorphic to the Absolute Mechanical Acoustic Impedance of the physical $\mathcal{M}_A$ substrate.
+\end{resultbox}
+
+Evaluating numerically from the physics engine constants ($\ell_{node} = 3.862 \times 10^{-13}$ m):
+\begin{align}
+    L_{cell} &= 1.257 \times 10^{-6} \times 3.862 \times 10^{-13} = 4.855 \times 10^{-19} \text{ H} \\
+    C_{cell} &= 8.854 \times 10^{-12} \times 3.862 \times 10^{-13} = 3.419 \times 10^{-24} \text{ F}
+\end{align}
+The characteristic impedance of each lattice cell is:
+\begin{resultbox}{Scale-Invariant Characteristic Impedance}
+\begin{equation}
+    Z_{cell} = \sqrt{\frac{L_{cell}}{C_{cell}}} = \sqrt{\frac{\mu_0\, \ell_{node}}{\epsilon_0\, \ell_{node}}} = \sqrt{\frac{\mu_0}{\epsilon_0}} \equiv Z_0 \approx 376.73\;\Omega
+    \label{eq:z0_cell}
+\end{equation}
+\end{resultbox}
+
+The lattice pitch cancels identically. This is the fundamental reason $Z_0$ is a universal constant: it is a property of the node-to-node impedance ratio of the lattice, independent of the absolute scale $\ell_{node}$. Every cell, at every location in the universe, presents the same $376.73\;\Omega$ characteristic impedance.
+
+\subsection{Signal Propagation Velocity}
+
+The group velocity of a signal through a lumped LC ladder is:
+\begin{resultbox}{Propagation Velocity from Discrete Components}
+\begin{equation}
+    v_g = \frac{\ell_{node}}{\sqrt{L_{cell}\, C_{cell}}} = \frac{\ell_{node}}{\sqrt{\mu_0\, \epsilon_0\, \ell_{node}^2}} = \frac{1}{\sqrt{\mu_0\, \epsilon_0}} \equiv c
+    \label{eq:c_from_lc}
+\end{equation}
+\end{resultbox}
+
+The invariant speed of light is structurally identical to the slew rate of a discrete LC transmission line. No continuous medium is assumed; $c$ emerges from lumped elements.
+
+\subsection{Mechanical Acoustic Impedance}
+
+Applying the Topo-Kinematic identity (Section~\ref{sec:topo_kinematic}), the mechanical impedance equivalent is:
+\begin{resultbox}{Mechanical Acoustic Impedance of the Vacuum}
+\begin{equation}
+    Z_{mech} = \xi_{topo}^{2}\, Z_0 = (4.149 \times 10^{-7})^2 \times 376.73 \approx 6.485 \times 10^{-11} \text{ kg/s}
+    \label{eq:z_mech}
+\end{equation}
+\end{resultbox}
+
+This value represents the absolute force-per-velocity ratio of a single lattice node. It is the fundamental quantum of mechanical impedance in the $\mathcal{M}_A$ condensate.
+
+\subsection{Impedance Across Physical Regimes}
+
+Table~\ref{tab:impedance_regimes} summarises how $Z_0$ behaves across the three operating regimes of the vacuum, as established in Volume~I.
+
+\begin{table}[H]
+\centering
+\caption{Characteristic impedance across the three vacuum operating regimes. Gravity preserves $Z_0$ (stealth); particle cores and event horizons destroy it ($Z \to 0$).}
+\label{tab:impedance_regimes}
+\small
+\begin{tabular}{@{}l c c c c@{}}
+\toprule
+\textbf{Regime} & $\mu_{eff}$ & $\epsilon_{eff}$ & $Z = \sqrt{\mu_{eff}/\epsilon_{eff}}$ & $\Gamma$ \\
+\midrule
+Linear vacuum             & $\mu_0$                & $\epsilon_0$                & $Z_0 = 376.73\;\Omega$  & $0$ \\
+Gravity well ($n \gg 1$)  & $n\, \mu_0$            & $n\, \epsilon_0$            & $Z_0 = 376.73\;\Omega$  & $0$ \\
+Particle core ($\Delta\phi \to \alpha$) & $\to 0$ (Meissner) & $\to 0$ (dielectric collapse) & $\to 0\;\Omega$ & $-1$ \\
+Event horizon             & $\to 0$ (saturated)    & $\to 0$ (saturated)         & $\to 0\;\Omega$          & $-1$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent The critical distinction: gravity scales $\mu$ and $\epsilon$ \textit{symmetrically} ($n \times n$), preserving $Z_0$ and producing zero reflection. Topological saturation (particles, event horizons) drives both to zero \textit{asymmetrically} via Axiom~4, collapsing $Z$ and creating perfect mirrors ($\Gamma = -1$). This is why gravity wells are RF-transparent (stealth) while particle boundaries and event horizons are perfect reflectors.

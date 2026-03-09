@@ -30,8 +30,8 @@ $d_0$       & 3.8~\AA       & $C_\alpha$--$C_\alpha$ peptide geometry  & Axioms 
 $r_{C_\alpha}$ & 1.7~\AA    & Slater orbital radius (Carbon, $n^*=2$) & Axioms 1--2 $\to$ periodic table \\
 $Q$         & 7.0           & Amide-V: $f_0/\Delta f = 23/3.3$~THz    & Axiom 1 $\to$ backbone $f_\text{res}$ \\
 $Z_0$       & 1.0           & Normalised backbone impedance            & Definition \\
-$\kappa$    & 0.5           & Critical coupling ($Q_\text{ext} = Q_\text{int}$) & Unique resonator maximum \\
-$R_\text{burial}$ & 7.6~\AA & $2 \times d_0$ (helix contact diameter) & Axiom-derived geometry \\
+$\kappa_\text{HB}$    & $1/(2Q) = 1/14$           & Half-bandwidth coupling & Resonator Q factor \\
+$R_\text{burial}$ & $d_0\sqrt{2} = 5.37$~\AA & FCC coordination shell & Axiom-derived geometry \\
 $D_{\mathrm{H_2O}}$ & 2.75~\AA  & Water molecular diameter                  & Axiom 2 $\to$ O--H bond length \\
 $\beta_\text{burial}$ & 1.6~\AA$^{-1}$ & $4.4 / D_{\mathrm{H_2O}}$ (sigmoid) & Derived \\
 $r_\text{steric}$ & 3.4~\AA & $2 \times r_{C_\alpha}$ (Pauli exclusion) & Axiom-derived Slater radii \\
@@ -211,6 +211,7 @@ The coupling enters $Y_\text{shunt}$ at positions $i+1$ (the C$_\alpha$ between 
 No new constants are introduced: $\kappa_\text{HB} = 1/(2Q)$ and $\lambda_\text{rama} = 2Z_0 \cdot (2r_{C_\alpha}/d_0)$ are both previously derived.
 
 \subsection{Layer 4: Full Backbone ABCD Cascade}
+\label{eq:abcd_section}
 
 The backbone is modelled as $3N{-}1$ cascaded transmission line sections---one per individual covalent bond (Ch.~2: ``$L$-$C$ ladder from bond stiffness'').  Each residue contributes three segments:
 \begin{equation}
@@ -304,6 +305,7 @@ This is the sole source of L/D selectivity in the engine: right-handed helices r
 A folded protein is a set of coupled resonant cavities, not a single cascade.  The engine identifies segment boundaries via the local reflection coefficient:
 \begin{equation}
     \Gamma_j = \frac{|Z_{j+1}| - |Z_j|}{|Z_{j+1}| + |Z_j|}, \qquad \text{turn indicator: } t_j = \sigma(20(\Gamma_j - 0.3))
+    \label{eq:gamma_turn}
 \end{equation}
 
 \paragraph{Layer 7a: Adjacent Junction Coupling.}
@@ -444,14 +446,14 @@ The engine contains:
 The force on each residue $\mathbf{F}_i = -\partial \mathcal{L} / \partial \mathbf{r}_i$ is computed exactly by reverse-mode automatic differentiation in a single forward--backward pass.  No finite-difference approximation, no force constants, no statistical potentials.
 
 \section{Verification: 20-Sequence Stress Test}
-\label{sec:stress_test}
+\label{sec:stress_test_v3}
 
 To validate the complete engine, all 20 homopolymer sequences (10-mers) were folded with 3000 Adam steps.  Pass criteria: (i) $S_{11}$ converges, (ii) radius of gyration $R_g \in [2, 8]$~\AA, (iii) mean bond angle $\theta \in [30^\circ, 160^\circ]$.
 
 \begin{table}[H]
 \centering
 \caption{Stress test results: 19/20 sequences pass.  The only failure (Poly-D) is physically correct: a chain of identical negative charges self-repels into an extended rod.}
-\label{tab:stress_test}
+\label{tab:stress_test_v3}
 \small
 \begin{tabular}{@{}l c c c c l@{}}
 \toprule
@@ -518,11 +520,12 @@ Earlier versions used an explicit Ramachandran potential with pre-defined $\alph
 The Ramachandran basins are \emph{consequences} of steric clashes between backbone atoms---not a fundamental potential.  The correct first-principles approach models these clashes directly using the \textbf{5-atom backbone}: N, C$_\alpha$, C, O (carbonyl), H (amide), plus C$_\beta$ (sidechain stub).
 
 \paragraph{Atom placement.}
-O and H positions are fully determined by the peptide plane geometry---no new DOFs:
+O and H positions are fully determined by the peptide plane geometry---no new DOFs. To maintain a strict zero-parameter theory, the empirical crystallographic averages (C=O $\approx 1.23$~\AA, N--H $\approx 1.01$~\AA) are discarded in favour of the pure first-principles predictions from the 1D soliton bond solver, alongside exact $sp^2$ trigonal planar angles:
 \begin{align}
-    \mathbf{r}_{\text{O}_i} &= \mathbf{r}_{C_i} + 1.23\,\hat{\mathbf{e}}_O \qquad (121.4^\circ \text{ from } C_\alpha\text{--}C \text{ in peptide plane}) \\
-    \mathbf{r}_{\text{H}_i} &= \mathbf{r}_{N_i} + 1.01\,\hat{\mathbf{e}}_H \qquad (119.2^\circ \text{ from } C\text{--}N \text{; Pro excluded})
+    \mathbf{r}_{\text{O}_i} &= \mathbf{r}_{C_i} + 1.121\,\hat{\mathbf{e}}_O \qquad (120.0^\circ \text{ from } C_\alpha\text{--}C \text{ in peptide plane}) \\
+    \mathbf{r}_{\text{H}_i} &= \mathbf{r}_{N_i} + 0.817\,\hat{\mathbf{e}}_H \qquad (120.0^\circ \text{ from } C\text{--}N \text{; Pro excluded})
 \end{align}
+This forces the entire Ramachandran steric landscape to emerge natively from Axioms 1 and 2, without a single empirical geometric input.
 
 \paragraph{Steric exclusion radii.}
 The hard-sphere exclusion is the LJ repulsive distance $\sigma_{ij} = (r_i + r_j) / 2^{1/6} \approx 0.891 \times (r_i + r_j)$, not the raw VdW sum (which is the zero-crossing, not the wall).
@@ -595,7 +598,7 @@ Both use $\kappa_\text{HB} = 1/(2Q) = 1/14$ from the amide-V quality factor, req
 \textbf{Current status:} With torsion-angle parameterisation (NERF), bond lengths are enforced exactly by construction (0.000~\AA\ std) and the loss function reduces to $S_{11}$ + steric + backbone H-bond + peptide-plane + port coupling + NEXT cross-talk.  No bond, angle, or $\omega$ penalties are needed.
 
 \section{Validation: Three-Protein Test}
-\label{sec:validation_results}
+\label{sec:validation_three_protein}
 
 The engine was validated on four proteins spanning 20--76 residues with random torsion-angle initialisation (no structural seed), Adam($\eta = 2 \times 10^{-3}$) with simulated annealing ($T_0 = 0.05$), and 5-start selection.
 
@@ -836,6 +839,7 @@ The engine contains five Axiom~4 saturation operators, each governing a distinct
 
 \section{Architectural Ceiling Theorem}
 \label{sec:ceiling_theorem}
+\label{sec:architectural_ceiling}
 
 \begin{theorem}[1D Cascade SS Ceiling]
 In a 1D ABCD cascade with shunt admittances at junctions, secondary structure (standing-wave resonance) can emerge only from adjacent-junction coupling.  Non-local contacts, modelled as $Y_\text{shunt}$ at backbone nodes, provide damping but not resonance.
@@ -930,6 +934,7 @@ Protein synthesis follows a fixed pipeline that maps directly to classical EE de
 
 
 \subsection{Segmentation at Impedance Discontinuities}
+\label{sec:multiscale_segmentation}
 \label{sec:segmentation}
 
 The key innovation is partitioning the chain into SS elements at \emph{impedance discontinuities} --- the protein-scale analog of segmenting a TL at connectors and vias.  Three types of boundary are detected:
@@ -964,6 +969,7 @@ GB1 (N=56) & 5 & L--N $\Delta Z$, K--G $\Delta Z$, D--N $\Delta Z$, V--D $\Delta
 \end{table}
 
 \subsection{Energy Function: Nodal $Y$-Matrix $S_{11}$}
+\label{sec:s11_cascade}
 \label{sec:multiscale_energy}
 
 The multi-scale fold engine uses segmentation (Section~\ref{sec:multiscale_segmentation}) for initialisation and the full $S_{11}$ network loss from the S-parameter engine (Chapter~\ref{ch:protein_sim_architecture}) for gradient descent.
@@ -1004,7 +1010,7 @@ A key insight:\ the hydrophilic/hydrophobic distinction emerges naturally from t
 The complex reflection coefficient at the sidechain--water boundary is:
 \begin{equation}
     \Gamma_i = \frac{Z_{\text{TOPO},i} - Z_\text{water}(\omega)}{Z_{\text{TOPO},i} + Z_\text{water}(\omega)}
-    \label{eq:complex_gamma}
+    \label{eq:complex_gamma_hydro}
 \end{equation}
 where $Z_\text{water}(\omega) = \sqrt{\varepsilon_\infty + (\varepsilon_s - \varepsilon_\infty)/(1 + j\omega\tau)}$ from the Debye model.  Nonpolar residues have $|\Gamma|^2 \approx 0.14$ (high mismatch), while charged residues achieve $|\Gamma|^2 \approx 0.07$ through conjugate impedance matching of their reactive component with water's Debye relaxation.  No empirical hydrophobicity scale is required---it emerges from the impedance physics.
 

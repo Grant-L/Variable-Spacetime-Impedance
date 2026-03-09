@@ -191,48 +191,43 @@ def einstein_deflection_angle(mass_kg: float, impact_parameter_m: float) -> floa
 
 
 # ═══════════════════════════════════════════════════════════════════
-# Radial Impedance & Γ = -1 Horizon Physics
+# Lattice Phase Transition at Saturation Boundary
 # ═══════════════════════════════════════════════════════════════════
 #
-# For PARTICLES, confinement arises because µ saturates first at
-# torus knot self-intersections: Z → 0, Γ → -1 (short circuit).
+# SYMMETRIC GRAVITY:  Z(r) = √(μ'/ε') = Z₀  *everywhere*.
+# Both μ' and ε' scale as n(r), so Z is invariant.  There is NO
+# impedance mismatch and Γ = 0 for transverse waves at all radii.
 #
-# For GRAVITY, confinement arises because the refractive index
-# n(r) = 1 + 2GM/(c²r) diverges at the Schwarzschild radius.
-# The RADIAL impedance Z_radial = Z₀ · n(r) → ∞, giving
-# Γ_inward → +1 (open circuit, total reflection for infall).
-# From inside looking out, Γ_outward → -1 (nothing escapes).
+# BH confinement arises from a LATTICE PHASE TRANSITION at ε₁₁ = 1:
+#   - Shear modulus G_shear → 0 (topology melts)
+#   - Group velocity c_g → 0 (energy freezes)
+#   - GWs (transverse shear waves) CANNOT propagate in the ruptured
+#     interior (same as transverse acoustic waves in a fluid)
+#   - The interior is a PERFECT REFLECTOR for shear perturbations
 #
-# Both mechanisms are instances of the same universal Γ operator
-# applied at different saturation boundaries.
+# For PARTICLES, confinement uses a different mechanism:
+#   - μ saturates first at torus knot self-intersections
+#   - Z → 0, Γ → −1 (short circuit, standing wave = rest mass)
 # ═══════════════════════════════════════════════════════════════════
 
 
-def radial_impedance(mass_kg: float, radius_m: float) -> float:
+def saturation_radius(mass_kg: float) -> float:
     """
-    Radial wave impedance in the gravitational field.
+    The Axiom 4 saturation boundary: radius where ε₁₁(r) = 1.
 
-    For a radially propagating wave, the effective impedance is
-    modified by the refractive index gradient:
+    r_sat = 7·G·M/c² = 7·M_g = 3.5·r_s
 
-        Z_radial(r) = Z₀ · n(r) = Z₀ · [1 + 2GM/(c²r)]
-
-    While the transverse impedance Z₀ = √(µ/ε) is invariant under
-    achromatic matching (µ and ε scale identically), the radial
-    impedance grows because a radially infalling wave encounters
-    increasing optical path density.
-
-    At the Schwarzschild radius: Z_radial → ∞ (open circuit).
+    This is the elastic limit of the lattice — the phase transition
+    boundary between the solid (shear-supporting) lattice and the
+    ruptured (topology-melted) interior.
 
     Args:
         mass_kg: Source mass [kg].
-        radius_m: Distance from center of mass [m].
 
     Returns:
-        Radial impedance [Ω].
+        Saturation radius [m].
     """
-    n = refractive_index(mass_kg, radius_m)
-    return Z_0 * n
+    return (7.0 * G * mass_kg) / C_0**2
 
 
 def gravitational_saturation_factor(mass_kg: float, radius_m: float) -> float:
@@ -241,7 +236,6 @@ def gravitational_saturation_factor(mass_kg: float, radius_m: float) -> float:
 
     The principal radial strain ε₁₁(r) = 7GM/(c²r) is the amplitude
     parameter A. The yield limit A_yield = 1 (unitary strain).
-    The saturation factor is:
 
         S_grav(r) = √(1 - ε₁₁²)
 
@@ -261,29 +255,67 @@ def gravitational_saturation_factor(mass_kg: float, radius_m: float) -> float:
     return float(saturation_factor(strain, yield_limit=1.0, clip=True))
 
 
-def radial_reflection_coefficient(mass_kg: float, radius_m: float) -> float:
+def shear_modulus_factor(mass_kg: float, radius_m: float) -> float:
     """
-    Reflection coefficient for a wave propagating radially inward
-    through the gravitational impedance gradient.
+    Shear modulus relative to the vacuum baseline.
 
-    Γ = (Z_radial(r) - Z₀) / (Z_radial(r) + Z₀)
+    G_shear(r) / G_shear(∞) = S(r) = √(1 − ε₁₁²)
 
-    For a wave travelling from flat space (Z₀) into the gravitational
-    field at radius r (Z_radial = Z₀·n(r)):
+    At r > r_sat: G_shear > 0 (elastic lattice, GWs propagate)
+    At r = r_sat: G_shear = 0 (phase transition)
+    At r < r_sat: G_shear = 0 (ruptured, topology melted)
 
-    At flat space: n = 1, Γ = 0 (no reflection).
-    At r → R_s:    n → ∞, Γ → +1 (total reflection, open circuit).
-
-    From the interior looking outward, the reciprocal applies:
-    Γ_out = (Z₀ - Z_radial) / (Z₀ + Z_radial) → -1 (nothing escapes).
+    This is identical to gravitational_saturation_factor but named
+    for physical clarity: gravitational waves are shear waves, and
+    this factor determines whether they can propagate.
 
     Args:
         mass_kg: Source mass [kg].
         radius_m: Distance from center of mass [m].
 
     Returns:
-        Reflection coefficient Γ in [-1, +1].
+        Shear modulus ratio in [0, 1].
     """
-    Z_rad = radial_impedance(mass_kg, radius_m)
+    return gravitational_saturation_factor(mass_kg, radius_m)
+
+
+# ── Deprecated backward-compatible wrappers ──
+
+import warnings as _warnings
+
+
+def radial_impedance(mass_kg: float, radius_m: float) -> float:
+    """
+    .. deprecated::
+        INCORRECT under Symmetric Gravity.  Z(r) = Z₀ always.
+        Use ``local_impedance(mass_kg, radius_m)`` instead.
+        Kept for backward compatibility only.
+    """
+    _warnings.warn(
+        "radial_impedance() is deprecated: Z = Z₀ everywhere under "
+        "Symmetric Gravity.  Use local_impedance() instead.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
+    n = refractive_index(mass_kg, radius_m)
+    return Z_0 * n
+
+
+def radial_reflection_coefficient(mass_kg: float, radius_m: float) -> float:
+    """
+    .. deprecated::
+        INCORRECT under Symmetric Gravity.  Γ = 0 for gravity.
+        BH confinement is via lattice phase transition (G_shear → 0),
+        not impedance mismatch.
+        Kept for backward compatibility only.
+    """
+    _warnings.warn(
+        "radial_reflection_coefficient() is deprecated: Γ = 0 for gravity "
+        "under Symmetric Gravity.  BH confinement uses shear_modulus_factor().",
+        DeprecationWarning,
+        stacklevel=2,
+    )
+    Z_rad = Z_0 * refractive_index(mass_kg, radius_m)
     return float(_reflection_coefficient(Z_0, Z_rad))
+
 

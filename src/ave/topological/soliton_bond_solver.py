@@ -62,13 +62,21 @@ def _is_terminal(Z: int) -> bool:
 # BOND ENERGY MODEL
 # ═══════════════════════════════════════════════════════════
 
-def bond_energy(d: float, Z_a: int, Z_b: int, n_shared: int) -> float:
+def bond_energy(d: float, Z_a: int, Z_b: int, n_shared: int,
+                theta: float = 0.0) -> float:
     """
     Total energy of a covalent bond at internuclear distance d [m].
 
     Uses Slater orbital radii as fixed electron cloud sizes.
     σ/π decomposition for double bonds: π electrons contribute
     with reduced coupling (perpendicular to bond axis).
+
+    Args:
+        d: Internuclear distance [m].
+        Z_a, Z_b: Atomic numbers.
+        n_shared: Number of shared bonding electrons (2=single, 3=partial double, 4=double).
+        theta: Out-of-plane torsion angle [rad]. π overlap goes as cos²(θ).
+               Default 0.0 preserves existing radial-only behaviour.
     """
     if d <= 0:
         return 1e10
@@ -96,7 +104,15 @@ def bond_energy(d: float, Z_a: int, Z_b: int, n_shared: int) -> float:
     chi_a = _electronegativity(Z_a)
     chi_b = _electronegativity(Z_b)
     polar_slip = abs(chi_a - chi_b) / (chi_a + chi_b)
-    PI_COUPLING = (4.0 / 9.0) * (1.0 - polar_slip)
+    # Torsion-angle dependence of π coupling.
+    # The FULL Coulomb attraction doesn't vanish at θ=π/2 — the π electron
+    # is still orbiting.  Only the RESONANCE (delocalization) fraction,
+    # proportional to the orbital overlap integral S², depends on torsion.
+    # At θ=0: full overlap → PI_COUPLING × 1.
+    # At θ=π/2: zero overlap → PI_COUPLING × (1 - S²).
+    S_bond = _bond_overlap(Z_a, Z_b, d) if n_pi > 0 else 0.0
+    torsion_factor = 1.0 - S_bond**2 * np.sin(theta)**2
+    PI_COUPLING = (4.0 / 9.0) * (1.0 - polar_slip) * torsion_factor
 
     # 1. Nuclear-nuclear Coulomb repulsion
     E_nn = _k_coul * Z_eff_a * Z_eff_b / d
@@ -156,6 +172,88 @@ def compute_bond_curve(Z_a, Z_b, n_shared, d_min=0.5e-10, d_max=4.0e-10, n_point
     d_range = np.linspace(d_min, d_max, n_points)
     energies = np.array([bond_energy(d, Z_a, Z_b, n_shared) for d in d_range])
     return d_range, energies
+
+
+def compute_torsion_curve(Z_a, Z_b, n_shared, d_eq=None, n_points=100):
+    """
+    Compute E(θ) at fixed d=d_eq for torsion angles 0 to π.
+
+    If d_eq is None, it is found from the radial equilibrium.
+    Only bonds with π electrons (n_shared > 2) have a torsional barrier;
+    pure σ bonds return a flat curve.
+
+    Returns: (theta_array [rad], energy_array [J])
+    """
+    if d_eq is None:
+        d_arr, E_arr = compute_bond_curve(Z_a, Z_b, n_shared)
+        d_eq = d_arr[np.argmin(E_arr)]
+    theta_range = np.linspace(0.0, np.pi, n_points)
+    energies = np.array([
+        bond_energy(d_eq, Z_a, Z_b, n_shared, theta=th)
+        for th in theta_range
+    ])
+    return theta_range, energies
+
+
+def extract_torsional_constant(Z_a, Z_b, n_shared, d_eq=None):
+    r"""
+    Torsional (bending) force constant from the power factor decomposition.
+
+    The bending stiffness of a bond with π character is the stretching
+    stiffness projected through three coupling filters:
+
+    1. **σ→π geometric coupling** = PI_COUPLING = (4/9)(1 − polar_slip)
+       The angular projection of the π plane onto the bond axis.
+
+    2. **Resonance fraction** = S²
+       Only the overlap-dependent (delocalized) part of the π energy
+       varies with torsion angle.  S is the Slater orbital overlap integral.
+
+    3. **Isotropic projection** = 1/7  (ISOTROPIC_PROJECTION)
+       The bending mode is one transverse direction, projected onto
+       the full 7-component Borromean strain trace.
+
+    For pure σ bonds (n_shared ≤ 2), k_bend = 0 (free rotation).
+
+    Returns
+    -------
+    k_theta : float
+        Angular stiffness [J/rad²] (= k_linear × d²).
+    k_linear : float
+        Linearised transverse force constant [N/m].
+    d_eq : float
+        Equilibrium bond length used [m].
+    """
+    if d_eq is None:
+        d_arr, E_arr = compute_bond_curve(Z_a, Z_b, n_shared)
+        d_eq = d_arr[np.argmin(E_arr)]
+
+    if n_shared <= 2:
+        return 0.0, 0.0, d_eq
+
+    # Get the stretching force constant
+    d_arr, E_arr = compute_bond_curve(Z_a, Z_b, n_shared)
+    _, k_stretch, _ = extract_force_constant(d_arr, E_arr,
+                                              Z_a=Z_a, Z_b=Z_b,
+                                              n_shared=n_shared)
+
+    # Coupling filter 1: σ→π geometric coupling
+    chi_a = _electronegativity(Z_a)
+    chi_b = _electronegativity(Z_b)
+    polar_slip = abs(chi_a - chi_b) / (chi_a + chi_b)
+    pi_coupling = (4.0 / 9.0) * (1.0 - polar_slip)
+
+    # Coupling filter 2: resonance (overlap) fraction
+    S = _bond_overlap(Z_a, Z_b, d_eq)
+
+    # Coupling filter 3: Borromean isotropic projection
+    ISOTROPIC = 1.0 / 7.0
+
+    # Bending force constant
+    k_linear = k_stretch * pi_coupling * S**2 * ISOTROPIC
+    k_theta = k_linear * d_eq**2
+
+    return k_theta, k_linear, d_eq
 
 
 def extract_force_constant(d_array, E_array, Z_a: int = 6, Z_b: int = 6, n_shared: int = 2):

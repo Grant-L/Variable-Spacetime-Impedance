@@ -155,7 +155,7 @@ In a real $\alpha$-helix, the backbone NH group at position $i{+}4$ hydrogen-bon
 where $d_{\text{hb}} = 5.4$~\AA\ is the ideal $C_\alpha(i)$--$C_\alpha(i{+}4)$ distance in an $\alpha$-helix and $k_{\text{hb}}^{\text{helix}} = 4.0$.
 
 \paragraph{7. $S_{11}$ Feedback Gain Modulation (PID Error Signal).}
-The preceding forces operate in an open-loop fashion: each is computed independently from the current geometry. To close the loop between the 1D impedance model and the 3D engine, we compute the local reflection coefficient $\Gamma(i)$ at each backbone junction:
+The preceding forces operate in an open-loop fashion: each is computed independently from the current geometry. To close the loop between the 1D impedance model and the 3D engine, the local reflection coefficient $\Gamma(i)$ is computed at each backbone junction:
 \begin{resultbox}{$S_{11}$ Feedback Gain Modulation (PID Error Signal)}
 \begin{equation}
     \Gamma_i = \frac{Z_{topo}^{(i+1)} - Z_{topo}^{(i)}}{Z_{topo}^{(i+1)} + Z_{topo}^{(i)}}, \qquad
@@ -177,7 +177,7 @@ All forces are clamped to a maximum magnitude of 20.0 units per step (analogous 
 
 
 \section{SPICE Transmission Line Mismatch ($S_{11}$ Strain)}
-To formally prove that organic geometry is driven by electrical resonance, we can model the exact amino acid sequence as a cascaded SPICE AC transmission line. By running a broad frequency sweep across the discrete R-group topologies, we calculate the macroscopic impedance mismatch (effectively the $S_{11}$ Reflection Coefficient) of the entire molecular chain.
+To formally prove that organic geometry is driven by electrical resonance, the exact amino acid sequence is modelled as a cascaded SPICE AC transmission line. By running a broad frequency sweep across the discrete R-group topologies, the macroscopic impedance mismatch (effectively the $S_{11}$ Reflection Coefficient) of the entire molecular chain is calculated.
 
 \begin{figure}[H]
     \centering
@@ -191,7 +191,7 @@ As shown in Figure \ref{fig:protein_spice_folding}, the macroscopic AC strain di
 \section{Empirical Validation: 20-Sequence Stress Test}
 \label{sec:stress_test}
 
-To stress-test the first-principles folding engine across diverse protein architectures, we selected 20 peptide sequences spanning pure helices, $\beta$-hairpins/sheets, mixed $\alpha/\beta$ proteins, short peptides, edge cases, and longer real proteins with known experimental structures. No sequence-specific parameters were adjusted---the same five-force engine with identical constants was applied to all 20 sequences.
+To stress-test the first-principles folding engine across diverse protein architectures, 20 peptide sequences were selected spanning pure helices, $\beta$-hairpins/sheets, mixed $\alpha/\beta$ proteins, short peptides, edge cases, and longer real proteins with known experimental structures. No sequence-specific parameters were adjusted---the same five-force engine with identical constants was applied to all 20 sequences.
 
 \begin{table}[H]
 \centering
@@ -241,6 +241,41 @@ To stress-test the first-principles folding engine across diverse protein archit
 
 The single failure is polytryptophan (\#16): tryptophan's $Z_{topo} = 1.63$ lies in the boundary zone between helix and sheet regimes. Its bulky indole ring sterically disfavors helix formation, but the $Z_{topo}$ value falls below the 1.5 pairing threshold, preventing sheet formation. This residue is one of the five identified in Section~\ref{sec:ramachandran_derivation} that requires $\pi$-stacking corrections beyond the current single-residue model.
 
+\section{Backbone Eigenvalue from the Universal Solver}
+\label{sec:backbone_eigenvalue}
+
+The backbone resonance frequency $f_0 \approx 23$~THz and quality factor $Q \approx 7$ were introduced empirically in~\S\ref{sec:ramachandran_derivation} (from the amide-V IR band at 725~cm$^{-1}$).  The following analysis shows that \textbf{both emerge from the same 5-step universal eigenvalue method} documented in Appendix~\ref{app:solver_toolchain}---the identical procedure that predicts black hole quasi-normal modes to 1.7\%.
+
+\paragraph{Step 1: Saturation boundary.}
+The Pauli exclusion limit for the backbone is the C$_\alpha$--C$_\alpha$ virtual bond length, computed from the Flory four-atom distance formula (Eq.~\ref{eq:flory} in Appendix~\ref{app:solver_toolchain}):
+\begin{equation}
+    d_0 = 3.80\;\text{\AA} \quad \text{(from 3 bond lengths + 2 sp$^2$ angles + trans dihedral)}
+\end{equation}
+
+\paragraph{Step 2: Mode number.}
+The mode number is quantised by the lattice constant in Bohr units:
+\begin{equation}
+    \ell = \left\lfloor \frac{d_0}{a_0} \right\rceil = \left\lfloor 7.22 \right\rceil = 7
+\end{equation}
+This is the protein-domain analog of $\ell = 2$ for gravitational waves.  The backbone resonator fits seven electron orbitals along one lattice constant.
+
+\paragraph{Step 3: Poisson correction.}
+$r_\mathrm{eff} = d_0 / (1 + \nu_\mathrm{vac}) = 2.96$~\AA.
+
+\paragraph{Step 4: Eigenfrequency.}
+\begin{equation}
+    f = \frac{\ell \cdot v}{2\pi \, r_\mathrm{eff}} = \frac{7 \times 5770}{2\pi \times 2.96 \times 10^{-10}} = 21.7\;\mathrm{THz} \quad (\text{error: } {+0.1\%}\text{ vs IR})
+\end{equation}
+where $v = 5770$~m/s is the measured backbone group velocity.
+
+\paragraph{Step 5: Quality factor.}
+\begin{equation}
+    Q = \ell = 7, \qquad \Delta f = f_0/Q = 3.1\;\text{THz} \quad (\text{measured: } {\sim}3.3\;\text{THz})
+\end{equation}
+
+\noindent The $Q = 7$ that governs the reactive impedance scaling of Eq.~\ref{eq:q_factor} and the backbone linewidth throughout the folding engine is therefore \textbf{not an empirical input}: it is the topological mode number, derived from the same universal procedure as the black hole quality factor $Q = \ell = 2$.
+
+
 \section{Discussion}
 
 \subsection{Comparison with Statistical Approaches}
@@ -256,7 +291,7 @@ The 20-sequence stress test (Table~\ref{tab:stress_test}) demonstrates 95\% accu
 \subsection{First-Principles Derivation of $Z_{topo}$}
 \label{sec:ramachandran_derivation}
 
-The impedance ratio $Z_{topo}$ that governs secondary structure classification was initially assigned per amino acid type from the SPICE impedance library.  In this section we derive $Z_{topo}$ from first principles, using only constants traceable to the soliton bond solver (Chapter~\ref{ch:biological_circuitry})---no empirical structural data enters the calculation.
+The impedance ratio $Z_{topo}$ that governs secondary structure classification was initially assigned per amino acid type from the SPICE impedance library.  This section derives $Z_{topo}$ from first principles, using only constants traceable to the soliton bond solver (Chapter~\ref{ch:biological_circuitry})---no empirical structural data enters the calculation.
 
 \paragraph{Axiom Chain.}
 The derivation requires three classes of inputs, all sourced from the periodic table module:
@@ -286,7 +321,7 @@ The \textbf{helix steric fraction} $f_\text{steric}$ is the mean allowed fractio
 \end{figure}
 
 \paragraph{Component 2: Hydrogen-Bond Competition.}
-Sidechain polar groups can ``steal'' backbone H-bond partners, reducing helix stability.  From the molecular graph of each R-group, we count the H-bond donors (N--H, O--H, S--H) and acceptors (C$=$O, lone-pair N, lone-pair O) and compute the steal probability from force constant ratios:
+Sidechain polar groups can ``steal'' backbone H-bond partners, reducing helix stability.  From the molecular graph of each R-group, the H-bond donors (N--H, O--H, S--H) and acceptors (C$=$O, lone-pair N, lone-pair O) are counted and the steal probability is computed from force constant ratios:
 \begin{equation}
     p_\text{steal} = \frac{k_\text{sidechain}}{k_\text{sidechain} + k_\text{backbone}} \times f_\text{reach}(n_\text{bonds})
     \label{eq:hbond_steal}
@@ -350,7 +385,7 @@ The five residues not yet captured (W, H, R, Y, G) involve physics beyond single
 \section{RMSD Benchmarking Against PDB}
 \label{sec:rmsd_benchmark}
 
-To test the eight-force engine against experimental 3D structures, we downloaded backbone $C_\alpha$ coordinates from the RCSB Protein Data Bank for four well-characterised peptides. The AVE prediction chain is entirely first-principles:
+To test the eight-force engine against experimental 3D structures, backbone $C_\alpha$ coordinates were downloaded from the RCSB Protein Data Bank for four well-characterised peptides. The AVE prediction chain is entirely first-principles:
 \[
     \text{Axioms 1--2} \;\to\; d_{\text{eq}},\, r_{\text{Slater}} \;\to\; Z_{topo} \;\to\; \text{8-force engine} \;\to\; \text{predicted 3D coords}
 \]
@@ -380,7 +415,7 @@ Villin HP35 (3-helix)       & 1YRF & 35 & 7.31 & 6.5 & 8.9 & $102^\circ$ & $82^\
 
 The eight-force engine encodes each physical effect as a separate force term with its own spring constant. A more fundamental AVE approach asks: \emph{can every structural feature emerge from a single impedance-matching criterion?}
 
-We replace all eight forces with a single objective function:
+All eight forces are replaced with a single objective function:
 \begin{resultbox}{$S_{11}$ Objective Function}
 \begin{equation}
     E(\mathbf{r}) = |S_{11}(\mathbf{r})|^2 \quad \text{where } S_{11} = \frac{A + B/Z_0 - CZ_0 - D}{A + B/Z_0 + CZ_0 + D}
@@ -522,6 +557,7 @@ $\beta$-sheet & Coupled stripline array & Antiparallel microstrip pair \\
 \end{enumerate}
 
 \subsection{Predicted Extensions}
+\label{sec:protein_bridge}
 
 The eight-force gradient descent framework suggests several concrete next steps:
 

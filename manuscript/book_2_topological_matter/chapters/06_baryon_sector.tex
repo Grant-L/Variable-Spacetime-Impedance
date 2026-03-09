@@ -19,7 +19,7 @@ The proton is modeled not as a bound state of independent point particles, but a
 
 Because the vacuum operates as a discrete LC network, extreme spatial separation causes the phase-flux lines connecting the Borromean loops to collimate tightly into a 1D cylindrical tube rather than spreading out isotropically. The baseline 1D continuous electromagnetic string tension of the unperturbed $\mathcal{M}_{A}$ lattice evaluates to $T_{EM}=m_{e}c^{2}/\ell_{node}\approx0.212\text{ N}$. Standard Lattice QCD measures the empirical macroscopic strong force string tension at exactly $\approx 1\text{ GeV/fm}$ ($\approx 160,200\text{ N}$). 
 
-While the 3D non-linear orthogonal tensor trace ($\mathcal{I}_{tensor}$) of the saturated $6_2^3$ Borromean linkage requires continuous elastodynamic simulation to solve analytically, the physical boundary conditions dictate a steady-state scaling relationship. We propose a \textbf{Topological Scaling Ansatz:} because the proton is a saturated Borromean linkage, the baseline tension bounding the quarks is geometrically amplified by three structural multipliers: the number of topological loops (3), the relative inductive resonance mass ratio ($m_p/m_e$), and the dielectric saturation boundary ($\alpha^{-1}$). Using the empirical CODATA proton mass ratio ($\approx 1836.15 \ m_e$) as a preview (the eigenvalue is derived in Section~\ref{sec:thermal_softening}):
+While the 3D non-linear orthogonal tensor trace ($\mathcal{I}_{tensor}$) of the saturated $6_2^3$ Borromean linkage requires continuous elastodynamic simulation to solve analytically, the physical boundary conditions dictate a steady-state scaling relationship. The following \textbf{Topological Scaling Ansatz} is proposed: because the proton is a saturated Borromean linkage, the baseline tension bounding the quarks is geometrically amplified by three structural multipliers: the number of topological loops (3), the relative inductive resonance mass ratio ($m_p/m_e$), and the dielectric saturation boundary ($\alpha^{-1}$). Using the empirical CODATA proton mass ratio ($\approx 1836.15 \ m_e$) as a preview (the eigenvalue is derived in Section~\ref{sec:thermal_softening}):
 
 \begin{resultbox}{Topological Scaling Ansatz}
 \begin{equation}
@@ -31,7 +31,7 @@ Using the geometrically derived eigenvalue ($\approx 1836\ m_e$, Section~\ref{se
 
 \section{The Proton Mass: The Dynamic Tensor Deficit}
 
-The empirical mass ratio $m_p/m_e \approx 1836.15$ emerges dynamically as the exact eigenvalue of non-linear inductive resonance. We evaluate the steady-state proton mass by mapping it to the Faddeev-Skyrme non-linear Hamiltonian. Bounded by the strict squared dielectric limit ($n=2$) established in Axiom 4 to match standard QED optics, the static energy functional evaluates as:
+The empirical mass ratio $m_p/m_e \approx 1836.15$ emerges dynamically as the exact eigenvalue of non-linear inductive resonance. The steady-state proton mass is evaluated by mapping it to the Faddeev-Skyrme non-linear Hamiltonian. Bounded by the strict squared dielectric limit ($n=2$) established in Axiom 4 to match standard QED optics, the static energy functional evaluates as:
 \begin{resultbox}{Saturated Faddeev-Skyrme Proton Energy}
 \begin{equation}
 E_{proton} = \min_{n} \int_{\mathcal{M}_A} d^3x \left[ \frac{1}{2}(\partial_\mu n)^2 + \frac{1}{4}\kappa_{FS}^2 \frac{(\partial_\mu n \times \partial_\nu n)^2}{\sqrt{1 - (\Delta\phi / \alpha)^2}} \right]
@@ -80,7 +80,7 @@ The product evaluates to $\delta_{th} = \frac{\nu_{vac}}{\kappa_{cold}} \times \
 \subsection{The 3D Orthogonal Tensor Trace ($\mathcal{I}_{tensor}$)}
 While the 1D scalar radial projection of the saturated topological Hamiltonian assumes spherical symmetry, the Proton is a $6^3_2$ Borromean linkage possessing $\mathbb{Z}_3$ discrete permutation symmetry. Because the three constituent flux tubes are mutually orthogonal, they cross over each other within the saturated structural core. In an LC resonant network, intersecting confined electromagnetic flux lines generate anisotropic \textit{Transverse Polarization Strain}. 
 
-We mathematically decompose the total RMS energy integral into two distinct geometric trace components: the continuous spherical scalar trace ($\mathcal{I}_{scalar}$), and the discrete orthogonal intersection trace ($\mathcal{I}_{tensor}$):
+The total RMS energy integral is decomposed into two distinct geometric trace components: the continuous spherical scalar trace ($\mathcal{I}_{scalar}$), and the discrete orthogonal intersection trace ($\mathcal{I}_{tensor}$):
 \begin{resultbox}{Proton Mass Geometric Decomposition}
 \begin{equation}
 m_p c^2 = \mathcal{I}_{scalar} \text{ (1D)} + \mathcal{I}_{tensor} \text{ (3D Orthogonal Crossings)}
@@ -90,7 +90,7 @@ m_p c^2 = \mathcal{I}_{scalar} \text{ (1D)} + \mathcal{I}_{tensor} \text{ (3D Or
 Our thermally corrected 1D solver, with Axiom~4 gradient saturation applied inside the integrand, evaluates the scalar component to $\mathcal{I}_{scalar} \approx 1162\,m_e$. The remaining mass generation is contained within the orthogonal topological interference vectors of the intersecting flux loops.
 
 \subsection{Computational Proof: Skew-Lines and The Toroidal Halo}
-To analytically resolve the 3D orthogonal tensor trace ($\mathcal{I}_{tensor}$), we must evaluate the non-linear geometric frustration of the proton's spatial topology. The $6^3_2$ Borromean linkage is mathematically defined by exactly six orthogonal topological crossings.
+To analytically resolve the 3D orthogonal tensor trace ($\mathcal{I}_{tensor}$), the non-linear geometric frustration of the proton's spatial topology. The $6^3_2$ Borromean linkage is mathematically defined by exactly six orthogonal topological crossings.
 
 By Axiom 1, the Full-Width at Half-Maximum (FWHM) of a fundamental flux tube is $1.0 l_{node}$. Furthermore, the hard-sphere exclusion principle dictates that orthogonal tubes cannot collide at a distance closer than $1.0 l_{node}$. To satisfy this constraint during 3D PDE integration, the flux tubes are modelled as \textbf{Skew Lines}, offset from one another by $1.0 l_{node}$ along their orthogonal axis.
 
@@ -104,11 +104,11 @@ When evaluated continuously across the discrete grid, this skew-line topology re
 Consequently, the cross-product vector ($\nabla V_1 \times \nabla V_2$) evaluates to zero. The topological metric bypasses the $0/0$ L'Hôpital singularity. The mass generation cannot collapse into a point singularity; instead, the localised spatial metric is pushed outward, forming a stable, saturated 3D \textbf{Toroidal Halo} of tensor shear.
 
 \subsection{The Self-Consistent Mass Oscillator (The Structural Eigenvalue)}
-To convert the orthogonal tensor trace into a closed-form mass prediction, we must first analytically resolve the total saturated volume $\mathcal{V}_{total}$ of the toroidal halo formed by the six orthogonal crossings.
+To convert the orthogonal tensor trace into a closed-form mass prediction, one must first analytically resolve the total saturated volume $\mathcal{V}_{total}$ of the toroidal halo formed by the six orthogonal crossings.
 
 \textbf{Counting the saturated crossings.} The $6^3_2$ Borromean linkage consists of three mutually orthogonal loops, each pair of which crosses exactly twice. The total number of pairwise orthogonal crossings is therefore $\binom{3}{2} \times 2 = 6$. By the $\mathbb{Z}_3$ permutation symmetry of the linkage, all six crossings are geometrically equivalent under discrete rotation.
 
-\textbf{The derived saturation threshold.} The critical advance in evaluating $\mathcal{V}_{total}$ is determining the density threshold at which the combined flux-tube field becomes topologically locked. We derive this threshold from the mutual inductance coupling between the orthogonal LC flux loops at their crossings.
+\textbf{The derived saturation threshold.} The critical advance in evaluating $\mathcal{V}_{total}$ is determining the density threshold at which the combined flux-tube field becomes topologically locked. This threshold is derived from the mutual inductance coupling between the orthogonal LC flux loops at their crossings.
 
 Each flux tube is a Gaussian LC resonant loop with FWHM $= \ell_{node}$ (Axiom 1), giving a Gaussian dispersion $\sigma = \ell_{node}/(2\sqrt{2\ln 2})$. At a pairwise crossing, the tubes are separated by the skew offset $d = \ell_{node}/2$. The mutual inductance coupling coefficient between two perpendicular tubes at this separation is:
 \begin{resultbox}{Orthogonal Flux Tube Mutual Coupling}
@@ -158,7 +158,7 @@ This topological confinement means the proton extends over approximately five la
 \subsection{The Self-Consistent Mass Oscillator (The Structural Eigenvalue)}
 To mathematically convert this pure topological volume into physical mass, it must be scaled by the discrete hardware limits of the $\mathcal{M}_A$ condensate: the topological packing limit ($p_c \approx 0.1834$) derived in Chapter 2, and the inductive mass-stiffening ratio ($x_{core} = m_{core}/m_e$).
 
-Because the structural tension generating the tensor mass is strictly driven by the total inductive mass of the knot, the mass generation forms a dynamic, self-consistent structural feedback loop. We formulate this as an exact linear eigenvalue equation:
+Because the structural tension generating the tensor mass is strictly driven by the total inductive mass of the knot, the mass generation forms a dynamic, self-consistent structural feedback loop. This is formulated as an exact linear eigenvalue equation:
 \begin{resultbox}{Self-Consistent Mass Eigenvalue Equation}
 \begin{equation}
 x_{core} = \mathcal{I}_{scalar} + \left[ (\mathcal{V}_{total} \cdot p_c) \cdot x_{core} \right]
@@ -271,7 +271,7 @@ A key observation in the computational audit of this topology is the Mass-Stiffe
 
 \subsection{Topological Verification: The Elastic Displacement Amplitude}
 
-To verify this model and resolve the spatial scale question, we ask: How can the sub-fermi empirical radius of the Helium-4 nucleus exist without compressing the fundamental $386\text{ fm}$ grid (Axiom 1)? This is resolved by distinguishing between \textit{Node Spacing} and \textit{Elastic Node Displacement}. We evaluate the derived nuclear tension against the empirical binding energy using the classical work-energy theorem ($W = F \cdot \Delta x$). The 28.3 MeV total binding energy is stored as elastic potential energy distributed across the six flux tubes of the $K_{4}$ tetrahedral cage. The energy per bond is $\approx 4.72\text{ MeV}$ ($7.55 \times 10^{-13}\text{ J}$). Dividing this energy by the mass-stiffened nuclear tension ($T_{nuc} \approx 390.5\text{ N}$) yields the structural displacement ($\Delta x$) of the local vacuum nodes:
+To verify this model and resolve the spatial scale question, the question arises: How can the sub-fermi empirical radius of the Helium-4 nucleus exist without compressing the fundamental $386\text{ fm}$ grid (Axiom 1)? This is resolved by distinguishing between \textit{Node Spacing} and \textit{Elastic Node Displacement}. The derived nuclear tension against the empirical binding energy using the classical work-energy theorem ($W = F \cdot \Delta x$). The 28.3 MeV total binding energy is stored as elastic potential energy distributed across the six flux tubes of the $K_{4}$ tetrahedral cage. The energy per bond is $\approx 4.72\text{ MeV}$ ($7.55 \times 10^{-13}\text{ J}$). Dividing this energy by the mass-stiffened nuclear tension ($T_{nuc} \approx 390.5\text{ N}$) yields the structural displacement ($\Delta x$) of the local vacuum nodes:
 
 \begin{resultbox}{Nuclear Elastic Displacement Amplitude}
 \begin{equation}

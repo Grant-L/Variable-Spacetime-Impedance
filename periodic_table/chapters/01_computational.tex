@@ -4,12 +4,12 @@
 
 A fundamental challenge in standard continuous vacuum theories is calculating the total integrated strain (and therefore the total energy or mass) of complex overlapping geometrical fields. Brute-force 3D numerical volume integration of the $1/r$ topological strain density across millions of spatial voxels is mathematically rigorous but computationally exhaustive ($O(N^3)$ scaling). 
 
-However, because the Applied Vacuum Engineering (AVE) framework explicitly defines the vacuum as a discrete $LC$ (Inductor-Capacitor) hardware network, we can leverage established Electrical Engineering network theory to drastically simplify these calculations.
+However, because the Applied Vacuum Engineering (AVE) framework explicitly defines the vacuum as a discrete $LC$ (Inductor-Capacitor) hardware network, established Electrical Engineering network theory can be leveraged to drastically simplify these calculations.
 
 \section{Mass as a Localized Reactive Load}
 By Axiom 1, mass is strictly defined as a sustained topological defect that acts as a localized inductive load ($\Delta L$) on the vacuum network. When individual free nucleons (such as protons and neutrons) are brought into close spatial proximity to form an atomic nucleus, their individual inductive strain fields geometrically overlap.
 
-In Electrical Engineering, when two reactive loads (such as two inductor coils or antennas) are brought together, we do not need to calculate the total continuous 3D volume of their combined magnetic fields to find the total stored energy. Instead, we calculate the \textbf{Mutual Inductance} ($M_{ij}$) or \textbf{Mutual Capacitance} ($C_m$) directly between the discrete nodes as a function of their spatial separation. 
+In Electrical Engineering, when two reactive loads (such as two inductor coils or antennas) are brought together, there is no need to calculate the total continuous 3D volume of their combined magnetic fields to find the total stored energy. Instead, one calculates the \textbf{Mutual Inductance} ($M_{ij}$) or \textbf{Mutual Capacitance} ($C_m$) directly between the discrete nodes as a function of their spatial separation. 
 
 The total internal energy ($U_{total}$) of the coupled network is precisely:
 \begin{equation}
@@ -58,12 +58,12 @@ def calculate_topological_mass(Z, A):
 \end{verbatim}
 
 \section{Network Analytics: Q-Factor and S-Parameters}
-By defining the topology natively as a reactive grid, we can push the analysis far beyond static mass to reveal the dynamic stability of the nuclei using classical RF (Radio Frequency) terminology: \textbf{Quality Factor ($Q$)} and \textbf{Scattering Cross-Section ($S_{11}$)}.
+By defining the topology natively as a reactive grid, the analysis can be pushed far beyond static mass to reveal the dynamic stability of the nuclei using classical RF (Radio Frequency) terminology: \textbf{Quality Factor ($Q$)} and \textbf{Scattering Cross-Section ($S_{11}$)}.
 
 \subsection{Topological Quality Factor ($Q$) and Resonance}
-In an LC tank, the Quality Factor ($Q$) defines the ratio of stored reactive energy to the energy dissipated per rotational oscillating cycle. A high-$Q$ circuit rings perfectly and is incredibly stable; a low-$Q$ circuit is lossy and chemically reactive. 
+In an LC tank, the Quality Factor ($Q$) defines the ratio of stored reactive energy to the energy dissipated per rotational oscillating cycle. A high-$Q$ circuit rings perfectly and is highly stable; a low-$Q$ circuit is lossy and chemically reactive. 
 
-Within the AVE framework, "dissipation" maps physically to the acoustic drag (vacuum friction) across the geometric perimeter of the defect. We calculate $Q$ as the ratio of Total Internal Mutual Inductance ($U_{stored}$) to the Effective Topological Radius ($R_{eff}$).
+Within the AVE framework, "dissipation" maps physically to the acoustic drag (vacuum friction) across the geometric perimeter of the defect. $Q$ is calculated as the ratio of Total Internal Mutual Inductance ($U_{stored}$) to the Effective Topological Radius ($R_{eff}$).
 
 The symmetrical Helium-4 core achieves a massively dominant $Q$-factor ($19.22$), proving why the Alpha particle is virtually indestructible. Conversely, the vast asymmetrical spatial gap in Lithium-7 causes its $Q$-factor to plummet ($2.85$), making its outer shell highly susceptible to decay or chemical bonding. Beryllium-9's endothermic bridge topology manages a moderate $Q$-factor ($7.93$).
 
@@ -147,7 +147,7 @@ This derived value, applied to the symmetric Helium-4 Alpha particle (6 pairs at
 
 When this same coupling constant is applied to the asymmetrical Lithium-7 dual-shell topology, the spatial distance mapping that satisfies the empirical CODATA mass of $6533.832$ MeV requires the outer shell (1 proton, 2 neutrons) to rest at a distance exactly $9.72\times$ the radius of the inner ultra-dense Alpha core.
 
-This analytical solution provides unprecedented structural resolution of complex isotopic geometries without requiring a single continuous fluid-dynamic 3D volume integration or any empirical calibration constant.
+This analytical solution provides precise structural resolution of complex isotopic geometries without requiring a single continuous fluid-dynamic 3D volume integration or any empirical calibration constant.
 
 \section{Proton--Neutron Junction Coupling}
 \label{sec:pn_junction}
@@ -387,7 +387,7 @@ In classical discrete electrical engineering, when an AC geometric bridge or LC 
 When unstable isotopes are modeled using the AVE mutual impedance simulator, their localized geometries inherently prevent the formulation of a highly resonant, stable core.
 
 \subsection{Tritium ($^3H$) Beta Decay}
-Tritium ($1p, 2n$) lacks the necessary geometric symmetry to fold into a tight topological knot. The solver proves that to match its empirical mass defect ($8.48$ MeV), its nodes must be stretched to an incredibly wide $\sim 3.5d$ separation. This results in a miserable Topological $Q$-factor of just $3.20$. To eliminate this extreme parasitic strain, the topology spontaneously ejects a unit of phase (an electron via $\beta$-decay) to transition into the stable Helium-3 ($^3He$) lattice, which boasts a tight, highly symmetrical $Q=19.52$ footprint. The topological contraction yields an exothermic energy release of $\sim 11.3$ MeV.
+Tritium ($1p, 2n$) lacks the necessary geometric symmetry to fold into a tight topological knot. The solver proves that to match its empirical mass defect ($8.48$ MeV), its nodes must be stretched to a wide $\sim 3.5d$ separation. This results in a critically low Topological $Q$-factor of just $3.20$. To eliminate this extreme parasitic strain, the topology spontaneously ejects a unit of phase (an electron via $\beta$-decay) to transition into the stable Helium-3 ($^3He$) lattice, which boasts a tight, highly symmetrical $Q=19.52$ footprint. The topological contraction yields an exothermic energy release of $\sim 11.3$ MeV.
 
 \subsection{Beryllium-8 ($^8Be$) Alpha Fission}
 Conversely, the Beryllium-8 geometry ($4p, 4n$) consists of two massive $^4He$ Alpha tanks but fundamentally lacks the critical central bridging neutron required to establish mutual inductance ($M_{bridge}$) between them. As an open Wheatstone bridge with zero central coupling, the two macro-components instantly repel and cleanly shatter back into independent Alpha fragments.

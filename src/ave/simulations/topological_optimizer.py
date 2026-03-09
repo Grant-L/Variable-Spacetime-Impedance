@@ -16,62 +16,74 @@ import numpy as np
 import scipy.optimize
 
 class TopologicalOptimizer:
-    def __init__(self, node_masses, interaction_scale='nuclear'):
+    def __init__(self, node_masses, interaction_scale='nuclear', node_charges=None):
         """
         Initialize the optimizer.
         :param node_masses: Array of masses/charges for the N nodes.
-        :param interaction_scale: 'nuclear' (1/d) or 'molecular' (1/r^2 vs Van der Waals).
+        :param interaction_scale: 'nuclear' (1/d) or 'molecular'.
+        :param node_charges: Array of charges (1 for proton, 0 for neutron). If None,
+                             charges are inferred from masses (m < 1.003 = proton).
         """
         self.masses = np.array(node_masses)
         self.N = len(self.masses)
         self.scale = interaction_scale
-        
-        # Scaling parameters based on the physical domain
+
+        # ALL constants derived from axioms via ave.core.constants
         if self.scale == 'nuclear':
-            # K_mutual derived in Phase 1 for nucleon-nucleon coupling
-            self.K_attr = 11.33763228 
-            self.K_rep = 15.0 # Repulsive core proxy
-            self.r_min = 0.85 # Fermi cutoff
+            from ave.core.constants import (
+                K_MUTUAL, D_PROTON,
+                ALPHA, HBAR, C_0, e_charge
+            )
+            self.K_attr = K_MUTUAL
+            self.d_sat = D_PROTON
+
+            # Coulomb constant: αℏc [MeV·fm]
+            self.alpha_hc = ALPHA * (HBAR * C_0 / e_charge) * 1e9
+
+            # Assign proton/neutron identity for Coulomb repulsion
+            if node_charges is not None:
+                self.charges = np.array(node_charges, dtype=float)
+            else:
+                self.charges = np.array(
+                    [1.0 if m < 1.003 else 0.0 for m in self.masses]
+                )
         else:
-            # Macro-Molecular (Protein Folding)
-            # A simplified Lennard-Jones / Coulomb scale proxy for the 1/d macroscopic limit
             self.K_attr = 1.0
-            self.K_rep = 1.0
-            self.r_min = 3.5 # Van der Waals equilibrium proxy
-            
+            self.d_sat = 3.5
+            self.alpha_hc = 0.0
+            self.charges = np.zeros(self.N)
+
     def _cost_function(self, flat_coords):
         """
         The global impedance scalar (U_total).
-        Calculates the exact structural strain of the entire 3D geometry matrix 
-        based on the mutual distances of every node. The goal is to minimize this value.
+        
+        Uses the universal saturated pairwise potential (Operator 4):
+          U_mutual(r) = universal_pairwise_energy(r, K, d_sat)
+        Plus Coulomb repulsion between proton pairs: +αℏc/r
         """
+        from ave.core.universal_operators import universal_pairwise_energy
+
         coords = flat_coords.reshape((self.N, 3))
         energy = 0.0
         
-        # Calculate pair-wise interactions (O(N^2) complexity, significantly faster than DFT)
         for i in range(self.N):
             for j in range(i + 1, self.N):
                 dist_vec = coords[i] - coords[j]
-                dist_sq = np.sum(dist_vec**2)
-                dist = np.sqrt(dist_sq)
-                
-                # Prevent singularities
+                dist = np.sqrt(np.sum(dist_vec**2))
                 if dist < 0.01:
-                    dist = 0.01 
+                    dist = 0.01
                 
                 m_prod = self.masses[i] * self.masses[j]
                 
                 if self.scale == 'nuclear':
-                    # Pure 1/d topological resonant tension
-                    # Repulsion spikes violently inside the Fermi cutoff
-                    if dist < self.r_min:
-                        energy += m_prod * self.K_rep * ((self.r_min / dist)**3 - 1.0)
-                    else:
-                        # Standard 1/d mutual acoustic binding
-                        energy -= m_prod * (self.K_attr / dist)
+                    # Universal Operator 4: saturated mutual coupling
+                    energy += m_prod * universal_pairwise_energy(dist, self.K_attr, self.d_sat)
+
+                    # Coulomb repulsion between proton pairs
+                    q_prod = self.charges[i] * self.charges[j]
+                    if q_prod > 0:
+                        energy += q_prod * self.alpha_hc / dist
                 else:
-                    # Macro-Molecular Steric Constraints
-                    # 1-2 C-alpha backbone constraint
                     if j == i + 1:
                         energy += 1000.0 * (dist - 3.8)**2
                     elif j == i + 2:
@@ -85,8 +97,10 @@ class TopologicalOptimizer:
         
     def _jacobian(self, flat_coords):
         """
-        Calculates the gradient (force vectors) for the optimizer to step efficiently.
+        Analytical gradient using the universal pairwise gradient (Operator 4).
         """
+        from ave.core.universal_operators import universal_pairwise_gradient
+
         coords = flat_coords.reshape((self.N, 3))
         grad = np.zeros_like(coords)
         
@@ -95,7 +109,6 @@ class TopologicalOptimizer:
                 dist_vec = coords[i] - coords[j]
                 dist_sq = np.sum(dist_vec**2)
                 dist = np.sqrt(dist_sq)
-                
                 if dist < 0.01:
                     dist = 0.01
                     
@@ -103,12 +116,13 @@ class TopologicalOptimizer:
                 force_mag = 0.0
                 
                 if self.scale == 'nuclear':
-                    if dist < self.r_min:
-                        # Derivative of repulsion
-                        force_mag = -3.0 * m_prod * self.K_rep * (self.r_min**3 / dist**4)
-                    else:
-                        # Derivative of attraction: d/dr(-K/r) = K/r^2
-                        force_mag = m_prod * self.K_attr / dist_sq
+                    # Universal Operator 4: gradient of saturated potential
+                    force_mag = m_prod * universal_pairwise_gradient(dist, self.K_attr, self.d_sat)
+
+                    # Coulomb gradient
+                    q_prod = self.charges[i] * self.charges[j]
+                    if q_prod > 0:
+                        force_mag -= q_prod * self.alpha_hc / dist_sq
                 else:
                     if j == i + 1:
                         force_mag = -2000.0 * (dist - 3.8)
@@ -119,11 +133,6 @@ class TopologicalOptimizer:
                         target = 5.1 if m_prod < 1.0 else 10.0
                         force_mag = -1000.0 * (dist - target)
                 
-                # Apply force vector
-                # If force_mag > 0, it pushes nodes apart (repulsion gradient acts outwards)
-                # But our optimizer MINIMIZES energy, so gradient points towards increasing energy.
-                # Actually, scipy.minimize wants the mathematical gradient dU/dx.
-                
                 f_vec = force_mag * (dist_vec / dist)
                 grad[i] += f_vec
                 grad[j] -= f_vec
@@ -133,10 +142,6 @@ class TopologicalOptimizer:
     def optimize(self, initial_coords, method='L-BFGS-B', options=None, record_history=False):
         """
         Runs the numerical optimizer to find the minimum-stress crystalline state.
-        :param initial_coords: Starting (N, 3) coordinate array. If randomized, the solver 
-                               will physically "fold" or "assemble" them from scratch.
-        :param record_history: If True, saves and returns the coordinates at every iteration 
-                               for dynamic animation.
         """
         if options is None:
             options = {'disp': True, 'maxiter': 5000, 'ftol': 1e-7}
@@ -151,12 +156,9 @@ class TopologicalOptimizer:
         
         def callback(xk):
             if record_history:
-                # Save the current 3D geometry
                 history.append(xk.reshape((self.N, 3)).copy())
-                # Save the current total energetic strain
                 energy_history.append(self._cost_function(xk))
         
-        # Scipy Minimize (L-BFGS-B is great for smooth energetic gradients)
         result = scipy.optimize.minimize(
             fun=self._cost_function,
             x0=initial_flat,

@@ -25,6 +25,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src', 'ave', 'solvers'))
 from protein_bond_constants import Z_TOPO, Q_BACKBONE, KAPPA_HB, D_HB_DETECT
 from ave.core.constants import P_C, ETA_EQ
+from ave.axioms.scale_invariant import reflection_coefficient, saturation_factor
 
 
 # ═══════════════════════════════════════════════════════════════
@@ -103,7 +104,7 @@ def detect_ss_elements(seq):
         if i < N - 1:
             Z_i = z_profile[i]
             Z_next = z_profile[i + 1]
-            gamma = abs(Z_next - Z_i) / (Z_next + Z_i + 1e-12)
+            gamma = abs(reflection_coefficient(Z_i, Z_next))
             if gamma > GAMMA_BOUNDARY:
                 boundary_candidates.append(i)
                 reasons.append(f"ΔZ at {i}: |Γ|={gamma:.3f}")
@@ -286,11 +287,9 @@ def ss_element_energy(seq_element, ca_coords=None):
 #   2. Inter-element H-bonds: H-bonds between element boundaries
 #   3. Hydrophobic Z-matching: conjugate impedance matching
 #
-# From scale_invariant.py:
+# From scale_invariant.py (imported at top):
 #   Γ = (Z_2 - Z_1) / (Z_2 + Z_1)  — reflection at the junction
 #   T = 1 + Γ = 2Z_1 / (Z_1 + Z_2) — transmission through
-
-from ave.axioms.scale_invariant import reflection_coefficient
 
 
 def build_tertiary_Y(elements, seq, ca_coords):
@@ -389,7 +388,7 @@ def build_tertiary_Y(elements, seq, ca_coords):
                 continue
             
             # Γ from Thevenin impedances
-            Gamma_ij = abs(Z_th[i] - Z_th[j]) / (Z_th[i] + Z_th[j])
+            Gamma_ij = abs(reflection_coefficient(Z_th[i], Z_th[j]))
             
             # Hydrophobic coupling: stronger when both elements are hydrophobic
             f_h = element_info[i]['f_hydro'] * element_info[j]['f_hydro']

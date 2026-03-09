@@ -20,7 +20,13 @@ venv/
 *.aux
 *.out
 *.toc
+*.lof
+*.lot
 *.fdb_latexmk
 *.fls
 *.synctex.gz
+
+# In-tree LaTeX builds (canonical PDFs live in build/)
+manuscript/book_*/main.pdf
+build/aux/
 LIVING_REFERENCE.md

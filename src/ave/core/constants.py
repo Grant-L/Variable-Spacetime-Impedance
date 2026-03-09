@@ -450,3 +450,59 @@ D_PROTON: float = 4.0 * HBAR / (M_P_MEV * 1e6 * e_charge / C_0**2 * C_0) * 1e15 
 # Intra-alpha distance: nucleons at vertices of regular tetrahedron
 # D_intra = d × √8  (tetrahedral edge from vertex ±(d,d,d))
 D_INTRA_ALPHA: float = D_PROTON * np.sqrt(8.0)   # ≈ 2.379 fm
+
+# =============================================================================
+# NUCLEAR EIGENVALUE CONSTANTS (Derived — 5-Step Regime Boundary Method)
+# =============================================================================
+#
+# Applying the universal 5-step regime-boundary eigenvalue method to the
+# nucleon saturation boundary:
+#
+# Step 1-2: r_sat = D_PROTON (strain field saturates at proton radius)
+# Step 3:   r_eff = D_PROTON / (1 + ν_vac) = D_PROTON × 7/9
+# Step 4:   ω₁ = c / r_eff (fundamental ℓ=1 inter-nucleon mode)
+# Step 5:   Q = ℓ = 1
+#
+# The EQUILIBRIUM DISTANCE between two nucleons is the half-wavelength
+# of the fundamental standing wave at the saturation boundary:
+#   d_nn = λ/2 = πc/ω₁ = π × r_eff = π × D_PROTON × 7/9
+#
+# The DEUTERON BINDING ENERGY is the eigenvalue energy scaled by α:
+#   B_deuteron = ℏω₁ × α  (electromagnetic coupling of the cavity mode)
+
+NU_VAC: float = 2.0 / 7.0   # Vacuum Poisson ratio (Axiom 3)
+
+# Inter-nucleon eigenvalue distance [fm]
+D_NN_EIGENVALUE: float = pi * D_PROTON * 7.0 / 9.0   # ≈ 2.056 fm
+
+# Coulomb coupling constant αℏc [MeV·fm]
+ALPHA_HC: float = ALPHA * HBAR_C_MEV_FM   # ≈ 1.440 MeV·fm
+
+# Predicted deuteron binding [MeV]  (ℏω₁ × α where ω₁ = c/r_eff)
+_OMEGA_1: float = C_0 / (D_PROTON * 1e-15 / (1.0 + NU_VAC))
+B_DEUTERON_PREDICTED: float = HBAR * _OMEGA_1 / e_charge * 1e-6 * ALPHA  # ≈ 2.201 MeV
+
+# =============================================================================
+# COUPLED RESONATOR CONSTANTS (Lumped Circuit Nuclear Model)
+# =============================================================================
+#
+# Each nucleon is an LC resonator at frequency ω₀ = c(1+ν)/d_p.
+# The coupling coefficient k between two resonators is derived from
+# the deuteron binding condition B_d = ℏω₀ × α:
+#
+#   B_d = ℏω₀(1 - 1/√(1+k)) = ℏω₀ × α
+#   → k = 1/(1-α)² - 1 ≈ 2α + 3α² + ...
+#
+# This is the EE mutual inductance coefficient M/L between two
+# nucleon LC tanks at the eigenvalue distance d_nn.
+
+# Uncoupled resonant frequency [rad/s]
+OMEGA_0_NUCLEAR: float = _OMEGA_1   # = c(1+ν)/d_p
+
+# Uncoupled resonant energy [MeV]
+E_0_NUCLEAR: float = HBAR * OMEGA_0_NUCLEAR / (e_charge * 1e6)   # ≈ 301.6 MeV
+
+# Dimensionless coupling coefficient (from deuteron binding)
+K_COUPLING: float = 1.0 / (1.0 - ALPHA) ** 2 - 1.0   # ≈ 0.01476 ≈ 2α
+
+

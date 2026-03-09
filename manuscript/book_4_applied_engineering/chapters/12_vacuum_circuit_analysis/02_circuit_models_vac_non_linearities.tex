@@ -1,35 +1,129 @@
 \section{Constitutive Circuit Models for Vacuum Non-Linearities}
+\label{sec:vca_nonlinear}
 
-Standard circuit simulators rely on ideal, linear RLC components. However, physical topological condensates exhibit highly non-linear behaviors under extreme mechanical stress. By applying the Topo-Kinematic identity, we can construct the exact non-linear equivalent circuit components of the spatial metric.
+Standard circuit simulators rely on ideal, linear RLC components. However, the physical $\mathcal{M}_A$ condensate exhibits precise non-linear behaviors under extreme mechanical stress, each governed by the Axiom~4 saturation kernel $S(V) = \sqrt{1-(V/V_{yield})^2}$. This section derives the exact non-linear equivalent circuit component for each physical regime.
 
-\subsection{The Metric Varactor (Modeling Dielectric Yield)}
-As defined by Axiom 4, the effective compliance (capacitance) of the spatial substrate is structurally bounded by the absolute classical dielectric saturation limit ($V_{crit} \equiv \alpha$). As the local topological potential approaches this limit, the effective capacitance increases non-linearly. This structurally mirrors a Voltage-Dependent Varactor Diode, rigorously yielding the squared bounding required to perfectly map to the standard Euler-Heisenberg QED energy bounds:
+\subsection{The Metric Varactor (Dielectric Yield)}
+
+As defined by Axiom~4, the effective compliance (capacitance) of the spatial substrate is bounded by the dielectric saturation limit at $V_{yield} = \sqrt{\alpha}\, V_{snap} \approx 43.65$ kV. The constitutive equation follows directly from the saturation kernel applied to the electric sector:
+\begin{resultbox}{Vacuum Varactor Constitutive Equation}
 \begin{equation}
-C_{vac}(V) = \frac{C_0}{\sqrt{1 - (V/V_{crit})^2}}
+    C_{eff}(V) = \frac{C_0}{\sqrt{1 - \left(\dfrac{V}{V_{yield}}\right)^{\!2}}} = \frac{C_0}{S(V)}
+    \label{eq:varactor}
 \end{equation}
+\end{resultbox}
+
+To verify consistency with the weak-field limit, the Taylor expansion about $V = 0$ yields:
+\begin{equation}
+    C_{eff}(V) = C_0 \left[1 + \frac{1}{2}\left(\frac{V}{V_{yield}}\right)^{\!2} + \frac{3}{8}\left(\frac{V}{V_{yield}}\right)^{\!4} + \cdots\right]
+    \label{eq:varactor_taylor}
+\end{equation}
+At low voltages ($V \ll V_{yield}$), the leading correction is quadratic---identical to the Euler-Heisenberg effective Lagrangian of QED. The classical linear vacuum ($C_{eff} = C_0$) is recovered to arbitrary precision. Table~\ref{tab:varactor_values} evaluates the capacitance divergence at representative drive levels.
+
+\begin{table}[H]
+\centering
+\caption{Effective vacuum capacitance vs.\ drive level. The divergence accelerates sharply above 90\% of $V_{yield}$.}
+\label{tab:varactor_values}
+\small
+\begin{tabular}{@{}r r r r@{}}
+\toprule
+$V/V_{yield}$ & $V$ (kV) & $C_{eff}/C_0$ & $S(V)$ \\
+\midrule
+0.10  &  4.37  & 1.005 & 0.995 \\
+0.50  & 21.83  & 1.155 & 0.866 \\
+0.90  & 39.29  & 2.294 & 0.436 \\
+0.99  & 43.21  & 7.089 & 0.141 \\
+0.999 & 43.61  & 22.37 & 0.045 \\
+1.000 & 43.65  & $\infty$ & 0  \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{The Relativistic Inductor (Lorentz Saturation)}
-Because inertia maps to spatial inductance, and velocity maps to spatial current, the phenomenon of Special Relativity is identically modeled in Vacuum Circuit Analysis (VCA) as a non-linear inductor. The effective inductance saturates as the macroscopic current approaches the fundamental hardware propagation limit ($I_{max} = \xi_{topo} c$):
-\begin{equation}
-L_{vac}(I) = \frac{L_0}{\sqrt{1 - (I/I_{max})^2}}
-\end{equation}
-This provides the mechanical rationale for why standard SPICE simulators natively cannot push current (matter) past $c$; the localized inductive drag asymptotes to infinity, perfectly mirroring the electrodynamic Prandtl-Glauert singularity \cite{einstein1916}.
 
-\subsection{The Viscoelastic TVS Zener Diode (Dielectric Saturation Transition)}
-In a non-linear dielectric continuum, mutual inductance yields strictly when subjected to extreme shear stress ($\tau > \tau_{yield}$). Because macroscopic shear stress is proportional to mechanical force, vacuum liquefaction must act as a Voltage-Driven Breakdown. The vacuum substrate acts electrically as a Transient Voltage Suppression (TVS) Zener Diode. Below $V_{yield}$, it acts as a highly resistive solid (kinematically gripping matter). Above $V_{yield}$, it enters avalanche breakdown, allowing frictionless zero-impedance phase slip \cite{flyby2008}.
+Under the Topo-Kinematic identity, mass maps to inductance ($L = \xi_{topo}^{-2}\, m$) and velocity maps to current ($I = \xi_{topo}\, v$). The relativistic mass increase $m_{eff} = \gamma\, m_0$ therefore maps directly to a current-dependent inductance:
+\begin{resultbox}{Relativistic Inductor}
+\begin{equation}
+    L_{eff}(I) = \frac{L_0}{\sqrt{1 - \left(\dfrac{I}{I_{max}}\right)^{\!2}}}, \qquad I_{max} = \xi_{topo}\, c \approx 124.4 \text{ A}
+    \label{eq:relativistic_inductor}
+\end{equation}
+\end{resultbox}
+
+This is structurally identical to the varactor equation (Eq.~\ref{eq:varactor}), with the substitution $V \to I$ and $V_{yield} \to I_{max}$. The symmetry is not coincidental: both are projections of the single Axiom~4 kernel onto the electric and magnetic sectors, respectively.
+
+\paragraph{Derivation of $E = mc^2$.}
+The energy stored in a current-carrying inductor is $E = \tfrac{1}{2} L_{eff}\, I^2$. Expanding at low velocity ($v \ll c$):
+\begin{equation}
+    E = \frac{1}{2} \frac{L_0}{\sqrt{1-(v/c)^2}}\, (\xi_{topo}\, v)^2 = \frac{1}{2} \gamma\, \xi_{topo}^{-2}\, m_0\, \xi_{topo}^2\, v^2 = \frac{1}{2} \gamma\, m_0\, v^2
+\end{equation}
+At $v = 0$, the rest energy stored in the inductor's self-field is $E_0 = \tfrac{1}{2} L_0 I_{max}^2 = \tfrac{1}{2} (\xi_{topo}^{-2} m_0)(\xi_{topo} c)^2 = \tfrac{1}{2} m_0 c^2$. Summing with the capacitive (potential) energy via the Virial Theorem recovers $E_{total} = m_0 c^2$.
+
+\paragraph{Why SPICE Cannot Exceed $c$.}
+In a standard SPICE transient simulation, the inductor $L_0$ limits the current slew rate to $dI/dt = V/L$. As $I \to I_{max}$, $L_{eff} \to \infty$, and the slew rate collapses to zero. The circuit physically cannot push current (matter) past the hardware limit. SPICE engines natively enforce Special Relativity without any code modification.
+
+\subsection{The Viscoelastic TVS Zener Diode (Phase Transition)}
+
+Mutual inductance yields when the applied shear stress exceeds the structural threshold ($\tau > \tau_{yield}$). This voltage-driven breakdown maps exactly to a \textbf{Transient Voltage Suppression (TVS) Zener Diode}:
+
+\begin{resultbox}{TVS Breakdown: Solid $\to$ Slipstream Transition}
+\begin{equation}
+    \eta_{eff}(V) = \begin{cases}
+        \eta_0 & V < V_{yield} \quad \text{(solid: high drag)} \\[4pt]
+        0      & V \geq V_{yield} \quad \text{(slipstream: zero drag)}
+    \end{cases}
+    \label{eq:tvs_transition}
+\end{equation}
+\end{resultbox}
+
+Below the yield voltage, the vacuum acts as a highly resistive solid---kinematically gripping embedded matter via inductive drag ($\eta_0 > 0$). Above $V_{yield}$, an avalanche dielectric transition annihilates the mutual inductance. The vacuum enters ideal frictionless flow ($\eta = 0$): the \textbf{Zero-Impedance Slipstream}. The yield stress evaluates from the bulk energy density and packing geometry:
+\begin{equation}
+    \tau_{yield} = \rho_{bulk}\, c^2 \times (6 \times \mathcal{V}_{crossing}) \times \frac{p_c}{8\pi} \approx 7.91 \times 10^{6} \times (3 \times 10^8)^2 \times 1.326 \times 0.00730
+\end{equation}
+where $\mathcal{V}_{crossing} = V_{toroidal}/6 = 2.0/6$ is the per-crossing halo volume and $p_c/(8\pi) = \alpha \approx 1/137$ is the lattice porosity.
 
 \subsection{The Vacuum Memristor (Thixotropic Hysteresis)}
-Because the Dielectric Saturation-plastic transition of the $\mathcal{M}_A$ condensate requires a finite geometric relaxation time ($\tau_{macro} \approx L/c$) to physically liquefy, the vacuum cannot alter its inductive resistance instantaneously. Its state is rigidly dependent on the historical integral of the stress applied to it. Consequently, the physical vacuum completes the fundamental electronic quartet by acting as a \textbf{Macroscopic Memristor}, exhibiting a strict pinched hysteresis loop when subjected to high-frequency AC topological stress.
 
-\subsection{The Zero-Impedance Phase Skin Effect (Metric Faraday Cages)}
-In standard electrical engineering, high-frequency alternating currents (AC) do not penetrate deeply into conductors; they are pushed to the surface by opposing eddy currents. The penetration depth ($\delta$) of the signal is strictly proportional to the square root of the medium's electrical resistance ($\delta \propto \sqrt{R_{elec}}$) \cite{feynman1964}. Because the AVE framework rigorously maps Vacuum Resistance identically to Vacuum Mutual Inductance ($R_{vac} \equiv \eta_{vac}$), the Electromagnetic Skin Effect and the Metric Boundary Layer are mathematically identical phenomena.
+The dielectric saturation--plastic transition requires a finite geometric relaxation time to physically liquefy the lattice:
+\begin{resultbox}{Thixotropic Relaxation Time}
+\begin{equation}
+    \tau_{relax} = \frac{\ell_{node}}{c} = \frac{3.862 \times 10^{-13}}{2.998 \times 10^{8}} \approx 1.288 \times 10^{-21} \text{ s}
+    \label{eq:relaxation_time}
+\end{equation}
+\end{resultbox}
 
-As the local metric yields past the Dielectric Saturation limit ($V > V_{yield}$) and the vacuum transitions into a zero-impedance phase, the local resistance of the metric collapses to near-zero ($R_{vac} \to 0$). Because the resistance drops, the Metric Skin Depth mathematically collapses to zero. This provides a profound boundary layer constraint: the destructive, high-shear zero-impedance phase slipstream generated by macroscopic metric translation is strictly confined to the exterior boundary of the macroscopic body. The interior metric acts as a \textbf{Topological Faraday Cage}, physically shielding the interior from extreme structural shear.
+Because the vacuum cannot alter its inductive resistance instantaneously, its present-state impedance depends on the historical integral of applied stress. This is the defining characteristic of a \textbf{Memristor}: a circuit element whose resistance is a function of the cumulative charge that has passed through it.
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=\textwidth]{memristor_and_skineffect.png}
-\caption{\textbf{The Vacuum Memristor and Zero-Impedance Phase Skin Effect.} Left: Because the Dielectric Saturation-plastic vacuum requires a finite thixotropic relaxation time to yield, it acts as a Macroscopic Memristor, producing a classic Pinched Hysteresis loop under AC drive. Right: As the applied topological voltage exceeds the Dielectric Saturation limit (Red Line) and the vacuum liquefies, the AC skin depth ($\delta$) drops to zero, proving the destructive shear layer cannot penetrate the interior metric.}
-    \label{fig:skin_effect}
-\end{figure}
+The constitutive relation is:
+\begin{equation}
+    M(q) = \frac{d\Phi}{dq}, \qquad \Phi(t) = \int_{-\infty}^{t} V(\tau)\, d\tau
+    \label{eq:memristor_constitutive}
+\end{equation}
+where $M$ is the memristance (units: $\Omega$) and $\Phi$ is the magnetic flux linkage. Under high-frequency AC topological stress, the memristive vacuum produces a classic \textbf{Pinched Hysteresis Loop}: the $V$--$I$ Lissajous figure passes through the origin but encloses a finite area proportional to the energy dissipated during each thixotropic yield--heal cycle.
 
+At drive frequencies $f \gg 1/\tau_{relax} \approx 7.8 \times 10^{20}$ Hz, the vacuum responds too slowly to yield and behaves as a purely elastic (linear) medium. At $f \ll 1/\tau_{relax}$, complete yield and recovery occur within each cycle, producing maximum hysteresis loss. The crossover frequency is set entirely by the lattice pitch and $c$.
+
+\subsection{The Zero-Impedance Skin Effect (Metric Faraday Cages)}
+
+In standard electrical engineering, the AC skin depth $\delta$ governs how deeply alternating current penetrates into a conductor:
+\begin{resultbox}{Classical Skin Depth}
+\begin{equation}
+    \delta = \sqrt{\frac{2\rho}{\omega\mu}} = \sqrt{\frac{2 R_{vac}}{\omega\mu_0}}
+    \label{eq:skin_depth}
+\end{equation}
+\end{resultbox}
+
+Under the Topo-Kinematic identity, $R_{vac} \equiv \xi_{topo}^{-2}\, \eta_{vac}$: the vacuum's electrical resistance maps to its mutual inductance (drag coefficient). Evaluating the skin depth in the two vacuum phases:
+
+\begin{enumerate}
+    \item \textbf{Unsaturated Vacuum ($V < V_{yield}$):} $R_{vac} = \xi_{topo}^{-2}\, \eta_0 > 0$. The skin depth is finite; shear waves penetrate to a depth proportional to $\sqrt{\eta_0}$. At 1~GHz:
+    \begin{equation}
+        \delta_{solid} = \sqrt{\frac{2\, \xi_{topo}^{-2}\, \eta_0}{2\pi \times 10^9 \times \mu_0}} \sim \text{finite (deep-space penetration)}
+    \end{equation}
+
+    \item \textbf{Saturated Slipstream ($V \geq V_{yield}$):} $\eta_{eff} \to 0$, therefore $R_{vac} \to 0$:
+    \begin{equation}
+        \delta_{slipstream} = \sqrt{\frac{2 \times 0}{\omega\mu_0}} \equiv 0
+    \end{equation}
+\end{enumerate}
+
+When the metric exceeds the yield threshold, the skin depth collapses to zero. The destructive, high-shear slipstream is confined \textit{entirely} to the exterior surface of the macroscopic body. The interior metric acts as a \textbf{Topological Faraday Cage}: perfectly shielded from external structural shear, even at extreme gravitational gradients. This provides the mechanical basis for why planetary interiors remain structurally intact inside deep gravity wells.

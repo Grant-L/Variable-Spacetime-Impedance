@@ -32,6 +32,16 @@ local_wave_speed(amplitude, yield_limit, c_base)
     c_eff = c_base · (1 − (A/A_yield)²)^(1/4)
 impedance_at_strain(amplitude, yield_limit, Z_base)
     Z_eff = Z_base / (1 − (A/A_yield)²)^(1/4)
+regime_boundary_eigenvalue(r_sat, nu_vac, ell, c_wave)
+    ω = ℓ·c/r_eff — eigenfrequency at any saturation boundary.
+phase_transition_Q(ell)
+    Q = ℓ — quality factor from shear-reflector geometry.
+shear_modulus_ratio(strain, yield_strain)
+    G_shear/G₀ = S(ε) — alias for saturation_factor.
+co_rotating_decay_rate(omega_R, omega_rotation, ell, m)
+    ω_I = (ω_R − m·Ω)/(2ℓ) — FOC/Park co-rotating frame decomposition.
+avalanche_factor(V_applied, V_breakdown, n_topology)
+    M = 1/(1 − (V/V_BR)^n) — Miller multiplication (inverse of saturation).
 """
 
 import numpy as np
@@ -97,6 +107,9 @@ def saturation_factor(
       - Plasma cutoff (cutoff)
       - Macroscopic dielectric yield (saturation)
 
+    Delegates to ``ave.core.universal_operators.universal_saturation()``
+    for the core kernel.  This wrapper adds the ``clip=False`` error path.
+
     Args:
         amplitude: Local field amplitude, voltage, or strain (scalar/array).
         yield_limit: Absolute saturation limit (default V_snap = m_e c²/e).
@@ -109,17 +122,17 @@ def saturation_factor(
     Raises:
         ValueError: If ``clip=False`` and |amplitude| > yield_limit.
     """
-    ratio_sq = np.asarray(amplitude, dtype=float) ** 2 / yield_limit ** 2
-    if clip:
-        ratio_sq = np.clip(ratio_sq, 0.0, 1.0 - 1e-15)
-    else:
+    if not clip:
+        ratio_sq = np.asarray(amplitude, dtype=float) ** 2 / yield_limit ** 2
         if np.any(ratio_sq > 1.0):
             raise ValueError(
                 f"Dielectric rupture: |A/A_yield| > 1.0. "
                 f"Max ratio² = {np.max(ratio_sq):.6f}. "
                 f"The lattice has structurally failed at this strain."
             )
-    return np.sqrt(1.0 - ratio_sq)
+    # Core kernel: single source of truth in universal_operators
+    from ave.core.universal_operators import universal_saturation
+    return universal_saturation(amplitude, yield_limit)
 
 
 # ────────────────────────────────────────────────────────────────────
@@ -286,3 +299,182 @@ def impedance_at_strain(amplitude, yield_limit: float = V_SNAP,
     if clip:
         ratio_sq = np.clip(ratio_sq, 0.0, 1.0 - 1e-15)
     return Z_base / (1.0 - ratio_sq) ** 0.25
+
+
+# ────────────────────────────────────────────────────────────────────
+# Universal regime-boundary eigenvalue operators
+# ────────────────────────────────────────────────────────────────────
+
+def regime_boundary_eigenvalue(r_sat, nu_vac, ell, c_wave=C_0):
+    r"""
+    Universal eigenfrequency at any saturation boundary (the 5-step method).
+
+    .. math::
+        \omega = \frac{\ell \cdot c}{r_{eff}}, \qquad
+        r_{eff} = \frac{r_{sat}}{1 + \nu_{vac}}
+
+    This is the SAME formula at every scale:
+
+    ===========  ============  ======  ========  ===================
+    Domain       r_sat         ν       ℓ         Result
+    ===========  ============  ======  ========  ===================
+    BH QNM       7 M_g         2/7     2         ω·M = 18/49
+    Electron     a₀            2/7     n         Bohr levels
+    Protein      bond length   2/7     amide     Amide-I eigenmode
+    Antenna      stub length   2/7     λ/4       Design frequency
+    Tokamak      wall radius   2/7     Alfvén    MHD eigenmode
+    ===========  ============  ======  ========  ===================
+
+    Args:
+        r_sat: Regime boundary radius (where saturation_factor = 0).
+        nu_vac: Poisson ratio of the medium (ν_vac = 2/7 for vacuum).
+        ell: Angular mode number (integer).
+        c_wave: Wave speed in the medium (default c₀).
+
+    Returns:
+        Angular eigenfrequency ω [rad/s].
+    """
+    r_eff = r_sat / (1.0 + nu_vac)
+    return ell * c_wave / r_eff
+
+
+def phase_transition_Q(ell):
+    r"""
+    Universal quality factor from lattice phase transition: Q = ℓ.
+
+    At the saturation boundary (S = 0), the shear modulus vanishes.
+    Transverse (shear) waves cannot propagate in the ruptured interior,
+    making it a perfect reflector.  The mode has ℓ wavelengths around
+    the circumference, each releasing ~1/ℓ of energy per cycle.
+
+    .. math::
+        Q = \ell
+
+    This is the gravitational-scale manifestation of the knot crossing
+    number → mass stability relationship at the particle scale.
+
+    ===========  ======  ======  ==============================
+    Domain       ℓ       Q       Physical meaning
+    ===========  ======  ======  ==============================
+    BH QNM       2       2       Fundamental GW ringdown
+    Overtone 1   3       3       First GW overtone
+    Electron     n       n       Atomic orbital Q
+    ===========  ======  ======  ==============================
+
+    Args:
+        ell: Angular mode number (integer ≥ 1).
+
+    Returns:
+        Quality factor Q (dimensionless).
+    """
+    return float(ell)
+
+
+def shear_modulus_ratio(strain, yield_strain=1.0):
+    r"""
+    Shear modulus relative to baseline: G_shear / G_shear₀ = S(ε).
+
+    At saturation (ε = yield_strain): G_shear → 0 (topology melts).
+    Transverse (shear) waves cannot propagate.
+    Identical to ``saturation_factor`` but named for physical clarity.
+
+    Args:
+        strain: Local strain amplitude (scalar or array).
+        yield_strain: Strain at which topology ruptures (default 1.0).
+
+    Returns:
+        Shear modulus ratio S ∈ [0, 1].
+    """
+    return saturation_factor(strain, yield_limit=yield_strain, clip=True)
+
+
+def co_rotating_decay_rate(omega_R, omega_rotation, ell, m=None):
+    r"""
+    Co-rotating frame decomposition: the FOC/Park transform operator.
+
+    Decomposes the mode frequency into co-rotating (reactive) and
+    differential (radiating) components:
+
+    .. math::
+        \omega_I = \frac{\omega_R - m \cdot \Omega}{2\,\ell}
+
+    This is structurally identical to Field-Oriented Control (FOC)
+    of a BLDC motor:
+
+    ==================  =========================  ====================
+    FOC Motor           BH QNM                     Universal
+    ==================  =========================  ====================
+    d-axis (flux)       m·Ω (co-rotating)          Reactive component
+    q-axis (torque)     (ω_R − m·Ω) (differential) Radiating component
+    Back-EMF            Curvature radiation ω_I     Decay rate
+    Stall = 0 torque    Superradiance (ω_R = m·Ω)  Q → ∞
+    ==================  =========================  ====================
+
+    At the **superradiance threshold** (ω_R = m·Ω): ω_I → 0, Q → ∞.
+    The mode gains energy from the rotation — no net radiation.
+
+    Applicable domains:
+      - BH ringdown: Ω = lattice frame-dragging at photon sphere
+      - Nuclear: Ω = shell rotation → magic number corrections
+      - BLDC motor: Ω = rotor angular velocity, ω_R = stator field
+      - Tokamak: Ω = plasma toroidal rotation
+
+    Args:
+        omega_R: Mode angular frequency [rad/s or dimensionless].
+        omega_rotation: Co-rotating angular velocity Ω [same units].
+        ell: Angular mode number (integer ≥ 1).
+        m: Azimuthal mode number (default: m = ell for co-rotating).
+
+    Returns:
+        Decay rate ω_I [same units as omega_R].
+        Returns 0 if at or beyond superradiance (ω_R ≤ m·Ω).
+    """
+    if m is None:
+        m = ell
+    omega_eff = omega_R - m * omega_rotation
+    omega_I = omega_eff / (2.0 * ell)
+    return max(omega_I, 0.0)
+
+
+def avalanche_factor(V_applied, V_breakdown, n_topology):
+    r"""
+    Miller avalanche multiplication: the INVERSE of saturation.
+
+    .. math::
+        M = \frac{1}{1 - (V / V_{BR})^n}
+
+    At V → 0:     M = 1  (linear, no avalanche).
+    At V → V_BR:  M → ∞  (breakdown, divergence).
+
+    This is the topological dual of the saturation factor:
+
+    ====================  ===================================
+    Saturation            Avalanche
+    ====================  ===================================
+    S = √(1 − (A/A_y)²)  M = 1/(1 − (V/V_BR)^n)
+    S → 0 at boundary     M → ∞ at boundary
+    Continuous (n=2)       Discrete (n = crossing number)
+    Kills propagation      Amplifies coupling
+    ====================  ===================================
+
+    The exponent n is set by the **topology**: for nuclear binding,
+    n = 5 (cinquefoil crossing number).  For a simple junction,
+    n could be 3 (trefoil) or 7 (septafoil).
+
+    Applied domains:
+      - Nuclear binding: V = Coulomb/alpha, V_BR = 6·αℏc/D, n = 5
+      - Semiconductor: V = reverse bias, V_BR = junction breakdown, n varies
+      - LED: V = current density, V_BR = droop onset, n = recombination order
+
+    Args:
+        V_applied: Applied stress (voltage, Coulomb, current density).
+        V_breakdown: Breakdown threshold.
+        n_topology: Exponent = crossing number or recombination order.
+
+    Returns:
+        Multiplication factor M ≥ 1.
+    """
+    ratio = float(V_applied) / float(V_breakdown)
+    ratio = min(abs(ratio), 1.0 - 1e-15)  # guard against divergence
+    return 1.0 / (1.0 - ratio ** n_topology)
+
