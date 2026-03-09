@@ -46,15 +46,14 @@ from matplotlib.gridspec import GridSpec
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
 from ave.core.constants import (
     ALPHA, HBAR, C_0, e_charge, M_E, V_YIELD, V_SNAP,
-    XI_TOPO, L_NODE, G, EPSILON_0,
+    EPSILON_0, MU_0, Z_0, K_B, M_SUN, M_PROTON,
+    XI_TOPO, L_NODE, G,
 )
 
 # ══════════════════════════════════════════════════════════════════════════════
 # Physical constants (SI measurements — NOT AVE-derived)
 # ══════════════════════════════════════════════════════════════════════════════
-M_P = 1.67262192369e-27        # Proton mass [kg] (CODATA 2018)
-K_B = 1.380649e-23             # Boltzmann constant [J/K] (SI exact, 2019)
-M_SUN = 1.989e30               # Solar mass [kg] (IAU)
+M_P = float(M_PROTON)          # Proton mass [kg] — from constants.py
 R_SUN = 6.957e8                # Solar radius [m] (IAU)
 
 # AVE derived — every constant traceable to axioms

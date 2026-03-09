@@ -33,7 +33,7 @@ When V_CC = Δm²cos2θ/(2E): resonance → θ_m = π/4 → maximal mixing.
 import numpy as np
 from dataclasses import dataclass
 
-from ave.core.constants import C_0, HBAR
+from ave.core.constants import C_0, HBAR, e_charge
 from ave.axioms.scale_invariant import reflection_coefficient
 
 
@@ -55,7 +55,7 @@ THETA_23 = np.radians(49.2)   # Atmospheric mixing angle
 THETA_13 = np.radians(8.57)   # Reactor mixing angle
 
 # Conversion factors
-EV_TO_JOULE = 1.602176634e-19
+EV_TO_JOULE = float(e_charge)  # from constants.py
 HBAR_EV_S = 6.582119569e-16  # ℏ [eV·s]
 MEV_TO_JOULE = EV_TO_JOULE * 1e6
 

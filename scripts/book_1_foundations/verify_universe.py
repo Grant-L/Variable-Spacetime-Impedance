@@ -29,6 +29,14 @@ MAGIC_NUMBERS = {
     299792458.0: "Speed of light (c) (Must be imported from constants.py)",
     1.05457e-34: "Planck constant (hbar) (Must be imported from constants.py)",
     6.674e-11: "Gravitational constant (G) (Must be imported from constants.py)",
+    1.380649e-23: "Boltzmann constant (K_B) (Must be imported from constants.py)",
+    6.02214e23: "Avogadro constant (N_A) (Must be imported from constants.py)",
+    1.67262e-27: "Proton mass (M_PROTON) (Must be imported from constants.py)",
+    1.989e30: "Solar mass (M_SUN) (Must be imported from constants.py)",
+    1.602176e-19: "Elementary charge (e_charge) (Must be imported from constants.py)",
+    9.10938e-31: "Electron mass (M_E) (Must be imported from constants.py)",
+    8.8541878e-12: "Vacuum permittivity (EPSILON_0) (Must be imported from constants.py)",
+    300000000.0: "Speed of light (c) (Must be imported from constants.py)",
 }
 
 class AVESyntaxValidator(ast.NodeVisitor):

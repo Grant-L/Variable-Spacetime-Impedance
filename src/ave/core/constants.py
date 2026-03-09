@@ -36,6 +36,9 @@ Z_0: float = np.sqrt(MU_0 / EPSILON_0)         # Characteristic impedance [Ω] �
 HBAR: float = 1.054571817e-34                   # reduced Planck constant [J·s]
 e_charge: float = 1.602176634e-19              # Elementary charge [C]
 K_B: float = 1.380649e-23                       # Boltzmann constant [J/K] (exact, 2019 SI)
+N_A: float = 6.02214076e23                       # Avogadro constant [mol⁻¹] (exact, 2019 SI)
+M_PROTON: float = 1.67262192369e-27             # Proton mass [kg] (CODATA 2018)
+M_SUN: float = 1.989e30                          # Solar mass [kg] (IAU nominal)
 
 # =============================================================================
 # THREE CALIBRATION INPUTS

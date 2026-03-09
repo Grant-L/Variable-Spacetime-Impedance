@@ -38,13 +38,13 @@ from matplotlib.patches import FancyArrowPatch
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
 from ave.core.constants import (
     ALPHA, HBAR, C_0, e_charge, M_E, V_YIELD, V_SNAP,
-    XI_TOPO, L_NODE, Z_0, MU_0, EPSILON_0,
+    XI_TOPO, L_NODE, Z_0, MU_0, EPSILON_0, M_PROTON,
 )
 
 # ── Derived Constants (all from engine) ─────────────────────────────────────
 
-# Proton mass (CODATA 2018 — SI measurement, not AVE-derived)
-M_P = 1.67262192369e-27  # kg
+# Proton mass from constants.py
+M_P = float(M_PROTON)
 
 # Bohr radius: a_0 = ℏ / (m_e c α) — Axiom 1 derived
 A_BOHR = HBAR / (M_E * C_0 * ALPHA)  # ≈ 5.29e-11 m

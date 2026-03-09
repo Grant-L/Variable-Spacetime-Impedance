@@ -23,7 +23,7 @@ All constants imported from ave.core.constants — zero free parameters.
 import numpy as np
 from ave.core.constants import (
     C_0, G, M_E, HBAR, ALPHA, L_NODE, Z_0,
-    NU_VAC, ISOTROPIC_PROJECTION, P_C, T_EM, K_B,
+    NU_VAC, ISOTROPIC_PROJECTION, P_C, T_EM, K_B, M_SUN,
 )
 
 # Alias for readability
@@ -31,8 +31,7 @@ G_NEWTON = G
 
 # ---------------------------------------------------------------------------
 # Physical constants for astrophysical targets
-# ---------------------------------------------------------------------------
-M_SUN = 1.989e30          # Solar mass [kg]
+
 
 # ---------------------------------------------------------------------------
 # 1.  Isotropic Schwarzschild Refractive Index

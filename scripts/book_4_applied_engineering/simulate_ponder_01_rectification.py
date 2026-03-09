@@ -40,8 +40,8 @@ def simulate_ponder_01_thrust():
     # -------------------------------------------------------------
     d_gap = 0.01          # Anode-Cathode Gap (meters) -> 1cm
     A = 0.05 * 0.05       # Collector Area (m^2) -> 5cm x 5cm
-    e_charge = 1.602e-19  # Elementary charge (C)
-    m_e = 9.109e-31       # Electron mass equivalent mapping (kg)
+    e_charge_val = float(e_charge)  # from constants.py import already in scope
+    m_e = float(M_E)                # from constants.py import already in scope
     eps_0 = float(EPSILON_0)  # Vacuum permittivity from engine
     
     # We will sweep AC Operating Frequency (1 MHz to 100 MHz)

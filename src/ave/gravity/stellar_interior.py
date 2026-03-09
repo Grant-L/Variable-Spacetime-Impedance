@@ -32,6 +32,7 @@ from typing import Optional
 
 from ave.core.constants import (
     C_0, EPSILON_0, MU_0, Z_0, M_E, e_charge, HBAR, ALPHA, K_B,
+    M_SUN, M_PROTON,
 )
 from ave.axioms.scale_invariant import (
     impedance,
@@ -50,7 +51,6 @@ def plasma_frequency(n_e):
 # ═══════════════════════════════════════════════════════════════
 
 R_SUN = 6.957e8  # Solar radius [m]
-M_SUN = 1.989e30  # Solar mass [kg]
 L_SUN = 3.828e26  # Solar luminosity [W]
 
 @dataclass
@@ -261,7 +261,7 @@ def helioseismology_modes(n_max: int = 10,
     # Solar sound speed profile (simplified)
     # c_s ≈ √(γ k_B T / m_p)  where γ = 5/3
     k_B_val = float(K_B)
-    m_p = 1.673e-27
+    m_p = float(M_PROTON)
     gamma = 5.0 / 3.0
 
     # Acoustic travel time through the Sun

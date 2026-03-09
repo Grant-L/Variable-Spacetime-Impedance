@@ -38,7 +38,7 @@ import numpy as np
 from dataclasses import dataclass
 from typing import Optional
 
-from ave.core.constants import G, C_0, H_INFINITY
+from ave.core.constants import G, C_0, H_INFINITY, M_SUN
 from ave.axioms.scale_invariant import saturation_factor
 
 
@@ -267,8 +267,6 @@ def derive_a0_from_cosmology() -> float:
 # Catalog of well-studied galaxies
 # ======================================================
 
-# Solar mass
-M_SUN = 1.989e30  # kg
 KPC = 3.0857e19   # m
 
 GALAXY_CATALOG = {

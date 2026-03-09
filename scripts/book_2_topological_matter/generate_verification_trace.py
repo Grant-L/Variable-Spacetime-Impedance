@@ -16,6 +16,7 @@ from ave.core.constants import (
     KAPPA_FS_COLD, KAPPA_FS, DELTA_THERMAL,
     I_SCALAR_1D, V_TOROIDAL_HALO, PROTON_ELECTRON_RATIO,
     T_NUC, H_INFINITY, R_HUBBLE, RHO_BULK, NU_KIN,
+    M_PROTON, e_charge,
 )
 
 # Derived values
@@ -29,7 +30,7 @@ proton_mass_MeV = PROTON_ELECTRON_RATIO * M_E * C_0**2 / 1.602e-13
 # Empirical CODATA target for comparison display only.
 # This value is NOT used in any derivation — it is the reference benchmark.
 # Computed from CODATA proton mass (kg) divided by engine's M_E.
-_M_PROTON_KG = 1.67262192595e-27   # CODATA 2018: proton mass in kg
+_M_PROTON_KG = float(M_PROTON)  # from constants.py
 PROTON_EMPIRICAL = _M_PROTON_KG / M_E
 proton_error_pct = abs(PROTON_ELECTRON_RATIO - PROTON_EMPIRICAL) / PROTON_EMPIRICAL * 100
 

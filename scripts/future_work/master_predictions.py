@@ -19,7 +19,7 @@ import numpy as np
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 
-from ave.core.constants import C_0, EPSILON_0, MU_0, ALPHA, Z_0, V_SNAP, G, BARYON_LADDER
+from ave.core.constants import C_0, EPSILON_0, MU_0, ALPHA, Z_0, V_SNAP, G, BARYON_LADDER, M_SUN
 
 
 def main():
@@ -102,7 +102,7 @@ def main():
 
     # ━━━ 10. Solar light deflection ━━━
     from ave.gravity import einstein_deflection_angle
-    M_sun = 1.989e30
+    M_sun = M_SUN  # from constants.py
     R_sun = 6.957e8
     delta_rad = einstein_deflection_angle(M_sun, R_sun)
     delta_arcsec = np.degrees(delta_rad) * 3600

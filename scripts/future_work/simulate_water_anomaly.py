@@ -41,7 +41,8 @@ def main():
     print(f"  AVE inductance:      {mol.inductance_ave:.3e} H")
     print(f"  AVE capacitance:     {mol.capacitance_ave:.3e} F")
     print(f"  AVE impedance:       {mol.impedance_ave:.3e} Ω-equiv")
-    print(f"  H-bond energy:       {mol.hbond_energy/1.602e-19:.3f} eV")
+    from ave.core.constants import e_charge as _e
+    print(f"  H-bond energy:       {mol.hbond_energy/_e:.3f} eV")
 
     # ─────────────────────────────────────────────────────────
     # Temperature sweep

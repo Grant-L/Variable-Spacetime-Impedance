@@ -60,7 +60,7 @@ from ave.axioms.scale_invariant import (
 # ══════════════════════════════════════════════════════════════════════════════
 # SOLAR MASS AND KNOWN BH DATA
 # ══════════════════════════════════════════════════════════════════════════════
-M_SUN = 1.989e30  # kg (IAU nominal solar mass)
+M_SUN_local = M_SUN  # re-export for readability
 k_B = K_B
 
 # LIGO events for comparison

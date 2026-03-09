@@ -33,7 +33,7 @@ import numpy as np
 from typing import Optional
 
 from ave.core.constants import (
-    C_0, EPSILON_0, MU_0, Z_0, V_SNAP, B_SNAP, G, HBAR, L_NODE,
+    C_0, EPSILON_0, MU_0, Z_0, V_SNAP, B_SNAP, G, HBAR, L_NODE, M_SUN,
 )
 from ave.axioms.scale_invariant import (
     saturation_factor,
@@ -263,7 +263,6 @@ def gw_propagation_summary(M_solar: float = 30.0,
     Returns:
         Dict with all computed properties.
     """
-    M_SUN = 1.989e30
     M = M_solar * M_SUN
     r_s = schwarzschild_radius(M)
 

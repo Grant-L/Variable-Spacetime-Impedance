@@ -43,7 +43,7 @@ import numpy as np
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 
-from ave.core.constants import V_SNAP, V_YIELD, ALPHA, C_0, HBAR
+from ave.core.constants import V_SNAP, V_YIELD, ALPHA, C_0, HBAR, e_charge
 
 
 # ======================================================
@@ -53,7 +53,7 @@ M_MUON = 105.6583755  # MeV/c²
 M_ELECTRON = 0.51099895  # MeV/c²
 TAU_MUON_EXP = 2.1969811e-6  # seconds (PDG 2024)
 HBAR_SI = float(HBAR)  # J·s — from constants.py
-EV_TO_J = 1.602176634e-19
+EV_TO_J = float(e_charge)  # from constants.py
 
 
 def muon_lifetime_rc_model():

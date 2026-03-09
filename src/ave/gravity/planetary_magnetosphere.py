@@ -29,7 +29,7 @@ import numpy as np
 from dataclasses import dataclass
 from typing import Optional
 
-from ave.core.constants import G, C_0, Z_0, MU_0
+from ave.core.constants import G, C_0, Z_0, MU_0, M_PROTON, K_B
 from ave.axioms.scale_invariant import reflection_coefficient
 
 
@@ -38,7 +38,7 @@ from ave.axioms.scale_invariant import reflection_coefficient
 # ═══════════════════════════════════════════════════════════════
 
 AU = 1.496e11           # Astronomical unit [m]
-M_P = 1.6726e-27        # Proton mass [kg]
+M_P = float(M_PROTON)   # Proton mass alias [kg]
 
 
 # ═══════════════════════════════════════════════════════════════
@@ -301,7 +301,7 @@ def internal_plasma_pressure(planet: PlanetMagnetosphere) -> float:
     Returns:
         Internal plasma pressure [Pa].
     """
-    k_B = 1.381e-23  # Boltzmann constant [J/K]
+    k_B_val = float(K_B)  # from constants.py
     T_sw = 1e5       # Solar wind temperature [K]
 
     # Solar wind density at planet
@@ -330,7 +330,7 @@ def internal_plasma_pressure(planet: PlanetMagnetosphere) -> float:
     n_trapped = n_sw * f_trap * 0.1  # Fraction that enters
     T_internal = T_sw * min(1.0 / mirror_ratio, 100.0)  # Adiabatic heating
 
-    P_generic = n_trapped * k_B * T_internal
+    P_generic = n_trapped * k_B_val * T_internal
 
     # ─── Jupiter Io torus correction ─────────────────────────────
     if planet.name == 'Jupiter':

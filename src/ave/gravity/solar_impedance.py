@@ -38,22 +38,21 @@ from typing import Optional
 
 from ave.core.constants import (
     G, C_0, Z_0, EPSILON_0, MU_0,
-    M_E,
+    M_E, e_charge, M_SUN,
 )
 from ave.axioms.scale_invariant import (
     reflection_coefficient, saturation_factor, impedance,
 )
 from ave.gravity.galactic_rotation import A0_MOND
 
-# Electron charge (local, consistent with cutoff.py)
-E_CHARGE = 1.602176634e-19  # [C]
+# Alias for readability in formulas
+E_CHARGE = e_charge
 
 
 # ═══════════════════════════════════════════════════════════════
 # Solar system constants
 # ═══════════════════════════════════════════════════════════════
 
-M_SUN = 1.989e30        # Solar mass [kg]
 R_SUN = 6.957e8         # Solar radius [m]
 AU = 1.496e11           # Astronomical unit [m]
 KPC = 3.0857e19         # Kiloparsec [m]

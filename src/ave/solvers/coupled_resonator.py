@@ -45,6 +45,7 @@ from ave.core.constants import (
     K_COUPLING as _K_COUPLING_CONST,
     OMEGA_0_NUCLEAR as _OMEGA_0_CONST,
     E_0_NUCLEAR as _E_0_CONST,
+    M_E,
 )
 
 
@@ -218,7 +219,7 @@ def nuclear_mass(Z, A, n_alphas=None):
 # ─────────────────────────────────────────────────────────────────
 
 # Atomic scale constants (all from axioms)
-_M_E = 9.1093837015e-31   # electron mass [kg]
+_M_E = float(M_E)  # electron mass from constants.py [kg]
 _A0 = HBAR / (_M_E * C_0 * ALPHA)   # Bohr radius [m]
 _RY_EV = _M_E * C_0**2 * ALPHA**2 / (2.0 * e_charge)   # Rydberg [eV]
 _TWO_RY = 2.0 * _RY_EV   # e²/(4πε₀a₀) = Hartree ≈ 27.21 eV
