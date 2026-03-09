@@ -49,7 +49,7 @@ from ave.core.constants import (
     C_0, ALPHA, HBAR, M_E, e_charge,
     EPSILON_0, MU_0, Z_0, L_NODE,
     V_SNAP, V_YIELD,
-    B_SNAP, NU_VAC,
+    B_SNAP, NU_VAC, H_INFINITY,
 )
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -307,22 +307,37 @@ def protein_regime(d_bond, d_eq):
     )
 
 
-def galactic_regime(g_newtonian, a_0=1.2e-10):
+def galactic_regime(g_newtonian, a_0=None):
     """
     Galactic regime: r = g_N / a₀.
 
-    a₀ ≈ 1.2 × 10⁻¹⁰ m/s² (MOND acceleration scale).
-    Inner galaxy (g >> a₀): r >> 1 (Regime IV — but here "ruptured"
-    means the Newtonian potential dominates; the saturation correction
-    is negligible because the lattice is in the unsaturated deep interior).
-    Outer galaxy (g ~ a₀): r ~ 1 (Regime III — rotation curve flattening).
-    Far outer (g << a₀): r << 1 (Regime I — but this is the deep MOND limit).
+    a₀ = cH∞/(2π) ≈ 1.07 × 10⁻¹⁰ m/s² (DERIVED, not empirical).
+    H∞ = 28πm_e³cG/(ℏ²α²) is the asymptotic Hubble parameter.
 
-    Note: The galactic regime has an INVERTED interpretation compared to
-    others. High g_N means LESS saturation effect, not more. The
-    nonlinearity appears at LOW accelerations where the lattice
-    compliance gradient matters.
+    The saturation operator acts on LATTICE MUTUAL INDUCTANCE η:
+        η_eff = η₀ × S(g_N/a₀)
+
+    This is the SAME universal operator as every other domain:
+        S(r→1) = medium compliance → 0.
+
+    What differs is the OBSERVATIONAL CONSEQUENCE:
+        EM:      ε→0 = pair production (dramatic)
+        Gravity: G_shear→0 = event horizon (dramatic)
+        Galaxy:  η→0 = drag vanishes → Newtonian (boring!)
+
+    The galactic rotation curve problem IS the regime boundary
+    transition. At r = g_N/a₀ ≈ 1 (Regime III→IV), the lattice
+    drag switches off. "Dark matter" is the drag that exists
+    on the Regime I–III side of this phase transition.
+
+    Regime locations:
+        Inner galaxy (g_N >> a₀): r >> 1 → Regime IV (Newtonian, no drag)
+        Transition (g_N ≈ a₀): r ≈ 1 → Regime III (curve flattening)
+        Outer galaxy (g_N << a₀): r << 1 → Regime I (deep MOND, full drag)
     """
+    if a_0 is None:
+        # Derived: a₀ = cH∞/(2π)
+        a_0 = float(C_0) * float(H_INFINITY) / (2 * np.pi)
     return classify_regime(
         g_newtonian, a_0,
         domain="Galactic rotation",

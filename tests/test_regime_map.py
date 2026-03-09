@@ -166,6 +166,31 @@ class TestBCSDomain:
         assert info.regime == REGIME_YIELD
 
 
+class TestGalacticDomain:
+    """Galactic domain with derived a₀ = cH∞/(2π)."""
+
+    def test_derived_a0_used(self):
+        """Default a₀ should be derived, not empirical 1.2e-10."""
+        info = galactic_regime(1e-10)
+        # Derived a₀ ≈ 1.07e-10, so g_N=1e-10 gives r ≈ 0.93
+        assert info.Ac < 1.15e-10  # derived, not 1.2e-10 empirical
+
+    def test_inner_galaxy_newtonian(self):
+        """Inner galaxy: g_N >> a₀ → Regime IV (Newtonian, no drag)."""
+        info = galactic_regime(1e-9)  # 10× a₀
+        assert info.regime == REGIME_RUPTURED
+
+    def test_transition_boundary(self):
+        """At g_N ≈ a₀: regime boundary (dark matter problem!)."""
+        info = galactic_regime(1.07e-10)  # ≈ a₀
+        assert info.regime in (REGIME_YIELD, REGIME_RUPTURED)
+
+    def test_outer_galaxy_deep_mond(self):
+        """Outer galaxy: g_N << a₀ → Regime I (deep MOND, full drag)."""
+        info = galactic_regime(1e-12)  # 0.01× a₀
+        assert info.regime == REGIME_LINEAR
+
+
 class TestRegimeEquations:
 
     def test_linear_equations(self):
