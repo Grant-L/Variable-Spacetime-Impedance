@@ -19,12 +19,13 @@ project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
 sys.path.append(str(project_root / "src"))
 
 from periodic_table.simulations.simulate_element import get_nucleon_coordinates, K_MUTUAL
+from ave.core.constants import e_charge
 
-# 1 MeV = 1.60218e-13 Joules
+# 1 MeV = e_charge * 1e6 Joules
 # 1 fm^3 = 1.0e-45 m^3
 # 1 Pa = 1 J / m^3
 # 1 GPa = 1e9 Pa
-MEV_PER_FM3_TO_GPA = 1.60218e-13 / 1.0e-45 / 1.0e9
+MEV_PER_FM3_TO_GPA = float(e_charge * 1e6) / 1.0e-45 / 1.0e9
 
 def compute_properties(Z, A, name):
     nodes = get_nucleon_coordinates(Z, A)  # d is derived from proton charge radius (4λ_p ≈ 0.841 fm)

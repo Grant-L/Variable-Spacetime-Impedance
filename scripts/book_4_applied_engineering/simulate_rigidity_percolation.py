@@ -12,6 +12,13 @@ import matplotlib.pyplot as plt
 from scipy.spatial import Delaunay
 import networkx as nx
 import os
+import sys
+import pathlib
+
+project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
+sys.path.insert(0, str(project_root / "src"))
+
+from ave.core.constants import ALPHA
 
 def simulate_percolation_threshold():
     """
@@ -33,7 +40,7 @@ def simulate_percolation_threshold():
     # 3D continuous amorphous network with bond-bending forces is known
     # in condensed matter physics to be roughly p_c ~ 0.183
     
-    empirical_alpha = 1.0 / float("137.035999")
+    empirical_alpha = float(ALPHA)
     
     # Generate a range of possible network packing fractions near the transition
     p_c_range = np.linspace(0.180, 0.186, 100)

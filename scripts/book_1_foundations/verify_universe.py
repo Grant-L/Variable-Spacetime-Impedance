@@ -11,12 +11,9 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 SRC_DIR = PROJECT_ROOT / "src" / "ave"
-SCRIPTS_DIRS = [
-    PROJECT_ROOT / "scripts",
-    PROJECT_ROOT / "manuscript" / "scripts",
-    PROJECT_ROOT / "periodic_table" / "animations",
-    PROJECT_ROOT / "spice_manual" / "scripts",
-]
+# Scan the ENTIRE project root for Python files (no directory left behind)
+SCRIPTS_DIRS = [PROJECT_ROOT]
+EXCLUDED_DIRS = {".venv", "venv", "node_modules", ".git", "__pycache__", ".eggs", "*.egg-info"}
 
 BANNED_IMPORTS = ["scipy.constants"]
 
@@ -96,14 +93,22 @@ def run_verification():
     clean_files: int = 0
     global_violations: int = 0
 
-    # The absolute root constants file is exempt from the Magic Float checks
-    # since it actually maps k.C, k.G, etc.
-    EXEMPT_FILES = ["constants.py", "verify_universe.py"]
+    # Exempt from Magic Float checks:
+    # - constants.py / cosserat.py: define the engine constants
+    # - verify_universe.py: this verifier itself
+    # - test_*: tests legitimately compare against known PDG/CODATA values
+    EXEMPT_FILES = ["constants.py", "cosserat.py", "verify_universe.py"]
+    EXEMPT_PREFIXES = ["test_"]
 
-    py_files_to_scan = list(SRC_DIR.rglob("*.py"))
-    for script_dir in SCRIPTS_DIRS:
-        if script_dir.exists():
-            py_files_to_scan.extend(script_dir.rglob("*.py"))
+    # Scan the ENTIRE project root — no directory left behind
+    py_files_to_scan = []
+    for py_file in PROJECT_ROOT.rglob("*.py"):
+        # Skip excluded directories
+        if any(part in EXCLUDED_DIRS for part in py_file.parts):
+            continue
+        py_files_to_scan.append(py_file)
+    # Deduplicate
+    py_files_to_scan = sorted(set(py_files_to_scan))
 
     for py_file in py_files_to_scan:
         total_files += 1
@@ -117,7 +122,7 @@ def run_verification():
 
         validator = AVESyntaxValidator(py_file)
 
-        if py_file.name in EXEMPT_FILES:
+        if py_file.name in EXEMPT_FILES or any(py_file.name.startswith(p) for p in EXEMPT_PREFIXES):
             validator.in_main_block = True
 
         validator.visit(tree)

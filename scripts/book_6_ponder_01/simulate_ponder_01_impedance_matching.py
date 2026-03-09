@@ -12,8 +12,13 @@ and plots the resulting S11 Reflection Coefficient ($\Gamma$).
 """
 
 import os
+import sys
 import numpy as np
 import matplotlib.pyplot as plt
+
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
+
+from ave.core.constants import EPSILON_0 as EPS_0
 
 def simulate_impedance_match():
     print("[*] Generating PONDER-01 RF Impedance Resonance Profile...")
@@ -31,10 +36,9 @@ def simulate_impedance_match():
     # Vacuum Permittivity ~ 8.854e-12 F/m
     AREA = 0.0025
     D_GAP = 0.001
-    EPSILON_0 = 8.854e-12
     
     # Parallel Plate Base Capacitance
-    C_base = (EPSILON_0 * AREA) / D_GAP
+    C_base = (float(EPS_0) * AREA) / D_GAP
     
     # Multiplier for the highly dense etched emitter array topology
     # (Sharp tips dramatically increase localized flux density)

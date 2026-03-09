@@ -23,6 +23,8 @@ import pathlib
 project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
 sys.path.append(str(project_root / "src"))
 
+from ave.core.constants import C_0
+
 def optimize_electrode_geometry():
     print("[*] Running High-Fidelity Electrode Optimization Sweep...")
     
@@ -33,9 +35,9 @@ def optimize_electrode_geometry():
     freq = 1e8            # 100 MHz VHF Drive
     A = 0.05 * 0.05       # 5cm x 5cm collector
     
-    rho_bulk = 7.92e6     # Macroscopic metric density
-    nu_vac = 8.45e-7      # Kinematic vacuum drag
-    k_topo = (nu_vac**2) / (float("299792458")**2 * rho_bulk) # ~ 1e-27
+    rho_bulk = 7.92e6     # Macroscopic metric density (ad-hoc, needs derivation)
+    nu_vac = 8.45e-7      # Kinematic vacuum drag (ad-hoc, needs derivation)
+    k_topo = (nu_vac**2) / (float(C_0)**2 * rho_bulk) # ~ 1e-27
 
     # -------------------------------------------------------------
     # 2D Sweep Space 

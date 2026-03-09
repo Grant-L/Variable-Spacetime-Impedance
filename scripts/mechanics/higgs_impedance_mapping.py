@@ -1,4 +1,14 @@
 import numpy as np
+import os
+import sys
+import pathlib
+
+project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
+sys.path.insert(0, str(project_root / "src"))
+
+from ave.core.constants import (
+    MU_0, EPSILON_0, Z_0, e_charge, HIGGS_VEV_MEV,
+)
 
 def main():
     print("==========================================================")
@@ -14,9 +24,8 @@ def main():
     # The Higgs Vacuum Expectation Value (VEV) is the background energy density
     # that "thickens" the universe, giving particles mass.
     # v = 246 GeV
-    v_higgs_vev = 246e9  # eV
-    joules_per_eV = 1.602176634e-19
-    v_higgs_joules = v_higgs_vev * joules_per_eV
+    v_higgs_vev = float(HIGGS_VEV_MEV) * 1e6  # MeV -> eV
+    v_higgs_joules = v_higgs_vev * float(e_charge)
 
     print("[1] Evaluating the Standard Model Higgs VEV:")
     print(f"    VEV (v) = 246 GeV = {v_higgs_joules:.4e} Joules")
@@ -27,12 +36,10 @@ def main():
     # The "Field" is simply the structured, continuous LC network of Space itself.
     # The minimum resistance through this free-space network is precisely
     # the Characteristic
-    u_0 = 4 * np.pi * 1e-7  # Vacuum Permeability (H/m)
-    e_0 = 8.8541878128e-12  # Vacuum Permittivity (F/m)
-    Z_0 = np.sqrt(u_0 / e_0) # Ohms (Exact standard metric)
+    Z_vac = float(Z_0)  # Impedance of free space from engine
 
     print("[2] Evaluating the AVE Characteristic Impedance:")
-    print(f"    Z_0 = sqrt(u_0 / e_0) ≈ {Z_0:.2f} Ohms")
+    print(f"    Z_0 = sqrt(u_0 / e_0) ≈ {Z_vac:.2f} Ohms")
     print("    This is the literal 'thickness' of the vacuum. It takes real energy")
     print("    to displace the electric/magnetic flux of empty space to push a")
     print("    wave through it.\n")

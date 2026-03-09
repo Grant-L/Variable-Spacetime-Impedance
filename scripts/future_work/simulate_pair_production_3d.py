@@ -22,7 +22,12 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from mpl_toolkits.mplot3d import Axes3D
 import os
+import sys
 from pathlib import Path
+
+# Add engine to path for future physics integration
+sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
+from ave.core.constants import C_0 as C_PHYSICAL  # noqa: F401 — available for future use
 
 # JAX GPU acceleration (graceful fallback to numpy)
 try:
@@ -36,7 +41,7 @@ except ImportError:
 
 # 3D Grid Configuration (kept small to prevent memory/CPU overload)
 N = 45 
-C_0 = 0.5
+C_0_CFL = 0.5   # CFL wave speed (dimensionless FDTD parameter, NOT physical c)
 T_MAX = 80
 
 # The physical 3D displacement vectors (dx, dy, dz)
@@ -71,7 +76,7 @@ def grad_central(A, axis):
 # Extract a Gaussian planar wave pulse
 def inject_gamma_ray(t):
     pulse_width = 3.0
-    x_center = 2.0 + C_0 * t
+    x_center = 2.0 + C_0_CFL * t
     # Pure planar transverse wave oscillating in Y
     pulse = 2.0 * np.exp(-((np.arange(N) - x_center)**2) / pulse_width**2)
     # Broadcast across Y and Z
@@ -108,9 +113,9 @@ def simulate_wave_tear():
 
         @jit
         def _step(Ux, Uy, Uz, Ux_prev, Uy_prev, Uz_prev):
-            Ux_next = 2*Ux - Ux_prev + (C_0**2) * _lap(Ux)
-            Uy_next = 2*Uy - Uy_prev + (C_0**2) * _lap(Uy)
-            Uz_next = 2*Uz - Uz_prev + (C_0**2) * _lap(Uz)
+            Ux_next = 2*Ux - Ux_prev + (C_0_CFL**2) * _lap(Ux)
+            Uy_next = 2*Uy - Uy_prev + (C_0_CFL**2) * _lap(Uy)
+            Uz_next = 2*Uz - Uz_prev + (C_0_CFL**2) * _lap(Uz)
             Ux_next = jnp.where(nuc_j, 0.0, Ux_next)
             Uy_next = jnp.where(nuc_j, 0.0, Uy_next)
             Uz_next = jnp.where(nuc_j, 0.0, Uz_next)
@@ -153,9 +158,9 @@ def simulate_wave_tear():
                 print(f" Simulating Frame {t}/{T_MAX}...")
     else:
         for t in range(T_MAX):
-            Ux_next = 2*Ux - Ux_prev + (C_0**2) * laplacian(Ux)
-            Uy_next = 2*Uy - Uy_prev + (C_0**2) * laplacian(Uy)
-            Uz_next = 2*Uz - Uz_prev + (C_0**2) * laplacian(Uz)
+            Ux_next = 2*Ux - Ux_prev + (C_0_CFL**2) * laplacian(Ux)
+            Uy_next = 2*Uy - Uy_prev + (C_0_CFL**2) * laplacian(Uy)
+            Uz_next = 2*Uz - Uz_prev + (C_0_CFL**2) * laplacian(Uz)
             if t < 20:
                  Uy_next += inject_gamma_ray(t) * 0.1
             Ux_next[nucleus_mask] = 0

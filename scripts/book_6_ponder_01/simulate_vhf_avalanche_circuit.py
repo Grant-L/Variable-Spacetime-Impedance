@@ -14,6 +14,10 @@ import sys
 import numpy as np
 import matplotlib.pyplot as plt
 
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
+
+from ave.core.constants import V_YIELD  # Derived yield voltage ≈ 43.65 kV
+
 # -------------------------------------------------------------
 # 1. Non-Linear Avalanche SPICE Model (Transient Analysis)
 # -------------------------------------------------------------
