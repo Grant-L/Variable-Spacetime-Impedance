@@ -223,8 +223,8 @@ def gravity_regime(M_kg, r_meters):
     Neutron star: ε₁₁ ≈ 0.3 (Regime II).
     Black hole at r_s: ε₁₁ → 1 (Regime III/IV boundary).
     """
-    G_Newton = 6.67430e-11  # m³/(kg·s²)
-    epsilon_11 = 7.0 * G_Newton * M_kg / (C_0**2 * r_meters)
+    from ave.core.constants import G
+    epsilon_11 = 7.0 * G * M_kg / (C_0**2 * r_meters)
     return classify_regime(
         epsilon_11, 1.0,
         domain="Gravity",
