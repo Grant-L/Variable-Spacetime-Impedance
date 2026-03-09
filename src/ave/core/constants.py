@@ -132,7 +132,7 @@ XI_MACHIAN: float = HBAR * C_0 / (7.0 * G * M_E**2)
 # =============================================================================
 
 # On-shell weak mixing angle from Poisson ratio: sin²θ_W = 1 - 7/9 = 2/9
-SIN2_THETA_W: float = 2.0 / 9.0                 # ≈ 0.2222 (PDG: 0.2230, Δ=0.35%)
+SIN2_THETA_W: float = 2.0 / 9.0                 # ≈ 0.2222 (PDG on-shell: 0.2234, Δ=−0.52%)
 
 # W boson mass from unknot self-energy at saturation:
 # M_W = m_e / (α² × p_c × √(3/7))

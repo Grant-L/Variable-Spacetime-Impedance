@@ -70,8 +70,19 @@ from ave.core.constants import (
 # PDG EXPERIMENTAL VALUES (for comparison)
 # Source: Particle Data Group 2024 Review of Particle Physics
 # ══════════════════════════════════════════════════════════════════════════════
+#
+# IMPORTANT: sin²θ_W has TWO standard definitions:
+#   On-shell:  sin²θ_W = 1 - (M_W/M_Z)² = 0.22337  (bare mass ratio)
+#   MS-bar:    sin²θ_W(μ=M_Z) = 0.23122              (loop-corrected at M_Z)
+#
+# AVE derives the ON-SHELL value (tree-level mass ratio = 2/9).
+# The ~3.5% difference between schemes is standard one-loop radiative
+# running — in EE terms, the DC bias ratio (on-shell) vs the AC
+# small-signal parameter at operating frequency (MS-bar).
+#
 PDG = {
-    'sin2_theta_W': 0.23122,    # On-shell scheme
+    'sin2_theta_W_onshell': 0.22337,  # On-shell: 1 - (M_W/M_Z)² (correct comparison)
+    'sin2_theta_W_msbar': 0.23122,    # MS-bar at M_Z (includes loop corrections)
     'M_W': 80379.0,             # MeV
     'M_Z': 91187.6,             # MeV
     'G_F': 1.1663788e-5,        # GeV⁻²
@@ -110,12 +121,16 @@ def run_derivation():
     print(f"    sin²θ_W = 1 - 7/9 = 2/9")
     
     sin2_ave = float(SIN2_THETA_W)
-    sin2_pdg = PDG['sin2_theta_W']
-    delta_sin2 = (sin2_ave - sin2_pdg) / sin2_pdg * 100
+    sin2_onshell = PDG['sin2_theta_W_onshell']
+    sin2_msbar = PDG['sin2_theta_W_msbar']
+    delta_onshell = (sin2_ave - sin2_onshell) / sin2_onshell * 100
+    delta_msbar = (sin2_ave - sin2_msbar) / sin2_msbar * 100
     
-    print(f"\n    AVE:  sin²θ_W = {sin2_ave:.6f}")
-    print(f"    PDG:  sin²θ_W = {sin2_pdg:.6f}")
-    print(f"    Δ = {delta_sin2:+.2f}%")
+    print(f"\n    AVE:  sin²θ_W = {sin2_ave:.6f}  (tree-level, on-shell)")
+    print(f"    PDG:  sin²θ_W = {sin2_onshell:.5f}  (on-shell: 1-(M_W/M_Z)²)")
+    print(f"    Δ = {delta_onshell:+.2f}%  ← correct comparison")
+    print(f"    PDG:  sin²θ_W = {sin2_msbar:.5f}  (MS-bar at M_Z, loop-corrected)")
+    print(f"    Δ = {delta_msbar:+.2f}%  ← includes radiative running")
     
     # ── Step 2: Mass Ratio ─────────────────────────────────────────────────
     print(f"\n  ── STEP 2: W/Z MASS RATIO ──")
@@ -202,7 +217,7 @@ def run_derivation():
     print(f"  ───────────────────────────────────────────────────────────")
     
     predictions = [
-        ("sin²θ_W",  "2/9",                     sin2_ave,  PDG['sin2_theta_W'], ""),
+        ("sin²θ_W",  "2/9",                     sin2_ave,  PDG['sin2_theta_W_onshell'], ""),
         ("m_W",      "m_e/(α²p_c√(3/7))",       M_W,       PDG['M_W'],         "MeV"),
         ("m_Z",      "M_W × 3/√7",              M_Z,       PDG['M_Z'],         "MeV"),
         ("G_F",      "√2πα/(2s²M_W²)",          G_F_ave,   PDG['G_F'],         "GeV⁻²"),
@@ -402,8 +417,10 @@ def run_derivation():
     ax6.scatter([2/7], [2/9], color=C_AVE, s=150, zorder=5, edgecolors="#ffffff")
     
     # PDG measurement
-    ax6.axhline(y=PDG['sin2_theta_W'], color=C_PDG, linewidth=1, linestyle=":",
-                alpha=0.5, label=f"PDG: {PDG['sin2_theta_W']:.5f}")
+    ax6.axhline(y=PDG['sin2_theta_W_onshell'], color=C_PDG, linewidth=1.5, linestyle=":",
+                alpha=0.7, label=f"PDG on-shell: {PDG['sin2_theta_W_onshell']:.5f}")
+    ax6.axhline(y=PDG['sin2_theta_W_msbar'], color=C_PDG, linewidth=1, linestyle="--",
+                alpha=0.3, label=f"PDG MS-bar: {PDG['sin2_theta_W_msbar']:.5f}")
     
     ax6.set_xlabel("Poisson ratio ν", color=C_TEXT, fontsize=10)
     ax6.set_ylabel("sin²θ_W", color=C_TEXT, fontsize=10)
