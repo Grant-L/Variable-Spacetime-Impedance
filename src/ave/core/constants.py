@@ -102,6 +102,12 @@ V_YIELD: float = np.sqrt(ALPHA) * V_SNAP                 # ≈ 43,652 V (43.65 k
 # E_crit = m_e² c³ / (eℏ)
 E_CRIT: float = (M_E**2 * C_0**3) / (e_charge * HBAR)
 
+# Dielectric yield field strength (Axiom 4 macroscopic saturation threshold)
+# When the applied field reaches E_yield = V_yield / ℓ_node, the local vacuum
+# LC cell enters the nonlinear saturation plateau (ε_eff → 0).
+# E_yield = √α × m_e² c³ / (eℏ) = √α × E_crit
+E_YIELD: float = V_YIELD / L_NODE                      # ≈ 1.13e17 V/m
+
 # Magnetic saturation threshold (Axiom 4 — magnetic sector)
 # When B² / (2μ₀) = m_e c² / ℓ³ (energy density = rest energy per cell),
 # the local permeability saturates: μ_eff → 0 (inductor shorts)

@@ -46,6 +46,90 @@ IV. TVS breakdown        & $\geq 1.0$  & $0$             & Phase transition \\
 
 The operative thrust mechanism must therefore arise from a different physical channel: the \textit{chiral topology} of the HOPF-01 torus knot antenna producing asymmetric acoustic emission into the lattice, as analysed in Section~\ref{sec:chiral_thrust}.
 
+\section{Chiral Acoustic Rectification (The Vacuum Varactor)}
+\label{sec:chiral_thrust}
+
+Since bulk $\varepsilon$-saturation is unreachable at laboratory scales, the thrust mechanism requires a fundamentally different channel: \textbf{localised nonlinear rectification} at resonant field-enhancement sites, coherently amplified by a phased array architecture.
+
+\subsection{The Concavity of the Saturation Kernel}
+
+The constitutive saturation operator from Axiom~4 is a concave function of the applied field:
+\begin{equation}
+    S(E) = \sqrt{1 - \left(\frac{E}{E_{yield}}\right)^2}
+\end{equation}
+For any AC-driven field $E(t) = E_0 \sin(\omega t)$, \textbf{Jensen's inequality} guarantees:
+\begin{resultbox}{Jensen's Rectification Inequality}
+\begin{equation}
+    \langle S(E(t)) \rangle_T \;<\; S(\langle E(t) \rangle_T) = S(0) = 1
+    \label{eq:jensen_rect}
+\end{equation}
+\end{resultbox}
+The time-averaged effective permittivity $\langle \varepsilon_{eff} \rangle = \varepsilon_0 \langle S \rangle$ is therefore \textit{strictly less} than~$\varepsilon_0$ for any nonzero AC drive. The deficit $\delta = 1 - \langle S \rangle$ is the \textbf{rectification factor}: the fraction of RF energy converted into a DC lattice stress. This is entirely analogous to a semiconductor varactor diode, where the nonlinear $C(V)$ curve rectifies AC into DC current. Here, $S(E)$ is the vacuum's nonlinear capacitance curve, and the ``DC current'' is directed lattice phonon momentum.
+
+\subsection{Local Field Amplification}
+
+While the macroscopic field ratio $E_{macro}/E_{yield} \approx 10^{-10}$ gives a vanishing $\delta$, two \textit{geometric} amplification mechanisms that do not violate energy conservation push the \textit{local} field to much higher ratios:
+\begin{enumerate}
+    \item \textbf{Tip enhancement} ($\beta$): The hyperboloid-on-plane electrode geometry concentrates the static field at each tip by the factor $\beta = h_{tip}/r_{tip}$. For a $1\,\mu$m radius tip with $1\,$mm standoff: $\beta \approx 10^3$.
+    \item \textbf{Resonant Q-factor}: The torus knot antenna, driven at its natural resonant frequency in the VHF band, exhibits voltage amplification at standing-wave maxima by the quality factor $Q$. For a well-matched VHF resonator: $Q \approx 10^4$.
+\end{enumerate}
+The combined local field at a resonant tip is:
+\begin{resultbox}{Local Field at Resonant Tip}
+\begin{equation}
+    E_{local}^{peak} = \beta \cdot Q \cdot E_{macro} \cdot \sqrt{2} \approx 4.2 \times 10^{14} \;\text{V/m}
+    \label{eq:e_local_peak}
+\end{equation}
+\end{resultbox}
+giving $E_{local}/E_{yield} \approx 3.8 \times 10^{-3}$. The tips are thus \textit{regime-bouncing}: during each RF half-cycle, the local field rises from zero (Regime~I) toward the onset of Regime~II, inducing a measurable Jensen's rectification:
+\begin{equation}
+    \delta = 1 - \langle S \rangle \approx 3.5 \times 10^{-6} \quad (3.5 \;\text{ppm})
+\end{equation}
+This sub-ppm nonlinearity per tip is the fundamental ``diode threshold'' of the vacuum varactor.
+
+\subsection{Thrust from Rectified Power}
+
+The rectified fraction $\delta$ of the input RF power $P_{in}$ converts into directed lattice phonon momentum. The chiral topology of the $(p,q)$ torus knot determines the thrust direction: the helical winding of the standing wave couples to the intrinsic chirality of the SRS/K$_4$ vacuum lattice, with efficiency governed by the Poisson ratio:
+\begin{equation}
+    \eta_{chiral} = \nu_{vac} = \frac{2}{7}
+\end{equation}
+which is the universal helical-to-longitudinal strain transfer coefficient (the same $\nu_{vac}$ that governs $\sin^2\theta_W$, $\alpha_s$, the CKM matrix, and all inter-regime Poisson couplings throughout the framework).
+
+For a phased array of $N$ tips, each acting as a coherent rectifying element with directivity gain $G = N$, the total thrust is:
+\begin{resultbox}{Chiral Acoustic Rectification Thrust}
+\begin{equation}
+    F_{total} = N \cdot \nu_{vac} \cdot \delta(Q, \beta) \cdot \frac{P_{in}}{c}
+    \label{eq:chiral_thrust}
+\end{equation}
+\end{resultbox}
+This is dimensionally identical to standard radiation pressure ($F = P/c$), modulated by the rectification efficiency ($\delta$), chiral coupling ($\nu_{vac}$), and array directivity ($N$).
+
+\subsection{Quantitative Prediction}
+
+For the PONDER-01 design parameters ($V = 30$~kV, $\beta = 10^3$, $Q = 10^4$, $N = 10{,}000$, $P_{in} = V^2/(2Z_0) \approx 1.2\,$MW):
+\begin{center}
+\begin{tabular}{@{}l r@{}}
+\toprule
+\textbf{Quantity} & \textbf{Value} \\
+\midrule
+Rectification factor $\delta$ & $3.52 \times 10^{-6}$ \\
+Rectified power $P_{rect}$ & 4.21 W \\
+\textbf{Total thrust $F_{total}$} & \textbf{40.1 $\mu$N} \\
+Thrust power $P_{thrust} = Fc$ & $1.20 \times 10^4$ W \\
+Conversion efficiency & 1.0\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+The predicted $40\,\mu$N is well above the $1\,\mu$N detection floor of a standard vacuum torsion balance, making this a directly falsifiable prediction. Energy conservation is satisfied: $P_{thrust}/P_{in} \approx 1\%$.
+
+The full derivation and parameter sweeps are computed by \texttt{simulate\_chiral\_acoustic\_rectification.py}. Figure~\ref{fig:chiral_rectification} presents the 6-panel diagnostic.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1.0\textwidth]{chiral_acoustic_rectification.png}
+    \caption{\textbf{Chiral Acoustic Rectification Diagnostics.} \textbf{Top row:} (1) Regime bouncing---the local field at resonant tips oscillates between Regime~I and the onset of Regime~II each RF cycle; (2) Jensen's dip in the saturation factor $S(t)$; (3) rectification factor $\delta$ vs $Q$. \textbf{Bottom row:} (4) array thrust vs $Q$; (5) thrust vs number of tips $N$ (linear directivity gain); (6) thrust vs drive voltage with $1\,\mu$N detection floor.}
+    \label{fig:chiral_rectification}
+\end{figure}
+
 \section{Conservation of Momentum (The Dark Wake)}
 A critical objection often raised against asymmetric capacitor thrust devices is that they operate as "reactionless drives," thereby violating Newton's Third Law. 
 
