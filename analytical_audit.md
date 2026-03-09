@@ -170,7 +170,7 @@ $$ M_{topo} = \frac{K}{\oint \vec{r}_{ij} \cdot d\vec{l}} $$
 $$ Z_0 = \sqrt{\frac{L}{C}} \quad , \quad c = \frac{1}{\sqrt{\epsilon_0 \mu_0}} $$
 
 ## 05_topological_matter.tex
-**Path**: `manuscript/book_2_topological_matter/chapters/05_topological_matter.tex`
+**Path**: `manuscript/book_3_topological_matter/chapters/05_topological_matter.tex`
 
 ### Sections
 - Topological Matter: Fermion Generations
@@ -191,7 +191,7 @@ $$ Q = \frac{1}{16\pi^2} \int \epsilon_{ijk} \vec{n} \cdot (\partial_i \vec{n} \
 $$ C_{eff}(\Delta\phi) = \frac{C_0}{\sqrt{1 - \left(\frac{\Delta\phi}{\alpha}\right)^2}} $$
 
 ## 06_baryon_sector.tex
-**Path**: `manuscript/book_2_topological_matter/chapters/06_baryon_sector.tex`
+**Path**: `manuscript/book_3_topological_matter/chapters/06_baryon_sector.tex`
 
 ### Sections
 - The Baryon Sector: Confinement and Fractional Quarks
@@ -232,7 +232,7 @@ $$ F_g = \left( \frac{m_p c^2}{\ell_{node}} \right) \left[ \frac{1}{7 \xi} \left
 $$ \mathbf{F_g = T_{nuc} \left[ \frac{1}{7 \xi} \left(\frac{\ell_{node}}{r}\right)^2 \left(\frac{m_p}{m_e}\right) \right]} $$
 
 ## 07_neutrino_sector.tex
-**Path**: `manuscript/book_2_topological_matter/chapters/07_neutrino_sector.tex`
+**Path**: `manuscript/book_3_topological_matter/chapters/07_neutrino_sector.tex`
 
 ### Sections
 - The Neutrino Sector: Chiral Unknots
@@ -250,7 +250,7 @@ $$ m_{flavor} = m_e \left(\nu_{vac}\right)^n = m_e \left(\frac{2}{7}\right)^n $$
 $$ \Psi(x,t) = A_e \cos(k_1 x - \omega_1 t) + A_\mu \cos(k_2 x - \omega_2 t) + A_\tau \cos(k_3 x - \omega_3 t) $$
 
 ## 08_electroweak_gauge_theory.tex
-**Path**: `manuscript/book_2_topological_matter/chapters/08_electroweak_gauge_theory.tex`
+**Path**: `manuscript/book_3_topological_matter/chapters/08_electroweak_gauge_theory.tex`
 
 ### Sections
 - Electroweak Mechanics and Gauge Symmetries
@@ -271,7 +271,7 @@ $$ \frac{m_W}{m_Z} = \sqrt{\frac{2G}{2G(1+\nu_{vac})}} = \frac{1}{\sqrt{1+\nu_{v
 $$ \frac{m_W}{m_Z} = \frac{1}{\sqrt{1+2/7}} = \frac{1}{\sqrt{9/7}} = \frac{\sqrt{7}}{3} \approx 0.881917 $$
 
 ## 14_planck_and_string_theory.tex
-**Path**: `manuscript/book_2_topological_matter/chapters/14_planck_and_string_theory.tex`
+**Path**: `manuscript/book_3_topological_matter/chapters/14_planck_and_string_theory.tex`
 
 ### Sections
 - The Planck Scale and String Theory
@@ -287,7 +287,7 @@ $$ T = \frac{1}{2\pi\alpha'} $$
 $$ T_{AVE} = \frac{U_{\text{inductive}}}{L_{\text{knot}}} $$
 
 ## 15_electroweak_and_higgs.tex
-**Path**: `manuscript/book_2_topological_matter/chapters/15_electroweak_and_higgs.tex`
+**Path**: `manuscript/book_3_topological_matter/chapters/15_electroweak_and_higgs.tex`
 
 ### Sections
 - The Subatomic Scale: Electroweak and Higgs Sectors
@@ -302,7 +302,7 @@ $$ Z_0 = \sqrt{\frac{\mu_0}{\epsilon_0}} \approx 376.73 \ \Omega $$
 $$ M_{inertial} \equiv L_{drag}(Z_0) $$
 
 ## 16_quantum_mechanics_and_orbitals.tex
-**Path**: `manuscript/book_2_topological_matter/chapters/16_quantum_mechanics_and_orbitals.tex`
+**Path**: `manuscript/book_3_topological_matter/chapters/16_quantum_mechanics_and_orbitals.tex`
 
 ### Sections
 - Quantum Mechanics and Atomic Orbitals
@@ -313,7 +313,7 @@ $$ M_{inertial} \equiv L_{drag}(Z_0) $$
 - \textbf{Deterministic Orbital Acoustics.
 
 ## 17_macroscopic_material_properties.tex
-**Path**: `manuscript/book_2_topological_matter/chapters/17_macroscopic_material_properties.tex`
+**Path**: `manuscript/book_3_topological_matter/chapters/17_macroscopic_material_properties.tex`
 
 ### Sections
 - Deriving Macroscopic Material Properties
@@ -324,7 +324,7 @@ $$ M_{inertial} \equiv L_{drag}(Z_0) $$
 - Fluid-dynamic streamline simulation comparing Diamagnetism (left: completely symmetric Magnesium-24 pushing flux evenly) versus Paramagnetism (right: asymmetric Aluminum-27 snagging flux with its offset halo).
 
 ## 18_macroscopic_orbital_mechanics.tex
-**Path**: `manuscript/book_2_topological_matter/chapters/18_macroscopic_orbital_mechanics.tex`
+**Path**: `manuscript/book_3_topological_matter/chapters/18_macroscopic_orbital_mechanics.tex`
 
 ### Sections
 - Macroscopic Orbital Mechanics
@@ -352,13 +352,13 @@ $$ N(E) \propto E^{-\alpha} \quad \text{where} \quad \alpha \approx 1.8 $$
 $$ I(V) = I_S \left( e^{\frac{V}{V_T}} - 1 \right) \times \left( \frac{1}{1 - (\frac{V}{V_{bd}})^\alpha} \right) $$
 
 ## 00_title.tex
-**Path**: `manuscript/book_2_topological_matter/frontmatter/00_title.tex`
+**Path**: `manuscript/book_3_topological_matter/frontmatter/00_title.tex`
 
 ### Equations
 $$ E = \int \left( \frac{1}{2}\partial_\mu \vec{n} \cdot \partial^\mu \vec{n} + \frac{1}{4e^2}(\partial_\mu \vec{n} \times \partial_\nu \vec{n})^2 \right) d^3x $$
 
 ## 04_gravity_and_yield.tex
-**Path**: `manuscript/book_3_macroscopic_continuity/chapters/04_gravity_and_yield.tex`
+**Path**: `manuscript/book_4_macroscopic_continuity/chapters/04_gravity_and_yield.tex`
 
 ### Sections
 - Trace-Reversal, Gravity, and Macroscopic Yield
@@ -390,7 +390,7 @@ $$ E_{k}=\sqrt{F_{yield}\left(\frac{e^{2}}{4\pi\epsilon_{0}}\right)}=\sqrt{\left
 $$ T_{static}=\frac{m_{e}c^{2}}{16.37\ \ell_{node}}=\frac{T_{EM}}{16.37}\approx\mathbf{0.0129\text{ N}} $$
 
 ## 09_macroscopic_relativity.tex
-**Path**: `manuscript/book_3_macroscopic_continuity/chapters/09_macroscopic_relativity.tex`
+**Path**: `manuscript/book_4_macroscopic_continuity/chapters/09_macroscopic_relativity.tex`
 
 ### Sections
 - Macroscopic Relativity: The Optical Metric
@@ -424,7 +424,7 @@ $$ \delta = \frac{4GM}{b c^2} $$
 $$ \text{Strain} = \frac{2GM}{c^2 R_{rupture}} \equiv 1.0 \implies R_{rupture} = \frac{2GM}{c^2} $$
 
 ## 10_generative_cosmology.tex
-**Path**: `manuscript/book_3_macroscopic_continuity/chapters/10_generative_cosmology.tex`
+**Path**: `manuscript/book_4_macroscopic_continuity/chapters/10_generative_cosmology.tex`
 
 ### Sections
 - Generative Cosmology and Thermodynamic Attractors
@@ -446,7 +446,7 @@ $$ \frac{10^{11}}{10^{10}} = \frac{e^{500 / \tau_{ind}}}{e^{350 / \tau_{ind}}} \
 $$ \tau_{ind} = \frac{150}{\ln(10)} \approx \mathbf{65.1 \text{ Million Years}} $$
 
 ## 17_condensed_matter_superconductivity.tex
-**Path**: `manuscript/book_3_macroscopic_continuity/chapters/17_condensed_matter_superconductivity.tex`
+**Path**: `manuscript/book_4_macroscopic_continuity/chapters/17_condensed_matter_superconductivity.tex`
 
 ### Sections
 - Condensed Matter and Superconductivity
@@ -462,7 +462,7 @@ $$ \frac{d\theta_i}{dt} = \omega_i + \frac{K}{N} \sum_{j=1}^N \sin(\theta_j - \t
 $$ \text{If } \Delta\left(\frac{dB}{dt}\right)_{relative} = 0, \text{ then } \text{Resistance} = 0 $$
 
 ## 18_thermodynamics_and_entropy.tex
-**Path**: `manuscript/book_3_macroscopic_continuity/chapters/18_thermodynamics_and_entropy.tex`
+**Path**: `manuscript/book_4_macroscopic_continuity/chapters/18_thermodynamics_and_entropy.tex`
 
 ### Sections
 - Thermodynamics and The Arrow of Time
@@ -477,7 +477,7 @@ $$ \text{If } \Delta\left(\frac{dB}{dt}\right)_{relative} = 0, \text{ then } \te
 $$ T \propto \langle U_{noise} \rangle = \left\langle \frac{1}{2}\epsilon_0 |\mathbf{E}|^2 + \frac{1}{2}\mu_0 |\mathbf{H}|^2 \right\rangle $$
 
 ## 19_general_relativity_and_gravity.tex
-**Path**: `manuscript/book_3_macroscopic_continuity/chapters/19_general_relativity_and_gravity.tex`
+**Path**: `manuscript/book_4_macroscopic_continuity/chapters/19_general_relativity_and_gravity.tex`
 
 ### Sections
 - General Relativity and Gravitational Waves
@@ -494,7 +494,7 @@ $$ T_{\mu\nu} \equiv U_{\mu\nu} = \frac{1}{2}\epsilon_0 |\mathbf{E}|^2 + \frac{1
 $$ ds^2 = -\left(1 - \frac{r_s}{r}\right) c^2 dt^2 + \left(1 - \frac{r_s}{r}\right)^{-1} dr^2 \quad \implies \quad \epsilon_{eff}(r) = \epsilon_0 \left(1 - \frac{r_s}{r}\right)^{-1} $$
 
 ## 20_ideal_gas_law_and_fluid_pressure.tex
-**Path**: `manuscript/book_3_macroscopic_continuity/chapters/20_ideal_gas_law_and_fluid_pressure.tex`
+**Path**: `manuscript/book_4_macroscopic_continuity/chapters/20_ideal_gas_law_and_fluid_pressure.tex`
 
 ### Sections
 - The Ideal Gas Law and Fluid Pressure
@@ -510,13 +510,13 @@ $$ PV = nRT $$
 $$ U \cdot V = N \cdot k_B \cdot \overline{T_{jitter}} $$
 
 ## 00_title.tex
-**Path**: `manuscript/book_3_macroscopic_continuity/frontmatter/00_title.tex`
+**Path**: `manuscript/book_4_macroscopic_continuity/frontmatter/00_title.tex`
 
 ### Equations
 $$ T_{\mu\nu} = (\rho + P)u_\mu u_\nu + P \eta_{\mu\nu} $$
 
 ## 01_topo_kinematic_circuit_identity.tex
-**Path**: `manuscript/book_4_applied_engineering/chapters/12_vacuum_circuit_analysis/01_topo_kinematic_circuit_identity.tex`
+**Path**: `manuscript/book_5_applied_engineering/chapters/12_vacuum_circuit_analysis/01_topo_kinematic_circuit_identity.tex`
 
 ### Sections
 - The Topo-Kinematic Circuit Identity
@@ -526,7 +526,7 @@ $$ Q = \int (\xi_{topo} v) \, dt = \xi_{topo} \int v \, dt = \xi_{topo} x $$
 $$ W = \int (\xi_{topo}^{-1} F)(\xi_{topo} \, dx) = \int F \, dx $$
 
 ## 02_circuit_models_vac_non_linearities.tex
-**Path**: `manuscript/book_4_applied_engineering/chapters/12_vacuum_circuit_analysis/02_circuit_models_vac_non_linearities.tex`
+**Path**: `manuscript/book_5_applied_engineering/chapters/12_vacuum_circuit_analysis/02_circuit_models_vac_non_linearities.tex`
 
 ### Sections
 - Constitutive Circuit Models for Vacuum Non-Linearities
@@ -544,7 +544,7 @@ $$ C_{vac}(V) = \frac{C_0}{\sqrt{1 - (V/V_{crit})^2}} $$
 $$ L_{vac}(I) = \frac{L_0}{\sqrt{1 - (I/I_{max})^2}} $$
 
 ## 03_impedance_free_space.tex
-**Path**: `manuscript/book_4_applied_engineering/chapters/12_vacuum_circuit_analysis/03_impedance_free_space.tex`
+**Path**: `manuscript/book_5_applied_engineering/chapters/12_vacuum_circuit_analysis/03_impedance_free_space.tex`
 
 ### Sections
 - The Impedance of Free Space (\texorpdfstring{$Z_0$
@@ -554,7 +554,7 @@ $$ Z_{elec} = \frac{V}{I} = \frac{\xi_{topo}^{-1} F}{\xi_{topo} v} = \xi_{topo}^
 $$ Z_m = \xi_{topo}^2 \cdot Z_0 = \xi_{topo}^2 \sqrt{\frac{\mu_0}{\epsilon_0}} \approx 6.48 \times 10^{-11} \left[ \frac{\text{kg}}{\text{s}} \right] $$
 
 ## 04_topological_defects_lc.tex
-**Path**: `manuscript/book_4_applied_engineering/chapters/12_vacuum_circuit_analysis/04_topological_defects_lc.tex`
+**Path**: `manuscript/book_5_applied_engineering/chapters/12_vacuum_circuit_analysis/04_topological_defects_lc.tex`
 
 ### Sections
 - Gravitational Stealth (S-Parameter Analysis)
@@ -571,7 +571,7 @@ $$ Z_{local}(r) = \sqrt{\frac{\mu_{local}}{\epsilon_{local}}} = \sqrt{\frac{n(r)
 $$ \Gamma_{EH} = \frac{Z_{EH} - Z_{0}}{Z_{EH} + Z_{0}} = \frac{0 - 376.7}{0 + 376.7} = -1 $$
 
 ## 05_real_vs_reactive.tex
-**Path**: `manuscript/book_4_applied_engineering/chapters/12_vacuum_circuit_analysis/05_real_vs_reactive.tex`
+**Path**: `manuscript/book_5_applied_engineering/chapters/12_vacuum_circuit_analysis/05_real_vs_reactive.tex`
 
 ### Sections
 - Topological Defects as Resonant LC Solitons
@@ -588,7 +588,7 @@ $$ \Gamma=\frac{Z_{core}-Z_{0}}{Z_{core}+Z_{0}}=\frac{0-376.7}{0+376.7}=-1 $$
 $$ P_{real} = F_g \cdot v_{orb} \cdot \cos(90^\circ) \equiv 0\ \text{Watts} $$
 
 ## 06_imd_spectroscopy.tex
-**Path**: `manuscript/book_4_applied_engineering/chapters/12_vacuum_circuit_analysis/06_imd_spectroscopy.tex`
+**Path**: `manuscript/book_5_applied_engineering/chapters/12_vacuum_circuit_analysis/06_imd_spectroscopy.tex`
 
 ### Sections
 - Condensate IMD Spectroscopy: The Harmonic Fingerprint
@@ -600,13 +600,13 @@ $$ P_{real} = F_g \cdot v_{orb} \cdot \cos(90^\circ) \equiv 0\ \text{Watts} $$
 $$ C_{vac}(V) = \frac{C_0}{\sqrt{1 - (V/V_{crit})^2}} $$
 
 ## _manifest.tex
-**Path**: `manuscript/book_4_applied_engineering/chapters/12_vacuum_circuit_analysis/_manifest.tex`
+**Path**: `manuscript/book_5_applied_engineering/chapters/12_vacuum_circuit_analysis/_manifest.tex`
 
 ### Sections
 - Vacuum Circuit Analysis: Equivalent Network Models
 
 ## 01_falsifiable_predictions.tex
-**Path**: `manuscript/book_4_applied_engineering/chapters/13_falsifiable_predictions/01_falsifiable_predictions.tex`
+**Path**: `manuscript/book_5_applied_engineering/chapters/13_falsifiable_predictions/01_falsifiable_predictions.tex`
 
 ### Sections
 - Falsifiable Predictions and Experimental Blueprints
@@ -635,13 +635,13 @@ $$ F_{thrust} = \left( \frac{\nu_{vac}^2}{c^2 \rho_{bulk}} \right) A \cdot f^2 \
 $$ \vec{v}_{\text{cw}} &= c - v_{\text{drift}} \\ \vec{v}_{\text{ccw}} &= c + v_{\text{drift}} $$
 
 ## _manifest.tex
-**Path**: `manuscript/book_4_applied_engineering/chapters/13_falsifiable_predictions/_manifest.tex`
+**Path**: `manuscript/book_5_applied_engineering/chapters/13_falsifiable_predictions/_manifest.tex`
 
 ### Sections
 - Non-Linear Optics and Falsifiable Predictions
 
 ## 14_applied_fusion.tex
-**Path**: `manuscript/book_4_applied_engineering/chapters/14_applied_fusion.tex`
+**Path**: `manuscript/book_5_applied_engineering/chapters/14_applied_fusion.tex`
 
 ### Sections
 - Applied Fusion and Dielectric Limits
@@ -667,7 +667,7 @@ $$ V_{topo} = \frac{0.0250 \text{ N}}{4.149 \times 10^{-7} \text{ C/m}} \approx 
 $$ V_{yield} \propto \frac{\alpha c \hbar}{e \ell_{node}} \approx 60.0\text{ kV} $$
 
 ## 15_antimatter_annihilation.tex
-**Path**: `manuscript/book_4_applied_engineering/chapters/15_antimatter_annihilation.tex`
+**Path**: `manuscript/book_5_applied_engineering/chapters/15_antimatter_annihilation.tex`
 
 ### Sections
 - Antimatter Annihilation and Parity Inversion
@@ -683,7 +683,7 @@ $$ E_{\text{knot}} = \frac{1}{2} I \omega^2 $$
 $$ U_{yield} = \frac{1}{2}\epsilon_0 |E_{crit}|^2 \implies E_{\text{knot}} \implies E_{\text{photon}} = h\nu $$
 
 ## 16_quantum_computing_and_decoherence.tex
-**Path**: `manuscript/book_4_applied_engineering/chapters/16_quantum_computing_and_decoherence.tex`
+**Path**: `manuscript/book_5_applied_engineering/chapters/16_quantum_computing_and_decoherence.tex`
 
 ### Sections
 - Quantum Computing and Topological Immunity
@@ -699,7 +699,7 @@ $$ U_{yield} = \frac{1}{2}\epsilon_0 |E_{crit}|^2 \implies E_{\text{knot}} \impl
 $$ \mathcal{L} = \frac{1}{4\pi} \oint \oint \frac{\mathbf{r}_1 - \mathbf{r}_2}{|\mathbf{r}_1 - \mathbf{r}_2|^3} \cdot (d\mathbf{r}_1 \times d\mathbf{r}_2) $$
 
 ## 18_the_standard_model_overdrive.tex
-**Path**: `manuscript/book_4_applied_engineering/chapters/18_the_standard_model_overdrive.tex`
+**Path**: `manuscript/book_5_applied_engineering/chapters/18_the_standard_model_overdrive.tex`
 
 ### Sections
 - The Standard Model Overdrive
@@ -711,13 +711,13 @@ $$ \mathcal{L} = \frac{1}{4\pi} \oint \oint \frac{\mathbf{r}_1 - \mathbf{r}_2}{|
 - First-Principles Protein Folding. A high-fidelity empirical Polyalanine polypeptide tracking the exact atomic folding pathway. The simulation dynamically films the unorganized 1D chain crumpling into its absolute minimum-energy 3D sequence (an Alpha-Helix), eliminating empirical AI approximations.
 
 ## 00_title.tex
-**Path**: `manuscript/book_4_applied_engineering/frontmatter/00_title.tex`
+**Path**: `manuscript/book_5_applied_engineering/frontmatter/00_title.tex`
 
 ### Equations
 $$ \Delta t = \frac{4 A \Omega}{c^2 (1 - \frac{v_{slip}^2}{c^2})} $$
 
 ## 01_organic_circuitry.tex
-**Path**: `manuscript/book_5_topological_biology/chapters/01_organic_circuitry.tex`
+**Path**: `manuscript/book_6_topological_biology/chapters/01_organic_circuitry.tex`
 
 ### Sections
 - Biological Circuitry: Amino Acids as SPICE Logic Gates
@@ -735,7 +735,7 @@ $$ \Delta t = \frac{4 A \Omega}{c^2 (1 - \frac{v_{slip}^2}{c^2})} $$
 - SPICE Resonant Frequency Response (Bode Plot) of Glycine vs L-Alanine.
 
 ## 02_deterministic_protein_folding.tex
-**Path**: `manuscript/book_5_topological_biology/chapters/02_deterministic_protein_folding.tex`
+**Path**: `manuscript/book_6_topological_biology/chapters/02_deterministic_protein_folding.tex`
 
 ### Sections
 - Deterministic Protein Folding

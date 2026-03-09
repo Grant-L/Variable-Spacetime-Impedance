@@ -1,5 +1,5 @@
 """
-DEPRECATED — Use scripts/book_4_applied_engineering/simulate_topological_qubit_3d.py instead.
+DEPRECATED — Use scripts/book_5_applied_engineering/simulate_topological_qubit_3d.py instead.
 
 This legacy version uses VacuumGrid bulk noise and does NOT compute the Gauss linking
 integral. The canonical version computes the actual contour integral, uses boundary-
@@ -8,7 +8,7 @@ appropriate noise, and produces a clean two-panel plot with raw linking number d
 import warnings
 warnings.warn(
     "This script is deprecated. Use "
-    "scripts/book_4_applied_engineering/simulate_topological_qubit_3d.py instead.",
+    "scripts/book_5_applied_engineering/simulate_topological_qubit_3d.py instead.",
     DeprecationWarning, stacklevel=2,
 )
 

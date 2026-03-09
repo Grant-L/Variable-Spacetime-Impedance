@@ -183,7 +183,7 @@ KAPPA_HB = 1.0 / (2.0 * Q_BACKBONE)  # = 1/14 ≈ 0.071
 #     C = ξ²/k (bond capacitance from force constant)
 #   X = charge reactance / Q
 #
-# Derivation script: scripts/book_5_topological_biology/derive_z_topo_first_principles.py
+# Derivation script: scripts/book_6_topological_biology/derive_z_topo_first_principles.py
 # Full derivation chain: Axioms 1-4 → ξ_topo → L,C → Z → Z_topo
 #
 Z_TOPO = {

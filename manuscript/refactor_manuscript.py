@@ -10,7 +10,7 @@ books = {
         '03_quantum_and_signal_dynamics.tex',
         '13_universal_spatial_tension.tex'
     ],
-    'book_2_topological_matter': [
+    'book_3_topological_matter': [
         '05_topological_matter.tex',
         '06_baryon_sector.tex',
         '07_neutrino_sector.tex',
@@ -19,7 +19,7 @@ books = {
         '16_quantum_mechanics_and_orbitals.tex',
         '14_planck_and_string_theory.tex'
     ],
-    'book_3_macroscopic_continuity': [
+    'book_4_macroscopic_continuity': [
         '09_macroscopic_relativity.tex',
         '04_gravity_and_yield.tex',
         '19_general_relativity_and_gravity.tex',
@@ -28,7 +28,7 @@ books = {
         '17_condensed_matter_superconductivity.tex',
         '20_ideal_gas_law_and_fluid_pressure.tex'
     ],
-    'book_4_applied_engineering': [
+    'book_5_applied_engineering': [
         '14_applied_fusion.tex',
         '15_antimatter_annihilation.tex'
     ]
@@ -167,7 +167,7 @@ for book, chapter_list in books.items():
         
         manifest_content += f"\\input{{chapters/{ch}}}\n"
     
-    if book == 'book_4_applied_engineering':
+    if book == 'book_5_applied_engineering':
         # Add the falsifiable predictions manifest
         manifest_content += "\\input{../chapters/13_falsifiable_predictions/_manifest.tex}\n"
         manifest_content += "\\input{../chapters/12_vacuum_circuit_analysis/_manifest.tex}\n"

@@ -39,9 +39,9 @@ verify:
 	@echo "[Verify] Running DAG Anti-Cheat Scan..."
 	$(PYTHON) $(SCRIPT_DIR)/book_1_foundations/verify_universe.py
 	@echo "\n[Verify] Running FDTD LC Network solvers..."
-	$(PYTHON) $(SCRIPT_DIR)/book_4_applied_engineering/visualize_impedance_rupture.py
+	$(PYTHON) $(SCRIPT_DIR)/book_5_applied_engineering/visualize_impedance_rupture.py
 	@echo "\n[Verify] Running Macroscopic Mutual Inductance bounds..."
-	$(PYTHON) $(SCRIPT_DIR)/book_4_applied_engineering/simulate_mutual_inductance.py
+	$(PYTHON) $(SCRIPT_DIR)/book_5_applied_engineering/simulate_mutual_inductance.py
 	@echo "\n[Verify] Running Topological Borromean geometric limits..."
 	$(PYTHON) $(SCRIPT_DIR)/book_1_foundations/visualize_topological_bounds.py
 	@echo "\n=================================================="
@@ -64,7 +64,7 @@ pdf_manuscript:
 	@echo "[Build] Setting up build directories for manuscript..."
 	@mkdir -p $(OUT_DIR)/aux/chapters $(OUT_DIR)/aux/frontmatter $(OUT_DIR)/aux/backmatter
 	@echo "[Build] Compiling Books 1 to 7..."
-	@for dir in book_1_foundations book_2_topological_matter book_3_macroscopic_continuity book_4_applied_engineering book_5_topological_biology book_6_ponder_01 book_7_cross_scale_verification; do \
+	@for dir in book_1_foundations book_3_topological_matter book_4_macroscopic_continuity book_5_applied_engineering book_6_topological_biology book_7_ponder_01 book_2_regime_map_and_verification; do \
 		echo "[Build] Compiling $$dir..."; \
 		rm -f $(OUT_DIR)/aux/$$dir.out $(OUT_DIR)/aux/$$dir.aux $(OUT_DIR)/aux/$$dir.toc; \
 		(cd $(SRC_DIR)/$$dir && $(LATEX) -jobname=$$dir -output-directory=../../$(OUT_DIR)/aux main.tex); \
