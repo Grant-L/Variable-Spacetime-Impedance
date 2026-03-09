@@ -6,6 +6,14 @@ Uses a simple N-body Verlet / Euler integrator to evolve a massive
 central node (Saturn) and N test-mass nodes (ice ring particles) 
 over time in 3D space.
 
+╔══════════════════════════════════════════════════════════════════╗
+║  NOTE: This is a DIMENSIONLESS TOY MODEL.                       ║
+║  G=1.0 and M_SATURN=10000 are computational parameters, NOT     ║
+║  physical constants. No physics predictions are made here.       ║
+║  For real Saturn ring gap physics, see:                          ║
+║    src/ave/gravity/solar_impedance.py → saturn_ring_gap_model()  ║
+╚══════════════════════════════════════════════════════════════════╝
+
 Generates an animated GIF of the structural evolution.
 """
 
@@ -29,11 +37,11 @@ try:
 except ImportError:
     _HAS_JAX = False
 
-# Gravitational Constant proxy for the simulation scale
-G = 1.0 
-
-# Saturn Mass (Central Node)
-M_SATURN = 10000.0
+# ── DIMENSIONLESS TOY PARAMETERS (NOT physics constants) ──────────────────
+# These are computational parameters for the N-body demo.
+# For real Saturn physics, use ave.gravity.solar_impedance.saturn_ring_gap_model()
+G = 1.0                # Dimensionless gravitational coupling
+M_SATURN = 10000.0      # Dimensionless central mass
 
 # Ring Particles
 N_PARTICLES = 1000

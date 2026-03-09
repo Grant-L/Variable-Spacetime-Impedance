@@ -30,11 +30,19 @@ from scipy.signal import peak_widths
 project_root = pathlib.Path(__file__).parent.parent.absolute()
 sys.path.append(str(project_root))
 
-# Semiconductor / Macroscopic Constants
+# AVE Engine — for context on the macroscopic yield limit
+from ave.core.constants import V_YIELD, V_SNAP
+
+# ── PHENOMENOLOGICAL PARAMETERS ──────────────────────────────────────────
+# These are phenomenological fits to the Shockley diode + avalanche model.
+# V_BD, I_S, V_T are macroscopic analogy parameters (NOT derived from AVE axioms).
+# AVALANCHE_N = 1.8 is an EMPIRICAL exponent matching the observed solar
+# flare power-law distribution — it needs first-principles derivation.
+# TODO: Derive AVALANCHE_N from torus knot topology cascade statistics.
 V_BD = 100.0          # Macroscopic Bandgap Voltage (Yield Stress of Vacuum)
 I_S = 1e-3            # Saturation leakage current (Ambient Corona Emission)
 V_T = 15.0            # Thermal Equivalent Voltage (Ambient kinetic baseline)
-AVALANCHE_N = 1.8     # Empirical Avalanche exponent (matches empirical solar power-law)
+AVALANCHE_N = 1.8     # EMPIRICAL: Avalanche exponent (solar flare power-law fit)
 
 def macroscopic_shockley_avalanche(v):
     """

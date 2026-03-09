@@ -117,9 +117,9 @@ if __name__ == "__main__":
     cir_files = glob.glob(str(cir_dir / "*_ave.cir"))
     
     # 300 cm-1 to 4000 cm-1 (convert to Hz: c * cm-1 * 100)
-    c = 299792458
+    from ave.core.constants import C_0
     wavenumbers = np.linspace(300, 4000, 2000)
-    freqs = wavenumbers * c * 100
+    freqs = wavenumbers * C_0 * 100
     
     plt.style.use('dark_background')
     plt.figure(figsize=(16, 10))
