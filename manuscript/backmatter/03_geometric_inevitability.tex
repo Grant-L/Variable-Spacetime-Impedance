@@ -160,6 +160,10 @@ $r_s(\odot)$ & $\dfrac{2GM_\odot}{c^2}$
 $\beta_\text{fold}$ & $\ln(3) \times 3/7$
     & 0.471
     & Protein folding barrier exponent \\[6pt]
+$E_{yield}$ & $\dfrac{V_{yield}}{\ell_{node}}
+    = \dfrac{\sqrt{\alpha}\, m_e^2 c^3}{e\, \hbar}$
+    & $1.13\times10^{17}$ V/m
+    & Dielectric yield field ($\sqrt{\alpha}\times E_S$) \\[6pt]
 \bottomrule
 \end{tabular}
 \end{center}
@@ -248,6 +252,14 @@ where $N$ is the chain length, CO is the relative contact order, and the barrier
 \end{itemize}
 Empirical barrier: $b_\text{emp} = 0.452$.  Derived: $\beta = 0.471$.  \textbf{Error: 4.1\%.}
 Validated across 15 two-state folders: $R = 0.87$, 12/15 within $\pm$2 decades.
+
+\subsection{Dielectric Yield Field ($E_{yield} = \sqrt{\alpha}\, E_S$)}
+
+The Axiom~4 yield voltage $V_{yield} = \sqrt{\alpha}\, V_{snap} \approx 43.65$~kV applies across a single lattice node of spacing $\ell_{node} = \hbar/(m_e c) = 3.862 \times 10^{-13}$~m. The corresponding electric field threshold is:
+\begin{equation}
+    E_{yield} = \frac{V_{yield}}{\ell_{node}} = \frac{\sqrt{\alpha}\, m_e^2 c^3}{e\, \hbar} \approx 1.13 \times 10^{17}\;\text{V/m}
+\end{equation}
+This is exactly $\sqrt{\alpha}$ times the Schwinger critical field of QED ($E_S = m_e^2 c^3 / (e\hbar) \approx 1.32 \times 10^{18}$~V/m). The strongest sustained laboratory fields ($\sim 10^{10}$~V/m in ultrafast laser foci) are seven orders of magnitude below $E_{yield}$. Consequently, all macroscopic electromagnetic devices operate in \textbf{Regime~I} (linear vacuum, $\varepsilon_{eff} = \varepsilon_0$). Axiom~4 saturation is physically operative only at sub-femtometer separations---within particle cores, nuclear scattering events, and event horizons (see Book~6, Section~\ref{sec:regimes_of_operation}).
 
 \section{$g_* = 7^3/4 = 85.75$: Lattice Mode Count}
 \label{sec:g_star_derivation}

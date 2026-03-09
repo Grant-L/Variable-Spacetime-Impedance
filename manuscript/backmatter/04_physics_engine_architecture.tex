@@ -194,6 +194,9 @@ The primary FDTD engine.  At each time step, $\varepsilon_{eff}$
 and $\mu_{eff}$ are recomputed from the local field amplitudes via
 \texttt{saturation\_factor}, implementing Axiom~4 dynamically.
 
+\paragraph{Grid-dependent saturation (known caveat).}
+The engine computes the local cell voltage as $V_{local} = |E| \times dx$, where $dx$ is the simulation grid spacing (default 1~cm).  This makes the saturation threshold $E_{yield}^{sim} = V_{yield}/dx = 4.37$~MV/m --- achievable by laboratory fields.  However, the physical threshold is $E_{yield} = V_{yield}/\ell_{node} \approx 1.13 \times 10^{17}$~V/m (Appendix~\ref{sec:derived_numerology}).  The FDTD engine thus produces \textit{qualitatively correct} nonlinear behaviour but \textit{quantitatively amplified} saturation effects at macroscopic grid resolutions.  Simulation results involving Axiom~4 saturation should be interpreted as scale-compressed demonstrations rather than absolute-magnitude predictions.
+
 \subsection{\texttt{solvers/bond\_energy\_solver.py} --- Nuclear Bond Curves}
 
 1D FDTD for computing $E(d)$ curves between nuclear defects.
