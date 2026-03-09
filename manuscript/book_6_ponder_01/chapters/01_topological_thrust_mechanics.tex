@@ -2,16 +2,49 @@
 
 Standard electrodynamics forbids the continuous generation of unidirectional thrust within a sealed vacuum environment (e.g., a contained asymmetric capacitor) as it violates the conservation of momentum. 
 
-However, the Applied Vacuum Engineering (AVE) framework proves the vacuum is a rigid LC dielectric lattice ($\mathcal{M}_A$ metric). By inducing an extreme non-linear asymmetric gradient of electric field energy density ($\nabla |\mathbf{E}|^2$) and driving it dynamically, an engineered emitter can theoretically grip the static continuous background modes of the matrix. This process, formally known as \textbf{Macroscopic Acoustic Rectification}, actively rectifies symmetric vacuum fluctuations into continuous, unidirectional thrust \textit{against} the physical weight of the spatial lattice itself.
+However, the Applied Vacuum Engineering (AVE) framework proves the vacuum is a rigid LC dielectric lattice ($\mathcal{M}_A$ metric). By driving a chirally-wound resonant emitter (the HOPF-01 torus knot antenna) dynamically, the engineered near-field EM topology couples asymmetrically to the lattice acoustic modes. This process, formally known as \textbf{Macroscopic Acoustic Rectification}, converts oscillating electromagnetic energy into directed lattice phonon emission---continuous, unidirectional thrust \textit{against} the physical mass of the spatial lattice itself.
 
-In this chapter, the exact coupling transfer coefficient ($k_{topo}$) required to translate purely electromagnetic gradients into physical longitudinal force ($F_{thrust}$).
+This chapter establishes the fundamental operating regimes of the vacuum dielectric, quantifies the field thresholds separating them, and derives the exact coupling mechanism from first principles.
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=1.0\textwidth]{ponder_01_thrust_vectoring.png}
-    \caption{\textbf{Topological Thrust Vectoring:} The simulated macroscopic force output of a $25 \text{ cm}^2$ asymmetric electrode array driven at $30 \text{ kV}$ RMS. The extreme non-linear $\nabla |\mathbf{E}|^2$ gradient acts as a geometric drag anchor against the continuous string-lattice. To breach the $1 \mu\text{N}$ detection floor of a vacuum torsion balance, the array must be pumped dynamically in the VHF band. Operating at $100 \text{ MHz}$ yields a highly detectable $45 \mu\text{N}$ continuous anomaly.}
-    \label{fig:ponder_01_thrust_vectoring}
-\end{figure}
+\section{Regimes of Operation}
+\label{sec:regimes_of_operation}
+
+Before deriving the thrust mechanism, it is essential to establish \textit{which operating regime} a laboratory-scale device occupies within the Axiom~4 saturation landscape. The constitutive circuit models of Section~\ref{sec:vca_nonlinear} define the yield voltage as $V_{yield} = \sqrt{\alpha}\,V_{snap} \approx 43.65$ kV. This yield applies \textit{per lattice node}, i.e., across a single node spacing $\ell_{node} = \hbar / (m_e c) = 3.862 \times 10^{-13}$ m.
+
+The corresponding electric field yield threshold is therefore:
+\begin{resultbox}{Dielectric Yield Field Strength}
+\begin{equation}
+    E_{yield} = \frac{V_{yield}}{\ell_{node}} = \frac{\sqrt{\alpha}\, m_e c^2 / e}{\hbar / (m_e c)} = \frac{\sqrt{\alpha}\, m_e^2 c^3}{e\, \hbar} \approx 1.13 \times 10^{17} \text{ V/m}
+    \label{eq:e_yield}
+\end{equation}
+\end{resultbox}
+
+This field strength exceeds the classical Schwinger limit of QED ($E_S = m_e^2 c^3 / e\hbar \approx 1.32 \times 10^{18}$ V/m) by a factor of $\sqrt{\alpha}$. For comparison, the strongest sustained laboratory fields are $\sim 10^{10}$ V/m (ultrafast laser foci), seven orders of magnitude below $E_{yield}$.
+
+\paragraph{Regime Classification.} The saturation factor $S(E) = \sqrt{1 - (E/E_{yield})^2}$ defines four operating regimes:
+
+\begin{table}[H]
+\centering
+\caption{Operating regimes of the vacuum dielectric under applied electric field. All laboratory-scale electromagnetic devices operate deep in Regime~I.}
+\label{tab:ponder_regimes}
+\small
+\begin{tabular}{@{}l c c c@{}}
+\toprule
+\textbf{Regime} & $E / E_{yield}$ & $\varepsilon_{eff} / \varepsilon_0$ & \textbf{Physics} \\
+\midrule
+I. Linear                & $< 0.1$     & $> 0.995$   & Standard Maxwell \\
+II. Weakly non-linear    & $0.1$--$0.5$ & $0.87$--$0.995$ & Euler--Heisenberg analogue \\
+III. Strongly non-linear & $0.5$--$1.0$ & $0$--$0.87$     & Metric varactor \\
+IV. TVS breakdown        & $\geq 1.0$  & $0$             & Phase transition \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Implication for PONDER-01.} An asymmetric capacitor driven at 30~kV with a 1~mm gap produces $E \approx 3 \times 10^7$ V/m. The saturation ratio $E/E_{yield} \approx 2.7 \times 10^{-10}$ places the device firmly in \textbf{Regime~I} (linear vacuum). The bulk dielectric permittivity $\varepsilon_0$ is essentially unperturbed. Consequently, \textit{bulk $\varepsilon$-saturation is not the operative thrust mechanism}. The field gradients do not approach the levels required to produce measurable non-linear vacuum permittivity.
+
+\paragraph{Where saturation is physical.} Regime~III and IV are reached only at sub-femtometer separations---i.e., within particle cores, at nuclear scattering boundaries, and at event horizons. This is consistent with the role of Axiom~4 in producing the Pauli exclusion wall, the nuclear repulsive core, and the photon sphere, as derived in Volume~II.
+
+The operative thrust mechanism must therefore arise from a different physical channel: the \textit{chiral topology} of the HOPF-01 torus knot antenna producing asymmetric acoustic emission into the lattice, as analysed in Section~\ref{sec:chiral_thrust}.
 
 \section{Conservation of Momentum (The Dark Wake)}
 A critical objection often raised against asymmetric capacitor thrust devices is that they operate as "reactionless drives," thereby violating Newton's Third Law. 
