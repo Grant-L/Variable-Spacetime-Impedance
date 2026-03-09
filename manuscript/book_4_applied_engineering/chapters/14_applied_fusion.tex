@@ -104,6 +104,113 @@ This increases the local scalar refractive index ($n \gg 1$), compressing the sp
     \label{fig:fusion_crisis_audit}
 \end{figure}
 
+\subsection{Quantitative Scaling Laws}
+
+The impact of active metric compression on fusion parameters follows directly from the Topo-Kinematic Identity and the Axiom-4 saturation kernel. Let $n_{scalar}$ denote the local effective refractive index (lattice density enhancement). Three scaling laws follow:
+
+\begin{resultbox}{Metric-Catalyzed Fusion Scaling Laws}
+\begin{align}
+    r(n) &= \frac{a_0}{n_{scalar}} \label{eq:radius_scaling} \\[6pt]
+    T_{ign}(n) &= \frac{T_0}{n_{scalar}^{2}} \label{eq:temp_scaling} \\[6pt]
+    V_{topo}(n) &= \frac{V_{topo,0}}{n_{scalar}^{3}} \label{eq:vtopo_scaling}
+\end{align}
+\end{resultbox}
+
+Equation~(\ref{eq:radius_scaling}): the effective Bohr radius shrinks inversely with the metric compression, directly analogous to the muon-catalyzed radius reduction.
+
+\textbf{Derivation of Equation~(\ref{eq:vtopo_scaling}):} The collision strain is $V_{topo} = F/\xi_{topo}$, where $F = E_k/d_{turn}$ is the average Coulomb deceleration force. In a metrically compressed space with $c_{local} = c_0/n$, the turning distance at the Gamow-shifted kinetic energy $E_k(n) = E_0/n^2$ is:
+\begin{equation}
+    d_{turn}(n) = \frac{\alpha\hbar c_{local}}{E_k(n)} = \frac{\alpha\hbar (c_0/n)}{(E_0/n^2)} = n \times d_{turn,0}
+\end{equation}
+The turning distance \textit{increases} because the kinetic energy ($\propto 1/n^2$) drops faster than the coordinate compression ($\propto 1/n$). The collision force therefore decreases as $F(n) = E_k(n)/d_{turn}(n) = F_0/n^3$.
+
+\textbf{WKB derivation of Equation~(\ref{eq:temp_scaling}):} The fusion cross-section is governed by the Gamow tunnelling probability through the Coulomb barrier. The WKB tunnelling exponent is:
+\begin{equation}
+    \eta = \frac{1}{\hbar}\int_{r_{nuc}}^{r_{turn}}\! \sqrt{2\mu\bigl(V(r) - E\bigr)}\;\mathrm{d}r
+    \label{eq:wkb_integral}
+\end{equation}
+In a metrically compressed space ($n_{scalar} > 1$), two transformations act simultaneously:
+\begin{itemize}
+    \item \textbf{Potential invariance:} $V(r_{lab}) = \alpha\hbar c_{local}/r_{lab} = \alpha\hbar(c_0/n)/(r_0/n) = \alpha\hbar c_0/r_0 = V_{vac}(r_0)$. The Coulomb barrier height is unchanged.
+    \item \textbf{Coordinate compression:} The spatial measure contracts: $\mathrm{d}r_{lab} = \mathrm{d}r_{vac}/n$. The WKB integral picks up a factor of $1/n$:
+\end{itemize}
+\begin{resultbox}{Compressed Gamow Exponent}
+\begin{equation}
+    \eta(n) = \frac{\eta_0}{n}
+    \label{eq:gamow_compressed}
+\end{equation}
+\end{resultbox}
+The barrier is not lowered---it is \textit{narrowed}. Since the tunnelling probability depends exponentially on $\eta$, even a modest compression dramatically enhances the cross-section.
+
+The Gamow energy, which sets the peak of the Maxwell-Boltzmann$\times$tunnelling integrand, is $E_G = (\pi \alpha Z_1 Z_2)^2 \times 2\mu c^2$. Since $\eta \propto \sqrt{E_G/E}$ and $\eta(n) = \eta_0/n$, the compressed Gamow energy is:
+\begin{equation}
+    E_G(n) = \frac{E_{G,0}}{n^2}
+    \label{eq:gamow_energy_compressed}
+\end{equation}
+The Lawson ignition criterion---where the volumetric reaction rate first exceeds radiative losses---depends on $E_G$. Therefore the ignition temperature scales directly:
+
+Setting $V_{topo}(n^*) = V_{yield}$ yields the critical compression threshold:
+\begin{resultbox}{Critical Metric Compression Threshold}
+\begin{equation}
+    n^* = \left(\frac{V_{topo,0}}{V_{yield}}\right)^{1/3} = \left(\frac{60{,}340}{43{,}650}\right)^{1/3} \approx \mathbf{1.114}
+    \label{eq:n_star}
+\end{equation}
+\end{resultbox}
+
+A lattice density enhancement of merely $11\%$ is sufficient to suppress the D-T collision strain below the vacuum yield limit. At $n^* = 1.114$:
+\begin{itemize}
+    \item The effective Bohr radius compresses from $0.529$~\AA\ to $0.475$~\AA\ ($90\%$ of free-space).
+    \item The required ignition temperature drops from $15$~keV to $12.1$~keV ($81\%$ of free-space).
+    \item The saturation factor remains $S > 0$, and the Strong Nuclear Force stays active throughout the collision.
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{metric_catalyzed_fusion.png}
+    \caption{\textbf{Metric-Catalyzed Fusion Scaling Laws.} \textbf{Top Left:} Effective Bohr radius vs.\ lattice density $n_{scalar}$. \textbf{Top Right:} Required D-T ignition temperature drops as $1/n^2$. \textbf{Bottom Left:} Topological collision strain $V_{topo}$ drops as $1/n^3$, crossing below $V_{yield} = 43.65$~kV at $n^* = 1.114$. \textbf{Bottom Right:} Saturation factor $S(n)$: the Strong Nuclear Force activates above the compression threshold. All parameters from \texttt{ave.core.constants}; zero empirical fits.}
+    \label{fig:metric_catalyzed_fusion}
+\end{figure}
+
+\subsection{Why Fusion Works in the Sun but Not on Earth}
+
+The Standard Solar Model provides an instructive natural demonstration of metric-catalyzed fusion. The Sun's core fuses protons via the pp-chain at only $\sim 1.35$~keV---an order of magnitude below the $15$~keV D-T requirement of terrestrial Tokamaks. Yet a $1.35$~keV proton-proton collision generates only $V_{topo} \approx 0.5$~kV in free-space, far below $V_{yield}$.
+
+The answer lies in \textit{density}, not temperature. The solar core operates at $n_e \approx 1.5 \times 10^{32}$~m$^{-3}$---twelve orders of magnitude denser than a Tokamak ($n_e \approx 10^{20}$~m$^{-3}$). At this density, the Debye screening length collapses to:
+\begin{equation}
+    \lambda_D = \sqrt{\frac{\varepsilon_0 k_B T}{n_e e^2}} \approx 22~\text{pm}
+    \label{eq:debye_solar}
+\end{equation}
+This confines the Coulomb repulsion to a volume smaller than the classical turning distance, dramatically lowering the effective collision strain. In AVE terms, the dense plasma acts as a natural metric compressor, providing an effective $n_{scalar} \gg 1$.
+
+By contrast, a Tokamak with $n_e = 10^{20}$~m$^{-3}$ has $\lambda_D \approx 91~\mu$m---a million times larger---providing zero screening benefit. The plasma density is too sparse to compress the metric. When two $15$~keV D-T ions collide in this unscreened environment, the full $60.3$~kV topological strain is applied, rupturing the vacuum and disabling the Strong Force at the moment of ignition.
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Parameter} & \textbf{Solar Core} & \textbf{Tokamak (ITER)} & \textbf{AVE Reactor} \\
+\midrule
+Density $n_e$ (m$^{-3}$) & $1.5 \times 10^{32}$ & $1.0 \times 10^{20}$ & engineered \\
+Temperature (keV) & 1.35 & 15.0 & 3.75 \\
+Debye length $\lambda_D$ & 22 pm & 91 $\mu$m & N/A \\
+$V_{topo}$ (kV) & 10.3 & 60.3 & 7.5 \\
+$V_{yield}$ (kV) & 43.65 & 43.65 & 43.65 \\
+Strong Force & \textbf{ACTIVE} & \textbf{DISABLED} & \textbf{ACTIVE} \\
+Fusion outcome & \textit{Sustained} & \textit{Leaks} & \textit{Sustained} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Gravitational metric compression at the solar core ($n_{grav} = 1/\sqrt{1 - 2GM/rc^2} \approx 1.0000085$) is entirely negligible. The fusion-enabling mechanism is the enormous \textit{matter density}, which compresses the Coulomb screening length by six orders of magnitude relative to a terrestrial Tokamak.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{solar_vs_tokamak_fusion.png}
+    \caption{\textbf{Solar Core vs.\ Tokamak vs.\ AVE Reactor.} The Sun fuses at 1.35~keV because its core density ($1.5 \times 10^{32}$~m$^{-3}$) collapses $\lambda_D$ to 22~pm, providing natural metric compression. A Tokamak at $10^{20}$~m$^{-3}$ has no such screening; at 15~keV, $V_{topo} = 60.3$~kV exceeds $V_{yield}$. An AVE reactor engineers the missing density effect via standing-wave metric compression ($n \ge 1.38$), enabling fusion below the yield limit.}
+    \label{fig:solar_vs_tokamak}
+\end{figure}
+
 \section{Empirical Reactor Data: Validating the Leakage Paradox}
 
 In standard fusion science, plasma behavior is modeled almost entirely using "Empirical Scaling Laws." Because orthodox physics relies on classical Magnetohydrodynamics (MHD)---which assumes the vacuum is an empty, linear void---it consistently fails to predict macroscopic plasma instabilities from absolute first principles. When experimental data deviates, physicists are forced to manually curve-fit the data. 
