@@ -35,6 +35,7 @@ EPSILON_0: float = 1.0 / (MU_0 * C_0**2)       # Vacuum permittivity [F/m]
 Z_0: float = np.sqrt(MU_0 / EPSILON_0)         # Characteristic impedance [Ω] ≈ 376.73
 HBAR: float = 1.054571817e-34                   # reduced Planck constant [J·s]
 e_charge: float = 1.602176634e-19              # Elementary charge [C]
+K_B: float = 1.380649e-23                       # Boltzmann constant [J/K] (exact, 2019 SI)
 
 # =============================================================================
 # THREE CALIBRATION INPUTS

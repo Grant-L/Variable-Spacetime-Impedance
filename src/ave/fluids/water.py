@@ -41,13 +41,11 @@ Physical constants for H₂O:
 import numpy as np
 from dataclasses import dataclass
 
-from ave.core.constants import HBAR, C_0
+from ave.core.constants import HBAR, C_0, K_B, e_charge as EV_TO_J
 
 # Physical constants
-K_B = 1.380649e-23       # Boltzmann [J/K]
 N_A = 6.02214076e23      # Avogadro
 H_BAR = float(HBAR)      # ℏ [J·s] — from constants.py
-EV_TO_J = 1.602176634e-19
 
 
 @dataclass

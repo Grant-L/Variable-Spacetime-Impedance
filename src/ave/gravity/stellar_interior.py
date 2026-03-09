@@ -31,7 +31,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 from ave.core.constants import (
-    C_0, EPSILON_0, MU_0, Z_0, M_E, e_charge, HBAR, ALPHA,
+    C_0, EPSILON_0, MU_0, Z_0, M_E, e_charge, HBAR, ALPHA, K_B,
 )
 from ave.axioms.scale_invariant import (
     impedance,
@@ -39,15 +39,10 @@ from ave.axioms.scale_invariant import (
     saturation_factor,
 )
 
-# Electron properties (same as cutoff.py)
-E_CHARGE = 1.602176634e-19    # [C]
-M_ELECTRON = 9.1093837015e-31  # [kg]
-K_B = 1.380649e-23             # [J/K]
-
 
 def plasma_frequency(n_e):
     """ω_p = √(n_e e² / (m_e ε₀))  [rad/s]."""
-    return np.sqrt(np.asarray(n_e, dtype=float) * E_CHARGE**2 / (M_ELECTRON * EPSILON_0))
+    return np.sqrt(np.asarray(n_e, dtype=float) * e_charge**2 / (M_E * EPSILON_0))
 
 
 # ═══════════════════════════════════════════════════════════════
@@ -265,7 +260,7 @@ def helioseismology_modes(n_max: int = 10,
     """
     # Solar sound speed profile (simplified)
     # c_s ≈ √(γ k_B T / m_p)  where γ = 5/3
-    k_B = 1.381e-23
+    k_B_val = float(K_B)
     m_p = 1.673e-27
     gamma = 5.0 / 3.0
 
@@ -273,7 +268,7 @@ def helioseismology_modes(n_max: int = 10,
     profile = build_radial_profile(n_points=200)
     dr = np.diff(profile['r_m'])
     T_mid = 0.5 * (profile['T_K'][:-1] + profile['T_K'][1:])
-    c_s = np.sqrt(gamma * k_B * T_mid / m_p)
+    c_s = np.sqrt(gamma * k_B_val * T_mid / m_p)
     travel_time = np.sum(dr / c_s)  # one-way [s]
 
     # Resonant frequencies: f_n = n / (2T)

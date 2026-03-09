@@ -20,11 +20,8 @@ The FDTD engine already implements this: when E > V_snap/dx,
 
 import numpy as np
 from dataclasses import dataclass
-from ave.core.constants import C_0, EPSILON_0, MU_0, V_SNAP, ALPHA, L_NODE, e_charge, M_E
+from ave.core.constants import C_0, EPSILON_0, MU_0, V_SNAP, ALPHA, L_NODE, e_charge, M_E, K_B
 from ave.axioms.scale_invariant import saturation_factor, epsilon_eff as _si_epsilon_eff
-
-# Boltzmann constant (not yet in core/constants.py)
-K_B = 1.380649e-23             # [J/K]
 
 
 @dataclass

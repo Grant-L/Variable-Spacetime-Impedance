@@ -42,7 +42,7 @@ def simulate_ponder_01_thrust():
     A = 0.05 * 0.05       # Collector Area (m^2) -> 5cm x 5cm
     e_charge = 1.602e-19  # Elementary charge (C)
     m_e = 9.109e-31       # Electron mass equivalent mapping (kg)
-    eps_0 = 8.854e-12     # Vacuum permittivity
+    eps_0 = float(EPSILON_0)  # Vacuum permittivity from engine
     
     # We will sweep AC Operating Frequency (1 MHz to 100 MHz)
     freqs = np.logspace(6, 8, 500)

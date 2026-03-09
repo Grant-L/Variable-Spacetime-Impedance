@@ -23,7 +23,7 @@ All constants imported from ave.core.constants — zero free parameters.
 import numpy as np
 from ave.core.constants import (
     C_0, G, M_E, HBAR, ALPHA, L_NODE, Z_0,
-    NU_VAC, ISOTROPIC_PROJECTION, P_C, T_EM,
+    NU_VAC, ISOTROPIC_PROJECTION, P_C, T_EM, K_B,
 )
 
 # Alias for readability
@@ -732,8 +732,7 @@ def hawking_temperature(M):
     -------
     T_H : float   Hawking temperature [K]
     """
-    k_B = 1.380649e-23  # Boltzmann constant [J/K]
-    return HBAR * C_0**3 / (8.0 * np.pi * G_NEWTON * M * k_B)
+    return HBAR * C_0**3 / (8.0 * np.pi * G_NEWTON * M * K_B)
 
 
 # ---------------------------------------------------------------------------

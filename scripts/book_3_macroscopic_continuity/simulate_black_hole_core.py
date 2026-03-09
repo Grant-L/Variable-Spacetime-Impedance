@@ -39,7 +39,7 @@ from matplotlib.gridspec import GridSpec
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
 from ave.core.constants import (
     C_0, G, HBAR, MU_0, EPSILON_0, Z_0, NU_VAC,
-    ALPHA, M_E, e_charge, L_NODE,
+    ALPHA, M_E, e_charge, L_NODE, K_B,
 )
 from ave.gravity import (
     principal_radial_strain,
@@ -61,7 +61,7 @@ from ave.axioms.scale_invariant import (
 # SOLAR MASS AND KNOWN BH DATA
 # ══════════════════════════════════════════════════════════════════════════════
 M_SUN = 1.989e30  # kg (IAU nominal solar mass)
-k_B = 1.380649e-23  # J/K (Boltzmann constant)
+k_B = K_B
 
 # LIGO events for comparison
 LIGO_EVENTS = {
