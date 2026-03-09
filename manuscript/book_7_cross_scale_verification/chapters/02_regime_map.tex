@@ -14,25 +14,61 @@ This chapter establishes the regime classification as a \textbf{prerequisite gat
 \end{resultbox}
 
 \begin{center}
-\begin{tabular}{|c|l|c|c|l|}
+\begin{tabular}{|c|l|c|c|l|l|}
 \hline
-\textbf{Regime} & \textbf{Name} & \textbf{$r$ range} & \textbf{$S$ range} & \textbf{Physics} \\ \hline
-I   & Linear     & $r < 0.1$        & $S > 0.995$       & Standard equations (Maxwell, Newton) \\
-II  & Nonlinear  & $0.1 \leq r < 0.9$ & $0.436 < S < 0.995$ & Axiom~4 corrections non-negligible \\
-III & Yield      & $0.9 \leq r < 1.0$ & $0 < S < 0.436$   & Phase transition zone \\
-IV  & Ruptured   & $r \geq 1.0$       & $S = 0$           & Topology destroyed \\ \hline
+\textbf{Regime} & \textbf{Name} & \textbf{$r$ range} & \textbf{$S$ range} & \textbf{Physics} & \textbf{EE Analog} \\ \hline
+I   & Linear     & $r < \sqrt{2\alpha}$        & $S > 0.993$       & Standard equations  & Small-Signal \\
+II  & Nonlinear  & $\sqrt{2\alpha} \leq r < \frac{\sqrt{3}}{2}$ & $0.500 < S < 0.993$ & Axiom~4 active  & Large-Signal \\
+III & Yield      & $\frac{\sqrt{3}}{2} \leq r < 1$ & $0 < S < 0.500$   & Phase transition  & Avalanche ($M \geq 2$) \\
+IV  & Ruptured   & $r \geq 1.0$       & $S = 0$           & Topology destroyed  & Breakdown ($M \to \infty$) \\ \hline
 \end{tabular}
 \end{center}
 
-\noindent The boundary values (0.1, 0.9, 1.0) are not arbitrary:
+\noindent The boundary values are \textbf{derived from first principles}, not chosen by convention:
 
 \begin{itemize}
-    \item \textbf{$r = 0.1$:} The perturbative expansion $S \approx 1 - r^2/2$ is accurate to $< 0.5\%$. Below this threshold, Axiom~4 corrections are negligible and all standard (Maxwell/Newton) results are recovered. No simulation needs the full nonlinear operator.
+    \item \textbf{$r_1 = \sqrt{2\alpha} \approx 0.1208$ (Small-Signal Limit):} The perturbative expansion (Eq.~\ref{eq:S_taylor}) gives a first-order correction $\Delta S = r^2/2$. The lattice's own self-coupling is $\alpha$ (the fine-structure constant = packing fraction / $8\pi$). When $\Delta S = \alpha$:
+    \begin{equation}
+        \frac{r^2}{2} = \alpha \qquad \Longrightarrow \qquad r_1 = \sqrt{2\alpha} \approx 0.1208
+    \end{equation}
+    Below $r_1$, Axiom~4 corrections are \textit{sub-$\alpha$}: smaller than the lattice's own coupling strength and therefore physically unresolvable. This is the exact analog of small-signal linearization in semiconductor analysis, where perturbations smaller than $V_T = kT/q$ are absorbed by thermal noise.
 
-    \item \textbf{$r = 0.9$:} Below this threshold, $S$ varies smoothly. Above it, $S$ drops precipitously ($dS/dr \to -\infty$ as $r \to 1$), signaling a phase transition where the metric stiffens catastrophically. The quality factor $Q = 1/\sqrt{1-r^2}$ exceeds $2.3\times$ at $r = 0.9$, indicating measurable energy trapping.
+    \item \textbf{$r_2 = \sqrt{3}/2 \approx 0.8660$ (Avalanche Onset):} The quality factor $Q(r) = 1/S(r)$ measures energy trapping efficiency. A mode with $Q \geq \ell$ stores more energy per cycle than it radiates. The minimum non-trivial multipole is $\ell = 2$ (dipole cannot radiate gravitational waves; monopole cannot radiate at all). The yield regime begins when $Q$ first reaches this minimum:
+    \begin{equation}
+        Q(r) = \frac{1}{S(r)} = \ell_{\min} = 2 \qquad \Longrightarrow \qquad S = \frac{1}{2}, \quad r_2 = \sqrt{1 - \frac{1}{4}} = \frac{\sqrt{3}}{2}
+    \end{equation}
+    In semiconductor terms, this is the onset of \textbf{avalanche multiplication}: the Miller factor $M = 1/(1-(V_R/V_{BR})^n)$ reaches $M = 2$, meaning each cycle doubles the stored charge.
 
-    \item \textbf{$r = 1.0$:} The topology is destroyed. The saturation factor reaches zero, compliance vanishes, and the node can no longer support propagating waves. In different domains this manifests as: pair production (EM), event horizon formation (gravity), quark deconfinement (nuclear), or superconducting transition (BCS).
+    \item \textbf{$r_3 = 1.0$ (Breakdown):} Axiomatic from Axiom~4. The saturation factor reaches zero, compliance vanishes, and the topology is destroyed. In different domains this manifests as: pair production (EM), event horizon formation (gravity), quark deconfinement (nuclear), or superconducting transition (BCS). In semiconductor terms: $V_R = V_{BR}$, $M \to \infty$, the device is destroyed.
 \end{itemize}
+
+\subsection{Semiconductor Device Analogy}
+
+The four regimes map exactly to the standard operating regions of a semiconductor p-n junction (see also Appendix~\ref{app:solver_toolchain}, \S5.6):
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{l p{5cm} p{5cm}}
+\toprule
+\textbf{Regime} & \textbf{Semiconductor} & \textbf{AVE Universal} \\
+\midrule
+\textbf{I: Small-Signal} &
+  DC bias, linearised $g_m$, $r_\pi$, $C_\pi$ &
+  $S \approx 1$, standard Maxwell/Newton \\
+\textbf{II: Large-Signal} &
+  Switching transient, saturation onset &
+  $S(r) = \sqrt{1-r^2}$ required in full \\
+\textbf{III: Avalanche} &
+  Miller $M \geq 2$, carrier multiplication &
+  $Q \geq 2$, energy trapping dominates \\
+\textbf{IV: Breakdown} &
+  $V_R = V_{BR}$, $M \to \infty$, junction failure &
+  $S = 0$, topology destroyed \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent This is not an analogy---it is the \textbf{same operator} ($S = \sqrt{1 - (V/V_{BR})^2}$ in the semiconductor case) applied at different scales. The nuclear periodic table already classifies each element by its $V_R/V_{BR}$ ratio and Miller exponent $n$ (the proton's cinquefoil crossing number $c = 5$).
 
 \subsection{Perturbative Expansion (Regime~I)}
 
@@ -41,7 +77,7 @@ In Regime~I, the saturation factor admits a convergent Taylor expansion:
     S(r) = 1 - \frac{r^2}{2} - \frac{r^4}{8} - \frac{r^6}{16} - \cdots
     \label{eq:S_taylor}
 \end{equation}
-To leading order, $\Delta S \approx r^2/2$. For $r = 0.1$, $\Delta S < 0.005$ ($0.5\%$). This validates the use of unmodified Maxwell/Newton equations in all terrestrial laboratory experiments except those explicitly designed to approach $V_{yield}$ (e.g., PONDER-05).
+To leading order, $\Delta S \approx r^2/2$. At the derived boundary $r_1 = \sqrt{2\alpha}$, $\Delta S = \alpha \approx 1/137$. This validates the use of unmodified Maxwell/Newton equations in all terrestrial laboratory experiments except those explicitly designed to approach $V_{yield}$ (e.g., PONDER-05).
 
 \section{Domain Control Parameter Catalog}
 \label{sec:domain_catalog}
@@ -158,7 +194,7 @@ Control parameter & $r = h / \sqrt{\alpha}$ \\
 \end{tabular}
 \end{center}
 
-\noindent LIGO detections ($h \sim 10^{-21}$) correspond to $r \sim 10^{-20}$ --- the most deeply linear measurement in physics. A neutron star merger at the surface ($h \sim 0.01$) reaches $r \sim 0.12$ (Regime~II).
+\noindent LIGO detections ($h \sim 10^{-21}$) correspond to $r \sim 10^{-20}$ --- the most deeply linear measurement in physics. A neutron star merger at the surface ($h \sim 0.01$) reaches $r = 0.117 < \sqrt{2\alpha} = 0.121$ --- still in Regime~I. The correction $\Delta S = 0.007 < \alpha$ is sub-$\alpha$ and unresolvable. A strong merger at $h \sim 0.02$ ($r = 0.23$) enters Regime~II.
 
 \subsection{Galactic Rotation}
 
@@ -221,7 +257,7 @@ MRI scanner (3~T)          & Magnetic & $10^{-9}$  & I \\
 \multicolumn{4}{|c|}{\textit{Regime II (Nonlinear, $0.1 \leq r < 0.9$)}} \\ \hline
 PONDER-05 @ 30~kV          & EM       & $0.687$    & II \\
 Nb superconductor @ 4~K    & BCS      & $0.435$    & II \\
-NS merger surface ($h \sim 0.01$) & GW & $0.117$    & II \\
+NS merger surface ($h \sim 0.01$) & GW & $0.117$    & I (sub-$\alpha$) \\
 \hline
 \multicolumn{4}{|c|}{\textit{Regime III (Yield, $0.9 \leq r < 1.0$)}} \\ \hline
 PONDER-05 @ 43~kV          & EM       & $0.985$    & III \\

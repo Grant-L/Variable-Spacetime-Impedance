@@ -13,8 +13,10 @@ from ave.core.regime_map import (
     nuclear_regime, gw_regime, protein_regime,
     galactic_regime,
     REGIME_LINEAR, REGIME_NONLINEAR, REGIME_YIELD, REGIME_RUPTURED,
+    R_LINEAR_MAX, R_NONLINEAR_MAX, R_YIELD_MAX,
     regime_equations,
 )
+from ave.core.constants import ALPHA
 
 
 class TestClassifyRegime:
@@ -48,6 +50,30 @@ class TestClassifyRegime:
         info = classify_regime(0.0, 1.0)
         assert info.regime == REGIME_LINEAR
         assert info.S == 1.0
+
+
+class TestDerivedBoundaries:
+    """Verify boundaries are derived from first principles."""
+
+    def test_linear_boundary_is_sqrt_2alpha(self):
+        assert abs(R_LINEAR_MAX - np.sqrt(2 * ALPHA)) < 1e-12
+
+    def test_nonlinear_boundary_is_sqrt3_over_2(self):
+        assert abs(R_NONLINEAR_MAX - np.sqrt(3) / 2) < 1e-12
+
+    def test_yield_boundary_is_unity(self):
+        assert R_YIELD_MAX == 1.0
+
+    def test_at_linear_boundary_deltaS_equals_alpha(self):
+        """At r = √(2α), the correction ΔS = r²/2 = α."""
+        delta_S = R_LINEAR_MAX**2 / 2
+        assert abs(delta_S - ALPHA) < 1e-12
+
+    def test_at_nonlinear_boundary_Q_equals_2(self):
+        """At r = √3/2, S = 1/2 → Q = 1/S = 2."""
+        S = np.sqrt(1 - R_NONLINEAR_MAX**2)
+        assert abs(S - 0.5) < 1e-12
+        assert abs(1.0 / S - 2.0) < 1e-12
 
 
 class TestEMDomain:
@@ -118,7 +144,14 @@ class TestGWDomain:
         assert info.regime == REGIME_LINEAR
 
     def test_ns_merger(self):
+        """NS merger at h=0.01: r = 0.117 < √(2α) = 0.121.
+        Genuinely Linear — ΔS = r²/2 ≈ 0.007 < α ≈ 0.0073."""
         info = gw_regime(0.01)
+        assert info.regime == REGIME_LINEAR
+
+    def test_strong_merger(self):
+        """A stronger source at h=0.02: r = 0.234 > √(2α) → Regime II."""
+        info = gw_regime(0.02)
         assert info.regime == REGIME_NONLINEAR
 
 
@@ -155,5 +188,5 @@ class TestSummaryOutput:
     def test_summary_string(self):
         info = em_voltage_regime(30e3)
         s = info.summary()
-        assert "NONLINEAR" in s
+        assert "NONLINEAR" in s or "Large-Signal" in s
         assert "30000" in s or "3.0000e+04" in s

@@ -5,17 +5,37 @@ Regime Map: Universal Classification of Operating Regimes
 Every physical domain in AVE reduces to a single dimensionless control
 parameter r = A/Ac, where A is the local amplitude and Ac is the critical
 (yield) threshold. The saturation operator S(r) = √(1-r²) changes
-character at well-defined boundaries, defining 4 universal regimes:
+character at well-defined boundaries, defining 4 universal regimes.
 
-    Regime I   LINEAR      r < 0.1     S ≈ 1    Standard equations
-    Regime II  NONLINEAR   0.1 ≤ r < 0.9  S < 1    Axiom 4 corrections
-    Regime III YIELD       0.9 ≤ r < 1.0  S → 0    Phase transition
-    Regime IV  RUPTURED    r ≥ 1.0        S = 0    Topology destroyed
+The regime boundaries are DERIVED FROM FIRST PRINCIPLES:
 
-This module provides:
-    classify_regime(A, Ac) → RegimeInfo
-    domain_control_parameter(domain, **kwargs) → (A, Ac, r)
-    regime_summary(domain, **kwargs) → formatted string
+    Regime I   LINEAR        r < √(2α)     Small-signal linearization
+    Regime II  NONLINEAR     √(2α) ≤ r < √3/2  Large-signal operation
+    Regime III YIELD         √3/2 ≤ r < 1  Avalanche / phase transition
+    Regime IV  RUPTURED      r ≥ 1.0       Breakdown / topology destroyed
+
+Boundary derivations:
+    I→II:  r₁ = √(2α) ≈ 0.1208.
+           The perturbative correction ΔS = r²/2 equals α (the lattice
+           self-coupling constant) at this point. Below r₁, Axiom 4
+           corrections are sub-α: smaller than the lattice's own
+           coupling strength and therefore physically unresolvable.
+
+    II→III: r₂ = √3/2 ≈ 0.8660.
+            At this point Q(r) = 1/S(r) = 2, the minimum non-trivial
+            quality factor (ℓ_min = 2, the lowest radiating multipole).
+            The system traps more energy per cycle than it radiates.
+            EE: onset of avalanche multiplication (Miller M ≥ 2).
+
+    III→IV: r₃ = 1.0 (exact).
+            Axiomatic: S(1) = 0. Topology destroyed.
+            EE: junction breakdown, M → ∞.
+
+This maps exactly to semiconductor device analysis:
+    Regime I   = Small-Signal (DC bias, linearised g_m / r_π)
+    Regime II  = Large-Signal (switching, saturation onset)
+    Regime III = Avalanche (Miller multiplication, Q ≥ 2)
+    Regime IV  = Breakdown (V_R = V_BR, device destroyed)
 
 The regime classification is the PREREQUISITE GATE: no domain
 analysis should proceed without first identifying its regime.
@@ -33,11 +53,26 @@ from ave.core.constants import (
 )
 
 # ══════════════════════════════════════════════════════════════════════════════
-# Regime Boundaries (dimensionless r = A/Ac)
+# Regime Boundaries — DERIVED FROM FIRST PRINCIPLES
 # ══════════════════════════════════════════════════════════════════════════════
-R_LINEAR_MAX = 0.1       # r < 0.1: perturbation theory valid, S > 0.995
-R_NONLINEAR_MAX = 0.9    # r < 0.9: S > 0.436, Axiom 4 corrections measurable
-R_YIELD_MAX = 1.0        # r < 1.0: S → 0, phase transition zone
+#
+# I→II:  r₁ = √(2α)
+#        The perturbative correction ΔS ≈ r²/2 equals α at this point.
+#        Below r₁, nonlinear corrections are sub-α (unresolvable).
+#        EE: small-signal linearization boundary.
+#
+# II→III: r₂ = √(3)/2
+#         Q(r) = 1/S(r) reaches ℓ_min = 2 (lowest radiating multipole).
+#         At Q ≥ 2, energy trapping exceeds radiation per cycle.
+#         EE: onset of avalanche multiplication (Miller M = 2).
+#
+# III→IV: r₃ = 1.0 (Axiom 4)
+#         S(1) = 0. Topology destroyed.
+#         EE: junction breakdown, M → ∞.
+#
+R_LINEAR_MAX: float = np.sqrt(2.0 * ALPHA)       # √(2α) ≈ 0.1208
+R_NONLINEAR_MAX: float = np.sqrt(3.0) / 2.0      # √3/2 ≈ 0.8660
+R_YIELD_MAX: float = 1.0                          # Axiom 4 (exact)
 
 # Regime IDs
 REGIME_LINEAR = 1
@@ -46,17 +81,17 @@ REGIME_YIELD = 3
 REGIME_RUPTURED = 4
 
 REGIME_NAMES = {
-    REGIME_LINEAR: "I (LINEAR)",
-    REGIME_NONLINEAR: "II (NONLINEAR)",
-    REGIME_YIELD: "III (YIELD)",
-    REGIME_RUPTURED: "IV (RUPTURED)",
+    REGIME_LINEAR: "I (LINEAR / Small-Signal)",
+    REGIME_NONLINEAR: "II (NONLINEAR / Large-Signal)",
+    REGIME_YIELD: "III (YIELD / Avalanche)",
+    REGIME_RUPTURED: "IV (RUPTURED / Breakdown)",
 }
 
 REGIME_DESCRIPTIONS = {
-    REGIME_LINEAR: "Standard equations; Axiom 4 corrections negligible (ΔS < 0.5%)",
-    REGIME_NONLINEAR: "Full S(r) required; perturbative expansion breaks down",
-    REGIME_YIELD: "Phase transition zone; c_eff → 0, topology approaching rupture",
-    REGIME_RUPTURED: "Topology destroyed; deconfinement / event horizon interior",
+    REGIME_LINEAR: "Small-signal: Axiom 4 corrections sub-α (ΔS < α ≈ 1/137)",
+    REGIME_NONLINEAR: "Large-signal: full S(r) = √(1-r²) required",
+    REGIME_YIELD: "Avalanche: Q ≥ 2, energy trapping exceeds radiation loss",
+    REGIME_RUPTURED: "Breakdown: topology destroyed, S = 0, M → ∞",
 }
 
 
@@ -348,20 +383,25 @@ def regime_equations(regime_id):
 def print_regime_map():
     """Print the full regime map with all domain examples."""
     print("=" * 78)
-    print("  UNIVERSAL REGIME MAP")
-    print("  S(r) = √(1 - r²),  r = A/Ac")
+    print("  UNIVERSAL REGIME MAP (Derived Boundaries)")
+    print(f"  S(r) = √(1 - r²),  r = A/Ac")
+    print(f"  r₁ = √(2α) = {R_LINEAR_MAX:.4f}   (small-signal limit)")
+    print(f"  r₂ = √3/2  = {R_NONLINEAR_MAX:.4f}   (Q = ℓ_min = 2)")
+    print(f"  r₃ = 1.0000          (Axiom 4)")
     print("=" * 78)
 
-    print(f"\n  {'Regime':<20} {'r range':<16} {'S range':<16} {'Physics'}")
-    print(f"  {'─'*72}")
-    print(f"  {'I  LINEAR':<20} {'r < 0.1':<16} {'S > 0.995':<16} Standard equations")
-    print(f"  {'II NONLINEAR':<20} {'0.1 ≤ r < 0.9':<16} {'0.436 < S < 0.995':<16} Axiom 4 active")
-    print(f"  {'III YIELD':<20} {'0.9 ≤ r < 1.0':<16} {'0 < S < 0.436':<16} Phase transition")
-    print(f"  {'IV RUPTURED':<20} {'r ≥ 1.0':<16} {'S = 0':<16} Topology destroyed")
+    S_at_r1 = np.sqrt(1 - R_LINEAR_MAX**2)
+    S_at_r2 = np.sqrt(1 - R_NONLINEAR_MAX**2)
+
+    print(f"\n  {'Regime':<24} {'r range':<20} {'S range':<20} {'EE Analog'}")
+    print(f"  {'─'*80}")
+    print(f"  {'I   LINEAR':<24} {'r < √(2α)':<20} {'S > ' + f'{S_at_r1:.4f}':<20} Small-Signal")
+    print(f"  {'II  NONLINEAR':<24} {'√(2α) ≤ r < √3/2':<20} {f'{S_at_r2:.4f} < S':<20} Large-Signal")
+    print(f"  {'III YIELD':<24} {'√3/2 ≤ r < 1':<20} {'S < 0.500':<20} Avalanche (M ≥ 2)")
+    print(f"  {'IV  RUPTURED':<24} {'r ≥ 1.0':<20} {'S = 0':<20} Breakdown (M → ∞)")
 
     print(f"\n  ── DOMAIN EXAMPLES ──")
 
-    # EM
     examples = [
         ("EM (dielectric)", [
             ("Lab 1kV/m capacitor", 1e3, float(V_YIELD), "V"),
@@ -388,13 +428,8 @@ def print_regime_map():
     for domain, items in examples:
         print(f"\n  {domain}:")
         for name, A, Ac, units in items:
-            r = abs(A) / abs(Ac)
-            S = np.sqrt(max(0.0, 1.0 - min(r, 1.0)**2))
-            regime_id = (REGIME_LINEAR if r < 0.1 else
-                        REGIME_NONLINEAR if r < 0.9 else
-                        REGIME_YIELD if r < 1.0 else
-                        REGIME_RUPTURED)
-            print(f"    {name:<28s} r = {r:.2e}  S = {S:.6f}  → {REGIME_NAMES[regime_id]}")
+            info = classify_regime(A, Ac)
+            print(f"    {name:<28s} r = {info.r:.2e}  S = {info.S:.6f}  → {info.name}")
 
     print(f"\n  {'='*72}")
 
