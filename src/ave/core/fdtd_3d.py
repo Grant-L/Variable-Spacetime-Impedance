@@ -30,7 +30,11 @@ class FDTD3DEngine:
 
     Args:
         nx, ny, nz: Grid dimensions.
-        dx: Cell size [m].
+        dx: Cell size [m]. This is a COMPUTATIONAL grid parameter, not the
+            physical lattice pitch ℓ_node. The physics enters solely through
+            V_yield and B_yield (the dielectric/magnetic saturation thresholds
+            from Axiom 4). dx controls numerical resolution; results converge
+            as dx → 0 with fixed V_yield.
         linear_only: If True, uses constant ε₀ (standard Maxwell). Default False.
         v_yield: Dielectric yield voltage per cell [V]. Default is V_SNAP = m_e c²/e.
         b_yield: Magnetic saturation field [T]. Default is B_SNAP.
