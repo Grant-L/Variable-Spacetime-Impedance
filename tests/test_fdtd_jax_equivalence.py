@@ -81,7 +81,7 @@ def test_equivalence(nx=20, ny=20, nz=20, n_steps=50, linear_only=False, use_pml
     print(f"    Energy: numpy={energy_np:.6e}, jax={energy_jax:.6e}, rel_diff={energy_diff:.2e}  {energy_status}")
     print(f"    Time: {dt_total:.2f}s  {'PASS' if all_pass else 'FAIL'}")
 
-    return all_pass
+    assert all_pass, f"JAX/numpy mismatch in {label}"
 
 
 def main():
