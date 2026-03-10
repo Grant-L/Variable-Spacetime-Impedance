@@ -55,6 +55,8 @@ Tier 2: DOMAIN ADAPTERS (thin wrappers providing eps/mu analogs)
 |-- topological/                 7 modules: Skyrme, Borromean, Cosserat,
 |                                  soliton bond, combiner, tensors, SC sim
 |-- mechanics/                   impedance.py
+|-- condensed_matter/            condensed_matter.py (T_melt, c_sound,
+|                                  E_gap, E_breakdown — Regime II)
 
 Tier 3: SOLVERS (consume Tiers 1+2, never re-derive operators)
 |-- core/fdtd_3d.py              3D nonlinear FDTD (numpy)
