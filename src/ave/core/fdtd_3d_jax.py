@@ -45,6 +45,10 @@ def _compute_local_epsilon_kernel(E_component, eps_base, dx, v_yield):
     The local voltage across a cell is V_local = |E| · dx.
     When V_local → V_yield, the dielectric saturates (ε → 0).
     This is the AVE mechanism for mass generation: trapped energy.
+
+    NOTE: JIT-optimized copy of ``scale_invariant.epsilon_eff()``.
+    Canonical source of truth: ``axioms/scale_invariant.py``.
+    Inlined here because JAX @jit cannot call non-JAX Python functions.
     """
     V_local = jnp.abs(E_component) * dx
     ratio_sq = (V_local / v_yield) ** 2
@@ -61,6 +65,10 @@ def _compute_local_mu_kernel(H_component, mu_base, mu_0, b_yield):
 
     where B = μ₀ · |H|.  When B → B_yield, the inductor saturates
     (μ → 0, shorts): the lattice cannot store more magnetic flux.
+
+    NOTE: JIT-optimized copy of ``scale_invariant.mu_eff()``.
+    Canonical source of truth: ``axioms/scale_invariant.py``.
+    Inlined here because JAX @jit cannot call non-JAX Python functions.
     """
     B_local = mu_0 * jnp.abs(H_component)
     ratio_sq = (B_local / b_yield) ** 2

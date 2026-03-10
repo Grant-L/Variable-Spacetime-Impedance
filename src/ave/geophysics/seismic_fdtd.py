@@ -130,7 +130,7 @@ def verify_impedance_consistency(profile: dict) -> dict:
             'max_deviation_pct': maximum relative deviation
     """
     Z_seismic = profile['rho'] * profile['v_p']
-    Z_fdtd_raw = np.sqrt(profile['mu_r'] / profile['eps_r'])
+    Z_fdtd_raw = impedance(profile['mu_r'], profile['eps_r'])
 
     # Normalize to the same scale (surface value)
     scale = Z_seismic[0] / Z_fdtd_raw[0]

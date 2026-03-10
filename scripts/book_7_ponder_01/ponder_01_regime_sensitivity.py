@@ -97,7 +97,7 @@ def run_sensitivity():
     
     # ── Sweep 1: V_rms with different cell sizes ───────────────────────────
     print(f"\n  ═══ SWEEP 1: Regime Classification vs Voltage & Scale ═══")
-    V_range = np.array([1e3, 5e3, 10e3, 20e3, 30e3, 40e3, 43.65e3])
+    V_range = np.array([1e3, 5e3, 10e3, 20e3, 30e3, 40e3, V_YIELD])
     
     # Different physical interpretation scales for dx
     dx_set = {

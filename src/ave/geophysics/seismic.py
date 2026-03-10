@@ -53,6 +53,7 @@ class SeismicLayer:
 
     @property
     def thickness_km(self) -> float:
+        """Layer thickness in km (depth_bot - depth_top)."""
         return self.depth_bot_km - self.depth_top_km
 
     @property

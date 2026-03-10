@@ -59,6 +59,7 @@ class PlanetMagnetosphere:
 
     @property
     def dipole_tilt_rad(self) -> float:
+        """Magnetic dipole tilt angle in radians."""
         return np.radians(self.dipole_tilt_deg)
 
     @property

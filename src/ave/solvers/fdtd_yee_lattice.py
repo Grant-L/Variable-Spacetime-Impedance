@@ -1,9 +1,20 @@
+"""
+2D TMz FDTD Yee Lattice Animation
+==================================
+
+Standalone script demonstrating Maxwell's equations on a discrete Yee grid
+with a circular dielectric obstacle (topological defect). Generates an
+animated GIF of wave scattering off the impedance boundary.
+
+Axiom 1 compliance: Yee grid = discrete LC lattice.
+"""
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import os
 
 def main():
+    """Run the 2D TMz FDTD simulation and save the animation as a GIF."""
     print("==========================================================")
     print(" AVE STANDARD MODEL: FDTD CONTINUOUS YEE LATTICE")
     print("==========================================================\n")
@@ -68,6 +79,7 @@ def main():
     ax.set_yticks([])
 
     def update(frame):
+        """Advance one FDTD timestep: H-update, E-update, source injection, and ABC."""
         nonlocal Ez, Hx, Hy
         
         # 1. Update H from E
