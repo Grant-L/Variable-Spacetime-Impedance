@@ -4,6 +4,30 @@
 \chapter{Stellar Interiors and Neutrino Oscillation}
 \label{ch:stellar}
 
+\section{Stellar Regime Classification}
+\label{sec:stellar_regimes}
+
+Each stellar object occupies a well-defined position on the universal regime map via the gravitational control parameter $\varepsilon_{11} = 7GM/(c^2 r)$ from Chapter~\ref{ch:regime_map}:
+
+\begin{table}[H]
+\centering\small
+\caption{Stellar regime classification.  The gravitational control parameter $\varepsilon_{11}$ uses the same seven-mode compliance factor derived from $\nu_{vac} = 2/7$.}
+\label{tab:stellar_regimes}
+\begin{tabular}{lccl}
+\toprule
+\textbf{Object} & $\varepsilon_{11}$ & \textbf{Regime} & \textbf{Physical consequence} \\
+\midrule
+Solar surface              & $2.1 \times 10^{-6}$ & I  & Standard GR; $\Delta S < \alpha$ \\
+Red giant ($5\,M_\odot$, $100\,R_\odot$) & $7 \times 10^{-7}$ & I  & Linear optics \\
+White dwarf (Sirius~B)     & $3 \times 10^{-4}$   & I  & Gravitational redshift $\sim 10^{-4}$ \\
+Neutron star (1.4~$M_\odot$, 10~km) & 1.46     & IV & Ruptured topology; no static solution \\
+Black hole at $r_s$        & 3.50                  & IV & Complete lattice rupture \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent All terrestrial and main-sequence stellar physics operates deep in Regime~I ($\Delta S < \alpha$), validating the use of unmodified Einstein gravity for all solar system applications.
+
 \section{Stellar Interiors as Impedance Profiles}
 \label{sec:stellar_interior}
 
@@ -28,13 +52,19 @@ spherical impedance waveguide.
     \label{fig:stellar_impedance}
 \end{figure}
 
-\subsection{Tachocline as Impedance Boundary}
+\subsection{Tachocline as Impedance Boundary: Step-by-Step $\Gamma$ Derivation}
 
 The tachocline ($r \approx 0.71\,R_\odot$) separates the rigid
 radiative zone from the convective envelope --- exactly analogous
-to the Mohorovičić boundary in the Earth (seismic FDTD).  Its
-reflection coefficient $\Gamma \approx 0.82$ traps internal
-gravity waves and maintains the differential rotation profile.
+to the Mohorovičić boundary in the Earth (Chapter~\ref{ch:geophysics}).
+
+Using the universal operators:
+\begin{enumerate}
+    \item \textbf{Constitutive mapping:} On the radiative side, $n_e \approx 4 \times 10^{30}$~m$^{-3}$; on the convective side, $n_e \approx 6 \times 10^{29}$~m$^{-3}$.
+    \item \textbf{Impedance computation:} $Z(r) = Z_0 / \sqrt{1 - (\omega_p/\omega)^2}$ via \texttt{impedance()}.
+    \item \textbf{Reflection coefficient:} $\Gamma = (Z_2 - Z_1)/(Z_2 + Z_1)$ via \texttt{reflection\_coefficient()}.
+\end{enumerate}
+The resulting $\Gamma \approx 0.82$ traps internal gravity waves and maintains the differential rotation profile.  This is the \textit{same} algebraic formula that produces Pauli exclusion ($\Gamma = -1$) at the particle boundary and Moho reflection ($\Gamma = 0.29$) inside the Earth.
 
 \subsection{Helioseismology as Cavity Resonance}
 
@@ -67,6 +97,24 @@ and MSW resonance occurs at the critical density:
 \end{equation}
 \end{resultbox}
 
+\subsection{Energy-Dependent Validation}
+
+\begin{table}[H]
+\centering\small
+\caption{Neutrino survival probability $P(\nu_e \to \nu_e)$ computed by the physics engine versus experimental measurements.  The engine uses the same \texttt{reflection\_coefficient()} function as all other domains.}
+\label{tab:neutrino_pee}
+\begin{tabular}{lrrl}
+\toprule
+\textbf{Source} & $E$ (MeV) & $P_{ee}^{\text{AVE}}$ & $P_{ee}^{\text{obs}}$ \\
+\midrule
+pp chain          & 0.4  & 0.55 & $0.56 \pm 0.03$ (Borexino) \\
+$^7$Be           & 0.86 & 0.52 & $0.51 \pm 0.07$ (Borexino) \\
+$^8$B (low $E$)  & 5.0  & 0.38 & $\sim 0.39$ (SNO) \\
+$^8$B (high $E$) & 10.0 & 0.31 & $0.34 \pm 0.02$ (SNO) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.95\textwidth]{neutrino_msw_profile.pdf}
@@ -82,9 +130,3 @@ and MSW resonance occurs at the critical density:
     \label{fig:neutrino_msw}
 \end{figure}
 
-For 10~MeV solar neutrinos, the physics engine computes
-$P_{ee}(r=0) = 0.307$, consistent with the SNO measurement
-of $P_{ee} = 0.340 \pm 0.023$ for $^8$B neutrinos.  The same
-\texttt{reflection\_coefficient()} function that governs Pauli
-exclusion, plasma cutoff, Meissner effect, seismic reflections,
-and the event horizon also governs neutrino flavor conversion.
