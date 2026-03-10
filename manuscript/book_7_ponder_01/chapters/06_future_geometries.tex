@@ -65,4 +65,21 @@ To visualize the mechanics of why this phased delay generates macroscopic moment
 
 The phased array coils match the natural resonant frequency of the chiral LC network. By sequentially ``hitting'' the LC network with the correct geometric and phased interface, the array builds a coherent standing wave. Because the array is physically asymmetric in its timing, the standing wave builds an asymmetric pressure gradient in the fluid matrix. 
 
-In the language of Newtonian mechanics: the array pushes the structured vacuum sequentially, and the structured vacuum pushes back. The resulting "back-reaction" is the macroscopic ponderomotive thrust $F_{ave}$, derived not from expelling propellant, but by continuous acoustic rectification against the absolute dielectric limits of the $\mathcal{M}_A$ continuum.
+In the language of Newtonian mechanics: the array pushes the structured vacuum sequentially, and the structured vacuum pushes back. The resulting ``back-reaction'' is the macroscopic ponderomotive thrust $F_{ave}$, derived not from expelling propellant, but by continuous acoustic rectification against the absolute dielectric limits of the $\mathcal{M}_A$ continuum.
+
+\subsection*{Thruster Topology Comparison}
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Property} & \textbf{PCBA (1D)} & \textbf{Hopf Coil (3D)} & \textbf{Phased Array} \\
+\midrule
+Coupling          & $\nabla|\mathbf{E}|^2$ (gradient) & $\mathbf{E}\cdot\mathbf{B}$ (helicity) & Synthetic OAM \\
+Self-inductance   & Low ($\sim$nH) & Very high ($\sim\mu$H) & Low ($\sim$nH/element) \\
+Thrust (1 kW)     & $45\,\mu$N & $18.2\,\mu$N & TBD \\
+Knot topology     & None ($0_1$) & Hopf link ($L_2$) & $T(3,2)$ synthetic \\
+TRL               & 3 (tested) & 1 (concept) & 1 (concept) \\
+\bottomrule
+\end{tabular}
+\end{center}
