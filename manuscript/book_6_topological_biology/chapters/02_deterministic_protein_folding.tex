@@ -568,8 +568,19 @@ The eight-force gradient descent framework suggests several concrete next steps:
     \item \textbf{Sequence-Context $Z_{topo}$.} A nearest-neighbour modulation $Z_i \cdot g(Z_{i\pm1})$ could capture helix-capping, $\beta$-sheet nucleation, and turn propensities that emerge from cooperative sequence effects.
 \end{itemize}
 
-\medskip\noindent
-\textit{For the full axiom-to-backbone derivation chain
-($\ell_{node} \to d_p \to d_0$), amino acid impedance table, and
-inter-residue $\Gamma$ analysis, see \S\ref{sec:protein_bridge} in
-Appendix~\ref{app:full_derivation_chain}.}
+\subsection*{Engine Validation Summary}
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Benchmark} & \textbf{Metric} & \textbf{Result} & \textbf{Free Params} \\
+\midrule
+20-sequence stress test & Secondary structure & 19/20 (95\%) & 0 \\
+Chou--Fasman correlation & Pearson $r$ & $+0.61$ & 0 \\
+Chignolin RMSD (5AWL)  & Kabsch RMSD & 2.82 \AA & 0 \\
+$R_g$ accuracy (Chignolin) & $R_g^{AVE}/R_g^{PDB}$ & 96\% & 0 \\
+JAX autodiff speedup   & Wall-clock & $33\times$ & --- \\
+\bottomrule
+\end{tabular}
+\end{center}
