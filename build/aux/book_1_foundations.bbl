@@ -1,3 +1,15 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{1}
+
+\bibitem{codata2018}
+Eite Tiesinga, Peter~J. Mohr, David~B. Newell, and Barry~N. Taylor.
+\newblock Codata recommended values of the fundamental physical constants:
+  2018.
+\newblock {\em Reviews of Modern Physics}, 93(2):025010, 2021.
+
+\bibitem{pdg2022}
+R.~L. Workman et~al.
+\newblock Review of particle physics.
+\newblock {\em Progress of Theoretical and Experimental Physics},
+  2022(8):083C01, 2022.
 
 \end{thebibliography}

@@ -70,6 +70,7 @@ pdf_manuscript:
 		(cd $(SRC_DIR)/$$dir && $(LATEX) -jobname=$$dir -output-directory=../../$(OUT_DIR)/aux main.tex); \
 		if [ -f $(SRC_DIR)/bibliography.bib ]; then \
 			cp $(SRC_DIR)/bibliography.bib $(OUT_DIR)/aux/; \
+			cp $(SRC_DIR)/bibliography.bib $(OUT_DIR)/bibliography.bib; \
 			(cd $(OUT_DIR)/aux && $(BIBTEX) $$dir || true); \
 			(cd $(SRC_DIR)/$$dir && $(LATEX) -jobname=$$dir -output-directory=../../$(OUT_DIR)/aux main.tex); \
 		fi; \
