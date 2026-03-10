@@ -1,5 +1,20 @@
 \begin{thebibliography}{1}
 
+\bibitem{feynman1964}
+Richard~P Feynman.
+\newblock {\em The Feynman Lectures on Physics}, volume~2.
+\newblock Addison-Wesley, 1964.
+
+\bibitem{nyquist1928}
+Harry Nyquist.
+\newblock Thermal agitation of electric charge in conductors.
+\newblock {\em Physical Review}, 32(1):110, 1928.
+
+\bibitem{shannon1949}
+Claude~E. Shannon.
+\newblock Communication in the presence of noise.
+\newblock {\em Proceedings of the IRE}, 37(1):10--21, 1949.
+
 \bibitem{codata2018}
 Eite Tiesinga, Peter~J. Mohr, David~B. Newell, and Barry~N. Taylor.
 \newblock Codata recommended values of the fundamental physical constants:
