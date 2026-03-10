@@ -19,7 +19,7 @@ The proton is modeled not as a bound state of independent point particles, but a
 
 Because the vacuum operates as a discrete LC network, extreme spatial separation causes the phase-flux lines connecting the Borromean loops to collimate tightly into a 1D cylindrical tube rather than spreading out isotropically. The baseline 1D continuous electromagnetic string tension of the unperturbed $\mathcal{M}_{A}$ lattice evaluates to $T_{EM}=m_{e}c^{2}/\ell_{node}\approx0.212\text{ N}$. Standard Lattice QCD measures the empirical macroscopic strong force string tension at exactly $\approx 1\text{ GeV/fm}$ ($\approx 160,200\text{ N}$). 
 
-While the 3D non-linear orthogonal tensor trace ($\mathcal{I}_{tensor}$) of the saturated $6_2^3$ Borromean linkage requires continuous elastodynamic simulation to solve analytically, the physical boundary conditions dictate a steady-state scaling relationship. The following \textbf{Topological Scaling Ansatz} is proposed: because the proton is a saturated Borromean linkage, the baseline tension bounding the quarks is geometrically amplified by three structural multipliers: the number of topological loops (3), the relative inductive resonance mass ratio ($m_p/m_e$), and the dielectric saturation boundary ($\alpha^{-1}$). Using the empirical CODATA proton mass ratio ($\approx 1836.15 \ m_e$) as a preview (the eigenvalue is derived in Section~\ref{sec:thermal_softening}):
+While the 3D non-linear orthogonal tensor trace ($\mathcal{I}_{tensor}$) of the saturated $6_2^3$ Borromean linkage requires continuous elastodynamic simulation to solve analytically, the physical boundary conditions dictate a steady-state scaling relationship. The following \textbf{Topological Scaling Ansatz} is proposed: because the proton is a saturated Borromean linkage, the baseline tension bounding the quarks is geometrically amplified by three structural multipliers: the number of topological loops (3), the relative inductive resonance mass ratio ($m_p/m_e$), and the dielectric saturation boundary ($\alpha^{-1}$). Using the empirical CODATA proton mass ratio ($\approx 1836.15 \ m_e$)~\cite{codata2018} as a preview (the eigenvalue is derived in Section~\ref{sec:thermal_softening}):
 
 \begin{resultbox}{Topological Scaling Ansatz}
 \begin{equation}
@@ -87,7 +87,7 @@ m_p c^2 = \mathcal{I}_{scalar} \text{ (1D)} + \mathcal{I}_{tensor} \text{ (3D Or
 \end{equation}
 \end{resultbox}
 
-Our thermally corrected 1D solver, with Axiom~4 gradient saturation applied inside the integrand, evaluates the scalar component to $\mathcal{I}_{scalar} \approx 1162\,m_e$. The remaining mass generation is contained within the orthogonal topological interference vectors of the intersecting flux loops.
+The thermally corrected 1D solver, with Axiom~4 gradient saturation applied inside the integrand, evaluates the scalar component to $\mathcal{I}_{scalar} \approx 1162\,m_e$. The remaining mass generation is contained within the orthogonal topological interference vectors of the intersecting flux loops.
 
 \subsection{Computational Proof: Skew-Lines and The Toroidal Halo}
 To analytically resolve the 3D orthogonal tensor trace ($\mathcal{I}_{tensor}$), the non-linear geometric frustration of the proton's spatial topology. The $6^3_2$ Borromean linkage is mathematically defined by exactly six orthogonal topological crossings.
@@ -186,7 +186,7 @@ x = 1835.12 + 1.0 = \mathbf{1836.12}
 \end{equation}
 \end{resultbox}
 
-By resolving the exact saturated topological geometry of the Toroidal Halo at $\mathcal{V}_{total}=2.0$, confining the soliton by the cinquefoil crossing number with Axiom~4 gradient saturation inside the energy functional, and adding the $+1$ integer twist required for global charge, the theoretical prediction converges to within $\mathbf{0.002\%}$ of the empirical CODATA proton mass ($1836.153\,m_e$) using zero Standard Model parameters.
+By resolving the exact saturated topological geometry of the Toroidal Halo at $\mathcal{V}_{total}=2.0$, confining the soliton by the cinquefoil crossing number with Axiom~4 gradient saturation inside the energy functional, and adding the $+1$ integer twist required for global charge, the theoretical prediction converges to within $\mathbf{0.002\%}$ of the empirical CODATA proton mass ($1836.153\,m_e$)~\cite{codata2018} using zero Standard Model parameters.
 
 \begin{figure}[h!]
     \centering
@@ -229,7 +229,7 @@ Three features of this spectrum deserve emphasis:
 \begin{figure}[h]
     \centering
     \includegraphics[width=1.0\textwidth]{torus_knot_baryon_spectrum.png}
-    \caption{\textbf{The Torus Knot Baryon Spectrum.} Predicted masses from the $(2,q)$ torus knot ladder (red points) compared against PDG baryon resonances (blue bands). The same formula $m(c) = \mathcal{I}(\kappa/c)/(1-2p_c)+1$ with zero adjusted parameters reproduces five validated states across 1.4 GeV of mass range ($c = 5$ to $13$). The $c = 15$ point (shaded region) is an extrapolation beyond the validated engine ladder; its $+9.8\%$ deviation from $\Delta(2420)$ indicates higher-order corrections (radiation width, self-energy) become non-negligible at high crossing number.}
+    \caption{\textbf{The Torus Knot Baryon Spectrum.} Predicted masses from the $(2,q)$ torus knot ladder (red points) compared against PDG baryon resonances~\cite{pdg2022} (blue bands). The same formula $m(c) = \mathcal{I}(\kappa/c)/(1-2p_c)+1$ with zero adjusted parameters reproduces five validated states across 1.4 GeV of mass range ($c = 5$ to $13$). The $c = 15$ point (shaded region) is an extrapolation beyond the validated engine ladder; its $+9.8\%$ deviation from $\Delta(2420)$ indicates higher-order corrections (radiation width, self-energy) become non-negligible at high crossing number.}
     \label{fig:torus_knot_spectrum}
 \end{figure}
 
@@ -314,7 +314,7 @@ F_g = G \frac{m_p^2}{r^2}
 \end{equation}
 \end{resultbox}
 
-By substituting the derived macroscopic boundary limit of Gravity ($G = c^4 / 7\xi T_{EM}$) and the fundamental baseline vacuum tension ($T_{EM} = m_e c^2 / \ell_{node}$), we expand the gravitational coupling:
+By substituting the derived macroscopic boundary limit of Gravity ($G = c^4 / 7\xi T_{EM}$) and the fundamental baseline vacuum tension ($T_{EM} = m_e c^2 / \ell_{node}$), the derivation expands the gravitational coupling:
 \begin{resultbox}{Expanded Gravitational Coupling}
 \begin{equation}
 F_g = \left( \frac{c^4 \ell_{node}}{7 \xi m_e c^2} \right) \frac{m_p^2}{r^2} = \frac{c^2 \ell_{node} m_p^2}{7 \xi m_e r^2}

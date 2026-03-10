@@ -36,9 +36,14 @@ from ave.gravity.galactic_rotation import (
     radial_acceleration_relation, derive_a0_from_cosmology,
 )
 from ave.core.constants import G
+from ave.core.regime_map import identify_regime
 
 
 def main():
+    # ── PREREQUISITE GATE: identify operating regime for outer galaxy ──
+    regime = identify_regime("galactic", g_newtonian=1e-11)
+    print()
+
     print("=" * 75)
     print("  GALAXY ROTATION CURVES: No Dark Matter, Zero Free Parameters")
     print("=" * 75)

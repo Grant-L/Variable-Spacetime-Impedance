@@ -43,9 +43,14 @@ from ave.core.constants import (
     HIGGS_VEV_MEV, N_K4, LAMBDA_HIGGS,
 )
 from ave.core.universal_operators import universal_saturation
+from ave.core.regime_map import identify_regime
 
 
 def run_simulation():
+    # ── PREREQUISITE GATE: identify operating regime at V_snap ──
+    regime = identify_regime("em_voltage", V_local=float(V_SNAP))
+    print()
+
     print("=" * 78)
     print("  HIGGS RUPTURE: DIELECTRIC BREAKDOWN OF THE LC LATTICE")
     print("  All from ave.core.constants + universal_saturation operator")

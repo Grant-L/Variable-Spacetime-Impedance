@@ -12,7 +12,8 @@ Wire-stitched torus knot antenna fixture for AVE chiral verification.
 | 6 | Glass dish ≥170×130mm, ≥25mm deep             | Pyrex 9×13"          | 1   | $10        |
 | 7 | M3×10mm nylon standoffs + M3 hardware         | Generic              | 1   | $8         |
 | 8 | SMA 50Ω terminators (for unused ports)        | Generic              | 5   | $5         |
-| **TOTAL** |                                       |                      |     | **$102**   |
+| 9 | SMA vacuum feedthrough (KF-25 or panel-mount) | Generic              | 1   | $40        |
+| **TOTAL** |                                       |                      |     | **$142**   |
 
 ## Test Equipment (not included in total)
 

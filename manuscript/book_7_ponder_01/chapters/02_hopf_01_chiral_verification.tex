@@ -44,6 +44,13 @@ All five knot topologies plus one zero-topology control antenna share a \textbf{
     \label{fig:hopf_01_impedance}
 \end{figure}
 
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1.0\textwidth]{hopf_01_s11_sweep.png}
+    \caption{\textbf{Predicted S$_{11}$ Response.} Overlaid return-loss sweeps for all five torus knot antennas in air (left) and mineral oil (right). The chiral frequency shift is directly visible as the progressive displacement of each knot's resonant dip. This is the primary observable that the VNA measurement will produce.}
+    \label{fig:hopf_01_s11_sweep}
+\end{figure}
+
 The predicted shifts for the enamel-corrected wire-in-air model ($\varepsilon_{eff} = 1.295$) are:
 
 \begin{center}
@@ -71,6 +78,8 @@ All shifts exceed 8.5~MHz---easily resolvable with a VNA. All resonant frequenci
 
     \item \textbf{Measurement~(Oil):} Submerge the entire board in a glass dish of mineral oil ($\varepsilon_r \approx 2.1$, transformer grade). Re-measure all six antennas. The oil changes the wave speed but \textbf{not} the topology.
 
+    \item \textbf{Measurement~(Vacuum):} Place the board inside a vacuum chamber at $\sim$5~Torr. At this pressure, $\varepsilon_{air} \approx 1.000004$ --- effectively unity. The effective permittivity drops to $\varepsilon_{eff} \approx 1.294$ (enamel correction only). Connect via SMA vacuum feedthrough and re-measure all six antennas. The absolute frequencies will be essentially identical to air (shift $< 200$~kHz), but the fractional chiral shift $\Delta f/f$ must remain unchanged. This provides a third independent medium and eliminates any concern about humidity or atmospheric dielectric effects.
+
     \item \textbf{Extract the Anomaly:} For each knot and each medium, compute:
     \begin{equation}
         \Delta f_i = f_{measured,i} - f_{Maxwell,i}
@@ -79,11 +88,11 @@ All shifts exceed 8.5~MHz---easily resolvable with a VNA. All resonant frequenci
 
     \item \textbf{Test the Scaling Law:} Plot $\Delta f / f$ vs.\ $pq/(p+q)$ for all five knots (plus the $pq/(p+q)=0$ control point).
     \begin{itemize}
-        \item \textbf{AVE confirmed:} $\Delta f/f$ is linear through the origin with slope $\alpha$, and \textit{identical} in air and oil.
+        \item \textbf{AVE confirmed:} $\Delta f/f$ is linear through the origin with slope $\alpha$, and \textit{identical} in all three media (air, oil, vacuum).
         \item \textbf{AVE falsified:} $\Delta f/f$ is zero, random, does not scale as $pq/(p+q)$, or differs between media.
     \end{itemize}
 
-    \item \textbf{Substrate Independence:} The air vs.\ mineral oil comparison replaces the need for multiple PCB substrates (Rogers, duroid). The fractional shift $\Delta f / f$ must be identical in both media---it depends only on $\alpha$ and $pq/(p+q)$, not on $\varepsilon_{eff}$.
+    \item \textbf{Substrate Independence:} The air/oil/vacuum comparison replaces the need for multiple PCB substrates (Rogers, duroid). The fractional shift $\Delta f / f$ must be identical in all three media---it depends only on $\alpha$ and $pq/(p+q)$, not on $\varepsilon_{eff}$.
 \end{enumerate}
 
 \section{Impedance Characterization}
@@ -238,16 +247,26 @@ The key insight is that these variations affect all six antennas as \textbf{comm
     \label{fig:hopf_01_sensitivity}
 \end{figure}
 
-\section{Substrate Independence: Air vs.\ Mineral Oil}
+\section{Substrate Independence: Three-Medium Verification}
 
 The strongest falsification criterion is substrate independence. If the chiral coupling is a vacuum property (Axiom~1), then the \textit{fractional} shift $\Delta f / f$ must be identical regardless of the surrounding medium:
 \begin{equation}
     \frac{\Delta f}{f} = \alpha \frac{pq}{p+q} \quad \text{(independent of } \varepsilon_{eff} \text{)}
 \end{equation}
 
-The wire-stitched design enables a direct test: the \textit{same board} is measured first in air ($\varepsilon_{eff} = 1.295$), then submerged in mineral oil ($\varepsilon_{r} \approx 2.1$, $\varepsilon_{eff} \approx 2.265$). The absolute frequencies shift downward in oil (expected): the trefoil drops from 1.098~GHz to 0.830~GHz. But the fractional shift $\Delta f / f$ must remain constant. The simulation confirms: across all five knots, the ratio $\Delta f/f|_{air} \;/\; \Delta f/f|_{oil} = 1.00000$ to machine precision.
+The wire-stitched design enables a direct three-medium test: the \textit{same board} is measured first in air ($\varepsilon_{eff} = 1.295$), then submerged in mineral oil ($\varepsilon_{r} \approx 2.1$, $\varepsilon_{eff} \approx 2.265$), and finally in a roughing-pump vacuum ($\sim$5~Torr, $\varepsilon_{eff} \approx 1.294$). The absolute frequencies shift downward in oil (expected): the trefoil drops from 1.098~GHz to 0.830~GHz. In vacuum, frequencies are essentially identical to air (the atmospheric dielectric contribution is only $\Delta\varepsilon \approx 6\times10^{-4}$). But the fractional shift $\Delta f / f$ must remain constant across all three media. The simulation confirms: across all five knots, the ratio $\Delta f/f|_{air} \;/\; \Delta f/f|_{oil} = 1.00000$ to machine precision.
 
-This eliminates the need for multiple expensive PCB substrates (Rogers, duroid). A single \$10 FR-4 board tested in two media provides an equally powerful substrate independence check.
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+\hline
+Medium & $\varepsilon_{eff}$ & $f_{res}$ range (GHz) & $\Delta f/f$ \\ \hline
+Vacuum (5~Torr) & 1.294 & 0.51--1.05 & $\alpha \cdot pq/(p{+}q)$ \\
+Air (760~Torr)  & 1.295 & 0.51--1.05 & $\alpha \cdot pq/(p{+}q)$ \\
+Mineral oil     & 2.265 & 0.38--0.79 & $\alpha \cdot pq/(p{+}q)$ \\ \hline
+\end{tabular}
+\end{center}
+
+\noindent This three-medium verification eliminates the need for multiple expensive PCB substrates (Rogers, duroid). A single \$10 FR-4 board tested in three media provides a more powerful substrate independence check than any number of different substrates, because it tests three \textit{fundamentally different} environmental conditions with a single unchanging specimen.
 
 \section{Bill of Materials}
 
@@ -262,10 +281,11 @@ Enameled magnet wire, 24~AWG, 1~lb spool (Remington)            & 1     & \$14  
 M3 hardware kit + 10~mm nylon standoffs                         & 1 kit & \$8   \\
 SMA-to-SMA cable, 30~cm, RG316                                  & 1     & \$8   \\
 Mineral oil, 500~mL, transformer grade                          & 1     & \$10  \\
-Glass dish, 9$\times$13'' (Pyrex, oil bath)                     & 1     & \$10  \\ \hline
-\textbf{Subtotal (excl.\ VNA)}                                   &       & \textbf{\$111} \\ \hline
+Glass dish, 9$\times$13'' (Pyrex, oil bath)                     & 1     & \$10  \\
+SMA vacuum feedthrough (KF-25 flange or panel-mount)             & 1     & \$40  \\ \hline
+\textbf{Subtotal (excl.\ VNA)}                                   &       & \textbf{\$151} \\ \hline
 LiteVNA-64 (50~kHz -- 6.3~GHz, incl.\ cal kit)                  & 1     & \$100 \\ \hline
-\textbf{Grand Total}                                             &       & \textbf{\$211} \\ \hline
+\textbf{Grand Total}                                             &       & \textbf{\$251} \\ \hline
 \end{tabular}
 \end{center}
 
@@ -342,6 +362,18 @@ Radiation polarization         & geometry-determined         & geometry-determin
 
 \section{Decision Gate}
 
-If the HOPF-01 scaling law is confirmed---meaning $\Delta f/f$ is linear in $pq/(p+q)$ with slope $\alpha$, identical in air and oil, and absent in the zero-topology control---the AVE framework has produced a genuine, zero-parameter electromagnetic prediction that no existing Maxwell solver can reproduce. This justifies the significantly greater investment required for the mechanical thrust measurements described in the following chapters.
+The HOPF-01 experiment proceeds in three phases:
 
-If the scaling law is \textit{not} confirmed, the chiral coupling term in Eq.~\ref{eq:n_ave} is falsified, and the PONDER thrust predictions must be re-examined from first principles.
+\begin{center}
+\begin{tabular}{|c|l|l|l|}
+\hline
+Phase & Medium & Pass Criterion & Confidence \\ \hline
+1 & Air     & $\Delta f/f$ monotonic in $pq/(p{+}q)$, control null & Proceed \\
+2 & Oil     & $\Delta f/f$ identical to Phase~1 ($\pm\sigma$)       & Strong  \\
+3 & Vacuum  & $\Delta f/f$ identical to Phases~1\&2                  & Decisive \\ \hline
+\end{tabular}
+\end{center}
+
+\noindent If all three phases pass---meaning $\Delta f/f$ is linear in $pq/(p+q)$ with slope~$\alpha$, identical across three independent media (air, mineral oil, and vacuum at~5~Torr), and absent in the zero-topology control---the AVE framework has produced a genuine, zero-parameter electromagnetic prediction that no existing Maxwell solver can reproduce. This justifies the significantly greater investment required for the mechanical thrust measurements described in the following chapters.
+
+If the scaling law is \textit{not} confirmed at any phase, the chiral coupling term in Eq.~\ref{eq:n_ave} is falsified, and the PONDER thrust predictions must be re-examined from first principles.

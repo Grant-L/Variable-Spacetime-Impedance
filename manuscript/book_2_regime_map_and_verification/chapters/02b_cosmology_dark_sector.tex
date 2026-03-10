@@ -1,0 +1,78 @@
+% 02_cosmology_dark_sector.tex
+% Ch.2: Galactic rotation, RAR — MOND from Axiom 4
+
+\chapter{Cosmology: Galactic Rotation from Axiom 4}
+\label{ch:cosmology_v7}
+
+The most dramatic application of scale invariance closes the
+``dark matter problem.''  The MOND acceleration scale
+$a_0 \approx 1.2 \times 10^{-10}$~m/s$^2$ is first \textit{derived}:
+\begin{resultbox}{Derived MOND Acceleration Scale ($a_0$)}
+\begin{equation}
+    a_0 = \frac{c \cdot H_\infty}{2\pi}
+    \approx 1.07 \times 10^{-10}\;\text{m/s}^2
+    \label{eq:a0_derived}
+\end{equation}
+\end{resultbox}
+where $H_\infty$ is the asymptotic Hubble parameter from the derivation
+chain (10.7\% below the empirical value).
+
+The lattice mutual inductance $\eta$ at galactic scale is governed
+by the \textit{same} saturation operator as particle confinement:
+\begin{resultbox}{Saturated Lattice Mutual Inductance}
+\begin{equation}
+    \eta_{eff}(\dot\gamma) \;=\; \eta_0 \cdot
+    \sqrt{1 - \left(\frac{\dot\gamma}{\dot\gamma_{yield}}\right)^{\!2}}
+    \label{eq:galactic_inductance}
+\end{equation}
+\end{resultbox}
+When local Newtonian acceleration $g_N$ serves as the saturation
+amplitude (with $a_0$ as the yield limit), the drag contribution
+becomes:
+\begin{resultbox}{Effective Galactic Acceleration (Axiom 4 MOND)}
+\begin{equation}
+    g_{eff} \;=\; g_N + \sqrt{g_N \cdot a_0}\;
+    \sqrt{1 - \frac{g_N}{a_0}}
+    \label{eq:saturation_mond}
+\end{equation}
+\end{resultbox}
+
+\section{Asymptotic Limits}
+
+\begin{itemize}
+    \item $g_N \ll a_0$: $g_{eff} \to \sqrt{g_N \cdot a_0}$
+          \quad (deep MOND --- flat rotation curves)
+    \item $g_N \ge a_0$: The term under the root ($1 - g_N/a_0$) becomes negative, yielding an imaginary inductive drag. In discrete wave mechanics, an imaginary frequency forces the solution to become an \textit{Evanescent Wave}. The drag envelope decays to absolute zero and cannot propagate through the saturated inner-galaxy lattice, leaving only standard, conservative Newtonian gravity:  $g_{eff} = g_N + 0 = g_N$.
+\end{itemize}
+
+\section{Physical Mechanism}
+
+In the outer galaxy where $g_N < a_0$,
+the vacuum lattice is in its linear (unsaturated) regime.  Its mutual
+inductance $\eta_{eff} \approx \eta_0$ resists differential rotation,
+producing an additional radial acceleration that mimics a dark matter
+halo.  In the inner galaxy where $g_N > a_0$, the same saturation
+operator that drives particle confinement drives
+$\eta_{eff} \to 0$~--- the lattice saturates and cannot support
+transverse inductive drag.  Orbits become conservative and Keplerian.
+
+\section{Validation: NGC~3198}
+
+The saturation model produces a flat
+rotation velocity of $\sim$159~km/s versus the observed 150~km/s
+($\sim$5\% agreement), with a flatness ratio $v(25\,\text{kpc}) /
+v(10\,\text{kpc}) = 0.961$~--- identical to the McGaugh empirical
+interpolation.  Both the deep-MOND asymptote and the Newtonian limit
+are reproduced exactly, with zero adjustable parameters.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{galactic_rotation_curve.pdf}
+    \caption{\textbf{Left:} NGC~3198 rotation curve. Newtonian
+    prediction (dashed) falls off as $1/\sqrt{r}$; the AVE Axiom~4
+    saturation (solid) produces flat curves matching observations
+    (green dots). \textbf{Right:} Radial Acceleration Relation
+    for three galaxies (NGC~3198, Milky Way, DDO~154). The 1:1
+    line (no dark matter) and deep-MOND asymptote are shown.}
+    \label{fig:galactic_rotation}
+\end{figure}

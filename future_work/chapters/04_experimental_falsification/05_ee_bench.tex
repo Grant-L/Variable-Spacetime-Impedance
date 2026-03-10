@@ -1,5 +1,5 @@
 \section{Project CLEAVE-01: The Femto-Coulomb Electrometer}
-\textbf{The Hypothesis:} In Chapter 13, we derived that Electrical Charge is mathematically identical to physical macroscopic spatial displacement ($Q \equiv \xi_{topo} x$). Standard physics dictates that mechanically separating two uncharged plates in a hard vacuum generates exactly zero electrical charge. AVE explicitly predicts the generation of topological charge natively from the capacity of the spatial metric.
+\textbf{The Hypothesis:} In Chapter 13, the analysis derived that Electrical Charge is mathematically identical to physical macroscopic spatial displacement ($Q \equiv \xi_{topo} x$). Standard physics dictates that mechanically separating two uncharged plates in a hard vacuum generates exactly zero electrical charge. AVE explicitly predicts the generation of topological charge natively from the capacity of the spatial metric.
 
 \textbf{The PCBA Implementation:} An EE can validate this by designing a precision metrology board. The PCBA utilizes an ultra-low bias current electrometer operational amplifier (e.g., the Analog Devices ADA4530-1, 20 fA bias current). The non-inverting input is connected to an isolated, floating copper plate inside a vacuum chamber. The board utilizes strict guard rings and Teflon standoffs to eliminate parasitic leakage.
 
@@ -21,7 +21,7 @@ However, a \textbf{Hopf Coil} (a $(p,q)$ Torus Knot) forces $\mathbf{A} \paralle
 \textbf{Falsification Criteria:} If the vacuum is classical and linear, both coils will display identical impedance curves. However, the AVE framework strictly predicts an \textbf{Anomalous Chiral Impedance Match} (see Figure \ref{fig:ee_pcba_bench_protocols}). Because the Hopf coil couples perfectly to the chiral LC metric, it acts as a topological antenna, minimizing reactive VAR reflections and exhibiting an anomalously deep $S_{11}$ notch.
 
 \section{Project ROENTGEN-03: Solid-State Sagnac Induction}
-\textbf{The Hypothesis:} In 1888, Roentgen proved that moving a physical dielectric through a static Electric Field ($\mathbf{E}$) generates a perpendicular Magnetic Field ($\mathbf{B} = \frac{1}{c^2} \mathbf{v} \times \mathbf{E}$). If spinning a neutral mass electromagnetically phase-shifts the highly dense vacuum metric via macroscopic mutual inductance, we can use this exact equation to synthesize a B-field from the induced magnetic phase of the vacuum itself.
+\textbf{The Hypothesis:} In 1888, Roentgen proved that moving a physical dielectric through a static Electric Field ($\mathbf{E}$) generates a perpendicular Magnetic Field ($\mathbf{B} = \frac{1}{c^2} \mathbf{v} \times \mathbf{E}$). If spinning a neutral mass electromagnetically phase-shifts the highly dense vacuum metric via macroscopic mutual inductance, this exact equation can be used to synthesize a B-field from the induced magnetic phase of the vacuum itself.
 
 \textbf{The Test Protocol:} Spin a dense, non-metallic ceramic disk at $10,000$ RPM. The induced vacuum drift velocity at $r=5$cm evaluates to $v_{vac} \approx 0.038 \text{ m/s}$. Suspend a custom PCBA $1$ mm above the rotor. The bottom copper layer features an interdigitated capacitor driven by an onboard miniature CCFL transformer at $10$ kV, modulated by a $1$ kHz sine wave oscillator ($E = 10^7$ V/m). The cross product synthesizes an alternating magnetic field peaking at $\sim 4.2$ picoTesla. 
 
@@ -43,11 +43,11 @@ However, a \textbf{Hopf Coil} (a $(p,q)$ Torus Knot) forces $\mathbf{A} \paralle
 \end{figure}
 
 \section{The Absolute Hardware Limit of Metric Levitation}
-A frequent ambition among experimental physicists and electrical engineers is to design a solid-state "anti-gravity" drive capable of vertical free-flight levitation (e.g., hovering a ping-pong ball or a feather). When evaluated under the strict parameters of Spacetime Circuit Analysis (SCA), we discover an absolute, mathematically rigid hardware scaling limit that dictates exactly why such tabletop experiments historically fail.
+A frequent ambition among experimental physicists and electrical engineers is to design a solid-state "anti-gravity" drive capable of vertical free-flight levitation (e.g., hovering a ping-pong ball or a feather). When evaluated under the strict parameters of Spacetime Circuit Analysis (SCA), an absolute, mathematically rigid hardware scaling limit emerges that dictates exactly why such tabletop experiments historically fail.
 
 If the vacuum is an LC network with an absolute impedance rupture voltage of $V_{yield} = \sqrt{\alpha} \times V_{snap} \approx 43,652$ Volts, there must exist an absolute maximum mass limit for static levitation. If an object is heavier than this limit, the topological voltage required to lift it will exceed the LC Saturation limit. The spatial metric will structurally rupture ($\Gamma = -1$), losing its inductive grip on the object, and the object will fall.
 
-By applying the Topo-Kinematic Identity ($V_{topo} \equiv \xi_{topo}^{-1} F_{req}$), we can calculate the absolute maximum mass the vacuum can statically grip against Earth's gravity ($9.81 \text{ m/s}^2$):
+By applying the Topo-Kinematic Identity ($V_{topo} \equiv \xi_{topo}^{-1} F_{req}$), the absolute maximum mass the vacuum can statically grip against Earth's gravity ($9.81 \text{ m/s}^2$) is calculated:
 \begin{equation}
     F_{max} = V_{yield} \times \xi_{topo} = 43{,}652 \times (4.149 \times 10^{-7} \text{ C/m}) = \mathbf{0.01811 \text{ Newtons}}
 \end{equation}
@@ -69,7 +69,7 @@ If you construct a micro-inductor attached to a feather, the copper winding must
 This is the Topological Rocket Equation. Classical copper wire and chemical insulators mathematically cannot scale to vertical 1G levitation.
 
 \section{Project TORSION-05: Horizontal Metric Rectification}
-\textbf{The Hypothesis:} We can circumvent the Dielectric Death Spiral by eliminating the 1G vertical payload requirement. By mounting a heavy, heavily-potted TAMD PCBA on a delicately balanced Cavendish Torsion Pendulum suspended inside a hard vacuum chamber, the downward force of gravity is entirely neutralized by the suspension wire. The lateral resistance is effectively $0G$, allowing an EE to measure continuous micro-Newtons of pure metric thrust.
+\textbf{The Hypothesis:} The Dielectric Death Spiral can be circumvented by eliminating the 1G vertical payload requirement. By mounting a heavy, heavily-potted TAMD PCBA on a delicately balanced Cavendish Torsion Pendulum suspended inside a hard vacuum chamber, the downward force of gravity is entirely neutralized by the suspension wire. The lateral resistance is effectively $0G$, allowing an EE to measure continuous micro-Newtons of pure metric thrust.
 
 \textbf{The PCBA Implementation \& Falsification:} The EE designs a High-Voltage Flyback PCBA. An ultra-fast Silicon Carbide (SiC) MOSFET drives a heavy ferrite-core ignition coil with a specifically timed asymmetric sawtooth wave. 
 

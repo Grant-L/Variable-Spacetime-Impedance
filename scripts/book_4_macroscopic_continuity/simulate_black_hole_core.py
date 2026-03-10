@@ -39,8 +39,9 @@ from matplotlib.gridspec import GridSpec
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
 from ave.core.constants import (
     C_0, G, HBAR, MU_0, EPSILON_0, Z_0, NU_VAC,
-    ALPHA, M_E, e_charge, L_NODE, K_B,
+    ALPHA, M_E, e_charge, L_NODE, K_B, M_SUN,
 )
+from ave.core.regime_map import identify_regime
 from ave.gravity import (
     principal_radial_strain,
     refractive_index,
@@ -72,6 +73,11 @@ LIGO_EVENTS = {
 
 
 def run_simulation():
+    # ── PREREQUISITE GATE: identify operating regime for 10 M☉ BH ──
+    regime = identify_regime("gravity", M_kg=10*float(M_SUN),
+                             r_meters=7*G*10*float(M_SUN)/C_0**2)
+    print()
+
     print("=" * 78)
     print("  BLACK HOLE IMPEDANCE HORIZON: FIRST-PRINCIPLES DERIVATION")
     print("  All from ave.gravity module + AVE Axioms 1-4")

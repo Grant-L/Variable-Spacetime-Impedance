@@ -1,26 +1,11 @@
 \documentclass[11pt,letterpaper,twoside]{book}
-\usepackage[utf8]{inputenc}
-\usepackage{amsmath, amssymb, amsfonts}
-\usepackage{graphicx}
-\usepackage{geometry}
-\usepackage{longtable}
-\usepackage{booktabs}
-\geometry{letterpaper, margin=1in}
 
-\usepackage{hyperref}
-\hypersetup{
-    colorlinks=true,
-    linkcolor=blue,
-    filecolor=magenta,      
-    urlcolor=cyan,
-    citecolor=black,
-}
+% --- Shared AVE Framework Infrastructure ---
+\input{../manuscript/structure/preamble.tex}
+\input{../manuscript/structure/commands.tex}
 
-% Centralized Graphics Path
-\graphicspath{{assets/}{simulations/outputs/}}
-
-% Custom Commands (Shared AVE Framework Nomenclature)
-\input{structure/commands.tex}
+% --- Build-specific Graphics Path ---
+\graphicspath{{assets/}{simulations/outputs/}{../assets/}{../assets/figures/}{../assets/sim_outputs/}}
 
 \begin{document}
 
@@ -33,31 +18,31 @@
 \tableofcontents
 
 \mainmatter
-\include{chapters/00_summary_table}
+\input{chapters/00_summary_table}
 
 % -------------------------
 % CHAPTERS
 % -------------------------
 % --- Theoretical Framework ---
-\include{chapters/00_introduction}
-\include{chapters/01_computational}
-\include{chapters/02_chemistry}
+\input{chapters/00_introduction}
+\input{chapters/01_computational}
+\input{chapters/02_chemistry}
 
 % --- Elemental Catalog ---
-\include{chapters/03_hydrogen}
-\include{chapters/04_helium}
-\include{chapters/05_lithium}
-\include{chapters/06_beryllium}
-\include{chapters/07_boron}
-\include{chapters/08_carbon}
-\include{chapters/09_nitrogen}
-\include{chapters/10_oxygen}
-\include{chapters/11_fluorine}
-\include{chapters/12_neon}
-\include{chapters/13_sodium}
-\include{chapters/14_magnesium}
-\include{chapters/15_aluminum}
-\include{chapters/16_silicon}
+\input{chapters/03_hydrogen}
+\input{chapters/04_helium}
+\input{chapters/05_lithium}
+\input{chapters/06_beryllium}
+\input{chapters/07_boron}
+\input{chapters/08_carbon}
+\input{chapters/09_nitrogen}
+\input{chapters/10_oxygen}
+\input{chapters/11_fluorine}
+\input{chapters/12_neon}
+\input{chapters/13_sodium}
+\input{chapters/14_magnesium}
+\input{chapters/15_aluminum}
+\input{chapters/16_silicon}
 
 
 % -------------------------
@@ -68,8 +53,8 @@
 
 % --- AUTOMATED HIGH-Z ELEMENTS ---
 \appendix
-\include{chapters/A_heavy_element_catalog}
-\input{../manuscript/backmatter/03_geometric_inevitability}
+\input{chapters/A_heavy_element_catalog}
+\input{../manuscript/backmatter/03_geometric_inevitability.tex}
 
 \backmatter
 \bibliographystyle{plain}

@@ -53,6 +53,7 @@ from ave.core.constants import (
     NU_VAC, RHO_BULK,
 )
 from ave.core.universal_operators import universal_saturation
+from ave.core.regime_map import identify_regime
 
 # ==============================================================================
 # PONDER-01 HARDWARE PARAMETERS (geometric — not physics constants)
@@ -175,6 +176,10 @@ def rectified_thrust(Q_factor, P_input, N=N_TIPS, beta=BETA_TIP):
 
 def run_simulation():
     """Generate 6-panel diagnostic figure."""
+
+    # ── PREREQUISITE GATE: identify operating regime ──
+    regime = identify_regime("em_field", E_local=E_MACRO)
+    print()
 
     # Input RF power: V²/(2Z₀) into free space (upper bound)
     P_INPUT = 0.5 * V_DRIVE_RMS**2 / Z_0  # ≈ 1.19 MW (30 kV into 377 Ω)

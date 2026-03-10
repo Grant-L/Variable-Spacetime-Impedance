@@ -12,9 +12,11 @@ from ave.core.regime_map import (
     gravity_regime, bcs_regime, magnetic_regime,
     nuclear_regime, gw_regime, protein_regime,
     galactic_regime,
+    identify_regime,
     REGIME_LINEAR, REGIME_NONLINEAR, REGIME_YIELD, REGIME_RUPTURED,
     R_LINEAR_MAX, R_NONLINEAR_MAX, R_YIELD_MAX,
     regime_equations,
+    TRANSITION_NAMES,
 )
 from ave.core.constants import ALPHA
 
@@ -74,6 +76,85 @@ class TestDerivedBoundaries:
         S = np.sqrt(1 - R_NONLINEAR_MAX**2)
         assert abs(S - 0.5) < 1e-12
         assert abs(1.0 / S - 2.0) < 1e-12
+
+
+class TestTransitionBoundaries:
+    """Verify transition (between-regime) boundary detection."""
+
+    def test_near_linear_nonlinear_boundary(self):
+        """r ≈ √(2α) should flag I↔II transition."""
+        info = classify_regime(R_LINEAR_MAX, 1.0)
+        assert info.near_boundary
+        assert "I↔II" in info.boundary_name
+
+    def test_near_nonlinear_yield_boundary(self):
+        """r ≈ √3/2 should flag II↔III transition."""
+        info = classify_regime(R_NONLINEAR_MAX * 0.95, 1.0)
+        assert info.near_boundary
+        assert "II↔III" in info.boundary_name
+
+    def test_near_yield_ruptured_boundary(self):
+        """r ≈ 1.0 should flag III↔IV transition."""
+        info = classify_regime(0.98, 1.0)  # Within 10% of r=1.0, outside 10% of r=0.866
+        assert info.near_boundary
+        assert "III↔IV" in info.boundary_name
+
+    def test_deep_linear_no_boundary(self):
+        """r ≪ √(2α) should NOT flag transition."""
+        info = classify_regime(0.01, 1.0)
+        assert not info.near_boundary
+        assert info.boundary_name is None
+
+    def test_mid_nonlinear_no_boundary(self):
+        """r = 0.5 is far from both boundaries — no transition."""
+        info = classify_regime(0.5, 1.0)
+        assert not info.near_boundary
+
+    def test_summary_includes_transition(self):
+        """The summary string should include TRANSITION for boundary cases."""
+        info = classify_regime(R_LINEAR_MAX, 1.0)
+        s = info.summary()
+        assert "TRANSITION" in s
+        assert "I↔II" in s
+
+    def test_all_transition_names_defined(self):
+        """All 3 boundary pairs should have transition names."""
+        assert len(TRANSITION_NAMES) == 3
+        assert (REGIME_LINEAR, REGIME_NONLINEAR) in TRANSITION_NAMES
+        assert (REGIME_NONLINEAR, REGIME_YIELD) in TRANSITION_NAMES
+        assert (REGIME_YIELD, REGIME_RUPTURED) in TRANSITION_NAMES
+
+
+class TestIdentifyRegime:
+    """Test the identify_regime() convenience startup function."""
+
+    def test_em_voltage(self):
+        info = identify_regime("em_voltage", verbose=False, V_local=30e3)
+        assert info.regime == REGIME_NONLINEAR
+        assert info.domain == "EM (dielectric)"
+
+    def test_gravity(self):
+        info = identify_regime("gravity", verbose=False,
+                               M_kg=1.989e30, r_meters=6.96e8)
+        assert info.regime == REGIME_LINEAR
+
+    def test_gw(self):
+        info = identify_regime("gw", verbose=False, h_strain=1e-21)
+        assert info.regime == REGIME_LINEAR
+
+    def test_generic(self):
+        info = identify_regime("generic", verbose=False,
+                               A=0.5, Ac=1.0)
+        assert info.regime == REGIME_NONLINEAR
+
+    def test_invalid_domain_raises(self):
+        with pytest.raises(ValueError, match="Unknown domain"):
+            identify_regime("invalid_domain", verbose=False, A=1.0)
+
+    def test_verbose_prints(self, capsys):
+        identify_regime("em_voltage", verbose=True, V_local=1000)
+        captured = capsys.readouterr()
+        assert "REGIME CLASSIFICATION" in captured.out
 
 
 class TestEMDomain:
@@ -215,3 +296,4 @@ class TestSummaryOutput:
         s = info.summary()
         assert "NONLINEAR" in s or "Large-Signal" in s
         assert "30000" in s or "3.0000e+04" in s
+

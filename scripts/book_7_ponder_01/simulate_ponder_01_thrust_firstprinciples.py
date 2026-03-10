@@ -58,6 +58,7 @@ from ave.core.constants import (
     V_SNAP, V_YIELD, XI_TOPO, L_NODE,
 )
 from ave.core.universal_operators import universal_saturation
+from ave.core.regime_map import identify_regime
 
 # ══════════════════════════════════════════════════════════════════════════════
 # 1. GEOMETRY — Asymmetric Tip-Plate Capacitor
@@ -157,6 +158,10 @@ def ponderomotive_force(z, u):
 # ══════════════════════════════════════════════════════════════════════════════
 
 def run_simulation():
+    # ── PREREQUISITE GATE: identify operating regime ──
+    regime = identify_regime("em_voltage", V_local=30e3)
+    print()
+
     print("=" * 78)
     print("  PONDER-01: FIRST-PRINCIPLES THRUST FROM AXIOM 4 SATURATION")
     print("  All operators from ave.core — zero magic numbers")

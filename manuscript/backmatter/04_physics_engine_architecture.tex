@@ -18,7 +18,7 @@ axioms through the architecture documented below.
 
 \begin{enumerate}
     \item \textbf{Single source of truth.}  The three universal operators
-          ($Z$, $\sigma$, $\Gamma$) are implemented \emph{once} in
+          ($Z$, $S$, $\Gamma$) are implemented \emph{once} in
           \texttt{scale\_invariant.py}.  No domain module re-derives them.
     \item \textbf{Scale invariance by construction.}  Domain modules
           provide constitutive analogs ($\varepsilon$, $\mu$) only;
@@ -80,8 +80,9 @@ Every entry traces to Axioms~1--4 with zero free parameters.}
 $Z_0$        & $\sqrt{\mu_0/\varepsilon_0} \approx 376.73\;\Omega$ & 1 \\
 $\ell_{node}$ & $\hbar/(m_e c) \approx 3.86 \times 10^{-13}$ m     & 1 \\
 $\alpha$      & $e^2/(4\pi\varepsilon_0\hbar c)$                    & 2 \\
-$V_{snap}$    & $m_e c^2 \sqrt{\alpha}/e \approx 43.65$ kV          & 4 \\
-$B_{snap}$    & $V_{snap}/(c \cdot \ell_{node})$                    & 4 \\
+$V_{snap}$    & $m_e c^2/e \approx 511$ kV                        & 4 \\
+$V_{yield}$   & $\sqrt{\alpha}\,V_{snap} \approx 43.65$ kV          & 4 \\
+$B_{snap}$    & $\sqrt{2\mu_0 m_e c^2 / \ell_{node}^3}$             & 4 \\
 $G$           & $\hbar c / (7\xi \cdot m_e^2)$                      & 3 \\
 \bottomrule
 \end{tabular}
@@ -106,13 +107,13 @@ Every domain module delegates to these functions.}
   & $Z = \sqrt{\mu/\varepsilon}$
   & Vacuum, plasma, seismic, protein \\
 \texttt{saturation\_factor($A$, $A_c$)}
-  & $\sigma = \sqrt{1-(A/A_c)^2}$
+  & $S = \sqrt{1-(A/A_c)^2}$
   & Dielectric, BCS, galactic, relativistic \\
 \texttt{epsilon\_eff($A$, $A_c$)}
-  & $\varepsilon_0 \cdot \sigma$
+  & $\varepsilon_0 \cdot S$
   & Plasma onset, FDTD \\
 \texttt{mu\_eff($B$, $B_c$)}
-  & $\mu_0 \cdot \sigma$
+  & $\mu_0 \cdot S$
   & Meissner, particle confinement \\
 \texttt{reflection\_coeff($Z_1$, $Z_2$)}
   & $\Gamma = (Z_2-Z_1)/(Z_2+Z_1)$

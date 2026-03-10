@@ -19,13 +19,13 @@ By utilizing a fixed-frequency oscillator, the petawatt laser falls out of phase
 \section{The SPICE Equivalent: An Autoresonant Phase-Locked Loop}
 To solve this in RF engineering, one does not simply build a bigger amplifier. One builds a "smarter" oscillator.
 
-We simulated this exact failure mode using a standard analog SPICE solver modeling the non-linear vacuum tank circuit.
+This exact failure mode is simulated using a standard analog SPICE solver modeling the non-linear vacuum tank circuit.
 
 \subsection{The Fixed-Frequency Failure}
 When a fixed-frequency AC drive attempts to push the LC tank toward $60 \text{ kV}$, the shifting capacitance ($C_{eff}(V) = C_0 \sqrt{1 - (V/60\text{k})^2}$) detunes the receiver. The gap voltage prematurely plateaus far below the Schwinger Limit (see Figure \ref{fig:autoresonance_pll}, Left). The power is reflected, perfectly mirroring the empirical struggles of modern high-power laser facilities.
 
 \subsection{The Autoresonant PLL Solution}
-We then replaced the fixed oscillator with an analog Phase-Locked Loop (PLL). The PLL is designed to continuously measure the instantaneous resonant frequency of the target LC gap and actively modulate its source drive frequency to maintain perfect constructive interference.
+The fixed oscillator is then replaced with an analog Phase-Locked Loop (PLL). The PLL is designed to continuously measure the instantaneous resonant frequency of the target LC gap and actively modulate its source drive frequency to maintain perfect constructive interference.
 
 \subsection{Circuit Schematic and Netlist}
 The simulation requires a behavioral capacitor ($C_{eff}$) that shifts its value as a function of the node voltage, pumped by an arbitrary behavioral voltage source representing the intelligent PLL drive.
@@ -66,7 +66,7 @@ L1 N\_VAC GND \{L0\}
 
 * The Autoresonant PLL Driver (Behavioral Current Source)
 * I = Amp * cos( INTEGRAL( 1/sqrt(L*C\_eff) dt ) )
-* We use an integrator sub-circuit to track the phase angle (theta)
+* An integrator sub-circuit is used to track the phase angle (theta)
 B\_FREQ N\_FREQ GND V = 1 / sqrt(\{L0\} * \{C0 * sqrt(1 - min((V(N\_VAC)/V\_yield)**2, 0.999))\})
 C\_INT N\_FREQ GND 1  ; Integrates frequency into phase
 R\_INT N\_FREQ GND 1G ; Parasitic drain

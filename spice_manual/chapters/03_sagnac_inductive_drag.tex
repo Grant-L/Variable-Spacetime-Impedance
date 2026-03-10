@@ -20,7 +20,7 @@ Because $c = \frac{1}{\sqrt{\mu \epsilon}}$, any fractional shift in the local i
 \end{itemize}
 
 \section{The SPICE Equivalent: A Differential LC Ring}
-We simulated this using a standard 1D discrete LC topology. We constructed a closed ring of 50 purely classical inductors and capacitors.
+This simulation uses a standard 1D discrete LC topology. A closed ring of 50 purely classical inductors and capacitors is constructed.
 
 \subsection{Circuit Schematic and Netlist}
 The simulation evaluates the instantaneous direction of current flow across every single discrete node in the ring. 
@@ -58,7 +58,7 @@ The core SPICE mechanism relies on arbitrary behavioral inductors or behavioral 
 C\_N NODE\_N GND \{C0\}
 
 * Directional Inductor linking Node N to Node N+1
-* We use a Behavioral Current Source to model V = L * di/dt
+* A Behavioral Current Source is used to model V = L * di/dt
 * where L depends on the sign of the current (I\_sense)
 V\_SENSE NODE\_N NODE\_INT 0  ; 0V source to measure current
 B\_IND NODE\_INT NODE\_N\_PLUS\_1 I = sdt( V(NODE\_INT, NODE\_N\_PLUS\_1) / 
@@ -70,7 +70,7 @@ B\_IND NODE\_INT NODE\_N\_PLUS\_1 I = sdt( V(NODE\_INT, NODE\_N\_PLUS\_1) /
 .END
 \end{tcolorbox}
 
-To model the rotation of the massive frame, we did not apply relativistic tensor math to the simulation clocks or spatial coordinates. We simply instructed the SPICE solver to dynamically evaluate the direction of the current $I$. 
+To model the rotation of the massive frame, no relativistic tensor math is applied to the simulation clocks or spatial coordinates. Instead, the SPICE solver is instructed to dynamically evaluate the direction of the current $I$. 
 If the current was flowing clockwise (co-rotating), the solver encountered an inductor valued at $L_0(1 - \delta)$. If the current flowed counter-clockwise, the solver encountered an inductor valued at $L_0(1 + \delta)$.
 
 \begin{figure}[h!]

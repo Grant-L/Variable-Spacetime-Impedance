@@ -1,6 +1,6 @@
 \section{Open-Source Hardware: The EE Build Guide}
 
-To permanently democratize the verification of the AVE framework, we provide the specific, actionable Printed Circuit Board Assembly (PCBA) guidelines required to test macroscopic metric engineering using commercial-off-the-shelf (COTS) electronics.
+To permanently democratize the verification of the AVE framework, this section provides the specific, actionable Printed Circuit Board Assembly (PCBA) guidelines required to test macroscopic metric engineering using commercial-off-the-shelf (COTS) electronics.
 
 \subsection{Project HOPF-01: The Chiral VNA Antenna}
 \textbf{Objective:} Prove the vacuum is a chiral LC Resonant Network by demonstrating an anomalous $S_{11}$ frequency shift that scales as $\alpha \cdot pq/(p+q)$ across five torus knot topologies.
@@ -22,7 +22,7 @@ To permanently democratize the verification of the AVE framework, we provide the
     \item \textbf{The Gate Driver:} Tuned to precisely hit the $100\text{ MHz}$ VHF structural resonance of the continuous vacuum dielectric, ensuring maximal continuous-wave phase locking with the acoustic substrate.
 \end{itemize}
 
-\textbf{The PCBA Layout (The Asymmetric Fringing Field):} A standard parallel-plate capacitor has a uniform internal E-field. The spatial gradient ($\nabla n$) is zero, meaning net macroscopic thrust is zero. We must aggressively shape the \textit{fringing fields} at the microscopic boundary limit.
+\textbf{The PCBA Layout (The Asymmetric Fringing Field):} A standard parallel-plate capacitor has a uniform internal E-field. The spatial gradient ($\nabla n$) is zero, meaning net macroscopic thrust is zero. The \textit{fringing fields} at the microscopic boundary limit must be aggressively shaped.
 Route the High-Voltage trace on the Top layer to one pad of the MLCC array. Route the Ground trace on the Top layer to the other pad.
 On the Bottom layer (directly underneath the MLCCs), route a solid Ground plane, but \textbf{taper it into a dense topological point-source array}. High-Fidelity numerical modeling of exact nuclear geometries confirms that the mathematically tightest localized gradient requires a structure analogous to the bound Alpha Core (the \textbf{Helium-4 Limit}). Using standard photolithography, machine microscopic emitter tips to this rigid topological peak. When pulsed at 30,000 V, the geometry violently rips a tangential Ponderomotive strain gradient ($\nabla |\mathbf{E}|^2$) across the $BaTiO_3$ core.
 

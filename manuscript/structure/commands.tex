@@ -16,12 +16,12 @@
 \providecommand{\lp}{\ensuremath{l_{node}}}         % Lattice Pitch
 
 % --- Vacuum Engineering Shorthand ---
-\newcommand{\vacuum}{\ensuremath{M_A}}
-\newcommand{\slew}{\ensuremath{c}}
-\newcommand{\planck}{\ensuremath{\hbar}}
-\newcommand{\permeability}{\ensuremath{\mu_0}}
-\newcommand{\permittivity}{\ensuremath{\epsilon_0}}
-\newcommand{\impedance}{\ensuremath{Z_0}}
+\providecommand{\vacuum}{\ensuremath{M_A}}
+\providecommand{\slew}{\ensuremath{c}}
+\providecommand{\planck}{\ensuremath{\hbar}}
+\providecommand{\permeability}{\ensuremath{\mu_0}}
+\providecommand{\permittivity}{\ensuremath{\epsilon_0}}
+\providecommand{\impedance}{\ensuremath{Z_0}}
 
 % --- Citation Commands ---
 \providecommand{\citestart}{}              
@@ -68,6 +68,6 @@
 %    (SPICE manual pattern)
 \newtcolorbox{codebox}[1]{
     colback=black!95!white, colframe=black!75!white, coltext=white,
-    fontupper=\ttfamily, fonttitle=\bfseries, coltitle=white,
+    fontupper=\ttfamily, fonttitle=\bfseries, coltitle=green!70!white,
     title=#1, enhanced, breakable
 }

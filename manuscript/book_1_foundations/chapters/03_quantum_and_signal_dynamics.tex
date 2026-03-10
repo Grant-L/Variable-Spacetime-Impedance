@@ -59,7 +59,11 @@ To map the real-valued physical lattice potential $\mathbf{A}(\mathbf{x},t)$ to 
 The complex continuous Hilbert space of standard quantum mechanics is formally identical to the Paley-Wiener signal-processing representation of the discrete vacuum hardware.
 
 \subsection{The Generalized Uncertainty Principle (GUP)}
-On a discrete graph with pitch $\ell_{node}$, continuous coordinate translation is physically impossible[cite: 1783]. For a macroscopic wave propagating through a stochastic 3D amorphous solid, the effective continuous momentum operator $\langle \hat{P} \rangle$ is defined as an isotropic ensemble average of the symmetric central finite-difference operator across adjacent nodes[cite: 1784]:
+On a discrete graph with pitch $\ell_{node}$, continuous coordinate translation is physically impossible[cite: 1783]. The continuous canonical momentum $\hat{p}_c$ is strictly bounded by the Brillouin zone of the lattice:
+\begin{equation}
+    p_c \in \left[-\frac{\pi\hbar}{\ell_{node}},\; \frac{\pi\hbar}{\ell_{node}}\right]
+\end{equation}
+For a macroscopic wave propagating through a stochastic 3D amorphous solid, the effective continuous momentum operator $\langle \hat{P} \rangle$ is defined as an isotropic ensemble average of the symmetric central finite-difference operator across adjacent nodes[cite: 1784]:
 \begin{resultbox}{Continuous Momentum Expectation}
 \begin{equation}
     \langle \hat{P} \rangle \approx \frac{\hbar}{\ell_{node}} \sin\left(\frac{\ell_{node} \hat{p}_c}{\hbar}\right)

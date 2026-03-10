@@ -94,6 +94,46 @@ REGIME_DESCRIPTIONS = {
     REGIME_RUPTURED: "Breakdown: topology destroyed, S = 0, M → ∞",
 }
 
+# ══════════════════════════════════════════════════════════════════════════════
+# Transition Boundaries — BETWEEN regimes
+# ══════════════════════════════════════════════════════════════════════════════
+#
+# Physical objects near a regime boundary experience TRANSITIONAL physics:
+# the simplified equations of neither regime fully apply.  The transition
+# zone width is ±10% of the boundary value (the ≈ α fractional resolution
+# of the lattice's own self-coupling).
+#
+# I↔II:   r₁ = √(2α) ≈ 0.1208  → transition zone [0.1087, 0.1329]
+# II↔III: r₂ = √3/2  ≈ 0.8660  → transition zone [0.7794, 0.9526]
+# III↔IV: r₃ = 1.0              → transition zone [0.9000, 1.0000]
+#
+# EE analog: the transition zones map to the "knee" of device curves —
+# the region where simple models (small-signal, saturated) break down
+# and full nonlinear SPICE simulation is required.
+
+_BOUNDARY_TOLERANCE = 0.10  # 10% fractional width
+
+TRANSITION_NAMES = {
+    (REGIME_LINEAR, REGIME_NONLINEAR): "I↔II (Linear ↔ Nonlinear onset)",
+    (REGIME_NONLINEAR, REGIME_YIELD): "II↔III (Nonlinear ↔ Yield onset)",
+    (REGIME_YIELD, REGIME_RUPTURED): "III↔IV (Yield ↔ Rupture onset)",
+}
+
+TRANSITION_DESCRIPTIONS = {
+    (REGIME_LINEAR, REGIME_NONLINEAR): (
+        "Transition: ΔS ~ α. Perturbative and full S(r) both marginally valid. "
+        "EE: biasing near V_BE — device entering active region."
+    ),
+    (REGIME_NONLINEAR, REGIME_YIELD): (
+        "Transition: Q → 2. Energy trapping rising, avalanche onset. "
+        "EE: approaching breakdown knee — Miller multiplication rising."
+    ),
+    (REGIME_YIELD, REGIME_RUPTURED): (
+        "Transition: S → 0. Topology on verge of rupture. "
+        "EE: Zener/avalanche knee — device at absolute maximum rating."
+    ),
+}
+
 
 @dataclass
 class RegimeInfo:
@@ -108,11 +148,15 @@ class RegimeInfo:
     domain: Optional[str] = None
     A_units: Optional[str] = None
     Ac_units: Optional[str] = None
+    near_boundary: bool = False
+    boundary_name: Optional[str] = None
+    boundary_description: Optional[str] = None
 
     def __repr__(self):
+        bnd = f", boundary='{self.boundary_name}'" if self.near_boundary else ""
         return (
             f"RegimeInfo(regime={self.name}, r={self.r:.6f}, "
-            f"S={self.S:.6f}, A={self.A:.4e}, Ac={self.Ac:.4e})"
+            f"S={self.S:.6f}, A={self.A:.4e}, Ac={self.Ac:.4e}{bnd})"
         )
 
     def summary(self) -> str:
@@ -127,6 +171,9 @@ class RegimeInfo:
             f"  ▶ Regime:  {self.name}",
             f"  ▶ Physics: {self.description}",
         ]
+        if self.near_boundary:
+            lines.append(f"  ⚡ TRANSITION: {self.boundary_name}")
+            lines.append(f"     {self.boundary_description}")
         return "\n".join(lines)
 
 
@@ -166,6 +213,23 @@ def classify_regime(A, Ac, domain=None, A_units=None, Ac_units=None):
     else:
         regime = REGIME_RUPTURED
 
+    # Detect transition boundaries (within ±10% of any boundary)
+    near_boundary = False
+    boundary_name = None
+    boundary_desc = None
+
+    boundaries = [
+        (R_LINEAR_MAX, (REGIME_LINEAR, REGIME_NONLINEAR)),
+        (R_NONLINEAR_MAX, (REGIME_NONLINEAR, REGIME_YIELD)),
+        (R_YIELD_MAX, (REGIME_YIELD, REGIME_RUPTURED)),
+    ]
+    for r_bnd, regime_pair in boundaries:
+        if abs(r - r_bnd) / r_bnd < _BOUNDARY_TOLERANCE:
+            near_boundary = True
+            boundary_name = TRANSITION_NAMES[regime_pair]
+            boundary_desc = TRANSITION_DESCRIPTIONS[regime_pair]
+            break
+
     return RegimeInfo(
         regime=regime,
         name=REGIME_NAMES[regime],
@@ -177,6 +241,9 @@ def classify_regime(A, Ac, domain=None, A_units=None, Ac_units=None):
         domain=domain,
         A_units=A_units,
         Ac_units=Ac_units,
+        near_boundary=near_boundary,
+        boundary_name=boundary_name,
+        boundary_description=boundary_desc,
     )
 
 
@@ -447,6 +514,65 @@ def print_regime_map():
             print(f"    {name:<28s} r = {info.r:.2e}  S = {info.S:.6f}  → {info.name}")
 
     print(f"\n  {'='*72}")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# identify_regime() — Convenience Startup Function
+# ══════════════════════════════════════════════════════════════════════════════
+
+_DOMAIN_DISPATCH = {
+    "em_voltage": lambda kw: em_voltage_regime(kw["V_local"]),
+    "em_field":   lambda kw: em_field_regime(kw["E_local"]),
+    "gravity":    lambda kw: gravity_regime(kw["M_kg"], kw["r_meters"]),
+    "bcs":        lambda kw: bcs_regime(kw["T_kelvin"], kw["T_c_kelvin"]),
+    "magnetic":   lambda kw: magnetic_regime(kw["B_local"]),
+    "nuclear":    lambda kw: nuclear_regime(kw["r_separation"], kw["d_sat"]),
+    "gw":         lambda kw: gw_regime(kw["h_strain"]),
+    "protein":    lambda kw: protein_regime(kw["d_bond"], kw["d_eq"]),
+    "galactic":   lambda kw: galactic_regime(kw["g_newtonian"]),
+    "generic":    lambda kw: classify_regime(kw["A"], kw["Ac"],
+                       domain=kw.get("domain"), A_units=kw.get("A_units"),
+                       Ac_units=kw.get("Ac_units")),
+}
+
+
+def identify_regime(domain: str, verbose: bool = True, **kwargs) -> RegimeInfo:
+    """
+    Identify and print the operating regime at script startup.
+
+    This is the PREREQUISITE GATE: every physics script should call this
+    before proceeding with domain-specific analysis.
+
+    Parameters
+    ----------
+    domain : str
+        One of: 'em_voltage', 'em_field', 'gravity', 'bcs', 'magnetic',
+        'nuclear', 'gw', 'protein', 'galactic', 'generic'.
+    verbose : bool
+        If True (default), print the regime summary to stdout.
+    **kwargs
+        Domain-specific parameters. See each domain classifier for details.
+        Examples:
+            identify_regime('em_voltage', V_local=30e3)
+            identify_regime('gravity', M_kg=1.989e30, r_meters=6.96e8)
+            identify_regime('gw', h_strain=1e-21)
+            identify_regime('generic', A=0.5, Ac=1.0, domain='custom')
+
+    Returns
+    -------
+    RegimeInfo
+        Complete regime classification with transition boundary awareness.
+    """
+    if domain not in _DOMAIN_DISPATCH:
+        valid = ", ".join(sorted(_DOMAIN_DISPATCH.keys()))
+        raise ValueError(f"Unknown domain '{domain}'. Valid: {valid}")
+
+    info = _DOMAIN_DISPATCH[domain](kwargs)
+
+    if verbose:
+        print(info.summary())
+
+    return info
 
 
 if __name__ == "__main__":
