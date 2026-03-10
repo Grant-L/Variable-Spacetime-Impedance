@@ -54,6 +54,48 @@ This dynamic structural yielding lowers the local geometric Q-factor of the disc
     \label{fig:electron_3d}
 \end{figure}
 
+\section{Regime Classification of Topological Matter}
+
+Every stable particle in the AVE framework operates within the universal regime landscape defined by the Axiom~4 saturation kernel. The regime boundary determines whether the particle's internal field stresses remain within the linear elastic response of the lattice or enter the non-linear saturation plateau.
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{lccl}
+\toprule
+\textbf{Particle} & \textbf{Topology} & \textbf{Regime} & \textbf{Physical Mechanism} \\
+\midrule
+Photon ($\gamma$)          & Propagating wave    & I (Linear)    & $\Delta\phi \ll \alpha$; free propagation \\
+Neutrino ($\nu$)           & Twisted unknot      & I--II boundary & Chiral phase below yield \\
+Electron ($e^-$)           & $0_1$ Unknot         & II (Yield)    & $\Delta\phi = \alpha$; self-confinement \\
+Proton ($p$)               & $(2,5)$ Cinquefoil   & II (Yield)    & Borromean linkage at saturation \\
+W/Z Bosons                 & Transient defect     & III (Rupture)  & $\Delta\phi > \alpha$; temporary \\
+Black Hole                 & Macroscopic soliton  & III (Rupture)  & $V_{topo} \gg V_{yield}$; metric collapse \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{The Torus Knot Phase Winding Ladder}
+
+The $(2,q)$ torus knots classify the phase winding number of stable topological defects. Each odd crossing number $q$ defines a unique soliton confinement radius $r_{opt} = \kappa_{FS} / q$, where $\kappa_{FS} = 8\pi$ is the cold Faddeev--Skyrme coupling constant. The ladder is:
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{$(2,q)$ Knot} & \textbf{$q$} & \textbf{$r_{opt}$} & \textbf{Gauge Symmetry} & \textbf{Particle} \\
+\midrule
+Trefoil ($3_1$)    & 3 & $8.378\,\ell_{node}$ & SU(2) & Electron \\
+Cinquefoil ($5_1$) & 5 & $5.027\,\ell_{node}$ & SU(3) & Proton \\
+$7_1$ knot         & 7 & $3.590\,\ell_{node}$ & SU(4) & Predicted \\
+$9_1$ knot         & 9 & $2.793\,\ell_{node}$ & SU(5) & Predicted \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The crossing number $q$ constrains the phase gradient by absorbing a fraction of the total coupling. Higher $q$ produces smaller, more tightly wound solitons. The proton's cinquefoil ($q = 5$) gives $r_{opt} = \kappa_{FS}/5 \approx 5.03\,\ell_{node}$. All values are computed from \texttt{ave.core.constants} with zero empirical fits.
+
 \section{Chirality and Antimatter Disintegration}
 Because the $\mathcal{M}_A$ LC network supports polarised transverse EM waves, it breaks geometric symmetry between left and right. Electric charge polarity is defined as the \textbf{Topological Twist Direction} of the closed magnetic standing wave. An electron ($e^-$) is a right-handed unknot; a positron ($e^+$) is physically identical, but wound as a left-handed unknot.
 
