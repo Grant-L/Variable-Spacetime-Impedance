@@ -78,9 +78,39 @@ The exponential decay curve derived from classical rotational inertia correspond
 
 Consequently, what quantum mechanics describes as ``perfect diamagnetism'' through a macroscopic complex wave function is functionally identical to the \textbf{static rejection of boundary torque} across a rigid mechanical gearbox.
 
-\medskip\noindent
-\textit{For the quantitative $\mu$-saturation treatment --- critical
-field $B_c(T)$, Meissner reflection $\Gamma$, and the
-$\varepsilon$--$\mu$ duality with plasma cutoff --- see
-\S\ref{sec:superconductivity_duality} in
-Appendix~\ref{app:full_derivation_chain}.}
+\section{Superconductor Catalog: AVE Engine Predictions}
+
+The AVE superconductor engine (\texttt{ave.plasma.superconductor}) computes critical fields and London depths from first principles via the universal saturation operator $S(T/T_c) = \sqrt{1 - (T/T_c)^2}$.
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Material} & \textbf{$T_c$ [K]} & \textbf{$B_{c0}$ [T]} & \textbf{$\lambda_L$ [nm]} & \textbf{Type} \\
+\midrule
+Aluminium & 1.18  & 0.0105 & 12.5  & I \\
+Lead      & 7.19  & 0.0803 & 14.6  & I \\
+Niobium   & 9.25  & 0.206  & 22.5  & II \\
+MgB$_2$   & 39.0  & 16.0   & 40.8  & II \\
+YBCO      & 92.0  & 100.0  & 118.8 & II \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent The key identity is that the BCS critical field profile $B_c(T) = B_{c0}\sqrt{1-(T/T_c)^2}$ is \emph{exactly} the Axiom~4 saturation factor $S(T/T_c)$. The Meissner effect is the magnetic-sector analog of plasma screening: a saturated $\mu_{eff} \to 0$ expels flux, just as a saturated $\epsilon_{eff} \to 0$ expels E-field in a plasma.
+
+\subsection*{Regime Classification}
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{lcl}
+\toprule
+\textbf{State} & \textbf{Regime} & \textbf{Physical Character} \\
+\midrule
+Superconducting ($T < T_c$) & I (Linear) & Phase-locked inductors; $\mu_{eff} \to 0$ \\
+Transition ($T \approx T_c$)      & I--II boundary & Partial saturation; mixed state \\
+Normal ($T > T_c$)                 & II (Yield) & Thermal disorder breaks phase lock \\
+\bottomrule
+\end{tabular}
+\end{center}
