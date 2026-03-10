@@ -130,6 +130,7 @@ class TopologicalHamiltonian1D:
         r_opt_max = self.kappa / crossing_number
 
         def objective(params):
+            """Integrate the Faddeev-Skyrme energy density for a trial (r_opt, n) profile."""
             r_opt, n = params
             # Integrate the energy density from core out to 10 * r_opt
             integral, _ = quad(self._energy_density_integrand, 0.0, 10.0 * r_opt, args=(r_opt, n), limit=100)

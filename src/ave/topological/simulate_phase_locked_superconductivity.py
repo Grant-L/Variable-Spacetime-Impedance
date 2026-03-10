@@ -75,6 +75,7 @@ def simulate_phase_locked_superconductivity(n_electrons=30, frames=200):
     history_R = []
 
     def update(frame):
+        """Advance one Kuramoto time step: coupling, thermal noise, and order parameter."""
         nonlocal phases
         
         # Temperature profile (drops linearly until T_c_frame, then plateau)

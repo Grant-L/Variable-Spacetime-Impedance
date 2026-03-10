@@ -35,22 +35,42 @@ axioms through the architecture documented below.
 \centering
 \begin{verbatim}
 Tier 1: CORE (never duplicated)
-|-- core/constants.py         All derived constants (Z_0, V_snap, ...)
-|-- axioms/scale_invariant.py Z, S, Gamma, T, eps_eff, mu_eff, c_eff, Z_eff
+|-- core/constants.py            All derived constants (Z_0, V_snap, ...)
+|-- core/universal_operators.py  Z, S, Gamma, pairwise energy (JAX/numpy)
+|-- core/regime_map.py           r_I, r_II, r_III regime classification
+|-- axioms/scale_invariant.py    Canonical API: Z, S, eps_eff, mu_eff, ...
+|-- axioms/saturation.py         Axiom 4 demonstrations
+|-- axioms/isomorphism.py        Topo-kinematic identity proofs
+|-- axioms/yang_mills.py         Yang-Mills mass-gap from AVE
+|-- axioms/navier_stokes.py      N-S global regularity from AVE
+|-- axioms/spectral_gap.py       Spectral gap from lattice topology
+|-- axioms/open_problems.py      Millennium problem demonstrations
 
 Tier 2: DOMAIN ADAPTERS (thin wrappers providing eps/mu analogs)
-|-- gravity/                  n(r), Schwarzschild, heliospheric profiles
-|-- plasma/                   omega_p, Drude, skin depth, Meissner
-|-- geophysics/               PREM layers, K/G -> eps/mu mapping
-|-- fluids/                   H-bond LC model, water density
-|-- topological/              Skyrme, Borromean, Cosserat tensors
-|-- mechanics/                Refractive strain, mutual inductance
+|-- gravity/                     7 modules: solar, galactic, GW, stellar,
+|                                  neutrino MSW, planetary magnetosphere
+|-- plasma/                      cutoff.py, superconductor.py
+|-- geophysics/                  seismic.py, seismic_fdtd.py
+|-- fluids/                      water.py
+|-- topological/                 7 modules: Skyrme, Borromean, Cosserat,
+|                                  soliton bond, combiner, tensors, SC sim
+|-- mechanics/                   impedance.py
 
 Tier 3: SOLVERS (consume Tiers 1+2, never re-derive operators)
-|-- core/fdtd_3d.py           3D nonlinear FDTD engine
-|-- solvers/bond_energy_solver     1D FDTD for nuclear bond E(d) curves
-|-- solvers/fdtd_lc_network        1D macroscopic gravity FDTD
-|-- solvers/protein_bond_constants Backbone derivation chain + data
+|-- core/fdtd_3d.py              3D nonlinear FDTD (numpy)
+|-- core/fdtd_3d_jax.py          3D nonlinear FDTD (JAX GPU)
+|-- core/grid.py                 Grid infrastructure
+|-- core/lbm_3d.py               Lattice Boltzmann
+|-- core/node.py                 Node data structures
+|-- solvers/bond_energy_solver    Nuclear bond E(d) curves
+|-- solvers/coupled_resonator     Multi-mode resonator chains
+|-- solvers/fdtd_lc_network       1D macroscopic gravity FDTD
+|-- solvers/fdtd_yee_lattice      2D TMz Yee animation
+|-- solvers/orbital_resonance     Shell eigenvalue solver
+|-- solvers/protein_bond_constants Backbone derivation + data
+|-- solvers/resonator             Single-mode LC resonator
+|-- solvers/transmission_line     S-parameters, Q-factor
+|-- simulations/topological_optimizer  N-body impedance minimizer
 \end{verbatim}
 \caption{Three-tier architecture enforcing scale invariance.
 Every computation flows downward; no tier re-derives operators
@@ -127,6 +147,18 @@ Every domain module delegates to these functions.}
 \texttt{impedance\_at\_strain($A$, $A_c$)}
   & $Z_{eff} = Z_0 / (1-r^2)^{1/4}$
   & Local impedance under saturation \\
+\texttt{regime\_boundary\_eigen(r, $\nu$, $\ell$)}
+  & $\omega = \ell c / r_{eff}$
+  & Universal eigenfrequency \\
+\texttt{co\_rotating\_decay(R, $\Omega$, $\ell$)}
+  & $\omega_I = (\omega_R - m\Omega) / 2\ell$
+  & FOC/Park decomposition \\
+\texttt{avalanche\_factor($V$, $V_{br}$, $n$)}
+  & $M = 1/(1-(V/V_{br})^n)$
+  & Miller multiplication \\
+\texttt{shear\_modulus\_ratio($\varepsilon$)}
+  & $G/G_0 = S(\varepsilon)$
+  & Alias for saturation \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -148,7 +180,8 @@ delegate to Tier~1.
     \item \texttt{local\_epsilon($M$, $r$)}: $\varepsilon_{eff} = \varepsilon_0 \cdot n(r)$
     \item \textbf{Key result:} $Z = \sqrt{\mu_{eff}/\varepsilon_{eff}} = Z_0$ (invariant)
     \item Sub-modules: \texttt{solar\_impedance}, \texttt{galactic\_rotation},
-          \texttt{gw\_propagation}, \texttt{stellar\_interior},
+          \texttt{gw\_propagation}, \texttt{gw\_detector},
+          \texttt{stellar\_interior},
           \texttt{neutrino\_msw}, \texttt{planetary\_magnetosphere}
 \end{itemize}
 

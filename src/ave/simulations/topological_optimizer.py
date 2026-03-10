@@ -155,6 +155,7 @@ class TopologicalOptimizer:
         energy_history = []
         
         def callback(xk):
+            """Record optimisation trajectory for convergence analysis."""
             if record_history:
                 history.append(xk.reshape((self.N, 3)).copy())
                 energy_history.append(self._cost_function(xk))
