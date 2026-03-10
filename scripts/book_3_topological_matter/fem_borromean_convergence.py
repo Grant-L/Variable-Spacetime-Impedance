@@ -24,7 +24,6 @@ Output: assets/sim_outputs/borromean_fem_convergence.png
 import sys
 import os
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 
 import numpy as np
 import matplotlib.pyplot as plt

@@ -17,7 +17,6 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.colors import LightSource
 
 # Bind into the AVE framework
-sys.path.append(os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')), 'src'))
 try:
     from ave.core.fdtd_3d_jax import FDTD3DEngineJAX as FDTD3DEngine
 except ImportError:

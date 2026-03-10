@@ -4,7 +4,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Ensure local ave package is in path
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 
 from ave.core.constants import C_0, MU_0, EPSILON_0
 from ave.solvers.fdtd_lc_network import FDTDLattice1D

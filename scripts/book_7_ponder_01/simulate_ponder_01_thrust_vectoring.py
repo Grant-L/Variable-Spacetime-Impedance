@@ -18,7 +18,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Add the root directory to the Python path to import AVE core modules
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'src')))
 
 from ave.core.constants import C_0, ALPHA
 # Calculate Vacuum Bulk Density and Kinematic Impedance dynamically

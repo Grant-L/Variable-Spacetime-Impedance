@@ -25,7 +25,6 @@ import numpy as np
 import sys, os, time
 
 # Import constants from the original (authoritative source)
-sys.path.insert(0, os.path.dirname(__file__))
 from ramachandran_steric import (
     BOND_LEN, ANGLE_TET, ANGLE_SP2, VDW_RADIUS, OVERLAP_FACTOR,
     HELIX_PHI, HELIX_PSI, SHEET_PHI, SHEET_PSI, SCAN_STEP,

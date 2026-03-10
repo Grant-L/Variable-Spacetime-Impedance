@@ -9,8 +9,7 @@ inside the energy functional itself.
 
 Output: assets/sim_outputs/thermal_skyrmion_comparison.png
 """
-import sys, os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
+import os
 
 import numpy as np
 import matplotlib.pyplot as plt

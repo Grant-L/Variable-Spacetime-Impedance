@@ -35,7 +35,6 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import FancyArrowPatch
 
 # ── AVE Engine Imports ──────────────────────────────────────────────────────
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
 from ave.core.constants import (
     ALPHA, HBAR, C_0, e_charge, M_E, V_YIELD, V_SNAP,
     XI_TOPO, L_NODE, Z_0, MU_0, EPSILON_0, M_PROTON,

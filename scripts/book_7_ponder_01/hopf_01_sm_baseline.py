@@ -26,7 +26,6 @@ import pathlib
 import numpy as np
 
 project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
-sys.path.append(str(project_root / "src"))
 
 from ave.core.constants import C_0, ALPHA, MU_0, EPSILON_0, Z_0
 

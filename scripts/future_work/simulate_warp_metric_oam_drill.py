@@ -21,7 +21,6 @@ import sys
 import numpy as np
 import matplotlib.pyplot as plt
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from src.ave.core.constants import C_0
 
 # JAX GPU acceleration (graceful fallback to numpy)

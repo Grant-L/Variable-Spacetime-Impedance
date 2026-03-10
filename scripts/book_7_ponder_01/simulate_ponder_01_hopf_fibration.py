@@ -22,7 +22,6 @@ from mpl_toolkits.mplot3d import Axes3D
 # Add root to sys.path to resolve src imports
 import pathlib
 project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
-sys.path.append(str(project_root / "src"))
 from ave.core.constants import Z_0
 
 def simulate_hopf_fibration():

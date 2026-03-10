@@ -41,7 +41,6 @@ import sys
 import os
 import numpy as np
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 
 from ave.core.constants import V_SNAP, V_YIELD, ALPHA, C_0, HBAR, e_charge
 

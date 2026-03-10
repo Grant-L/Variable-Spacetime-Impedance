@@ -6,8 +6,7 @@ SH0ES (local) measurements, visualizing the Hubble tension.
 
 Output: assets/sim_outputs/hubble_tension_position.png
 """
-import sys, os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
+import os
 
 import numpy as np
 import matplotlib.pyplot as plt

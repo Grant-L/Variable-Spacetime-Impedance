@@ -28,7 +28,6 @@ import os
 import sys
 import numpy as np
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 
 from ave.gravity.galactic_rotation import (
     GalaxyModel, GALAXY_CATALOG, A0_MOND, KPC, M_SUN,

@@ -19,7 +19,6 @@ import urllib.request
 import json
 
 project_root = pathlib.Path(__file__).parent.parent.absolute()
-sys.path.append(str(project_root))
 
 def simulate_empirical_noaa_overlay():
     print("[*] Generating Empirical NOAA GOES Satellite vs AVE Topological Diode comparison...")

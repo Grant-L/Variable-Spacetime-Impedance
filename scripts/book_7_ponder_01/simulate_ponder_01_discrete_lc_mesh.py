@@ -22,7 +22,6 @@ from matplotlib.collections import LineCollection
 from mpl_toolkits.mplot3d.art3d import Line3DCollection
 
 # Bind into the AVE framework
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from src.ave.core.constants import C_0, EPSILON_0
 
 # JAX GPU acceleration (graceful fallback to numpy)

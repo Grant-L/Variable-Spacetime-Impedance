@@ -18,11 +18,9 @@ filter section with its own Thevenin equivalent and structural energy.
 """
 
 import numpy as np
-import sys, os
+import os
 
 # Import lumped element values (Step 2 of architecture)
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src', 'ave', 'solvers'))
 from protein_bond_constants import Z_TOPO, Q_BACKBONE, KAPPA_HB, D_HB_DETECT
 from ave.core.constants import P_C, ETA_EQ
 from ave.axioms.scale_invariant import reflection_coefficient, saturation_factor

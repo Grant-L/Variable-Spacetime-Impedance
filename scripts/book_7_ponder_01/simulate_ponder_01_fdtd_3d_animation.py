@@ -20,7 +20,6 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
 # Bind into the AVE framework
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 try:
     from src.ave.core.fdtd_3d_jax import FDTD3DEngineJAX as FDTD3DEngine
 except ImportError:

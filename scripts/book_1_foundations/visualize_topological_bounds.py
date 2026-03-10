@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 # Ensure local ave package is in path
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 
 from ave.topological.tensors import (
     calculate_structural_baryon_eigenvalue, 

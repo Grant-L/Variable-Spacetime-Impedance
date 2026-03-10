@@ -23,11 +23,9 @@ where:
 This replaces the bridged constants with ab initio computed values.
 """
 
-import sys, os
+import os
 import numpy as np
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'mechanics'))
 
 from spice_organic_mapper import (
     get_inductance, get_capacitance, ATOMIC_INDUCTANCE, COVALENT_CAPACITANCE,

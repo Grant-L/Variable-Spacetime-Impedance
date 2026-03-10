@@ -6,8 +6,7 @@ operator, from ℓ_node (~10⁻¹³ m) to the Hubble radius (~10²⁶ m).
 
 Output: assets/sim_outputs/cross_scale_verification.png
 """
-import sys, os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
+import os
 
 import numpy as np
 import matplotlib.pyplot as plt

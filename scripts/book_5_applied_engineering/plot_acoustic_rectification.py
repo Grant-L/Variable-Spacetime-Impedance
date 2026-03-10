@@ -20,7 +20,6 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import FancyArrowPatch
 
 project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
-sys.path.append(str(project_root / "src"))
 
 def generate_acoustic_rectification_figure():
     print("[*] Generating Acoustic Rectification Figure...")

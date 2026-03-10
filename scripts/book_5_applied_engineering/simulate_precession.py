@@ -15,7 +15,6 @@ import pathlib
 import matplotlib.animation as animation
 
 project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
-sys.path.append(str(project_root / "src"))
 
 # Constants (Normalized for aesthetic visual scaling)
 G_M = 1.0 # Standard 1/r^2 mass displacement constant

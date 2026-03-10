@@ -26,7 +26,6 @@ import matplotlib.pyplot as plt
 import pathlib
 
 project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
-sys.path.append(str(project_root / "src"))
 
 def simulate_ee_bench_plateau():
     print("[*] Generating the EE Bench Dielectric Yield predictions...")

@@ -20,10 +20,8 @@ NO FREE PARAMETERS.  Every constant traces to the lattice axioms.
 
 import numpy as np
 from collections import namedtuple
-import sys, os
 
 # Import the AVE periodic table (soliton bond solver)
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 from ave.topological.soliton_bond_solver import (
     _slater_orbital_radius, _slater_z_eff, _n_star,
     KNOWN_D, A_BOHR,

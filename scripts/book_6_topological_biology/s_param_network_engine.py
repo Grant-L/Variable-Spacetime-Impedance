@@ -25,13 +25,9 @@ from jax import jit, lax
 import optax
 
 # AVE constants
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'mechanics'))
 from ave.core.constants import ETA_EQ, P_C
 
 # Import from 1D engine (reuse, don't duplicate)
-sys.path.insert(0, os.path.dirname(__file__))
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src', 'ave', 'solvers'))
 from s11_fold_engine_v3_jax import (
     _torsions_to_backbone, _compute_cb_positions, _compute_cg_positions,
     compute_z_topo, compute_gly_mask, compute_pro_mask, compute_cg_mask,

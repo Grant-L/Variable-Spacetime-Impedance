@@ -34,7 +34,6 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
 from ave.core.constants import (
     C_0, ALPHA, HBAR, M_E, e_charge,
     EPSILON_0, MU_0, Z_0, L_NODE,

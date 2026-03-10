@@ -27,7 +27,6 @@ import os
 import sys
 import numpy as np
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'src')))
 
 from ave.core.constants import C_0, EPSILON_0, MU_0, Z_0, ALPHA, V_SNAP, V_YIELD
 

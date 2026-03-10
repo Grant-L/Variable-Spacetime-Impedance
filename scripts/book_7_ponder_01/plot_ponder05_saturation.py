@@ -6,8 +6,7 @@ V → V_yield, plus the DC operating point at 30 kV and the thrust profile.
 
 Output: assets/sim_outputs/ponder05_saturation_curves.png
 """
-import sys, os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
+import os
 
 import numpy as np
 import matplotlib.pyplot as plt

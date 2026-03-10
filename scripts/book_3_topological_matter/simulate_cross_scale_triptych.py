@@ -24,7 +24,6 @@ import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-sys.path.insert(0, os.path.join(project_root, 'src'))
 
 from ave.core.constants import (
     C_0, ALPHA, L_NODE, Z_0, HBAR, M_E,

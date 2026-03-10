@@ -4,7 +4,6 @@ import pathlib
 
 # Setup paths
 project_root = pathlib.Path(__file__).parent.absolute()
-sys.path.append(str(project_root))
 
 from periodic_table.simulations.simulate_element import get_nucleon_coordinates
 

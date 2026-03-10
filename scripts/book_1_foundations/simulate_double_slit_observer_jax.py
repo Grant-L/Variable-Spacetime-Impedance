@@ -34,7 +34,6 @@ import jax
 import jax.numpy as jnp
 from jax import jit, lax
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 
 import matplotlib
 matplotlib.use('Agg')

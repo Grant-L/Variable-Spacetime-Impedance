@@ -43,7 +43,6 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch
 from matplotlib.gridspec import GridSpec
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
 from ave.core.constants import (
     ALPHA, HBAR, C_0, e_charge, M_E, V_YIELD, V_SNAP,
     EPSILON_0, MU_0, Z_0, K_B, M_SUN, M_PROTON,

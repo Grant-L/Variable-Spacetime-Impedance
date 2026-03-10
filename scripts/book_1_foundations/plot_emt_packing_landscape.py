@@ -7,8 +7,7 @@ Also marks the Cauchy solid (K/G = 5/3) and the rigidity threshold.
 
 Output: assets/sim_outputs/emt_packing_landscape.png
 """
-import sys, os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
+import os
 
 import numpy as np
 import matplotlib.pyplot as plt

@@ -21,7 +21,6 @@ from spice_exporter import generate_spice_netlist
 
 # Import derived constants from the AVE physics engine
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
-sys.path.insert(0, os.path.join(REPO_ROOT, "src"))
 from ave.core.constants import K_MUTUAL, ALPHA, M_E, C_0, e_charge, HBAR, M_P_MEV, M_N_MEV, D_PROTON
 
 # Fundamental Constants (MeV domain)

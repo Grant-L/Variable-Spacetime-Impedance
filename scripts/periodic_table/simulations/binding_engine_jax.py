@@ -45,11 +45,9 @@ except ImportError:
     print("[JAX] Not available, using NumPy fallback")
 
 # ---- Import AVE constants ----
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'src')))
 from ave.core.constants import K_MUTUAL, ALPHA, V_SNAP, V_YIELD, B_SNAP
 
 # Import nucleon coordinates from existing engine
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__))))
 from simulate_element import get_nucleon_coordinates, M_P_RAW, M_N_RAW
 
 # ---- Physical constants in nuclear units ----

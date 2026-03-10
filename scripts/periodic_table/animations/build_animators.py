@@ -13,7 +13,6 @@ import pathlib
 
 # Ensure the core framework is in PATH
 project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
-sys.path.append(str(project_root))
 
 from src.ave.topological.borromean import FundamentalTopologies
 
@@ -83,7 +82,6 @@ import pathlib
 
 # Ensure the core framework is in PATH
 project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
-sys.path.append(str(project_root))
 
 from periodic_table.simulations.simulate_element import get_nucleon_coordinates
 

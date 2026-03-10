@@ -30,7 +30,6 @@ import numpy as np
 import sys, os, time
 
 # Import AVE constants
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'src')))
 from ave.core.constants import K_MUTUAL, ALPHA, HBAR, C_0, e_charge, Z_0, M_P_MEV, M_N_MEV, D_PROTON, ALPHA_HBAR_C, D_INTRA_ALPHA
 
 # ---- AXIOM-DERIVED CONSTANTS ----

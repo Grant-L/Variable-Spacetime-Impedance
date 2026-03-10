@@ -26,7 +26,6 @@ from matplotlib.animation import FuncAnimation
 from mpl_toolkits.mplot3d import Axes3D
 
 # Bind to AVE parameters
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 try:
     from src.ave.core.fdtd_3d_jax import FDTD3DEngineJAX as FDTD3DEngine
 except ImportError:

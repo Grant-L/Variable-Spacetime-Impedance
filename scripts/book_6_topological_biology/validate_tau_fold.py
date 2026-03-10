@@ -29,7 +29,6 @@ import sys
 import numpy as np
 import urllib.request
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 
 # ===========================================================================
 # AVE-derived constants (from physics engine)

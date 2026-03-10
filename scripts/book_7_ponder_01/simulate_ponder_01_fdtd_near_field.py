@@ -20,7 +20,6 @@ import matplotlib.pyplot as plt
 
 # Bind into the AVE constants
 import sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from src.ave.core.constants import C_0, MU_0, EPSILON_0
 
 # JAX GPU acceleration (graceful fallback to numpy)

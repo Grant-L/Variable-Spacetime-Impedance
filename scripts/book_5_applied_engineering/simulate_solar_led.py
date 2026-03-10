@@ -28,7 +28,6 @@ import matplotlib.pyplot as plt
 import pathlib
 
 project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
-sys.path.append(str(project_root / "src"))
 
 # Simulation Parameters: Macroscopic Diode (The Sun)
 YEARS_TO_SIMULATE = 50.0  # Covering multiple 11-year solar cycles

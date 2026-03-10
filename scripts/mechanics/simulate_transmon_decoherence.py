@@ -19,7 +19,6 @@ import sys
 import os
 
 # Import the core AVE engine
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from ave.core.grid import VacuumGrid
 
 def main():

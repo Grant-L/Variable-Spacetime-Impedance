@@ -15,8 +15,6 @@ import matplotlib.pyplot as plt
 
 import pathlib
 project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
-sys.path.insert(0, str(project_root))
-sys.path.insert(0, str(project_root / 'src'))
 
 from periodic_table.simulations.simulate_element import get_nucleon_coordinates
 

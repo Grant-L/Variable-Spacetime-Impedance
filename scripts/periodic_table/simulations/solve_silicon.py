@@ -12,7 +12,6 @@ import sys
 
 import pathlib
 project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
-sys.path.append(str(project_root))
 
 # All constants imported from the physics engine — zero hardcoded values
 from ave.core.constants import K_MUTUAL, M_P_MEV as M_P_RAW, M_N_MEV as M_N_RAW, D_PROTON as D_0

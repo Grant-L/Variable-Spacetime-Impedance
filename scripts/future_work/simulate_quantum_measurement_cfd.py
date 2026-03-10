@@ -22,7 +22,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Bind to AVE Core
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from src.ave.core.constants import C_0
 
 def run_2d_wave_solver(case_name, measure_slit_2):

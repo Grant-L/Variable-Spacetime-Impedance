@@ -26,7 +26,6 @@ import jax.numpy as jnp
 from jax import jit
 
 # Bind to AVE Core
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from src.ave.core.constants import C_0
 
 import matplotlib

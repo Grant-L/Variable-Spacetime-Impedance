@@ -15,7 +15,6 @@ import sys
 import numpy as np
 
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(project_root)
 
 from periodic_table.simulations.simulate_element import get_nucleon_coordinates
 from periodic_table.simulations.spice_exporter import NUCLEON_SUBCKT, SPICE_K_SCALAR

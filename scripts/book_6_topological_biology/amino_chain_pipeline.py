@@ -32,9 +32,6 @@ warnings.filterwarnings('ignore')
 
 # --- Path setup ---------------------------------------------------------
 PROJECT_ROOT = pathlib.Path(__file__).parent.parent.parent.absolute()
-sys.path.insert(0, str(PROJECT_ROOT / "src"))
-sys.path.insert(0, str(PROJECT_ROOT / "scripts" / "mechanics"))
-sys.path.insert(0, str(PROJECT_ROOT / "scripts" / "book_6_topological_biology"))
 
 # Lazy imports: control + spice_organic_mapper only needed for
 # the transmission line builder (Sections 1-3), not for Z_topo or folding.

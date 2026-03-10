@@ -11,7 +11,7 @@ Each figure shows:
 
 All output goes to periodic_table/figures/<element>_topology.png
 """
-import sys, os
+import os
 import numpy as np
 import matplotlib
 matplotlib.use('Agg')
@@ -20,12 +20,10 @@ import matplotlib.pyplot as plt
 # ---------------------------------------------------------------------------
 # Import physics engine — NO ad-hoc values
 # ---------------------------------------------------------------------------
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', '..',
                                 'src'))
 from ave.core.constants import ALPHA, L_NODE
 
 OUTDIR = "/Users/grantlindblom/Variable-Spacetime-Impedance/Variable-Spacetime-Impedance/periodic_table/figures"
-
 
 
 # ============================================================================

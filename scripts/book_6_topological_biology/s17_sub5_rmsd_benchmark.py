@@ -18,7 +18,6 @@ import numpy as np
 import jax.numpy as jnp
 import urllib.request
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from s11_fold_engine_v3_jax import (
     fold_s11_jax, fold_cotranslational,
     compute_z_topo, _torsions_to_backbone

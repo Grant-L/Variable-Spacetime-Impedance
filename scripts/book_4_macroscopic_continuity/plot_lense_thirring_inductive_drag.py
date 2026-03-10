@@ -16,7 +16,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
-sys.path.append(str(project_root / "src"))
 
 def generate_lense_thirring_figure():
     print("[*] Generating Lense-Thirring Inductive Drag Figure...")

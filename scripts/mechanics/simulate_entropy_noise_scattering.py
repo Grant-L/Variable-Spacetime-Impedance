@@ -5,7 +5,6 @@ import sys
 import os
 
 # Add the src directory to path to import the ave engine
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from ave.core.grid import VacuumGrid
 
 def main():

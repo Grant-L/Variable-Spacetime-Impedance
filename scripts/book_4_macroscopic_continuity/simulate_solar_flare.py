@@ -17,7 +17,6 @@ import pathlib
 import matplotlib.collections as mcoll
 
 project_root = pathlib.Path(__file__).parent.parent.absolute()
-sys.path.append(str(project_root))
 
 # Simulation Parameters
 N_RADIAL = 30       # Number of shells

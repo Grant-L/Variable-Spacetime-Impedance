@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 from matplotlib import animation
 
 # Important: Add project root to sys path so we can import ave.core cleanly
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
 
 from src.ave.core import VacuumGrid, TopologicalNode
 

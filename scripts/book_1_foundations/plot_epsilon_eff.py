@@ -11,8 +11,7 @@ These are physically distinct:
 
 Output: assets/sim_outputs/vacuum_dielectric_saturation.png
 """
-import sys, os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
+import os
 
 import numpy as np
 import matplotlib.pyplot as plt

@@ -24,7 +24,6 @@ from matplotlib.patches import FancyArrowPatch
 
 # Ensure local ave package is in path
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-sys.path.insert(0, os.path.join(project_root, 'src'))
 
 from ave.solvers.orbital_resonance import (
     refractive_index,

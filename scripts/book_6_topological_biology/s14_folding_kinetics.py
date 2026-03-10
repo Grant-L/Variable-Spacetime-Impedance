@@ -25,7 +25,6 @@ import matplotlib.pyplot as plt
 
 # Try to import from AVE core, otherwise fallback to local definitions
 try:
-    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'src'))
     from ave.solvers.protein_bond_constants import Q_BACKBONE
     Q = Q_BACKBONE
 except ImportError:

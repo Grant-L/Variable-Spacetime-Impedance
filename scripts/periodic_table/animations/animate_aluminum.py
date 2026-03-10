@@ -7,7 +7,6 @@ from PIL import Image
 import pathlib
 
 project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
-sys.path.append(str(project_root))
 
 from periodic_table.simulations.simulate_element import get_nucleon_coordinates
 

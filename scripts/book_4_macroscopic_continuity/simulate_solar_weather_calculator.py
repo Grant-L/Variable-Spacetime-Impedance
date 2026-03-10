@@ -28,7 +28,6 @@ import pathlib
 from scipy.signal import peak_widths
 
 project_root = pathlib.Path(__file__).parent.parent.absolute()
-sys.path.append(str(project_root))
 
 # AVE Engine — for context on the macroscopic yield limit
 from ave.core.constants import V_YIELD, V_SNAP

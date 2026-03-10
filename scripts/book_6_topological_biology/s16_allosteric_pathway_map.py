@@ -27,7 +27,6 @@ import jax.numpy as jnp
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from s11_fold_engine_v3_jax import fold_s11_jax, compute_z_topo
 
 # ═══════════════════════════════════════════════════════════════

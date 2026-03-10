@@ -17,7 +17,6 @@ import sys
 import os
 import numpy as np
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 
 from ave.core.constants import C_0, EPSILON_0, MU_0, ALPHA, Z_0, V_SNAP, G, BARYON_LADDER, M_SUN
 

@@ -22,7 +22,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Add root to sys.path to resolve src imports if needed later
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 
 def simulate_open_air_paschen():
     print("[*] Generating Open-Air Paschen Breakdown Curve...")

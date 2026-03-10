@@ -40,7 +40,6 @@ coupling of the lattice.
 import numpy as np
 import sys
 import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 
 from ave.core.constants import (
     e_charge, HBAR, M_E, C_0, Z_0, MU_0, EPSILON_0, L_NODE, XI_TOPO

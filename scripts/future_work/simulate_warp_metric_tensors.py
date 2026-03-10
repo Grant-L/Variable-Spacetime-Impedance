@@ -27,7 +27,6 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 
 # Bind to AVE parameters to ensure 100% rigid framework compliance
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from src.ave.core.constants import C_0, EPSILON_0
 
 def generate_warp_metric():

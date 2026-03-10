@@ -24,8 +24,6 @@ import optax
 import numpy as np
 import sys, os, time
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'mechanics'))
 
 # Import canonical Z_topo from the physics engine (single source of truth)
 from ave.solvers.protein_bond_constants import (

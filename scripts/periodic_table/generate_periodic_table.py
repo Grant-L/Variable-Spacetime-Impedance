@@ -3,7 +3,6 @@ import json
 import sys
 
 # Ensure Python path sees the simulations folder directly
-sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from simulations.simulate_element import create_element_report
 
 def get_group_name(group):

@@ -51,8 +51,6 @@ from ave.solvers.transmission_line import (
 )
 
 # Import proven backbone generation from v3 (don't reimplement)
-import sys, os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__)))
 from s11_fold_engine_v3_jax import (
     _torsions_to_backbone,
     _compute_cb_positions,
@@ -164,8 +162,6 @@ def compute_masks(sequence):
     neg  = jnp.array([1.0 if aa in 'DE' else 0.0 for aa in sequence])  # acidic
     pos  = jnp.array([1.0 if aa in 'KR' else 0.0 for aa in sequence])  # basic
     return cys, arom, gly, pro, cg, neg, pos
-
-
 
 
 def dc_analysis(coords_flat, z_topo, gly_mask, pro_mask, N,

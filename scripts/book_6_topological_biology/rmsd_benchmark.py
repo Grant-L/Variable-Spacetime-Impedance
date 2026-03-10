@@ -7,8 +7,6 @@ AVE PREDICTION CHAIN (zero empirical structural data):
 PDB data: comparison ONLY (never enters prediction)
 """
 import sys, os, urllib.request, numpy as np, time
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'mechanics'))
 import amino_chain_pipeline as acp
 
 def fetch_pdb_ca(pdb_id):

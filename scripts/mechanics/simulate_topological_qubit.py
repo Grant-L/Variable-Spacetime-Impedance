@@ -18,7 +18,6 @@ from matplotlib import animation
 import sys
 import os
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from ave.core.grid import VacuumGrid
 from ave.core.node import TopologicalNode
 

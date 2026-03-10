@@ -8,7 +8,6 @@ Run this whenever the engine changes to keep the manuscript in sync.
 
 import sys
 import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
 from ave.core.constants import (
     L_NODE, ALPHA, G, XI_TOPO, P_C, M_E, C_0, HBAR,

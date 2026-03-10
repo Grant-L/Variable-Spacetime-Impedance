@@ -36,7 +36,6 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.colors import Normalize
 import matplotlib.cm as cm
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'src')))
 try:
     from ave.core.fdtd_3d_jax import FDTD3DEngineJAX as FDTD3DEngine
 except ImportError:

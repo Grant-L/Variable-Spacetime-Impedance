@@ -9,9 +9,6 @@ import sys
 warnings.filterwarnings('ignore')
 
 # --- Physics engine imports ---
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'src'))
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'mechanics'))
 
 from scripts.mechanics.spice_organic_mapper import get_inductance, get_capacitance
 from ave.solvers.protein_bond_constants import Z_TOPO, Q_BACKBONE
@@ -205,7 +202,6 @@ if not os.path.exists(output_dir):
 output_path = os.path.join(output_dir, "protein_spice_folding_strain.png")
 plt.savefig(output_path, dpi=300, bbox_inches='tight')
 print(f"Rendered diagnostic graph to: {output_path}")
-
 
 
 plt.close()

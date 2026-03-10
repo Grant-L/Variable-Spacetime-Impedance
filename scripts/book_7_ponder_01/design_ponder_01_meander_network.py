@@ -22,7 +22,6 @@ import matplotlib.pyplot as plt
 # Bind into the AVE constants
 import os
 import sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from src.ave.core.constants import C_0
 
 def design_meander_network():

@@ -14,7 +14,6 @@ import optax
 import numpy as np
 
 os.environ['JAX_ENABLE_X64'] = '1'
-sys.path.insert(0, os.path.dirname(__file__))
 
 # Import the core physics components from the Tier 1/2 engine
 from s11_fold_engine_v3_jax import (

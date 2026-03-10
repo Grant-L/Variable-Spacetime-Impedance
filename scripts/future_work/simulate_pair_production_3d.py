@@ -26,7 +26,6 @@ import sys
 from pathlib import Path
 
 # Add engine to path for future physics integration
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 from ave.core.constants import C_0 as C_PHYSICAL  # noqa: F401 — available for future use
 
 # JAX GPU acceleration (graceful fallback to numpy)

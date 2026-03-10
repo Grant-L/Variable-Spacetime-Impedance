@@ -19,8 +19,6 @@ import sys, os, time, urllib.request
 import numpy as np
 
 os.environ['JAX_ENABLE_X64'] = '1'
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
-sys.path.insert(0, os.path.dirname(__file__))
 
 from ave.core.constants import ETA_EQ
 from s_param_network_engine import fold_network

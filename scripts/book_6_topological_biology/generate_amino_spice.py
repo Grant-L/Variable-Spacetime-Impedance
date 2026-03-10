@@ -18,8 +18,6 @@ from pathlib import Path
 
 # Fix path to import scripts folder
 PROJECT_ROOT = Path(__file__).parent.parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
-sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from scripts.mechanics.spice_organic_mapper import (
     get_inductance,

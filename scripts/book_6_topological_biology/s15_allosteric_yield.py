@@ -22,7 +22,6 @@ import jax.numpy as jnp
 import matplotlib.pyplot as plt
 
 # Try to import from the existing JAX engine
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 try:
     from s11_fold_engine_v3_jax import fold_s11_jax, compute_z_topo, Z_TOPO
 except ImportError:

@@ -16,7 +16,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 project_root = pathlib.Path(__file__).parent.parent.parent.absolute()
-sys.path.append(str(project_root / "src"))
 
 from ave.core.constants import C_0, V_YIELD, V_SNAP
 
