@@ -7,52 +7,31 @@ Because the AVE framework roots physical reality in the deterministic continuum 
 
 \section{The Rosetta Stone of Physics}
 
-\begin{table}[htbp]
-    \centering
-    \renewcommand{\arraystretch}{1.5}
-    \small
-    \begin{tabularx}{\textwidth}{@{} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X @{}}
-    \toprule
-    \textbf{Abstract Physics Discipline} & \textbf{Vacuum Engineering (AVE)} & \textbf{Applied Engineering Equiv.} \\ \midrule
-    
-    \multicolumn{3}{c}{\cellcolor[HTML]{EFEFEF} \textbf{Network \& Solid Mechanics}} \\
-    Speed of Light ($c$) & Global Hardware Slew Rate & Transverse Acoustic Velocity ($v_s$) \\ 
-    \multicolumn{3}{c}{\cellcolor[HTML]{EFEFEF} \textbf{Orbital Mechanics \& Cosmology}} \\
-    Gravitation ($G$) & TT Macroscopic Strain Projection & Gordon Optical Refractive Index \\ 
-    Dark Matter Halo & Low-Shear Vacuum Mutual Inductance & non-linear dielectric Friction \\ 
-    Special Relativity ($\gamma$) & Discrete Dispersion Asymptote & Prandtl-Glauert Compressibility \\ 
-    
-    \multicolumn{3}{c}{\cellcolor[HTML]{EFEFEF} \textbf{Materials Science \& Metallurgy}} \\
-    Electric Charge ($q$) & Topological Phase Vortex ($Q_H$) & Burgers Vector ($\mathbf{b}$) \\
-    Lorentz Force ($F_{EM}$) & Kinematic Convective Shear & Peach-Koehler Dislocation Force \\
-    Pair Production ($2m_e$) & Dielectric Lattice Rupture & Griffith Fracture Criterion ($\sigma_c$) \\
-    
-    \multicolumn{3}{c}{\cellcolor[HTML]{EFEFEF} \textbf{Information \& Network Theory}} \\
-    Planck's Constant ($\hbar$) & Minimum Topological Action & Nyquist-Shannon Sampling Limit \\
-    Quantum Mass Gap ($m_e$) & Absolute Topological Self-Impedance & Algebraic Connectivity ($\lambda_1$) \\
-    Holographic Principle & 2D Flux-Tube Signal Bottleneck & Channel Capacity Bound \\
-    
-    \multicolumn{3}{c}{\cellcolor[HTML]{EFEFEF} \textbf{Non-Linear Optics \& Photonics}} \\
-    Fermion Mass Generation & Non-Linear Resonant Soliton & NLSE Spatial Kerr Solitons ($\chi^{(3)}$) \\
-    Photons / Gauge Bosons & Linear Transverse Shear Waves & Evanescent Cutoff Modes \\
+The following domain-specific translation tables are each defined once in a canonical location (\texttt{manuscript/common/}) and \texttt{\textbackslash input}'d into the relevant chapter.  The complete set is collected here as a single reference.
 
-    \multicolumn{3}{c}{\cellcolor[HTML]{EFEFEF} \textbf{Quantum Mechanics \& Atomic Physics}} \\
-    Schrödinger Wave Equation & Helmholtz Continuous LC Fluid Dynamics & Acoustic Pressure Cavity Modes \\
-    Atomic Orbital / Electron Cloud & Macroscopic Impedance Cavity & Resonant Standing Wave Topology \\
-    Ionization Energy (IE) & Outermost Mode Eigenvalue & Regime Boundary $S \to 0$ Gap \\
-    Principal Quantum Number ($n$) & Phase-Locking Integer ($\int n(r) dr$) & Optical Path Length Resonance \\
-    Electron-Electron Screening & $Z_{eff}(r)$ Strain Superposition & Local Impedance Bumps \\
+\subsection{Circuit Analysis (Topo-Kinematic Identity)}
+\input{../common/translation_circuit.tex}
 
-    \multicolumn{3}{c}{\cellcolor[HTML]{EFEFEF} \textbf{Topological Chemistry \& Molecular Biology}} \\
-    Ramachandran Torsional Rigidity ($\phi, \psi$) & $p$-Shell Macro Equivalent Phase Bound ($120^\circ$) & Rigid Polypeptide Steric Hindrance \\
-    Ramachandran Disallowed Basins ($\phi > 0$)  & Reactive Impedance Tuning Stubs ($\Gamma \to -1$) & RF Smith Chart Forbidden Phase Zones \\
-    Hydrogen Bond Acceptor/Donor Coupling & Dual-Microstrip Even/Odd Admittance Pair & Macromolecular Secondary Structure ($\alpha$, $\beta$) \\
+\subsection{Quantum Mechanics}
+\input{../common/translation_qm.tex}
 
-    \bottomrule
-    \end{tabularx}
-    \caption{The Unified Translation Matrix: Mapping Abstract Physics to Macroscopic Engineering Disciplines.}
-    \label{tab:rosetta_stone}
-\end{table}
+\subsection{Particle Physics / Standard Model}
+\input{../common/translation_particle_physics.tex}
+
+\subsection{General Relativity / Gravity}
+\input{../common/translation_gravity.tex}
+
+\subsection{Cosmology}
+\input{../common/translation_cosmology.tex}
+
+\subsection{Condensed Matter / Superconductivity}
+\input{../common/translation_condensed_matter.tex}
+
+\subsection{Protein Folding (Biology $\leftrightarrow$ EE)}
+\input{../common/translation_protein.tex}
+
+\subsection{Protein Solver (Biology $\to$ EE $\to$ AVE Axiom)}
+\input{../common/translation_protein_solver.tex}
 
 \section{Parameter Accounting: The Synthesis of the Zero-Parameter Topology}
 The Standard Model requires the manual, heuristic injection of 25--26 arbitrary parameters to function (see Table~\ref{tab:sm_params} in Appendix~\ref{app:full_derivation_chain} for the complete enumeration). To bridge this gap, the AVE framework can initially be parameterized as a \textbf{Three-Parameter Theory}. By empirically calibrating the framework exclusively to the topological coherence length ($\ell_{node}$), the geometric packing fraction ($p_c$), and macroscopic gravity ($G$), \textbf{all other constants} ($c, \hbar, H_\infty, \nu_{vac}, \alpha, m_p, m_W, m_Z$) emerge as algebraically interlocked geometric consequences of the Chiral LC lattice topology. As the derivations resolve, even these three initial inputs are shown to be scale-invariant geometric outcomes, establishing a closed \textbf{Zero-Parameter} framework.

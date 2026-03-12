@@ -1821,38 +1821,9 @@ BW/2$^\dagger$ & $1/(2Q) \approx 0.068$ rad & Trust-region constraint \\
 \section{Translation Matrix: Biology $\to$ EE $\to$ AVE}
 \label{sec:translation_matrix}
 
-Table~\ref{tab:translation_matrix} provides the complete mapping between biological, electrical engineering, and AVE axiomatic terminology.  Any reader familiar with \emph{one} column can reconstruct the solver in their native domain.
+Table~\ref{tab:trans_protein_solver} provides the complete mapping between biological, electrical engineering, and AVE axiomatic terminology.  Any reader familiar with \emph{one} column can reconstruct the solver in their native domain.
 
-\begin{table}[H]
-\centering
-\caption{Domain Translation Matrix.  Every row is one physical concept; every column is one language for describing it.  The ``Script Reference'' column identifies the implementation in the codebase.}
-\label{tab:translation_matrix}
-\small
-\begin{tabular}{@{}l l l l@{}}
-\toprule
-\textbf{Biology} & \textbf{EE / RF} & \textbf{AVE Axiom} & \textbf{Script Reference} \\
-\midrule
-Peptide bond & Transmission line segment & Axiom 1: $Z = \sqrt{\mu/\varepsilon}$ & \texttt{backbone\_segments} \\
-Amino acid sidechain & Impedance stub ($Z_\text{topo}$) & Axiom 1: $\sqrt{M/n_e}$ & \texttt{protein\_bond\_constants} \\
-H-bond & Mutual inductance ($\kappa = 1/2Q$) & Axiom 1: transformer coupling & \texttt{dc\_analysis()} \\
-$\beta$-sheet & Backward-wave coupler & Axiom 1: antiparallel TL & \texttt{dc\_analysis()} \\
-Hydrophobic core & Conjugate impedance match & Axiom 1: $\operatorname{Re}(Z_iZ_j^*)$ & \texttt{dc\_analysis()} \\
-Salt bridge & Reactive LC resonance & Axiom 1: $+jX \times -jX$ & \texttt{dc\_analysis()} \\
-Disulfide bond & Near-infinite admittance & Axiom 4: $Z \to \infty$ wall & \texttt{dc\_analysis()} \\
-Solvent exposure & Shunt to ground via $Z_\text{water}$ & Axiom 2: Debye relaxation & \texttt{dc\_analysis()} \\
-Steric clash & Pauli exclusion ($r < r_\text{steric}$) & Axiom 4: saturation wall & \texttt{dc\_analysis()} \\
-Protein compaction & Standing wave pattern & Axiom 4: $\eta_\text{eq} = P_C(1-\nu)$ & \texttt{ac\_analysis()} \\
-\midrule
-\multicolumn{4}{@{}l}{\textit{Solver Methods:}} \\
-\midrule
-Native fold & Eigenstate ($\lambda_{\min}(S^\dagger S) = 0$) & 5-step eigenvalue method & \texttt{\_eigenvalue\_target()} \\
-Folding kinetics & SPICE transient ring-down & Axiom 1: $L/C/R$ network & \texttt{explicit\_spice\_step()} \\
-Cotranslational folding & Segmented cascade & Axiom 1: $Q$-coherence length & \texttt{fold\_cascade\_transient\_v7()} \\
-Allostery & Tuning stub injection & Axiom 3: $\Gamma$ perturbation & \texttt{s15\_allosteric\_yield.py} \\
-Folding timescale & Kramers barrier ($\beta = \ln 3 \cdot 3/7$) & Axiom 1+2: $Q^2 N \tau_w e^{\beta N \cdot \text{CO}}$ & \texttt{s14\_folding\_kinetics.py} \\
-\bottomrule
-\end{tabular}
-\end{table}
+\input{../../common/translation_protein_solver.tex}
 
 % ═══════════════════════════════════════════════════════════════
 \subsection{Multi-Path Transmission Line Architecture}

@@ -90,26 +90,9 @@ Resistance dissipates power as $P = I^2 R$. Substituting:
 
 \subsection{Complete Translation Dictionary}
 
-Table~\ref{tab:topo_kinematic} consolidates the six identities into a single reference dictionary.
+Table~\ref{tab:trans_circuit} consolidates the six identities into a single reference dictionary.
 
-\begin{table}[H]
-\centering
-\caption{The Topo-Kinematic Circuit Identity. Every row is verified dimensionally and numerically from $\xi_{topo} = e/\ell_{node} \approx 4.149 \times 10^{-7}$ C/m.}
-\label{tab:topo_kinematic}
-\small
-\begin{tabular}{@{}l l c l c@{}}
-\toprule
-\textbf{Electrical} & \textbf{Mechanical} & \textbf{Mapping} & \textbf{Units Check} & \textbf{Eq.} \\
-\midrule
-Charge $Q$        & Displacement $x$ & $Q = \xi\, x$             & $[\text{C/m}][\text{m}] = [\text{C}]$          & \ref{eq:charge_displacement} \\
-Current $I$       & Velocity $v$     & $I = \xi\, v$             & $[\text{C/m}][\text{m/s}] = [\text{A}]$        & \ref{eq:current_velocity} \\
-Voltage $V$       & Force $F$        & $V = \xi^{-1} F$          & $[\text{m/C}][\text{N}] = [\text{V}]$          & \ref{eq:voltage_force} \\
-Inductance $L$    & Mass $m$         & $L = \xi^{-2} m$          & $[\text{m}^2/\text{C}^2][\text{kg}] = [\text{H}]$ & \ref{eq:inductance_mass} \\
-Capacitance $C$   & Compliance $\kappa$ & $C = \xi^{2} \kappa$   & $[\text{C}^2/\text{m}^2][\text{m/N}] = [\text{F}]$ & \ref{eq:capacitance_compliance} \\
-Resistance $R$    & Viscosity $\eta$ & $R = \xi^{-2} \eta$       & $[\text{m}^2/\text{C}^2][\text{kg/s}] = [\Omega]$  & \ref{eq:resistance_viscosity} \\
-\bottomrule
-\end{tabular}
-\end{table}
+\input{../../../common/translation_circuit.tex}
 
 \subsection{Self-Consistency Verification}
 
