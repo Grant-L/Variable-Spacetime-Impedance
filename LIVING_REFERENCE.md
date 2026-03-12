@@ -232,7 +232,7 @@ See: `src/ave/core/regime_map.py` for the engine module, `manuscript/book_2_regi
 | Solar impedance | `src/ave/gravity/solar_impedance.py` |
 | Magnetospheres | `src/ave/gravity/planetary_magnetosphere.py` |
 | PONDER-01 build | `future_work/PONDER_01_BUILD_GUIDE.md` |
-| PONDER-05 analysis | `scripts/book_7_ponder_01/ponder_05_characterization.py` |
+| PONDER-05 analysis | `scripts/vol_4_experimental/ponder_05_characterization.py` |
 | Element catalog | `periodic_table/simulations/` |
 | Seismology | `src/ave/geophysics/seismic.py` |
 | Water | `src/ave/fluids/water.py` |

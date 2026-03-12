@@ -37,13 +37,13 @@ all: verify pdf
 # -----------------------------------------------------------------------------
 verify:
 	@echo "[Verify] Running DAG Anti-Cheat Scan..."
-	$(PYTHON) $(SCRIPT_DIR)/book_1_foundations/verify_universe.py
+	$(PYTHON) $(SCRIPT_DIR)/vol_1_foundations/verify_universe.py
 	@echo "\n[Verify] Running FDTD LC Network solvers..."
-	$(PYTHON) $(SCRIPT_DIR)/book_5_applied_engineering/visualize_impedance_rupture.py
+	$(PYTHON) $(SCRIPT_DIR)/vol_4_engineering/visualize_impedance_rupture.py
 	@echo "\n[Verify] Running Macroscopic Mutual Inductance bounds..."
-	$(PYTHON) $(SCRIPT_DIR)/book_5_applied_engineering/simulate_mutual_inductance.py
+	$(PYTHON) $(SCRIPT_DIR)/vol_4_engineering/simulate_mutual_inductance.py
 	@echo "\n[Verify] Running Topological Borromean geometric limits..."
-	$(PYTHON) $(SCRIPT_DIR)/book_1_foundations/visualize_topological_bounds.py
+	$(PYTHON) $(SCRIPT_DIR)/vol_1_foundations/visualize_topological_bounds.py
 	@echo "\n=================================================="
 	@echo "[Verify] ALL PHYSICS PROTOCOLS PASSED."
 	@echo "=================================================="

@@ -191,7 +191,7 @@ For each finding, cite the specific file, line number, and recommended fix.
 
 For every **HARDCODED** or **TIER-VIOLATION** finding that gets fixed:
 
-- [ ] **Add a corresponding check to the `make verify` pipeline** (e.g., `scripts/book_1_foundations/verify_universe.py` or a new `verify_architecture.py`).
+- [ ] **Add a corresponding check to the `make verify` pipeline** (e.g., `scripts/vol_1_foundations/verify_universe.py` or a new `verify_architecture.py`).
 - [ ] The check should **grep or import-test** for the specific violation pattern so that regressions are caught automatically on every `make verify` run.
 - [ ] Examples of verify checks:
   - `grep -rn "3.86e-13" src/ scripts/` → should return 0 matches outside `constants.py`
