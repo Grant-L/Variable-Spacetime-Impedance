@@ -1,8 +1,7 @@
+# Python
 __pycache__/
 *.py[cod]
 *.ipynb_checkpoints/
-data/*
-simulations/*
 
 # Virtual environments
 venv/
@@ -15,7 +14,7 @@ venv/
 .vscode/
 .idea/
 
-# LaTeX
+# LaTeX auxiliary files
 *.log
 *.aux
 *.out
@@ -25,8 +24,12 @@ venv/
 *.fdb_latexmk
 *.fls
 *.synctex.gz
+*.bbl
+*.blg
 
-# In-tree LaTeX builds (canonical PDFs live in build/)
-manuscript/book_*/main.pdf
-build/aux/
-LIVING_REFERENCE.md
+# Build output (all PDFs are generated artifacts)
+build/
+
+# Simulation data
+data/*
+simulations/*
