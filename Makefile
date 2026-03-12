@@ -13,7 +13,7 @@ SOURCE_DIR = src
 # Export PYTHONPATH so scripts can import 'ave' modules from src/
 export PYTHONPATH := $(shell pwd)/$(SOURCE_DIR)
 
-.PHONY: all clean distclean verify test pdf pdf_manuscript pdf_future_work pdf_spice periodic_table figures help
+.PHONY: all clean distclean verify test pdf pdf_manuscript pdf_future_work pdf_spice periodic_table figures help vol1 vol2 vol3 vol4 vol5
 
 help:
 	@echo "Applied Vacuum Engineering (AVE) Build System"
@@ -23,6 +23,11 @@ help:
 	@echo "  make test            : Run unit tests (pytest)"
 	@echo "  make pdf             : Compile all documents (manuscript, future work, SPICE, periodic table)"
 	@echo "  make pdf_manuscript  : Compile manuscript Volumes I-V only"
+	@echo "  make vol1            : Compile Vol I: Foundations only"
+	@echo "  make vol2            : Compile Vol II: Subatomic only"
+	@echo "  make vol3            : Compile Vol III: Macroscopic only"
+	@echo "  make vol4            : Compile Vol IV: Engineering only"
+	@echo "  make vol5            : Compile Vol V: Biology only"
 	@echo "  make pdf_future_work : Compile future work document only"
 	@echo "  make pdf_spice       : Compile SPICE manual only"
 	@echo "  make periodic_table  : Compile the Periodic Table document"
@@ -79,6 +84,37 @@ pdf_manuscript:
 	done
 	@echo "[Build] Manuscript PDFs generated in $(OUT_DIR)/ directory."
 
+# Individual volume targets
+define COMPILE_VOL
+	@mkdir -p $(OUT_DIR)/aux/chapters $(OUT_DIR)/aux/frontmatter $(OUT_DIR)/aux/backmatter
+	@echo "[Build] Compiling $(1)..."
+	@rm -f $(OUT_DIR)/aux/$(1).out $(OUT_DIR)/aux/$(1).aux $(OUT_DIR)/aux/$(1).toc
+	@(cd $(SRC_DIR)/$(1) && $(LATEX) -jobname=$(1) -output-directory=../../$(OUT_DIR)/aux main.tex)
+	@if [ -f $(SRC_DIR)/bibliography.bib ]; then \
+		cp $(SRC_DIR)/bibliography.bib $(OUT_DIR)/aux/; \
+		(cd $(OUT_DIR)/aux && $(BIBTEX) $(1) || true); \
+		(cd $(SRC_DIR)/$(1) && $(LATEX) -jobname=$(1) -output-directory=../../$(OUT_DIR)/aux main.tex); \
+	fi
+	@(cd $(SRC_DIR)/$(1) && $(LATEX) -jobname=$(1) -output-directory=../../$(OUT_DIR)/aux main.tex)
+	@mv $(OUT_DIR)/aux/$(1).pdf $(OUT_DIR)/ 2>/dev/null || true
+	@echo "[Build] $(1).pdf generated in $(OUT_DIR)/"
+endef
+
+vol1:
+	$(call COMPILE_VOL,vol_1_foundations)
+
+vol2:
+	$(call COMPILE_VOL,vol_2_subatomic)
+
+vol3:
+	$(call COMPILE_VOL,vol_3_macroscopic)
+
+vol4:
+	$(call COMPILE_VOL,vol_4_engineering)
+
+vol5:
+	$(call COMPILE_VOL,vol_5_biology)
+
 pdf_future_work:
 	@echo "[Build] Setting up build directories for future work..."
 	@mkdir -p $(OUT_DIR)/aux/chapters $(OUT_DIR)/aux/frontmatter $(OUT_DIR)/aux/backmatter
@@ -124,9 +160,9 @@ periodic_table:
 # -----------------------------------------------------------------------------
 figures:
 	@echo "[Figures] Generating particle topology suite..."
-	$(PYTHON) $(SRC_DIR)/scripts/generate_particle_topology_suite.py
+	$(PYTHON) $(SCRIPT_DIR)/vol_2_subatomic/generate_particle_topology_suite.py
 	@echo "[Figures] Regenerating electron topology figure..."
-	$(PYTHON) $(SRC_DIR)/scripts/simulate_electron_topology.py
+	$(PYTHON) $(SCRIPT_DIR)/vol_2_subatomic/simulate_electron_topology.py
 	@echo "[Figures] All figures generated."
 
 clean:
@@ -137,9 +173,9 @@ clean:
 	rm -rf periodic_table/main.pdf
 	rm -rf __pycache__
 	find . -type d -name "__pycache__" -exec rm -rf {} +
-	@echo "[Clean] Removing in-tree LaTeX artifacts from book directories..."
-	rm -f $(SRC_DIR)/book_*/main.pdf
-	find $(SRC_DIR)/book_* -maxdepth 1 \( -name "*.aux" -o -name "*.toc" -o -name "*.lof" -o -name "*.lot" -o -name "*.fls" -o -name "*.fdb_latexmk" -o -name "*.out" -o -name "*.log" -o -name "*.synctex.gz" \) -delete 2>/dev/null || true
+	@echo "[Clean] Removing in-tree LaTeX artifacts from volume directories..."
+	rm -f $(SRC_DIR)/vol_*/main.pdf
+	find $(SRC_DIR)/vol_* -maxdepth 1 \( -name "*.aux" -o -name "*.toc" -o -name "*.lof" -o -name "*.lot" -o -name "*.fls" -o -name "*.fdb_latexmk" -o -name "*.out" -o -name "*.log" -o -name "*.synctex.gz" \) -delete 2>/dev/null || true
 
 distclean: clean
 	@echo "[DistClean] Removing ALL build artifacts including PDFs..."
