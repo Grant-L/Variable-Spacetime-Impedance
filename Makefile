@@ -22,7 +22,7 @@ help:
 	@echo "  make verify          : Run physics verification protocols (The Kernel Check)"
 	@echo "  make test            : Run unit tests (pytest)"
 	@echo "  make pdf             : Compile all documents (manuscript, future work, SPICE, periodic table)"
-	@echo "  make pdf_manuscript  : Compile manuscript Books 1-7 only"
+	@echo "  make pdf_manuscript  : Compile manuscript Volumes I-V only"
 	@echo "  make pdf_future_work : Compile future work document only"
 	@echo "  make pdf_spice       : Compile SPICE manual only"
 	@echo "  make periodic_table  : Compile the Periodic Table document"
@@ -63,8 +63,8 @@ pdf: pdf_manuscript pdf_future_work pdf_spice periodic_table
 pdf_manuscript:
 	@echo "[Build] Setting up build directories for manuscript..."
 	@mkdir -p $(OUT_DIR)/aux/chapters $(OUT_DIR)/aux/frontmatter $(OUT_DIR)/aux/backmatter
-	@echo "[Build] Compiling Books 1 to 7..."
-	@for dir in book_1_foundations book_3_topological_matter book_4_macroscopic_continuity book_5_applied_engineering book_6_topological_biology book_7_ponder_01 book_2_regime_map_and_verification; do \
+	@echo "[Build] Compiling Volumes I to V..."
+	@for dir in vol_1_foundations vol_2_subatomic vol_3_macroscopic vol_4_engineering vol_5_biology; do \
 		echo "[Build] Compiling $$dir..."; \
 		rm -f $(OUT_DIR)/aux/$$dir.out $(OUT_DIR)/aux/$$dir.aux $(OUT_DIR)/aux/$$dir.toc; \
 		(cd $(SRC_DIR)/$$dir && $(LATEX) -jobname=$$dir -output-directory=../../$(OUT_DIR)/aux main.tex); \
