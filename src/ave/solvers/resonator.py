@@ -28,6 +28,8 @@ Performance:
 import numpy as np
 from typing import Callable, Optional, Sequence, Tuple, List
 
+from ave.core.constants import EPS_DIVZERO
+
 
 # ====================================================================
 # 1.  S₁₁ frequency sweep through a graded impedance profile
@@ -150,7 +152,7 @@ def graded_tl_eigenvalue(
 
             sA = c_gl
             sB = Zc * s_gl
-            sC = s_gl / Zc if abs(Zc) > 1e-30 else 0.0
+            sC = s_gl / Zc if abs(Zc) > EPS_DIVZERO else 0.0
             sD = c_gl
 
             # M = M @ segment
@@ -166,11 +168,11 @@ def graded_tl_eigenvalue(
                 Zs = Z_shells[i]
                 if stub_termination == "open":
                     # Y_stub = (1/Z) * tanh(γℓ)
-                    Y_stub = np.tanh(gl_s) / Zs if abs(Zs) > 1e-30 else 0.0
+                    Y_stub = np.tanh(gl_s) / Zs if abs(Zs) > EPS_DIVZERO else 0.0
                 else:
                     # Y_stub = (1/Z) / tanh(γℓ)
                     th = np.tanh(gl_s)
-                    Y_stub = 1.0 / (Zs * th) if abs(Zs * th) > 1e-30 else 0.0
+                    Y_stub = 1.0 / (Zs * th) if abs(Zs * th) > EPS_DIVZERO else 0.0
 
                 # Shunt: M = M @ [[1,0],[Y,1]]
                 nA = A
@@ -181,7 +183,7 @@ def graded_tl_eigenvalue(
 
         # S₁₁ and S₂₁ from ABCD
         denom = A + B / Z_load + C * Z_source + D
-        if abs(denom) > 1e-30:
+        if abs(denom) > EPS_DIVZERO:
             Gamma = (A + B / Z_load - C * Z_source - D) / denom
             T21 = 2.0 / denom
         else:
@@ -252,7 +254,7 @@ def cavity_q_from_spectrum(
         for j in range(i, 0, -1):
             if s11_power[j] < half_power:
                 frac = ((half_power - s11_power[j])
-                        / max(s11_power[j + 1] - s11_power[j], 1e-30))
+                        / max(s11_power[j + 1] - s11_power[j], EPS_DIVZERO))
                 f_low = freqs[j] + frac * (freqs[j + 1] - freqs[j])
                 break
 
@@ -260,7 +262,7 @@ def cavity_q_from_spectrum(
         for j in range(i, N - 1):
             if s11_power[j] < half_power:
                 frac = ((half_power - s11_power[j])
-                        / max(s11_power[j - 1] - s11_power[j], 1e-30))
+                        / max(s11_power[j - 1] - s11_power[j], EPS_DIVZERO))
                 f_high = freqs[j] - frac * (freqs[j] - freqs[j - 1])
                 break
 

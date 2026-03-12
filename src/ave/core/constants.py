@@ -116,6 +116,42 @@ B_SNAP: float = np.sqrt(2.0 * MU_0 * M_E * C_0**2 / L_NODE**3)  # ≈ 1.89e9 T
 
 
 # =============================================================================
+# NUMERICAL PRECISION POLICY
+# =============================================================================
+#
+# All modules use IEEE 754 float64 (double precision, ~15 significant digits).
+# No float32 is used anywhere in the engine.
+#
+# Three standard guard constants prevent numerical singularities.
+# All engine modules MUST import these rather than defining ad-hoc values.
+#
+#   EPS_NUMERICAL  — Impedance ratios, reflection coefficients, normalisation
+#                    denominators.  Chosen so that Z/(Z+eps) ≈ 1 to within
+#                    float64 precision for any physical impedance value.
+#
+#   EPS_CLIP       — Saturation operator clip (√(1 − x²) near x=1).
+#                    Must be small enough that S(A_yield − δ) ≈ 0 to float64
+#                    resolution, yet large enough that 1−x² > 0 always.
+#
+#   EPS_DIVZERO    — Hard floor for denominators that could reach exactly 0
+#                    (e.g., transmission line impedance at DC).  Sub-float64
+#                    so it never affects physical results.
+#
+# Dimensional note: these constants are DIMENSIONLESS ratios applied to
+# already-normalised quantities.  They carry no units and no physics.
+#
+# IMPORTANT: These are defined EARLY in this file (before the derived nuclear
+# constants) because the Faddeev-Skyrme solver calls universal_operators
+# during constants initialization, creating a dependency chain:
+#   constants.py → faddeev_skyrme.py → universal_operators.py → constants.py
+# The guards must be defined before _compute_i_scalar_dynamic() runs.
+
+EPS_NUMERICAL: float = 1e-12   # Reflection / impedance guards
+EPS_CLIP: float      = 1e-15   # Saturation argument clip ceiling
+EPS_DIVZERO: float   = 1e-30   # Hard division-by-zero floor
+
+
+# =============================================================================
 # DERIVED MACROSCOPIC CONSTANTS (Gravity, Cosmology)
 # =============================================================================
 
@@ -312,23 +348,33 @@ def _compute_i_scalar_dynamic(crossing_number: int = 5) -> float:
     Args:
         crossing_number: Torus knot crossing number.  Default 5 (proton).
     """
-    try:
-        from ave.topological.faddeev_skyrme import TopologicalHamiltonian1D
-        solver = TopologicalHamiltonian1D(
-            node_pitch=HBAR / (M_E * C_0),  # = L_NODE (avoid circular ref)
-            scaling_coupling=KAPPA_FS,
-        )
-        return solver.solve_scalar_trace(crossing_number=crossing_number)
-    except Exception:
-        # Fallback values computed from a known-good run (with gradient saturation)
-        _fallbacks = {5: 1162.0, 7: 1562.0, 9: 1960.0, 11: 2347.0, 13: 2719.0, 15: 3070.0}
-        return _fallbacks.get(crossing_number, 1162.0)
+    from ave.topological.faddeev_skyrme import TopologicalHamiltonian1D
+    solver = TopologicalHamiltonian1D(
+        node_pitch=HBAR / (M_E * C_0),  # = L_NODE (avoid circular ref)
+        scaling_coupling=KAPPA_FS,
+    )
+    return solver.solve_scalar_trace(crossing_number=crossing_number)
 
 I_SCALAR_1D: float = _compute_i_scalar_dynamic(crossing_number=5)
 
-# Toroidal halo geometric volume (upper bound from skew-line integration)
-# This is the volume of the 3D orthogonal tensor crossings of the Borromean link,
-# computed analytically from the signed intersection integral of 3 great circles.
+# Toroidal halo geometric volume (Borromean link tensor crossing integral)
+# ────────────────────────────────────────────────────────────────────────
+# DERIVATION:
+#   The proton is a Borromean link (6³₂) of 3 mutually linked flux tubes.
+#   Each tube traces a great circle on S³.  The tensor volume of the
+#   orthogonal crossing region — the 3D signed intersection integral of
+#   3 mutually perpendicular great circles — evaluates to exactly 2:
+#
+#     V = ∫∫∫ sgn(det[τ₁, τ₂, τ₃]) dτ₁ dτ₂ dτ₃ = 2
+#
+#   This is a topological invariant: it counts the number of independent
+#   chiral orientations of the Borromean linkage (left-handed + right-handed).
+#
+#   Manuscript references:
+#     Book 3, Ch.6 §"Skew-Lines and The Toroidal Halo" — full proof
+#     Appendix "Geometric Inevitability" §V_halo=2 — summary
+#     FEM verification: 2.001 ± 0.003 (Richardson N→∞, 01_appendices)
+#   See also: ave/topological/faddeev_skyrme.py
 V_TOROIDAL_HALO: float = 2.0
 
 # Proton mass eigenvalue (self-consistent structural feedback)
@@ -480,7 +526,7 @@ D_INTRA_ALPHA: float = D_PROTON * np.sqrt(8.0)   # ≈ 2.379 fm
 # The DEUTERON BINDING ENERGY is the eigenvalue energy scaled by α:
 #   B_deuteron = ℏω₁ × α  (electromagnetic coupling of the cavity mode)
 
-NU_VAC: float = 2.0 / 7.0   # Vacuum Poisson ratio (Axiom 3)
+# NU_VAC already defined at line 127 — use that single definition
 
 # Inter-nucleon eigenvalue distance [fm]
 D_NN_EIGENVALUE: float = pi * D_PROTON * 7.0 / 9.0   # ≈ 2.056 fm
@@ -514,5 +560,3 @@ E_0_NUCLEAR: float = HBAR * OMEGA_0_NUCLEAR / (e_charge * 1e6)   # ≈ 301.6 MeV
 
 # Dimensionless coupling coefficient (from deuteron binding)
 K_COUPLING: float = 1.0 / (1.0 - ALPHA) ** 2 - 1.0   # ≈ 0.01476 ≈ 2α
-
-

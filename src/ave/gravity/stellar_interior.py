@@ -32,7 +32,7 @@ from typing import Optional
 
 from ave.core.constants import (
     C_0, EPSILON_0, MU_0, Z_0, M_E, e_charge, HBAR, ALPHA, K_B,
-    M_SUN, M_PROTON,
+    M_SUN, M_PROTON, EPS_NUMERICAL,
 )
 from ave.axioms.scale_invariant import (
     impedance,
@@ -131,7 +131,7 @@ def build_radial_profile(layers: list = None,
             if layer.r_inner <= r <= layer.r_outer:
                 # Linear interpolation within layer
                 frac = (r - layer.r_inner) / max(
-                    layer.r_outer - layer.r_inner, 1e-10)
+                    layer.r_outer - layer.r_inner, EPS_NUMERICAL)
                 n_e[i] = layer.n_e
                 T[i] = layer.T
                 names.append(layer.name)

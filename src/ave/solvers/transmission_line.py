@@ -563,7 +563,7 @@ def s11_from_y_matrix_jax(Y, port=0, Y0=1.0):
     jax, jnp, lax = _jax_mod
 
     N = Y.shape[0]
-    I = jnp.eye(N, dtype=jnp.complex64)
+    I = jnp.eye(N, dtype=jnp.complex128)
     Y_norm = Y / Y0
     S = jnp.linalg.solve(Y_norm + I, Y_norm - I)
     return S[port, port]
@@ -601,11 +601,11 @@ def abcd_to_y_backbone_jax(N, Z_eff, gamma_l):
     # Distribute self-admittance to nodes: each segment contributes to
     # both of its endpoint nodes
     bb_idx = jnp.arange(N - 1)
-    diag_bb = jnp.zeros(N, dtype=jnp.complex64)
-    diag_bb = diag_bb.at[bb_idx].add(y_bb_self.astype(jnp.complex64))
-    diag_bb = diag_bb.at[bb_idx + 1].add(y_bb_self.astype(jnp.complex64))
+    diag_bb = jnp.zeros(N, dtype=jnp.complex128)
+    diag_bb = diag_bb.at[bb_idx].add(y_bb_self.astype(jnp.complex128))
+    diag_bb = diag_bb.at[bb_idx + 1].add(y_bb_self.astype(jnp.complex128))
 
-    return y_mutual.astype(jnp.complex64), diag_bb
+    return y_mutual.astype(jnp.complex128), diag_bb
 
 
 def s_diagonal_from_y_matrix_jax(Y, Y0=1.0):
@@ -644,10 +644,10 @@ def s_diagonal_from_y_matrix_jax(Y, Y0=1.0):
     # Build diagonal reference admittance matrix
     if jnp.ndim(Y0) == 0:
         # Scalar Y0 — use identity scaling (original behaviour)
-        Y0_diag = Y0 * jnp.ones(N, dtype=jnp.complex64)
+        Y0_diag = Y0 * jnp.ones(N, dtype=jnp.complex128)
     else:
         # Per-port Y₀ vector
-        Y0_diag = Y0.astype(jnp.complex64)
+        Y0_diag = Y0.astype(jnp.complex128)
 
     # Ensure minimum reference admittance (avoid division by zero for buried ports)
     Y0_diag = jnp.maximum(jnp.abs(Y0_diag), 1e-4).astype(jnp.complex64)
@@ -771,9 +771,9 @@ def abcd_to_y_3seg_jax(N, Z_seg, d_seg, Z_node, omega, d0):
     y_self_right = A_t / B_phys
 
     bb_idx = jnp.arange(N - 1)
-    diag_bb = jnp.zeros(N, dtype=jnp.complex64)
-    diag_bb = diag_bb.at[bb_idx].add(y_self_left.astype(jnp.complex64))
-    diag_bb = diag_bb.at[bb_idx + 1].add(y_self_right.astype(jnp.complex64))
+    diag_bb = jnp.zeros(N, dtype=jnp.complex128)
+    diag_bb = diag_bb.at[bb_idx].add(y_self_left.astype(jnp.complex128))
+    diag_bb = diag_bb.at[bb_idx + 1].add(y_self_right.astype(jnp.complex128))
 
-    return y_mutual.astype(jnp.complex64), diag_bb
+    return y_mutual.astype(jnp.complex128), diag_bb
 

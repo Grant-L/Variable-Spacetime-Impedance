@@ -22,7 +22,10 @@ import numpy as np
 import jax
 import jax.numpy as jnp
 from jax import jit, lax
-import optax
+try:
+    import optax  # Legacy v3 optimizer — only needed for fold functions
+except ImportError:
+    optax = None
 
 # AVE constants
 from ave.core.constants import ETA_EQ, P_C

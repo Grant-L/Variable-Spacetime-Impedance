@@ -33,6 +33,12 @@ import numpy as np
 from scipy.integrate import quad
 from scipy.optimize import minimize
 
+# NOTE: Cannot import EPS_NUMERICAL from ave.core.constants here because
+# constants.py calls _compute_i_scalar_dynamic() → TopologicalHamiltonian1D
+# during module initialization, creating a circular import.  Use the
+# canonical value directly (kept in sync with constants.EPS_NUMERICAL).
+_EPS_NUMERICAL = 1e-12
+
 # Crossing number of the (2,5) cinquefoil torus knot.
 # This is the next entry in the phase winding ladder after the electron's c=3.
 # The (2,q) torus knot progression uses only odd q: 3, 5, 7, ...
@@ -102,7 +108,7 @@ class TopologicalHamiltonian1D:
         # Quartic stabilization term (Skyrme/Faddeev Tensor repulsion)
         # Prevents the defect from collapsing to a singularity
         # In 1D radial projection, sin²(phi)/r² dominates
-        skyrme_term = 0.5 * (np.sin(phi1)**2) / (r**2 + 1e-12)
+        skyrme_term = 0.5 * (np.sin(phi1)**2) / (r**2 + _EPS_NUMERICAL)
 
         # Total density scaled spherically
         density = 4 * np.pi * (r**2) * (kinetic_term + (self.kappa**2) * skyrme_term * dphi_dr_eff**2)

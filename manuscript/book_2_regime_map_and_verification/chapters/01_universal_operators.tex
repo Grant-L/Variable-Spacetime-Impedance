@@ -98,11 +98,12 @@ appears in four structurally distinct domains:
 
 \begin{enumerate}
     \item \textbf{Dielectric saturation} (Axiom 4): lattice permittivity
-          collapses under strong-field loading.
+          collapses under strong-field loading.  In fluid-mechanics language,
+          this is the Bingham plastic yield: the vacuum flows above
+          $\tau_y = B_\text{snap}^2/2\mu_0$.
     \item \textbf{BCS critical field}: $B_c(T) = B_{c0}\sqrt{1-(T/T_c)^2}$.
     \item \textbf{Galactic rotation}: $\eta_{eff} = \eta_0\sqrt{1-(g_N/a_0)^2}$.
     \item \textbf{Relativistic mass--energy}: $E = mc^2/\sqrt{1-(v/c)^2}$.
-    \item \textbf{Fluid Bingham Plastic Yield:} The vacuum flows above $\tau_y = B_{snap}^2/2\mu_0$.
 \end{enumerate}
 
 All four call \textit{the same engine function}
@@ -157,3 +158,112 @@ on the $\mathcal{M}_A$ lattice impedance.
     applications.}
     \label{fig:cross_scale}
 \end{figure}
+
+
+% ═══════════════════════════════  Op 4  ═══════════════════════════════
+\section{The Universal Pairwise Potential}
+\label{sec:universal_pairwise}
+
+The pairwise interaction between two nodes at separation $r$ is constructed
+by composing Operators~1--3:
+
+\begin{resultbox}{Universal Pairwise Potential ($U$)}
+\begin{equation}
+    U(r) = -\frac{K}{r}\bigl(T^2 - \Gamma^2\bigr), \qquad
+    \Gamma(r) = \frac{Z(r) - Z_0}{Z(r) + Z_0}, \qquad
+    Z(r) = \frac{Z_0}{\bigl(1 - (d_\text{sat}/r)^2\bigr)^{1/4}}
+    \label{eq:universal_pairwise}
+\end{equation}
+\end{resultbox}
+
+The three regime behaviours emerge automatically:
+\begin{center}\small
+\begin{tabular}{llll}
+\toprule
+\textbf{Regime} & \textbf{$r$ range} & \textbf{$\Gamma$}
+  & \textbf{Physics} \\
+\midrule
+I (Linear) & $r \gg d_\text{sat}$ & $\approx 0$ & Coulomb / gravity \\
+II (Nonlinear) & $r \sim d_\text{sat}$ & $0 < \Gamma < 1$ & Nuclear / H-bond \\
+III (Saturated) & $r \leq d_\text{sat}$ & $\to 1$ & Pauli wall \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Code path: \texttt{universal\_operators.universal\_pairwise\_energy(r, K, d\_sat)}.
+
+% ═══════════════════════════════  Op 5  ═══════════════════════════════
+\section{The Universal Y-to-S Conversion}
+\label{sec:universal_y_to_s}
+
+The multiport generalisation of Operator~3:
+\begin{resultbox}{Multiport S-Matrix}
+\begin{equation}
+    [S] = (I + [Y]/Y_0)^{-1} \cdot (I - [Y]/Y_0)
+    \label{eq:y_to_s}
+\end{equation}
+\end{resultbox}
+
+Used at: nuclear (K\_MUTUAL eigenvalues), protein (fold eigenstate),
+antenna (S-parameters).
+Code path: \texttt{universal\_operators.universal\_ymatrix\_to\_s(Y, Y0)}.
+
+% ═══════════════════════════════  Op 6  ═══════════════════════════════
+\section{The Universal Eigenvalue Target}
+\label{sec:universal_eigenvalue}
+
+The ground state of any impedance network is the configuration where
+at least one mode is perfectly absorbed:
+\begin{resultbox}{Eigenvalue Target}
+\begin{equation}
+    \lambda_\text{min}\bigl(S^\dagger S\bigr) \to 0
+    \label{eq:eigenvalue_target}
+\end{equation}
+\end{resultbox}
+
+When $\lambda_\text{min} = 0$, the network has found an eigenstate---a
+zero singular value of $[S]$ means one mode passes through the system
+with no reflection.  Code path: \texttt{universal\_operators.universal\_eigenvalue\_target(S)}.
+
+% ═══════════════════════════════  Op 7  ═══════════════════════════════
+\section{The Universal Spectral Analyser}
+\label{sec:universal_spectral}
+
+The spatial Fourier transform of any 1D impedance sequence reveals
+its resonant mode structure:
+\begin{itemize}
+    \item Peaks identify dominant periodicities
+      (e.g.\ $k = N/3.6$ for $\alpha$-helices, $k = N/2$ for $\beta$-sheets).
+    \item The Wiener--Khintchin autocorrelation gives the coherence length.
+    \item This is the DSP complement to the time-domain SPICE integrator.
+\end{itemize}
+
+Code path: \texttt{universal\_operators.universal\_spectral\_analysis(Z\_seq)}.
+
+% ═══════════════════════════════  Op 8  ═══════════════════════════════
+\section{The Universal Packing Reflection}
+\label{sec:universal_packing}
+
+Axiom~3 applied at the macroscopic scale: any confined system of $N$
+nodes has an equilibrium packing fraction $\eta = P_C(1 - 1/N)$ from
+Axiom~4.  The macroscopic reflection coefficient measures spatial
+mismatch:
+\begin{resultbox}{Packing Reflection Coefficient ($\Gamma_\text{pack}$)}
+\begin{align}
+    R_{g,\text{target}} &= \sqrt{\tfrac{3}{5}}\left(
+      \frac{3\,N\,V_\text{res}}{4\pi\,\eta_\text{target}}
+    \right)^{1/3}, \qquad
+    \eta_\text{target} = P_C\!\left(1 - \frac{1}{N}\right)
+    \label{eq:rg_target} \\[4pt]
+    \Gamma_\text{pack} &= \frac{R_g - R_{g,\text{target}}}
+                              {R_g + R_{g,\text{target}}}
+    \label{eq:gamma_pack}
+\end{align}
+\end{resultbox}
+
+This operator is domain-agnostic: it applies to protein globules,
+nuclear matter ($r_\text{node} = r_\text{proton}$), and any fluid in a
+finite cavity.
+
+Code path: \texttt{universal\_operators.universal\_packing\_reflection(Rg\_sq, N, r\_node, P\_C)}.
+

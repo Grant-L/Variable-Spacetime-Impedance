@@ -10,7 +10,10 @@ import sys, os, time
 import jax
 import jax.numpy as jnp
 from jax import jit, grad
-import optax
+try:
+    import optax  # Legacy v3 optimizer — only needed for fold functions
+except ImportError:
+    optax = None
 import numpy as np
 
 os.environ['JAX_ENABLE_X64'] = '1'

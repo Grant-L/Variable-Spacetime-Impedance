@@ -115,6 +115,12 @@ def main():
         if ca_native is None:
             print(f"  SKIP: could not download {pdb_id}")
             continue
+            
+        # Truncate if the PDB contains the full protein instead of just the target domain
+        if len(sequence) > expected_n + 5:
+            sequence = sequence[:expected_n]
+            ca_native = ca_native[:expected_n]
+            
         N = len(sequence)
         print(f"  Sequence: {sequence[:40]}{'...' if N>40 else ''} (N={N})")
 

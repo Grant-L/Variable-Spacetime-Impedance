@@ -45,7 +45,7 @@ avalanche_factor(V_applied, V_breakdown, n_topology)
 """
 
 import numpy as np
-from ave.core.constants import EPSILON_0, MU_0, C_0, Z_0, V_SNAP
+from ave.core.constants import EPSILON_0, MU_0, C_0, Z_0, V_SNAP, EPS_CLIP
 
 
 # ────────────────────────────────────────────────────────────────────
@@ -270,7 +270,7 @@ def local_wave_speed(amplitude, yield_limit: float = V_SNAP,
     """
     ratio_sq = np.asarray(amplitude, dtype=float) ** 2 / yield_limit ** 2
     if clip:
-        ratio_sq = np.clip(ratio_sq, 0.0, 1.0 - 1e-15)
+        ratio_sq = np.clip(ratio_sq, 0.0, 1.0 - EPS_CLIP)
     return c_base * (1.0 - ratio_sq) ** 0.25
 
 
@@ -297,7 +297,7 @@ def impedance_at_strain(amplitude, yield_limit: float = V_SNAP,
     """
     ratio_sq = np.asarray(amplitude, dtype=float) ** 2 / yield_limit ** 2
     if clip:
-        ratio_sq = np.clip(ratio_sq, 0.0, 1.0 - 1e-15)
+        ratio_sq = np.clip(ratio_sq, 0.0, 1.0 - EPS_CLIP)
     return Z_base / (1.0 - ratio_sq) ** 0.25
 
 
@@ -475,6 +475,6 @@ def avalanche_factor(V_applied, V_breakdown, n_topology):
         Multiplication factor M ≥ 1.
     """
     ratio = float(V_applied) / float(V_breakdown)
-    ratio = min(abs(ratio), 1.0 - 1e-15)  # guard against divergence
+    ratio = min(abs(ratio), 1.0 - EPS_CLIP)  # guard against divergence
     return 1.0 / (1.0 - ratio ** n_topology)
 

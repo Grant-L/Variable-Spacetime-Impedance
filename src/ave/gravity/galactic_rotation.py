@@ -38,7 +38,7 @@ import numpy as np
 from dataclasses import dataclass
 from typing import Optional
 
-from ave.core.constants import G, C_0, H_INFINITY, M_SUN
+from ave.core.constants import G, C_0, H_INFINITY, M_SUN, EPS_DIVZERO
 from ave.axioms.scale_invariant import saturation_factor
 
 
@@ -130,7 +130,7 @@ def ave_effective_acceleration(g_N: float, a0: float = A0_MOND) -> float:
         return 0.0
     x = np.sqrt(g_N / a0)
     denominator = 1.0 - np.exp(-x)
-    if denominator < 1e-30:
+    if denominator < EPS_DIVZERO:
         return np.sqrt(g_N * a0)  # Deep MOND limit
     return g_N / denominator
 

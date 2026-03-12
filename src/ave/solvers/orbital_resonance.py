@@ -24,6 +24,7 @@ import numpy as np
 from ave.core.constants import (
     C_0, G, M_E, HBAR, ALPHA, L_NODE, Z_0,
     NU_VAC, ISOTROPIC_PROJECTION, P_C, T_EM, K_B, M_SUN,
+    EPS_CLIP, EPS_NUMERICAL,
 )
 
 # Alias for readability
@@ -60,7 +61,7 @@ def refractive_index(r, M):
     rh = G_NEWTON * M / (2.0 * C_0**2)
     ratio = rh / np.maximum(r, rh * 1.01)          # clamp at horizon
     W = 1.0 + ratio
-    U = np.maximum(1.0 - ratio, 1e-6)
+    U = np.maximum(1.0 - ratio, EPS_CLIP)
     return W**3 / U
 
 
@@ -480,7 +481,7 @@ def qnm_eigenvalue(M, a_star=0.0, ell=2, s=2, n_overtone=0):
     # Universal operator: co-rotating frame decomposition (FOC/Park)
     from ave.axioms.scale_invariant import co_rotating_decay_rate
     oI_dimless = co_rotating_decay_rate(oR_dimless, Omega, ell)
-    oI_dimless = max(oI_dimless, 1e-15)  # Guard: superradiant limit
+    oI_dimless = max(oI_dimless, EPS_CLIP)  # Guard: superradiant limit
 
     Q = oR_dimless / (2.0 * oI_dimless)
 

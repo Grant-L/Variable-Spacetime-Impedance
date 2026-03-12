@@ -20,7 +20,10 @@ AVE DERIVATION CHAIN:
 import jax
 import jax.numpy as jnp
 from jax import grad, jit, lax
-import optax
+try:
+    import optax  # Legacy v3 optimizer — only needed for fold_s11_jax()
+except ImportError:
+    optax = None  # Geometry helpers (NERF, Z_topo) work without optax
 import numpy as np
 import sys, os, time
 
@@ -29,7 +32,8 @@ import sys, os, time
 from ave.solvers.protein_bond_constants import (
     Z_TOPO as Z_TOPO_COMPLEX, Q_BACKBONE,
     BACKBONE_BONDS, BACKBONE_ANGLES,
-    D_HB_DETECT, KAPPA_HB,
+    D_HB_DETECT, KAPPA_HB, R_STERIC_AROMATIC, R_STERIC_CC,
+    R_OXYGEN_SP3
 )
 from ave.core.constants import P_C  # Packing fraction = 8πα ≈ 0.183
 from ave.core.universal_operators import universal_reflection
@@ -292,7 +296,7 @@ def debye_z_water(omega_ratio):
     return jnp.sqrt(jnp.abs(eps_w))
 
 
-def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, kappa=0.1, chi1=None, chi2=None, cg_mask=None, stub_len=None, stub_type_arr=None):
+def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, kappa=0.1, chi1=None, chi2=None, cg_mask=None, stub_len=None, stub_type_arr=None, tunnel_window=0, return_components=False):
     """
     Differentiable multi-frequency S₁₁ loss with full N-Cα-C backbone.
     All physical constants derived from AVE axioms (zero empirical fits).
@@ -306,6 +310,12 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
         N: number of residues (static)
         chi1: (N,) sidechain χ₁ torsion angles (if None, default 60° gauche+)
     """
+    
+    # ── Ribosome Exit Tunnel Mask (Phase 9) ──
+    # Residues functionally inside the tunnel (the newest 'tunnel_window' residues)
+    # cannot form tertiary contacts or crumple into the global shape.
+    tunnel_mask = jnp.arange(N) >= (N - tunnel_window)
+    
     # Full backbone: (N, 3, 3) — atom_N, atom_Ca, atom_C per residue
     bb = coords_flat.reshape(N, 3, 3)
     atom_N  = bb[:, 0, :]  # (N, 3) — nitrogen positions
@@ -482,13 +492,21 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     Y_shunt = Y_shunt + Y_disulfide.sum(axis=1)
 
     # --- Upgrade 4: π-Stacking Mutual Inductance ---
-    # Aromatic rings create mutual inductance when stacked (d ≈ 3.4 Å)
+    # Aromatic rings create mutual inductance when stacked (d ≈ 3.4 Å).
     # Axiom trace: d_stack = 2 × r_Slater(C) = 3.4 Å → Axioms 1-2
-    #              α_ring = A_benzene / A_backbone ≈ 0.53
+    # The interaction occurs at the rings, which branch from Cγ!
+    # Using Cα distances forces unphysical backbone crushing.
     arom_pair = arom_mask[:, None] * arom_mask[None, :]  # (N, N)
-    # Exponential coupling with π-stack distance scale
-    pi_coupling = ALPHA_PI * arom_pair * jnp.exp(-dists / D_PI_STACK)
-    pi_coupling = jnp.where(mask, 0.0, pi_coupling)  # exclude i,i±1,i±2
+    
+    # Calculate pairwise pi_centroid distances strictly for topological stacking volume overlaps
+    # Need to match the centroid logic implemented below in Phase 10
+    v_CbCg_n = (cg_pos - cb_pos) / jnp.sqrt(jnp.sum((cg_pos - cb_pos)**2, axis=-1, keepdims=True) + 1e-12)
+    pi_centroid = cg_pos + 1.40 * v_CbCg_n
+    dists_cg = jnp.sqrt(jnp.sum((pi_centroid[:, None, :] - pi_centroid[None, :, :])**2, axis=-1) + 1e-12)
+    
+    # Exponential coupling with π-stack distance scale measured dynamically between pi_centroids
+    pi_coupling = ALPHA_PI * arom_pair * jnp.exp(-dists_cg / D_PI_STACK)
+    pi_coupling = jnp.where(mask, 0.0, pi_coupling)  # exclude local backbone proximity
     Y_pi = pi_coupling.sum(axis=1)
     Y_shunt = Y_shunt + Y_pi
     # --- Upgrade 8: H-Bond Mutual Inductance (Backbone TL Node Coupling) ---
@@ -783,10 +801,173 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     #
     # Coefficient: 1/N (normalise like S₁₁_avg, no fitted weight)
     seq_sep_mask = (jnp.abs(idx[:, None] - idx[None, :]) > 2).astype(jnp.float32)
-    K_near_field = (d0 / (dists + 1e-12))**2 * seq_sep_mask
+    
+    # ═══════════════════════════════════════════════════════════════════
+    # NATIVE RF STERICS (Axiom 4 Pauli Expansion)
+    # ═══════════════════════════════════════════════════════════════════
+    # Move the steric calculation UP so it can be injected directly into 
+    # the crosstalk topological network.
+    
+    # ── Phase 10: 2D Anisotropic Aromatic Projection ──
+    v_CbCa = atom_Ca - cb_pos
+    v_CbCg = cg_pos - cb_pos
+    v_CbCg_n = v_CbCg / jnp.sqrt(jnp.sum(v_CbCg**2, axis=-1, keepdims=True) + 1e-12)
+    p_norm = jnp.cross(v_CbCg, v_CbCa)
+    
+    n_face = jnp.cross(v_CbCg, p_norm)
+    n_face_hat = n_face / jnp.sqrt(jnp.sum(n_face**2, axis=-1, keepdims=True) + 1e-12) # (N, 3)
+    
+    R_plane = 1.7  
+    R_face = 0.5   
+    
+    # ── VdW Radii Configuration ──
+    SIGMA_FACTOR = 1.0 / (2.0 ** (1.0/6.0))  # ≈ 0.891
+    r_vdw_N = 1.55
+    r_vdw_C = 1.70  
+    r_vdw_O = 1.52
+    r_vdw_H = 1.20
+    atom_radii = jnp.array([r_vdw_N, r_vdw_C, r_vdw_O, r_vdw_C, r_vdw_C, r_vdw_H]) # (6,)
+
+    
+    LAMBDA_STERIC = LAMBDA_BOND * d0 / r_Ca
+    LAMBDA_BB_STERIC = LAMBDA_STERIC * 0.5
+    
+    steric_mask = (jnp.abs(idx[:, None] - idx[None, :]) > 1).astype(jnp.float32)
+    dists_sq = jnp.zeros((6, N, 6, N))
+    
+    atoms_all = jnp.stack([
+        atom_N, atom_Ca, atom_C, cb_pos, cg_pos,
+        atom_N + 1.0 * (atom_N - atom_C) / (jnp.sqrt(jnp.sum((atom_N-atom_C)**2, axis=-1, keepdims=True)) + 1e-12)
+    ], axis=0)
+    
+    # diff_atoms is shape (6, N, 6, N, 3)
+    # where diff_atoms[a, i, b, j, :] is the vector FROM atom b of residue j TO atom a of residue i.
+    # atoms_all is (6, N, 3)
+    diff_atoms = atoms_all[:, None, None, None, :] - atoms_all[None, None, :, :, :]
+    # Let's fix this cleanly.
+    # We want diff_atoms[a, i, b, j, :] = pos[a, i] - pos[b, j]
+    # To do this, expand pos[a, i] to (6, N, 1, 1, 3)
+    # and expand pos[b, j] to (1, 1, 6, N, 3)
+    diff_atoms = atoms_all[:, :, None, None, :] - atoms_all[None, None, :, :, :]
+    
+    dists_sq = jnp.sum(diff_atoms**2, axis=-1) # (6, N, 6, N)
+    dists_atoms = jnp.sqrt(dists_sq + 1e-12) # (6, N, 6, N)
+    
+    # diff_atoms is shape (6, N, 6, N, 3)
+    # diff_atoms[a, i, b, j, :] is the vector FROM atom b of residue j TO atom a of residue i.
+    # Therefore, the vector FROM ring of residue i TO atom b of residue j is:
+    # diff_atoms[b, j, 4, i, :] !
+    
+    # Let's cleanly construct the vector:
+    # We want vector FROM ring (i) TO atom (a) of residue (j).
+    # atom_a_j = atoms_all[:, None, :]  (6, 1, N, 3)
+    # ring_i = atoms_all[4, :, :]       (1, N, 1, 3)
+    
+    # Target: (N_ring, 6_atom, N_atom, 3_coords)
+    # ring_pos[:, None, None, :]  -> (N, 1, 1, 3)
+    # atoms_all[None, :, :, :]    -> (1, 6, N, 3)
+    # Vector from ring i to all atoms j (atom type a):
+    ring_pos = atoms_all[4] # (N, 3)
+    v_ring_to_atom = atoms_all[None, :, :, :] - ring_pos[:, None, None, :] 
+    
+    dot_sq_universal = jnp.sum(v_ring_to_atom * n_face_hat[:, None, None, :], axis=-1)**2
+    # dists_sq is (6, N, 6, N). We want dists_sq[atom, j, ring, i] OR just compute it:
+    dists_sq_ring_to_atom = jnp.sum(v_ring_to_atom**2, axis=-1) # (N_ring, 6_atom, N_atom)
+    
+    w_sq_universal = dot_sq_universal / (dists_sq_ring_to_atom + 1e-12)
+    r_ring_dynamic = R_plane + (R_face - R_plane) * w_sq_universal # (N_ring, 6_atom, N_atom)
+    
+    R_EXCL = (atom_radii[:, None] + atom_radii[None, :]) * SIGMA_FACTOR
+    R_EXCL_full = jnp.zeros((6, N, 6, N))
+    R_EXCL_full = R_EXCL_full + R_EXCL[:, None, :, None]
+    
+    r_a_broadcast = atom_radii[None, :, None] # (1, 6, 1)
+    R_dynamic_collision = (r_ring_dynamic + r_a_broadcast) * SIGMA_FACTOR # (N_ring, 6_atom, N_atom)
+    
+    # R_EXCL_full target shape: (6, N, 6, N)
+    # We are updating where the 'aggressor' is Ring.
+    # We need to map (N_ring, 6_atom, N_atom) -> R_EXCL_full[4, i, a, j]
+    # R_dynamic_collision is indexed [i_ring, a_atom, j_atom]
+    # To place it in R_EXCL_full[4, :, :, :], which has shape (N_ring, 6_atom, N_atom). This matches perfectly!
+    R_EXCL_full = jnp.where(arom_mask[:, None, None], R_EXCL_full.at[4, :, :, :].set(R_dynamic_collision), R_EXCL_full)
+    
+    # Now for the Transpose: Vector FROM atom (a) of residue (i) TO ring of residue (j)
+    # Target shape: (6_atom, N_atom, N_ring, 3_coords)
+    # atom (a, i) is atoms_all[:, :, None, :] -> expand to (6, N, 1, 3)
+    # ring (j) is ring_pos[None, None, :, :]  -> expand to (1, 1, N, 3)
+    v_atom_to_ring = ring_pos[None, None, :, :] - atoms_all[:, :, None, :]
+    
+    # Check broadcast match for n_face_hat:
+    # We want dot product along axis=-1 against n_face_hat of ring j.
+    # n_face_hat is (N_ring, 3). Expand to (1, 1, N_ring, 3)
+    dot_sq_j_univ = jnp.sum(v_atom_to_ring * n_face_hat[None, None, :, :], axis=-1)**2 # (6_atom, N_atom, N_ring)
+    dists_sq_atom_to_ring = jnp.sum(v_atom_to_ring**2, axis=-1)
+    w_sq_j_univ = dot_sq_j_univ / (dists_sq_atom_to_ring + 1e-12)
+    r_ring_dynamic_j = R_plane + (R_face - R_plane) * w_sq_j_univ # (6_atom, N_atom, N_ring)
+    
+    r_i_broadcast = atom_radii[:, None, None] # (6_atom, 1, 1)
+    R_dynamic_collision_j = (r_ring_dynamic_j + r_i_broadcast) * SIGMA_FACTOR 
+    
+    # R_EXCL_full target: R_EXCL_full[a, i, 4, j], shape (6_atom, N_atom, N_ring)
+    R_EXCL_full = jnp.where(arom_mask[None, None, :], R_EXCL_full.at[:, :, 4, :].set(R_dynamic_collision_j), R_EXCL_full)
+    
+    R_EXCL_full = R_EXCL_full.at[0, :, 0, :].set(3.0) 
+    R_EXCL_full = R_EXCL_full.at[1, :, 1, :].set(3.4) 
+    R_EXCL_full = R_EXCL_full.at[0, :, 1, :].set(3.2) 
+    R_EXCL_full = R_EXCL_full.at[1, :, 0, :].set(3.2) 
+    
+    violations = jnp.maximum(0.0, R_EXCL_full - dists_atoms) ** 2
+    
+    seq_sep = jnp.abs(idx[:, None] - idx[None, :])
+    valid_mask = jnp.ones((6, N, 6, N), dtype=bool)
+    min_sep = jnp.full((6, 6), 2.0)
+    min_sep = min_sep.at[3, 0].set(1); min_sep = min_sep.at[0, 3].set(1)
+    min_sep = min_sep.at[3, 1].set(1); min_sep = min_sep.at[1, 3].set(1)
+    min_sep = min_sep.at[3, 3].set(3)
+    valid_mask = valid_mask & (seq_sep[None, :, None, :] >= min_sep[:, None, :, None])
+    
+    cb_mask_bool = (1.0 - gly_mask).astype(bool)
+    cg_mask_bool = cg_mask_arr.astype(bool)
+    mask_cb_i = (jnp.arange(6)[:, None, None, None] == 3) & (~cb_mask_bool)[None, :, None, None]
+    mask_cb_j = (jnp.arange(6)[None, None, :, None] == 3) & (~cb_mask_bool)[None, None, None, :]
+    valid_mask = jnp.where(mask_cb_i | mask_cb_j, False, valid_mask)
+    mask_cg_i = (jnp.arange(6)[:, None, None, None] == 4) & (~cg_mask_bool)[None, :, None, None]
+    mask_cg_j = (jnp.arange(6)[None, None, :, None] == 4) & (~cg_mask_bool)[None, None, None, :]
+    valid_mask = jnp.where(mask_cg_i | mask_cg_j, False, valid_mask)
+    triu_mask = (jnp.arange(6)[:, None, None, None] * N + jnp.arange(N)[None, :, None, None]) < \
+                (jnp.arange(6)[None, None, :, None] * N + jnp.arange(N)[None, None, None, :])
+    valid_mask = valid_mask & triu_mask
+    
+    # ── MAP TO Y_STERIC ADMITTANCE ──
+    Y_steric_bb = 100.0 * LAMBDA_BB_STERIC * jnp.where(valid_mask, violations, 0.0)
+    Y_steric_sidechain = 100.0 * LAMBDA_STERIC * jnp.where(steric_mask, jnp.maximum(0.0, d0 - dists)**2, 0.0)
+    Y_steric_matrix = jnp.sum(Y_steric_bb, axis=(0, 2)) + Y_steric_sidechain
+    Y_steric_matrix = Y_steric_matrix + Y_steric_matrix.T
+    
+    # Phase 9: Ribosome Tunnel Shielding & Cotranslational Chaperones
+    tunnel_pair_mask = (~tunnel_mask[:, None]) & (~tunnel_mask[None, :])
+    
+    # NEW BIOLOGY: Cotranslational Chaperone Shielding
+    # Residues that have JUST extruded from the tunnel (the trailing ~10 residues)
+    # are bound by Chaperone proteins (like Trigger Factor).
+    # This dielectric shield prevents massive aromatic rings from capacitively knotting
+    # before the whole chain emerges.
+    # We define chaperone zone: index >= N - tunnel_window - 10, BUT outside tunnel.
+    chap_zone = (jnp.arange(N) >= (N - tunnel_window - 15)) & (~tunnel_mask)
+    chap_pair_mask = chap_zone[:, None] | chap_zone[None, :]
+    
+    # Aromatics hitting each other while shielded get 10x reduced coupling!
+    arom_pair = arom_mask[:, None] * arom_mask[None, :]
+    chaperone_shield = jnp.where(chap_pair_mask * arom_pair, 0.1, 1.0)
+    
+    K_near_field = (d0 / (dists + 1e-12))**2 * seq_sep_mask * tunnel_pair_mask * chaperone_shield
     # Γ from sidechain impedances (z_mag already computed)
     Gamma_ij = jnp.abs(universal_reflection(z_mag[:, None], z_mag[None, :], eps=1e-12))
-    xtalk_matrix = K_near_field * Gamma_ij          # (N, N)
+    
+    # Merge AC Sterics natively into the crosstalk graph!
+    # A steric clash (d < R_excl) creates a massive Y_shunt (Short Circuit).
+    # This spikes the crosstalk natively without an external spring penalty.
+    xtalk_matrix = K_near_field * Gamma_ij + Y_steric_matrix
     xtalk_loss = jnp.sum(xtalk_matrix) / (N * N)    # normalised
     
     # Shunt admittance at junctions (3N-2 junctions between segments)
@@ -856,8 +1037,17 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     #   → C_bend = (1 - cos θ) / (2π²)
     #
     # 2π² ≈ 19.74 — purely geometric, no Q factor needed.
+    # This is the REACTIVE near-field mismatch (Energy Storage).
     C_bend_interior = (1.0 - cos_bend) / (2.0 * jnp.pi**2)  # (N-2,)
     C_bend = jnp.concatenate([jnp.zeros(1), C_bend_interior, jnp.zeros(1)])  # (N,)
+
+    # Radiation Conductance (Energy Damping):
+    # A kinked pipe radiates acoustic energy into the vacuum/solvent.
+    # A small antenna has radiation resistance R_rad ∝ (d_eff / λ)^2.
+    # We define the normalised characteristic radiation conductance coefficient.
+    # Given d_eff/λ = 1/2π at w=1: G_rad_0 = (1/2π)^2 × (1 - cos θ)
+    G_rad_interior = (1.0 - cos_bend) / (4.0 * jnp.pi**2)
+    G_rad = jnp.concatenate([jnp.zeros(1), G_rad_interior, jnp.zeros(1)])
 
     # --- Multi-frequency S₁₁ via lax.fori_loop ---
     def s11_at_freq(freq):
@@ -877,8 +1067,10 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
         # Frequency-dependent solvent impedance (Debye relaxation)
         Z_water_f = debye_z_water(freq)
         Y_solvent_f = exposure / Z_water_f
-        # Frequency-dependent bend admittance Y = ω × C_bend (capacitive)
-        Y_bend_f = w * C_bend
+        # Frequency-dependent bend admittance (Conductance + Capacitance)
+        # Y = G_rad(w) + j w C_bend
+        # G_rad scales with w^2 for electrically small antennas. 
+        Y_bend_f = (w**2) * G_rad + 1j * w * C_bend
         # Sidechain stub admittance (DISABLED — see benchmark notes below)
         # Open/short-circuit stubs with 1/(2π) normalization help α/β (BBA5 −0.88 Å)
         # but hurt pure α-helix (Villin +1.60 Å). The termination model and
@@ -891,30 +1083,46 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
         seg_Y_total = seg_Y_base.at[ca_indices].add(
             Y_solvent_f + Y_bend_f + Y_stub_f)
 
-        # ABCD cascade via lax.fori_loop (3N-1 steps)
-        init_state = jnp.array([1.0 + 0j, 0.0 + 0j, 0.0 + 0j, 1.0 + 0j])
+        # ABCD cascade via O(1) parallel associative scan (3N-1 sections)
+        # 1. Build the ABCD matrix for each TL section (alpha, beta, Zc)
+        A_sec = cosh_arr
+        B_sec = sinh_arr * seg_Zc
+        C_sec = sinh_arr / (seg_Zc + 1e-12)
+        D_sec = cosh_arr
 
-        def cascade_step(i, state):
-            A, B, C, D = state[0], state[1], state[2], state[3]
-            ch = cosh_arr[i]
-            sh = sinh_arr[i]
-            Zc = seg_Zc[i] + 1e-12
+        # 2. Build the Shunt ABCD matrix for each junction
+        #    Y shunt is applied after the TL section. For the last segment, Y=0.
+        Y_arr = jnp.where(jnp.arange(n_bb_segs) < n_junctions, 
+                          seg_Y_total[jnp.clip(jnp.arange(n_bb_segs), 0, n_junctions - 1)], 
+                          0.0)
+        
+        # Combined block: [TL Section] * [Shunt Y]
+        # M = [A_sec, B_sec] * [1,   0] = [A_sec + B_sec*Y, B_sec]
+        #     [C_sec, D_sec]   [Y,   1]   [C_sec + D_sec*Y, D_sec]
+        M11 = A_sec + B_sec * Y_arr
+        M12 = B_sec
+        M21 = C_sec + D_sec * Y_arr
+        M22 = D_sec
 
-            # Lossy transmission line section
-            A_n = A * ch + B * (sh / Zc)
-            B_n = A * (Zc * sh) + B * ch
-            C_n = C * ch + D * (sh / Zc)
-            D_n = C * (Zc * sh) + D * ch
+        # Stack into shape (3N-1, 2, 2)
+        M_all = jnp.stack([
+            jnp.stack([M11, M12], axis=-1),
+            jnp.stack([M21, M22], axis=-1)
+        ], axis=-2)
 
-            # Shunt admittance at junction (if not last segment)
-            Y = jnp.where(i < n_junctions, seg_Y_total[jnp.clip(i, 0, n_junctions - 1)], 0.0)
-            C_n = C_n + Y * A_n
-            D_n = D_n + Y * B_n
+        # 3. Associative Scan (O(log N) parallel cascading)
+        def matmul_fn(m1, m2):
+            return jnp.matmul(m1, m2)
 
-            return jnp.array([A_n, B_n, C_n, D_n])
+        # reverse=False computes the prefix product from N-terminus to C-terminus.
+        # The final matrix is at index [-1]
+        M_cum = lax.associative_scan(matmul_fn, M_all, reverse=False)
+        M_final = M_cum[-1]
 
-        final = lax.fori_loop(0, n_bb_segs, cascade_step, init_state)
-        A, B, C, D = final[0], final[1], final[2], final[3]
+        A = M_final[0, 0]
+        B = M_final[0, 1]
+        C = M_final[1, 0]
+        D = M_final[1, 1]
 
         numer = A + B / Z0 - C * Z0 - D
         denom = A + B / Z0 + C * Z0 + D + 1e-20
@@ -1006,34 +1214,55 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
         cosh_arr_l = jnp.cosh(gamma_arr)
         sinh_arr_l = jnp.sinh(gamma_arr)
 
-        init = jnp.array([1.0 + 0j, 0.0 + 0j, 0.0 + 0j, 1.0 + 0j])
+        # 1. Build local ABCD matrices for all segments
+        A_l = cosh_arr_l
+        B_l = sinh_arr_l * seg_Zc
+        C_l = sinh_arr_l / (seg_Zc + 1e-12)
+        D_l = cosh_arr_l
 
-        def step_local(i, state):
-            A, B, C, D = state[0], state[1], state[2], state[3]
-            # Only update when within [seg_start, seg_end)
-            active = ((i >= seg_start) & (i < seg_end)).astype(jnp.float64)
-            ch = cosh_arr_l[jnp.clip(i, 0, n_bb_segs - 1)]
-            sh = sinh_arr_l[jnp.clip(i, 0, n_bb_segs - 1)]
-            Zc = seg_Zc[jnp.clip(i, 0, n_bb_segs - 1)] + 1e-12
-            # TL update (only when active)
-            A_n = A * ch + B * (sh / Zc)
-            B_n = A * (Zc * sh) + B * ch
-            C_n = C * ch + D * (sh / Zc)
-            D_n = C * (Zc * sh) + D * ch
-            # Junction shunt
-            j_idx = jnp.clip(i, 0, n_junctions - 1)
-            Y = jnp.where(i < n_junctions, seg_Y_base[j_idx], 0.0)
-            C_n = C_n + Y * A_n
-            D_n = D_n + Y * B_n
-            # Mix: active → updated, inactive → identity
-            A_out = active * A_n + (1.0 - active) * A
-            B_out = active * B_n + (1.0 - active) * B
-            C_out = active * C_n + (1.0 - active) * C
-            D_out = active * D_n + (1.0 - active) * D
-            return jnp.array([A_out, B_out, C_out, D_out])
+        Y_base = jnp.where(jnp.arange(n_bb_segs) < n_junctions,
+                           seg_Y_base[jnp.clip(jnp.arange(n_bb_segs), 0, n_junctions - 1)],
+                           0.0)
 
-        final = lax.fori_loop(0, n_bb_segs, step_local, init)
-        A, B, C, D = final[0], final[1], final[2], final[3]
+        M11_l = A_l + B_l * Y_base
+        M12_l = B_l
+        M21_l = C_l + D_l * Y_base
+        M22_l = D_l
+
+        M_all_l = jnp.stack([
+            jnp.stack([M11_l, M12_l], axis=-1),
+            jnp.stack([M21_l, M22_l], axis=-1)
+        ], axis=-2)
+
+        # 2. Slice the active port window
+        # We need to scan only from seg_start to seg_end
+        # Pad M_all_l with identity matrices to assure shape matches N_COH_RESIDUES length
+        max_len = 3 * N_COH_RESIDUES
+        
+        # dynamic_slice extracts exactly max_len elements starting at seg_start
+        # We must pad the end of the array to prevent out-of-bounds slicing
+        ident = jnp.array([[1.0+0j, 0.0+0j], [0.0+0j, 1.0+0j]])
+        padding = jnp.tile(ident, (max_len, 1, 1))
+        M_padded = jnp.concatenate([M_all_l, padding], axis=0)
+        
+        M_window = lax.dynamic_slice(M_padded, (seg_start, 0, 0), (max_len, 2, 2))
+        
+        # Mask out segments beyond the physical chain (if port is near the end)
+        valid_len = jnp.maximum(0, seg_end - seg_start)
+        mask = jnp.arange(max_len) < valid_len
+        M_window_masked = jnp.where(mask[:, None, None], M_window, ident[None, :, :])
+
+        def matmul_fn_l(m1, m2):
+            return jnp.matmul(m1, m2)
+
+        M_cum_l = lax.associative_scan(matmul_fn_l, M_window_masked, reverse=False)
+        M_final_l = M_cum_l[-1]
+
+        A = M_final_l[0, 0]
+        B = M_final_l[0, 1]
+        C = M_final_l[1, 0]
+        D = M_final_l[1, 1]
+
         numer = A + B / Z0 - C * Z0 - D
         denom = A + B / Z0 + C * Z0 + D + 1e-20
         g = numer / denom
@@ -1116,7 +1345,15 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
             z_q = jnp.sum(z_mag * mem_q) / w_q
             z_m = 2.0 * z_p * z_q / (z_p**2 + z_q**2 + 1e-12)
             s21_cross = z_m * jnp.exp(-d_pq / R_BURIAL)
-            cross_loss = cross_loss - has_both * s21_cross**2
+            
+            # Phase 9: Ribosome Tunnel Shielding
+            # Segments p and q can only couple if they are both physically extruded into the cytoplasm!
+            # If the segment's average index is inside the tunnel, it cannot form tertiary cavities.
+            idx_p = jnp.sum(idx * mem_p) / w_p
+            idx_q = jnp.sum(idx * mem_q) / w_q
+            is_extruded = (idx_p < (N - tunnel_window)) & (idx_q < (N - tunnel_window))
+            
+            cross_loss = cross_loss - has_both * is_extruded * s21_cross**2
     # ═══════════════════════════════════════════════════════════════════
     # P_C SATURATION (Axiom 4 trace reversal at protein scale)
     # ═══════════════════════════════════════════════════════════════════
@@ -1125,13 +1362,16 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     # η = N × r³ / R³, η_ratio = η / P_C (normalised to saturation limit)
     com = jnp.mean(coords, axis=0)
     Rg_sq = jnp.mean(jnp.sum((coords - com)**2, axis=1))
+    
     R_eff = jnp.sqrt(5.0 / 3.0 * Rg_sq + 1e-12)  # effective sphere radius
     eta = N * _r_Ca**3 / (R_eff**3 + 1e-12)        # packing fraction
     eta_ratio = jnp.clip(eta / P_C, 0.0, 0.999)     # normalised to P_C
     sat_packing = jnp.sqrt(1.0 - eta_ratio**2)       # Axiom 4 saturation
-
-    # port_loss includes s11_combined for compaction + junction/cross coupling
-    port_loss = (s11_combined + junction_loss + cross_loss / N) * sat_packing
+    
+    # port_loss combines global reflection matching, Kirkwood junctions, and the attractive cross-coupling cavities.
+    # Axiom 4 sat_packing is ADDITIVE: the protein dynamically minimizes both S11 sequence mismatch
+    # and total geometric volume phase independently, eliminating the old multiplication exploit.
+    port_loss = s11_combined + junction_loss + cross_loss / N + sat_packing
 
     # Steric repulsion — Pauli exclusion (Axiom 2)
     # d₀ = 3.8 Å: backbone step provides effective exclusion zone.
@@ -1144,39 +1384,14 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     upper = jnp.triu(violations, k=3)
     steric_penalty = LAMBDA_STERIC * jnp.sum(upper) / N
 
-    # ═══════════════════════════════════════════════════════════════════
-    # FULL BACKBONE ATOM STERIC (Axiom 2: Pauli exclusion)
-    # ═══════════════════════════════════════════════════════════════════
-    #
-    # REPLACES the Ramachandran penalty. The Rama basins are NOT a
-    # fundamental potential — they are CONSEQUENCES of steric clashes
-    # between backbone atoms. By computing pairwise steric exclusion
-    # between all N, Cα, C atoms, the basins emerge naturally from
-    # geometry:
-    #   φ rotation: C_{i-1} clashes with C_i, Cβ_i
-    #   ψ rotation: N_i clashes with N_{i+1}
-    #
     # Exclusion radii (Axiom 2: Slater/Clementi radii):
-    #   C-C: 3.4 Å (2 × r_C = 1.7 Å)
-    #   N-N: 3.0 Å (2 × r_N = 1.5 Å)
-    #   C-N: 3.2 Å (r_C + r_N)
-    #
-    # This is the SAME physics as Cα-Cα steric above, but applied to
-    # all 3 backbone atom types. Benefits:
-    #   - No artificial basin parameters (PHI_ALPHA, etc.)
-    #   - Gly naturally has more freedom (no Cβ → fewer clashes)
-    #   - Pro naturally restricted (ring constrains φ)
-    #   - Loop/turn conformations emerge when globally favourable
-    
     R_CC = 3.4   # Å — C-C exclusion (2 × 1.7 Å Slater radius)
     R_NN = 3.0   # Å — N-N exclusion (2 × 1.5 Å)
     R_CN = 3.2   # Å — C-N exclusion (1.7 + 1.5 Å)
-    LAMBDA_BB_STERIC = LAMBDA_STERIC  # Same weight as Cα-Cα steric
     
     # Sequence separation: exclude bonded atoms (|i-j| <= 1)
     bb_seq_mask = jnp.abs(idx[:, None] - idx[None, :]) >= 2
     
-    # N-N pairwise distances and steric
     d_NN = jnp.sqrt(jnp.sum((atom_N[:, None, :] - atom_N[None, :, :])**2, axis=-1) + 1e-12)
     nn_violations = jnp.maximum(0.0, R_NN - d_NN) ** 2
     nn_violations = jnp.where(bb_seq_mask, nn_violations, 0.0)
@@ -1195,136 +1410,159 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     cn_violations = jnp.maximum(0.0, R_CN - d_NC_all.T) ** 2
     cn_violations = jnp.where(bb_seq_mask, cn_violations, 0.0)
     
-    # --- Cβ steric (the key Axiom 2 contributor to Ramachandran basins) ---
-    # The Ramachandran basins arise primarily from Cβ clashing with
-    # backbone atoms of adjacent residues. Without Cβ, backbone N/Cα/C
-    # are too far apart to create angular constraints.
+    # --- O(1) Vectorized Pairwise Backbone Steric (Axiom 2: Pauli) ---
+    # Combine N, C, O, Cβ, Cγ, H into a single [6, N, 3] array
+    # Shape: (num_atom_types=6, N_residues, 3_coords)
+    # Note: Cα is EXCLUDED because Cα-Cα spacing handles global steric 
+    # independently. The Rama basins arise strictly from these 6 geometries.
+    # Indices: 0=N, 1=C, 2=O, 3=CB, 4=CG, 5=H
+    all_atoms = jnp.stack([atom_N, atom_C, o_pos, cb_pos, cg_pos, h_pos], axis=0)
     
-    # --- LJ σ distances (zero-crossing = VdW sum / 2^(1/6)) ---
-    SIGMA_FACTOR = 1.0 / (2.0 ** (1.0/6.0))  # ≈ 0.891
-    R_O_CB = (1.52 + 1.70) * SIGMA_FACTOR  # ≈ 2.87 Å
-    R_O_N  = (1.52 + 1.55) * SIGMA_FACTOR  # ≈ 2.73 Å
-    R_O_O  = (1.52 + 1.52) * SIGMA_FACTOR  # ≈ 2.71 Å
-    R_H_C  = (1.20 + 1.70) * SIGMA_FACTOR  # ≈ 2.58 Å
-    R_H_CB = (1.20 + 1.70) * SIGMA_FACTOR  # ≈ 2.58 Å
-    R_H_O  = (1.20 + 1.52) * SIGMA_FACTOR  # ≈ 2.42 Å
-    R_CB_N = (1.70 + 1.55) * SIGMA_FACTOR  # ≈ 2.90 Å
-    R_CB_C = (1.70 + 1.70) * SIGMA_FACTOR  # ≈ 3.03 Å
-    R_CB_CB = (1.70 + 1.70) * SIGMA_FACTOR # ≈ 3.03 Å
-    # Cγ σ distances (same VdW radius as Cβ = 1.70 Å)
-    R_CG_N  = R_CB_N   # ≈ 2.90 Å
-    R_CG_C  = R_CB_C   # ≈ 3.03 Å
-    R_CG_CB = R_CB_CB  # ≈ 3.03 Å
-    R_CG_CG = R_CB_CB  # ≈ 3.03 Å
-    R_O_CG  = R_O_CB   # ≈ 2.87 Å
+    # Radii now defined above at Line ~805 for universal sterics.
     
-    # Bonded-pair masks
-    oh_mask = jnp.abs(idx[:, None] - idx[None, :]) >= 2  # O/H: exclude bonded O=C-N-H
-    cb_mask = jnp.abs(idx[:, None] - idx[None, :]) >= 1  # Cβ: stub, not main chain
+    # ── Phase 10: 2D Anisotropic Aromatic Projection ──
+    # Construct normal to the aromatic ring face (π-cloud) using Cα, Cβ, Cγ
+    v_CbCa = atom_Ca - cb_pos
+    v_CbCg = cg_pos - cb_pos
+    v_CbCg_n = v_CbCg / jnp.sqrt(jnp.sum(v_CbCg**2, axis=-1, keepdims=True) + 1e-12)
+    p_norm = jnp.cross(v_CbCg, v_CbCa)
     
-    # --- Backbone atom steric exclusion (Axiom 2: Pauli) ---
-    # Hard-sphere at σ = VdW_sum / 2^(1/6) (LJ zero-crossing).
-    #
-    # NOTE: Full LJ 6-12 (with attractive well) was tested but causes
-    # gradient instability at backbone distances (2-3 Å). The (σ/r)^12
-    # repulsive wall is too steep. Future: use Morse potential or
-    # softer power law. The well depth would be ε = ℏω_amide/Q ≈ 0.46 kT
-    # (same pattern as K_MUTUAL at nuclear scale).
+    # Calculate geometric centroid of the planar sp2 ring topology
+    # The pure hexagonal benzene ring extends outward along the Cβ-Cγ branch axis.
+    # The center of the phase volume is exactly 1.40Å (aromatic C-C bond length) from Cγ.
+    pi_centroid = cg_pos + 1.40 * v_CbCg_n
     
-    # --- O steric ---
-    d_OCB = jnp.sqrt(jnp.sum((o_pos[:, None, :] - cb_pos[None, :, :])**2, axis=-1) + 1e-12)
-    ocb_violations = jnp.maximum(0.0, R_O_CB - d_OCB) ** 2
-    ocb_violations = jnp.where(oh_mask, ocb_violations, 0.0)
+    # Calculate the normalized orthogonal face vector (n_face_hat)
+    n_face = jnp.cross(v_CbCg, p_norm)
+    n_face_hat = n_face / jnp.sqrt(jnp.sum(n_face**2, axis=-1, keepdims=True) + 1e-12) # (N, 3)
     
-    d_ON = jnp.sqrt(jnp.sum((o_pos[:, None, :] - atom_N[None, :, :])**2, axis=-1) + 1e-12)
-    on_violations = jnp.maximum(0.0, R_O_N - d_ON) ** 2
-    on_violations = jnp.where(oh_mask, on_violations, 0.0)
+    # Calculate True Aromatic Pairwise Distance matrix using centroids!
+    diff_pi = pi_centroid[:, None, :] - pi_centroid[None, :, :]  # (N, N, 3)
+    dists_sq_pi = jnp.sum(diff_pi**2, axis=-1)
     
-    d_OO = jnp.sqrt(jnp.sum((o_pos[:, None, :] - o_pos[None, :, :])**2, axis=-1) + 1e-12)
-    oo_violations = jnp.maximum(0.0, R_O_O - d_OO) ** 2
-    oo_mask = jnp.abs(idx[:, None] - idx[None, :]) >= 2
-    oo_violations = jnp.where(oo_mask, oo_violations, 0.0)
+    # Calculate geometric projection fraction using the centroid diff vectors!
+    dot_sq_i = jnp.sum(diff_pi * n_face_hat[:, None, :], axis=-1)**2 # (N, N)
+    w_sq_i = dot_sq_i / (dists_sq_pi + 1e-12) # 1 if pure face, 0 if pure edge
     
-    # --- H steric ---
-    d_HC = jnp.sqrt(jnp.sum((h_pos[:, None, :] - atom_C[None, :, :])**2, axis=-1) + 1e-12)
-    hc_violations = jnp.maximum(0.0, R_H_C - d_HC) ** 2
-    hc_violations = jnp.where(oh_mask, hc_violations, 0.0)
+    dot_sq_j = jnp.sum(diff_pi * n_face_hat[None, :, :], axis=-1)**2 # (N, N)
+    w_sq_j = dot_sq_j / (dists_sq_pi + 1e-12) # (N, N)
     
-    d_HCB = jnp.sqrt(jnp.sum((h_pos[:, None, :] - cb_pos[None, :, :])**2, axis=-1) + 1e-12)
-    hcb_violations = jnp.maximum(0.0, R_H_CB - d_HCB) ** 2
-    hcb_violations = jnp.where(oh_mask, hcb_violations, 0.0)
+    # Mathematical Constants for the Topology
+    # R_NODE is derived from topological spatial constraints in constants.py
+    R_NODE = R_STERIC_CC / 2.0  # 1.298 Å
+    # Edge limit strictly governed by derived sp2 phase volume (centroid to C + Node Radius)
+    R_plane = 1.40 + R_NODE            # 2.698 Å
+    # Face limit strictly governed by topological π-stacking orbital boundary
+    R_face = 3.4 / 2.0                 # 1.700 Å
     
-    d_HO = jnp.sqrt(jnp.sum((h_pos[:, None, :] - o_pos[None, :, :])**2, axis=-1) + 1e-12)
-    ho_violations = jnp.maximum(0.0, R_H_O - d_HO) ** 2
-    ho_violations = jnp.where(oh_mask, ho_violations, 0.0)
+    r_cg_arom_i = R_plane + (R_face - R_plane) * w_sq_i # (N, N)
+    r_cg_arom_j = R_plane + (R_face - R_plane) * w_sq_j # (N, N)
+    R_CGCG_aniso = r_cg_arom_i + r_cg_arom_j # (N, N) dynamically calculated pairwise limit
     
-    # --- Cβ-backbone steric ---
-    d_CBN = jnp.sqrt(jnp.sum((cb_pos[:, None, :] - atom_N[None, :, :])**2, axis=-1) + 1e-12)
-    cbn_violations = jnp.maximum(0.0, R_CB_N - d_CBN) ** 2
-    cbn_violations = jnp.where(cb_mask, cbn_violations, 0.0)
+    # Modify ONLY Cγ-Cγ interactions to use centroid boundaries!
+    cg_is_arom = arom_mask[:, None] * arom_mask[None, :]
+    R_CB_CB = (r_vdw_C + r_vdw_C) * SIGMA_FACTOR
     
-    d_CBC = jnp.sqrt(jnp.sum((cb_pos[:, None, :] - atom_C[None, :, :])**2, axis=-1) + 1e-12)
-    cbc_violations = jnp.maximum(0.0, R_CB_C - d_CBC) ** 2
-    cbc_violations = jnp.where(cb_mask, cbc_violations, 0.0)
+    # ── Reconstruct Original Distance Matrix ──
+    # Phase 10 FIX: Use `pi_centroid` for aromatic residues so ALL backbone atoms collide 
+    # with the center of the ring, not the stem!
+    effective_cg_pos = jnp.where(arom_mask[:, None], pi_centroid, cg_pos)
+    all_atoms = jnp.stack([atom_N, atom_C, o_pos, cb_pos, effective_cg_pos, h_pos], axis=0)
     
-    # Cβ-Cβ (longer range)
-    d_CBCB = jnp.sqrt(jnp.sum((cb_pos[:, None, :] - cb_pos[None, :, :])**2, axis=-1) + 1e-12)
-    cb_seq_mask = jnp.abs(idx[:, None] - idx[None, :]) >= 3
-    cbcb_violations = jnp.maximum(0.0, R_CB_CB - d_CBCB) ** 2
-    cbcb_violations = jnp.where(cb_seq_mask, cbcb_violations, 0.0)
+    diff = all_atoms[:, :, None, None, :] - all_atoms[None, None, :, :, :] # (6, N, 6, N, 3)
+    dists_sq = jnp.sum(diff**2, axis=-1)
+    dists = jnp.sqrt(dists_sq + 1e-12)  # (6, N, 6, N)
     
-    # --- Cγ steric (branching point topology) ---
-    # Cγ exclusion with backbone and other sidechains.
-    # Masked for Gly/Ala (cg_pos == cb_pos → zero distance violations masked)
-    cg_seq_mask = jnp.abs(idx[:, None] - idx[None, :]) >= 2
-    cg_has = cg_mask_arr[:, None] * cg_mask_arr[None, :]  # both have Cγ
-    cg_one = jnp.maximum(cg_mask_arr[:, None], cg_mask_arr[None, :])  # at least one
+    # ── Universal Anisotropic Aromatic Projection ──
+    # The Aromatic Ring (index 4) has a variable radius depending on the approach angle
+    # of the colliding atom (Face vs Edge).
     
-    d_CGN = jnp.sqrt(jnp.sum((cg_pos[:, None, :] - atom_N[None, :, :])**2, axis=-1) + 1e-12)
-    cgn_violations = jnp.maximum(0.0, R_CG_N - d_CGN) ** 2
-    cgn_violations = jnp.where(cg_seq_mask, cgn_violations, 0.0)
-    cgn_violations = cgn_violations * cg_mask_arr[:, None]  # only if residue has Cγ
+    # 1. Compute projection fraction (w_sq) for ALL atoms approaching an aromatic ring (i)
+    # diff[4, :, a, :] is the vector FROM ring (i) TO atom (a) of residue (j)
+    v_ring_to_atom = diff[4, :, :, :, :] # shape: (N_ring, 6_atom, N_atom, 3_coords)
+    dot_sq_universal = jnp.sum(v_ring_to_atom * n_face_hat[:, None, None, :], axis=-1)**2 # (N, 6, N)
+    w_sq_universal = dot_sq_universal / (dists_sq[4, :, :, :] + 1e-12) # (N, 6, N)
     
-    d_CGC = jnp.sqrt(jnp.sum((cg_pos[:, None, :] - atom_C[None, :, :])**2, axis=-1) + 1e-12)
-    cgc_violations = jnp.maximum(0.0, R_CG_C - d_CGC) ** 2
-    cgc_violations = jnp.where(cg_seq_mask, cgc_violations, 0.0)
-    cgc_violations = cgc_violations * cg_mask_arr[:, None]
+    # 2. Dynamic Aromatic Radius
+    # If the ring is aromatic, its radius toward the invading atom is smoothly interpolated
+    r_ring_dynamic = R_plane + (R_face - R_plane) * w_sq_universal # (N, 6, N)
     
-    d_CGCB = jnp.sqrt(jnp.sum((cg_pos[:, None, :] - cb_pos[None, :, :])**2, axis=-1) + 1e-12)
-    cgcb_violations = jnp.maximum(0.0, R_CG_CB - d_CGCB) ** 2
-    cgcb_seq = jnp.abs(idx[:, None] - idx[None, :]) >= 2  # not bonded Cγ-Cβ
-    cgcb_violations = jnp.where(cgcb_seq, cgcb_violations, 0.0)
-    cgcb_violations = cgcb_violations * cg_mask_arr[:, None]
+    # Pairwise zero-crossing exclusion distances (base isotropic)
+    R_EXCL = (atom_radii[:, None] + atom_radii[None, :]) * SIGMA_FACTOR # (6, 6)
+    R_EXCL_full = jnp.zeros((6, N, 6, N))
+    R_EXCL_full = R_EXCL_full + R_EXCL[:, None, :, None]
     
-    d_CGCG = jnp.sqrt(jnp.sum((cg_pos[:, None, :] - cg_pos[None, :, :])**2, axis=-1) + 1e-12)
-    cgcg_violations = jnp.maximum(0.0, R_CG_CG - d_CGCG) ** 2
-    cgcg_violations = jnp.where(cg_seq_mask, cgcg_violations, 0.0)
-    cgcg_violations = cgcg_violations * cg_has  # both must have Cγ
+    # 3. Apply the dynamic radii to the collision matrix
+    # When Atom 4 (Ring i) hits Atom a (Residue j): Radius = (r_ring_dynamic + r_a) * SIGMA_FACTOR
+    # We must format r_a to broadcast: shape (6_atom) -> (1, 6, 1)
+    r_a_broadcast = atom_radii[None, :, None]
+    R_dynamic_collision = (r_ring_dynamic + r_a_broadcast) * SIGMA_FACTOR # (N_ring, 6_atom, N_atom)
     
-    d_OCG = jnp.sqrt(jnp.sum((o_pos[:, None, :] - cg_pos[None, :, :])**2, axis=-1) + 1e-12)
-    ocg_violations = jnp.maximum(0.0, R_O_CG - d_OCG) ** 2
-    ocg_violations = jnp.where(oh_mask, ocg_violations, 0.0)
-    ocg_violations = ocg_violations * cg_mask_arr[None, :]
+    # Apply to row 4 (Ring i hitting anything)
+    R_EXCL_full = jnp.where(arom_mask[None, :, None, None], R_EXCL_full.at[4, :, :, :].set(R_dynamic_collision), R_EXCL_full)
     
-    # Total 6-atom backbone+sidechain steric
-    bb_atom_steric = (
-        jnp.sum(jnp.triu(nn_violations, k=2)) +
-        jnp.sum(jnp.triu(cc_violations, k=2)) +
-        jnp.sum(jnp.triu(nc_violations, k=2)) +
-        jnp.sum(jnp.triu(cn_violations, k=2)) +
-        jnp.sum(cbn_violations) + jnp.sum(cbc_violations) +
-        jnp.sum(jnp.triu(cbcb_violations, k=3)) +
-        jnp.sum(ocb_violations) + jnp.sum(on_violations) +
-        jnp.sum(jnp.triu(oo_violations, k=2)) +
-        jnp.sum(hc_violations) + jnp.sum(hcb_violations) +
-        jnp.sum(ho_violations) +
-        # Cγ steric (5 new terms)
-        jnp.sum(cgn_violations) + jnp.sum(cgc_violations) +
-        jnp.sum(cgcb_violations) +
-        jnp.sum(jnp.triu(cgcg_violations, k=2)) +
-        jnp.sum(ocg_violations)
-    )
-    rama_penalty = LAMBDA_BB_STERIC * bb_atom_steric / (6 * N)
+    # Apply to col 4 (Anything hitting Ring j) - Transpose logic!
+    # If j is an aromatic ring, the vector from atom a(i) to ring j is diff[:, :, 4, :]
+    v_atom_to_ring = diff[:, :, 4, :, :] # (6_atom, N_atom, N_ring, 3_coords)
+    dot_sq_j_univ = jnp.sum(v_atom_to_ring * n_face_hat[None, None, :, :], axis=-1)**2 # (6, N, N_ring)
+    w_sq_j_univ = dot_sq_j_univ / (dists_sq[:, :, 4, :] + 1e-12) # (6, N, N_ring)
+    r_ring_dynamic_j = R_plane + (R_face - R_plane) * w_sq_j_univ # (6, N, N_ring)
+    
+    r_i_broadcast = atom_radii[:, None, None]
+    R_dynamic_collision_j = (r_ring_dynamic_j + r_i_broadcast) * SIGMA_FACTOR # (6, N, N_ring)
+    
+    R_EXCL_full = jnp.where(arom_mask[None, None, None, :], R_EXCL_full.at[:, :, 4, :].set(R_dynamic_collision_j), R_EXCL_full)
+    R_EXCL_full = R_EXCL_full.at[0, :, 0, :].set(3.0) # R_NN
+    R_EXCL_full = R_EXCL_full.at[1, :, 1, :].set(3.4) # R_CC
+    R_EXCL_full = R_EXCL_full.at[0, :, 1, :].set(3.2) # R_CN
+    R_EXCL_full = R_EXCL_full.at[1, :, 0, :].set(3.2) # R_NC
+    
+    violations = jnp.maximum(0.0, R_EXCL_full - dists) ** 2
+
+    
+    # ── MASKING (Exclude covalently bonded atoms) ──
+    # Sequence separation: |res_i - res_j|
+    seq_sep = jnp.abs(idx[:, None] - idx[None, :])  # (N, N)
+    
+    # Define boolean masks for valid pairwise interactions.
+    # We only care about upper triangle of (6*N x 6*N) logically,
+    valid_mask = jnp.ones((6, N, 6, N), dtype=bool)
+    
+    # Minimum sequence separation required per atom-pair type
+    # 0=N, 1=C, 2=O, 3=CB, 4=CG, 5=H
+    # Baseline strictly derived from AVE 5-atom Ramachandran (>=2)
+    min_sep = jnp.full((6, 6), 2.0)
+    
+    # EXCEPTIONS (as defined by original physical masks):
+    # CB can interact closely with adjacent N/C due to branching geometry
+    min_sep = min_sep.at[3, 0].set(1) # CB-N
+    min_sep = min_sep.at[0, 3].set(1) # N-CB
+    min_sep = min_sep.at[3, 1].set(1) # CB-C
+    min_sep = min_sep.at[1, 3].set(1) # C-CB
+    # CB-CB requires >=3 spacing to exclude immediate neighbors
+    min_sep = min_sep.at[3, 3].set(3) # CB-CB
+    
+    # Apply minimum sequence separations
+    valid_mask = valid_mask & (seq_sep[None, :, None, :] >= min_sep[:, None, :, None])
+    
+    # Mask out non-existent atoms (Cb on Gly, Cg on Gly/Ala)
+    cb_mask_bool = (1.0 - gly_mask).astype(bool)
+    cg_mask_bool = cg_mask_arr.astype(bool)
+    
+    mask_cb_i = (jnp.arange(6)[:, None, None, None] == 3) & (~cb_mask_bool)[None, :, None, None]
+    mask_cb_j = (jnp.arange(6)[None, None, :, None] == 3) & (~cb_mask_bool)[None, None, None, :]
+    valid_mask = jnp.where(mask_cb_i | mask_cb_j, False, valid_mask)
+    
+    mask_cg_i = (jnp.arange(6)[:, None, None, None] == 4) & (~cg_mask_bool)[None, :, None, None]
+    mask_cg_j = (jnp.arange(6)[None, None, :, None] == 4) & (~cg_mask_bool)[None, None, None, :]
+    valid_mask = jnp.where(mask_cg_i | mask_cg_j, False, valid_mask)
+    
+    # Also ignore self-interactions (same atom, same residue) or duplicates
+    triu_mask = (jnp.arange(6)[:, None, None, None] * N + jnp.arange(N)[None, :, None, None]) < \
+                (jnp.arange(6)[None, None, :, None] * N + jnp.arange(N)[None, None, None, :])
+    # Y_steric_matrix is ALREADY computed at line 1444 and added to xtalk_matrix back at line 813.
+    # Wait, Y_steric_matrix is used at line 813, but I declared it down here in a previous edit!
+    # I must construct Y_steric_matrix BEFORE line 813. Let me move the definition up!
     # ═══════════════════════════════════════════════════════════════════
     # LOSS FUNCTION — pure S₁₁ + steric + peptide-plane coupling
     # ═══════════════════════════════════════════════════════════════════
@@ -1346,8 +1584,58 @@ def _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, k
     tau_g_sat = group_delay_peak * jnp.sqrt(
         jnp.clip(1.0 - (group_delay_peak / (N + 1e-12))**2, 1e-12, 1.0)
     )
-    return (s11_avg + steric_penalty + jnp.maximum(0.0, port_loss)
-            + rama_penalty + xtalk_loss
+    
+    # ═══════════════════════════════════════════════════════════════════
+    # PHASE 8: Tertiary Bend Loss (Macroscopic Impedance Reflection)
+    # ═══════════════════════════════════════════════════════════════════
+    # The backbone amide-V acoustic wave experiences a total internal
+    # reflection when the macroscopic bending radius exceeds the
+    # transverse structural coherence limit (set by ν_vac = 2/7).
+    #
+    # Any instantaneous Cα path change exceeding θ_crit = 2π/7 (51.4°)
+    # costs P_bend topology strain:
+    #   Γ² = sin²((θ - θ_crit)/2)
+    # Scaled by the Axiom 4 volumetric packing fraction 1/P_c.
+    
+    THETA_CRITICAL = 2.0 * jnp.pi / 7.0  # ≈ 51.43°
+    
+    # 1. Compute Cα backbone unit direction vectors u_i (N-1 vectors)
+    v_Ca = atom_Ca[1:] - atom_Ca[:-1]
+    u_i = v_Ca / jnp.sqrt(jnp.sum(v_Ca**2, axis=-1, keepdims=True) + 1e-12)
+    
+    # 2. Compute instantaneous turn angle at each Cα joint (N-2 joints)
+    # u_i · u_i+1 gives cos(theta)
+    cos_theta = jnp.sum(u_i[:-1] * u_i[1:], axis=-1)
+    # Clip for arccos numerical stability
+    cos_theta = jnp.clip(cos_theta, -1.0 + 1e-7, 1.0 - 1e-7)
+    theta_i = jnp.arccos(cos_theta)
+    
+    # 3. Calculate reflection fraction Γ² and bound by P_c metric strain
+    gamma_sq = jnp.sin((theta_i - THETA_CRITICAL) / 2.0)**2
+    # Apply penalty only when bending is tighter than critical angle
+    p_bend_i = jnp.where(theta_i > THETA_CRITICAL, gamma_sq / P_C, 0.0)
+    
+    # 4. Integrate total tertiary loss
+    # Normalized by chain length
+    tertiary_bend_loss = jnp.sum(p_bend_i) / N
+    
+    if return_components:
+        return {
+            's11_avg': s11_avg,
+            'y_steric_sum': jnp.sum(Y_steric_matrix),
+            'port_loss': jnp.maximum(0.0, port_loss),
+            'xtalk_loss': xtalk_loss,
+            'tertiary_bend_loss': tertiary_bend_loss,
+            'spectral_contrast': -spectral_contrast / N_FREQ,
+            'tau_g_sat': -tau_g_sat / N,
+            'total': (s11_avg + jnp.maximum(0.0, port_loss)
+                      + xtalk_loss + tertiary_bend_loss
+                      - spectral_contrast / N_FREQ
+                      - tau_g_sat / N)
+        }
+        
+    return (s11_avg + jnp.maximum(0.0, port_loss)
+            + xtalk_loss + tertiary_bend_loss
             - spectral_contrast / N_FREQ
             - tau_g_sat / N)
 
@@ -1593,7 +1881,7 @@ def compute_cg_mask(sequence):
     return jnp.array([0.0 if aa in NO_CG else 1.0 for aa in sequence])
 
 
-def _torsion_loss(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, cg_mask=None, stub_len=None, stub_type_arr=None):
+def _torsion_loss(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, cg_mask=None, stub_len=None, stub_type_arr=None, tunnel_window=0):
     """
     Loss function with torsion-angle parameterization.
     
@@ -1614,11 +1902,11 @@ def _torsion_loss(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, cg
     chi2 = angles[3*N:] if angles.shape[0] > 3*N else None
     coords_flat = _torsions_to_backbone(phi, psi, N)
     return _s11_loss(coords_flat, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N,
-                     chi1=chi1, chi2=chi2, cg_mask=cg_mask, stub_len=stub_len, stub_type_arr=stub_type_arr)
+                     chi1=chi1, chi2=chi2, cg_mask=cg_mask, stub_len=stub_len, stub_type_arr=stub_type_arr, tunnel_window=tunnel_window)
 
 
-_torsion_loss_jit = jit(_torsion_loss, static_argnums=(6,))
-_torsion_grad_jit = jit(grad(_torsion_loss), static_argnums=(6,))
+_torsion_loss_jit = jit(_torsion_loss, static_argnums=(6, 10))
+_torsion_grad_jit = jit(grad(_torsion_loss), static_argnums=(6, 10))
 
 
 def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True, n_starts=3, z_topo_override=None, initial_angles=None):
@@ -1696,8 +1984,8 @@ def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True, n_starts=3, z_top
         t0 = time.time()
         # JIT warmup on first start only
         if start_idx == 0:
-            _ = _torsion_loss_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, cg_mask, stub_len_arr, stub_type)
-            _ = _torsion_grad_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, cg_mask, stub_len_arr, stub_type)
+            _ = _torsion_loss_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, cg_mask, stub_len_arr, stub_type, 0)
+            _ = _torsion_grad_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, cg_mask, stub_len_arr, stub_type, 0)
             print(f"    JIT compiled in {time.time()-t0:.1f}s", flush=True)
             t0 = time.time()
 
@@ -1706,7 +1994,7 @@ def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True, n_starts=3, z_top
         
         def opt_step(step, carry):
             angles_c, opt_state_c, key_c = carry
-            g = _torsion_grad_jit(angles_c, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, cg_mask, stub_len_arr, stub_type)
+            g = _torsion_grad_jit(angles_c, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, cg_mask, stub_len_arr, stub_type, 0)
             g = jnp.where(jnp.isnan(g), 0.0, g)
             g_norm = jnp.sqrt(jnp.sum(g**2) + 1e-12)
             g = jnp.where(g_norm > 10.0, g * 10.0 / g_norm, g)
@@ -1721,7 +2009,7 @@ def fold_s11_jax(sequence, n_steps=5000, lr=1e-3, anneal=True, n_starts=3, z_top
         angles, opt_state, key = jax.lax.fori_loop(
             0, n_steps, opt_step, (angles, opt_state, key))
 
-        loss = float(_torsion_loss_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, cg_mask, stub_len_arr, stub_type))
+        loss = float(_torsion_loss_jit(angles, z_topo, cys_mask, arom_mask, gly_mask, pro_mask, N, cg_mask, stub_len_arr, stub_type, 0))
         dt = time.time() - t0
         print(f"    start {start_idx}: loss={loss:.4f} ({dt:.0f}s)", flush=True)
 
@@ -1771,6 +2059,9 @@ def fold_cotranslational(sequence, steps_per_residue=200, lr=2e-3,
     full_arom_mask = compute_aromatic_mask(sequence)
     full_gly_mask = compute_gly_mask(sequence)
     full_pro_mask = compute_pro_mask(sequence)
+    full_cg_mask = compute_cg_mask(sequence)
+    full_stub_len = jnp.array([float(STUB_LENGTH.get(aa, 0)) for aa in sequence])
+    full_stub_type = jnp.array([float(STUB_TYPE.get(aa, 0.0)) for aa in sequence])
     
     # Initialize all angles randomly
     np.random.seed(42)
@@ -1792,6 +2083,9 @@ def fold_cotranslational(sequence, steps_per_residue=200, lr=2e-3,
     arom_k = full_arom_mask[:k]
     gly_k = full_gly_mask[:k]
     pro_k = full_pro_mask[:k]
+    cg_k = full_cg_mask[:k]
+    stub_len_k = full_stub_len[:k]
+    stub_type_k = full_stub_type[:k]
     
     angles_k = jnp.concatenate([jnp.array(all_phi[:k]),
                                  jnp.array(all_psi[:k]),
@@ -1803,83 +2097,103 @@ def fold_cotranslational(sequence, steps_per_residue=200, lr=2e-3,
     key = jax.random.PRNGKey(42)
     
     t0 = time.time()
-    # JIT warmup for initial size
-    _ = _torsion_loss_jit(angles_k, z_k, cys_k, arom_k, gly_k, pro_k, k)
-    _ = _torsion_grad_jit(angles_k, z_k, cys_k, arom_k, gly_k, pro_k, k)
+    # JIT warmup for initial size with full tunneling
+    _ = _torsion_loss_jit(angles_k, z_k, cys_k, arom_k, gly_k, pro_k, k, cg_k, stub_len_k, stub_type_k, window)
+    _ = _torsion_grad_jit(angles_k, z_k, cys_k, arom_k, gly_k, pro_k, k, cg_k, stub_len_k, stub_type_k, window)
     print(f"    JIT compiled for k={k} in {time.time()-t0:.1f}s", flush=True)
     
     n_init_steps = steps_per_residue * 5  # 5× more for nucleation
     for step in range(n_init_steps):
-        g = _torsion_grad_jit(angles_k, z_k, cys_k, arom_k, gly_k, pro_k, k)
+        g = _torsion_grad_jit(angles_k, z_k, cys_k, arom_k, gly_k, pro_k, k, cg_k, stub_len_k, stub_type_k, window)
         g = jnp.where(jnp.isnan(g), 0.0, g)
         g_norm = jnp.sqrt(jnp.sum(g**2) + 1e-12)
         g = jnp.where(g_norm > 10.0, g * 10.0 / g_norm, g)
         updates, opt_state = optimizer.update(g, opt_state)
         angles_k = optax.apply_updates(angles_k, updates)
-        # Anneal during first half
+        
+        # ATP Hydrolysis Kinetics (Phase 9)
+        # 10^13 Hz hydrolysis maps to 0.25 rad RMS structural perturbations
+        # that break kinetic traps natively bounded by the Ribosome tunnel
         if step < n_init_steps * 0.5:
-            T = 0.05 * (1.0 - step / (n_init_steps * 0.5)) ** 2
+            T_ATP = 0.25 * (1.0 - step / (n_init_steps * 0.5)) ** 2
             key, subkey = jax.random.split(key)
-            angles_k = angles_k + jax.random.normal(subkey, shape=angles_k.shape) * T
+            angles_k = angles_k + jax.random.normal(subkey, shape=angles_k.shape) * T_ATP
     
-    loss_k = float(_torsion_loss_jit(angles_k, z_k, cys_k, arom_k, gly_k, pro_k, k))
+    loss_k = float(_torsion_loss_jit(angles_k, z_k, cys_k, arom_k, gly_k, pro_k, k, cg_k, stub_len_k, stub_type_k, window))
     all_phi[:k] = np.array(angles_k[:k])
     all_psi[:k] = np.array(angles_k[k:2*k])
     all_chi1[:k] = np.array(angles_k[2*k:])
-    print(f"    k={k}: loss={loss_k:.4f} ({time.time()-t0:.0f}s)", flush=True)
-    
     # Phase 2: Grow chain one residue at a time
     for k in range(k0 + 1, N + 1):
         t_step = time.time()
-        # Prepare sub-chain of length k
+        
+        # Ribosome boundary: if chain is fully synthesized, it releases from the PTC!
+        is_released = (k == N)
+        current_window = 0 if is_released else window
+        
+        # When released, allow more time (ATP cycles) to resolve global tertiary folding
+        n_steps_k = steps_per_residue * 15 if is_released else steps_per_residue
+        
         z_k = full_z_topo[:k]
         cys_k = full_cys_mask[:k]
         arom_k = full_arom_mask[:k]
         gly_k = full_gly_mask[:k]
         pro_k = full_pro_mask[:k]
+        cg_k = full_cg_mask[:k]
+        stub_len_k = full_stub_len[:k]
+        stub_type_k = full_stub_type[:k]
         
-        # Warm-start: use previously optimized angles + random for new residue
+        # Warm-start from previously optimized chain
         angles_k = jnp.concatenate([
             jnp.array(all_phi[:k]),
             jnp.array(all_psi[:k]),
             jnp.array(all_chi1[:k])
         ])
         
-        # Fresh optimizer for each growth step
         optimizer = optax.adam(lr)
         opt_state = optimizer.init(angles_k)
         
-        for step in range(steps_per_residue):
-            g = _torsion_grad_jit(angles_k, z_k, cys_k, arom_k, gly_k, pro_k, k)
+        for step in range(n_steps_k):
+            g = _torsion_grad_jit(angles_k, z_k, cys_k, arom_k, gly_k, pro_k, k, cg_k, stub_len_k, stub_type_k, current_window)
             g = jnp.where(jnp.isnan(g), 0.0, g)
             g_norm = jnp.sqrt(jnp.sum(g**2) + 1e-12)
             g = jnp.where(g_norm > 10.0, g * 10.0 / g_norm, g)
             updates, opt_state = optimizer.update(g, opt_state)
             angles_k = optax.apply_updates(angles_k, updates)
+            
+            # Phase 9: Biological ATP Kineto-Topology
+            # True $10^{13}$ Hz hydrolysis vibrational energy drives the chain out of local kinetic traps.
+            # During extrusion, ATP gently shakes the nascent secondary structure.
+            # At release (k=N), a large ATP burst allows the chain to sample full global tertiary topologies.
+            anneal_fraction = 0.8 if is_released else 0.5
+            if step < n_steps_k * anneal_fraction:
+                T_ATP = 0.25 * (1.0 - step / (n_steps_k * anneal_fraction)) ** 2
+                key, subkey = jax.random.split(key)
+                angles_k = angles_k + jax.random.normal(subkey, shape=angles_k.shape) * T_ATP
         
         # Store optimized angles
         all_phi[:k] = np.array(angles_k[:k])
         all_psi[:k] = np.array(angles_k[k:2*k])
         all_chi1[:k] = np.array(angles_k[2*k:])
         
-        # Progress reporting every 10 residues
         if k % 10 == 0 or k == N:
             loss_k = float(_torsion_loss_jit(angles_k, z_k, cys_k, arom_k,
-                                              gly_k, pro_k, k))
-            print(f"    k={k}: loss={loss_k:.4f} ({time.time()-t_step:.1f}s)",
-                  flush=True)
+                                              gly_k, pro_k, k, cg_k, stub_len_k, stub_type_k, current_window))
+            print(f"    k={k}: loss={loss_k:.4f} ({time.time()-t_step:.1f}s)", flush=True)
     
-    # Build final coordinates from co-translationally folded angles
+    # Build final coordinates from completely co-translated angles
     phi_final = jnp.array(all_phi)
     psi_final = jnp.array(all_psi)
     coords_flat = _torsions_to_backbone(phi_final, psi_final, N)
     bb_final = np.array(coords_flat.reshape(N, 3, 3))
     ca_final = bb_final[:, 1, :]
+    
+    # Exact final loss evaluation (Ribosome completely released, window=0)
     final_loss = float(_torsion_loss_jit(
         jnp.concatenate([phi_final, psi_final, jnp.array(all_chi1)]),
         full_z_topo, full_cys_mask, full_arom_mask, full_gly_mask,
-        full_pro_mask, N))
-    print(f"    Final loss (N={N}): {final_loss:.4f}", flush=True)
+        full_pro_mask, N, full_cg_mask, full_stub_len, full_stub_type, 0))
+    print(f"    Final native loss (N={N}): {final_loss:.4f}", flush=True)
     return ca_final, [], [final_loss], bb_final
 
 

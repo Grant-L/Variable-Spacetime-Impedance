@@ -176,7 +176,13 @@ The backbone LC circuit oscillates at the amide-V resonance:
 \end{equation}
 This is the \textbf{fundamental clock} of the backbone---the fastest rate at which the LC network can respond to a conformational change.  It sets the minimum granularity of any folding event, analogous to the clock cycle of a digital processor.
 
-Source: Axiom~1 (LC network) $\to$ amide-V mode frequency, independently measured by IR spectroscopy.
+Source: Axiom~1 (LC network) $\to$ 5-step universal eigenvalue method
+(Chapter~\ref{ch:protein_folding}, \S\ref{sec:backbone_eigenvalue}):
+$\ell = \lfloor d_0/a_0 \rceil = 7$,
+$r_\text{eff} = d_0/(1+\nu_\text{vac}) = 2.96$~\AA,
+$f_0 = \ell \cdot v / (2\pi r_\text{eff})$ with measured BC
+$v = 5770$~m/s (backbone group velocity).  Cross-checked by
+IR spectroscopy: amide-V band at $725$~cm$^{-1}$ ($\pm 0.1\%$).
 
 \subsection{Step 2: Ring-Down Time (Q Factor)}
 \label{sec:ringdown}
@@ -886,7 +892,7 @@ matched); a disordered chain wanders near $|\Gamma| = 1$.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{../../assets/sim_outputs/protein_smith_chart.png}
+\includegraphics[width=\textwidth]{protein_smith_chart.png}
 \caption{Protein Smith charts for Trp-cage ($\alpha$-helix, $N=20$),
 Chignolin ($\beta$-hairpin, $N=10$), and Villin HP35
 ($\alpha$-helix, $N=35$).  Circles are constant-resistance
@@ -922,18 +928,37 @@ $\theta_\text{tet} = \arccos(-1/3) \approx 109.47^\circ$ (Axiom~2).
 The C$_\alpha$ carbon is sp$^3$-hybridised, giving three staggered
 rotamers at $\pm 60^\circ$ and $180^\circ$ for the $\varphi$ dihedral.
 Of these, only the gauche$^-$ position ($\varphi = -60^\circ$) avoids
-steric clash between O$_{i-1}$ and the sidechain~$R$.  The $\psi$ angle
-follows from helix periodicity: 3.6 residues per turn requires
-$|\varphi| + |\psi| = 100^\circ$, giving
-$\psi = -(100 - 60) = -40^\circ$.
+steric clash between O$_{i-1}$ and the sidechain~$R$.
+
+The $\psi$ angle follows from the backbone resonator $Q$-factor
+(Chapter~\ref{ch:protein_folding}, \S\ref{sec:backbone_eigenvalue}).
+A helical slow-wave structure locks into a standing wave whose pitch
+equals the half-cycle periodicity of the resonator:
+\begin{equation}
+    \text{res/turn} = \frac{Q}{2} = \frac{3\pi^2}{8} \approx 3.701
+    \label{eq:helix_pitch}
+\end{equation}
+The angular advance per residue is $\Delta = 360^\circ / (Q/2)
+= 2880/(3\pi^2) \approx 97.3^\circ$, giving
+$\psi_\alpha = -(\Delta - |\varphi_\alpha|) = -(97.3 - 60.0) =
+-37.3^\circ$.
 
 \paragraph{$\beta$-Sheet basin.}
 The fully extended backbone ($\varphi = \psi = 180^\circ$) is
 modified by the sp$^3$ tetrahedral deviation at each C$_\alpha$:
+
+\paragraph{PPII basin.}
+The polyproline~II helix has no intramolecular hydrogen bonds---it is
+the backbone conformation when no standing-wave resonance locks in
+($\Gamma \to 1$ at all junctions).  $\psi_\text{PPII} = \psi_\beta$
+is derived from the same maximum-extension geometry.  The $\varphi$
+centre ($-75^\circ$) is a measured boundary condition, analogous to
+$d_0 = 3.80$~\AA: it does not enter the $S_{11}$ loss function.
+
 \begin{resultbox}{Derived Ramachandran Basins}
 \begin{equation}
     \varphi_\alpha = -60^\circ, \quad
-    \psi_\alpha = -40^\circ, \quad
+    \psi_\alpha = -37.3^\circ\;(\Delta = 2.7^\circ), \quad
     \varphi_\beta = -\!\left(180 - \frac{\theta_\text{tet}}{2}\right)
                   \approx -125.3^\circ, \quad
     \psi_\beta = +125.3^\circ
@@ -941,11 +966,15 @@ modified by the sp$^3$ tetrahedral deviation at each C$_\alpha$:
 \end{equation}
 \end{resultbox}
 Compare to crystallographic observation: $\varphi_\alpha^\text{obs} =
--57^\circ$, $\psi_\alpha^\text{obs} = -47^\circ$;
+-57^\circ$, $\psi_\alpha^\text{obs} = -47^\circ$ (median);
 $\varphi_\beta^\text{obs} = -120^\circ$,
 $\psi_\beta^\text{obs} = +130^\circ$.  The derived values are
-within~$5^\circ$ of the observed centres.  Benchmark shows zero
-regression when replacing the observed values.
+within~$5^\circ$ of all observed centres except $\psi_\alpha$
+($\Delta = 2.7^\circ$ from the $Q/2$ derivation vs.\ $9.7^\circ$
+from crystallography).  This residual is flagged as an open
+question: the simple $|\varphi| + |\psi| = \Delta$ partition
+may require a NERF or $\nu_\text{vac}$ correction.
+Benchmark shows zero regression when using the derived values.
 
 % ═══════════════════════════════════════════════════════════════
 \subsection{Circuit Representation}
@@ -958,7 +987,7 @@ frequency-dependent shunt elements at each C$_\alpha$ junction.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{../../assets/sim_outputs/protein_circuit.png}
+\includegraphics[width=\textwidth]{protein_circuit.png}
 \caption{Protein backbone ABCD cascade as an RF circuit.
 Each residue has three TL segments (blue, impedance $Z_c = \sqrt{M/n_e}$)
 and shunt elements at C$_\alpha$ junctions: bend capacitance
@@ -1049,6 +1078,330 @@ The Y-matrix improves 4 of 5 benchmarks, with the largest gain
 (Chignolin $+0.22$~\AA) is within sampling noise for a 10-residue
 peptide.  The improvement scales with chain length, consistent
 with the Y-matrix's ability to capture long-range contact topology.
+
+
+% ═══════════════════════════════════════════════════════════════
+\subsection{Eigenvalue Root-Finding (v5 Upgrade)}
+\label{sec:eigenvalue_v5}
+
+The folded protein is the \emph{eigenstate} of its admittance network: the torsion-angle configuration $\boldsymbol{\theta}^*$ at which the impedance network is maximally matched to itself.  Finding this state is a \textbf{root-finding} problem, not an optimisation.
+
+\paragraph{Target function.}
+The eigenvalue root target combines the S-matrix eigenvalue spectrum with the Axiom~4 packing saturation:
+\begin{resultbox}{Eigenvalue Root Target (v5)}
+\begin{equation}
+    f(\boldsymbol{\theta}) = \lambda_{\min}\!\bigl(S^\dagger S(\boldsymbol{\theta})\bigr) \cdot S_\text{pack}(\eta) + \mathcal{P}_\text{steric}
+    \label{eq:eigenvalue_target_v5}
+\end{equation}
+\end{resultbox}
+\noindent where:
+\begin{itemize}
+    \item $\lambda_{\min}(S^\dagger S)$ is the smallest eigenvalue of the Hermitian product $S^\dagger S$.  When $\lambda_{\min} \to 0$, the S-matrix has a zero singular value $\Rightarrow$ one mode is perfectly absorbed — the network has an eigenstate.
+    \item $S_\text{pack} = \sqrt{1 - (\eta / P_C)^2}$ is the Axiom~4 saturation factor, with $\eta$ the global packing fraction computed from the $C_\alpha$ coordinates and $P_C = 8\pi\alpha$.  This factor naturally vanishes as the protein approaches its equilibrium density, ensuring the fold stops compacting at $\eta_\text{eq} = P_C(1 - \nu)$.
+    \item $\mathcal{P}_\text{steric} = \sum_{|i-j|\geq 3} \max(0, r_\text{steric}^2 - d_{ij}^2)^2$ enforces Pauli exclusion between non-bonded atoms.
+\end{itemize}
+
+\paragraph{Newton-Raphson update.}
+The step is the classical Newton update, applied to the full $2N$-dimensional torsion-angle space:
+\begin{equation}
+    \Delta\boldsymbol{\theta} = -f(\boldsymbol{\theta}) \cdot \frac{\nabla f}{|\nabla f|^2}, \qquad |\Delta\theta_i| \leq \pi \quad\text{(trust region)}
+    \label{eq:newton_update_v5}
+\end{equation}
+The step size is entirely determined by the function value and gradient --- no learning rate.  The trust region $\pi$ is the geometric bound on angular variables.
+
+\paragraph{Convergence criterion.}
+The solver halts when $|f| < 1/Q^2 \approx 0.018$, the noise floor of the backbone resonator.  Below this threshold, the eigenvalue spectrum of $S^\dagger S$ cannot be distinguished from noise within the $Q$-limited bandwidth of the backbone.  This is the \emph{same} convergence criterion used by the nuclear $K_\text{MUTUAL}$ solver for binding energy --- the biological and nuclear problems are formally identical.\vspace{0.5em}
+
+\paragraph{Cross-scale analogy.}
+\begin{center}
+\small
+\begin{tabular}{@{}l l l@{}}
+\toprule
+\textbf{Scale} & \textbf{Target} & \textbf{Root} \\
+\midrule
+Nuclear & $\lambda_{\min}(S^\dagger S)$ of nucleon Y-matrix & Binding energy \\
+Protein & $\lambda_{\min}(S^\dagger S)$ of backbone Y-matrix & Native fold \\
+\bottomrule
+\end{tabular}
+\end{center}
+\noindent The \emph{same} operator chain (Y-matrix $\to$ S-matrix $\to$ eigenvalue) governs both nuclear binding and protein folding.  This is not a metaphor --- both use exactly \texttt{universal\_ymatrix\_to\_s()} (Operator~5 in \texttt{universal\_operators.py}) followed by the Newton root-finder in \texttt{eigenvalue\_root\_finder.py}.
+
+\paragraph{Implementation.}
+Function \texttt{fold\_eigenvalue\_v5()} in \texttt{s11\_fold\_engine\_v4\_ymatrix.py} (L640--720).  Gradients are computed by \texttt{jax.grad} through the full Y-matrix assembly + S-parameter extraction chain.  Typical convergence: 50--150 Newton steps for $N < 40$.
+
+
+% ═══════════════════════════════════════════════════════════════
+\subsection{Explicit SPICE Transient Integration (v7 Upgrade)}
+\label{sec:spice_v7}
+
+Folding \emph{kinetics} are modelled by explicit time-stepping of the backbone torsion angles, treating each degree of freedom as a lumped $L$-$C$-$R$ circuit element.
+
+\paragraph{Physical model.}
+The torsion angle $\theta_i$ at each residue behaves as a mechanical oscillator with:
+\begin{itemize}
+    \item \textbf{Inductance} $L = 1.0$ per residue (normalised inertial mass of the backbone segment)
+    \item \textbf{Resistance} $R = 0.5$ per residue (solvent friction $+$ radiative damping).  The ratio $R/L = 0.5$ is set by the backbone $Q$-factor: a resonator with $Q \approx 7$ has $R/(2L\omega_0) = 1/(2Q) \approx 0.07$, and the Debye solvent time $\tau_w$ provides the additional viscous component.
+    \item \textbf{Driving force} $-\nabla_i f(\boldsymbol{\theta})$ from the eigenvalue target gradient
+\end{itemize}
+
+\paragraph{Equations of motion.}
+\begin{resultbox}{SPICE Transient Equations}
+\begin{align}
+    v_i(t + \Delta t) &= v_i(t) + \frac{-\nabla_i f(\boldsymbol{\theta}) - R \cdot v_i(t)}{L} \cdot \Delta t \label{eq:spice_v} \\
+    \theta_i(t + \Delta t) &= \theta_i(t) + v_i(t + \Delta t) \cdot \Delta t \label{eq:spice_theta}
+\end{align}
+\end{resultbox}
+\noindent The system \emph{rings down} into a topological equilibrium: the fold emerges from physical inertia and dissipation, not from artificial gradient descent schedules.
+
+\paragraph{Cotranslational cascade (v7 architecture).}
+The full-chain integration follows the biological ribosome's cotranslational folding:
+\begin{enumerate}
+    \item \textbf{Segment phase}: The chain is divided into $Q$-length ($\approx 7$ residue) segments.  Each segment is integrated via Eq.~\ref{eq:spice_v}--\ref{eq:spice_theta} while prior segments are frozen.  This is the electrical analog of adding a tuned filter section to a cascade.
+    \item \textbf{Junction phase}: Junction residues at segment boundaries are released and integrated with zero initial momentum, allowing inter-segment contacts to relax.
+\end{enumerate}
+The segment length $Q$ is the coherence length of the backbone resonator --- torsion angles separated by more than $Q$ residues are electromagnetically decoupled.  This is a physical fact, not a tuning parameter.
+
+\paragraph{Derived damping (Axioms 1 + 2).}
+The ring-down friction $R$ has two dissipation channels, both
+derived from the circuit model:
+\begin{resultbox}{SPICE Damping: Two Channels}
+\begin{equation}
+    R = \underbrace{\frac{1}{Q}}_{\text{backbone bend loss}}
+      + \underbrace{\kappa_\text{HB} \cdot Z_\text{bb}^2}_{\text{solvent shunt loading}}
+    = \frac{1}{0.75\pi^2}
+      + \frac{1}{2Q} \cdot \bar{Z}_\text{bond}^2
+    \approx 0.887
+    \label{eq:R_damp_total}
+\end{equation}
+\end{resultbox}
+\noindent Channel~1: each oscillation cycle radiates $1/Q$ of the stored
+energy through the sp$^3$ bend discontinuity at C$_\alpha$.
+Channel~2: each solvent-exposed residue has shunt admittance
+$G = \kappa_\text{HB} = 1/(2Q)$ to the ground plane, dissipating
+power $P = G \cdot Z_\text{bb}^2 \cdot v^2$.  Only the ratio $R/L$
+matters (L = 1 normalised) --- both channels are derived, zero fitted
+parameters.
+
+\paragraph{Derived timestep scaling law.}
+Each cotranslational segment requires 5 ring-down time constants
+($\tau = L/R$) for 99\% amplitude decay.  The total Euler steps
+emerge from the chain length:
+\begin{equation}
+    n_\text{steps}(N) = \left\lceil \frac{N}{Q} \right\rceil
+    \times 2 \times \left\lceil \frac{5L}{R \cdot \Delta t} \right\rceil
+    \label{eq:n_steps_scaling}
+\end{equation}
+Evaluated: $R \approx 0.887$, $\Delta t = 0.05$, $Q \approx 7.4$,
+which gives $n_\text{steps} \approx 226 N/Q$ with a floor of 2000.
+This automatically allocates more steps for larger proteins.
+
+\paragraph{Implementation.}
+Function \texttt{fold\_cascade\_transient\_v7()} in \texttt{s11\_fold\_engine\_v4\_ymatrix.py},
+calling \texttt{explicit\_euler\_step\_jax()} from the universal \texttt{spice\_transient.py}
+in the physics engine (\texttt{ave/solvers/}).  The constant $R$ is imported
+as \texttt{R\_DAMP\_TOTAL} from \texttt{protein\_bond\_constants.py}.
+
+
+% ═══════════════════════════════════════════════════════════════
+\subsection{Frequency-Domain Analysis (Operator~7)}
+\label{sec:freq_domain}
+
+The SPICE transient integrator operates in the \emph{time domain}.
+A complementary set of tools from digital signal processing (DSP)
+operates in the \emph{frequency domain}, providing instant analytical
+results without time-stepping.
+
+\paragraph{Spatial FFT of impedance profile.}
+The amino acid sequence defines a 1D impedance profile
+$Z(n) = |Z_\text{TOPO}[\text{aa}_n]|$ for $n = 1,\ldots,N$.
+The spatial discrete Fourier transform:
+\begin{equation}
+    \hat{Z}(k) = \text{FFT}[Z(n)]
+    = \sum_{n=0}^{N-1} Z(n)\, e^{-2\pi j k n / N}
+    \label{eq:z_fft}
+\end{equation}
+decomposes the impedance landscape into resonant spatial modes.
+Peaks in the power spectrum $P(k) = |\hat{Z}(k)|^2$ directly
+predict secondary structure:
+\begin{center}
+\small
+\begin{tabular}{@{}l l l@{}}
+\toprule
+\textbf{Spatial period} $N/k$ & \textbf{SS Element} & \textbf{Physical Origin} \\
+\midrule
+$\approx 3.7$ residues & $\alpha$-helix & $Q/2$ standing wave (i$\to$i+4 H-bond) \\
+$\approx 2.0$ residues & $\beta$-sheet & Alternating H-bond topology \\
+$\approx 3{-}4$ residues & PPII helix & Polyproline pitch \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Autocorrelation and contact order.}
+The Wiener-Khinchin theorem gives the spatial autocorrelation:
+\begin{equation}
+    R_Z(m) = \text{IFFT}\bigl[|\hat{Z}(k)|^2\bigr]
+    \label{eq:autocorr}
+\end{equation}
+The first zero-crossing of $R_Z(m)$ is the impedance correlation
+length --- the average separation between impedance-matched residues.
+This is the purely analytical predictor of \emph{contact order}.
+
+\paragraph{Implementation.}
+Function \texttt{universal\_spectral\_analysis()} in
+\texttt{universal\_operators.py} (Operator~7). Returns the spectrum,
+PSD, autocorrelation, and the 5 dominant spatial periods in
+$O(N \log N)$ time.
+
+\paragraph{Spectral analysis results.}
+Table~\ref{tab:fft_results} summarises the FFT analysis of seven
+test sequences.  The helix/sheet power ratio $P_\alpha / P_\beta$
+is computed at the wavenumbers $k_\alpha = \lfloor N/3.6 \rceil$
+and $k_\beta = \lfloor N/2.0 \rceil$.
+
+\begin{table}[H]
+\centering
+\caption{FFT spectral analysis of protein impedance profiles.
+$P_\alpha/P_\beta$ is the power ratio at the helix vs.\ sheet
+spatial frequencies.  CV is the coefficient of variation of
+$|Z_\text{topo}|$ along the sequence (impedance contrast).}
+\label{tab:fft_results}
+\small
+\begin{tabular}{@{}l c c c c l@{}}
+\toprule
+\textbf{Protein} & $N$ & \textbf{CV(\%)} & \textbf{Dominant period} & $P_\alpha/P_\beta$ & \textbf{Prediction} \\
+\midrule
+Chignolin    & 10 & 23.3 & 3.3 res ($k\!=\!3$) & 36.0 & $\alpha$/PPII \\
+Trp-cage     & 20 & 27.3 & 4.0 res ($k\!=\!5$) & 247  & $\alpha$/PPII \\
+Villin HP35  & 35 & 20.9 & 11.7 res ($k\!=\!3$) & 1.5  & Mixed \\
+GB1 hairpin  & 16 & 21.6 & 3.2 res ($k\!=\!5$) & 26.9 & $\alpha$/PPII \\
+Poly-A       & 10 & 0.0  & --- (flat)          & 0.0  & No preference \\
+Poly-G       & 10 & 0.0  & --- (flat)          & 0.0  & No preference \\
+Alt. A-D     & 10 & 25.5 & 2.0 res ($k\!=\!5$) & 0.0  & $\beta$-sheet \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent Four observations emerge from the spectral decomposition:
+\begin{enumerate}
+    \item \textbf{Alternating sequences} (A-D-A-D\ldots) concentrate
+          100\% of non-DC power at $k = N/2$ (period = 2 residues),
+          exactly the $\beta$-sheet periodicity.
+    \item \textbf{Homopolymers} (poly-A, poly-G) have zero impedance
+          contrast $\to$ flat spectrum $\to$ no preferential SS.
+          SS is determined entirely by the EM driving force (H-bonds,
+          solvent coupling), not by the impedance profile.
+    \item \textbf{Heteropolymers} (Chignolin, Trp-cage) show dominant
+          peaks near 3.3--4.0 residue periods, matching known
+          $\alpha$-helix ($Q/2 \approx 3.7$) and PPII ($3.0$) periodicities.
+    \item \textbf{The impedance CV} ($\sigma/\bar{Z}$) measures the
+          total spectral energy available for SS selection.
+          CV $>$ 20\% provides sufficient driving contrast;
+          CV $=$ 0\% leaves SS entirely to kinetic (SPICE) physics.
+\end{enumerate}
+
+\paragraph{FFT-guided basin initialisation.}
+The spectral power distribution directly informs the initial
+$(\varphi, \psi)$ basin selection.  For each residue~$i$, a sliding
+window of width $Q$ ($\approx 7$ residues) is centred on position~$i$,
+and the local power at the helix frequency ($k_\alpha = \lfloor W/3.7
+\rceil$) and sheet frequency ($k_\beta = \lfloor W/2.0 \rceil$) is
+computed.  The per-residue basin probability is:
+\begin{equation}
+    p_\alpha^{(i)} \propto \frac{P(k_\alpha)}{P(k_\alpha) + P(k_\beta)}
+    + (1 - |Z_i|), \qquad
+    p_\beta^{(i)} \propto \frac{P(k_\beta)}{P(k_\alpha) + P(k_\beta)}
+    + |Z_i|
+    \label{eq:fft_basin_init}
+\end{equation}
+where the impedance magnitude bias ($|Z_i|$) encodes Axiom~1:
+low-impedance sidechains (Ala, Gly, Leu) fit tight helix turns;
+high-impedance sidechains (Asp, Trp, Glu) prefer extended $\beta$
+conformations.
+
+\begin{table}[H]
+\centering
+\caption{FFT-guided initialisation benchmark.
+``Random'' uses uniform basin selection;
+``Spectral'' uses Eq.~\ref{eq:fft_basin_init}.}
+\label{tab:fft_init_benchmark}
+\begin{tabular}{@{}l cc cc@{}}
+\toprule
+ & \multicolumn{2}{c}{\textbf{Random}} & \multicolumn{2}{c}{\textbf{Spectral}} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+\textbf{Protein} & $f(\theta)$ & $R_g$ (\AA) & $f(\theta)$ & $R_g$ (\AA) \\
+\midrule
+Chignolin ($N\!=\!10$) & 0.0448 & 6.9 & \textbf{0.0361} & \textbf{5.5} \\
+Trp-cage ($N\!=\!20$)  & 0.0636 & 12.1 & \textbf{0.0527} & \textbf{6.1} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent The spectral initialisation improves both the eigenvalue
+target ($f(\theta)$) and the radius of gyration for both test proteins.
+Trp-cage $R_g$ drops from 12.1\,\AA\ to 6.1\,\AA\ (experimental:
+7.3\,\AA), a 50\% improvement from a single $O(N \log N)$ pre-analysis
+step.
+
+% ═══════════════════════════════════════════════════════════════
+\subsection{Analytical VSWR Proof-of-Concept}
+\label{sec:vswr_proof}
+
+The \texttt{test\_vswr\_fold.py} script provides the one-page proof
+that the native fold is a \emph{deterministic matrix problem}, not
+an optimisation.
+
+\paragraph{Setup.}
+A 34-residue linear backbone is assembled as a nodal admittance
+matrix.  Each $C_\alpha$ node has self-admittance $Y_0 = 1/Z_0$
+and mutual coupling $-Y_0$ to its neighbours.  Terminal nodes
+have half the self-admittance (one boundary).
+
+\paragraph{Operator chain.}
+The chain is identical to the v5 eigenvalue solver:
+\begin{equation}
+    [\mathbf{Y}] \;\xrightarrow{\text{Operator 5}}\;
+    [\mathbf{S}] = (I + Y/Y_0)^{-1}(I - Y/Y_0)
+    \;\xrightarrow{\text{eigenvalue}}\;
+    \{S_{11},\, S_{21},\, \text{VSWR}\}
+    \label{eq:vswr_chain}
+\end{equation}
+No Adam, no gradient descent, no learning rate.  The $O(N^3)$
+matrix inversion is the \emph{entire} computational cost.
+
+\paragraph{Results.}
+\begin{center}
+\small
+\begin{tabular}{@{}l r l@{}}
+\toprule
+\textbf{Observable} & \textbf{Value} & \textbf{Physical Meaning} \\
+\midrule
+$|S_{11}|$ & 0.2361 & Input reflection $\approx 24\%$ \\
+$|S_{21}|$ & 0.0000 & End-to-end transmission (overdamped) \\
+VSWR       & 1.6180 & $= \varphi$ (golden ratio!) \\
+Mode 0     & Re$(Y) = 0.0000$ & DC zero-mode (rigid translation) \\
+Mode 1--4  & Re$(Y) > 0$ & Geometric resonance eigenstates \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Interpretation.}
+VSWR $= 1.0$ means perfect impedance match (zero reflected power).
+The 34-residue uniform backbone achieves VSWR~$= \varphi \approx 1.618$
+from topology alone.  The appearance of the golden ratio is not
+\emph{assumed} --- it emerges from the eigenvalue structure of the
+tridiagonal admittance matrix, whose eigenmodes are the Chebyshev
+polynomials of the second kind.  The five lowest eigenmodes of the
+Y-matrix are the geometrical resonances of the backbone: they are
+the standing-wave patterns that drive helix/sheet formation when
+sidechain impedances and H-bond couplers are introduced.
+
+\paragraph{Key insight.}
+The ground state of the protein is the $\boldsymbol{\theta}$ that
+drives VSWR $\to 1$ (or equivalently $\lambda_{\min}(S^\dagger S)
+\to 0$).  This is a testable, analytical condition --- not a loss
+function to be minimised.  \texttt{test\_vswr\_fold.py} is the
+existence proof that such a state can be found in $O(N^3)$ time
+without iteration.
 
 \section{Roadmap}
 \label{sec:2d_roadmap}
@@ -1443,10 +1796,10 @@ Constant & Value & Source \\
 $Z_\text{topo}$ & $\sqrt{M/n_e}$ & Axiom 1+4 \\
 Bond angles & $120^\circ$, $109.47^\circ$ & sp$^2$/sp$^3$ exact \\
 $d_0$ & 3.80 \AA & NERF geometry (invariant) \\
-Slater radii & $r_C=1.70$, $r_N=1.50$, $r_O=1.52$ & Atomic theory \\
+Node radii & $r_C=1.298$, $r_N=1.150$, $r_O=1.531$ \AA & Topological AC boundaries \\
 $R_\text{burial}$ & $d_0\sqrt{2} = 5.37$ \AA & FCC coordination \\
-$D_\text{water}$ & $2\,r_O = 3.04$ \AA & Slater oxygen \\
-$Q$ backbone & 7.0 & \texttt{protein\_bond\_constants} \\
+$D_\text{water}$ & $2\,R_{\text{O},sp^3} = 3.062$ \AA & Oxygen $p$-shell AC boundary \\
+$Q$ backbone & $0.75\pi^2 \approx 7.402$ & Bend loss derivation \\
 $\Lambda_\text{bond}$ & 2.0 & $2\times\sigma$ bonds \\
 $\Lambda_\text{Rama}$ & $2\pi$ & Full angular period \\
 FREQ\_SWEEP & $f_0 \pm \text{BW}/2$ & $Q$ bandwidth \\
@@ -1459,10 +1812,716 @@ $Y_\text{term}$$^\dagger$ & $Y_0$ at ports 0, $N{-}1$ & Matched termination \\
 $d_\text{SS}$$^\dagger$ & 2.05 \AA & Covalent S--S bond \\
 $Y_\text{arom}$$^\dagger$ & $\kappa_\text{HB} \cdot e^{-d/d_0}$ & $\pi$-orbital overlap \\
 $Y_\text{salt}$$^\dagger$ & $\kappa_\text{HB} \cdot d_0/d$ & Coulombic coupling \\
-BW/2$^\dagger$ & $1/(2Q) = 0.071$ rad & Trust-region constraint \\
-\midrule
-lr, $n_\text{steps}$, $T_0$ & varied & Engineering (optimizer) \\
+BW/2$^\dagger$ & $1/(2Q) \approx 0.068$ rad & Trust-region constraint \\
 \bottomrule
 \end{tabular}
 \end{table}
 
+% ═══════════════════════════════════════════════════════════════
+\section{Translation Matrix: Biology $\to$ EE $\to$ AVE}
+\label{sec:translation_matrix}
+
+Table~\ref{tab:translation_matrix} provides the complete mapping between biological, electrical engineering, and AVE axiomatic terminology.  Any reader familiar with \emph{one} column can reconstruct the solver in their native domain.
+
+\begin{table}[H]
+\centering
+\caption{Domain Translation Matrix.  Every row is one physical concept; every column is one language for describing it.  The ``Script Reference'' column identifies the implementation in the codebase.}
+\label{tab:translation_matrix}
+\small
+\begin{tabular}{@{}l l l l@{}}
+\toprule
+\textbf{Biology} & \textbf{EE / RF} & \textbf{AVE Axiom} & \textbf{Script Reference} \\
+\midrule
+Peptide bond & Transmission line segment & Axiom 1: $Z = \sqrt{\mu/\varepsilon}$ & \texttt{backbone\_segments} \\
+Amino acid sidechain & Impedance stub ($Z_\text{topo}$) & Axiom 1: $\sqrt{M/n_e}$ & \texttt{protein\_bond\_constants} \\
+H-bond & Mutual inductance ($\kappa = 1/2Q$) & Axiom 1: transformer coupling & \texttt{dc\_analysis()} \\
+$\beta$-sheet & Backward-wave coupler & Axiom 1: antiparallel TL & \texttt{dc\_analysis()} \\
+Hydrophobic core & Conjugate impedance match & Axiom 1: $\operatorname{Re}(Z_iZ_j^*)$ & \texttt{dc\_analysis()} \\
+Salt bridge & Reactive LC resonance & Axiom 1: $+jX \times -jX$ & \texttt{dc\_analysis()} \\
+Disulfide bond & Near-infinite admittance & Axiom 4: $Z \to \infty$ wall & \texttt{dc\_analysis()} \\
+Solvent exposure & Shunt to ground via $Z_\text{water}$ & Axiom 2: Debye relaxation & \texttt{dc\_analysis()} \\
+Steric clash & Pauli exclusion ($r < r_\text{steric}$) & Axiom 4: saturation wall & \texttt{dc\_analysis()} \\
+Protein compaction & Standing wave pattern & Axiom 4: $\eta_\text{eq} = P_C(1-\nu)$ & \texttt{ac\_analysis()} \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{Solver Methods:}} \\
+\midrule
+Native fold & Eigenstate ($\lambda_{\min}(S^\dagger S) = 0$) & 5-step eigenvalue method & \texttt{\_eigenvalue\_target()} \\
+Folding kinetics & SPICE transient ring-down & Axiom 1: $L/C/R$ network & \texttt{explicit\_spice\_step()} \\
+Cotranslational folding & Segmented cascade & Axiom 1: $Q$-coherence length & \texttt{fold\_cascade\_transient\_v7()} \\
+Allostery & Tuning stub injection & Axiom 3: $\Gamma$ perturbation & \texttt{s15\_allosteric\_yield.py} \\
+Folding timescale & Kramers barrier ($\beta = \ln 3 \cdot 3/7$) & Axiom 1+2: $Q^2 N \tau_w e^{\beta N \cdot \text{CO}}$ & \texttt{s14\_folding\_kinetics.py} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ═══════════════════════════════════════════════════════════════
+\subsection{Multi-Path Transmission Line Architecture}
+\label{sec:multipath_tl}
+
+The v4/v7 solver models h-bond and contact interactions as mutual
+admittances in the backbone Y-matrix.  While the \emph{topology} is
+correct (contacts connect node~$i$ to node~$j$, not to ground), the
+coupling \emph{values} were dimensionless coefficients.  First-principles
+analysis using Operator~4 corrects this.
+
+\paragraph{H-bond impedance (Operator~4 + Axiom~4).}
+Operator~4 gives the local impedance at distance $r$ from a covalent
+saturation centre:
+\begin{equation}
+    Z(r) = \frac{Z_0}{\bigl(1 - (d_\text{sat}/r)^2\bigr)^{1/4}}
+    \label{eq:Z_op4}
+\end{equation}
+At the H-bond detection distance $r = D_\text{HB} = 2.24$\,\AA{}
+with $d_\text{sat} = d_\text{C-N} = 1.33$\,\AA{}:
+\begin{equation}
+    A = \frac{d_\text{sat}}{D_\text{HB}} = 0.594, \qquad
+    Z_\text{HB} = Z_\text{bb} \times
+    \frac{1}{(1 - 0.353)^{1/4}} \approx 1.115\,Z_\text{bb}
+    \approx 3.72
+\end{equation}
+This places H-bonds in \textbf{Regime~II} (nonlinear, $A \in [0.121, 0.866]$)
+--- the same regime as nuclear forces at the meson exchange range.
+
+\paragraph{Key insight: near-perfect impedance match.}
+$Z_\text{HB} \approx Z_\text{bb}$ --- the H-bond is \emph{nearly
+impedance-matched} to the backbone ($\Gamma = 0.027$, $T^2 = 0.999$).
+The weakness of H-bonds does not come from impedance mismatch but
+from three \emph{geometric gating} factors:
+\begin{enumerate}
+    \item \textbf{Directional coupler angle} $\cos\theta_\text{donor}$:
+          N-H must point toward C=O.
+    \item \textbf{Yukawa decay} $\exp(-d/d_0)$: exponential attenuation.
+    \item \textbf{Proximity threshold}: sigmoid cutoff at $d > D_\text{HB}$.
+\end{enumerate}
+
+\paragraph{$\pi$-equivalent TL model.}
+Each H-bond is modelled as a TL segment with impedance $Z_\text{HB}$
+and propagation parameter
+$\gamma\ell = (\alpha + j\beta) \times d_\text{NC}/d_0$,
+where $\alpha = 1/Q$ and $\beta = 2\pi/Q$.  The $\pi$-equivalent
+admittance is
+\begin{equation}
+    y_\text{HB}(i,j) = \frac{1}{Z_\text{HB}\,|\!\sinh(\gamma\ell)|}
+    \times \cos\theta_\text{donor} \times g_\text{proximity}
+    \label{eq:y_hb_pi}
+\end{equation}
+which has correct admittance dimensions $[1/\text{impedance}]$,
+resolving the dimensional inconsistency of the previous model.
+
+\paragraph{Regime map.}
+\begin{center}
+\begin{tabular}{rccccc}
+\toprule
+$r$ (\AA) & $A = d_\text{sat}/r$ & $S(r)$ & $Z/Z_0$ & $\Gamma$ & Regime \\
+\midrule
+1.33 (covalent) & 1.000 & 0    & $\infty$ & $+1.00$ & Saturated \\
+2.00            & 0.665 & 0.75 & 1.157    & $+0.07$ & II \\
+\textbf{2.24 (H-bond)} & \textbf{0.594} & \textbf{0.80} &
+    \textbf{1.115} & \textbf{$+0.03$} & \textbf{II} \\
+3.80 (C$_\alpha$ sep.) & 0.350 & 0.94 & 1.033 & $+0.02$ & II \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ═══════════════════════════════════════════════════════════════
+\subsection{Sidechain Orbitals: Nearly Reactive Resonant Tanks}
+\label{sec:reactive_tanks}
+
+Each amino acid sidechain has topological impedance $Z_\text{topo}$
+with both reactive (imaginary) and resistive (real) components.
+
+\paragraph{Reactive component (Axiom~1).}
+$Z_R = \sqrt{L_R/C_R}$ where $L_R$ encodes kinetic energy and
+$C_R$ encodes potential energy.  For ground-state conformations,
+$Q_\text{SC} \to \infty$ because there is no lower state to decay
+into.
+
+\paragraph{Resistive component (Axiom~2).}
+$S(r) = \sqrt{1 - (A/A_y)^2}$ requires every system to have a
+yield threshold; a purely reactive tank ($Q = \infty$, $R = 0$)
+would require $S = 1$ everywhere.  Sidechains dissipate through:
+\begin{enumerate}
+    \item \textbf{Bend radiation} at C$_\alpha$--C$_\beta$:
+          $R_\text{bend} = 1/Q \approx 0.135$.
+    \item \textbf{H-bond coupling}:
+          $R_\text{HB} = \kappa_\text{HB} Z_\text{bb}^2 \approx 0.75$.
+    \item \textbf{Solvent coupling}: Debye relaxation of the water
+          shell provides resistive termination.
+\end{enumerate}
+
+\paragraph{Implication.}
+If sidechains were purely reactive, they would ring indefinitely
+and the protein would never fold.  Folding occurs \emph{because}
+the tanks have finite $Q$: energy dissipates until the system
+reaches the minimum-reflection eigenstate.  Sidechain rotamer
+precision gives diminishing returns compared to fixing the backbone
+topology, since the dissipation that drives folding lives primarily
+in the backbone network.
+
+
+% ═══════════════════════════════════════════════════════════════
+\subsection{Engine Architecture: Universal Operators Applied to Protein Folding}
+\label{sec:engine_architecture}
+
+The protein fold engine uses eight universal operators
+(documented in Volume~II, Ch.~1) with zero domain-specific
+modifications.  Table~\ref{tab:op_catalog} maps each operator
+to its protein-scale instantiation.
+
+\begin{table}[H]
+\centering\small
+\caption{Universal operator catalog applied to protein folding.}
+\label{tab:op_catalog}
+\begin{tabular}{clll}
+\toprule
+\textbf{Op} & \textbf{Operator} & \textbf{Axiom}
+  & \textbf{Protein instantiation} \\
+\midrule
+1 & $Z = \sqrt{\mu/\varepsilon}$
+  & Ax.~1
+  & $Z_\text{topo}$ per residue \\
+2 & $S(A) = \sqrt{1-A^2}$
+  & Ax.~4
+  & Pauli steric exclusion \\
+3 & $\Gamma = (Z_2-Z_1)/(Z_2+Z_1)$
+  & Ax.~3
+  & Inter-residue reflection \\
+4 & $U(r) = -(K/r)(T^2-\Gamma^2)$
+  & Ax.~1--4
+  & H-bond impedance ($Z_\text{HB}$) \\
+5 & $[S] = (I+Y/Y_0)^{-1}(I-Y/Y_0)$
+  & Ax.~3
+  & Backbone $Y$-matrix $\to$ S-params \\
+6 & $\lambda_\text{min}(S^\dagger S)$
+  & Ax.~3
+  & Fold eigenstate \\
+7 & FFT($Z_\text{seq}$)
+  & DSP
+  & $\alpha/\beta$ secondary structure ID \\
+\textbf{8} & $\boldsymbol{\Gamma_\text{pack}}$
+  & \textbf{Ax.~3+4}
+  & \textbf{Hydrophobic collapse} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Self-consistent loss function.}
+The total target balances three additive, axiom-derived terms:
+\begin{equation}
+    f(\theta) = \underbrace{\lambda_\text{min}(S^\dagger S)}_{\text{microscopic (Op 6)}}
+              + \underbrace{\Gamma_\text{pack}^2}_{\text{macroscopic (Op 8)}}
+              + \underbrace{P_\text{steric}}_{\text{geometric (Op 2)}}
+    \label{eq:self_consistent_loss}
+\end{equation}
+All three terms are bounded $[0,1]$ and self-balancing:
+no relative weight parameters are required.
+
+\paragraph{Validation: GB1 hairpin ($\beta$-sheet).}
+Before the macroscopic boundary condition (Op~8), the 16-residue
+GB1 hairpin was predicted at $R_g = 12.2$\,\AA{} ($+96\%$ error).
+After: $R_g = 5.6$\,\AA{} ($-10\%$ error vs.\ experimental 6.2\,\AA).
+The packing reflection provides the far-field boundary condition
+that the microscopic eigenvalue alone cannot impose.
+
+
+% ═══════════════════════════════════════════════════════════════
+\section{Y-Matrix Gradient Architecture}
+\label{sec:ymatrix_gradient}
+
+The self-consistent loss function (Eq.~\ref{eq:self_consistent_loss})
+achieves excellent $R_g$ predictions across all fold classes.  However,
+a first-principles audit reveals that the three terms contribute
+unequally to the optimizer gradient, with implications for the long-term
+architecture of the solver.
+
+\subsection{Magnitude Audit of Y-Matrix Entries}
+\label{sec:ymatrix_audit}
+
+Before computing $S_{11}$, the engine assembles an $N \times N$
+global admittance matrix $\mathbf{Y}$.  Each physical interaction enters
+as an admittance contribution.  Table~\ref{tab:ymatrix_magnitude}
+catalogues every entry.
+
+\begin{table}[H]
+\centering
+\caption{Magnitude of each Y-matrix contribution.  All values in
+dimensionless AVE admittance units ($Y = 1/Z$).}
+\label{tab:ymatrix_magnitude}
+\small
+\begin{tabular}{@{}l l c c l@{}}
+\toprule
+\textbf{Y-matrix entry} & \textbf{Source} & $|Y|$ & \textbf{\% bb} & \textbf{Axiom} \\
+\midrule
+Backbone (diag + mutual) & ABCD cascade  & 0.300 & 100\%  & 1 \\
+Solvent (diagonal)       & exposure/$Z_\text{water}$ & 0.113 & 37.7\% & 3 \\
+Bend (diagonal)          & $\omega C_\text{bend}$ & 0.021 & 7.0\%  & 1 \\
+H-bond (off-diagonal)    & $\kappa_\text{HB}/Z_\text{HB}$ & 0.017 & 5.8\% & 3 \\
+$\beta$-sheet (off-diag) & $\kappa_\text{HB}(Y_e - Y_o)$ & $0{-}0.034$ & $0{-}11\%$ & 3 \\
+Steric (diagonal)        & $\Gamma_\text{steric}/\bar{Z}$ & $0{-}0.10$ & var. & 3 \\
+Termination (diagonal)   & $1/Z_\text{water}$ & 0.113 & 37.7\% & 3 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Key observation.}
+The backbone entries dominate the Y-matrix at $\sim\!93\%$ of total
+admittance.  Contacts (H-bonds, $\beta$-sheets) contribute only $5{-}11\%$.
+The gradient $\partial(\Sigma|\Gamma_i|^2)/\partial\theta$ is therefore
+$\sim\!93\%$ determined by backbone propagation geometry and only $\sim\!6\%$ by
+contact coupling.
+
+\subsection{Loss Decomposition}
+\label{sec:loss_decomp}
+
+Empirical decomposition at convergence quantifies the contribution of
+each channel.
+
+\begin{table}[H]
+\centering
+\caption{Loss decomposition at convergence.  Impedance
+($\Sigma|\Gamma_i|^2$) contributes $>99.8\%$; packing
+($\Gamma_\text{pack}^2$) and steric
+($\langle\Gamma_\text{steric}^2\rangle$) together contribute
+$<0.1\%$.}
+\label{tab:loss_decomp}
+\small
+\begin{tabular}{@{}l c c c c c@{}}
+\toprule
+\textbf{Protein} & $N$ & $\Sigma|\Gamma_i|^2$ & $\Gamma_\text{pack}^2$ & $\langle\Gamma^2_\text{ster}\rangle$ & imp/total \\
+\midrule
+Chignolin   & 10 & 3.29  & 0.0004 & 0.0003 & 99.98\% \\
+GB1 hairpin & 16 & 5.68  & 0.0049 & 0.0033 & 99.86\% \\
+Trp-cage    & 20 & 7.43  & 0.0051 & 0.0007 & 99.92\% \\
+Villin HP35 & 35 & 15.01 & 0.0070 & 0.0015 & 99.94\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Despite contributing $<0.1\%$ of the total loss, the packing and
+steric terms are \emph{essential}: removing them causes structures to
+over-expand by $+25\%$ to $+211\%$.  The packing term provides a
+direct gradient from $R_g$ to torsion angles that the weak
+contact-mediated gradient alone cannot replicate.
+
+\subsection{Impedance Landscape of the Solvent Boundary}
+\label{sec:impedance_landscape}
+
+Each port's $S_{11}$ is currently referenced to its topological
+impedance:
+\begin{equation}
+    Y_{0,i} = \frac{1}{|Z_\text{topo}(i)|}, \qquad
+    Y_{0,i} \in [0.30,\; 0.95]
+\end{equation}
+The solvent admittance is:
+\begin{equation}
+    Y_\text{solvent} = \frac{\text{exposure}}{Z_\text{water}}
+    = \frac{\text{exposure}}{\sqrt{\varepsilon_s}}
+    \leq \frac{1}{\sqrt{78.4}} \approx 0.113
+\end{equation}
+
+Since $Y_\text{solvent} < Y_{0,i}$ for \emph{all 20 amino acids}, the
+solvent \emph{under-loads} every port relative to its reference
+admittance.  Increasing exposure adds more $Y_\text{solvent}$ to the
+diagonal, moving the port \emph{closer} to $Y_{0,i}$ and \emph{lowering}
+$|\Gamma_i|$.  The Y-matrix gradient therefore favours \emph{exposure},
+not burial.
+
+\begin{table}[H]
+\centering
+\caption{Impedance landscape: $Z_\text{topo}$ vs $Z_\text{water}$ for
+representative residues.  All residues satisfy
+$Z_\text{topo} \ll Z_\text{water}$ ($=8.85$).}
+\label{tab:impedance_landscape}
+\small
+\begin{tabular}{@{}l c c c@{}}
+\toprule
+\textbf{Class} & \textbf{Residue} & $|Z_\text{topo}|$ & $\Gamma_\text{exposed}$ \\
+\midrule
+Hydrophobic & Gly & 0.304 & $-0.93$ \\
+            & Leu & 0.610 & $-0.87$ \\
+            & Trp & 0.895 & $-0.82$ \\
+Polar       & Ser & 0.766 & $-0.84$ \\
+            & Asn & 0.842 & $-0.83$ \\
+Charged     & Asp & 0.957 & $-0.80$ \\
+            & Lys & 0.644 & $-0.86$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Consequence.}
+The pure Axiom~3 target $f(\theta) = \Sigma|\Gamma_i|^2$ prefers
+extended structures where every port is maximally solvent-exposed.
+This is the correct $S_{11}$ physics for the current boundary
+conditions, but it means compaction must come from an additional
+mechanism in the Y-matrix that outweighs the solvent-exposure benefit.
+
+\subsection{Hydrophobic Contact Hypothesis (Disproven)}
+\label{sec:hydrophobic_contact}
+
+A natural hypothesis is that the missing compaction driver could be
+a \textbf{hydrophobic contact admittance} derived from Axiom~1.  In
+transmission-line theory, the mutual admittance between two parallel
+conductors at close proximity scales as $1/\bar{Z}$:
+\begin{equation}
+    Y_\text{hydro}(i,j) = \frac{1}{\bar{Z}(i,j)} \cdot g(d_{ij}),
+    \qquad \bar{Z} = \sqrt{Z_i \cdot Z_j}
+\label{eq:y_hydro}
+\end{equation}
+This coupling is strong ($Y \approx 1.6{-}3.3$ for low-$Z$ pairs),
+and introduces zero new parameters.
+
+\paragraph{Experimental result.}
+When implemented in the Y-matrix, this dense $N^2$
+coupling \emph{degraded} solver performance:
+\begin{center}\small
+\begin{tabular}{@{}l c c c@{}}
+\toprule
+\textbf{Protein} & \textbf{Without hydro} & \textbf{With hydro} & \textbf{Experiment} \\
+\midrule
+Chignolin  & $R_g = 5.4$ (+23\%)  & $R_g = 6.0$ (+36\%)  & 4.4~\AA \\
+Villin     & $R_g = 9.1$ ($-5\%$) & $R_g = 11.2$ (+17\%) & 9.6~\AA \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent Villin degraded from $-5\%$ to $+17\%$ error.  The dense
+coupling flooded the Y-matrix gradient with $N^2$ pairwise terms,
+overwhelming the physically specific contact signals
+(H-bonds, $\beta$-sheets, salt bridges) with a uniform background.
+\textbf{The hydrophobic contact hypothesis was reverted.}
+
+\subsection{Architecture Guard Rails}
+\label{sec:architecture_guardrails}
+
+The above experiments motivate three guard rails for the solver
+architecture.
+
+\paragraph{Guard Rail 1: All three loss terms are the same operator.}
+The loss function
+\begin{equation}
+    f(\theta) = \underbrace{\sum_i |\Gamma_i|^2}_{\text{Op 5--6: microscopic}}
+    + \underbrace{|\Gamma_\text{pack}|^2}_{\text{Op 8: macroscopic}}
+    + \underbrace{\langle\Gamma_\text{steric}^2\rangle}_{\text{Op 2: pairwise}}
+    \label{eq:three_scale_loss}
+\end{equation}
+consists of three applications of the \emph{same} universal reflection
+operator (Axiom~3, Volume~II Ch.~1) at three different spatial scales.
+None of the three terms is ad hoc --- each is
+$\Gamma = (Z_2 - Z_1)/(Z_2 + Z_1)$ applied to a different impedance
+boundary:
+\begin{itemize}
+    \item \textbf{Microscopic:} residue port vs.\ Y-matrix environment
+    \item \textbf{Macroscopic:} actual $R_g$ vs.\ equilibrium cavity
+          ($R_{g,\text{target}}$ from Axiom~4 packing fraction $P_C$)
+    \item \textbf{Pairwise:} C$\alpha$ separation vs.\ exclusion
+          radius $d_0$
+\end{itemize}
+
+\paragraph{Guard Rail 2: Op~8 provides irreplaceable long-range gradient.}
+Y-matrix contacts are \emph{short-range}: the proximity gate
+$g(d) = \sigma(\beta(D + d_0 - d))$ activates only for $d < 7.6$~\AA.
+Without Op~8, the optimizer has no gradient signal to bring distant
+residues close enough for contacts to form.  Removing Op~8 causes
+structures to over-expand by $+100\%$ to $+200\%$ (measured for
+Chignolin and Villin).
+
+This is not an implementation deficiency --- it is a fundamental
+property of local Y-matrix gradients.  The packing operator provides
+a \emph{global} gradient from $R_g$ through all torsion angles
+simultaneously, which no local contact coupling can replace.
+
+\paragraph{Guard Rail 3: Small loss contribution $\neq$ unimportant.}
+At convergence, Op~8 contributes $<0.1\%$ of the total loss
+(Table~\ref{tab:loss_decomp}).  This small value does \emph{not}
+indicate irrelevance --- it indicates that the term has succeeded:
+$R_g \approx R_{g,\text{target}}$ means $\Gamma_\text{pack} \approx 0$.
+The packing term is small \textbf{because it is working}.
+
+
+% ═══════════════════════════════════════════════════════════════
+\section{Research Avenues Under the AVE Axioms}
+\label{sec:research_avenues}
+% ═══════════════════════════════════════════════════════════════
+
+The transmission line framework developed for protein folding
+is not specific to proteins.  Every biological system that
+propagates signals through structured media --- axons, ion
+channels, DNA, developing tissue --- is a candidate for the
+same impedance/saturation/reflection operator chain.  This
+section catalogues the most promising research directions,
+ordered by proximity to existing engine infrastructure.
+
+\subsection{Neural Circuitry as a TL Network}
+\label{sec:neural_tl}
+
+A myelinated axon is, by direct physical construction, a
+coaxial transmission line: the axoplasm is the inner conductor
+(resistive, ionic), the myelin sheath is the dielectric
+insulator, and the extracellular fluid is the outer conductor.
+Nodes of Ranvier are impedance discontinuities where the
+dielectric is interrupted --- the neural analog of connector
+junctions on a PCB trace.
+
+The characteristic impedance of an axon segment follows
+directly from Axiom~1:
+\begin{equation}
+    Z_\text{axon} = \sqrt{\frac{\mu_\text{axon}}{\varepsilon_\text{axon}}}
+    = \sqrt{\frac{R_m / (2\pi a)}{C_m \cdot 2\pi a}}
+    \label{eq:z_axon}
+\end{equation}
+where $R_m$ is the membrane resistance per unit area, $C_m$
+is the membrane capacitance per unit area, and $a$ is the
+axon radius.  For a typical myelinated axon ($R_m \approx
+40{,}000~\Omega\text{cm}^2$, $C_m \approx 1~\mu\text{F/cm}^2$,
+$a = 5~\mu\text{m}$): $Z_\text{axon} \approx 2 \times 10^4~\Omega$.
+
+A synapse is a junction between two such transmission lines.
+The reflection coefficient at each synaptic boundary is:
+\begin{equation}
+    \Gamma_\text{synapse} = \frac{Z_\text{post} - Z_\text{pre}}
+                                  {Z_\text{post} + Z_\text{pre}}
+    \label{eq:gamma_synapse}
+\end{equation}
+
+\subsubsection{Memory as Topological Impedance Locking}
+\label{sec:future_memory}
+
+\paragraph{Core hypothesis.}
+Long-term potentiation (LTP) --- the cellular basis of
+memory --- may be mechanically equivalent to
+\textbf{impedance matching} at a synaptic junction.  When
+a synaptic connection strengthens ($\Gamma \to 0$), the
+junction becomes transparent: standing wave patterns can
+propagate through it with minimal reflection.  A specific
+memory is a \textbf{topologically locked standing wave
+pattern} sustained by a network of impedance-matched
+boundaries.  Forgetting is impedance drift: weakening
+synapses increase $|\Gamma|$, and the standing wave
+pattern decays.
+
+\paragraph{Falsifiable prediction.}
+Memory capacity scales with the number of independent
+standing wave modes that the network can sustain --- a
+topological invariant (eigenvalue count of the network
+$S^\dagger S$ matrix), not a synaptic weight count.
+
+\subsubsection{Sleep as S-Parameter Recalibration}
+\label{sec:sleep_recalibration}
+
+In RF engineering, a network analyser characterises a
+device by sweeping a test signal across all frequencies
+and measuring the S-parameter matrix.  Sleep may be the
+biological equivalent: the brain replays activity
+patterns (hippocampal replay during slow-wave sleep) to
+\emph{measure and recalibrate} its own S-parameter matrix.
+
+\begin{itemize}
+    \item \textbf{Slow-wave sleep}: Low-frequency sweep
+          ($\delta$: 0.5--4~Hz).  Tests the global
+          standing wave modes of the cortical cavity.
+          Consolidation occurs when a replayed pattern
+          produces low $|S_{11}|^2$ (good impedance
+          match) --- the corresponding synaptic
+          impedances are reinforced.
+    \item \textbf{REM sleep}: Broadband sweep.  Tests
+          high-frequency local modes.  The characteristic
+          muscle atonia prevents motor output from
+          corrupting the measurement --- identical to
+          terminating unused ports with matched loads
+          during a calibration sweep.
+    \item \textbf{Sleep deprivation}: Skipping
+          recalibration causes progressive impedance
+          drift across the network, degrading the
+          fidelity of stored standing wave patterns ---
+          consistent with the observed cognitive
+          impairment.
+\end{itemize}
+
+\paragraph{Falsifiable prediction.}
+The frequency spectrum of sleep EEG should correspond to
+the eigenfrequencies of the cortical standing wave cavity.
+The dominant slow-wave frequency $f_\delta \approx 1$~Hz
+should satisfy $f_\delta \approx v_\text{axon} / (2L_\text{cortex})$
+where $v_\text{axon}$ is the mean axonal conduction velocity
+and $L_\text{cortex}$ is the effective cortical path length.
+
+\subsubsection{Alzheimer's Disease as Progressive Impedance Drift}
+\label{sec:alzheimers}
+
+Demyelination changes the characteristic impedance of axonal
+transmission lines by modifying $\varepsilon_\text{axon}$
+(myelin is dielectric insulation).  In the TL framework:
+
+\begin{enumerate}
+    \item Myelin loss increases $C_m$ (thinner dielectric
+          $\to$ higher capacitance), lowering $Z_\text{axon}$.
+    \item This detunes the impedance matching at every
+          downstream synapse, increasing $|\Gamma|$ at all
+          connected junctions.
+    \item Standing wave patterns that depend on the detuned
+          segments lose coherence (memory loss).
+    \item Recently formed memories are lost first because
+          their impedance-matched pathways have had less
+          time to develop structural reinforcement
+          (myelination thickening).
+\end{enumerate}
+
+\paragraph{Falsifiable prediction.}
+Regional myelin integrity (measurable via diffusion tensor
+MRI) should correlate with memory test performance in
+exactly the pattern predicted by the network $S_{11}$: the
+memory domains served by the most demyelinated tracts should
+fail first, independent of amyloid plaque location.
+
+\subsubsection{Anesthesia as Broadband Impedance Mismatch}
+\label{sec:anesthesia}
+
+General anaesthetics may work by introducing a \textbf{global
+impedance perturbation} that prevents standing wave formation
+across the cortical network.  The mechanism maps to Axiom~4
+saturation:
+
+\begin{itemize}
+    \item Anaesthetic molecules partition into lipid bilayers,
+          changing membrane permittivity $\varepsilon_m$ and
+          thus axonal $Z$.
+    \item A uniform shift in $Z$ across all segments does
+          \emph{not} change relative $\Gamma$ between segments
+          (impedance ratios are preserved).
+    \item However, a \emph{non-uniform} shift (agents
+          preferentially partition into myelin vs.\ axoplasm)
+          destroys the impedance matching at nodes of Ranvier,
+          preventing coherent standing waves.
+    \item Brainstem and spinal reflexes are preserved because
+          they operate on shorter, lower-$Q$ transmission
+          lines where impedance perturbation does not destroy
+          the fewer resonant modes.
+\end{itemize}
+
+\paragraph{Falsifiable prediction.}
+The minimum alveolar concentration (MAC) of an anaesthetic
+should correlate with its lipid--water partition coefficient
+\emph{times} the impedance mismatch it introduces at the
+node of Ranvier, not simply with lipid solubility alone.
+
+\subsubsection{EEG Frequency Bands as Cortical Cavity Modes}
+\label{sec:eeg_modes}
+
+The five canonical EEG bands ($\delta, \theta, \alpha, \beta,
+\gamma$) may correspond to the fundamental and harmonic
+standing wave modes of the cortical cavity:
+\begin{equation}
+    f_n = \frac{n \cdot v_\text{axon}}{2 L_\text{eff}},
+    \qquad n = 1, 2, 3, \ldots
+    \label{eq:cortical_modes}
+\end{equation}
+where $L_\text{eff}$ is the effective round-trip cortical
+path length.
+
+\begin{table}[H]
+\centering
+\caption{EEG bands as cortical cavity modes.  Using
+$v_\text{axon} \approx 5$~m/s (mean unmyelinated cortical
+velocity), $L_\text{eff} \approx 2.5$~m (cortical path
+length including folding).}
+\label{tab:eeg_modes}
+\small
+\begin{tabular}{@{}l c c c l@{}}
+\toprule
+\textbf{Band} & $n$ & $f_\text{pred}$ (Hz) & $f_\text{obs}$ (Hz) & \textbf{Interpretation} \\
+\midrule
+$\delta$ & 1 & 1.0 & 0.5--4   & Fundamental mode (sleep) \\
+$\theta$ & 2 & 2.0 & 4--8     & First harmonic (memory encoding) \\
+$\alpha$ & 5 & 5.0 & 8--13    & Idle mode (relaxed wakefulness) \\
+$\beta$  & 10 & 10  & 13--30   & Active processing \\
+$\gamma$ & 20 & 20  & 30--100  & Binding / consciousness \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\subsubsection{Phantom Limb as Orphaned Standing Wave}
+\label{sec:phantom_limb}
+
+After amputation, the neural transmission lines that served
+the missing limb are \emph{open-circuited}: $Z_\text{load}
+\to \infty$, $\Gamma = +1$, total reflection.  The standing
+wave patterns that previously coupled sensory and motor
+signals to the limb persist as orphaned eigenstates of the
+truncated network.  Phantom limb pain arises when these
+patterns couple to nociceptive pathways through the same
+impedance-matching mechanism that mediates allostery in
+proteins (Section~\ref{sec:allostery}).
+
+\paragraph{Falsifiable prediction.}
+Mirror therapy --- which provides a visual ``matched load''
+--- should be most effective when the visual feedback
+frequency matches the dominant standing wave frequency of
+the orphaned pathway ($f = v / 2L_\text{stump}$).
+
+\subsection{Broader Biological Research Avenues}
+\label{sec:broader_avenues}
+
+Table~\ref{tab:research_avenues} catalogues biological
+phenomena that map directly to the seven universal operators,
+identifying the AVE operator, the biological observable, and
+the testable prediction for each.
+
+\begin{table}[H]
+\centering
+\caption{Biological phenomena amenable to AVE
+transmission-line analysis.  Each row identifies the
+primary AVE operator, the biological system, and a
+parameter-free testable prediction.}
+\label{tab:research_avenues}
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}p{2.0cm} p{2.5cm} p{3.0cm} p{5.0cm}@{}}
+\toprule
+\textbf{Operator} & \textbf{System} & \textbf{Observable} & \textbf{Prediction} \\
+\midrule
+Op~1 (Z) & Myelinated axon & Conduction velocity & $v = 1/\sqrt{LC}$ from membrane $R_m, C_m$, axon radius \\
+\addlinespace
+Op~2 (S) & Ion channel gating & Conductance vs.\ voltage & $G(V) = G_0 \sqrt{1 - (V/V_\text{gate})^2}$; sigmoid gating emerges from saturation \\
+\addlinespace
+Op~3 ($\Gamma$) & Drug--receptor binding & Binding affinity & $K_d \propto |\Gamma|^2$ where $\Gamma = (Z_\text{drug} - Z_\text{site})/(Z_\text{drug} + Z_\text{site})$ \\
+\addlinespace
+Op~4 (U) & Enzyme catalysis & Activation energy & Transition state is the impedance peak of the substrate--enzyme TL junction \\
+\addlinespace
+Op~5 (Y$\to$S) & Neural network & Memory capacity & $N_\text{modes} = \text{rank}(S^\dagger S)$ of the cortical Y-matrix \\
+\addlinespace
+Op~6 ($\lambda_\text{min}$) & Morphogenesis & Pattern wavelength & Tissue standing waves: $\lambda = 2L/n$ where $L$ is the diffusion cavity length \\
+\addlinespace
+Op~7 (FFT) & EEG spectral analysis & Cognitive state & Band power ratios from cortical cavity mode spectrum \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{DNA as a digital transmission line.}
+The double helix is a twisted-pair transmission line where
+each base pair is a lumped impedance element.  The four bases
+(A, T, G, C) map to four impedance values via
+$Z_\text{base} = \sqrt{m_\text{base}/n_e}$ (identical to the
+protein bond solver).  Codon recognition becomes impedance
+matching between the mRNA ``source'' and the tRNA
+``load'' --- mismatches produce reflections that destabilise
+the ribosomal complex.
+
+\paragraph{Morphogenesis as standing wave patterning.}
+Turing patterns (stripes, spots, spirals) in developing tissue
+may arise from standing waves in a 2D impedance network.  The
+pattern wavelength is set by the cavity dimensions and the
+tissue impedance: $\lambda = v/f_0$ where $v$ is the
+signal propagation velocity through gap junctions and
+$f_0$ is the resonant frequency of the local LC network
+(cell membrane $C$ and cytoplasmic $L$).
+
+\paragraph{Enzyme catalysis as impedance-matched energy transfer.}
+An enzyme active site can be modelled as a stub-tuned
+impedance matching network.  The substrate approaches along a
+transmission line (the binding channel); the active site
+geometry creates an impedance taper that minimises $|S_{11}|^2$
+at the transition state.  Catalytic efficiency ($k_\text{cat}/K_M$)
+should correlate with the minimum $|S_{11}|^2$ achievable at
+the substrate--enzyme junction --- computable from
+$Z_\text{topo}$ values already in the engine.

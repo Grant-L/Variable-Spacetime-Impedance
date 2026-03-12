@@ -488,7 +488,9 @@ def magnetopause_standoff(planet: PlanetMagnetosphere) -> float:
     B_eff = k_sw * B_eq_factor
     ratio6 = P_eff * 2 * MU_0 / B_eff**2
     if ratio6 <= 0:
-        return planet.radius_m * 100  # Fallback
+        raise ValueError(
+            f"{planet.name}: P_eff ≤ 0 (internal plasma exceeds solar wind). "
+            f"Cannot compute magnetopause standoff.")
     r_mp = planet.radius_m / ratio6**(1.0/6.0)
     return r_mp
 
