@@ -94,64 +94,11 @@ The self-energy is a \textbf{two-vertex process} (second-order perturbation theo
     E_{\text{self}} = \iint \mathcal{L}_{\text{int}}(\mathbf{x})\, G(\mathbf{x}-\mathbf{x}')\, \mathcal{L}_{\text{int}}(\mathbf{x}')\, d^3x\, d^3x' \;\propto\; \alpha \times \alpha = \alpha^2
 \end{equation}
 \end{resultbox}
-\section{Electroweak Mechanics: Summary of Key Results}
 
-The electroweak sector is derived in full in Chapter \ref{ch:electroweak_higgs}. Here the text summarizes only the critical results that interlock with the gauge structure derived in this chapter.
+\section{Electroweak Mechanics: Forward Reference}
 
-\subsection{The Weak Mixing Angle and Boson Masses}
-The weak mixing angle is derived from the Perpendicular Axis Theorem (PAT) applied to cylindrical flux tubes with Poisson ratio $\nu_{vac} = 2/7$:
-\begin{resultbox}{Analytical On-Shell Weak Mixing Angle}
-\begin{equation}
-    \sin^2\theta_W = 1 - \frac{7}{9} = \frac{2}{9} \approx 0.2222 \qquad (\text{PDG on-shell: } 0.2230~\cite{pdg2022}, \; -0.35\%)
-\end{equation}
-\end{resultbox}
+The complete quantitative derivations of the Weak Mixing Angle ($\sin^2\theta_W = 2/9$), the W and Z boson masses, the three-generation lepton spectrum, the neutrino mass hierarchy, and the Schwinger anomalous magnetic moment ($a_e = \alpha/2\pi$) are presented in full in Chapter~\ref{ch:electroweak_higgs}. Those derivations build directly on the Cosserat micropolar mechanics and gauge structure established above.
 
-The W and Z masses follow from the torsional self-energy of the unknot:
-\begin{resultbox}{The W and Z Boson Masses}
-\begin{equation}
-    M_W = \frac{m_e}{8\pi\alpha^3\sqrt{3/7}} \approx 79{,}923 \text{ MeV}, \qquad M_Z = \frac{3}{\sqrt{7}}M_W \approx 90{,}624 \text{ MeV}
-\end{equation}
-\end{resultbox}
-
-The Schwinger anomalous magnetic moment is derived from the on-site impedance correction of the hopping unknot (full derivation in Chapter \ref{ch:electroweak_higgs}):
-\begin{resultbox}{Schwinger Anomalous Magnetic Moment}
-\begin{equation}
-    a_e = \frac{\alpha}{2\pi} \approx 0.001161
-\end{equation}
-\end{resultbox}
-
-\subsection{From Photon to Electron: The Self-Trapping Transition}
-
-A circularly polarized photon on the Chiral LC lattice is a torsional helix---the $\vec{E}$ and $\vec{H}$ vectors rotate around the propagation axis with pitch equal to the wavelength. The transverse radius of this helix is set by the angular momentum coherence length:
-\begin{resultbox}{Angular Momentum Coherence Length}
-\begin{equation}
-    R_{\text{helix}} = \frac{\lambda}{2\pi} = \frac{c}{2\pi f}
-\end{equation}
-\end{resultbox}
-This is a \emph{scaling law}: higher frequency $\to$ tighter helix $\to$ smaller polarization footprint on the lattice. The photon's spin angular momentum is concentrated in a cylinder of radius $R_{\text{helix}}$ around the propagation axis.
-
-\paragraph{The critical frequency.} As $f$ increases, $R$ shrinks. When the frequency reaches the Compton frequency,
-\begin{resultbox}{The Self-Trapping Frequency}
-\begin{equation}
-    f_C = \frac{m_e c^2}{\hbar} \approx 1.24 \times 10^{20} \text{ Hz},
-\end{equation}
-\end{resultbox}
-the helix radius collapses to
-\begin{resultbox}{Helix Self-Closing Radius}
-\begin{equation}
-    R_{\text{helix}} \to \frac{\ell_{\text{node}}}{2\pi}
-\end{equation}
-\end{resultbox}
----a fraction of a single lattice cell. The photon's field now wraps entirely within one node. Its leading wavefront interferes with its own trailing edge. \textbf{The photon catches its own tail.}
-
-\paragraph{Topological trapping.} At this point the helix self-closes into an unknot---a topologically stable loop confined to a single lattice site. The circulating EM energy can no longer propagate; it is trapped. The photon has become an electron:
-\begin{itemize}
-    \item \textbf{Mass} $= \hbar\omega/c^2$: the trapped photon's energy, now localized.
-    \item \textbf{Charge} $= e$: the topological winding number of the unknot.
-    \item \textbf{Spin-1/2}: half the photon's spin-1, because the loop closes after a $2\pi$ rotation, not $4\pi$.
-    \item \textbf{$g{-}2$ anomaly}: the residual interaction of the trapped helix with the node it occupies.
-\end{itemize}
-The fine structure constant $\alpha = (V_{\text{peak}}/V_{\text{snap}})^2 / (4\pi)$ measures \emph{how much} the trapped photon strains the lattice node it sits on. The entire spectrum of matter---from free photons to confined electrons---is a single excitation at different frequencies, separated by the self-trapping threshold at $f = f_C$.
 
 \begin{figure}[h]
     \centering

@@ -115,9 +115,57 @@ Normal ($T > T_c$)                 & II (Yield) & Thermal disorder breaks phase 
 \end{tabular}
 \end{center}
 
+\section{The Universal Saturation Operator: $\varepsilon$--$\mu$ Duality}
+\label{sec:superconductivity_duality}
+
+The most striking confirmation of scale invariance is the
+\textit{duality} between plasma physics and superconductivity.
+Both are instances of the \textit{same} saturation operator acting
+on complementary sectors of the impedance:
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{lll}
+\toprule
+\textbf{Property} & \textbf{Plasma ($\varepsilon$-sector)} & \textbf{Superconductor ($\mu$-sector)} \\
+\midrule
+What saturates      & $\varepsilon_{eff} \to 0$ (capacitor shorts)
+                    & $\mu_{eff} \to 0$ (inductor shorts) \\
+Saturation argument & $S(E \cdot \ell / V_{snap})$
+                    & $S(B / B_c)$ \\
+Field expelled      & E-field (Debye screening)
+                    & B-field (Meissner effect) \\
+Penetration depth   & Skin depth $\delta = c/\omega_p$
+                    & London depth $\lambda_L = \sqrt{m^*/\mu_0 n_s e^2}$ \\
+Boundary reflection & $\Gamma \to -1$ for $\omega < \omega_p$
+                    & $\Gamma \to -1$ for $B < B_c$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Key identity:} The BCS thermodynamic critical field $B_c(T) = B_{c0}\sqrt{1-(T/T_c)^2}$ is \textit{identically} the Axiom~4 saturation factor $S(T/T_c)$.  The London penetration depth and the plasma skin depth have \textbf{identical formulas}: $\delta = \sqrt{m/({\mu_0 n e^2})}$---the same operator acting on dual sectors.
+
+\section{Type I vs.\ Type II: Ginzburg-Landau $\kappa$}
+\label{sec:type_classification}
+
+The Ginzburg-Landau parameter $\kappa = \lambda_L / \xi_0$ classifies the saturation geometry:
+\begin{resultbox}{Superconductor Type Classification}
+\begin{equation}
+    \kappa < \frac{1}{\sqrt{2}}: \quad \text{Type I (uniform } \mu \to 0\text{)}, \qquad
+    \kappa > \frac{1}{\sqrt{2}}: \quad \text{Type II (vortex lattice)}
+\end{equation}
+\end{resultbox}
+
+In the AVE framework:
+\begin{itemize}
+    \item \textbf{Type I} = Uniform saturation: $\mu_{eff} \to 0$ homogeneously throughout the bulk.  The entire volume enters Regime~IV simultaneously.
+    \item \textbf{Type II} = Localized saturation vortices: $\mu_{eff} \to 0$ only within quantized flux-tube cores (Abrikosov lattice), while the inter-vortex regions remain in Regime~I.
+\end{itemize}
+
 \section{Condensed Matter $\leftrightarrow$ AVE Translation Dictionary}
 \label{sec:cm_ave_translation}
 
-The preceding sections show that superconductivity and the Meissner effect emerge from classical Kuramoto phase-locking of topological inductors.  Table~\ref{tab:trans_condensed} maps each condensed matter concept to its AVE structural equivalent.
+The preceding sections show that superconductivity and the Meissner effect emerge from classical Kuramoto phase-locking of topological inductors, verified by the universal saturation operator.  Table~\ref{tab:trans_condensed} maps each condensed matter concept to its AVE structural equivalent.
 
 \input{../common/translation_condensed_matter.tex}
