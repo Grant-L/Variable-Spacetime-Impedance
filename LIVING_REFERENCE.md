@@ -52,10 +52,14 @@ src/ave/
   geophysics/     # Seismic PREM model
   fluids/         # Water molecular impedance
   plasma/         # Plasma cutoff, Drude model, superconductor
-manuscript/       # 7-book LaTeX manuscript
-  book_1-7/       # Foundations → Cross-Scale Verification (12 ch, 56 pp)
+manuscript/       # 5-volume LaTeX manuscript
+  vol_1_foundations/     # Vol I: Foundations & Universal Operators (8 ch, 130 pp)
+  vol_2_subatomic/       # Vol II: The Subatomic Lattice (12 ch, 140 pp)
+  vol_3_macroscopic/     # Vol III: The Macroscopic Continuum (16 ch, 126 pp)
+  vol_4_engineering/     # Vol IV: Applied Impedance Engineering (11 ch)
+  vol_5_biology/         # Vol V: Topological Biology (5 ch, 132 pp)
 spice_manual/     # Particle decay as RLC circuits
-scripts/          # Simulation scripts per book
+scripts/          # Simulation scripts per volume
 tests/            # 480 passing tests
 future_work/      # Roadmap scripts (predictions, domains)
 periodic_table/   # 134 element torus knot simulations
@@ -145,7 +149,7 @@ The saturation operator S(r) = √(1-r²) defines 4 universal regimes. **Boundar
 | **III Yield** | √3/2 ≤ r < 1.0 | Q = 1/S ≥ 2 (ℓ_min) | Avalanche (M ≥ 2) | PONDER-05 @ 43kV (r=0.985) |
 | **IV Ruptured** | r ≥ 1.0 | S = 0, Axiom 4 | Breakdown (M → ∞) | BH interior, magnetar |
 
-See: `src/ave/core/regime_map.py` for the engine module, `manuscript/book_2_regime_map_and_verification/chapters/02_regime_map.tex` for the full chapter.
+See: `src/ave/core/regime_map.py` for the engine module, `manuscript/vol_1_foundations/chapters/08_regime_map.tex` for the full chapter.
 
 **Galactic Note:** The operator S(r) is universal — S(r→1) = medium compliance → 0 in every domain. In the galactic domain (r = g_N/a₀), S→0 means lattice drag vanishes → Newtonian gravity. **The dark matter problem IS the Regime III→IV phase transition.** See `src/ave/gravity/galactic_rotation.py`.
 
@@ -157,7 +161,7 @@ See: `src/ave/core/regime_map.py` for the engine module, `manuscript/book_2_regi
 | **B: Domain Extension** | ✅ Complete | Seismology, water, plasma, superconductor, GW, stellar, neutrino, protein |
 | **C: Predictions** | ✅ Complete | 40 predictions, ALL 26/26 SM Parameters Derived |
 | **D: Hardware** | 🔄 Active | PONDER-01/02/05, HOPF-01 characterization |
-| **E: Publication** | 🔄 Active | Book 7 (12 ch, 56 pp), Yang-Mills + NS proofs |
+| **E: Publication** | 🔄 Active | 5 volumes (~530 pp), Yang-Mills + NS proofs |
 | **F: Millennium Problems** | 🔄 Active | Yang-Mills ✅, Navier-Stokes ✅, Strong CP ✅ |
 
 ## PONDER Experiment Variants
