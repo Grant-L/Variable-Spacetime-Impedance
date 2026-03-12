@@ -221,13 +221,13 @@ The entire computation is reproduced in three commands from the repository root:
 
 \begin{verbatim}
 # Step 1: Generate all 20 SPICE netlists (.cir files)
-python scripts/book_6_topological_biology/generate_amino_spice.py
+python scripts/vol_5_biology/generate_amino_spice.py
 
 # Step 2: Solve all 20 netlists and generate the batch plot
-python scripts/book_6_topological_biology/batch_amino_spice_solver.py
+python scripts/vol_5_biology/batch_amino_spice_solver.py
 
 # Step 3 (optional): Verify Glycine/Alanine against NIST FTIR
-python scripts/book_6_topological_biology/simulate_ftir_comparison.py
+python scripts/vol_5_biology/simulate_ftir_comparison.py
 \end{verbatim}
 
 \noindent Step~1 calls \texttt{spice\_organic\_mapper.py}, which in turn calls \texttt{soliton\_bond\_solver.py} to derive all force constants from first principles at import time. No manual parameter entry is required.
