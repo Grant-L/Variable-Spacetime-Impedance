@@ -18,8 +18,9 @@ from matplotlib.collections import LineCollection
 import os
 import sys
 
-# AVE constants
-ALPHA = 7.2973525693e-3
+# AVE constants (imported from physics engine for traceability)
+from ave.core.constants import ALPHA
+
 A0_RELATIVE = 1.0 / ALPHA  # Bohr radius in units of l_node (~137)
 
 # ---- Element definitions ----

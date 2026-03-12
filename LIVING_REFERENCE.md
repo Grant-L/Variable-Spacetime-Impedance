@@ -52,17 +52,17 @@ src/ave/
   geophysics/     # Seismic PREM model
   fluids/         # Water molecular impedance
   plasma/         # Plasma cutoff, Drude model, superconductor
-manuscript/       # 5-volume LaTeX manuscript
-  vol_1_foundations/     # Vol I: Foundations & Universal Operators (8 ch, 130 pp)
-  vol_2_subatomic/       # Vol II: The Subatomic Lattice (12 ch, 140 pp)
-  vol_3_macroscopic/     # Vol III: The Macroscopic Continuum (16 ch, 126 pp)
-  vol_4_engineering/     # Vol IV: Applied Impedance Engineering (11 ch)
-  vol_5_biology/         # Vol V: Topological Biology (5 ch, 132 pp)
-spice_manual/     # Particle decay as RLC circuits
+manuscript/       # 5-volume LaTeX manuscript (~737 pages total)
+  vol_1_foundations/     # Vol I: Foundations & Universal Operators (8 ch, 135 pp)
+  vol_2_subatomic/       # Vol II: The Subatomic Lattice (14 ch, 149 pp) ← companion: periodic_table/
+  vol_3_macroscopic/     # Vol III: The Macroscopic Continuum (15 ch, 127 pp)
+  vol_4_engineering/     # Vol IV: Applied Impedance Engineering (19 ch, 181 pp) ← companion: spice_manual/
+  vol_5_biology/         # Vol V: Topological Biology (11 ch, 145 pp)
+spice_manual/     # Companion to Vol IV: Particle decay as RLC circuits
 scripts/          # Simulation scripts per volume
 tests/            # 480 passing tests
-future_work/      # Roadmap scripts (predictions, domains)
-periodic_table/   # 134 element torus knot simulations
+future_work/      # Speculative roadmap (4 chapters)
+periodic_table/   # Companion to Vol II: 134 element torus knot simulations
 ```
 
 ## Master Prediction Table (22 entries)
