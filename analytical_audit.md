@@ -1,3 +1,8 @@
+> [!WARNING]
+> **DEPRECATED**: This audit report uses the old `book_*` directory structure.
+> The manuscript was reorganized into 5 volumes (`vol_1` – `vol_5`) in March 2026.
+> Path references below are historical and do not reflect current file locations.
+
 # AVE Framework - Manuscript Logic & Math Audit Report
 
 ## 01_appendices.tex
