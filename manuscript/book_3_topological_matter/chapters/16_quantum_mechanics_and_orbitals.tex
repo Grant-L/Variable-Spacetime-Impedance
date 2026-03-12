@@ -167,6 +167,34 @@ The transition from Hydrogen ($Z=1$) to Helium ($Z=2$) introduces electron-elect
 
 The AVE framework rejects the probabilistic point-particle smearing in favor of exact topological geometry.
 
+\subsection{QM $\leftrightarrow$ AVE Translation Dictionary}
+\label{sec:qm_ave_translation}
+
+At atomic scales, AVE and standard QM produce identical mathematics.  The table below makes the ontological translation explicit: every QM concept maps to a structural AVE counterpart.  Where the mathematics are identical, we say so.  Where AVE adds genuinely new content, we mark it.
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}p{3.2cm} p{3.5cm} p{7cm}@{}}
+\toprule
+\textbf{Standard QM} & \textbf{AVE Equivalent} & \textbf{Relationship} \\
+\midrule
+Wavefunction $\psi(r)$ & Acoustic cavity mode & Same equation (Helmholtz). AVE: mode of vacuum LC mesh. \\
+$|\psi|^2$ probability & Time-averaged trajectory & Density of point-defect sweeping its standing-wave mode. \\
+Coulomb potential $e^2/(4\pi\varepsilon_0 r)$ & $\alpha\hbar c / r$ (Axiom 2) & Algebraically identical. $K = \alpha\hbar c$ is the impedance coupling. \\
+Bohr radius $a_0$ & $\ell_{node}/\alpha$ & $a_0 = \hbar/(m_e c \alpha)$. The atom is $1/\alpha \approx 137$ lattice pitches. \\
+Hartree energy $E_H$ & $m_e(\alpha c)^2$ & Same formula. $E_H = K/a_0$ (coupling per cavity radius). \\
+Electron & $0_1$ topological unknot & Irreducible closed flux tube. Internal radius $\sim \lambda_W \ll a_0$. \\
+Spin & Unknot chirality & Two orientations of the unknot twist: $\pm 1/2$. \\
+Exchange integral $K_{12}$ & Phase-separation geometry & For same orbital: $K_{12} = J_{12}$ (mathematics identical). \\
+Correlation energy & LC phase-jitter & \textbf{New AVE content.}  $J_{s^2} = \tfrac{1}{2}(1+p_c)$ from torus-knot geometry. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+Rows 1--8 are ontological reinterpretations: the mathematics are unchanged, but the physical picture shifts from probability amplitudes to structural acoustics.  Row~9 (correlation energy) is the genuinely new prediction---standard QM requires computationally expensive post-Hartree-Fock methods (CI, CCSD, etc.)\ to capture correlation, while AVE derives it from the geometric phase-jitter of discrete topological defects constrained by $p_c = 8\pi\alpha$.
+
 \subsection{The Spatial Extent of the $0_1$ Unknot}
 While the classical Bohr radius establishes the macroscopic acoustic resonant cavity ($a_0 \approx 10^{-11}\text{ m}$), the electron itself is a $0_1$ topological unknot---an irreducible closed flux tube. As a massive structural defect, its internal strain field decays exponentially into the vacuum, governed inherently by the Weak Interaction mass ($M_W$):
 \begin{resultbox}{Weak Interaction Decay Length}
@@ -210,47 +238,54 @@ Utilizing this explicit topological phase-separation scalar derived natively fro
 \subsection{Numerical Verification: Helium from Standard Methods}
 \label{sec:helium_numerical_verification}
 
-To demonstrate that the AVE framework is consistent with established quantum mechanics at the atomic scale, the helium ground state energy was computed by three successively more accurate methods---all using exclusively constants from \texttt{constants.py} ($m_e$, $\alpha$, $\hbar$, $c$, $e$), zero free parameters.
+At atomic scales ($r \sim a_0 \gg \ell_{node}$), the AVE saturation operator (Axiom~4) gives a sub-ppm correction: $\ell_{node} / a_0 \approx 0.007$.  Consequently, the Coulomb operator $V = \alpha \hbar c / r$ reduces to standard quantum mechanics.  The results below are therefore \emph{numerically identical} to textbook QM---the value of AVE here is ontological (deriving QM from impedance axioms), not numerical.  The genuinely new prediction is $J_{s^2}$ (preceding subsection).
 
 \paragraph{First-order perturbation theory.}
-Treating electron-electron repulsion $V_{ee} = \alpha \hbar c / r_{12}$ as a perturbation on the unperturbed $Z=2$ hydrogenic Hamiltonian:
+Treating electron-electron repulsion $V_{ee} = \alpha \hbar c / r_{12}$ (Axiom~2) as a perturbation on the bare $Z{=}2$ Hamiltonian:
 \begin{align}
     E_0 &= -Z^2 E_H = -108.85 \text{ eV} \\
     \langle V_{ee} \rangle_1 &= \frac{5Z}{8} E_H = 34.01 \text{ eV} \\
     E_\text{pert} &= -74.83 \text{ eV} \quad (5.28\%\text{ error vs.\ experiment})
 \end{align}
-The $(5/8)$ coefficient is the exact analytical Coulomb integral for two $1s$ exponentials; it is not a fit.
+The $(5/8)$ coefficient is the exact analytical Coulomb integral $\iint |\phi|^2 |\phi|^2 / r_{12}\, d^3r_1\, d^3r_2$; it is not a fit.
 
 \paragraph{Variational method.}
-Minimising the total energy over a product trial wavefunction $\psi \propto e^{-Z_\text{eff} r / a_0}$ yields the analytical optimum $Z_\text{eff} = Z - 5/16 = 27/16 = 1.6875$, which directly solves as:
+Minimising the total energy $E(Z_\text{eff}) = Z_\text{eff}^2 E_H - 2Z Z_\text{eff} E_H + (5/8) Z_\text{eff} E_H$ over a product trial wavefunction $\psi \propto e^{-Z_\text{eff} r / a_0}$ yields:
 \begin{equation}
-    E_\text{var} = -77.49 \text{ eV} \quad (1.92\%\text{ error})
+    \frac{\partial E}{\partial Z_\text{eff}} = 0 \quad \Longrightarrow \quad
+    Z_\text{eff} = Z - \frac{5}{16} = \frac{27}{16} = 1.6875, \quad
+    E_\text{var} = -77.49 \text{ eV} \quad (1.92\%)
 \end{equation}
 
 \paragraph{Self-consistent Hartree.}
-Iterating the mean-field potential on a compact radial grid (Gauss decomposition, converged within 19 iterations) recovers the same variational minimum from different initial conditions:
+Iterating the mean-field potential on a compact radial grid (Gauss decomposition, converged within 19 iterations) recovers the same variational minimum:
 \begin{equation}
-    E_\text{SCF} = -77.49 \text{ eV} \quad (Z_\text{eff} = 1.6875, \quad 1.92\%\text{ error})
+    E_\text{SCF} = -77.49 \text{ eV} \quad (Z_\text{eff} = 1.6875, \quad 1.92\%)
 \end{equation}
 
 \begin{center}
 \small
 \renewcommand{\arraystretch}{1.2}
-\begin{tabular}{lrrl}
+\begin{tabular}{lrrlr}
 \toprule
-\textbf{Method} & \textbf{$E$ [eV]} & \textbf{Error} & \textbf{Free Parameters} \\
+\textbf{Method} & \textbf{$E$ [eV]} & \textbf{Error} & \textbf{Source} & \textbf{Params} \\
 \midrule
-Perturbation (1st order) & $-74.83$ & $5.28\%$ & 0 \\
-Variational ($Z_\text{eff} = 27/16$) & $-77.49$ & $1.92\%$ & 0 \\
-Self-consistent Hartree & $-77.49$ & $1.92\%$ & 0 \\
-Hartree-Fock (literature) & $-77.87$ & $1.44\%$ & 0 \\
-\textbf{AVE topological $J_{s^2}$} & $\mathbf{-79.00}$ & $\mathbf{0.008\%}$ & \textbf{0} \\
-Experiment (NIST) & $-79.005$ & --- & --- \\
+Perturbation (1st order) & $-74.83$ & $5.28\%$ & Axiom 2 ($\alpha\hbar c$) & 0 \\
+Variational ($Z_\text{eff}$) & $-77.49$ & $1.92\%$ & Axiom 2 ($\alpha\hbar c$) & 0 \\
+Self-consistent Hartree & $-77.49$ & $1.92\%$ & Axiom 2 ($\alpha\hbar c$) & 0 \\
+\midrule
+HF limit (literature) & $-77.87$ & $1.44\%$ & Standard QM & 0 \\
+\midrule
+\textbf{AVE topological $J_{s^2}$} & $\mathbf{-79.00}$ & $\mathbf{0.008\%}$ & \textbf{Axioms 2+4 + topo} & \textbf{0} \\
+Experiment (NIST) & $-79.005$ & --- & --- & --- \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-The mean-field ceiling ($-77.87$~eV) misses experiment by 1.14~eV---the well-known ``correlation energy'' from instantaneous electron-electron correlations beyond mean-field. The AVE topological $J_{s^2}$ phase-separation model (preceding subsection) naturally recovers this correlation energy as the geometric LC phase-jitter of two $0_1$ unknots, achieving $0.008\%$ agreement with zero additional parameters.
+\noindent
+Rows 1--3 confirm that AVE reproduces standard QM at atomic scales.  The Hartree-Fock limit ($-77.87$~eV, row~4) is a basis-set refinement of the same mean-field calculation; we cite it from the literature for context.  The remaining $1.14$~eV gap to experiment is the well-known ``correlation energy''---a fundamental limitation of all mean-field approaches.
+
+The $J_{s^2}$ topological phase-separation model (row~5) is the genuinely new AVE physics. It captures correlation as geometric LC phase-jitter of two $0_1$ unknots constrained by $p_c = 8\pi\alpha$, achieving $0.008\%$ from zero free parameters.  Standard quantum chemistry requires post-Hartree-Fock methods (CI, CCSD, etc.)\ with large basis sets to approach this accuracy; AVE achieves it from structural geometry alone.
 
 \subsection{Field-Oriented Control (FOC) and the Secondary Density Wake}
 As the atom scales to Beryllium ($Z=4, 1s^2 2s^2$), a second macroscopic acoustic cavity boundary ($n=2$) is populated. Because the $1s^2$ inner core is fully saturated ($J_{1s} \to 0.5(1+p_c)$), it acts as a primary inductive rotor, dragging its localized vacuum metric along its orbital topology. This generates an intense macroscopic density wake in the surrounding spacetime lattice along its primary axis of oscillation.
