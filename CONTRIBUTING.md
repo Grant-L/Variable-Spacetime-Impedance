@@ -33,9 +33,18 @@ Thank you for considering contributing to the `Variable-Spacetime-Impedance` pro
 7. **Create a Pull Request**: Visit the original repository and click on the 'Pull Requests' tab to create a new pull request. Provide a clear description of your changes and why they should be merged.
 
 ## Guidelines
+
+### General
 - Please ensure your code is well-documented and includes relevant tests.
 - Follow the existing code style and conventions in the project.
 - Make sure your pull request is based on the latest version of the `main` branch.
+
+### Script Integrity (MANDATORY)
+- **All physics constants must be imported from `ave.core.constants`.** No hardcoded values for α, mₑ, c, ℏ, ε₀, μ₀, Z₀, V_SNAP, V_YIELD, etc.
+- **`scipy.constants` is banned.** Using `scipy` for math tools (optimize, linalg, signal) is fine.
+- **No smuggled data.** Do not normalize outputs to match experiment, curve-fit to known values, or use ad-hoc correction factors. Document discrepancies honestly.
+- **Engineering parameters** (wire lengths, PCB dimensions, operating frequencies) are permitted but must include a comment citing their source.
+- **Run `make verify` before submitting.** The verification suite catches hardcoded constants and banned imports.
 
 ## Questions?
 If you have any questions or need further assistance, feel free to open an issue or contact the project maintainers.

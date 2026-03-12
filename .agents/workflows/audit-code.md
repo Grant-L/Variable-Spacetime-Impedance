@@ -20,8 +20,7 @@ src/ave/
   gravity/        __init__.py, galactic_rotation.py, gw_detector.py, gw_propagation.py,
                   neutrino_msw.py, planetary_magnetosphere.py, solar_impedance.py,
                   stellar_interior.py
-  topological/    borromean.py, combiner.py, cosserat.py, faddeev_skyrme.py,
-                  simulate_phase_locked_superconductivity.py, soliton_bond_solver.py, tensors.py
+  topological/    borromean.py, combiner.py, cosserat.py, faddeev_skyrme.py, soliton_bond_solver.py, tensors.py
   solvers/        bond_energy_solver.py, fdtd_lc_network.py, fdtd_yee_lattice.py,
                   protein_bond_constants.py, transmission_line.py
   mechanics/      impedance.py
