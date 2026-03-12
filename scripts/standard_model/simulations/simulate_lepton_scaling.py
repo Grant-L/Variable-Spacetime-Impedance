@@ -1,3 +1,12 @@
+"""
+DEPRECATED — This script uses hardcoded CODATA masses and a non-first-principles
+m ∝ 1/R hypothesis. The AVE engine derives lepton masses through the Cosserat
+torus-knot topology (see src/ave/topological/cosserat.py and
+manuscript/book_3_topological_matter/chapters/05_topological_matter.tex).
+
+TODO: Rewrite to use ave.core.constants lepton masses and the proper
+topological compression ratio from cosserat.py.
+"""
 import numpy as np
 import matplotlib.pyplot as plt
 import os
