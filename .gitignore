@@ -27,8 +27,8 @@ venv/
 *.bbl
 *.blg
 
-# Build output (all PDFs are generated artifacts)
-build/
+# Build auxiliary files (logs, synctex, etc.) — PDFs are tracked
+build/aux/
 
 # Simulation data
 data/*
