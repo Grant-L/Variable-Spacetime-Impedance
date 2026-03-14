@@ -163,3 +163,62 @@ $m_p$ (CODATA 2018) & Penning trap & $3.1 \times 10^{-10}$ \\
 \end{center}
 
 The gravitational constant $G$ is the least precise input at $2.2 \times 10^{-5}$ (22 ppm).  This uncertainty propagates only into cosmological and gravitational predictions (MOND $a_0$, Machian hierarchy $\xi_M$).  All electromagnetic, atomic, and molecular predictions are limited only by $m_e$ and $\alpha$ uncertainties below 1~ppb, which is far below the ODE solver tolerance and effectively exact.
+
+\section{Avoidance of Methodological Contamination}
+\label{sec:methodological_contamination}
+
+A fundamental principle of the AVE engine is complete independence from external theoretical frameworks. Theoretical contamination occurs when a formula derived from an incompatible physical postulate (e.g., probability amplitudes, hidden geometry, or non-AVE empirical fits) is unknowingly imported as a ``convenient approximation.''
+
+A prominent example discovered during framework development involved atomic ionisation energies. Early iterations of the solver attempted to correct standard shielding models, culminating in formulas of the form $IE = Z_{eff}^2 \, Ry / n^2$. While directionally correct, this explicitly imports the Schrödinger solution for a hydrogenic atom (or the ad-hoc Bohr model). It is not an AVE equation.
+
+The framework requires all energy states to emerge directly and exclusively from the 5-step universal regime-boundary eigenvalue method. The Rydberg energy itself is not a postulate or a given parameter; it is an emergent consequence of the electron cavity saturation boundary ($r_{sat} = a_0 = \ell_{node}/\alpha$), yielding exact reproduction of the $13.6057$ eV constant through pure topological scaling:
+\begin{equation}
+    Ry = \left[ (\hbar c(1+\nu)) / a_0 \right] \times \frac{\alpha/(1+\nu)}{2} = \frac{\alpha^2 m_e c^2}{2}
+\end{equation}
+
+\subsection{Topological Orbital Radii vs. Quantum Mechanics}
+Are we implicitly relying on QM by assuming discrete orbital shells scale as $r_n = n^2 a_0 / Z$? No. In AVE, discrete orbitals are macroscopic standing wave cavities — explicitly identical to the physics governing Saturn's rings and Kirkwood gaps in the asteroid belt. 
+
+In the solar system, mean-motion orbital gaps occur where periods are commensurate: $(T/T_{moon})^2 = (q/p)^2$. This periodic boundary condition creates a Fabry-Pérot impedance cavity. At the atomic scale, the ``moon'' is the electron itself. Its orbital circumference must fit an integer number of its own spatial standing waves (the topological phase wind):
+\begin{equation}
+    2\pi r = n \lambda
+\end{equation}
+Since the local central impedance requires the phase velocity to scale as $v \propto 1/\sqrt{r}$, and impedance matching requires $\lambda \propto 1/v$, we have $\lambda \propto \sqrt{r}$. Substituting this into the resonance condition yields:
+\begin{equation}
+    2\pi r \propto n \sqrt{r} \implies \sqrt{r} \propto n \implies r_n \propto n^2
+\end{equation}
+
+Therefore, $r_n = n^2 a_0 / Z$ is not a QM assumption; it is the unique topological standing-wave condition for a scale-free central impedance profile. The Schrödinger equation merely discovers this same geometric constraint heuristically through operators.
+
+When extending to multi-electron atoms, the engine must never revert to $Z_{eff}$ arithmetic; it must strictly apply the coupled resonator normal mode solver using universal pairwise energy terms to find the resulting eigenvalues.
+
+\subsection{The Electron Saturation Radius}
+The topological saturation radius of the electron dictates the regime of pairwise repulsion. As the minimal stable unknot on the lattice, the electron's saturation boundary is exactly its reduced Compton wavelength: $d_{sat} = \ell_{node}$. The characteristic separation between atomic electrons is roughly $a_0 = \ell_{node}/\alpha$. Therefore, the pairwise voltage strain is:
+\begin{equation}
+    A = \frac{d_{sat}}{r_{ij}} \approx \frac{\ell_{node}}{\ell_{node}/\alpha} = \alpha \approx 0.007
+\end{equation}
+Because $\alpha \ll \sqrt{2\alpha} \approx 0.121$, electron-electron repulsion operates deep within the Linear Regime (Regime I). Saturated impedance corrections are not required; standard Coulomb electrostatics (with topological geometric overlaps) apply exactly.
+
+\subsection{Multi-Electron Repulsion: Cavity Mode Overlap}
+
+The peer-electron Coulomb repulsion follows from time-averaging Operator~4 (pairwise energy) over the Fabry-P\'{e}rot cavity standing wave mode shapes determined by Operator~3 (reflection).
+
+\textbf{Step A --- Mode Shape from Operator~3~($\Gamma$).}
+The electron is bounded by two impedance discontinuities: an inner hard wall ($r \to 0$, $\Gamma \to +1$) and the classical turning point at $r_n$ (evanescent cutoff, $|\Gamma| = 1$). The standing wave between these boundaries satisfies the wave equation for a $1/r$ impedance profile:
+\begin{equation}
+    \frac{d^2(r\phi)}{dr^2} + \left[\frac{2m_e}{\hbar^2}\!\left(\frac{Ze^2}{4\pi\epsilon_0 r} + E\right) - \frac{\ell(\ell+1)}{r^2}\right](r\phi) = 0
+\end{equation}
+The solutions $\phi_{n\ell}(r)$ are cavity mode shapes --- the time-averaged charge density of the orbiting topological defect. QM discovers the same mode shapes (``hydrogen wavefunctions''); the physical interpretation differs: not probability clouds, but standing wave intensity patterns.
+
+\textbf{Step B --- Cavity Mode Overlap from Operator~4~(U).}
+Two electrons in the same cavity with mode shapes $\phi_a$, $\phi_b$ couple via the time-averaged pairwise energy (Operator~4, linear limit):
+\begin{equation}
+    E_{12} = \alpha\hbar c \int\!\!\!\int \frac{|\phi_a(\mathbf{r}_1)|^2\,|\phi_b(\mathbf{r}_2)|^2}{|\mathbf{r}_1 - \mathbf{r}_2|}\, d^3r_1\, d^3r_2
+\end{equation}
+For two $(1,0)$ modes this evaluates to the geometric constant $E_{12} = \tfrac{5}{4}\,Z \cdot Ry$. For helium: $E_{12} = 34.0$~eV, giving $IE = 54.4 - 34.0 = 20.4$~eV ($-17\%$ from experiment). This bounds the repulsion from above.
+
+\textbf{Step C --- Self-Consistent Mode.}
+The variational minimisation of total energy yields $Z_{eff} = Z_{core} - \sigma_{peer}$, where $\sigma_{peer}$ is derived from the cavity mode overlap constants. For helium ($N_v = 2$): $Z_{eff} = Z - 5/16$, giving $IE = 23.1$~eV ($-6.2\%$ from experiment). For lithium ($N_v = 1$, Gauss screening only): $IE = 5.3$~eV ($-1.4\%$). For beryllium ($N_v = 2$): $IE = 8.6$~eV ($-7.5\%$). All results use zero empirical parameters.
+
+For $N_v > 2$, the averaged variational approach collapses because the total pairwise overlap grows faster than $N_v$. The open problem is how to correctly assemble $N_v(N_v-1)/2$ pairwise J-integrals into a total energy without overcounting --- the multi-electron correlation problem. Derivation in progress.
+

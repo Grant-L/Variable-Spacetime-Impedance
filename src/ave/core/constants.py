@@ -60,6 +60,14 @@ G: float = 6.67430e-11                          # Gravitational constant [m³/(k
 # ℓ_node ≡ ℏ / (m_e · c)
 L_NODE: float = HBAR / (M_E * C_0)             # ≈ 3.8616e-13 m
 
+# Bohr radius — the atomic unit of length
+# a₀ ≡ ℏ / (α · m_e · c) = ℓ_node / α
+A_0: float = L_NODE / ALPHA                     # ≈ 5.2918e-11 m
+
+# Rydberg energy in eV — the atomic unit of ionisation energy
+# Ry ≡ α² · m_e · c² / 2
+RY_EV: float = (ALPHA**2 * M_E * C_0**2 / 2.0) / e_charge  # ≈ 13.606 eV
+
 # Topological Conversion Constant: maps charge to spatial dislocation
 # ξ_topo ≡ e / ℓ_node   [C/m]
 XI_TOPO: float = e_charge / L_NODE             # ≈ 4.149e-7 C/m

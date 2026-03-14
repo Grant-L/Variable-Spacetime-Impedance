@@ -91,6 +91,29 @@ For each `\begin{equation}` / `\begin{align}` environment:
 - [ ] The full derivation chain in `backmatter/02_full_derivation_chain.tex` covers all 39 predictions
 - [ ] No circular dependencies in derivation chains
 
+### 8. Operator Compliance (Universal Operators from Ch.7)
+
+For every derived quantity, verify it maps to a universal operator:
+
+- [ ] **Op1 (Z)**: Is impedance defined from constitutive properties (√(μ/ε)), not from energies?
+- [ ] **Op2 (S)**: Is saturation S = √(1−(A/Ac)²) applied where fields approach Ac? Is p_c = 8πα used, not an ad-hoc value?
+- [ ] **Op3 (Γ)**: Are all impedance boundaries handled by Γ = (Z₂−Z₁)/(Z₂+Z₁)? No ad-hoc "screening constants"?
+- [ ] **Op4 (U)**: Are ALL pairwise interactions computed from U = −K/r × (T²−Γ²)? No hand-wavy energy formulas like "V = J × Z × Ry" that bypass the operator? (Pitfall #9)
+- [ ] **Op5 (Y→S)**: For multiport networks: are S-parameters from the Y-matrix conversion, not assumed?
+- [ ] **Op6 (λ_min)**: Is the eigenvalue condition λ_min(S†S) → 0 (S₁₁ dip)? Not the Bohr formula E = Z²Ry/n²? (Pitfall #8)
+- [ ] **Op7 (FFT)**: For periodic structures: is the mode structure from spectral analysis, not assumed?
+- [ ] **Op8 (Γ_pack)**: For 3D assemblies: is packing fraction from P_C(1−1/N)?
+
+### 9. QM Contamination Detection
+
+Search for these red flags in all `.tex` files and solver code:
+
+- [ ] **Bohr formula**: Any occurrence of `Z_eff² Ry / n²` or `(Z−σ)² Ry` used to COMPUTE an IE (pitfall #8). Acceptable only as a comparison/reference value.
+- [ ] **σ-arithmetic**: Any `Z − σ` used as the effective charge without deriving σ from an operator (pitfall #8). Cross-shell σ = N_inner (Gauss's law) is OK. Same-shell σ from "J × something" needs Op4 trace.
+- [ ] **Op4 bypass**: Any `V_ee = (constant) × (energy scale)` that doesn't trace to U(r) = −K/r × (T²−Γ²) (pitfall #9). The formula may be correct but must show the derivation from Op4.
+- [ ] **De Broglie ≠ Impedance**: Any place where the de Broglie refractive index n_dB(r) is called "impedance" (pitfall #10). The lattice has Z₀ = 377 Ω everywhere in Regime I.
+- [ ] **QM vocabulary**: "wavefunction," "probability density," "expectation value" used without AVE translation. Acceptable terms: standing wave, mode shape, angular average.
+
 ## Output
 
 Produce a structured report:
@@ -98,6 +121,8 @@ Produce a structured report:
 2. **STALE** — Likely outdated value from earlier version of theory
 3. **MISSING** — Derivation step or axiom citation not shown
 4. **MAGIC** — Unexplained numeric literal (needs derivation or numerology documentation)
-5. **OK** — Spot-checked and consistent
+5. **OP_BYPASS** — Quantity computed without tracing to a universal operator (pitfalls #9, #10)
+6. **QM_CONTAMINATION** — Formula or terminology from QM used without AVE derivation (pitfall #8)
+7. **OK** — Spot-checked and consistent
 
 For each finding, cite file, line number, the incorrect value, and the canonical value from `constants.py`.

@@ -100,7 +100,7 @@ def _element_bond_properties(Z, A=None):
 
     r_val = atom_port_impedance(Z, IE_eV)
     d_eq = molecular_bond_distance(r_val, r_val)
-    B_bond_eV, k_eff = molecular_bond_energy(IE_eV, IE_eV)
+    B_bond_eV, k_eff = molecular_bond_energy(IE_eV, IE_eV, r_val, r_val, d_eq)
 
     return IE_eV, r_val, d_eq, B_bond_eV, k_eff, A
 
