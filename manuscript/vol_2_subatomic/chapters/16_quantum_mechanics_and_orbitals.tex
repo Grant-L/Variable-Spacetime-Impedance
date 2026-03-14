@@ -3260,7 +3260,193 @@ Result: IE $ = 5.32$~eV vs.\ 5.39~eV
 (1.2\% error, 0 free parameters, 0 imported
 numbers).
 
-\paragraph{$p$-Shell Coupling Topology.}
+\subparagraph{(E2j) Same-shell interactions as
+coupled transmission lines.}
+
+The ABCD cascade (E2d-ii, E2f) models inner-shell
+screening via Gauss's law: the $1s$ charge
+distribution reduces the effective nuclear charge
+seen by the $2s$ soliton.  This works because the
+$1s$ and $2s$ shells are \textbf{spatially separated}
+--- the $1s$ density is concentrated at
+$r \approx a_0/Z$, while the $2s$ orbit extends to
+$r \approx 4a_0/Z$.  Gauss's law applies whenever the
+charge is enclosed inside a surface.
+
+For electrons in the \textbf{same shell} (e.g.\ the
+$2s$ and $2p$ orbitals in B, C, N), the situation is
+fundamentally different: the orbitals \emph{overlap
+spatially}.  One electron is not enclosed inside the
+other.  Gauss screening is the wrong model.
+
+\noindent\textbf{1. The EE analog: coupled microstrip.}
+
+In electrical engineering, when two transmission
+lines run through the \emph{same} dielectric medium
+(neither enclosed by the other), they are modelled
+as \textbf{coupled lines} with even and odd mode
+impedances:
+\begin{equation}
+    Z_{\rm even} = Z_0 \sqrt{\frac{1+k}{1-k}},
+    \qquad
+    Z_{\rm odd} = Z_0 \sqrt{\frac{1-k}{1+k}}
+    \label{eq:coupled_line_zo_ze}
+\end{equation}
+where $k$ is the mutual coupling coefficient from
+electromagnetic field overlap.  The key property:
+neither line ``screens'' the other --- both lines
+experience a \emph{modified impedance} due to the
+presence of the other.
+
+This is a standard, well-understood formalism.
+It appears at three scales in the AVE framework:
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{l l l}
+\toprule
+\textbf{Scale} &
+\textbf{Coupled lines} &
+\textbf{Coupling source} \\
+\midrule
+Atom & $2s + 2p$ in same shell &
+    Coulomb overlap integral \\
+Protein & $\beta$-sheet strands &
+    H-bond mutual admittance \\
+Antenna & Coupled microstrip &
+    Fringe-field capacitance \\
+\bottomrule
+\end{tabular}
+\end{center}
+The protein engine already uses coupled-line
+even/odd impedances for $\beta$-sheet inter-strand
+coupling (Vol.~V, Ch.~\ref{ch:network_solver}).
+The atomic instantiation is identical: two
+electron orbitals running through the same
+nuclear field are coupled by mutual Coulomb
+repulsion.
+
+\noindent\textbf{2. Same-shell coupling coefficient.}
+
+The coupling between two electrons in the same
+shell (at radius $R_n = n^2 a_0 / Z$) but different
+angular momentum states follows from Op4:
+\begin{equation}
+    k_{\rm same} = \frac{V_{\rm rep}}{E_0}
+    = \frac{\alpha\hbar c \; / \; \langle r_{12} \rangle}
+           {Z_{\rm eff}^2 \, R_y \, / \, n^2}
+    \label{eq:k_same_shell}
+\end{equation}
+where $\langle r_{12} \rangle$ is the mean
+inter-electron distance on the shell
+(Axiom~2, Coulomb integral) and $Z_{\rm eff}$
+is the effective charge after cross-shell screening.
+
+For same-$n$, different-$l$ orbitals (e.g.\
+$2s + 2p$ in B): the overlap integral is
+\emph{partial} --- the $2s$ density is spherically
+symmetric while the $2p$ density is axially
+concentrated.  The coupling is therefore
+\textbf{weaker} than for same-$l$ same-$n$ pairs
+(the Hopf-link case).
+
+\noindent\textbf{3. Why Gauss fails for same-shell.}
+
+If one naively models $2s^2$ as a Gauss screen for
+the $2p$ electron (assigning $N_{\rm inner} = 4$
+instead of $N_{\rm inner} = 2$ in the ABCD cascade),
+the ionisation energy is grossly wrong:
+\begin{center}
+\small
+\begin{tabular}{l c r r}
+\hline
+\textbf{B screening model} &
+$N_{\rm inner}$ &
+\textbf{IE (eV)} &
+\textbf{Error} \\
+\hline
+1s$^2$ only & 2 & 32.4 & $+291\%$ \\
+1s$^2$ + 2s$^2$ (Gauss) & 4 & 3.5 & $-58\%$ \\
+Experiment & --- & 8.30 & --- \\
+\hline
+\end{tabular}
+\end{center}
+\noindent Screening by $1s^2$ alone under-screens
+(too much charge visible); adding $2s^2$ as Gauss
+over-screens (too little charge visible).
+The true answer lies between the two extremes,
+because $2s$ and $2p$ \textbf{partially overlap}
+--- neither limit is physical.
+
+The coupled-line formalism resolves this: $2s$ and
+$2p$ are not screened from each other; they shift
+each other's effective impedance through mutual
+coupling, and the correct eigenvalue emerges from
+the coupled-mode splitting, not from an effective
+nuclear charge.
+
+\noindent\textbf{4. Multi-atom solver architecture.}
+
+The complete solver for atoms $Z \geq 3$ requires
+three components, each from a different universal
+operator:
+\begin{enumerate}
+    \item \textbf{ABCD cascade (P3):}
+          Cross-shell screening from inner shells
+          via the graded taper
+          $Z_{\rm net}(r) = Z - N_a\,\sigma(r)$.
+          Uses Op1, Op3--Op6.
+    \item \textbf{Coupled-line splitting (P2):}
+          Same-shell interactions via even/odd
+          mode impedances
+          (Eq.~\ref{eq:coupled_line_zo_ze}).
+          Uses Op3, Op5, Op6.
+    \item \textbf{Op2 crossing correction:}
+          Topological penalty at shell-penetration
+          crossings ($l{=}0$ only), giving
+          $\delta E = E \times P_C/4$.
+\end{enumerate}
+Each component is domain-agnostic (the same
+operators appear in protein folding and antenna
+design).  No effective charges, no screening
+constants, no fitted parameters.
+
+\noindent\textbf{5. Current validation.}
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{l c l r r}
+\toprule
+\textbf{Atom} & $Z$ &
+\textbf{Method} &
+\textbf{IE (eV)} &
+\textbf{Error} \\
+\midrule
+H & 1 & P1 (exact hydrogenic) &
+    13.61 & $0.1\%$ \\
+He & 2 & P2 (circuit, Hopf link) &
+    24.37 & $0.9\%$ \\
+Li & 3 & P3 + Op2 (ABCD taper) &
+    5.32 & $1.2\%$ \\
+Be & 4 & P3 + P2 (ABCD + Hopf) &
+    8.21 & $11.9\%$ \\
+\midrule
+B & 5 & P3 + coupled-line &
+    \multicolumn{2}{c}{\emph{not yet implemented}} \\
+\bottomrule
+\end{tabular}
+\end{center}
+\noindent H, He, and Li each test \emph{one}
+component in isolation and pass at $< 1.5\%$.
+Be combines P3 + P2 and achieves 12\% ---
+the remaining error is attributed to the
+oversimplified same-shell model
+(complete graph $K_2$ instead of coupled-line
+mode splitting).  B and beyond require the
+full coupled-line formalism for the 2s--2p
+interaction.
+
+
 The $p$-shell has three spatial axes $(m_l = -1, 0, +1)$.
 Two electrons in the \emph{same} $m_l$ orbital form a Hopf link
 with parallel crossings (the standard $k_{\text{pair}}$).
