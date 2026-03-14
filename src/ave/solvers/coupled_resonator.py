@@ -656,8 +656,9 @@ def ionization_energy_ymatrix(Z, n_electrons=None):
     E_N = _total_energy_from_ymatrix(Z, electrons_N)
     E_Nm1 = _total_energy_from_ymatrix(Z, electrons_Nm1)
 
-    # IE = E(N) - E(N-1) (both negative, IE is positive)
-    IE = E_N - E_Nm1
+    # IE = E(N-1) - E(N): removing one electron makes system less bound
+    # Both energies are negative; E(N) is more negative than E(N-1)
+    IE = E_Nm1 - E_N
     return max(0.0, IE)
 
 def atom_port_impedance(Z, ie_eV):

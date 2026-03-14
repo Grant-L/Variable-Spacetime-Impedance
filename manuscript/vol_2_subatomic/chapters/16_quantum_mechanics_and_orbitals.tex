@@ -3438,13 +3438,229 @@ B & 5 & P3 + coupled-line &
 \end{center}
 \noindent H, He, and Li each test \emph{one}
 component in isolation and pass at $< 1.5\%$.
-Be combines P3 + P2 and achieves 12\% ---
-the remaining error is attributed to the
-oversimplified same-shell model
-(complete graph $K_2$ instead of coupled-line
-mode splitting).  B and beyond require the
-full coupled-line formalism for the 2s--2p
-interaction.
+Be and B remain open: the corrections are
+applied \emph{outside} the phase integral,
+violating the action principle.
+
+\subparagraph{(E2k) Complete phase integral:
+all operators inside $V(r)$.}
+
+The fundamental problem with E2d--E2j is
+architectural: the ABCD cascade finds the
+eigenvalue from a phase integral
+$\oint k(r)\,dr = n\pi$, but Op2 crossings
+and same-shell coupling are applied
+\emph{after} the eigenvalue as multiplicative
+corrections.  These corrections change the
+energy but do not enter the potential $V(r)$
+that determines $k(r)$.  The soliton's action
+does not minimise through them.
+
+In AVE, the ground state is the configuration
+where the phase integral exactly satisfies
+the standing-wave condition ($B_{\text{total}}
+= 0$, Op6).  \textbf{Every} interaction that
+changes the soliton's energy must appear inside
+$V(r)$, so that the phase integral accounts
+for it.
+
+\noindent\textbf{1. Complete effective potential.}
+
+The potential for the outermost soliton
+(winding numbers $n$, $l$) is the sum of
+four terms, each from a specific axiom:
+\begin{equation}
+\boxed{
+    V_{\rm eff}(r) =
+    \underbrace{-\frac{Z\,\alpha\hbar c}{r}}_{\text{nuclear (Ax.~2)}}
+    + \underbrace{\sum_k \frac{N_k\,\sigma_k(r)\,
+      \alpha\hbar c}{r}}_{\text{screening (Ax.~2, Gauss)}}
+    + \underbrace{V_{\rm cross}(r)}_{\text{Op2 (Ax.~4)}}
+    + \underbrace{\frac{l(l+1)\hbar^2}{2 m_e r^2}}_{\text{angular (Ax.~1)}}
+}
+    \label{eq:V_complete}
+\end{equation}
+\noindent Each term:
+\begin{itemize}
+    \item \textbf{Nuclear Coulomb} (Axiom~2):
+          bare charge $Z$, exact $1/r$.
+    \item \textbf{Gauss screening} (Axiom~2):
+          one term per inner shell $k$, with
+          $N_k$ solitons and enclosed-charge
+          fraction $\sigma_k(r)$ computed from
+          the standing-wave density of shell
+          $k$ (Eq.~\ref{eq:smooth_screening}
+          for $1s$, generalised for $2s$).
+    \item \textbf{Crossing potential} (Axiom~4):
+          a localised repulsive potential at
+          each radius where the outer soliton's
+          flux tube crosses an inner soliton's
+          flux tube.  Derived below.
+    \item \textbf{Centrifugal barrier} (Axiom~1):
+          angular standing-wave condition.
+\end{itemize}
+
+\noindent\textbf{2. Layered screening densities.}
+
+The enclosed-charge fraction $\sigma_k(r)$
+must use the effective charge \emph{seen by
+shell $k$}, not bare $Z$.  Each shell is
+screened by all shells inside it:
+\begin{equation}
+    Z_{\rm eff}^{(k)} = Z - \sum_{j < k} N_j
+    \label{eq:z_layered}
+\end{equation}
+For Li ($1s^2\,2s^1$): the $1s$ pair sees
+bare $Z = 3$; the $2s$ sees
+$Z_{\rm eff} = 3 - 2 = 1$.  This is not
+iteration---it is Gauss's law applied
+sequentially, inside-out.  The result is
+exact for complete inner shells.
+
+For B ($1s^2\,2s^2\,2p^1$): the $2s$ pair sees
+$Z_{\rm eff}^{(2s)} = 5 - 2 = 3$.  Their
+standing-wave density $\sigma_{2s}(r)$ is
+therefore more diffuse than at bare $Z = 5$,
+providing stronger screening of the $2p$ at
+intermediate radii.
+
+\noindent\textbf{3. Torus knot crossing geometry.}
+
+Each soliton is a torus knot with winding
+numbers $(p, q)$ on the torus of major radius
+$R = r_n$ and tube radius $a = \ell_{\rm node}$:
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{c c c l}
+\toprule
+\textbf{Mode} & $l$ & $(p, q)$ &
+\textbf{Description} \\
+\midrule
+$ns$ & 0 & $(n, 0)$ & Poloidal (radial) \\
+$np$ & 1 & $(n, 1)$ & Toroidal + poloidal \\
+$nd$ & 2 & $(n, 2)$ & 2 toroidal wraps \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Two solitons with winding numbers
+$(p_1, q_1)$ and $(p_2, q_2)$ on the \emph{same}
+torus have intersection number:
+\begin{equation}
+    I = |p_1 q_2 - p_2 q_1|
+    \label{eq:intersection_number}
+\end{equation}
+This is a topological invariant: it counts
+the number of crossings on the torus surface.
+
+For $2s$--$2p$:
+$I = |2 \times 1 - 0 \times 2| = 2$.
+Two crossings---the same count as the
+Hopf link ($1s$--$1s$).
+
+\noindent\textbf{4. Crossing angle from torus
+geometry.}
+
+The tangent vectors of the two curves at
+a crossing determine the flux-tube angle
+$\theta$.  On a torus with aspect ratio
+$\mathcal{R} \equiv R/a = n^2/(Z\alpha)$:
+\begin{equation}
+    \cos\theta = \frac{p_1 p_2 + q_1 q_2\,
+    \mathcal{R}^2}{\sqrt{p_1^2 + q_1^2\,
+    \mathcal{R}^2}\;\sqrt{p_2^2 + q_2^2\,
+    \mathcal{R}^2}}
+    \label{eq:crossing_angle}
+\end{equation}
+For $2s$--$2p$ in B ($Z = 5$, $n = 2$):
+$\mathcal{R} = 4/(5\alpha) \approx 110$,
+giving $\cos\theta \approx 0.018$,
+$\theta \approx 89^\circ$.  The crossings
+are orthogonal because $\mathcal{R} \gg 1$
+(the torus is very thin at atomic scales).
+
+\noindent\textbf{5. Crossing potential.}
+
+At each crossing, the total strain is
+(Axiom~4):
+\begin{equation}
+    A_{\rm total}^2 = A_1^2 + A_2^2
+    + 2 A_1 A_2 \cos\theta
+\end{equation}
+For identical solitons ($A_1 = A_2 = A$):
+\begin{itemize}
+    \item Parallel ($\theta = 0$):
+          $A^2 = 4A^2$ (Hopf link, $1s$-$1s$).
+    \item Orthogonal ($\theta = 90^\circ$):
+          $A^2 = 2A^2$ (half the parallel cost).
+    \item Antiparallel ($\theta = 180^\circ$):
+          $A^2 = 0$ (healed---Pauli exclusion).
+\end{itemize}
+
+The Op2 energy at each crossing is
+$\delta E = E \times P_C / c_{\rm link}$,
+where $c_{\rm link}$ is the crossing number
+of the link.  For orthogonal crossings the
+cost is halved relative to parallel:
+\begin{equation}
+    V_{\rm cross}(r) =
+    \sum_{\text{crossings}} \frac{P_C}{2c}
+    \times \frac{\alpha\hbar c}{r_{\rm cross}}
+    \times \delta(r - r_{\rm cross})
+    \label{eq:V_crossing}
+\end{equation}
+The $\delta$-function is smeared over the
+tube diameter $\sim \ell_{\rm node}$ in the
+numerical implementation.
+
+\noindent\textbf{6. Crossing radius.}
+
+Where does the crossing occur?  The
+intersection of the $(n,0)$ and $(n,1)$
+curves on the torus occurs at the poloidal
+angle where the toroidal curve crosses the
+poloidal circle.  In the radial coordinate,
+this maps to:
+\begin{equation}
+    r_{\rm cross} = R_n
+    = \frac{n^2 a_0}{Z_{\rm eff}}
+\end{equation}
+where $R_n$ is the Bohr radius of shell $n$
+at the effective charge seen by that shell.
+The crossing is localised at the orbital
+radius---exactly where the two solitons
+share the same mean distance from the nucleus.
+
+\noindent\textbf{7. Phase integral with complete
+$V(r)$.}
+
+The ABCD cascade (E2f) integrates the radial
+ODE through the potential
+(Eq.~\ref{eq:V_complete}).  The eigenvalue
+condition $B_{\text{total}} = 0$ (Op6) gives
+the energy $E$ at which the total accumulated
+phase equals $n\pi$.  No post-hoc corrections
+are needed: every interaction---nuclear,
+screening, crossing, angular---is inside
+the phase integral.
+
+The soliton's action minimises naturally
+through the eigenvalue condition.
+
+\begin{resultbox}{Approach 24: Complete Phase
+Integral}
+All universal operators enter the effective
+potential $V_{\rm eff}(r)$ directly.  The ABCD
+cascade computes the eigenvalue in one pass.
+Screening is layered
+($Z_{\rm eff}^{(k)} = Z - \sum_{j<k} N_j$).
+Crossing potentials are localised at $r = R_n$
+with magnitudes from Axiom~4 and crossing
+angles from torus knot geometry
+(Eq.~\ref{eq:crossing_angle}).  No correction
+factors.  One phase integral.  One eigenvalue.
+\end{resultbox}
 
 
 The $p$-shell has three spatial axes $(m_l = -1, 0, +1)$.

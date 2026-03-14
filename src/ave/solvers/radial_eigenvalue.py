@@ -92,9 +92,9 @@ def _enclosed_charge_fraction(r, Z_eff):
     From Eq. (smooth_screening) in the LaTeX:
         σ(r) = 1 - exp(-2·Z_eff·r/a₀)·(1 + 2·Z_eff·r/a₀ + 2·Z_eff²·r²/a₀²)
 
-    This is the exact integral of the normalised hydrogenic 1s density
-    from 0 to r.  Derived from Axiom 2 (Coulomb → 1s solution) +
-    Axiom 2 (Gauss's law on the resulting density).
+    This is the exact integral of the normalised 1s standing-wave
+    density from 0 to r.  Derived from Axiom 2 (Coulomb → 1s
+    mode shape) + Axiom 2 (Gauss's law on the resulting density).
 
     Args:
         r:      Radial position [m].
@@ -105,6 +105,30 @@ def _enclosed_charge_fraction(r, Z_eff):
     """
     x = 2.0 * Z_eff * r / A_0  # dimensionless
     return 1.0 - np.exp(-x) * (1.0 + x + 0.5 * x**2)
+
+
+def _enclosed_charge_fraction_2s(r, Z_eff):
+    """Smooth enclosed-charge fraction σ(r) for a 2s (n=2, l=0) shell.
+
+    Derived by integrating the normalised 2s standing-wave density:
+        ρ₂ₛ(r) = (Z_eff/(2a₀))³/(2π) × (1 - Z_eff r/(2a₀))² × exp(-Z_eff r/a₀)
+    from 0 to r (Gauss's law, Axiom 2).
+
+    Analytic result:
+        σ₂ₛ(r) = 1 - exp(-x)·(1 + x + x²/2 + x⁴/8)
+
+    where x = Z_eff·r/a₀.  Same standing-wave ODE (Axiom 1+2),
+    different winding number.
+
+    Args:
+        r:      Radial position [m].
+        Z_eff:  Effective charge seen by the 2s soliton.
+
+    Returns:
+        σ:  Enclosed charge fraction (0 → 1) [dimensionless].
+    """
+    x = Z_eff * r / A_0  # dimensionless
+    return 1.0 - np.exp(-x) * (1.0 + x + 0.5 * x**2 + x**4 / 8.0)
 
 
 def _z_net_smooth(r, Z, shells):
@@ -128,7 +152,13 @@ def _z_net_smooth(r, Z, shells):
     z = float(Z)
     for n_shell, N_a in shells:
         # Z_eff = Z for the taper profile (unperturbed, pure Axiom 2)
-        sigma = _enclosed_charge_fraction(r, float(Z))
+        if n_shell == 1:
+            sigma = _enclosed_charge_fraction(r, float(Z))
+        elif n_shell == 2:
+            sigma = _enclosed_charge_fraction_2s(r, float(Z))
+        else:
+            # Higher shells: use 1s CDF as approximation (tightly bound)
+            sigma = _enclosed_charge_fraction(r, float(Z))
         z -= N_a * sigma
     return max(z, 0.0)
 
