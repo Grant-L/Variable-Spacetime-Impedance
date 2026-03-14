@@ -1,20 +1,66 @@
 """
-Radial Eigenvalue Solver
-========================
+Radial Eigenvalue Solver (ABCD Cascade)
+========================================
 
 Finds the energy eigenvalue of an electron (n, l) in a multi-electron
 atom by solving the radial standing wave condition on the vacuum lattice.
 
-This is the atomic-scale instance of the universal Op3 → Op6 chain:
-    1. Build V_eff(r) from Axiom 2 (Coulomb) + Axiom 1 (angular momentum)
-    2. Compute local wavenumber k(r) from Axiom 4 (soliton dispersion)
-    3. Accumulate phase ∫k dr in each region (Sommerfeld integral)
-    4. Compute reflection coefficient Γ at each shell boundary (Op3)
-    5. Find E where total phase = n_r·π (Op6, root-finding)
+DUAL FORMALISM — Two Universal Solver Strategies
+-------------------------------------------------
+AVE provides two complementary solver formalisms, both scale-invariant:
 
-Same algorithm used at nuclear, antenna, and galactic scales.
-~65 lines of new physics; all operators and constants reused.
+    Y→S (coupled_resonator.py)     ABCD (this module)
+    ──────────────────────────     ─────────────────────
+    Lumped LC networks             Distributed transmission lines
+    Discrete nodes (Hopf links)    Continuous graded profiles
+    k_Hopf = (2/Z)(1 - P_C/2)     Z_net(r) = Z - N·σ(r)
+    λ_min(S†S) = 0                 B_total(E) = 0
+    P2: same-shell pairs           P3: cross-shell screening
+
+    EE analog: SPICE netlist       EE analog: cascaded TL sections
+
+Both are needed for multi-electron atoms:
+    1. ABCD → radial eigenvalue through screened potential (5.58 eV for Li)
+    2. Y→S  → Op2 crossing correction from Hopf topology (−0.26 eV)
+    Result: 5.32 eV (1.2% error, 0 free parameters)
+
+UNIVERSAL OPERATOR MAPPING
+--------------------------
+Each solver step maps to a universal operator:
+
+    Step  Code location              Universal Operator    Delegation
+    ────  ─────────────────────────   ──────────────────    ──────────
+    1     _V_eff()                    Op4 (Coulomb)         Inline ¹
+    2     _k_local()                  Op1 (impedance)       Implicit ²
+    3     _abcd_section()             Op5 (cascade)         ABCD matrix
+    4     _radial_ode()               ODE from Ax 1,2,4     scipy IVP
+    5     _eigenvalue_condition()     Op6 (eigenvalue)      brentq root
+    6     _reflection_phase()         Op3 (reflection)      universal_reflection() ✓
+    7     radial_eigenvalue_abcd()    Bracket from Ax 2     Z²Ry/n² limits
+
+    ¹ The Coulomb potential V = −Z·αℏc/r is the atomic-scale pairwise
+      energy.  For the ODE approach this is a coefficient, not a
+      separate function call.  universal_pairwise_energy() uses the
+      same formula in the lumped-element context.
+
+    ² Impedance Z_TL = ℏk/m_e appears implicitly in the ODE's k(r)
+      term.  The transfer matrix M encodes the distributed impedance
+      profile.  Calling universal_impedance(mu, eps) would be
+      artificial here — the ODE IS the impedance equation.
+
+AXIOM TRACEABILITY
+------------------
+    Axiom 1 → angular momentum l(l+1), lattice dispersion ω = ck
+    Axiom 2 → Coulomb V(r), Gauss screening σ(r), bracket Z²Ry/n²
+    Axiom 3 → packing fraction P_C = 8πα (via Op2 crossing correction)
+    Axiom 4 → soliton mass m_e = ℏω/c², kinetic energy E − V
+
+CONSTANTS
+---------
+    All from ave.core.constants: ALPHA, HBAR, C_0, M_E, A_0, RY_EV, e_charge
+    Zero hardcoded values.  Zero imported numbers.
 """
+
 
 import numpy as np
 from scipy import integrate

@@ -3001,18 +3001,32 @@ higher-order coupling between Problems~2 and~3:
           of the single-soliton ABCD cascade.
 \end{itemize}
 
-\begin{resultbox}{E2 Summary (updated)}
-Cross-shell $l{=}0$ penetration is solved by the
-\textbf{ABCD cascade} (E2d-ii + E2f graded taper),
-not the Y-matrix.
-The Y-matrix ring--ring coupling overestimates
-$k_{12}$ for radial ($l{=}0$) orbits.\\
-Li result: IE = 5.58~eV vs.\ 5.39~eV experimental
-(3.5\%, 0 free parameters).\\
-Remaining systematic: dynamic polarisation of the
-inner shell ($1s$ resonant stub loading on the
-$2s$ TL), a higher-order coupling between
-Problems~2 and~3.
+\begin{resultbox}{E2 Summary — Dual-Formalism Architecture}
+AVE provides two complementary solver formalisms,
+both scale-invariant:\\[4pt]
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{lll}
+& \textbf{Y$\to$S} & \textbf{ABCD cascade} \\
+\hline
+Topology & Lumped nodes (Hopf links)
+         & Distributed graded line \\
+Eigenvalue & $\lambda_{\min}(S^\dagger S) = 0$
+           & $B_{\text{total}}(E) = 0$ \\
+EE analog & SPICE netlist
+          & Cascaded TL sections \\
+Problem & P2: same-shell pairs
+        & P3: cross-shell screening \\
+\hline
+\end{tabular}\\[4pt]
+Both are needed for multi-electron atoms:
+\begin{enumerate}
+    \item \textbf{ABCD} $\to$ radial eigenvalue through
+          screened potential (5.58~eV for Li).
+    \item \textbf{Y$\to$S} $\to$ Op2 crossing correction
+          from Hopf topology ($-0.26$~eV).
+\end{enumerate}
+\textbf{Result}: IE $= 5.32$~eV vs.\ 5.39~eV experimental
+(1.2\%, 0 free parameters).
 \end{resultbox}
 
 \subparagraph{(E2h) Lattice fluid mechanics
