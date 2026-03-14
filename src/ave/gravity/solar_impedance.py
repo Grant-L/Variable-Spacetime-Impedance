@@ -672,12 +672,8 @@ def flyby_anomaly_impedance(
 
     # Impedance mismatch at magnetopause
     Z_inside = Z_0  # Vacuum impedance inside magnetosphere
-    # Outside: solar wind plasma modifies Z
-    n_sw = 5e6  # electrons/m³ at 1 AU
-    omega_p = np.sqrt(n_sw * E_CHARGE**2 / (M_E * EPSILON_0))
-    omega_ref = 2 * np.pi * 1e6  # Reference frequency
-    ratio2 = (omega_p / omega_ref)**2
-    Z_outside = Z_0 / np.sqrt(1 - ratio2) if ratio2 < 1 else 0.0
+    # Outside: solar wind plasma modifies Z (delegates to solar_wind_impedance)
+    Z_outside = solar_wind_impedance(AU, freq_hz=1e6)
     Gamma_mp = float(reflection_coefficient(Z_inside, Z_outside))
 
     return {
