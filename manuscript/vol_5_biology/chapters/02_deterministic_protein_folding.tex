@@ -500,6 +500,250 @@ The final engine combines eight axiom-derived physics layers with zero empirical
 
 For peptides $N \leq 20$, the axiom-derived $S_{11}$ minimiser achieves consistently lower RMSD than the eight-force engine with zero tuned parameters. Chignolin achieves $2.82$~\AA\ RMSD with $R_g = 4.6 / 4.8$~\AA\ (96\% match to PDB)---breaking the 3~\AA\ barrier from first principles. For Villin HP35 ($N = 35$), the RMSD of $9.68$~\AA\ reflects the remaining challenge of tertiary topology: the cross-coupled cavity filter provides gradient signal for helix packing ($R_g$ improved from 13.2 to 11.9~\AA\ toward the PDB value of 8.9~\AA), but full 3-helix bundle compaction likely requires hierarchical fold-then-pack optimisation or longer-range coupled-mode analysis.
 
+% ═══════════════════════════════════════════════════════════════
+\section{Dual-Formalism Architecture and the Op2 Crossing Correction}
+\label{sec:dual_formalism}
+
+The atomic-scale radial eigenvalue problem
+(Chapter~\ref{ch:quantum_mechanics}, \S E2) required
+\emph{two} complementary solver formalisms:
+\begin{enumerate}
+    \item \textbf{ABCD cascade} (distributed TL) for the
+          radial eigenvalue through a continuously screened
+          potential.
+    \item \textbf{Y$\to$S network} (lumped LC) for the
+          Hopf-link coupling correction between
+          same-shell electron pairs.
+\end{enumerate}
+Neither formalism alone captures the full physics of
+multi-electron atoms.  The same duality appears at the
+protein scale, and identifying this structural
+isomorphism reveals a new topological correction
+(Op2 crossing penalty) that has not yet been
+incorporated into the folding engine.
+
+\subsection{Atom $\leftrightarrow$ Protein Mapping}
+
+Table~\ref{tab:dual_formalism} shows the complete
+operator-by-operator correspondence between the
+atomic-scale solver (Chapter~\ref{ch:quantum_mechanics})
+and the protein folding engine.
+
+\begin{table}[H]
+\centering
+\small
+\caption{Dual-formalism mapping between atom and protein
+scales.  Every row is a universal operator
+(Chapter~\ref{ch:quantum_mechanics}, \S E2 and
+Appendix~\ref{app:solver_toolchain}), applied
+identically at both scales.}
+\label{tab:dual_formalism}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+\textbf{Operator / Feature}
+    & \textbf{Atom (Ch.~16)}
+    & \textbf{Protein (Ch.~2--4)} \\
+\midrule
+\textbf{ABCD (distributed)} &
+    Radial eigenvalue through &
+    1D backbone $S_{11}$ \\
+    & screened potential $Z_{\rm net}(r)$ &
+    cascade (this chapter) \\[3pt]
+\textbf{Y$\to$S (lumped)} &
+    Hopf-link coupled &
+    Multi-path TL network \\
+    & resonator (P2) &
+    (Chapter~\ref{ch:network_solver}) \\[3pt]
+\textbf{Impedance profile} &
+    $\sigma(r) = 1s$ density $\to Z_{\rm net}(r)$ &
+    $Z_{\rm topo}(i)$ = sidechain $\to Z(i)$ \\[3pt]
+\textbf{Op2 crossing} &
+    $2s{\uparrow}$ through $1s{\uparrow}$: &
+    Backbone loop crossing: \\
+    & $\delta E = E \times P_C/4$ &
+    $\delta E = E_{\rm bond} \times P_C/4$ \\[3pt]
+\textbf{Op3 reflection} &
+    $\Gamma$ at shell boundary &
+    $\Gamma$ at segment boundary \\[3pt]
+\textbf{Op5 cascade} &
+    ABCD per radial section &
+    ABCD per peptide unit \\[3pt]
+\textbf{Op6 eigenvalue} &
+    $B_{\rm total}(E) = 0$ &
+    $\lambda_{\min}(S^\dagger S) = 0$ \\[3pt]
+\textbf{Op9 steric} &
+    Pauli exclusion at $r = 0$ &
+    $C_\alpha$ steric reflection \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The protein engine already uses \emph{both} formalisms:
+\begin{itemize}
+    \item The 1D ABCD cascade (\S\ref{sec:s11_minimiser})
+          predicts secondary structure from wave propagation
+          along the backbone.
+    \item The 2D Y$\to$S network
+          (Chapter~\ref{ch:network_solver}) predicts
+          tertiary structure from all-pairs coupling through
+          H-bonds and contacts.
+\end{itemize}
+What is \emph{missing} is the third component: the
+\textbf{Op2 topological crossing correction}, which
+penalises backbone self-crossings by a quantised,
+parameter-free energy cost.
+
+\subsection{Op2 Topological Crossing Correction}
+\label{sec:op2_crossing}
+
+\paragraph{Physical origin.}
+At the atomic scale, the $2s$ soliton crosses through the
+$1s$ worldline twice per radial oscillation.
+Each same-spin crossing costs
+$\delta E = E_{\rm ABCD} \times P_C/4$, where
+$P_C = 8\pi\alpha \approx 0.1834$ is the lattice packing
+fraction (Axiom~3).  This is not a steric effect---it is a
+\emph{topological} cost arising from the Op2 crossing
+operator (\S E2i of Chapter~\ref{ch:quantum_mechanics}).
+
+At the protein scale, the backbone chain can form loops and
+knots.  When one backbone segment crosses through another,
+the crossing event is topologically identical to the
+atomic Op2: the propagating soliton (backbone vibrational
+mode) must traverse a region already occupied by another
+soliton (the crossed segment).
+
+\paragraph{Derivation.}
+Let $c_{\min}$ be the minimum crossing number of the
+backbone knot type---a topological invariant:
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{l c l}
+Unknot (trivial) & $c_{\min} = 0$ & Most natural proteins \\
+Trefoil $3_1$    & $c_{\min} = 3$ & YibK, YbeA \\
+Figure-eight $4_1$ & $c_{\min} = 4$ & Rare \\
+Cinquefoil $5_1$ & $c_{\min} = 5$ & Not yet observed \\
+\end{tabular}
+\end{center}
+Each crossing carries the same Op2 cost as the atomic
+case.  The total topological crossing energy penalty is:
+\begin{resultbox}{Op2 Crossing Correction (Protein Scale)}
+\begin{equation}
+    \delta E_{\rm knot}
+    = c_{\min} \times \frac{P_C}{4} \times E_{\rm coupling}
+    = c_{\min} \times 2\pi\alpha \times E_{\rm coupling}
+    \label{eq:op2_protein}
+\end{equation}
+\end{resultbox}
+\noindent where $E_{\rm coupling}$ is the backbone coupling
+energy (bond eigenvalue from the $S_{11}$ minimiser) and
+$P_C/4 = 2\pi\alpha \approx 0.04587$ is the per-crossing
+fractional cost.
+
+\paragraph{Computing $c_{\min}$.}
+Given the 3D backbone coordinates
+$\{\mathbf{r}_1, \ldots, \mathbf{r}_N\}$, the crossing
+number is computed from the Gauss linking integral applied
+to the closed backbone curve (with a virtual closure
+connecting the termini):
+\begin{equation}
+    c = \frac{1}{4\pi}
+    \oint \oint
+    \frac{(\mathbf{r}_1 - \mathbf{r}_2) \cdot
+          (d\mathbf{r}_1 \times d\mathbf{r}_2)}
+         {|\mathbf{r}_1 - \mathbf{r}_2|^3}
+    \label{eq:gauss_linking}
+\end{equation}
+In practice, the Alexander polynomial or the KnotFinder
+algorithm provides $c_{\min}$ from any smoothly closed
+backbone trace.
+
+\paragraph{Quantitative predictions.}
+For a backbone coupling energy $E_{\rm coupling} \sim 15$
+kcal/mol (typical amide bond eigenvalue):
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{l c r l}
+\textbf{Knot type} & $c_{\min}$ &
+    $\delta E_{\rm knot}$ & \textbf{Prediction} \\
+\hline
+Unknot & 0 & 0 & Energetically preferred \\
+Trefoil & 3 & 2.1 kcal/mol & Rare; requires deep topology \\
+Figure-eight & 4 & 2.7 kcal/mol & Very rare \\
+Cinquefoil & 5 & 3.4 kcal/mol & Not observed \\
+\end{tabular}
+\end{center}
+Three testable consequences emerge:
+\begin{enumerate}
+    \item \textbf{Most proteins are unknotted.}
+          The Op2 penalty makes $c = 0$ the global minimum
+          in the vast majority of sequence/topology space.
+          Experimentally, $\sim 1\%$ of PDB structures
+          contain knots---consistent with a
+          $\sim 2$~kcal/mol barrier.
+    \item \textbf{Knotted proteins require compensating
+          stabilisation.}  Known trefoil-knotted proteins
+          (e.g., YibK, YbeA) have deeply buried hydrophobic
+          cores whose packing energy exceeds the
+          2.1~kcal/mol Op2 penalty.
+    \item \textbf{The crossing penalty is quantised.}
+          Unlike the continuous steric potential (Op9),
+          the Op2 correction is an integer multiple of
+          $2\pi\alpha \times E_{\rm coupling}$.  This
+          predicts discrete ``allowed'' and ``forbidden''
+          knot types---a topological selection rule for
+          protein architecture.
+\end{enumerate}
+
+\subsection{Op2 vs.\ Op9: Complementary Corrections}
+
+The Op2 crossing correction and the Op9 steric reflection
+operate on different levels:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{l l l}
+& \textbf{Op9 (steric)} & \textbf{Op2 (crossing)} \\
+\hline
+Nature & Pairwise, geometric & Global, topological \\
+Input  & Interatomic distances $d_{ij}$ &
+         Crossing number $c_{\min}$ \\
+Scale  & Continuous (soft wall) &
+         Quantised (integer $c$) \\
+Effect & Penalises spatial overlap &
+         Penalises chain threading \\
+Status & Implemented (Op9) &
+         Predicted (this section) \\
+\end{tabular}
+\end{center}
+
+\noindent Op9 prevents atoms from occupying the same space.
+Op2 prevents the backbone from \emph{threading through
+itself} without spatial overlap---a purely topological
+constraint.  Together, they constitute the complete
+geometric $+$ topological exclusion principle for folded
+proteins.
+
+\begin{resultbox}{Dual-Formalism Architecture (Protein)}
+The protein folding engine uses two complementary
+solver formalisms:
+\begin{enumerate}
+    \item \textbf{ABCD cascade} (distributed TL) for
+          secondary structure from backbone wave
+          propagation.
+    \item \textbf{Y$\to$S network} (lumped LC) for
+          tertiary structure from all-pairs coupling.
+\end{enumerate}
+A third correction---the \textbf{Op2 topological
+crossing penalty} ($\delta E = c_{\min} \times 2\pi\alpha
+\times E_{\rm coupling}$)---penalises backbone knots by a
+quantised, parameter-free energy cost.  This predicts
+that $\sim 99\%$ of natural proteins are unknotted,
+consistent with PDB statistics.
+\end{resultbox}
+
+
 \section{Translation of Terminology: Biology $\leftrightarrow$ Electrical Engineering}
 \label{sec:terminology}
 

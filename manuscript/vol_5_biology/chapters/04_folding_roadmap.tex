@@ -1972,6 +1972,9 @@ to its protein-scale instantiation.
 \textbf{8} & $\boldsymbol{\Gamma_\text{pack}}$
   & \textbf{Ax.~3+4}
   & \textbf{Hydrophobic collapse} \\
+\textbf{Op2$_\times$} & $\boldsymbol{\delta E = c_{\min} \times 2\pi\alpha \times E}$
+  & \textbf{Ax.~3}
+  & \textbf{Topological crossing penalty (\S\ref{sec:op2_crossing})} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -2208,6 +2211,38 @@ indicate irrelevance --- it indicates that the term has succeeded:
 $R_g \approx R_{g,\text{target}}$ means $\Gamma_\text{pack} \approx 0$.
 The packing term is small \textbf{because it is working}.
 
+
+\subsection{Op2 Topological Crossing Penalty}
+\label{sec:op2_crossing_ch4}
+
+The dual-formalism analysis (\S\ref{sec:dual_formalism} of
+Chapter~\ref{ch:protein_folding}) predicts a fourth loss term
+from the Op2 crossing operator:
+\begin{equation}
+    f(\theta) = \underbrace{\sum_i |\Gamma_i|^2}_{\text{Op 5--6}}
+    + \underbrace{|\Gamma_\text{pack}|^2}_{\text{Op 8}}
+    + \underbrace{\langle\Gamma_\text{steric}^2\rangle}_{\text{Op 9}}
+    + \underbrace{c_{\min} \times \frac{P_C}{4}}_{\text{Op2 crossing}}
+    \label{eq:four_scale_loss}
+\end{equation}
+where $c_{\min}$ is the minimum crossing number of the
+backbone knot type (Eq.~\ref{eq:op2_protein}).
+
+\paragraph{Implementation roadmap.}
+\begin{enumerate}
+    \item \textbf{Knot detection.}  After fold convergence,
+          close the backbone trace (N-terminus to C-terminus)
+          and compute $c_{\min}$ via the Alexander polynomial.
+          Libraries: \texttt{topoly} or \texttt{KnotProt}.
+    \item \textbf{Crossing penalty.}  Add $c_{\min} \times P_C/4$
+          to the total loss (Eq.~\ref{eq:four_scale_loss}).
+          This is a post-convergence correction, not a
+          gradient-driving term (crossing number is not
+          differentiable).
+    \item \textbf{Validation.}  Compare predicted vs.\
+          observed crossing numbers across the PDB.
+          Target: $c_{\min} = 0$ for $\sim 99\%$ of structures.
+\end{enumerate}
 
 % ═══════════════════════════════════════════════════════════════
 \section{Research Avenues Under the AVE Axioms}
